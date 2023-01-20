@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="Immer wenn ich die Verbindung zu meinem Heimnetz hergestellt habe, sei es über WLAN oder Kabel, dauerte es eine gefühlte Ewigkeit, bis der Finder (sic!) mein NAS gefunden hat, obwohl beide am gleichen Switch hängen. Es half dabei auch nichts, wenn ich direkt zum NAS verbinden wollte, weil ich die IP-Adresse kenne (Apfel &#43; K). Das hab ich eine Weile ignoriert, dann akzeptiert, aber irgendwann konnte ich die Geduld nicht mehr aufbringen und habe mich auf die Suche nach einer Lösung gemacht.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/favicon.ico">
+
+  
+  
+  <meta name="keywords" content=" hugo  latex  theme ">
+  
+
+  
+  
+
+  
+  <meta property="og:title" content="MacOS Finder und die SMB / Windows - Netzwerkfreigaben" />
+<meta property="og:description" content="Immer wenn ich die Verbindung zu meinem Heimnetz hergestellt habe, sei es über WLAN oder Kabel, dauerte es eine gefühlte Ewigkeit, bis der Finder (sic!) mein NAS gefunden hat, obwohl beide am gleichen Switch hängen. Es half dabei auch nichts, wenn ich direkt zum NAS verbinden wollte, weil ich die IP-Adresse kenne (Apfel &#43; K). Das hab ich eine Weile ignoriert, dann akzeptiert, aber irgendwann konnte ich die Geduld nicht mehr aufbringen und habe mich auf die Suche nach einer Lösung gemacht." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://nickyreinert.de/blog/2013/02/24/macos-finder-und-die-smb-/-windows-netzwerkfreigaben/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2013-02-24T00:00:00+00:00" />
+<meta property="article:modified_time" content="2013-02-24T00:00:00+00:00" />
+
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/blog/2013/02/24/macos-finder-und-die-smb-/-windows-netzwerkfreigaben/">
+
+  
+  
+  <meta itemprop="name" content="MacOS Finder und die SMB / Windows - Netzwerkfreigaben">
+<meta itemprop="description" content="Immer wenn ich die Verbindung zu meinem Heimnetz hergestellt habe, sei es über WLAN oder Kabel, dauerte es eine gefühlte Ewigkeit, bis der Finder (sic!) mein NAS gefunden hat, obwohl beide am gleichen Switch hängen. Es half dabei auch nichts, wenn ich direkt zum NAS verbinden wollte, weil ich die IP-Adresse kenne (Apfel &#43; K). Das hab ich eine Weile ignoriert, dann akzeptiert, aber irgendwann konnte ich die Geduld nicht mehr aufbringen und habe mich auf die Suche nach einer Lösung gemacht."><meta itemprop="datePublished" content="2013-02-24T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2013-02-24T00:00:00+00:00" />
+<meta itemprop="wordCount" content="165">
+<meta itemprop="keywords" content="" />
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>MacOS Finder und die SMB / Windows - Netzwerkfreigaben - Nicky Reinert</title>
+  
+
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="MacOS Finder und die SMB / Windows - Netzwerkfreigaben"/>
+<meta name="twitter:description" content="Immer wenn ich die Verbindung zu meinem Heimnetz hergestellt habe, sei es über WLAN oder Kabel, dauerte es eine gefühlte Ewigkeit, bis der Finder (sic!) mein NAS gefunden hat, obwohl beide am gleichen Switch hängen. Es half dabei auch nichts, wenn ich direkt zum NAS verbinden wollte, weil ich die IP-Adresse kenne (Apfel &#43; K). Das hab ich eine Weile ignoriert, dann akzeptiert, aber irgendwann konnte ich die Geduld nicht mehr aufbringen und habe mich auf die Suche nach einer Lösung gemacht."/>
+
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <h1>
+    <a href="https://nickyreinert.de/">Nicky Reinert</a>
+  </h1>
+
+  <nav>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/">Post</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/post/">Archives</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/about/">About</a>
+    </span>
+    
+  </nav>
+</header>
+
+    
+<main id="main" class="post">
+  
+  
+  <h1>MacOS Finder und die SMB / Windows - Netzwerkfreigaben</h1>
+  
+  
+  <article class="content">
+    
+    <p>Immer wenn ich die Verbindung zu meinem Heimnetz hergestellt habe, sei es über WLAN oder Kabel, dauerte es eine gefühlte Ewigkeit, bis der Finder (sic!) mein NAS gefunden hat, obwohl beide am gleichen Switch hängen. Es half dabei auch nichts, wenn ich direkt zum NAS verbinden wollte, weil ich die IP-Adresse kenne (Apfel + K). Das hab ich eine Weile ignoriert, dann akzeptiert, aber irgendwann konnte ich die Geduld nicht mehr aufbringen und habe mich auf die Suche nach einer Lösung gemacht.</p>
+<p>Diese fand ich in den <a href="https://discussions.apple.com/thread/2172049?start=15&amp;tstart=0">Apple Support Foren.</a> Ein langer Beitrag kurz zusammengefasst:</p>
+<p>1. Erstelle ein Textdatei mit dem Inhalt</p>
+<blockquote>
+<p>[default]
+minauth=none
+streams=no
+soft=yes
+notify_off=yes
+domain=DOMAIN_NAME_DEINER_NETZWERKFREIGABE
+port445=no_netbios
+[NAME_DEINER_NETZWERKFREIGABE]
+addr=IP-ADRESSE_DEINER_FREIGABE</p>
+</blockquote>
+<p>2. Speichere die Datei mit dem Namen &ldquo;nsmb.conf&rdquo; unter /etc ab. (Ggf.mit der Konsole / dem Terminal arbeiten). 3. Starte dein Mac(Book) neu.</p>
+<p>Danach dauerte es nur noch Bruchteile von Sekunden, bis die Netzwerkfreigabe im Finder sichtbar war.</p>
+<p> </p>
+<p>Update: Mit dem kostenfrei erhältlichen <a href="http://www.apple.com/de/osx/">Update auf MacOS 10.9 Mavericks</a> scheint dieses Problem behoben zu sein!</p>
+
+    
+  </article>
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/blog/2012/09/24/dos-spiele-auf-dem-mac-spielen/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/blog/2013/03/16/buffalo-linkstation-ls-wxl-mit-minidlna-und-custom-firmware-von-shonk-1.64-mod-1/">next →</a>
+    
+  </div>
+  <div class="comment">
+    
+    
+    
+    
+    
+    
+  </div>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 2019</span> - <span>2023</span>
+  </div>
+
+  <div>
+    <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a>
+    <span> 🍦 Theme </span>
+    <a class="link" href="https://github.com/queensferryme/hugo-theme-texify">TeXify</a>
+  </div>
+
+  <div class="footnote">
+    <span>Follow me on <a class=link href=https://github.com/queensferryme>GitHub</a>,
+<a class=link href=https://twitter.com/queensferryme>Twitter</a> or
+<a class=link href=/index.xml>RSS</a> |
+<a class=link href=https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh target=_blank rel=noopener>CC BY-NC-SA 4.0</a>
+</span>
+  </div>
+</footer>
+
+  </div>
+
+  
+  
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>htacces on Nicky Reinert</title>
+    <link>https://nickyreinert.de/tags/htacces/</link>
+    <description>Recent content in htacces on Nicky Reinert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>de-DE</language>
+    <lastBuildDate>Thu, 26 Oct 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/htacces/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Wie wirken sich viele 301 Weiterleitungen auf die  Performance aus?</title>
+      <link>https://nickyreinert.de/blog/2017/10/26/wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/</link>
+      <pubDate>Thu, 26 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickyreinert.de/blog/2017/10/26/wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/</guid>
+      
+      <description>&lt;p&gt;Um Weiterleitungen kommt man fast nicht herum. Vor allem im Bereich der Suchmaschinenoptimierung (SEO) sollte man vermeiden, dass es auf der Website zu 404-Fehlern kommt - also Ressourcen, die nicht (mehr) vorhanden sind.&lt;/p&gt;
+&lt;p&gt;Ein Weg, um das zu beheben, ist die Einrichtung einer Weiterleitung von der alten, nicht mehr vorhandenen Ressource auf die neue Ressource.  Der HTTP-Statuscode dafür ist entweder 301 (temporär) oder 302 (für eine dauerhafte Weiterleitung). Weiterleitungen können z.B. mit einer .htaccess Datei eingerichtet werden. Dazu aktiviert man zunächst die sogenannte RewriteEngine, um eine URL zu einer anderen URL &amp;ldquo;weiterzuleiten&amp;rdquo;. Dann kann man beliebig viele, Regeln nach folgendem Prinzip festlegen (freilich gibt es noch weitaus mehr Möglichkeiten, wie z.B. reguläre Ausdrücke):&lt;/p&gt;
+&lt;p&gt;RewriteEngine On
+Redirect 302 /redirect0r/foobar/1/ /redirect0r/foobar/index.php
+Redirect 302 /redirect0r/foobar/2/ /redirect0r/foobar/index.php&lt;/p&gt;
+&lt;p&gt;Wenn man nun von einem System (z.B. Joomla) auf ein anderes System (z.B. Wordpress) umzieht und dabei nicht nur auf eine veraltete URL sondern auf 100 URLs stößt, die im neuen System nicht mehr existieren, stellt sich oft die Frage: Was mache ich mit all den alten URLs, die ich im neuen System nicht exakt abbilden kann? Macht es Sinn, die htaccess-Datei mit zahllosen Weiterleitungen zu überfluten? Es kommen zu ersten Zweifeln: Die htaccess-Datei wird bei jedem Aufruf der Website geladen. Kann eine große htaccess-Datei sich also negativ auf die Performance der Seite auswirken?&lt;/p&gt;
+&lt;p&gt;Die Frage hat auch mich beschäftigt und deshalb habe ich ein kleines PHP-Script geschrieben, dass helfen soll, die Antwort zu finden.&lt;/p&gt;
+&lt;h2 id=&#34;funktion&#34;&gt;Funktion&lt;/h2&gt;
+&lt;p&gt;Der Quellcode für das PHP-Script ist über &lt;a href=&#34;https://github.com/nickyreinert/redirect0r&#34;&gt;github&lt;/a&gt; verfügbar. Das Script kann im Browser oder über die Kommandozeile aufgerufen werden. Sämtliche Einstellungen werden in einer JSON-Datei vorgenommen.&lt;/p&gt;
+&lt;p&gt;Der Ablauf des Scripts ist relativ einfach. In einer Schleife schreibt es eine beliebige Anzahl von Weiterleitungs-Regeln in eine htaccess-Datei. Diese Regeln haben folgenden Aufbau:&lt;/p&gt;
+&lt;p&gt;Redirect 302 /foobar/&lt;strong&gt;&lt;em&gt;i&lt;/em&gt;&lt;/strong&gt;/ /foobar/index.php&lt;/p&gt;
+&lt;p&gt;/foobar ist der Ordner, der für die Messung verwendet wird. In diesem Ordner befindet sich auch die htaccess-Datei. i ist eine fortlaufende Ziffer, die mit jedem Schleifendurchlauf inkrementiert wird. Schließlich wird das Ziel der Weiterleitung mit /foobar/index.php angegeben. Der Ordner und die Zieldatei sowie der Inhalt der Zieldatei können angepasst werden.&lt;/p&gt;
+&lt;p&gt;Nicht jeder Schleifendurchlauf schreibt in die htaccess-Datei und ruft Test-URL sofort auf. Das geschieht in definierbaren Abschnitten. Diese Schrittweite ist definierbar. Die Zeit für den Aufruf wird schließlich gemessen .&lt;/p&gt;
+&lt;p&gt;Weiterhin ist es möglich, die Aufrufe innerhalb einer Schrittweite zu wiederholen, also mehrere Abfragen nacheinander, um z.B. in der späteren Auswertung aus den Ergebnissen einen Mittelwert zu errechnen. Nach jeder Abfrage kann außerdem eine cool-down-Phase stattfinden, bevor der nächste Abruf stattfindet..&lt;/p&gt;
+&lt;h2 id=&#34;messergebnisse&#34;&gt;Messergebnisse&lt;/h2&gt;
+&lt;p&gt;Die Messergebnisse offenbaren keine Überraschung. Je größer die Datei, desto größer die Antwortzeiten.  Im Detail heißt das:&lt;/p&gt;
+&lt;p&gt;Gemessen wurden mit drei verschiedenen Methoden:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;auf einem lokalen Webserver (MacBook Pro mit 16 GByte RAM und 2,7 GHz i5) per Aufruf im Browser (local server)&lt;/li&gt;
+&lt;li&gt;auf einem gehosteten Webserver (unbekannte Hardware) per Aufruf im Browser (remote server)&lt;/li&gt;
+&lt;li&gt;auf einem gehosteten Webserver per Aufruf auf der Kommandozeile (remote server CLI)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Als Zeilenlimitin der htaccess-Datei wurden 100.000 Zeilen gewählt. Die Schrittweite beträgt 5.000. Nach jedem Aufruf gab es eine Pause von 3 Sekunden. Insgesamt gab es drei Aufrufe je Zeilenanzahl. Über diese 3 Aufrufe zu einer bestimmten Zeilenanzahl wurde schließlich der Mittelwert errechnet.&lt;/p&gt;
+&lt;p&gt;Bei 10.000 Zeilen wurde bei allen Methoden ca. 90 ms gemessen. Bei 20.000 Zeilen in der htaccess-Datei beträgt die Reaktionszeiten knapp das doppelte, aber immer noch recht unauffällige 185 ms. Ab da gehen die gemessenen Zeit leicht auseinander, der lokale Server scheint die schlechtere Performance zu haben.&lt;/p&gt;
+&lt;p&gt;Bei 60.000 Zeilen wird bei allen Methoden die &amp;ldquo;magische&amp;rdquo; Grenze von 1 Sekunde überschritten. Die Antwortzeiten steigen jetzt nicht mehr proportional. Bei 100.000 Zeilen benötigt der lokale Server schon über 4 Sekunden für die Antwort. Der gehostete Webserver braucht dafür über knapp 3 Sekunden.&lt;/p&gt;
+&lt;p&gt;[caption id=&amp;ldquo;attachment_1580&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;a href=&#34;https://www.nickyreinert.de/files/wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/htaccess-geschwindigkeit.png&#34;&gt;&lt;img src=&#34;images/htaccess-geschwindigkeit-300x186.png&#34; alt=&#34;Geschwindigkeit bei wachsender htaccess-Datei&#34;&gt;&lt;/a&gt; Geschwindigkeit bei wachsender htaccess-Datei[/caption]&lt;/p&gt;
+&lt;h2 id=&#34;fazit&#34;&gt;Fazit&lt;/h2&gt;
+&lt;p&gt;Natürlich wirkt sich eine große htaccess-Datei auf die Performance des Servers auf. Denn wie bereits bemerkt, muss der Webserver diese Datei bei jeder Anfrage öffnen und verarbeiten. Allerdings ist der negative Einfluss ziemlich gering und macht sich erst bei einer sehr großen Anzahl von Zeilen bemerkbar.&lt;/p&gt;
+&lt;p&gt;Eine htaccess-Datei mit 10.000 Zeilen verringert die Antwortzeit kaum. Allerdings steigt die Antwortzeit überproportional an. Bei 100.000 Zeilen ist sie bereits 50 mal langsamer.&lt;/p&gt;
+&lt;p&gt;Im Bereich ab 40.000 Zeilen dürfte der Einfluss auch nach außen hin spürbar sein. Natürlich hängt auch diese Erkenntnis stark von der verwendeten Hardware ab: Der lokale Webserver ist bei meinen Messungen etwas langsamer als der Server des Hosters.&lt;/p&gt;
+&lt;p&gt;Wer eine htaccess-Datei mit 10.000 Weiterleitungen pflegt sollte grundsätzlich sein Konzept überdenken. Oft lässt sich das entweder durch einen sauberen Umzug bzw. eine Anpassung des neuen Systems oder durch Weiterleitungen mit regulären Ausdrücken besser lösen. Am besten ist es natürlich, wenn man gar nicht erst in die Verlegenheit kommt, Weiterleitungen nutzen zu müssen.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>filter on Nicky Reinert</title>
+    <link>https://nickyreinert.de/tags/filter/</link>
+    <description>Recent content in filter on Nicky Reinert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>de-DE</language>
+    <lastBuildDate>Thu, 18 Apr 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/filter/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>WordPress Tag Cloud mit Umlauten (äöü) korrekt sortieren - Oder: Der WordPress Filter im Live-Beispiel erklärt</title>
+      <link>https://nickyreinert.de/blog/2019/04/18/wordpress-tag-cloud-mit-umlauten-%C3%A4%C3%B6%C3%BC-korrekt-sortieren-oder-der-wordpress-filter-im-live-beispiel-erkl%C3%A4rt/</link>
+      <pubDate>Thu, 18 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickyreinert.de/blog/2019/04/18/wordpress-tag-cloud-mit-umlauten-%C3%A4%C3%B6%C3%BC-korrekt-sortieren-oder-der-wordpress-filter-im-live-beispiel-erkl%C3%A4rt/</guid>
+      
+      <description>&lt;p&gt;WordPress bringt von Hause aus ein Widget mit, dass die verwendeten Tags als Cloud darstellt (wer es ein wenig schöner mag, &lt;a href=&#34;https://www.nickyreinert.de/wordpress-word-cloud-2-0/&#34;&gt;greift auf mein WordCloud Plugin zurück&lt;/a&gt;). Das Ganze hat nur einen Haken: Die entsprechende WordPress-Funktion &lt;strong&gt;&lt;a href=&#34;https://developer.wordpress.org/reference/functions/wp_generate_tag_cloud/&#34;&gt;wp_generate_tag_cloud&lt;/a&gt;&lt;/strong&gt; nutzt &lt;strong&gt;aosort()&lt;/strong&gt; als Sortierfunktion. Und die kommt mit Umlauten nicht sonderlich gut klar. Eine Lösung wäre also, die Umlaute für die Sortierung zu übersetzen, also Ä ind Ae, ö in oe und so weiter.&lt;/p&gt;
+&lt;p&gt;Das schöne an WordPress: Sehr viele Funktionalitäten lassen sich über &lt;strong&gt;Hooks&lt;/strong&gt; und &lt;strong&gt;Filter&lt;/strong&gt; modifizieren. So bietet auch der Sortier-Algorithmus die Möglichkeit an, den Array mit einer eigenen Funktion zu filtern. Die perfekte Gelegenheit, um sich mit dem Thema &lt;strong&gt;Filter mal&lt;/strong&gt; etwas näher zu beschäftigen. Ein Blick in den Source-Code von &lt;strong&gt;wp_generate_tag_cloud()&lt;/strong&gt; zeigt ab Zeile 875 (seit Version 4.8.0):&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;    /**
+     * Filters how the items in a tag cloud are sorted.
+     *
+     * @since 2.8.0
+     *
+     * @param WP_Term[] $tags Ordered array of terms.
+     * @param array     $args An array of tag cloud arguments.
+     */
+
+    $tags_sorted = apply_filters( &amp;#39;tag_cloud_sort&amp;#39;, $tags, $args );
+
+    if ( empty( $tags_sorted ) ) {
+        return $return;
+    }
+
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Die Tags lassen sich also über den &lt;strong&gt;Filter&lt;/strong&gt; &lt;strong&gt;tag_cloud_sort&lt;/strong&gt; mit einer eigenen Funktion sortieren. Gesagt, getan. Folgendes packen wir in die &lt;strong&gt;functions.php&lt;/strong&gt; unseres Child Themes (wir ignorieren dabei mal die Vorgabe, Funktionalitäten nicht im Theme unterzubringen):&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;add_filter(&amp;#39;tag_cloud_sort&amp;#39;, &amp;#39;custom_tag_sort&amp;#39;, 10, 2);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Der zweite Parameter verweist auf unsere eigene Sortier-Funktion. Die 10 beschreibt die Priorität und mit 2 wird die Anzahl der Funktions-Parmaeter festgelegt, nämlich &lt;strong&gt;$tags und $args&lt;/strong&gt;. Unsere eigene Sortier-Funktion sieht dann folgendermaßen aus (in Ahnlehnung an &lt;a href=&#34;http://www.marcokrings.de/arrays-sortieren-mit-umlauten/&#34;&gt;&amp;ldquo;Arrays sortieren mit Umlauten&amp;rdquo;&lt;/a&gt;).&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;function custom_tag_sort($tags, $args) {
+        
+    if (count($tags) == 0) { return $tags; }
+    $tagsSorted = array();
+    $tagsReturn   = array();
+    $search   = array(&amp;#34;Ä&amp;#34;,&amp;#34;ä&amp;#34;,&amp;#34;Ö&amp;#34;,&amp;#34;ö&amp;#34;,&amp;#34;Ü&amp;#34;,&amp;#34;ü&amp;#34;,&amp;#34;ß&amp;#34;);
+    $replace  = array(&amp;#34;Ae&amp;#34;,&amp;#34;ae&amp;#34;,&amp;#34;Oe&amp;#34;,&amp;#34;oe&amp;#34;,&amp;#34;Ue&amp;#34;,&amp;#34;ue&amp;#34;,&amp;#34;ss&amp;#34;);
+    
+    foreach($tags as $key =&amp;gt; $val) {
+        $tagsSorted[$key] = str_replace($search, $replace, $val-&amp;gt;name);
+    }
+
+    natcasesort($tagsSorted);
+    
+    foreach($tagsSorted as $key =&amp;gt; $val) {
+        $tagsReturn[$key] = $tags[$key];
+    }
+
+    return $tagsReturn;
+        
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Am Anfang schauen wir, ob überhaupt Tags übergeben werden, andernfalls gehts gleich wieder zurück. Danach initialisieren wir unsere Variablen. Von Interesse dürften hier vor allem &lt;strong&gt;$search&lt;/strong&gt; und &lt;strong&gt;$replace&lt;/strong&gt; sein. Damit legen wir fest, welche &lt;strong&gt;Umlaute und Sonderzeichen&lt;/strong&gt; ersetzt werden sollen. Die Liste darfst du natürlich beliebig erweitern.&lt;/p&gt;
+&lt;p&gt;In der ersten foreach-Schleife durchlaufen wir die Tag-Liste und ersetzen ganz schlicht die Umlaute entsprechend der Vorgabe.&lt;/p&gt;
+&lt;p&gt;Danach sortieren wir unsere &amp;ldquo;bereinigte&amp;rdquo; Tag-List mit der alternativen Sortier-Funktion &lt;a href=&#34;https://www.php.net/manual/de/function.natcasesort.php&#34;&gt;&lt;strong&gt;natcasesort()&lt;/strong&gt;.&lt;/a&gt; &lt;em&gt;natcase&lt;/em&gt; steht für &lt;em&gt;natural sort, case insensitive&lt;/em&gt;. Sprich: Natürliche &lt;em&gt;Sortierung, Ignorieren der Groß-/Kleinschreibung&lt;/em&gt;. Natürliche Sortierung heißt ganz einfach: So wie ein Mensch sortieren würde.&lt;/p&gt;
+&lt;p&gt;In der letzten Schleife sorgen wir dafür, dass die nun sortierte Tag-Liste wieder unsere ursprünglichen Umlaute enthält und geben die sortierte Liste dann zurück.&lt;/p&gt;
+&lt;p&gt;Das war es auch schon. Unsere Liste ist, unter Berücksichtigung der deutschen Umlaute, sauber sortiert. Ab dort übernimmt WordPress die weitere Verarbeitung. Und wir haben gelernt, wie wir einen &lt;strong&gt;einfachen Filter&lt;/strong&gt; in WordPress implementieren.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+  </channel>
+</rss>

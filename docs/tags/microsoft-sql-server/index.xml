@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>microsoft-sql-server on Nicky Reinert</title>
+    <link>https://nickyreinert.de/tags/microsoft-sql-server/</link>
+    <description>Recent content in microsoft-sql-server on Nicky Reinert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>de-DE</language>
+    <lastBuildDate>Thu, 28 Sep 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/microsoft-sql-server/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>JTL-Wawi Fernsteuerung auf Windows-Server einrichten</title>
+      <link>https://nickyreinert.de/blog/2017/09/28/jtl-wawi-fernsteuerung-auf-windows-server-einrichten/</link>
+      <pubDate>Thu, 28 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickyreinert.de/blog/2017/09/28/jtl-wawi-fernsteuerung-auf-windows-server-einrichten/</guid>
+      
+      <description>&lt;p&gt;Wenn mal als alleiniger Nutzer die kostenlose Warenwirtschaft JTL-Wawi einsetzen möchte, kommt man zunächst auf die Idee, sich einfach per Remote-Desktop (RDP) auf dem Windows-Rechner anzumelden, um so JTL zu nutzen. Doch diese JTL-Wawi Fernsteuerung hat zwei entscheidende Haken:&lt;/p&gt;
+&lt;h2 id=&#34;warum-jtl-wawi-auf-einem-gehosteten-windows-server-problematisch-sein-könnten&#34;&gt;Warum JTL-Wawi auf einem gehosteten Windows-Server problematisch sein könnten?&lt;/h2&gt;
+&lt;p&gt;Erstens ist die Verbindung per RDP  auf einen Windows-Server per Microsoft-Lizenzbedingung für gewöhnlich nur für administrative Zwecke erlaubt. Es sei denn, man installiert einen Terminal-Server und die notwendigen Zugriffslizenzen. Das Problem ist aber, dass die Verwendung eines Terminal Servers auf Virtuellen Servern von Microsoft ebenfalls untersagt ist. Entweder man hat den Windows-Server also zuhause unter dem Tisch stehen oder man nutzt beim Hoster seiner Wahl die weitaus teureren Dedicated Root Server.&lt;/p&gt;
+&lt;p&gt;Zweitens ist die Verbindung per Remote-Desktop auf zwei gleichzeitige Zugriffe bzw. Administratoren beschränkt. Selbst wenn man also die Lizenzbedingungen ignoriert: Wer die Warenwirtschaft mit mehreren Anwendern nutzen will, wird ziemlich schnell ein Problem bekommen.&lt;/p&gt;
+&lt;p&gt;Die Lösung ist es, JTL Wawi lokal zu installieren und für den Zugriff auf den Windows-Server vorzubereiten. Im Folgenden werde ich die dazu notwendigen Einstellungen beschreiben.&lt;/p&gt;
+&lt;h2 id=&#34;wie-kann-der-windows-server-eingerichtet-werden-um-jtl-wawi-den-zugriff-von-außen-zu-ermöglichen&#34;&gt;Wie kann der Windows-Server eingerichtet werden, um JTL-Wawi den Zugriff von außen zu ermöglichen?&lt;/h2&gt;
+&lt;p&gt;Auf einem gehosteten Windows-Server läuft ein Microsoft SQL Server. Die Anwender sollen auf ihren lokalen Windows-Rechnern die JTL Wawi nutzen, die sich mit dem entfernten Microsoft SQL-Server verbindet.&lt;/p&gt;
+&lt;h3 id=&#34;porteinstellungen&#34;&gt;Porteinstellungen&lt;/h3&gt;
+&lt;p&gt;Zunächst einmal bringen wir dem SQL Server bei, dass er auch auf der öffentlichen IP-Adresse erreichbar ist und welchen Port er dafür benutzen soll. Im SQL-Server-Configuration-Manager (SQLServerManager13.msc) muss dazu unterhalb der Netzwerk-Konfiguration &amp;ldquo;Protokolle für JTL-WAWI&amp;rdquo; ausgewählt werden. Dort befinden sich die Einstellungen für das Protokoll TCP/IP, die wir nun anpassen. Erstmal muss natürlich das Protokoll unter aktiviert werden: &amp;ldquo;Enabled: Ja&amp;rdquo;. Danach wird mit &amp;ldquo;Listen all: Ja&amp;rdquo; festgelegt, dass der SQL-Server über alle verfügbaren Netzwerkschnittstellen ansprechbar ist (&lt;a href=&#34;https://docs.microsoft.com/de-de/sql/tools/configuration-manager/tcp-ip-properties-protocols-tab&#34;&gt;siehe Microsoft-Doks&lt;/a&gt;). Wer den Server nur lokal verwendet, sollte diesen Schalter auf &amp;ldquo;Nein&amp;rdquo; setzen und die Einstellungen nur für die private, lokale IP-Adresse vornehmen.&lt;/p&gt;
+&lt;p&gt;Die entscheidende Einstellung befindet sich im Reiter &amp;ldquo;IP-Adressen&amp;rdquo;. Wenn zuvor &amp;ldquo;Listen all: Ja&amp;rdquo; eingestellt wurde, muss hier am Ende der Liste die Einstellung für &amp;ldquo;IPALL&amp;rdquo; angepasst werden. Hier genügt es, für TCP-Port einen beliebigen Port anzugeben. Der Standard-Port für Microsoft SQL ist 1433. Es empfiehlt sich, einen anderen Port zu wählen, damit der einfache Port-Scan nicht sofort auf die Idee kommt, dass hier ein MS-SQL-Dienst erreichbar ist.&lt;/p&gt;
+&lt;p&gt;[gallery ids=&amp;ldquo;1514,1512,1513&amp;rdquo;]&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;h3 id=&#34;benutzereinrichtung&#34;&gt;Benutzereinrichtung&lt;/h3&gt;
+&lt;p&gt;Als nächstes geht es an die Einrichtung der Benutzer, für die JTL-Wawi Fernsteuerung erlaubt werden soll. Dazu wird im Microsoft SQL Management Studio (ssms.exe)  entsprechende JTL-Datenbank geöffnet und unter Sicherheit per Rechtsklick auf Anmeldungen eine neue Anmeldung erstellt. Der Name ist natürlich frei wählbar. Das Passwort für die Anmeldung kann man eingeben, wenn man &amp;ldquo;SQL Server-Authentifizierung&amp;rdquo; auswählt. Natürlich empfiehlt es sich, entsprechend strenge Kennwort-Richtlinien zu verwenden. Unter &amp;ldquo;Benutzerrollen&amp;rdquo; muss der neue Benutzer nun noch der entsprechenden Datenbank zugewiesen und darauf Schreib- und Leserechte zugewiesen werden. Im Beispiel heißen diese Rollen  db_reader und db_writer.&lt;/p&gt;
+&lt;p&gt;[gallery ids=&amp;ldquo;1516,1515&amp;rdquo;]&lt;/p&gt;
+&lt;h3 id=&#34;firewall-einstellung&#34;&gt;Firewall-Einstellung&lt;/h3&gt;
+&lt;p&gt;Nun, da die Datenbank korrekt eingerichtet ist, muss die Firewall entsprechend geöffnet werden, um den Zugriff von außen zu ermöglichen. Die Windows-Firewall-Einstellungen erreichen wir über wf.msc. Dort wird eine neue eingehende Regel angelegt. Hier gibt es zwei Möglichkeiten: Entweder dem Microsoft SQL-Server wird generell der Kontakt zur Außenwelt genehmigt, oder wir öffnen nur den entsprechenden Port. Aus Sicherheitsgründen sollte die Einstellung allerdings so eng wie möglich gewählt werden. Wir wählen als Regeltyp also &amp;ldquo;Port&amp;rdquo; und geben dann den Port ein, den wir zu Beginn festgelegt haben. Unter &amp;ldquo;Aktion&amp;rdquo; muss natürlich &amp;ldquo;Verbindung zulassen&amp;rdquo; ausgewählt werden. Im nächsten Fenster &amp;ldquo;Profil&amp;rdquo; können alle Felder aktiviert bleiben. Die Regel soll ja vor allem für öffentliche Kommunikation erlauben. Abschließend kann noch ein Name für die Regel vergeben werden. Fertig.&lt;/p&gt;
+&lt;p&gt;[gallery ids=&amp;ldquo;1518,1517&amp;rdquo;]&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;Auf der Serverseite ist nun alles fertig eingerichtet. Als nächstes folgt die Einrichtung der JTL-Wawi auf dem lokalen Rechner.&lt;/p&gt;
+&lt;h3 id=&#34;jtl-wawi-einrichten&#34;&gt;JTL-Wawi einrichten&lt;/h3&gt;
+&lt;p&gt;Nach dem &lt;a href=&#34;https://www.jtl-software.de/JTL-Wawi-Download&#34;&gt;Download&lt;/a&gt; und der Installation der Software wird uns diese beim ersten Start zur Datenbankverwaltung führen. Hier legen wir ein neues Profil mit einem wohlklingenden Namen an tragen die Adresse zu unserem Windows-Server ein, auf dem der Microsoft SQL-Server läuft.  Wichtig ist, dass wir den oben konfigurierten Port hier mit einem Komma getrennt hinter die Server-Adresse eintragen. Als nächstes will das Programm von uns die vorher angelegten Zugangsdaten wissen. Wenn diese korrekt sind, erhalten wir nun eine Liste der Mandanten zur Auswahl und die Einrichtung der Software ist abgeschlossen.&lt;/p&gt;
+&lt;p&gt;[gallery ids=&amp;ldquo;1520,1519,1521&amp;rdquo;]&lt;/p&gt;
+&lt;p&gt;Fertig. Nun  kann man die JTL-Wawi Fernsteuerung so nutzen, als würde man direkt auf dem Server arbeiten.&lt;/p&gt;
+&lt;p&gt;[caption id=&amp;ldquo;attachment_1527&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;150&amp;rdquo;]&lt;a href=&#34;https://www.nickyreinert.de/files/jtl-wawi-fernsteuerung-mit-windows-server-ermoeglichen/jtl-wawi-fernsteuerung.png&#34;&gt;&lt;img src=&#34;images/jtl-wawi-fernsteuerung-150x150.png&#34; alt=&#34;Die JTL-Wawi Fernsteuerung ist komplett eingerichtet&#34;&gt;&lt;/a&gt; Die JTL-Wawi Fernsteuerung ist komplett eingerichtet[/caption]&lt;/p&gt;
+&lt;h2 id=&#34;nachteile-der-jtl-wawi-fernsteuerung&#34;&gt;Nachteile der JTL-Wawi Fernsteuerung&lt;/h2&gt;
+&lt;p&gt;Die hier vorgestellte Konfiguration für die JTL-Wawi Fernsteuerung hat einen großen, entscheidenden Nachteil: Sie ist relativ unsicher. Zwar ist der Zugriff auf die Datenbank mit Benutzernamen und Passwort geschützt, dennoch gehört es nicht gerade zum guten Ton, die Datenbank öffentlich über das Internet erreichbar zu machen. Hier gibt es einige Möglichkeiten, sich besser zu schützen.&lt;/p&gt;
+&lt;p&gt;Entweder man richtet einen  VPN-Tunnel ein, über den auf die Datenbank zugegriffen wird. Oder man hat die Möglichkeit, feste IP-Adressen zu vergeben, für den der Zugriff in der Windows-Firewall eingeschränkt werden kann. Ist auch das nicht möglich, sollte man wenigstens den IP-Adressbereich in der Windows-Firewall einrichten, dass er nur Zugriffe des jeweiligen Internet-Service-Providers (ISP) zulässt.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+  </channel>
+</rss>

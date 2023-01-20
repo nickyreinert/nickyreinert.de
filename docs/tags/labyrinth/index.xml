@@ -1,0 +1,749 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>labyrinth on Nicky Reinert</title>
+    <link>https://nickyreinert.de/tags/labyrinth/</link>
+    <description>Recent content in labyrinth on Nicky Reinert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>de-DE</language>
+    <lastBuildDate>Mon, 11 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/labyrinth/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to create a maze algorithm with JavaScript</title>
+      <link>https://nickyreinert.de/blog/2020/05/11/how-to-create-a-maze-algorithm-with-javascript/</link>
+      <pubDate>Mon, 11 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickyreinert.de/blog/2020/05/11/how-to-create-a-maze-algorithm-with-javascript/</guid>
+      
+      <description>&lt;p&gt;Meine Herangehensweise, um ein Labyrinth in JavaScript zu bauen, ist weitaus ausführlicher auf Medium in Englisch veröffentlicht worden:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://medium.com/swlh/how-to-create-a-maze-with-javascript-36f3ad8eebc1&#34;&gt;https://medium.com/swlh/how-to-create-a-maze-with-javascript-36f3ad8eebc1&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*J4ZDzViZ8Br0Od0EB2hmJg.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Wie erstelle ich ein Labyrinth mit JavaScript?</title>
+      <link>https://nickyreinert.de/blog/2020/04/11/wie-erstelle-ich-ein-labyrinth-mit-javascript/</link>
+      <pubDate>Sat, 11 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickyreinert.de/blog/2020/04/11/wie-erstelle-ich-ein-labyrinth-mit-javascript/</guid>
+      
+      <description>&lt;p&gt;Durch Zufall bin ich irgendwann mal &lt;a href=&#34;http://www.slate.com/articles/technology/books/2012/11/computer_programming_10_print_chr_205_5_rnd_1_goto_10_from_mit_press_reviewed.html&#34;&gt;auf diesen BASIC-Einzeiler gestoßen&lt;/a&gt;, mit dem sich eine Art Pseudo-Labyrinth erstellen lässt. Ich habe versucht, das &lt;a href=&#34;https://htmlpreview.github.io/?https://github.com/nickyreinert/maze/blob/master/pseudo_maze.html&#34;&gt;in Plain JavaScript&lt;/a&gt; halbwegs kompakt nachzubauen. Dabei kann man kaum übersehen, dass es sich keineswegs um ein richtiges Labyrinth handelt, sondern eher um eine zufällige Anordnung von Strichen ohne Lösungsweg. Also habe ich mich gefragt, wie schwer es wohl sein kann, ein Labyrinth programmatisch und vor allem kompakt zu erzeugen. Dazu gibt es zwar &lt;a href=&#34;https://en.wikipedia.org/wiki/Maze_generation_algorithm#Recursive_backtracker&#34;&gt;eine Menge Lösungsansätze&lt;/a&gt;, mein Ziel ist aber, die Herangehensweise zu beschreiben. Und da wir ja gerade alle zuhause abhängen, ist diese kleine Anleitung entstanden.&lt;/p&gt;
+&lt;h2 id=&#34;vorbereitung&#34;&gt;Vorbereitung&lt;/h2&gt;
+&lt;p&gt;Der aus meiner Sicht einfachste Ansatz ist es, eine Fläche mit schon gesetzten Wänden möglichst chaotisch zu durchpflügen. Wir brauchen also erstmal eine Fläche mit x * y Zellen, die jeweils mit Wänden voneinandern getrennt sind. In JavaScript sieht das folgendermaßen aus:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;function createBlankMaze() {
+
+    var rowIndex, colIndex;
+
+    var table = document.createElement(&amp;#34;table&amp;#34;);
+    var tbody = document.createElement(&amp;#34;tbody&amp;#34;);
+
+    for (rowIndex = 1; rowIndex &amp;lt;= mazeHeight; rowIndex++) {
+
+        var row = document.createElement(&amp;#34;tr&amp;#34;);
+
+        for (colIndex = 1; colIndex &amp;lt;= mazeWidth; colIndex++) {
+
+            var col = document.createElement(&amp;#34;td&amp;#34;);
+            if (rowIndex == 1 &amp;amp;&amp;amp; colIndex == 1 ) {
+
+                col.style.backgroundColor = &amp;#34;rgb(244,0,0)&amp;#34;;
+                col.setAttribute(&amp;#34;type&amp;#34;, &amp;#34;start&amp;#34;);
+
+            } else if (rowIndex == mazeHeight &amp;amp;&amp;amp; colIndex == mazeWidth) {
+                
+                col.style.backgroundColor = &amp;#34;rgb(0,244,0)&amp;#34;;
+                col.setAttribute(&amp;#34;type&amp;#34;, &amp;#34;finish&amp;#34;);
+
+            } else {
+
+                col.style.backgroundColor = &amp;#34;rgb(255,255,255)&amp;#34;;
+
+            }
+            col.setAttribute(&amp;#34;id&amp;#34;, &amp;#34;cell_&amp;#34; + rowIndex + &amp;#34;_&amp;#34; + colIndex);
+
+            row.appendChild(col);
+
+        }
+
+        tbody.appendChild(row);
+
+    }
+    
+    table.appendChild(tbody);
+
+    document.getElementById(&amp;#34;maze_container&amp;#34;).appendChild(table);
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Wir erzeugen also eine Tabelle mit 10 Zeilen und 10 Spalten und packen Sie am Ende in ein div mit der Id maze_container. Die &amp;ldquo;Wände&amp;rdquo; habe ich für jede Zelle mit CSS definiert:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;table td {
+
+    border: 1px #000000 solid;
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Der Eingang in rot befindet sich immer oben links, der Ausgang ist grün und unten rechts. Nun werden wir uns in einer Schleife vom Startfeld in Richtung Ziel bewegen. Mit jedem Schleifendurchlauf bewegen wir uns ein Feld weiter. Daraus entsteht erstmal ein Lösungsweg. Danach müssen natürlich noch die restlichen Felder bearbeitet werden. Dazu werden wir vom Lösungsweg aus Abzweige erzeugen. Los gehts.&lt;/p&gt;
+&lt;h2 id=&#34;schritt-1-der-simpelste-lösungsweg&#34;&gt;Schritt 1: Der simpelste Lösungsweg&lt;/h2&gt;
+&lt;p&gt;Um erstmal eine Schleife als Grundlage zu erhalten, beginnen wir mit einem sehr simplen Lösungsweg. Der geht ganz einfach 9 Felder nach rechts und 9 Felder nach unten. Wir nutzen dazu einfach eine Liste mit Anweisungen:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;var exits = [&amp;#34;right&amp;#34;, &amp;#34;right&amp;#34;, &amp;#34;right&amp;#34;, &amp;#34;right&amp;#34;, &amp;#34;right&amp;#34;, &amp;#34;right&amp;#34;, &amp;#34;right&amp;#34;, &amp;#34;right&amp;#34;, &amp;#34;right&amp;#34;, &amp;#34;bottom&amp;#34;, &amp;#34;bottom&amp;#34;, &amp;#34;bottom&amp;#34;, &amp;#34;bottom&amp;#34;, &amp;#34;bottom&amp;#34;, &amp;#34;bottom&amp;#34;, &amp;#34;bottom&amp;#34;, &amp;#34;bottom&amp;#34;, &amp;#34;bottom&amp;#34;];
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;em&gt;(Warum nicht 10, sondern 9? Sobald wir uns auf dem letzen Feld befinden, müssen wir uns nicht weiter bewegen.)&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;In einer Schleife gehen wir nun diese Liste durch und bewegen unseren Zähler entsprechend eine Zelle nach rechts oder unten:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;var currentCell;
+
+var rowIndex = 1;
+var colIndex = 1;
+
+for (exitIndex = 0; exitIndex &amp;lt; exits.length; exitIndex++) {
+
+    switch(exits[exitIndex]) {
+
+        case &amp;#34;right&amp;#34;:
+
+            colIndex = colIndex + 1;
+            break;
+
+        case &amp;#34;bottom&amp;#34;:
+
+            rowIndex = rowIndex + 1;
+            break;
+
+    }
+
+    currentCell = document.getElementById(&amp;#34;cell_&amp;#34; + rowIndex + &amp;#34;_&amp;#34; + colIndex);
+    
+    currentCell.style.backgroundColor = &amp;#34;#f00000&amp;#34;;
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Hier werden noch keine Wände entfernt, sondern erstmal nur der Weg nachgezeichnet, um eine Idee für den Algorithmus zu bekommen. Und so sieht das aus:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/grafik-3-700x701.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;schritt-2-einen-funken-abwechslung&#34;&gt;Schritt 2: Einen Funken Abwechslung&lt;/h2&gt;
+&lt;p&gt;Ein wenig Abwechslung erhalten wir, wenn wir uns einfach abwechselnd nach unten und rechts bewegen. Dazu füllen wir die Liste mit den Ausgängen einfach in einer Schleife:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;var exits = [];
+
+for (exit = 1; exit &amp;lt;= mazeWidth - 1; exit++) {
+
+    exits.push(&amp;#34;right&amp;#34;);
+    exits.push(&amp;#34;bottom&amp;#34;);
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Das war es schon. Das Ergebnis sieht folgendermaßen aus:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/grafik-4-700x703.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;schritt-3-die-wände-einreißen&#34;&gt;Schritt 3: Die Wände einreißen&lt;/h2&gt;
+&lt;p&gt;Nun sorgen wir dafür, dass tatsächlich ein Weg vom Start zum Ziel entsteht. Dazu werden einfach die Rahmen unten bzw. rechts entfernt, sobald wir uns in die entsprechende Richtung bewegen. Unsere Hauptschleife wird also etwas aufgebohrt.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;var  currentCell = document.getElementById(&amp;#34;cell_1_1&amp;#34;);
+
+for (exitIndex = 0; exitIndex &amp;lt; exits.length; exitIndex++) {
+
+    exit = exits[exitIndex];
+    
+    currentCell.style[&amp;#34;border-&amp;#34;+exit] = &amp;#34;none&amp;#34;;
+
+    switch(exit) {
+
+        case &amp;#34;right&amp;#34;:
+
+            colIndex = colIndex + 1;
+            break;
+
+        case &amp;#34;bottom&amp;#34;:
+
+            rowIndex = rowIndex + 1;
+            break;
+
+    }
+
+    currentCell = document.getElementById(&amp;#34;cell_&amp;#34; + rowIndex + &amp;#34;_&amp;#34; + colIndex);
+
+    currentCell.style.backgroundColor = &amp;#34;#f00000&amp;#34;;
+
+    switch(exit) {
+
+        case &amp;#34;right&amp;#34;:
+
+            currentCell.style[&amp;#34;border-left&amp;#34;] = &amp;#34;none&amp;#34;;
+            break;
+
+        case &amp;#34;bottom&amp;#34;:
+
+        currentCell.style[&amp;#34;border-top&amp;#34;] = &amp;#34;none&amp;#34;;
+            break;
+
+    }
+    
+    lastExit = exit;
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Noch bevor die Schleife startet, legen wir fest, in welcher Zelle wir uns befinden. Nur so können wir den Rahmen entsprechend unseres Ausgangs entfernen. Dazu wird einfach die CSS-Eigenschaft auf &amp;ldquo;none&amp;rdquo; gesetzt. Außerdem entfernen wir in der nächsten Zelle jeweils den gegenüberliegenden Rahmen. Wenn wir die vorherige Zelle also nach rechts verlassen haben, müssen wir in der darauffolgenden Zelle den Rahmen links entfernen.&lt;/p&gt;
+&lt;p&gt;Außerdem muss die Schleife für die Erstellung unserer Ausgänge angepasst werden:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;for (exit = 1; exit &amp;lt; mazeWidth; exit++) {
+
+    exits.push(&amp;#34;right&amp;#34;);
+    exits.push(&amp;#34;bottom&amp;#34;);
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Nun reichen uns nicht mehr nur 9 Schritte nach unten und rechts. Da wir nun für jedes Feld den unteren bzw. rechten Rahmen entfernen, müssen wir insgesamt 10 Felder in jede Richtung berücksichtigen. Das Ergebnis ist jetzt tatsächlich schon ein Irrgarten. Allerdings ein ziemlich einfacher:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/grafik-5-700x697.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;schritt-4-noch-mehr-abwechslung&#34;&gt;Schritt 4: Noch mehr Abwechslung&lt;/h2&gt;
+&lt;p&gt;Der nächste Schritt ist naheliegend: Wir durchlaufen nicht einfach die Liste möglicher Ausgänge, sondern entscheiden zufällig, welcher Ausgang als nächstes kommt. Dazu muss die Schleifenbedinung allerdings etwas angepasst werden.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;for (loop = 0; loop &amp;lt; (mazeWidth + mazeHeight - 2); loop++) {
+
+    exitIndex = Math.floor(Math.random() * exits.length);
+
+    exit = exits[exitIndex];
+
+    exits.splice(exitIndex, 1);
+
+    currentCell.style[&amp;#34;border-&amp;#34;+exit] = &amp;#34;none&amp;#34;;
+
+    switch(exit) {
+
+        case &amp;#34;right&amp;#34;:
+
+            colIndex = colIndex + 1;
+            break;
+
+        case &amp;#34;bottom&amp;#34;:
+
+            rowIndex = rowIndex + 1;
+            break;
+
+    }
+
+    currentCell = document.getElementById(&amp;#34;cell_&amp;#34; + rowIndex + &amp;#34;_&amp;#34; + colIndex);
+
+    currentCell.style.backgroundColor = &amp;#34;#f00000&amp;#34;;
+
+    switch(exit) {
+
+        case &amp;#34;right&amp;#34;:
+
+            currentCell.style[&amp;#34;border-left&amp;#34;] = &amp;#34;none&amp;#34;;
+            break;
+
+        case &amp;#34;bottom&amp;#34;:
+
+        currentCell.style[&amp;#34;border-top&amp;#34;] = &amp;#34;none&amp;#34;;
+            break;
+
+    }
+    
+    lastExit = exit;
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Die ersten drei Zeilen innerhalb der Zeile sind hier von Bedeutung. Zuerst wird der nächste Ausgang per Zufall bestimmt und in der Variable exit abgelegt. Danach wird dieser Eintrag auch aus der Liste möglicher Ausgänge entfernt. Das ist wichtig, da wir uns ja z.B. nicht mehr als 10 mal nach rechts bewegen können. Außerdem erzeugen wir so eine Art Gewichtung, die sich bei jedem Durchlauf verändert. Würden wir einfach nur per Zufall zwischen &lt;em&gt;rechts&lt;/em&gt; und &lt;em&gt;unten&lt;/em&gt; entscheiden, wäre das Ergebnis im Moment vielleicht ähnlich. Aber sobald wir auch die Richtungen &lt;em&gt;oben&lt;/em&gt; und &lt;em&gt;links&lt;/em&gt; dazu nehmen, ist das Ergebnis weitaus chaotischer.&lt;/p&gt;
+&lt;p&gt;Das Ergebnis ist immer noch recht banal, aber sieht schon etwas mehr nach Labyrinth aus:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/grafik-6-700x695.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;schritt-5-mehr-bewegungsfreiheit&#34;&gt;Schritt 5: Mehr Bewegungsfreiheit&lt;/h2&gt;
+&lt;p&gt;Bisher haben wir uns nur nach rechts und unten bewegt. Nun wollen wir uns auch nach links und oben bewegen. Dazu noch mal eine wichtige Grundannahme: Wir müssen uns 9 mal nach rechts und unten bewegen, um zum Ziel zu kommen. Erst wenn wir uns ein mal nach rechts bewegt haben, können wir uns dafür ein mal nach linsk bewegen. Das gleiche gilt für oben und unten. Da ich nun vier Bewegungsfreiheiten haben, muss die Schleifenbedingung erneut angepasst werden. Diesmal können wir ja theoretisch jedes der 100 Felder belegen. Außerdem muss ich nun zusätzliche Rahmen entfernen.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;while (loop &amp;lt; ((mazeWidth * mazeHeight) - 1)) {
+
+    exitIndex = Math.floor(Math.random() * exits.length);
+
+    exit = exits[exitIndex];
+
+    exits.splice(exitIndex, 1);
+
+    currentCell.style[&amp;#34;border-&amp;#34;+exit] = &amp;#34;none&amp;#34;;
+
+    switch(exit) {
+
+        case &amp;#34;right&amp;#34;:
+
+            colIndex = colIndex + 1;
+            exits.push(&amp;#34;left&amp;#34;);
+            break;
+
+        case &amp;#34;bottom&amp;#34;:
+
+            rowIndex = rowIndex + 1;
+            exits.push(&amp;#34;top&amp;#34;);
+            break;
+
+        case &amp;#34;left&amp;#34;:
+
+            colIndex = colIndex - 1;
+            exits.push(&amp;#34;right&amp;#34;);
+            break;
+
+        case &amp;#34;top&amp;#34;:
+
+            rowIndex = rowIndex - 1;
+            exits.push(&amp;#34;bottom&amp;#34;);
+            break;
+            
+    }
+
+    currentCell = document.getElementById(&amp;#34;cell_&amp;#34; + rowIndex + &amp;#34;_&amp;#34; + colIndex);
+
+    currentCell.style.backgroundColor = &amp;#34;#f00000&amp;#34;;
+
+    switch(exit) {
+
+        case &amp;#34;right&amp;#34;:
+
+            currentCell.style[&amp;#34;border-left&amp;#34;] = &amp;#34;none&amp;#34;;
+            break;
+
+        case &amp;#34;bottom&amp;#34;:
+
+        currentCell.style[&amp;#34;border-top&amp;#34;] = &amp;#34;none&amp;#34;;
+            break;
+
+        case &amp;#34;left&amp;#34;:
+
+            currentCell.style[&amp;#34;border-right&amp;#34;] = &amp;#34;none&amp;#34;;
+            break;
+
+        case &amp;#34;top&amp;#34;:
+
+            currentCell.style[&amp;#34;border-bottom&amp;#34;] = &amp;#34;none&amp;#34;;
+            break;
+
+    }
+    
+    lastExit = exit;
+
+    loop++;
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;In der ersten _Switch-_Anweisung gibt es außerdem eine wichtige Anweisung. Wenn der nächste Ausgang nach rechts geht, ergänze ich die Liste möglicher Ausgänge um einen Ausgang nach links (analog natürlich für die anderen Richtungen):&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;exits.push(&amp;#34;left&amp;#34;);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Und wie sieht das Ergebnis aus?&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/grafik-8-700x703.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Ich würde sagen: Bescheiden. Das Problem ist, dass wir uns nach links bewegen, nachdem wir uns gerade erst nach rechts bewegt haben. Genauso dürfen wir uns nicht nach oben und gleich danach wieder nach unten bewegen.&lt;br&gt;
+Wir müssen also etwas nachbessern. Wenn wir uns nun in z.B. der Zelle mit den Koordinaten x = 4 und y = 4 befinden, prüfen wir, ob die drei benachbarten Zellen bereits belegt sind (Hintergrundfarbe ist rot). Ist z.B. die rechte Nachbarzelle belegt, dürfen wir uns nicht nach rechts bewegen.&lt;br&gt;
+Auch die Liste möglicher Ausgänge wird etwas anders organisiert:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;var validExits = [&amp;#34;right&amp;#34;, &amp;#34;bottom&amp;#34;, &amp;#34;left&amp;#34;, &amp;#34;top&amp;#34;];
+var remainingExits = {&amp;#34;right&amp;#34;: mazeWidth, &amp;#34;bottom&amp;#34;: mazeHeight, &amp;#34;left&amp;#34;: 0, &amp;#34;top&amp;#34;: 0};
+var nextExits = [];
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Das Array &lt;em&gt;validExits&lt;/em&gt; ist eine globale, nicht veränderbare Liste aller möglichen Ausgänge. Mit &lt;em&gt;remainingExits&lt;/em&gt; führen wir ein Objekt ein, dass die Anzahl möglicher bzw. erforderlicher Ausgänge protokolliert. Und &lt;em&gt;nextExits&lt;/em&gt; ist das Array, das bei jedem Schleifendurchlauf die möglichen Ausgänge anzeigt. Die überarbeitete Schleife sieht nun so aus:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;while (loop &amp;lt; ((mazeWidth * mazeHeight) - 1)) {
+
+    nextExits = [];
+
+    for (i = 0; i &amp;lt; validExits.length; i++) {
+
+        switch(validExits[i]) {
+
+            case &amp;#34;right&amp;#34;:
+                nextPossibleCell = document.getElementById(&amp;#34;cell_&amp;#34; + rowIndex + &amp;#34;_&amp;#34; + (colIndex + 1));
+                break;
+
+            case &amp;#34;left&amp;#34;:
+                nextPossibleCell = document.getElementById(&amp;#34;cell_&amp;#34; + rowIndex + &amp;#34;_&amp;#34; + (colIndex - 1));
+                break;
+
+            case &amp;#34;bottom&amp;#34;:
+                nextPossibleCell = document.getElementById(&amp;#34;cell_&amp;#34; + (rowIndex + 1) + &amp;#34;_&amp;#34; + colIndex);
+                break;
+
+            case &amp;#34;top&amp;#34;:
+                nextPossibleCell = document.getElementById(&amp;#34;cell_&amp;#34; + (rowIndex - 1) + &amp;#34;_&amp;#34; + colIndex);
+                break;
+
+        }
+
+        if (nextPossibleCell == null || nextPossibleCell.style.backgroundColor != &amp;#34;rgb(240, 0, 0)&amp;#34;) {
+            
+            for (t = 0; t &amp;lt; remainingExits[validExits[i]]; t++) {
+
+                nextExits.push(validExits[i]);
+
+            }
+
+        } 
+
+    }
+
+    exitIndex = Math.floor(Math.random() * nextExits.length);
+
+    exit = nextExits[exitIndex];
+
+    currentCell.style[&amp;#34;border-&amp;#34;+exit] = &amp;#34;none&amp;#34;;
+
+    switch(exit) {
+
+        case &amp;#34;right&amp;#34;:
+
+            colIndex = colIndex + 1;
+            remainingExits.left++;
+            remainingExits.right--;
+            break;
+
+        case &amp;#34;bottom&amp;#34;:
+
+            rowIndex = rowIndex + 1;
+            remainingExits.top++;
+            remainingExits.bottom--;
+            break;
+
+        case &amp;#34;left&amp;#34;:
+
+            colIndex = colIndex - 1;
+            remainingExits.left--;
+            remainingExits.right++;
+            break;
+
+        case &amp;#34;top&amp;#34;:
+
+            rowIndex = rowIndex - 1;
+            remainingExits.top--;
+            remainingExits.bottom++;
+            break;
+            
+    }
+
+    currentCell = document.getElementById(&amp;#34;cell_&amp;#34; + rowIndex + &amp;#34;_&amp;#34; + colIndex);
+
+    switch(exit) {
+
+        case &amp;#34;right&amp;#34;:
+
+            currentCell.style[&amp;#34;border-left&amp;#34;] = &amp;#34;none&amp;#34;;
+            break;
+
+        case &amp;#34;bottom&amp;#34;:
+
+            currentCell.style[&amp;#34;border-top&amp;#34;] = &amp;#34;none&amp;#34;;
+            break;
+
+        case &amp;#34;left&amp;#34;:
+
+            currentCell.style[&amp;#34;border-right&amp;#34;] = &amp;#34;none&amp;#34;;
+            break;
+
+        case &amp;#34;top&amp;#34;:
+
+            currentCell.style[&amp;#34;border-bottom&amp;#34;] = &amp;#34;none&amp;#34;;
+            break;
+
+    }
+    if (rowIndex == mazeHeight &amp;amp;&amp;amp; colIndex == mazeWidth) {
+
+        break;
+
+    }
+
+    currentCell.style.backgroundColor = &amp;#34;#f00000&amp;#34;;
+
+    lastExit = exit;
+
+    loop++;
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Hier wede ich noch mal ein paar Besonderheiten erläutern: Gleich zu Beginn der Schleife durchlaufen wir alle gültigen Ausgänge um so zu den nächsten möglichen Zellen zu kommen (&lt;em&gt;nextPossibleCell&lt;/em&gt;). Nur wenn diese Zelle überhaupt existiert (wir uns also nicht am Rand des Irrgarten befinden) und nicht belegt ist (Hintergrundfarbe ist nicht rot), kann die entsprechende Bewegungsrichtung verwendet werden:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[...]
+nextExits.push(validExits[i]);
+[...]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Danach folgt wieder die Zufallsbestimmung des nächsten Ausgangs. Die Protokollierung der restlichen Ausgänge erfolgt nun etwas anders, am Beispiel von Ausgang &amp;ldquo;&lt;em&gt;rechts&lt;/em&gt;&amp;rdquo;:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[...]
+remainingExits.left++;
+remainingExits.right--;
+[...]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Der Rest der Schleife bleibt unverändert. Und tatsächlich: Der Irrgarten sieht weitaus schöner aus:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/grafik-9-700x705.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Allerdings fehlt immer noch eine offensichtliche Kleinigkeit: Wir erreichen das Ziel nicht.&lt;/p&gt;
+&lt;h2 id=&#34;schritt-6-das-sackgassenproblem&#34;&gt;Schritt 6: Das Sackgassenproblem&lt;/h2&gt;
+&lt;p&gt;Wir erzeugen eine Sackgasse. Der Weg aus der Sackgasse sieht folgendermaßen aus: Wir müssen uns zurück bewegen. Bei jeder Zelle prüfen wir die möglichen Ausgänge und nehmen einfach einen anderen. Die bereits belegten Zellen bleiben weiterhin belegt.&lt;/p&gt;
+&lt;p&gt;Da wir nun in den Schleifenablauf eingreifen, führen wir eine Sicherung ein. So vermeiden wir, dass die Schleife z.B. unendlich läuft.&lt;/p&gt;
+&lt;p&gt;Außerdem führen wir ein weiteres Array &lt;em&gt;lastExits&lt;/em&gt; ein, dass den aktuellen Weg protokolliert (das nennt sich übrigens &lt;em&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Maze_generation_algorithm#Recursive_backtracker&#34;&gt;recursive backtracker algorithmus&lt;/a&gt;)&lt;/em&gt; Gleich der Beginn der Schleife prüft nun erstmal unser Sicherungsnetz:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;while (loop &amp;lt; ((mazeWidth * mazeHeight) - 1)) {
+
+    loopFuse++;
+
+    if (loopFuse &amp;gt;= maxLoops) {break;}
+
+    [...]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Danach prüfen wir wie gehabt, welche Ausgänge noch nicht belegt sind. Und dann, bevor wir per Zufall den nächsten Ausgang bestimmen, bauen wir unsere Sackgassen-Schutz-Funktion ein:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[...]
+
+if (nextExits.length == 0) {
+
+    lastCells.splice(lastCells.length - 1, 1);
+    console.log(&amp;#34;Sackgasse. Einen Schritt zurück:&amp;#34;);
+
+    rowIndex = lastCells[lastCells.length - 1][0];
+    colIndex = lastCells[lastCells.length - 1][1];
+    currentCell = document.getElementById(&amp;#34;cell_&amp;#34; + rowIndex + &amp;#34;_&amp;#34; + colIndex);
+
+    continue;
+    
+}
+
+exitIndex = Math.floor(Math.random() * nextExits.length);
+
+[...]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Wenn wir uns in einer Sackgasse befinden, entfernen wir einfach die letzte Zelle aus &lt;em&gt;lastCells&lt;/em&gt; und setzen den Zeige auf die Zelle davor. Dann verlassen wir den Schleifendurchlauf mit &lt;em&gt;continue.&lt;/em&gt; Weiter unten müssen wir natürlich auch dafür sorgen, dass die jeweils aktuelle Zelle zu &lt;em&gt;lastCells&lt;/em&gt; hinzugefügt wird:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[...]
+lastCells.push([rowIndex, colIndex]);
+
+currentCell = document.getElementById(&amp;#34;cell_&amp;#34; + rowIndex + &amp;#34;_&amp;#34; + colIndex);
+
+[...]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Ganz am Ende der Schleife prüfen wir außerdem noch, ob wir uns vielleicht schon am Ziel befinden, um dann die Schleife zu verlassen:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;    [...]
+
+    if (rowIndex == mazeHeight &amp;amp;&amp;amp; colIndex == mazeWidth) {
+
+        break;
+
+    }
+
+    currentCell.style.backgroundColor = &amp;#34;#f00000&amp;#34;;
+
+    loop++;
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Das Ergebnis überzeugt: Wir erzeugen nun einen verzweigten Weg, der nicht nur nach rechts und unten geht, sondern sogar Sackgassen enthält:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/grafik-10-700x704.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;schritt-7-noch-mehr-sackgassen&#34;&gt;Schritt 7: Noch mehr Sackgassen!&lt;/h2&gt;
+&lt;p&gt;Wie bekommen wir noch mehr Sackgassen in unser Labyrinth? Indem wir die echte Route abgehen und einfach von jeder Zelle aus eine neue Route starten? Ja. Das war auch mein erster Gedanke. Allerdings ist die aktuelle Zielroute oft von Sackgassen umgeben. Wenn wir diesen Weg wählen, könnten also weiterhin einige Felder unbearbeitet bleiben. Deshalb werden wir ziemlich schroff einfach jedes belegte Feld als Startpunkt für einen Abzweig nutzen. Das Erzeugen der Abzweigungen kommt natürlich ohne die Sackgassen-Schutz-Funktion aus.&lt;/p&gt;
+&lt;p&gt;Dazu müssen wir erstmal die aktuelle Logik in eine Funktion packen, die jetzt drei Parameter erwartet:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;startAtRow = 1;
+startAtCol = 1;
+
+addRoute(startARow, statrtAtCol, false);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Die Funktion &lt;em&gt;addRoute&lt;/em&gt; sieht folgendermaßen aus. &lt;em&gt;False&lt;/em&gt; bedeutet also, dass wir keinen Abzeig sondern erstmal die korrekte Route zum Ziel erzeugen wollen.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;function addRoute(startAtRow, startAtCol, createDetour) {
+
+    var validExits = [&amp;#34;right&amp;#34;, &amp;#34;bottom&amp;#34;, &amp;#34;left&amp;#34;, &amp;#34;top&amp;#34;];
+    var remainingExits = {&amp;#34;right&amp;#34;: mazeWidth, &amp;#34;bottom&amp;#34;: mazeHeight, &amp;#34;left&amp;#34;: 0, &amp;#34;top&amp;#34;: 0};
+    var nextExits = [];
+    var lastCells= [];
+
+    var rowIndex = startAtRow;
+    var colIndex = startAtCol;
+    
+    var currentCell = document.getElementById(&amp;#34;cell_&amp;#34; + rowIndex + &amp;#34;_&amp;#34; + colIndex);
+
+    var exit;
+
+    var lastExit;
+
+    var exitIndex;
+
+    var loop = 0;
+    var loopFuse = 0;
+    var maxLoops = 4 * mazeWidth * mazeHeight;
+
+    var nextPossibleCell;
+
+    while (loop &amp;lt; ((mazeWidth * mazeHeight) - 1)) {
+
+        loopFuse++;
+
+        if (loopFuse &amp;gt;= maxLoops) {break;}
+
+        nextExits = [];
+
+        for (i = 0; i &amp;lt; validExits.length; i++) {
+
+            switch(validExits[i]) {
+
+                case &amp;#34;right&amp;#34;:
+                    nextPossibleCell = document.getElementById(&amp;#34;cell_&amp;#34; + rowIndex + &amp;#34;_&amp;#34; + (colIndex + 1));
+                    break;
+
+                case &amp;#34;left&amp;#34;:
+                    nextPossibleCell = document.getElementById(&amp;#34;cell_&amp;#34; + rowIndex + &amp;#34;_&amp;#34; + (colIndex - 1));
+                    break;
+
+                case &amp;#34;bottom&amp;#34;:
+                    nextPossibleCell = document.getElementById(&amp;#34;cell_&amp;#34; + (rowIndex + 1) + &amp;#34;_&amp;#34; + colIndex);
+                    break;
+
+                case &amp;#34;top&amp;#34;:
+                    nextPossibleCell = document.getElementById(&amp;#34;cell_&amp;#34; + (rowIndex - 1) + &amp;#34;_&amp;#34; + colIndex);
+                    break;
+
+            }
+            
+            if (nextPossibleCell != null) {
+
+                if (nextPossibleCell.getAttribute(&amp;#34;occupied&amp;#34;) != &amp;#34;true&amp;#34;) {
+                    
+                    for (t = 0; t &amp;lt; remainingExits[validExits[i]]; t++) {
+
+                        nextExits.push(validExits[i]);
+
+                    }
+
+                }
+
+            } 
+
+        }
+
+        if (nextExits.length == 0) {
+
+            if (createDetour == true) {
+
+                if (colIndex == mazeWidth) {
+                    rowIndex++;
+                    colIndex = 1;
+                } else {
+                    colIndex++;
+                }
+
+                currentCell = document.getElementById(&amp;#34;cell_&amp;#34; + rowIndex + &amp;#34;_&amp;#34; + colIndex);
+
+                continue;
+
+            } else {
+                
+                lastCells.splice(lastCells.length - 1, 1);
+
+                rowIndex = lastCells[lastCells.length - 1][0];
+                colIndex = lastCells[lastCells.length - 1][1];
+                currentCell = document.getElementById(&amp;#34;cell_&amp;#34; + rowIndex + &amp;#34;_&amp;#34; + colIndex);
+
+                continue;
+            
+            }
+
+        } 
+
+        exitIndex = Math.floor(Math.random() * nextExits.length);
+
+        exit = nextExits[exitIndex];
+
+        if (createDetour == false) {
+
+            currentCell.style[&amp;#34;border-&amp;#34;+exit] = &amp;#34;none&amp;#34;;
+
+        } else {
+
+            if (!(exit == &amp;#34;right&amp;#34; &amp;amp;&amp;amp; colIndex == mazeWidth - 1 &amp;amp;&amp;amp; rowIndex == mazeHeight) &amp;amp;&amp;amp;
+                !(exit == &amp;#34;bottom&amp;#34; &amp;amp;&amp;amp; colIndex == mazeWidth &amp;amp;&amp;amp; rowIndex == mazeHeight - 1) ) {
+
+                currentCell.style[&amp;#34;border-&amp;#34;+exit] = &amp;#34;none&amp;#34;;
+
+            }
+        }
+        
+        switch(exit) {
+
+            case &amp;#34;right&amp;#34;:
+
+                colIndex = colIndex + 1;
+                remainingExits.left++;
+                remainingExits.right--;
+                break;
+
+            case &amp;#34;bottom&amp;#34;:
+
+                rowIndex = rowIndex + 1;
+                remainingExits.top++;
+                remainingExits.bottom--;
+                break;
+
+            case &amp;#34;left&amp;#34;:
+
+                colIndex = colIndex - 1;
+                remainingExits.left--;
+                remainingExits.right++;
+                break;
+
+            case &amp;#34;top&amp;#34;:
+
+                rowIndex = rowIndex - 1;
+                remainingExits.top--;
+                remainingExits.bottom++;
+                break;
+                
+        }
+
+        lastCells.push([rowIndex, colIndex]);
+
+        currentCell = document.getElementById(&amp;#34;cell_&amp;#34; + rowIndex + &amp;#34;_&amp;#34; + colIndex);
+
+        switch(exit) {
+
+            case &amp;#34;right&amp;#34;:
+
+                currentCell.style[&amp;#34;border-left&amp;#34;] = &amp;#34;none&amp;#34;;
+                break;
+
+            case &amp;#34;bottom&amp;#34;:
+
+                currentCell.style[&amp;#34;border-top&amp;#34;] = &amp;#34;none&amp;#34;;
+                break;
+
+            case &amp;#34;left&amp;#34;:
+
+                currentCell.style[&amp;#34;border-right&amp;#34;] = &amp;#34;none&amp;#34;;
+                break;
+
+            case &amp;#34;top&amp;#34;:
+
+                currentCell.style[&amp;#34;border-bottom&amp;#34;] = &amp;#34;none&amp;#34;;
+                break;
+
+        }
+
+        if (rowIndex == mazeHeight &amp;amp;&amp;amp; colIndex == mazeWidth) {
+
+            break;
+
+        }
+
+        currentCell.style.backgroundColor = backgroundColorRoute;
+        currentCell.setAttribute(&amp;#34;occupied&amp;#34;, &amp;#34;true&amp;#34;);
+
+        lastExit = exit;
+
+        loop++;
+
+    }
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;An der Funktionalität hat sich hier nicht viel geändert: Wir prüfen zuerst, welche Ausgänge von der aktuellen Zelle aus möglich sind. Direkt danach allerdings müssen wir, wenn es keine weiteren Ausgänge gibt, die Funktion verlassen - wir wollen ja diesmal explizit Sackgassen erzeugen:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;if (createDetour == true) {
+  return false;
+[...]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Weiter unten gibt es eine weitere Besonderheit: Wenn wir den Abzweig erzeugen, darf dieser natürlich nicht &amp;ldquo;aus Versehen&amp;rdquo; zum Ziel führen. Wir prüfen also, ob wir uns direkt neben der Zielzelle befinden. In dem Fall wird der Rahmen nicht entfernt:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[...]
+if (!(exit == &amp;#34;right&amp;#34; &amp;amp;&amp;amp; colIndex == mazeWidth - 1 &amp;amp;&amp;amp; rowIndex == mazeHeight) &amp;amp;&amp;amp;
+    !(exit == &amp;#34;bottom&amp;#34; &amp;amp;&amp;amp; colIndex == mazeWidth &amp;amp;&amp;amp; rowIndex == mazeHeight - 1) ) {
+
+    currentCell.style[&amp;#34;border-&amp;#34;+exit] = &amp;#34;none&amp;#34;;
+
+}
+[...]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Ganz am Ende der Schleife wird außerdem das Attribut &lt;em&gt;occupied&lt;/em&gt; der Zelle auf &lt;em&gt;true&lt;/em&gt; gesetzt. So müssen wir nicht mehr mit der Hintergrundfarbe arbeiten, um belegte Zellen zu erkennen:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[...]
+currentCell.setAttribute(&amp;#34;occupied&amp;#34;, &amp;#34;true&amp;#34;);
+[...]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Nun kommen wir zum Erzeugen der Abzweige. Wie schon angekündigt, durchlaufen wir einfach die Zellen, die bereits belegt (&lt;em&gt;occupied == true)&lt;/em&gt; sind, um von dort aus unsere bewährte Routenerstellung - jedoch ohne Sackgassen-Schutz-Funktion, zu starten:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;for (n = 1; n &amp;lt; (mazeWidth * mazeHeight) - 1; n++) {
+
+    var currentCell = document.getElementById(&amp;#34;cell_&amp;#34; + startAtRow + &amp;#34;_&amp;#34; + startAtCol);
+    
+    if (currentCell.getAttribute(&amp;#34;occupied&amp;#34;) == &amp;#34;true&amp;#34;) {
+
+        addRoute(startAtRow, startAtCol, true);
+
+    }
+
+    if (startAtCol == mazeWidth) {
+        
+        startAtRow++;
+        startAtCol = 1;
+
+    } else {
+
+        startAtCol++;
+
+    }
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Et voila: Ein Irrgarten:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/grafik-12-700x696.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Und auch wenn der Algorithmus teilweise etwas stumpf gestaltet ist, kann sich die Performance sehen lassen. Ein Labyrinth mit der Kantenlänge 100 x 100 dauert nur wenige Sekunden:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/grafik-13-700x699.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Natürlich gibt es an der einen oder anderen Stelle noch Optimierungspotential. Ich hab die ganze Logik noch mit einer Navigation und einer Stopp-Uhr ausgestattet. So sieht das ganze dann als Zeitvertreib für die Quarantäne aus: &lt;a href=&#34;https://nickyreinert.github.io/maze/&#34;&gt;https://nickyreinert.github.io/maze/&lt;/a&gt;&lt;/p&gt;
+</description>
+      
+    </item>
+    
+  </channel>
+</rss>

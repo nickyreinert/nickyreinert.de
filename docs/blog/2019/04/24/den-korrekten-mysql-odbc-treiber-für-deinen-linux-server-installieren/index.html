@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="Wenn du denkst, du hast alles richtig gemacht, nachdem du einer der halb vollständigen Anleitungen da draußen gefolgt bist, und dann wirst du nach der mühseligen Installation von ein paar ODBC-Treibern doch mit der folgenden Fehlermeldung begrüßt:
+[ISQL]ERROR: Could not SQLDriverConnect [01000][unixODBC][Driver Manager]Can&#39;t open lib &#39;/usr/local/lib/libmyodbc8w.so&#39; : file not found [ISQL]ERROR: Could not SQLDriverConnect Doch tatsächlich existiert die Datei. Die Fehlermeldung ist nur etwas unpräzise und vermutlich hast du die falschen Treiber heruntergeladen.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/favicon.ico">
+
+  
+  
+  <meta name="keywords" content=" hugo  latex  theme ">
+  
+
+  
+  
+
+  
+  <meta property="og:title" content="Den korrekten MySQL ODBC-Treiber für deinen Linux-Server installieren" />
+<meta property="og:description" content="Wenn du denkst, du hast alles richtig gemacht, nachdem du einer der halb vollständigen Anleitungen da draußen gefolgt bist, und dann wirst du nach der mühseligen Installation von ein paar ODBC-Treibern doch mit der folgenden Fehlermeldung begrüßt:
+[ISQL]ERROR: Could not SQLDriverConnect [01000][unixODBC][Driver Manager]Can&#39;t open lib &#39;/usr/local/lib/libmyodbc8w.so&#39; : file not found [ISQL]ERROR: Could not SQLDriverConnect Doch tatsächlich existiert die Datei. Die Fehlermeldung ist nur etwas unpräzise und vermutlich hast du die falschen Treiber heruntergeladen." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://nickyreinert.de/blog/2019/04/24/den-korrekten-mysql-odbc-treiber-f%C3%BCr-deinen-linux-server-installieren/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-04-24T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-04-24T00:00:00+00:00" />
+
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/blog/2019/04/24/den-korrekten-mysql-odbc-treiber-f%C3%BCr-deinen-linux-server-installieren/">
+
+  
+  
+  <meta itemprop="name" content="Den korrekten MySQL ODBC-Treiber für deinen Linux-Server installieren">
+<meta itemprop="description" content="Wenn du denkst, du hast alles richtig gemacht, nachdem du einer der halb vollständigen Anleitungen da draußen gefolgt bist, und dann wirst du nach der mühseligen Installation von ein paar ODBC-Treibern doch mit der folgenden Fehlermeldung begrüßt:
+[ISQL]ERROR: Could not SQLDriverConnect [01000][unixODBC][Driver Manager]Can&#39;t open lib &#39;/usr/local/lib/libmyodbc8w.so&#39; : file not found [ISQL]ERROR: Could not SQLDriverConnect Doch tatsächlich existiert die Datei. Die Fehlermeldung ist nur etwas unpräzise und vermutlich hast du die falschen Treiber heruntergeladen."><meta itemprop="datePublished" content="2019-04-24T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2019-04-24T00:00:00+00:00" />
+<meta itemprop="wordCount" content="561">
+<meta itemprop="keywords" content="" />
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>Den korrekten MySQL ODBC-Treiber für deinen Linux-Server installieren - Nicky Reinert</title>
+  
+
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Den korrekten MySQL ODBC-Treiber für deinen Linux-Server installieren"/>
+<meta name="twitter:description" content="Wenn du denkst, du hast alles richtig gemacht, nachdem du einer der halb vollständigen Anleitungen da draußen gefolgt bist, und dann wirst du nach der mühseligen Installation von ein paar ODBC-Treibern doch mit der folgenden Fehlermeldung begrüßt:
+[ISQL]ERROR: Could not SQLDriverConnect [01000][unixODBC][Driver Manager]Can&#39;t open lib &#39;/usr/local/lib/libmyodbc8w.so&#39; : file not found [ISQL]ERROR: Could not SQLDriverConnect Doch tatsächlich existiert die Datei. Die Fehlermeldung ist nur etwas unpräzise und vermutlich hast du die falschen Treiber heruntergeladen."/>
+
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <h1>
+    <a href="https://nickyreinert.de/">Nicky Reinert</a>
+  </h1>
+
+  <nav>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/">Post</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/post/">Archives</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/about/">About</a>
+    </span>
+    
+  </nav>
+</header>
+
+    
+<main id="main" class="post">
+  
+  
+  <h1>Den korrekten MySQL ODBC-Treiber für deinen Linux-Server installieren</h1>
+  
+  
+  <article class="content">
+    
+    <p>Wenn du denkst, du hast alles richtig gemacht, nachdem du einer der halb vollständigen Anleitungen da draußen gefolgt bist, und dann wirst du nach der mühseligen Installation von ein paar ODBC-Treibern doch mit der folgenden Fehlermeldung begrüßt:</p>
+<pre tabindex="0"><code>[ISQL]ERROR: Could not SQLDriverConnect
+[01000][unixODBC][Driver Manager]Can&#39;t open lib &#39;/usr/local/lib/libmyodbc8w.so&#39; : file not found
+[ISQL]ERROR: Could not SQLDriverConnect
+</code></pre><p>Doch tatsächlich existiert die Datei. Die Fehlermeldung ist nur etwas unpräzise und vermutlich hast du die falschen Treiber heruntergeladen. Damit dir das nicht noch mal passiert, hier eine endgültige, hoffentlich vollständige Anleitung zur Installation der MySQL-ODBC Treiber (unter Ubuntu, aber leicht übertragbar auf andere Distributionen):</p>
+<h2 id="die-richtige-treiber-version-herunterladen">Die richtige Treiber-Version herunterladen</h2>
+<p>Zunächst musst du herausbekommen, welche Betriebssystem-Version du nutzt. Das funktioniert mit:</p>
+<pre tabindex="0"><code>$ lsb_release -a
+Distributor ID: Ubuntu
+Description:    Ubuntu 16.04.5 LTS
+Release:        16.04
+Codename:       xenial
+</code></pre><p>Außerdem benötigst du noch deinen Architektur-Typ, also 32- oder 64bit. Wenn LSB diese Info nicht liefert, kannst du folgendes probieren:</p>
+<pre tabindex="0"><code>$ uname -a
+Linux 192.168.10.10 4.4.0-042stab136.1 #1 SMP Wed Feb 27 09:04:24 MSK 2019 x86_64 x86_64 x86_64 GNU/Linux
+</code></pre><p>Mit diesen Informationen ausgestattet, besorgst du dir nun die passenden Treiber-Dateien von <a href="https://dev.mysql.com/downloads/connector/odbc/">https://dev.mysql.com/downloads/connector/odbc/</a> - ich gehe mal davon aus, dass du die aktuellste MySQL-Version benutzt und deshalb auch die Treiber in der Version 8 benötigst.</p>
+<p>Kopiere dir am besten den Download-Link, damit du das Archiv direkt auf dem Server mit wget herunterladen kannst, z.B. so:</p>
+<pre tabindex="0"><code>$ wget https://dev.mysql.com/get/Downloads/Connector-ODBC/8.0/mysql-connector-odbc-8.0.15-linux-ubuntu16.04-x86-64bit.tar.gz
+</code></pre><h2 id="die-treiber-installieren-und-registrieren">Die Treiber installieren und registrieren</h2>
+<p>Wenn der Download beendet wurde, entpackst du die Datei mit den folgenden Befehlen und wechselst danach in das soeben entstandene Verzeichnis:</p>
+<pre tabindex="0"><code>$ gunzip mysql-connector-odbc-8.0.15-linux-ubuntu16.04-x86-64bit.tar.gz
+$ tar xvf mysql-connector-odbc-8.0.15-linux-ubuntu16.04-x86-64bit.tar
+$ cd mysql-connector-odbc-8.0.15-linux-ubuntu16.04-x86-64bit
+</code></pre><p>Nun kopierst du das Installations-Script - was du vermutlich nicht benötigen wirst - und die Treiber-Dateien in die entsprechenden Ordner:</p>
+<pre tabindex="0"><code>$ cp bin/* /usr/local/bin
+$ cp lib/* /usr/local/lib
+</code></pre><p>Das war es schon fast. Als nächstes musst du die Treiber noch &ldquo;anmelden&rdquo;. Mit diesem Befehl bekommst du heraus, wo sich die Einstellungs-Datei für ODBC befindet.</p>
+<pre tabindex="0"><code>$ odbcinst -j
+unixODBC 2.3.6
+DRIVERS............: /etc/odbcinst.ini
+SYSTEM DATA SOURCES: /etc/odbc.ini
+FILE DATA SOURCES..: /etc/ODBCDataSources
+USER DATA SOURCES..: /root/.odbc.ini
+SQLULEN Size.......: 8
+SQLLEN Size........: 8
+SQLSETPOSIROW Size.: 8
+</code></pre><p>Es kann durchaus sein, dass die Datei für die Treiber (/etc/odbcinst.ini) noch nicht existiert, dann legst du sie einfach an und ergänzt die folgenden Zeilen:</p>
+<pre tabindex="0"><code>$ nano /etc/odbcinst.ini
+[MySQL ODBC 8.0 Unicode Driver]
+Driver=/usr/local/lib/libmyodbc8w.so
+UsageCount = 1
+[MySQL ODBC 8.0 ANSI Treiber]
+Driver=/usr/local/lib/libmyodbc8a.so
+UsageCount = 1
+</code></pre><p>Wie du siehst, steckt dahinter keine Raktentechnologie und in den meisten Fällen dürften diese Grundeinstellungen ausreichen. Du kannst die Datei natürlich noch ausbauen, eine ganze Menge zusätzlicher Parameter festlegen und nicht nur für MySQL nutzen (<a href="https://www.systutorials.com/docs/linux/man/5-odbcinst.ini/">siehe hier</a>).</p>
+<h2 id="die-funktionalität-testen">Die Funktionalität testen</h2>
+<p>Zum Abschluss kannst du folgendermaßen prüfen, ob die Einrichtung funktioniert hat. Wie du siehst, referenzierst du die oben registrierten Treiber:</p>
+<pre tabindex="0"><code>$ isql -v -k &#34;DRIVER={MySQL ODBC 8.0 Unicode Driver};SERVER=192.168.10.99;UID=root;PWD=password&#34;
+</code></pre><p>Sollte der Aufruf mit der folgenden Fehlermeldung quittiert werden, prüfe zunächst, ob die Datei vorhanden ist. Wenn dem so ist, ist es möglich, dass du oben die falschen Architektur oder Version der Treiber ausgewählt hast - auch dann beschwert sich isql, dass die Datei &ldquo;nicht gefunden werden kann&rdquo;:</p>
+<pre tabindex="0"><code>[01000][unixODBC][Driver Manager]Can&#39;t open lib &#39;/usr/local/lib/libmyodbc8w.so&#39; : file not found
+[ISQL]ERROR: Could not SQLDriverConnect
+</code></pre><p>Ansonsten solltest du auf die Konsole von deinem MySQL-Server gelangen, die in etwa so aussieht - und dann hast du alles richtig gemacht:</p>
+<pre tabindex="0"><code>+---------------------------------------+
+| Connected!                            |
+|                                       |
+| sql-statement                         |
+| help [tablename]                      |
+| quit                                  |
+|                                       |
++---------------------------------------+
+SQL&gt;
+</code></pre>
+    
+  </article>
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/blog/2019/04/18/wordpress-tag-cloud-mit-umlauten-%C3%A4%C3%B6%C3%BC-korrekt-sortieren-oder-der-wordpress-filter-im-live-beispiel-erkl%C3%A4rt/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/blog/2019/04/29/lorem-picsum-der-generator-f%C3%BCr-zuf%C3%A4llige-bilder/">next →</a>
+    
+  </div>
+  <div class="comment">
+    
+    
+    
+    
+    
+    
+  </div>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 2019</span> - <span>2023</span>
+  </div>
+
+  <div>
+    <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a>
+    <span> 🍦 Theme </span>
+    <a class="link" href="https://github.com/queensferryme/hugo-theme-texify">TeXify</a>
+  </div>
+
+  <div class="footnote">
+    <span>Follow me on <a class=link href=https://github.com/queensferryme>GitHub</a>,
+<a class=link href=https://twitter.com/queensferryme>Twitter</a> or
+<a class=link href=/index.xml>RSS</a> |
+<a class=link href=https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh target=_blank rel=noopener>CC BY-NC-SA 4.0</a>
+</span>
+  </div>
+</footer>
+
+  </div>
+
+  
+  
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>

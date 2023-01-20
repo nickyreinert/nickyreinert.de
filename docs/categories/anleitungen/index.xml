@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>anleitungen on Nicky Reinert</title>
+    <link>https://nickyreinert.de/categories/anleitungen/</link>
+    <description>Recent content in anleitungen on Nicky Reinert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>de-DE</language>
+    <lastBuildDate>Sun, 31 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/categories/anleitungen/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&amp;nbsp;1/2)</title>
+      <link>https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teilnbsp1/2/</link>
+      <pubDate>Sun, 31 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teilnbsp1/2/</guid>
+      
+      <description>&lt;p&gt;SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. &lt;a href=&#34;https://de.wikipedia.org/wiki/SHA-2&#34;&gt;SHA-256 ist Teil einer ganzen Gruppe von Algorithmen&lt;/a&gt;, mit dem gleichen Ziel: Die Erzeugung eines Hashes, der resistent gegen Kollisionen ist, dessen Berechnung nur in eine Richtung funktioniert und eine feste Länge hat. Im folgenden Artikel beschreibe ich die einzelnen Schritte die der Algorithmus vornimmt, um einen Hash zu erzeugen.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Im ersten Teil kümmern wir uns um die Vorbereitungen, im &lt;a href=&#34;https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/&#34;&gt;zweiten Teil&lt;/a&gt; geht es an den eigentlichen Algorithmus. Der Sourcecode&lt;/em&gt; &lt;a href=&#34;https://gist.github.com/nickyreinert/00d631fe9a90108924b1df6e911c8cd5&#34;&gt;&lt;em&gt;liegt auf Github&lt;/em&gt;&lt;/a&gt;&lt;em&gt;.&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&#34;was-wirst-dulernen&#34;&gt;Was wirst du lernen?&lt;/h3&gt;
+&lt;p&gt;Neben dem Erzeugen eines SHA-256 wirst du hier vor allem den Umgang mit binären Zahlen und binäre Rechenoperationen wie &lt;strong&gt;XOR&lt;/strong&gt;, &lt;strong&gt;AND&lt;/strong&gt; usw kennenleren. Ich gehe allerdings davon aus, dass ein Grundverständnis für binäre Zahlen vorhanden ist, der Fokus liegt auf dem Algorithmus. &lt;strong&gt;10&lt;/strong&gt; sollte in deinem Kopf also entweder für die &lt;strong&gt;zehn&lt;/strong&gt; oder eine &lt;strong&gt;zwei&lt;/strong&gt; stehen. (Oder auch &lt;strong&gt;zwölf&lt;/strong&gt;, wenn du das &lt;strong&gt;Duodezimalsystem&lt;/strong&gt; magst.)&lt;/p&gt;
+&lt;h3 id=&#34;vorwort&#34;&gt;Vorwort&lt;/h3&gt;
+&lt;p&gt;Bricht man das auf eine maximal laienhafte Beschreibung herunter, passiert bei einer krytpologischen Hash-Funktion das folgende: Ein Ausgangs-Text &lt;strong&gt;beliebiger&lt;/strong&gt; Länge wird so verarbeitet, dass daraus einen Ergebnis-Text (&lt;em&gt;der&lt;/em&gt; &lt;em&gt;Hash&lt;/em&gt;) mit der &lt;strong&gt;immer gleichen&lt;/strong&gt; Länge entsteht. Es ist nahezu unmöglich, aus dem Hash den Ausgangs-Text zu berechnen. Außerdem kann man fast sicher davon ausgehen, dass jeder Ausgangs-Text &lt;strong&gt;einen anderen Hash&lt;/strong&gt; erzeugt. Ändere ich nur ein Zeichen, wirkt sich das drastisch auf den Ausgangs-Text aus. Ein derartiger Algorithmus ist daher zB prädestiniert, Texte, sprich Nachrichten, zu verfizieren. Man spricht deswegen auch von einer Prüfsumme.&lt;/p&gt;
+&lt;p&gt;Und das ist die Grundlage einer Technologie, die in jüngster Vergangenheit immer mehr von sich Reden macht: Die &lt;strong&gt;Blockchain&lt;/strong&gt;, Basis für Kryptowährungen wie zB den &lt;strong&gt;Bitcoin&lt;/strong&gt;. Bei der Blockchain sind, und auch das nur laienhaft heruntergebrochen, die Einträge des “Kassenbuches” sicher vor Manipulation, weil eben die Änderung eines historischen Wertes (zB Buchungsvorganges) unweigerlich eine drastische Änderung der daraus erzeugten Prüfsummen nach sich ziehen würde. Um den Blockchain-Apologeten gleich den Wind aus den Segeln zu nehmen zitiere ich mal Fefe, sinngemäß: &lt;a href=&#34;https://ptrace.fefe.de/Blockchain/#46&#34;&gt;Es geht auch einfacher&lt;/a&gt;. Ich gebrauche Bitcoin hier auch nur als Buzzword, aus Marketing-Gründen. :]&lt;/p&gt;
+&lt;p&gt;Um dich nun aber auch zum Weiterlesen zu motivieren, ein wichtiger Hinweis:&lt;/p&gt;
+&lt;p&gt;Der Algorithmus wird dazu verwendet, die nächsten Einträge der Blockchain zu berechnen. Genau genommen wird hier ein bestimmter Hash vorgegeben, der errechnet werden soll (das berüchtigte &lt;em&gt;Mining&lt;/em&gt;). Die Belohnung für die korrekte Berechnung sind Bitcoins. Das Problem: Diese Berechnung ist &lt;strong&gt;sehr,&lt;/strong&gt; &lt;strong&gt;sehr aufwendig&lt;/strong&gt;, denn wie schon oben geschrieben: Sie funktioniert nur in eine Richtung. Die &lt;em&gt;Miner&lt;/em&gt; müssen also unsagbar viele Berechnungen durchführen, um einen Ziel-Wert zu errechnen. Und der Miner, der die Berechnung am schnellsten ausführt, wird dafür auch belohnt. Gelingt es dir also, wider erwarten, den Algorithmus zu optimieren, kannst du im Mining-Business ganz groß rauskommen. Das klingt doch nach einer Herausforderung, oder? ;)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*oRiiWtLJa7ahXSFUZMjB4w.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Quelle: &lt;a href=&#34;https://peakd.com/deutsch/@marcus0alameda/dagobert-gold-bitcoin-perfektion&#34;&gt;https://peakd.com/deutsch/@marcus0alameda/dagobert-gold-bitcoin-perfektion&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Disclaimer: Ich habe den ganzen Algorithmus in Python nachgebaut. Python ist aus Performance-Sicht sicher nicht die beste Option, um SHA-256 zu berechnen und der Umgang mit binären oder hexadezimalen Werten ist etwas unbequem. Python eignet sich dank Jupyter aber am ehesten dazu, einen komplexen Algorithmus Schritt-für-Schritt zu beschreiben.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;einführung&#34;&gt;Einführung&lt;/h3&gt;
+&lt;p&gt;Bevor wir uns an die Schleifen machen, müssen wir uns um ein paar Funktionen kümmern, die wir später dazu nutzen, um &lt;strong&gt;binäre Zahlen&lt;/strong&gt; ein wenig durchzumischen.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Hinweis 1: Ich verzichte im folgenden auf die Präfixe der Zahlensystem, wie zB 0b für binär, um den Text übersichtlich zu halten. Ich gehe davon aus, dass folgendes bekannt ist: 0 =&amp;gt; Falsch und 1 =&amp;gt; Wahr&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Hinweis 2: Im Kontext von SHA-256 entspricht ein Wort (bzw word) genau 32 Bit. In der Regel entspricht 1 Word = 2 Byte = 16 Bit.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;das-explizite-oderxor&#34;&gt;Das explizite Oder (XOR)&lt;/h4&gt;
+&lt;p&gt;Das explizite Oder (&lt;strong&gt;Entweder-Oder&lt;/strong&gt;) ist ein elementarer logischer, bitweise Operator. Der Ausgang der Operation ist nur dann wahr, wenn exakt ein Zustand wahr ist (im Vergleich dazu ist das Ergebnis bei dem “einfachen“ &lt;strong&gt;OR&lt;/strong&gt; übrigens dann wahr, wenn mindestens ein Operand wahr ist oder beide).&lt;/p&gt;
+&lt;p&gt;Es werden also zwei Werte folgendermaßen verarbeitet:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*5qG0_1Pm1ntPyeupvhdYXw.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;XOR: nur wenn genau ein Wert wahr (1) ist, ist die entsprechende Stelle im Ergebnis wahr (1)&lt;/p&gt;
+&lt;p&gt;Die Implementierung in Python erfolgt mit dem &lt;strong&gt;Zirkumflex&lt;/strong&gt;:&lt;/p&gt;
+&lt;p&gt;# 110 ^ 100&lt;br&gt;
+# 010&lt;/p&gt;
+&lt;h4 id=&#34;das-logische-undand&#34;&gt;&lt;strong&gt;Das logische Und (AND)&lt;/strong&gt;&lt;/h4&gt;
+&lt;p&gt;Der AND-Operator ist ebenfalls recht geläufig und vergleichsweise simpel. Analog zu XOR ist das Ergebnis wahr, wenn exakt beide (bzw. alle) Operanden wahr sind.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*dR9JWfubGUzMFV09SxOngg.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;AND: Nur wenn beide Werte einer Stelle wahr sind, ist die Stelle im Ergebnis wahr&lt;/p&gt;
+&lt;p&gt;Die Implementierung in Python erfolgt mit dem &lt;strong&gt;kaufmännischen Und&lt;/strong&gt;:&lt;/p&gt;
+&lt;p&gt;# 110 &amp;amp; 100&lt;br&gt;
+# 100&lt;/p&gt;
+&lt;h4 id=&#34;die-negierung-nope&#34;&gt;Die Negierung (Nope?)&lt;/h4&gt;
+&lt;p&gt;Jetzt wirds seltsam: Auch dafür gibt es einen Operator: Der bitweise Operator &lt;strong&gt;Negierung&lt;/strong&gt; dreht Werte um. Aus 0 wird 1, aus 1 wird 0.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*OFRBiUNCRvhHOCEcpY2-Kg.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Die Negierung kehrt Werte bitweise um. Nicht mehr aber auch nich weniger.&lt;/p&gt;
+&lt;p&gt;Die Implementierung in Python erfolgt mit der &lt;strong&gt;Tilde —&lt;/strong&gt; meinem Lieblingszeichen!&lt;/p&gt;
+&lt;p&gt;# ~110&lt;br&gt;
+# 001&lt;/p&gt;
+&lt;h4 id=&#34;die-shift-operation&#34;&gt;&lt;strong&gt;Die Shift-Operation&lt;/strong&gt;&lt;/h4&gt;
+&lt;p&gt;Die Shift-Funktion ist eine elementare binäre Rechenoperation, bei der die einzelnen Stellen eines binären Werts &lt;strong&gt;nach links oder rechts geschoben&lt;/strong&gt; werden. Die freien Stellen auf der jeweils anderen Seite werden mit 0 aufgefüllt.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*5sLtKs778nJ7EAM4Fl6itA.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Shift nach links um eine Stelle, aus 6 wird 12&lt;/p&gt;
+&lt;p&gt;Und jetzt gibt es hoffentlich einen positiven Knick in der Lernkurve: Wenn du genau hinschaust, fällt dir etwas auf und lass mich dir versichern, es handelt sich nicht um einen Zufall: 12 ist das Produkt aus 6 und 2. Das deutet auf ein interessanten Nebeneffekt: Ein Shift kommt einer Multiplikation bzw. Division mit 2 gleich. Ein Shift um mehrere Stellen entspricht demnach einer Multiplikation mit einer Potenz zur Basis 2 besteht. Klingt kompliziert, deswegen ein Beispiel:&lt;/p&gt;
+&lt;p&gt;Anstatt 139 * 2 ^17 kannst du die binäre Darstellung von 139, also 10001011, um 17 Stellen nach links shiften. Das Ergebnis: 1000101100000000000000000. Zähl gerne nach, rechts der 1 eins gibt es jetzt 17 Nullen.&lt;/p&gt;
+&lt;p&gt;In Python ist der binäre Shift mit dem &lt;strong&gt;Doppelpfeil&lt;/strong&gt; implementiert:&lt;/p&gt;
+&lt;p&gt;# 110 &amp;raquo; 1&lt;br&gt;
+# 011&lt;/p&gt;
+&lt;p&gt;# 110 &amp;laquo; 2&lt;br&gt;
+# 000&lt;/p&gt;
+&lt;h4 id=&#34;die-rotate-funktion&#34;&gt;Die Rotate-Funktion&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;Rotate&lt;/strong&gt; bedeutet, dass ein die Werte einer (binären) Zahl in eine Richtung verschoben werden. Und das erklärt man am besten an einem Beispiel. Die folgende Zahlenreihe soll um einen Zähler nach links rotiert werden. Die Zahl auf der linken Seite fällt also heraus und wir rechts wieder angehangen. Die anderen Zahlen rücken eine Position nach links.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*A01z8F9I0BXlpQsqt2p8Mw.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Rotate eines binären Wertes um eine Stelle nach links, aus 6wird 5&lt;/p&gt;
+&lt;p&gt;Das funktioniert in beide Richtungen und mit beliebig vielen Stellen. Die entsprechende Funktion (&lt;a href=&#34;https://stackoverflow.com/a/59005609/2360229&#34;&gt;Kudos an so&lt;/a&gt;) sieht so aus:&lt;/p&gt;
+&lt;p&gt;def rotate(value, rotations, width = 32):&lt;br&gt;
+if int(rotations) != abs(int(rotations)):&lt;br&gt;
+rotations = width + int(rotations)&lt;br&gt;
+return (int(value) &amp;laquo; (width - (rotations%width)) | (int(value) &amp;raquo; (rotations % width))) &amp;amp; ((1 &amp;laquo; width) - 1)&lt;/p&gt;
+&lt;h4 id=&#34;die-sigma-funktionen&#34;&gt;Die Sigma-Funktionen&lt;/h4&gt;
+&lt;p&gt;Insgesamt werden vier sogenannte &lt;strong&gt;Sigma-Funktionen&lt;/strong&gt; verwendet. &lt;strong&gt;σ0&lt;/strong&gt; und &lt;strong&gt;σ1&lt;/strong&gt; (das kleine Sigma) bzw. &lt;strong&gt;Σ0&lt;/strong&gt; und &lt;strong&gt;Σ1&lt;/strong&gt; (das große Sigma, vielen bekannt als das Summen-Zeichen). Alle funktionen werden mit einem binären Wert aufgerufen und geben diesen binären Wert in veränderter Form zurück.&lt;/p&gt;
+&lt;p&gt;σ0 (&lt;strong&gt;sigma0&lt;/strong&gt;) läuft folgendermaßen ab:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;der Ausgangs-Wert wird um 7 &lt;strong&gt;Stellen&lt;/strong&gt; nach &lt;strong&gt;rechts rotiert&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;der Ausgangs-Wert wird um &lt;strong&gt;18 Stellen&lt;/strong&gt; nach &lt;strong&gt;rechts rotiert&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;der Ausgangs-Wert wird um &lt;strong&gt;3 Stellen&lt;/strong&gt; nach &lt;strong&gt;rechts geshifted&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Daraus entstehen drei unterschiedliche Werte, die miteinander &lt;strong&gt;XOR-Verknüpft&lt;/strong&gt; werden. Die Funktion dazu in Python:&lt;/p&gt;
+&lt;p&gt;def sigma0(word):&lt;br&gt;
+part1 = bin(rotate(int(word, 2), 7, 32))&lt;br&gt;
+part2 = bin(rotate(int(word, 2), 18, 32))&lt;br&gt;
+part3 = bin(int(word, 2) &amp;raquo; 3)&lt;br&gt;
+return bin(int(part1, 2) ^ int(part2, 2) ^ int(part3, 2))[2:].zfill(32)&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Wichtiger Hinweis&lt;/strong&gt;: Ich arbeite mit bin() und in(s, 2), um die Ausgaben und Eingaben leserlich und vor allem nachvollziehbar zu machen. Außerdem sorge ich mit [2:] dafür, dass die binäre Darstellung ohne &lt;strong&gt;0b&lt;/strong&gt; auskommt. Das kommt dem Lernzweck zugute, da die binären Operationen an dezimalen Werten schwerer nachvollziehbar sind. Mit zfill(32) (&lt;strong&gt;zero fill&lt;/strong&gt;) wird der binäre Wert nach links um so viele Nullen erweitert, um immer &lt;strong&gt;32 Stellen&lt;/strong&gt; zu umfassen. Teilweise erleichtert das die Übersicht, andererseits erfüllt das später auch eine Längen-Vorgabe. Die obere Funktion kann also auch folgendermaßen vereinfacht werden:&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;def sigma0(word):&lt;br&gt;
+part1 = rotate(word, 7, 32)&lt;br&gt;
+part2 = rotate(word, 18, 32)&lt;br&gt;
+part3 = word &amp;raquo; 3&lt;br&gt;
+return part1 ^ part2  ^ part3&lt;/p&gt;
+&lt;p&gt;Bei σ1 (&lt;strong&gt;sigma1&lt;/strong&gt;) sieht es ganz ähnlich aus:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;der Ausgangs-Wert wird um &lt;strong&gt;17 Stellen&lt;/strong&gt; nach &lt;strong&gt;rechts rotiert&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;der Ausgangs-Wert wird um &lt;strong&gt;19 Stellen&lt;/strong&gt; nach &lt;strong&gt;rechts rotiert&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;der Ausgangs-Wert wird um &lt;strong&gt;10&lt;/strong&gt; &lt;strong&gt;Stellen&lt;/strong&gt; nach &lt;strong&gt;rechts geshifted&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Daraus entstehen drei unterschiedliche Werte, die miteinander &lt;strong&gt;XOR-Verknüpft&lt;/strong&gt; werden. Die Funktion dazu in Python:&lt;/p&gt;
+&lt;p&gt;def sigma0(word):&lt;br&gt;
+part1 = bin(rotate(int(word, 2), 7, 32))&lt;br&gt;
+part2 = bin(rotate(int(word, 2), 18, 32))&lt;br&gt;
+part3 = bin(int(word, 2) &amp;raquo; 3)&lt;br&gt;
+return bin(int(part1, 2) ^ int(part2, 2) ^ int(part3, 2))[2:].zfill(32)&lt;/p&gt;
+&lt;p&gt;Nun zu Σ0 (&lt;strong&gt;Sigma0&lt;/strong&gt;). Auch hier keine großen Überaschungen, hier nun ohne &lt;strong&gt;Shift:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;der Ausgangs-Wert wird um &lt;strong&gt;2 Stellen&lt;/strong&gt; nach &lt;strong&gt;rechts rotiert&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;der Ausgangs-Wert wird um &lt;strong&gt;13 Stellen&lt;/strong&gt; nach &lt;strong&gt;rechts rotiert&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;der Ausgangs-Wert wird um &lt;strong&gt;22&lt;/strong&gt; &lt;strong&gt;Stellen&lt;/strong&gt; nach &lt;strong&gt;rechts rotiert&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Auch hier werden die jeweiligen Ergebnisse final &lt;strong&gt;XOR-Verknüpftg&lt;/strong&gt;. In Python also:&lt;/p&gt;
+&lt;p&gt;def upper_sigma0(word):&lt;br&gt;
+part1 = bin(rotate(int(word, 2), 2, 32))&lt;br&gt;
+part2 = bin(rotate(int(word, 2), 13, 32))&lt;br&gt;
+part3 = bin(rotate(int(word, 2), 22, 32))&lt;br&gt;
+return bin(int(part1, 2) ^ int(part2, 2) ^ int(part3, 2))[2:].zfill(32)&lt;/p&gt;
+&lt;p&gt;Kommen wir zum letzten Teilnehmer unserer illustren griechischen Runde: Σ1 (&lt;strong&gt;Sigma1&lt;/strong&gt;):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;der Ausgangs-Wert wird um &lt;strong&gt;6&lt;/strong&gt; &lt;strong&gt;Stellen&lt;/strong&gt; nach &lt;strong&gt;rechts rotiert&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;der Ausgangs-Wert wird um &lt;strong&gt;11Stellen&lt;/strong&gt; nach &lt;strong&gt;rechts rotiert&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;der Ausgangs-Wert wird um &lt;strong&gt;25&lt;/strong&gt; &lt;strong&gt;Stellen&lt;/strong&gt; nach &lt;strong&gt;rechts rotiert&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Und am Ende wieder die XOR-Verknüpfung. Python:&lt;/p&gt;
+&lt;p&gt;def upper_sigma1(word):&lt;br&gt;
+part1 = bin(rotate(int(word, 2), 6, 32))&lt;br&gt;
+part2 = bin(rotate(int(word, 2), 11, 32))&lt;br&gt;
+part3 = bin(rotate(int(word, 2), 25, 32))&lt;br&gt;
+return bin(int(part1, 2) ^ int(part2, 2) ^ int(part3, 2))[2:].zfill(32)&lt;/p&gt;
+&lt;h4 id=&#34;wahl-undmehrheit&#34;&gt;Wahl und &lt;strong&gt;Mehrheit&lt;/strong&gt;&lt;/h4&gt;
+&lt;p&gt;Bleiben wir noch etwas bei den Griechen und wechseln in die Politik: Die Wahl und die Mehrheit, englisch: &lt;strong&gt;choose&lt;/strong&gt; und &lt;strong&gt;majority&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Choose ist eine etwas komplexere Funktion, die drei binäre Werte verarbeitet und zwar wieder bitweise. Die Funktion geht durch die jeweiligen Stellen (x) des ersten Eingangswerts und prüft:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Wenn &lt;strong&gt;x = 1&lt;/strong&gt; dann nimm &lt;strong&gt;y&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Wenn &lt;strong&gt;x = 0&lt;/strong&gt; dann nimm &lt;strong&gt;z&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Y und z stehen für die jeweiligen Stellen des zweiten und dritten Eingangswertes. Wie kann man das programmatisch lösen? So:&lt;/p&gt;
+&lt;p&gt;def choose(word1, word2, word3):&lt;br&gt;
+bin_word1 = (int(word1, 2))&lt;br&gt;
+bin_word2 = (int(word2, 2))&lt;br&gt;
+bin_word3 = (int(word3, 2))&lt;br&gt;
+return bin((bin_word1 &amp;amp; bin_word2) ^ (~bin_word1 &amp;amp; bin_word3))[2:].zfill(32)&lt;/p&gt;
+&lt;p&gt;Zunächst werden also Wert 1 und Wert 2 logisch UND-verknüpft. Dann wird die Negierung von Wert 1 mit Wert 3 UND-verknüpft. Die beiden Zwischensummen werden abschließend durch XOR gejagt.&lt;/p&gt;
+&lt;p&gt;Majority prüft ganz einfach für jede Stelle der drei Eingangs-Werte, welcher Wert, 1 oder 0, häufiger vorkommt. Das sieht in Python so aus — hier erklär ich die logischen Operationen jetzt nicht noch mal, es werden einfach XOR und AND verknüpft:&lt;/p&gt;
+&lt;p&gt;def majority(word1, word2, word3):&lt;br&gt;
+bin_word1 = (int(word1, 2))&lt;br&gt;
+bin_word2 = (int(word2, 2))&lt;br&gt;
+bin_word3 = (int(word3, 2))&lt;br&gt;
+return bin((bin_word1 &amp;amp; bin_word2) ^ (bin_word1 &amp;amp; bin_word3) ^ (bin_word2 &amp;amp; bin_word3))[2:].zfill(32)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Primzahlen?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Um noch ein anderes beliebtes Feld der Arithmetik abzudecken, lasst uns noch kurz über Primzahlen reden. Primzahlen sind mystisch. Und damit genau richtig für unser irdisches Vorhaben, das Mining zu optimieren.&lt;/p&gt;
+&lt;p&gt;SHA-256 nutzt Primzahlen als Grundlage für den Algorithmus. Was nicht bedeutet, dass das Ergebnis durchschaubar wäre.&lt;/p&gt;
+&lt;p&gt;Wir fangen mal mit den ersten 64 Primzahlen an und bauen daraus einen Satz Konstanten. Selbstverständlich in Bitform.&lt;/p&gt;
+&lt;p&gt;first_64_prime_numbers = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311]&lt;/p&gt;
+&lt;p&gt;Diese werden nun aber auch noch ordentlich durch die Mangel genommen. Warum das erforderlich ist, kann ich nicht nachvollziehen. Aus meiner Sicht ist es ziemlich egal, welche Konstanten man verwendet werden, da sie immer gleich sind (deswegen ja &lt;strong&gt;konstant&lt;/strong&gt;, diesmal übrigens aus dem lateinischen). Dahinter steckt also kein großes Geheimins.&lt;/p&gt;
+&lt;p&gt;Aus den 64 Primzahlen wird zuerst jeweils die dritte Wurzel gezogen. Dann wird der natürliche Teil entfernt (sprich alles vor dem Komma) und das Ergebnis mit 2³² (aka 4.294.967.296, was übrigens auch der Anzahl verfügbarer IPv4-Adressen entspricht — der 2. positive Knick in der heutigen Lernkurve?) multipliziert. Wie du oben ja gelernt und hoffentlich noch nicht vergessen hast, ist die Mulitplikation mit 2^32 ja eigentlich gar nicht so aufwendig im Bituniversum.&lt;/p&gt;
+&lt;p&gt;Das Ergebnis wird jedenfalls auf eine natürlich Zahl abgerundet — sprich alle Nachkommastellen entfernt. Wiederholt man das für die restlichen 63 Primzahlen, erhält man eine wohlgeformte Liste mit 64 Einträgen, die in etwa so aussehen, am Beispiel der notorischen Primzahl 2:&lt;/p&gt;
+&lt;p&gt;01000010100010100010111110011000&lt;/p&gt;
+&lt;p&gt;Oder als Hex-Wert:&lt;/p&gt;
+&lt;p&gt;0x428a2f98&lt;/p&gt;
+&lt;p&gt;Und im Dezimal-Zahlensystem:&lt;/p&gt;
+&lt;p&gt;1.116.352.408&lt;/p&gt;
+&lt;p&gt;Die Funktion dafür sieht folgendermaßen aus:&lt;/p&gt;
+&lt;p&gt;result_constants = []&lt;br&gt;
+for prime_number in first_64_prime_numbers:&lt;br&gt;
+cube_root = prime_number ** (1./3.)&lt;br&gt;
+frac_part = cube_root - floor(cube_root)&lt;br&gt;
+product = frac_part * (2**32)&lt;br&gt;
+floored_product = floor(product)&lt;br&gt;
+result_constants.append(bin(floored_product)[2:].zfill(32))&lt;/p&gt;
+&lt;p&gt;Das ganze nennen wir &lt;strong&gt;Ergebnis-Konstante&lt;/strong&gt;, denn diese Liste ist der Anfang unsere finalen Ausgabe. Diese Liste heben wir gut auf und weil die Arbeit mit Primzahlen so befreiend ist, veranstalten wir für die ersten 8 Primzahlen einen ähnlichen Zirkus. Mit einem Unterschied: Als Grundlage dient diesmal die Quadrat-Wurzel:&lt;/p&gt;
+&lt;p&gt;compression_constants = []&lt;br&gt;
+for prime_number in first_8_prime_numbers:&lt;br&gt;
+square_root = prime_number ** (1./2.)&lt;br&gt;
+frac_part = square_root - floor(square_root)&lt;br&gt;
+product = frac_part * (2**32)&lt;br&gt;
+floored_product = floor(product)&lt;br&gt;
+compression_constants.append(bin(floored_product)[2:].zfill(32))&lt;/p&gt;
+&lt;p&gt;Die Namen haben übrigens eine Bedeutung, auf die ich später noch eingehe.&lt;/p&gt;
+&lt;h3 id=&#34;epilog&#34;&gt;Epilog&lt;/h3&gt;
+&lt;p&gt;Die Vorbereitungen sind damit abgeschlossen und wir können uns &lt;a href=&#34;https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/&#34;&gt;im zweiten Teil&lt;/a&gt; dem eigentlichen Algorithmus widmen.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&amp;nbsp;2/2)</title>
+      <link>https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teilnbsp2/2/</link>
+      <pubDate>Sun, 31 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teilnbsp2/2/</guid>
+      
+      <description>&lt;p&gt;Wenn du &lt;a href=&#34;https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/&#34;&gt;den ersten Teil&lt;/a&gt; erfolgreich verarbeitet hast, bist du bestens gewappnet, um in diesem Teil zu erfahren, wie die einzelnen Komponenten bzw. Funktionen nun zusammenspielen.&lt;/p&gt;
+&lt;h3 id=&#34;vorbemerkung&#34;&gt;Vorbemerkung&lt;/h3&gt;
+&lt;p&gt;Bevor es los geht möchte ich noch einmal die Zusammenhänge verdeutlichen: Wir werden gleich eine Nachricht (&lt;strong&gt;Message&lt;/strong&gt;) erzeugen, deren Länge einem Vielfachen von &lt;strong&gt;512 Bit&lt;/strong&gt; entspricht; im Beispiel genau &lt;strong&gt;512 Bit&lt;/strong&gt;. Die Nachricht wird in &lt;strong&gt;Message-Blocks&lt;/strong&gt; zerlegt, die exakt &lt;strong&gt;512 Bit&lt;/strong&gt; lang sind. Jeder Message-Block wird wiederum zu einer &lt;strong&gt;Message-Schedule&lt;/strong&gt; zerlegt, mit &lt;strong&gt;16 Wörtern&lt;/strong&gt; (Words) zu je &lt;strong&gt;32 Bit&lt;/strong&gt; Länge. Die Länge der Wörter muss und wird immer &lt;strong&gt;32 Bit&lt;/strong&gt; sein! Der Message-Schedule wird dann aber erweitert, um &lt;strong&gt;64 Wörter zu&lt;/strong&gt; enthalten. Seine Länge dann: &lt;strong&gt;2.048 Bit&lt;/strong&gt;. Und grafisch:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*Gx3ZYmks_2_VW-xi_48uPg.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Wichtige Zusammenhänge&lt;/p&gt;
+&lt;h3 id=&#34;dekompressions&#34;&gt;Dekompressions&lt;/h3&gt;
+&lt;p&gt;Wir wollen also aus einer Nachricht eine &lt;strong&gt;SHA-256&lt;/strong&gt;-konforme Prüfsumme, den Hash, berechnen. Dazu muss die Nachricht, also der String, zunächst vorbereitet werden. Unsere Nachricht ist, klischeegerecht:&lt;/p&gt;
+&lt;p&gt;message = &amp;lsquo;hello_world&amp;rsquo;&lt;/p&gt;
+&lt;p&gt;Zunächst müssen wir für jeden Buchstabend die Position in der Zeichentabelle herausbekommen, sprich die Buchstaben (bzw genauer jedes Zeichen) in ihre numerische Repräsentation umwandeln:&lt;/p&gt;
+&lt;p&gt;dec_message = []&lt;br&gt;
+for char in message:&lt;br&gt;
+dec_message.append(ord(char))&lt;/p&gt;
+&lt;p&gt;Das Ergegnis ist eine Liste mit Integern:&lt;/p&gt;
+&lt;p&gt;[104, 101, 108, 108, 111, 95, 119, 111, 114, 108, 100]&lt;/p&gt;
+&lt;p&gt;Und da wir im ersten Teil so viel Spaß am Umgang mit binären Werten hatten, wandeln wir die Liste in binäre Werte um, die wir schlicht miteinander verknüpfen:&lt;/p&gt;
+&lt;p&gt;bin_message = &amp;rsquo;&amp;rsquo;&lt;br&gt;
+for decimal in dec_message:&lt;br&gt;
+bin_message += &amp;lsquo;0&amp;rsquo; + bin(decimal)[2:&lt;/p&gt;
+&lt;p&gt;Das Ergebnis:&lt;/p&gt;
+&lt;p&gt;0110100001100101011011000110110001101111010111110111011101101111011100100110110001100100&lt;/p&gt;
+&lt;p&gt;Hier gibt es allerdings eine Stolperfalle, und es widerstrebt mir das so stehen zu lassen, für die ich noch keine Erklärung gefunden habe: Bei der Umwandlung in die binäre Entsprechung stellen wir jedem binären Wert eine 0 voran. Aus &lt;strong&gt;104&lt;/strong&gt; wird also nicht &lt;strong&gt;1101000&lt;/strong&gt; sondern &lt;strong&gt;01101000&lt;/strong&gt;, uswf.&lt;/p&gt;
+&lt;p&gt;Außerdem hängen wir an dieses Datum eine 1 heran, sozusagen als Trennzeichen für das, was jetzt gleich kommt.&lt;/p&gt;
+&lt;p&gt;Als nächstes berechnen wir die Länge dieser binären Zahl:&lt;/p&gt;
+&lt;p&gt;len_bin_message = len(bin_message)&lt;/p&gt;
+&lt;p&gt;Die Längenangabe darf bzw muss exakt &lt;strong&gt;64 Bit&lt;/strong&gt; belegen. Wir wandeln sie also auch in eine binäre Zahl um hängen vorne ein paar Nullen ran um genau 64 Stellen zu erhalten:&lt;/p&gt;
+&lt;p&gt;rest_to_64 = 64 - len(bin(len_bin_message)[2:])&lt;/p&gt;
+&lt;p&gt;bin_message_len = &amp;lsquo;0&amp;rsquo; * rest_to_64 + bin(len_bin_message)[2:]&lt;/p&gt;
+&lt;p&gt;Nun müssen wir diese drei binären Informationen, Nachricht, trennende Eins und Längenangabe nicht nur verbinden, sondern auch mit so vielen Nullen auffüllen, damit die Gesamtlänge ein vielfaches von 512 ist.&lt;/p&gt;
+&lt;p&gt;payload = bin_message + &amp;lsquo;1&amp;rsquo; + bin_message_len&lt;/p&gt;
+&lt;p&gt;len_payload = len(payload)&lt;/p&gt;
+&lt;p&gt;pad_string = int(512 - (len_payload % 512))&lt;/p&gt;
+&lt;p&gt;full_message = bin_message + &amp;lsquo;1&amp;rsquo; + (&amp;lsquo;0&amp;rsquo; * pad_string) + bin_message_len&lt;/p&gt;
+&lt;p&gt;In unserem Beispiel belegen die drei Informationen 153 Bit. Wir müssen also 359 Nullen dazupacken. Genau genommen kommen die zwischen Nachricht und Längenangabe. Das Ergebnis ist immer &lt;strong&gt;n* 512 Bits&lt;/strong&gt; lang:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*uU6ACP1ZLNPL-7Aa3HWp-w.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Aufbau einer vorkodierten Nachricht&lt;/p&gt;
+&lt;p&gt;Zu guter Letzt nehmen wir diese sehr, sehr, sehr, sehr….sehr, sehr große Zahl (sie ist sehr groß, du solltest sie auch nicht als Zahl sehen, sondern als &lt;strong&gt;Bitfolge&lt;/strong&gt;!) und teilen sie in sogenannte Message Blocks mit einer Länge von jeweils &lt;strong&gt;512 Bits&lt;/strong&gt; auf:&lt;/p&gt;
+&lt;p&gt;message_block_length = 512&lt;br&gt;
+message_blocks = [full_message[i:i+message_block_length] for i in range(0, len(full_message), message_block_length)]&lt;/p&gt;
+&lt;p&gt;Schnapp dir einen Kaffee, geh noch mal frische Luft schnappen, schüttel den Stuhl aus. Jetzt geht es los.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/0*8c7oAT9LgDy48Ox4.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;8 Bits sind keine Bitfolge&lt;/p&gt;
+&lt;h3 id=&#34;die-schleife&#34;&gt;Die Schleife!&lt;/h3&gt;
+&lt;p&gt;Da es einfacher ist, den Vorgang ohne Schleife zu erklären, hier nur eine Schleife. Die programmatische Schleife findest du trotzdem auf &lt;a href=&#34;https://gist.github.com/nickyreinert/00d631fe9a90108924b1df6e911c8cd5&#34;&gt;&lt;strong&gt;Github&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*wWCFfBhvejAwbg3k0NpKGA.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Es folgt: Eine Schleife&lt;/p&gt;
+&lt;p&gt;Da unsere Nachricht genau 512 Bit groß ist und wir auch ohne Schleife arbeiten, können wir direkt in die Vollen gehen: Die mühsam zusammengeklebte Nachricht wird nun in den sog. Message Schedule zerlegt: Sprich in &lt;strong&gt;16 Wörter&lt;/strong&gt; mit jeweils 32 Bit Länge.&lt;/p&gt;
+&lt;p&gt;Im ersten Durchlauf nehmen wir vier Wörter und führen folgende Modifikationen aus:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;σ1&lt;/strong&gt; wird auf &lt;strong&gt;Wort 1&lt;/strong&gt; an Position 14 angewendet,&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Wort 2&lt;/strong&gt; von Position 9 bleibt unverändert,&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;σ0&lt;/strong&gt; wird auf &lt;strong&gt;Wort 3&lt;/strong&gt; an Position 1 angewendet und&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Wort 4&lt;/strong&gt; an Position 0 bleibt wieder unberührt&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Die Werte werden zunächst addiert und jetzt gibt es wieder einen &lt;strong&gt;wichtigen Punkt&lt;/strong&gt; zu beachten: Wir müssen strikt dafür sorgen, dass die Wörter nicht länger als &lt;strong&gt;32 Bit&lt;/strong&gt; sind. Denn nur so können wir sicherstellen, dass der finale Hash immer die gleiche länge hat. Und spätestens jetzt, bei der &lt;strong&gt;Addition großer Werte&lt;/strong&gt;, können wir die &lt;strong&gt;32 Bit&lt;/strong&gt; recht schnell überschreiten. Das ist auch aus technischer Sicht eine Hürde. Deswegen gilt: Hier und bei allen Additionen müssen wir abschließend &lt;strong&gt;Modulo 2&lt;/strong&gt;³² anwenden. Und jetzt kommt der dritte hoffentlich positive Knick in der Lernkurve: Auch für Modulo hält das binäre Universum eine schöne Vereinfachung parat: &lt;strong&gt;Das logische Und&lt;/strong&gt; mit 2³²–1 (bzw 4.294.967.295, das ist eine sehr große Zahl, nicht so groß wie die im ersten Teil, sondern genau einen Zähler kleiner) führt zum gleichen Ergebnis.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*Nr7Iqokxipq969FtGzuWRg.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Berechnung des ersten Schritts&lt;/p&gt;
+&lt;p&gt;Damit wäre der Message-Schedule vorbereitet und enthält nun &lt;strong&gt;64 wunderschöne Wörter&lt;/strong&gt; zu &lt;strong&gt;je 32 Bit&lt;/strong&gt;. Wir haben die Informationen aus dem Message Block also zunächst aufgeplustert und von &lt;strong&gt;512 Bit auf 2.048 Bit&lt;/strong&gt; erweitert- sie sind aber immer noch lesbar:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*nWnncmNCGjwqb8nPiCGF8Q.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Der erweiterte Message Schedule&lt;/p&gt;
+&lt;p&gt;Aber damit ist jetzt Schluss, wir kommen zum nächsten und wichtigsten Schritt:&lt;/p&gt;
+&lt;h3 id=&#34;die-kompression&#34;&gt;Die Kompression&lt;/h3&gt;
+&lt;p&gt;Der erweiterte Message-Schedule wird in diesem Schritt nicht direkt modifiziert, die Wörter werden vielmehr als Grundlage für die Modifikation der anfangs erzeugten &lt;strong&gt;Kompressions-Konstanten&lt;/strong&gt; verwendet.&lt;/p&gt;
+&lt;p&gt;In 64 Schleifen-Durchläufen gehen wir durch den Message-Schedule. Aus jedem Wort des Schedules (also unserer ursprünglichen Nachricht) wird zusammen mit den &lt;strong&gt;64 Ergebnis-Konstanten&lt;/strong&gt; und den &lt;strong&gt;8 Kompressions-Konstanten&lt;/strong&gt; ein neues Wort berechnet. Das neue Wort wird dann den Kompressions-Konstanten vorangestellt, gleichzeitig wird der letzte Eintrag gelöscht. So enthält die Liste immer genau 8 Einträge.&lt;/p&gt;
+&lt;p&gt;new_compression_constants = compression_constants.copy()&lt;/p&gt;
+&lt;p&gt;for i, word in enumerate(message_schedule):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;term1 = (int(upper\_sigma1(new\_compression\_constants\[4\]), 2) + \\  
+            int(choose(new\_compression\_constants\[4\], new\_compression\_constants\[5\], new\_compression\_constants\[6\]), 2) + \\  
+            int(new\_compression\_constants\[7\], 2) + \\  
+            int(result\_constants\[i\], 2) + \\  
+            int(word, 2)) \\  
+            &amp;amp; int(&#39;11111111111111111111111111111111&#39;, 2)
+
+term2 = (int(upper\_sigma0(new\_compression\_constants\[0\]), 2) + \\  
+            int(majority(new\_compression\_constants\[0\], new\_compression\_constants\[1\], new\_compression\_constants\[2\]), 2)) &amp;amp; int(&#39;11111111111111111111111111111111&#39;, 2)
+
+new\_compression\_constants.insert(0, 1)  
+new\_compression\_constants.pop()
+
+new\_compression\_constants\[0\] = bin(  
+            (term1 + term2) &amp;amp; int(&#39;11111111111111111111111111111111&#39;, 2)  
+            )\[2:\].zfill(32)
+
+new\_compression\_constants\[4\] = bin(  
+            (int(new\_compression\_constants\[4\], 2) + term1) &amp;amp; int(&#39;11111111111111111111111111111111&#39;, 2)  
+            )\[2:\].zfill(32)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Zunächst ein paar Berechnungen:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Term 1&lt;/strong&gt; berechnet sich aus den Kompressions-Konstanten, einer der Ergebnis-Konstanten und dem jeweiligen Wort. Wir verwenden hier auf Bitebene und &lt;strong&gt;Σ1&lt;/strong&gt; (upper_sigma1) sowie &lt;strong&gt;choose&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Term 2&lt;/strong&gt; ist eine Summe zweier anderer Kompressions-Konstanten, die mithilfe von &lt;strong&gt;Σ0&lt;/strong&gt; (upper_sigma0) sowie &lt;strong&gt;majority&lt;/strong&gt; modifiziert werden.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Und jetzt achte mal drauf, dass die ursprüngliche Nachricht Teil des 1. Terms ist — in der Abbildung rot markiert:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*L43gXddhAhk3udz82iykqw.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Im ersten Schritt erfolgt die Berechnung zweier Terme&lt;/p&gt;
+&lt;p&gt;Die beiden Terme werden nun wiederum addiert (und wie immer mit &lt;strong&gt;Modulo 2³²&lt;/strong&gt; auf 32 Bit-Kurs gebracht) und an den Anfang der Kompressions-Konstanten gestellt. Der erste Term wird außerdem mit der 4. Position dieser nun 9 Wörter langen List summiert:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*-BcRv8_DRt_qP8qvpe_Bqw.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Im zweiten Schritt wird die Listse der Kompression-Konstanten aktualisiert&lt;/p&gt;
+&lt;p&gt;Als nächstes wird der letzte Eintrag der Liste gelöscht, sie umfasst nun &lt;strong&gt;8 komplett neue Kompressions-Konstanten&lt;/strong&gt; (wenn du aufmerksam aufgepasst hast, wird dir nicht entgangen sein, dass sie gar nicht mal so konstant sind).&lt;/p&gt;
+&lt;p&gt;Ein Teil der ursprünglichen Nachricht befindet sich nun an als &lt;strong&gt;Summand von Term 1&lt;/strong&gt; and den &lt;strong&gt;Positionen 0 und 4&lt;/strong&gt; und. Diese werden in den nächsten Durchläufen Teil der gleichen Berechnungen und immer weiter nach unten rutschen. So verteilt sich die ursprüngliche, bisher noch halbwegs lesbare Nachricht, über die gesamte Liste.&lt;/p&gt;
+&lt;p&gt;Diese Liste ist also die Grundlage für den zweiten Durchlauf, der sie erneut “durchrotiert”, um wiederum eine komplett neue Liste für den dritten Durchlauf zu erzeugen. Und so weiter, bis alle 64 Wörter des Message-Schedules verarbeitet wurden. Das Ergebnis sollte in etwa so aussehen:&lt;/p&gt;
+&lt;p&gt;11100010000000010111101011011001&lt;br&gt;
+01000110110100101000001000010100&lt;br&gt;
+11100011111110010111100001001011&lt;br&gt;
+01110001100001100000010000011110&lt;br&gt;
+01001000000111100100000000011000&lt;br&gt;
+00011111110001101011001000110101&lt;br&gt;
+11101001110010001101110111110100&lt;br&gt;
+00001001011011110000111011111011&lt;/p&gt;
+&lt;p&gt;Oder in Hexadezimal:&lt;/p&gt;
+&lt;p&gt;0xe2017ad9 0x46d28214 0xe3f9784b 0x7186041e 0x481e4018 0x1fc6b235 0xe9c8ddf4 0x96f0efb&lt;/p&gt;
+&lt;p&gt;Abschließend gehen wird durch genau diese Liste der 8. Kompressions-Konstanten und addieren jede Positionen mit dem entsprechenden Wort der Ausgangs-Liste:&lt;/p&gt;
+&lt;p&gt;result = []&lt;/p&gt;
+&lt;p&gt;for i in range(0, 8):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;result.append(  
+    bin(int(compression\_constants\[i\], 2) +   
+    int(new\_compression\_constants\[i\], 2)  &amp;amp;      
+    int(&#39;11111111111111111111111111111111&#39;, 2))\[2:\].zfill(32))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Und im Klartext:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*L88ZRRaNpEkeBBkwRJ6-Ew.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Letzter Schritt: Addieren der Listen&lt;/p&gt;
+&lt;p&gt;Die neue Liste ist nun die &lt;strong&gt;Ausgangs-Liste&lt;/strong&gt; für den nächsten Message-Schedule. Da wir die Schleife hier aber nicht implementieren, war es das fürs erste. Im Folgenden noch mal eine beispielhafte Zusammenfassung der Schritte:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*Sj_AxftysVj_J6uSJX4z-w.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Schematische Darstellung des SHA-256 Algorithmus’&lt;/p&gt;
+&lt;h3 id=&#34;haschee-gesundheit-was&#34;&gt;Haschee. Gesundheit. Was?&lt;/h3&gt;
+&lt;p&gt;Wir haben es geschafft. Du hast es geschafft. Herzlichen Glückwunsch.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/0*KeZ2dcUvVLeN60uE.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Quelle: memecreator.org&lt;/p&gt;
+&lt;p&gt;Nun können wir den Hash entweder als Hex-Wert ausgeben oder wieder in binärer Schreibweise darstellen, je nach Anwendungszweck.&lt;/p&gt;
+&lt;p&gt;for word in result:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;print(hex(int(word, 2))\[2:\].zfill(8) + &#39;&#39;, end = &#39;&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Das Ergebnis kann sich in jedem Fall sehen lassen.&lt;/p&gt;
+&lt;p&gt;35072c1ae546350e0bfa7ab11d49dc6f129e72ccd57ec7eb671225bbd197c8f1&lt;/p&gt;
+&lt;p&gt;Oder&lt;/p&gt;
+&lt;p&gt;110101000001110010110000011010111001010100011000110101000011101011111110100111101010110001111010100100111011100011011111001010011110011100101100110011010101011111101100011111101011110011100010010001001011011101111010001100101111100100011110001&lt;/p&gt;
+&lt;h3 id=&#34;epilog&#34;&gt;Epilog&lt;/h3&gt;
+&lt;p&gt;Eine komplette Implementierung, inklusive einer Schleife, um auch große Nachrichten zu verarbeiten, findest &lt;a href=&#34;https://gist.github.com/nickyreinert/00d631fe9a90108924b1df6e911c8cd5&#34;&gt;du in diesem Gist&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Freilich ist Python nicht dazu geeignet, den SHA-256 Prozess zu optimieren, wohl aber um den Prozess zu verstehen und den Umgang mit elementaren binären Rechenoperation zu lernen.&lt;/p&gt;
+&lt;p&gt;Willst du den Prozess noch etwas interaktiver nachvollziehen, möchte ich dir &lt;a href=&#34;https://www.youtube.com/watch?v=f9EbD6iY9zI&#34;&gt;dieses Video&lt;/a&gt; empfehlen. Dort wird der Algorithmus in Ruby nachgebaut und die einzelnen Rechenschritte auch etwas genauer erklärt.&lt;/p&gt;
+&lt;p&gt;Und warum ist SHA-256 für das Mining von Kryptowährungen jetzt so wichtig? Kurz: Der Hash validiert die Gültigkeit des &lt;em&gt;Kassenbuches&lt;/em&gt;. Beim Mining geht es darum, aus einer gegebenen Nachricht und einem frei wählbaren Zusatz exakt einen gegebenen Ziel-Hash zu berechnen. Der Algorithmus muss also wahnsinng oft durchlaufen werden. Da das sehr aufwendig ist, kostet das Zeit und wird entsprechend belohnt.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Wie funktionieren Dateirechte?</title>
+      <link>https://nickyreinert.de/blog/2020/11/05/wie-funktionieren-dateirechte/</link>
+      <pubDate>Thu, 05 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickyreinert.de/blog/2020/11/05/wie-funktionieren-dateirechte/</guid>
+      
+      <description>&lt;p&gt;Die korrekten &lt;strong&gt;Dateirechte&lt;/strong&gt; sollten eine wichtige Rolle spielen, wenn du an einem Sicherheitskonzept für deine Webseite bzw. Wordpress arbeitest. Leider wird das Thema Dateirechte oft stiefmütterlich behandelt, nicht zuletzt weil es fälschlicherweise als zu kompliziert angesehen wird. Dabei muss es das gar nicht sein: Das Grundprinzip ist einfach: Du willst nicht, dass jedermann Dateien &lt;strong&gt;ändern&lt;/strong&gt;, &lt;strong&gt;ausführen&lt;/strong&gt; oder &lt;strong&gt;lesen&lt;/strong&gt; kann. Sicherlich gibt es feine Abstufungen. und genau die möchte ich hier erklären.&lt;/p&gt;
+&lt;p&gt;Achtung: Das Ziel dieses Beitrags ist nicht, dir eine fertige Lösung für deine WordPress-Installation bzw. dein Projekt zu geben. Das ist nicht möglich. Warum? Es gibt zig unterschiedliche Konfigurationen. Es mag allgemeingültige Lösungen geben, diese sind aber bei weitem nicht sicher. Stichwort: chmod 777 * -R&lt;/p&gt;
+&lt;p&gt;Du solltest nach der Lektüre aber das Konzept verstehen und vielleicht sogar in der Lage sein, die Dateirechte selbstständig zu setzen.&lt;/p&gt;
+&lt;h2 id=&#34;die-grundlagen-wie-verarbeitet-ein-web-server-anfragen&#34;&gt;Die Grundlagen: Wie verarbeitet ein Web-Server Anfragen?&lt;/h2&gt;
+&lt;p&gt;Jetzt fragst du dich sicherlich, was das mit Dateirechten zu tun hat? Was passiert, wenn du auf einer Webseite surfst? Folgende Vereinfachung dürfte das konzept hilfreich beschreibe: Der Web-Server schickt eine Datei an deinen Browser. Und du kannst Dateien an den Web-Server schicken, sprich hochladen. Wer also verstehen will, wie Dateirechte gesetzt werden müssen, sollte das Grundkonzept eines Servers verstehen.&lt;/p&gt;
+&lt;p&gt;Wie sieht diese Kommunikation mit dem Server also im Detail aus? Du schickst über deinen Browser eine Anfrage (&lt;a href=&#34;https://nickyreinert.de/index.html&#34;&gt;http://nickyreinert.de/index.html&lt;/a&gt;) an den Server (was auch nur irgendein anderer Computer auf der Welt ist, egal ob in der Cloud oder in einem Keller). Auf dem Server laufen verschiedene Dienste - die verwirrenderweise auch als Server bezeichnet werden.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://pbs.twimg.com/media/D864DxrWsAAmvXi?format=png&amp;amp;name=small&#34; alt=&#34;Bild&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Die Cloud ist auch nur der Computer von jemand anders&lt;/p&gt;
+&lt;p&gt;Einer dieser Dienste ist der &lt;strong&gt;&lt;a href=&#34;https://de.wikipedia.org/wiki/Internetdienst#Die_Internetdienste_im_Einzelnen&#34;&gt;HTTP-Dienst&lt;/a&gt;&lt;/strong&gt;. Sehr verbreitet sind &lt;strong&gt;Apache2&lt;/strong&gt; und &lt;strong&gt;nginx&lt;/strong&gt;. Das Konzept ist bei beiden gleich: Sie empfangen deine Anfrage und schicken dir eine Antwort. Bei dieser Antwort unterscheidet man grob zwischen &lt;strong&gt;statische Inhalten&lt;/strong&gt; (HTML-Datei, Texte, Bilder, &amp;hellip;), die der &lt;strong&gt;HTTP-Dienst&lt;/strong&gt; direkt zurückschickt und &lt;strong&gt;dynamischen Inhalten&lt;/strong&gt;. Dynamische Inhalte müssen auf dem Server erst verarbeitet werden, wie z.B. Datenbankabfragen oder ganz simpel die Darstellung der aktuellen Uhrzeit: &lt;a href=&#34;https://nickyreinert.de/dynamisch.php&#34;&gt;https://nickyreinert.de/dynamisch.php&lt;/a&gt;. Das ermöglicht ein &lt;strong&gt;PHP-Dienst&lt;/strong&gt; bzw. &lt;strong&gt;PHP-Interpreter&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Im Kontext der Dateirechte muss man hier eine wichtige Unterscheidung treffen: Der PHP-Interpreter ist entweder Teil des HTTP-Dienstes (&lt;strong&gt;PHP-Modul&lt;/strong&gt;). Damit ist z.B. &lt;strong&gt;Apache2&lt;/strong&gt; in der Lage, die PHP-Datei quasi selber zu interpretieren, und den dynamischen Inhalt für die Antwort zu erzeugen. Oder der PHP-Dienst ist ein getrennt laufender Dienst bzw. Prozess, der über eine Schnittstelle (CGI) vom HTTP-Dienst angesprochen wird (&lt;a href=&#34;http://www.php-faq.de/q/q-php-cgi-vs-modul.html&#34;&gt;mehr dazu hier&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;Um Informationen auf dem Server zu speichern, gibt es zwei Möglichkeiten: Zum einen wäre da die Datenbank, wie z.B. &lt;strong&gt;MySQL&lt;/strong&gt; oder &lt;strong&gt;MariaDB&lt;/strong&gt;. Der PHP-Dienst nutzt die Datenbank, um Informationen abzulegen, die in der Regel volatil sind. Wie z.B. Kommentare oder Texte für deinen Blog. Und es gibt das &lt;strong&gt;Dateisystem&lt;/strong&gt;. Ganz banal ausgedrückt ist das die Festplatte des Servers. Und genau dort brauchst du Dateirechte. Die folgende Abbildung zeigt die beiden oben erwähnten Konfigurationen: In der ersten Konfiguration sind HTTP- und PHP-Dienst getrennte Dienste, in der zweiten Konfiguration nutzt der HTTP-Dienst PHP als integriertes Modul.&lt;/p&gt;
+&lt;p&gt;Die Abbildung zeigt außerdem ein beispielhaftes Dateisystem mit einigen ausgewählten Dateien und Ordnern, die dir von WordPress bekannt vorkommen dürften.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/Folie1.png&#34;&gt;&lt;img src=&#34;images/Folie1-700x394.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/Folie2.png&#34;&gt;&lt;img src=&#34;images/Folie2-700x394.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Der vierte Dienst im Bunde ist übrigens der &lt;strong&gt;FTP-Dienst&lt;/strong&gt;. Dieser ermöglicht es (in der Regel dem Web-Entwickler) sich per &lt;strong&gt;FTP&lt;/strong&gt; auf den Server zu verbinden und Dateien über einen FTP-Client hochzuladen, zu bearbeiten oder zu löschen.&lt;/p&gt;
+&lt;h2 id=&#34;lesen-schreiben-ausführen---was-bedeutet-das-eigentlich&#34;&gt;Lesen, Schreiben, Ausführen - Was bedeutet das eigentlich?&lt;/h2&gt;
+&lt;p&gt;Wenn es um die Fähigkeit &amp;ldquo;Ausführen&amp;rdquo; geht, muss man streng zwischen Ordnern und Dateien unterscheiden. Das &lt;strong&gt;Ausführen&lt;/strong&gt; von Dateien, egal welche Endung sie haben, ist in &lt;strong&gt;keiner Konfiguration notwendig&lt;/strong&gt;! Das Ausführen von Ordern hingegen ermöglicht den Zugriff auf den Ordner. Jeder Ordner deiner WordPress-Installation darf also ausführbar sein.&lt;/p&gt;
+&lt;p&gt;Das &lt;strong&gt;Lesen&lt;/strong&gt; eines Ordners ermöglicht einem Dienst, die Ordner-Inhalte aufzulisten. Das Lesen einer Datei ermöglicht einem Dienst den Inhalt einer Datei darzustellen. Und das ist bereits ein sicherheitskritisches Merkmal: Nicht jeder Dienst muss bzw. darf jede Datei lesen. Der HTTP-Dienst benötigt z.B. keinen lesenden Zugriff auf PHP-Dateien. Und erst Recht nicht auf z.B. die wp-config.php - in der sich ja das Passwort für die Datenbank befindet. Der HTTP-Dienst reicht die Anfrage für die dynamische PHP-Datei in der Regel an den PHP-Dienst weiter. Gleichwohl muss der HTTP-Dienst statische Inhalte lesen können. Vor allem bei den Leserechten gibt es also sehr viele Feinheiten zu beachten.&lt;/p&gt;
+&lt;p&gt;Wer &lt;strong&gt;Schreibrechte&lt;/strong&gt; für einen Ordner hat, kann darin Dateien anlegen bzw. den Ordner löschen oder umbenennen. Das Schreibrecht für eine Datei ermöglicht das Löschen der Datei und das Ändern der Inhalte. Grundsätzlich sollte kein Dienst Schreibrechte im Dateisystem besitzen. So vermeidet man z.B., dass jemand Schadcode in eine PHP-Datei einfügt. Der PHP-Dienst kann Informationen in der Datenbank ablegen und für den HTTP-Dienst gibt es erstmal keinen Grund, überhaupt Dateien ändern oder anlegen zu müssen.&lt;/p&gt;
+&lt;p&gt;Natürlich gibt es Ausnahmen. Z.B. benötigt der PHP-Dienst Schreibrechte, wenn Dateien von WordPress oder der Plugins aktualisiert werden müssen. Oder ein Nutzer Dateien hochladen möchte (Hier kommt übrigens eine andere wichtige Sicherheitseinstellung zum Tragen: Man kann unterbinden, dass der PHP-Dienst Dateien aus dem Upload-Ordner als PHP-Dateien verarbeitet.)&lt;/p&gt;
+&lt;p&gt;Wie wir diese Dateirechte setzen, dazu gleich mehr.&lt;/p&gt;
+&lt;h2 id=&#34;besitzrechte-einer-datei&#34;&gt;Besitzrechte einer Datei&lt;/h2&gt;
+&lt;p&gt;Vorher schauen wir uns noch die Besitzverhältnisse von Dateien und Ordnern an. Diese lassen sich einem &lt;strong&gt;Besitzer&lt;/strong&gt; und einer &lt;strong&gt;Gruppe&lt;/strong&gt; zuordnen. Jeder der oben genannten Dienste kann, ganz abstrakt betracht, als &lt;strong&gt;&lt;em&gt;Nutzer&lt;/em&gt;&lt;/strong&gt; verstanden werden. Und damit entweder &lt;strong&gt;direkt Besitzer&lt;/strong&gt; einer Datei oder eines Ordners sein. Oder &lt;strong&gt;indirekt&lt;/strong&gt;, über die &lt;strong&gt;Gruppenzugehörigkeit&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Eine Datei gehört also zu einem Besitzer und zu einer Gruppe von Besitzern. Der Besitzer muss nicht zwingend Teil der Gruppe sein. Der &lt;strong&gt;Besitzer&lt;/strong&gt; kann bestimmte Rechte für diese Datei besitzen, wie z.B. &lt;strong&gt;Lesen&lt;/strong&gt; und &lt;strong&gt;Schreiben&lt;/strong&gt;. Einer &lt;strong&gt;Gruppe&lt;/strong&gt; von Besitzern werden auch individuelle Rechte zugesprochen, wie z.B. nur das &lt;strong&gt;Lesen&lt;/strong&gt;. Und dann gibt es noch &amp;ldquo;&lt;strong&gt;alle anderen&lt;/strong&gt;&amp;rdquo;, die vielleicht gar &lt;strong&gt;keine Zugriffsrechte&lt;/strong&gt; auf eine Datei haben. Am Beispiel von &lt;strong&gt;index.html&lt;/strong&gt; sieht das folgendermaßen aus:&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;index.html:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Besitzer&lt;/strong&gt;: FTP-Dienst, darf lesen und schreiben,&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Gruppe&lt;/strong&gt;: WWW-Data, darf lesen,&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;alle andern&lt;/strong&gt;: keine Rechte&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Und das enstpricht auch schon der klassischen Rechtevergabe von Dateien. Schreibrechte werden nur dem Besitzer eingeräumt. Die Gruppe darf bestenfalls lesen. Natürlich gibt es Sonderfälle, wie das Aktualisieren von WordPress oder von Plugins, dazu später mehr.&lt;/p&gt;
+&lt;h2 id=&#34;wie-funktionieren-chown-und-chmod&#34;&gt;Wie funktionieren chown und chmod?&lt;/h2&gt;
+&lt;p&gt;Du wirst es sicher schon mal gehört haben: Dateirechte werden mit &lt;strong&gt;chown&lt;/strong&gt; und &lt;strong&gt;chmod&lt;/strong&gt; konfiguriert. chown steht für &amp;ldquo;change owner&amp;rdquo; - also &amp;ldquo;ändere den Besitzer&amp;rdquo; und chmod für &amp;ldquo;change mode&amp;rdquo;, &amp;ldquo;ändere den Modus&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;Zu Demonstrationszwecken gehen wir von der folgenden Konfiguration aus, die zwar bei weitem nicht die sicherste, dafür aber weit verbreitet ist:&lt;/p&gt;
+&lt;p&gt;Die &lt;em&gt;Nutzer&lt;/em&gt; für den PHP- und HTTP-Dienst sind in der Gruppe &lt;strong&gt;www-data&lt;/strong&gt; zusammengefasst. Daneben gibt es den FTP-Dienst (&lt;strong&gt;ftp-user&lt;/strong&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Ftp-user&lt;/strong&gt; bekommt alle Rechte: Lesen, Schreiben, usw. Die Nutzer der Gruppe &lt;strong&gt;www-data&lt;/strong&gt; bekommen nur lesenden Zugriff - vorerst!&lt;/p&gt;
+&lt;p&gt;Jede Datei und jeder Ordner sollen dem &lt;strong&gt;ftp-user&lt;/strong&gt; gehören, gleichzeitig aber auch zur Gruppe &lt;strong&gt;www-data&lt;/strong&gt;. Das lässt sich mit &lt;strong&gt;chown&lt;/strong&gt; folgendermaßen bewerkstelligen:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;chown ftp-user:www-data /var/nginx/www/* --recursive
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Der erste Parameter definiert den Besitzer (ftp-user) und die Gruppenzugehörigkeit (www-data), immer getrent mit einem Doppelpunkt. Danach folgt der betroffene Ordner bzw. die Datei. Mit &lt;strong&gt;--recursive&lt;/strong&gt; (oder kürzer &lt;strong&gt;-R&lt;/strong&gt;) werden auch alle Unterordner und darin befindlichen Dateien angesprochen.&lt;/p&gt;
+&lt;p&gt;Bei den Dateirechten wird es etwas aufwendiger, zunächst der Aufruf:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;chmod 640 /var/nginx/www/* -R
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Hier nutzen wir die Kurzschreibweise -R um alle Dateien und Ordner rekursiv zu ändern. Wichtig ist für uns die Ziffer hinter chmod: 640. Genau genommen handelt es sich um drei (oktale) Ziffern, nämlich 6, 4 und 0. Entsprechend der Position regeln sie die Zugriffsrechte für den&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Besitzer&lt;/strong&gt; (ftp-user, die 6 an erster Stelle),&lt;/li&gt;
+&lt;li&gt;die &lt;strong&gt;Gruppe&lt;/strong&gt; (www-data) samt ihrer Mitglieder (HTTP-Dienst, die 4 an zweiter Stelle)&lt;/li&gt;
+&lt;li&gt;und an letzter Stelle alle anderen (&lt;strong&gt;others&lt;/strong&gt; - die 0).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Und wie entstehen die Ziffern 6, 4 und 0? Wir erinnern uns an die drei Zugriffsrechte:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;lesen,&lt;/li&gt;
+&lt;li&gt;schreiben sowie&lt;/li&gt;
+&lt;li&gt;ausführen.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Jedes Recht besitzt einen Wert:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Lesen (bzw. r für read) = 4&lt;/li&gt;
+&lt;li&gt;Schreiben (bzw. w für write) = 2&lt;/li&gt;
+&lt;li&gt;Ausführen (bzw. x für eXecute) = 1&lt;/li&gt;
+&lt;li&gt;Kein Recht = 0&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/2227/berechnung-der-Dateirechte-fu%CC%88r-chmod.png&#34;&gt;&lt;img src=&#34;images/berechnung-der-Dateirechte-fu%CC%88r-chmod-300x167.png&#34; alt=&#34;Die Berechnung der Dateirechte für chmod&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Die Berechnung der Dateirechte für chmod&lt;/p&gt;
+&lt;p&gt;Um Rechte zu kombinieren, bildet man deren Summe. Will man also alle Rechte vergeben, erechnet sich das folgendermaßen:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Lesen + Schreiben + Ausführen = 4 + 2+ 1 = 7&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Nur Lese- und Schreibzugriff errechnet sich demnach so:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Lesen + Schreiben = 6&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Die obene genannte chmod-Anweisung setzt also die folgenden Rechte um:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Besitzer (ftp-user): 6 (Lesen, Schreiben)&lt;/li&gt;
+&lt;li&gt;Gruppe (www-data): 4 (Lesen)&lt;/li&gt;
+&lt;li&gt;Alle anderen (others): 0 (keine Rechte)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Was heißt das? Der FTP-Nutzer darf als Besitzer alles: Dateien hochladen, löschen, bearbeiten usw. Jedes Mitglied der Gruppe www-data darf Dateien nur lesen. Jeder andere Nutzer (bzw. Dienst) darf gar nicht auf die Dateien in deinem WordPress-Projekt zugreifen. Das klingt sehr sicher, führt allerdings zu einem Problem: Dein Server dürfte so nicht funktionieren. Nimm als Beispiel diesen Aufruf: &lt;a href=&#34;https://nickyreinert.de/ordner/&#34;&gt;https://nickyreinert.de/ordner/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Die HTTP-Fehlermeldung &lt;strong&gt;403 Forbidden&lt;/strong&gt; erscheint. Das sind die Zugriffsrechte für den Ordner, so wie wir sie eben gesetzt haben:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;drw-r----- 2 ftp-user www-data   4096 Okt 14 11:48 ordner/
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;In der zweiten Spalte sehen wir: Der Ordner gehört &lt;strong&gt;ftp-user&lt;/strong&gt; und der Gruppe &lt;strong&gt;www-data&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Das &lt;strong&gt;d&lt;/strong&gt; ganz am Anfang steht für &lt;strong&gt;directory&lt;/strong&gt;, lies Ordner. Dann folgen die Dateirechte, die wir eben schon festgelegt haben: Zunächst drei Zeichen, die die Zugriffsrechte für den Besitzer (&lt;strong&gt;ftp-user&lt;/strong&gt;) beschreiben: &lt;strong&gt;rw-&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Also Lesen (&lt;strong&gt;read)&lt;/strong&gt; und Schreiben (&lt;strong&gt;write&lt;/strong&gt;) (würde anstelle des &lt;strong&gt;-&lt;/strong&gt; ein &lt;strong&gt;x&lt;/strong&gt; stehen (&lt;strong&gt;eXecute)&lt;/strong&gt;, stünde das für &lt;strong&gt;Ausführen&lt;/strong&gt;). Die Gruppe &lt;strong&gt;www-data&lt;/strong&gt; und alle ihre Mitglieder dürfen nur Lesen (r&amp;ndash;). Alle anderen dürfen gar nichts (&amp;mdash;).&lt;/p&gt;
+&lt;p&gt;Nun handelt es sich aber um einen Ordner. Ein Ordner kann aber nur &amp;ldquo;betreten&amp;rdquo; werden, wenn man die Genehmigung zum &lt;strong&gt;Ausführen&lt;/strong&gt; hat. Weder der Besitzer noch die Gruppe hat diese Genehmigung. Unsere obere Anweisung reicht also nicht aus! Tatsächlich sollte man also &lt;strong&gt;Zugriffsrechte für Dateien und Ordner immer getrennt&lt;/strong&gt; festlegen!&lt;/p&gt;
+&lt;p&gt;Berechtigung für alle Dateien:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;chmod 640 /var/nginx/www/* -R
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Berechtigung für alle Ordner:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;chmod 750 /var/nginx/www/* -R
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Du siehst, dass das Ermöglichen des Ausführens einfach durch das Addieren von 1 für die beiden ersten Positionen ermöglicht wird.&lt;/p&gt;
+&lt;p&gt;Tatsächlich findest du diese beiden Befehle auch in vielen Anleitungen zu Dateirechten und damit endet die Anleitung oft auch schon. Doch damit hast du ein Problem. Denn die zweite Anweisung überschreibt das Ergebnis der ersten Anweisung. Aber wir wollen doch Dateien und Ordner individuell einrichten! Abhilfe schafft der Befehl &lt;strong&gt;find&lt;/strong&gt;, um Dateien und Ordner getrennt anzusprechen:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;find /var/nginx/htdocs/. -type f -exec chmod 640 -- {} +
+find /var/nginx/htdocs/. -type d -exec chmod 750 -- {} +
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Der Parameter &lt;strong&gt;-type f&lt;/strong&gt; liefert alle Dateien im angegeben Ordner zurück (f wie file, Datei). Der Punkt hinter htdocs in der ersten Zeile sorgt dafür, dass auch versteckte Dateien, wie z.B. die .htaccess-Datei, gefunden werden. Mit &lt;strong&gt;exec&lt;/strong&gt; übergebe ich das Resultat von find, eine Liste die alle gefundenen Dateien enthält, an einen anderen Befehl. In dem Fall also &lt;strong&gt;chmod&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Vice versa für alle Ordner, die mit &lt;strong&gt;-type d&lt;/strong&gt; gefunden werden. Hier wird mit chmod auch das Recht zum Ausführen vergeben.&lt;/p&gt;
+&lt;h2 id=&#34;dateirechte-in-der-realität&#34;&gt;Dateirechte in der Realität&lt;/h2&gt;
+&lt;p&gt;Das klingt erstmal recht einfach, hat aber drei Haken:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Es gibt Dateien, die nur für den PHP-Dienst relevant sind, andere wiederum nur für den HTTP-Dienst. Man muss die Besitzrechte also etwas granularer vergeben.&lt;/li&gt;
+&lt;li&gt;Bei einem Update der Plugins oder WordPress müssen Dateien für die Gruppe www-data wenigstens temporär schreibbar sein.&lt;/li&gt;
+&lt;li&gt;Wenn man den Upload von Dateien zulassen möchte, muss der Ordner /wp-content/uploads dauerhaft beschreibbar sein.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Es gibt also verschiedene &lt;strong&gt;Ordner- und Datei-Kategorien&lt;/strong&gt;, die verschiedene Rechte erfordern. Die folgende Matrix zeigt, am Beispiel von WordPress, eine &lt;strong&gt;ideale&lt;/strong&gt; Konfiguration:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/grafik-4.png&#34;&gt;&lt;img src=&#34;images/grafik-4-700x315.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Die **.htaccess-**Datei muss für den PHP-Dienst gar nicht sichtbar, geschweige denn beschreibbar sein. Die Datei &lt;strong&gt;wp-config.php&lt;/strong&gt; wiederum sollte für den HTTP-Dienst unsichtbar sein. Generell müssen PHP-Dateien, also dynamische Ressourcen, für den HTTP-Dienst gar nicht sichtbar sein. Der Upload-Ordner ist hier beschreibbar, um das Hochladen von Datein zu ermöglichen. Wird ein Cache verwendet, muss natürlich auch dieser Ordner beschreibbar sein.&lt;/p&gt;
+&lt;p&gt;Solltest du, z.B. auf deinem eigenen Webspace, die Möglichkeit haben, Besitzrechte derart granular zu konfigurieren, kann dir die Matrix vielleicht als Inspiration dienen. In der Realität hilft das aber nicht weiter, da der PHP-Dienst als Modul entweder innerhalb des HTTP-Dienstes läuft oder beide Dienste unter einer Gruppe (www-data) laufen (&lt;a href=&#34;https://binary-butterfly.de/artikel/dateirechte-wie-stelle-ich-das-bei-meinem-hoster-ein/&#34;&gt;hier wird das Problem noch etwas genauer beleuchtet&lt;/a&gt;). Die Konfiguration sieht dann in etwa so aus:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/grafik-5.png&#34;&gt;&lt;img src=&#34;images/grafik-5-700x288.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Nun stellst du dir sicher die Frage, wie du ein derartiges Setup möglichst unkompliziert einrichten kannst. Eins Vorweg: Ohne Zugriff auf die Shell wird das ziemlich aufwendig. Mit Zugriff auf die Kommandozeile kannst du die Dateirechte z.B. folgendermaßen setzen:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;find /var/nginx/htdocs/. -type f -exec chmod 640 -- {} +
+find /var/nginx/htdocs/. -type d -exec chmod 750 -- {} +
+find /var/nginx/htdocs/wp-content/uploads/. -type f -exec chmod 660 -- {} +
+find /var/nginx/htdocs/wp-content/uploads/. -type d -exec chmod 770 -- {} +
+find /var/nginx/htdocs/wp-content/cache/. -type f -exec chmod 660 -- {} +
+find /var/nginx/htdocs/wp-content/cache/. -type d -exec chmod 770 -- {} +
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Wenn du Themes oder Plugins aktualisieren willst, musst du die Rechte folgendermaßen anpassen und somit Datein und Ordner schreibbar machen:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;find /var/nginx/htdocs/wp-content/themes/. -type f -exec chmod 660 -- {} +
+find /var/nginx/htdocs/wp-content/themes/. -type d -exec chmod 770 -- {} +
+find /var/nginx/htdocs/wp-content/plugins/. -type f -exec chmod 660 -- {} +
+find /var/nginx/htdocs/wp-content/plugins/. -type d -exec chmod 770 -- {} +
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Beim Update von WordPress trifft das natürlich auf die ganze Installation zu:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;find /var/nginx/htdocs/. -type f -exec chmod 660 -- {} +
+find /var/nginx/htdocs/. -type d -exec chmod 770 -- {} +
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Wenn du keinen Zugriff auf die Kommandozeile hast, kannst du auch PHP nutzen, insofern du die Rechte dazu hast. Die Funktion lautet &lt;a href=&#34;https://www.php.net/manual/de/function.chmod.php&#34;&gt;chmod()&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;ausführen-von-php-code-in-bestimmten-ordnern-unterbinden&#34;&gt;Ausführen von PHP-Code in bestimmten Ordnern unterbinden&lt;/h2&gt;
+&lt;p&gt;Oben hatte ich das Problem mit dem Upload-Ordner angesprochen. Wenn Nutzer in der Lage sind, dort Dateien zu modifizieren oder abzulegen, ist das ein Sicherheitsrisiko. Du kannst das Risiko aber eindämmen, indem du dafür sorgst, dass Dateien in diesem Ordner schlicht nicht von PHP interpretiert, sprich ausgeführt, werden können.&lt;/p&gt;
+&lt;p&gt;So kann der Ordner beschreibbar bleiben, das Sicherheitsrisiko wird aber trotzdem reduziert. Dazu erstellst du eine .htaccess-Datei im uploads-Ordner mit diesem Inhalt:&lt;/p&gt;
+&lt;p&gt;SetHandler !
+RemoveHandler .php .phtml .php3
+RemoveType .php .phtml .php3
+php_admin_value engine Off
+php_flag engine off&lt;/p&gt;
+&lt;p&gt;Die beiden letzten Zeile sind redundant zu den vorherigen. Sie soll sicherstellen, dass PHP hier wirklich nicht funktioniert. Ein Angreifer ist somit vielleicht in der Lage, PHP-Code in diesem Ordner abzulegen aber nicht mehr, diesen auch auszuführen.&lt;/p&gt;
+&lt;p&gt;Bei nginx kannst du den Upload-Ordner einfach implizit von PHP abnabeln:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;if ($uri !~ &amp;#34;^/uploads/&amp;#34;) {
+
+   fastcgi_pass unix:/run/php/php-fpm-$server.sock;
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;fs_method&#34;&gt;FS_METHOD&lt;/h2&gt;
+&lt;p&gt;Wenn du meinst, die Dateirechte korrekt vergeben zu haben und trotzdem fordert dich Wordpress beim Updaten auf, die FTP-Zugangsdaten einzugeben, setze diesen Parameter in der Datei wp-config.php:&lt;/p&gt;
+&lt;p&gt;define(&amp;lsquo;FS_METHOD&amp;rsquo;, &amp;lsquo;direct&amp;rsquo;);&lt;/p&gt;
+&lt;p&gt;WordPress weiß nun, dass es Dateien direkt anfassen darf, ohne den Umweg über den FTP-Nutzer zu gehen.&lt;/p&gt;
+&lt;p&gt;Dieser Parameter kann recht nützlich sein, wenn du die Dateirechte noch restriktiver vergeben willst, sprich: PHP gar keine Schreibrechte einräumst. Du musst dann einen FTP-Nutzer anlegen, über den WordPress sozusagen indirekt auf das Dateisystem zugreifen kann.&lt;/p&gt;
+&lt;h2 id=&#34;wenig-aufwand-viel-nutzen&#34;&gt;Wenig Aufwand, viel Nutzen&lt;/h2&gt;
+&lt;p&gt;Die Einarbeitung in die Benutzerrechte mit &lt;strong&gt;chmod&lt;/strong&gt; mag anfangs vielleicht ungewohnt sein, mit etwa Übung hat man den Dreh aber recht schnell raus. Der Nutzen ist immens, denn die falsche Rechte-Vergabe ist ein häufiger Grund, warum bösartige Software sich überhaupt auf einem Server verbreiten kann. Es gibt noch eine Handvoll andere Maßnahmen, die relativ simpel und effektiv sind, denen ich mich in einem anderen Beitrag widmen möchte.&lt;/p&gt;
+&lt;p&gt;Zuguter Letzt: Willst du wissen, ob die Dateirechte in deiner Installation korrekt gesetzt wurden, kannst du auf dieses Script zurückgreifen. Ich habe dazu das Script von &lt;a href=&#34;https://binary-butterfly.de/artikel/dateirechte-warum-eigentlich/&#34;&gt;Ernesto Ruge&lt;/a&gt; etwas überarbeitet, in der Funktionalität aber unverändert gelassen:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/grafik-7.png&#34;&gt;&lt;img src=&#34;images/grafik-7-700x366.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Die korrekten Datei und Ordner-Rechte für WordPress prüfen&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/testFileFolderPermissions.php_-1.zip&#34;&gt;testFileFolderPermissions.php_-1&lt;/a&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/testFileFolderPermissions.php_-1.zip&#34;&gt;Herunterladen&lt;/a&gt;&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Das Memory Limit von PHP und WordPress erhöhen - die vollständige Anleitung</title>
+      <link>https://nickyreinert.de/blog/2020/10/23/das-memory-limit-von-php-und-wordpress-erh%C3%B6hen-die-vollst%C3%A4ndige-anleitung/</link>
+      <pubDate>Fri, 23 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickyreinert.de/blog/2020/10/23/das-memory-limit-von-php-und-wordpress-erh%C3%B6hen-die-vollst%C3%A4ndige-anleitung/</guid>
+      
+      <description>&lt;p&gt;Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. &lt;a href=&#34;https://wp-ninjas.de/wordpress-php-memory-limit&#34;&gt;Viele&lt;/a&gt; &lt;a href=&#34;https://www.hosttest.de/artikel/was-ist-das-php-memory-limit-1411.html&#34;&gt;Anleitungen&lt;/a&gt; &lt;a href=&#34;https://socialmediadozent.com/php-memory-limit-erhoehen/#Drei_Loesungen_um_das_PHP_Memory_Limit_zu_erhoehen&#34;&gt;sind&lt;/a&gt; &lt;a href=&#34;https://www.how-to-wordpress.de/php-memory-limit/&#34;&gt;oft&lt;/a&gt; &lt;a href=&#34;http://juliusbeckmann.de/blog/php-memory-limit-erhohen.html&#34;&gt;unvollständig&lt;/a&gt;, und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;super-global in der php.ini&lt;/li&gt;
+&lt;li&gt;global in der pool.conf, bei Verwendung von PHP-FPM&lt;/li&gt;
+&lt;li&gt;oder global in der httpd.conf (Apache) oder server.conf (nginx)&lt;/li&gt;
+&lt;li&gt;auf Ordner-Ebene in der user.ini&lt;/li&gt;
+&lt;li&gt;auf Ordner-Ebene in der .htaccess-Datei&lt;/li&gt;
+&lt;li&gt;auf Applikations-Ebene über die WordPress-Konstanten WP_MEMORY_LIMIT und WP_MAX_MEMORY_LIMIT&lt;/li&gt;
+&lt;li&gt;oder auf Datei-Ebene im Script mit ini_set();&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-7.png&#34;&gt;&lt;img src=&#34;images/grafik-7-700x246.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Unterschiedliche Orte, um das PHP Memory Limit (und andere Parameter) zu setzen&lt;/p&gt;
+&lt;p&gt;Die Reihenfolge entspricht übrigens der Hierarchie. Wird das Limit also im PHP-Script mit ini_set() gesetzt, überschreibt das die Einstellung in der &lt;strong&gt;httpd.conf&lt;/strong&gt; oder &lt;strong&gt;server.conf&lt;/strong&gt;. Wie sich das vermeiden lässt, dazu unten mehr. Das trifft natürlich nicht nur auf das Memory Limit, sondern so ziemlich jede PHP-Einstellung zu.&lt;/p&gt;
+&lt;p&gt;Außerdem hängen die Möglichkeiten stark davon ab, wie du PHP nutzt, also ob als Modul oder über CGI. Um das Vorgehen besser zu verdeutlichen, gehe ich im Folgenden von zwei WordPress-Setups aus. Einmal wird nginx als HTTP-Server genutzt und dort PHP-FPM über CGI angesprochen. Das zweite Setup nutzt Apache2 als HTTP-Server und dort PHP als Modul (php-mod).&lt;/p&gt;
+&lt;h2 id=&#34;was-bedeutet-das-memory-limit-von-php&#34;&gt;Was bedeutet das Memory Limit von PHP?&lt;/h2&gt;
+&lt;p&gt;Jeder Dienst benötigt für seine Ausführung Platz im Arbeitsspeicher. So auch PHP. Und mit jedem Aufruf eines PHP-Scripts wird PHP aktiviert und fordert somit Platz im Arbeitsspeicher ein. Und genau dort spielt die Speichergrenze eine Rolle: Um zu vermeiden, dass bei der Verarbeitung &lt;strong&gt;eines PHP-Scripts&lt;/strong&gt; zu viel Speicher verbraucht und damit der ganze Server in Mitleidenschaft gezogen wird, legt man eine Obergrenze fest, das &lt;strong&gt;memory_limit&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Diese Grenze gilt &lt;strong&gt;für jeden einzelnen Script-Aufruf&lt;/strong&gt;. Ein Beispiel: Dein Server hat 8 GByte (&lt;strong&gt;8.192 MByte&lt;/strong&gt;) Arbeitsspeicher. Der Aufruf der Datei index.php, die eine sehr aufwendige Datenbankabfrage durchführt und damit viele Daten verarbeitet, erfordert 10 MByte Arbeitsspeicher (das ist übrigens relativ viel und &lt;a href=&#34;https://www.deimeke.net/dirk/blog/index.php?/archives/304-Bytes-auf-Papier-....html&#34;&gt;entspricht etwa 5.000 bedruckten A4 Seiten&lt;/a&gt;). Das Memory-Limit ist auf &lt;strong&gt;32 MByte&lt;/strong&gt; eingestellt. Das physikalische Limit beträgt allerdings &lt;strong&gt;8.192 MByte&lt;/strong&gt;. Die index.php kann also &lt;strong&gt;819 mal&lt;/strong&gt; gleichzeitig (!) aufgerufen werden; erst dann ist der Arbeitsspeicher voll. Das Memory-Limit hat hier also keine Auswirkungen.&lt;/p&gt;
+&lt;p&gt;Gehen wir nun davon aus, dass bei einem der &lt;strong&gt;819&lt;/strong&gt; Aufrufe bestimmte Parameter gesetzt werden, die eine weitaus größere Datenmenge in der Datenbank abfragen. Die Datenmenge erhöht sich auf &lt;strong&gt;40 MByte&lt;/strong&gt;. An dieser Stelle wird das memory_limit aktiv. Der Aufruf dieses Scripts wird abgebrochen mit der Fehlermeldung, dass die erlaubte Speichergrenze überschritten wurde. PHP wird in diesem Fall eine Fehlermeldung wie diese anzeigen:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Fatal error: Allowed memory size of 33554432 bytes exhausted…” followed by something like “(tried to allocate 8388608 bytes) in /home/www/index.php on line 42.”
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Das Gute daran: Der Aufruf der anderen Scripte wird davon nicht in Mitleidenschaft gezogen.&lt;/p&gt;
+&lt;p&gt;Es gibt sehr viele Wege, das Speicherlimit zu setzen. Das hat Vorteile aber auch Nachteile: So wird die Suche nach den gesetzen Einstellungen oft zur Suche nach der berühmten Nadel im Heuhaufen. Der Vorteil: Du kannst das Speicherlimit sehr granular an die Anforderungen deiner verschiedenen Anwendungen anpassen. Bereit? Los gehts&amp;hellip;&lt;/p&gt;
+&lt;h2 id=&#34;grundsätzliches&#34;&gt;Grundsätzliches&lt;/h2&gt;
+&lt;p&gt;Der Wert, den du für das Memory Limit übermittelst, kann als einfache Ziffer übergeben werden und legt die Speichergrenze somit in &lt;strong&gt;Byte&lt;/strong&gt; fest. PHP unterstützt darüber hinaus einige &lt;strong&gt;&lt;a href=&#34;https://www.php.net/manual/de/faq.using.php#faq.using.shorthandbytes&#34;&gt;Kurzschreibweisen&lt;/a&gt;&lt;/strong&gt;, also z.B. K für Kilobyte (32K), M für Megabyte (256M) und G für Gigabye (2G).&lt;/p&gt;
+&lt;p&gt;Willst du verhindern möchtest, dass die Speichergrenze später an anderer Stelle überschrieben wird, definierst du sie mithilfe von &lt;strong&gt;php_admin_value&lt;/strong&gt; anstatt nur &lt;strong&gt;php_value&lt;/strong&gt;. Also z.B.:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;php_admin_value[memory_limit] = 256M
+# oder
+fastcgi_param PHP_ADMIN_VALUE &amp;#34;memory_limit = 256M&amp;#34;;
+# oder
+php_admin_value memory_limit = 256M
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Willst du das Memory LImit komplett deaktivieren, dann setzt du es auf -1:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;memory_limit = -1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Aber Achtung: Zu Testzwecken mag das sinnvoll sein, in einer Live-Umgebung solltest du immer mit einer Obergrenze arbeiten.&lt;/p&gt;
+&lt;p&gt;Und abschließend noch der Verweis auf zwei nützliche Funktionen, die eigentlich bekannt sein sollten:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;echo ini_get(&amp;#39;memory_limit&amp;#39;); // zeigt das aktuell gesetzte Memory Limit
+phpinfo(); // zeigt alle relevanten Parameter, u.a. Memory Limit und verwendete .ini-Dateien
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-1.png&#34;&gt;&lt;img src=&#34;images/grafik-1-700x25.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Wichtig&lt;/strong&gt;: Derartige Funktionen dienen der Fehlersuche und sollten im Live-System nicht unbedingt öffentlich abrufbar sein!&lt;/p&gt;
+&lt;h2 id=&#34;das-memory-limit-in-php-einstellen&#34;&gt;Das Memory Limit in PHP einstellen&lt;/h2&gt;
+&lt;h3 id=&#34;super-global-in-der-phpini&#34;&gt;Super global in der php.ini&lt;/h3&gt;
+&lt;p&gt;Die erste &amp;ldquo;Konfigurations-Stufe&amp;rdquo; befindet sich natürlich direkt innerhalb von PHP. Wenn du wissen willst, wo sich die Einstellungen für PHP befinden, nutze ganz einfach phpinfo(); Die entsprechende Datei heißt &lt;strong&gt;php.ini&lt;/strong&gt; und befindet sich in der Regel in /etc/php/7.0/apache2/php.ini (für PHP als Modul, z.B. in &lt;strong&gt;Apache2&lt;/strong&gt;) oder /etc/php/7.4/fpm/php.ini (für PHP als Dienst, z.B. in &lt;strong&gt;nginx&lt;/strong&gt;). Der Parameter ist in beiden Fällen gleich:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;memory_limit = 256M
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Wenn du PHP als Modul unter Apache nutzt, musst du Apache2 neustarten, bzw. die Konfiguration neu einlesen lassen:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;service apache2 restart 
+service apache2 reload
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Analog, bei PHP als Dienst, wie z.B. in nginx, erfolgt das Neustarten folgendermaßen (In der Regel reicht es aus, mit reload nur die Konfiguration neu zu laden. Sollte es zu Komplikationen kommen, hilft ein kompletter Neustart des Dienstes eventuell weiter).&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;service php7.0-fpm restart
+service php7.0-fpm reload
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;für-jeden-php-fpm-pool-in-der-poolconf&#34;&gt;Für jeden PHP-FPM Pool in der pool.conf&lt;/h3&gt;
+&lt;p&gt;Nutzt du PHP-FPM über CGI (also mein erstes Setup mit nginx), gibt es für jeden Server (bzw. virtuellen Host) einen eigenen &lt;strong&gt;Pool&lt;/strong&gt;, lies eine Art eigene getrennte PHP-Umgebung für jeden einzelnen virtuellen Host. Die Einstellungen dazu befinden sich z.B. unter &lt;strong&gt;/etc/php/7.4/fpm/pool/my_host.conf&lt;/strong&gt;. Hier wird der entsprechende Parameter folgendermaßen gesetzt:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[my_host_de]
+...
+php_value[memory_limit] = 1024M
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Die Einstellung an dieser Stelle überschreibt den Wert in der &lt;strong&gt;php.ini&lt;/strong&gt;. Nach der Änderung muss der PHP-Dienst natürlich neu gestartet werden.&lt;/p&gt;
+&lt;h2 id=&#34;das-memory-limit-in-apache2-und-nginx-setzen&#34;&gt;Das Memory-Limit in Apache2 und nginx setzen&lt;/h2&gt;
+&lt;h3 id=&#34;super-global-in-der-nginxconf--httpdconf&#34;&gt;Super global in der nginx.conf / httpd.conf&lt;/h3&gt;
+&lt;p&gt;Für die beiden HTTP-Server nginx und Apache2 gibt es die beiden globalen Einstellungsdateien &lt;strong&gt;/etc/nginx/nginx.conf&lt;/strong&gt; bzw. &lt;strong&gt;/etc/apache2/httpd.conf&lt;/strong&gt;. In nginx kann das PHP-Limit im sogenannten &lt;strong&gt;http-Kontext&lt;/strong&gt; gesetzt werden und gilt damit für die komplette Nginx-Instanz. Ich gehe hier und im Folgenden übrigens davon aus, dass nginx den PHP-Interpreter über FastCGI anspricht und PHP eigenständig als FPM läuft.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;http {
+
+  fastcgi_param PHP_VALUE &amp;#34;memory_limit = 256M&amp;#34;;
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Im Falle von Apache2 gehe ich davon aus, dass PHP als Modul konfiguriert ist. Hier wird das PHP Limit in der &lt;strong&gt;httpd.conf&lt;/strong&gt; folgendermaßen gesetzt:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;php_value memory_limit = 256M
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;global-für-jeden-virtuellen-host&#34;&gt;Global für jeden virtuellen Host&lt;/h3&gt;
+&lt;p&gt;In nginx lässt sich die entsprechende Einstellung auch innerhalb des Server-Blocks setzen und gilt somit für einen ganzen virtuelle Host. Üblicherweise findest du diese Einstellung in &lt;strong&gt;/etc/nginx/conf.d/my_host.conf:&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;server {
+
+  fastcgi_param PHP_VALUE &amp;#34;memory_limit = 256M&amp;#34;;
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Nutzt du Apache2, findest du die entsprechende Einstellungs-Datei in der Regel unter &lt;strong&gt;/etc/apache2/sites-enabled/my_host.conf&lt;/strong&gt;:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;VirtualHost&amp;gt;
+
+php_value memory_limit 256M
+
+&amp;lt;/VirtualHost&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;global-für-jeden-ordner&#34;&gt;Global für jeden Ordner&lt;/h3&gt;
+&lt;p&gt;Weiter geht es mit dem Ordner-Spezifische Memory-Limit in nginx im location-Kontext (die Datei dürfte in der Regel unverändert sein).&lt;/p&gt;
+&lt;p&gt;Achtung: &lt;a href=&#34;http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html&#34;&gt;In nginx kann die Direktive fastcgi_param&lt;/a&gt; auch im übergeordneten http-Kontext oder auf Ordner-Ebene innerhalb des location-Blocks gesetzt werden:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;location ~ .(php|php.*)$ {
+
+  fastcgi_param PHP_VALUE &amp;#34;memory_limit = 256M&amp;#34;;
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Analog dazu kannst du in Apache2 das Limit global in apache2.conf oder auf Ordner-Ebene in der my_host.conf:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;Directory&amp;#34;/var/www/example_de/htdocs/&amp;#34;&amp;gt;
+php_value memory_limit 256M
+&amp;lt;/Directory&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;das-memory-limit-auf-ordner-ebene-setzen&#34;&gt;Das Memory-Limit auf Ordner-Ebene setzen&lt;/h2&gt;
+&lt;h3 id=&#34;für-jeden-ordner-mit-der-userini&#34;&gt;Für jeden Ordner mit der .user.ini&lt;/h3&gt;
+&lt;p&gt;Mit der Datei &lt;strong&gt;.super.ini&lt;/strong&gt; kannst du PHP-Einstellungen für beliebige Ordner individuell konfigurieren. Dieser Weg steht dir allerdings nur offen, &lt;a href=&#34;https://www.php.net/manual/en/configuration.file.per-user.php&#34;&gt;wenn du PHP nicht als Modul nutzt, sondern über CGI/FastCGI&lt;/a&gt;. In meinem Beispiel-Setup mit Apache2 und php-mod fällt diese Option also weg.&lt;/p&gt;
+&lt;p&gt;Du kannst die Datei in jedem Ordner anlegen und dort Parameter so einstellen, wie du es von der php.ini gewohnt bist. Dieser Weg muss allerdings vorher &amp;ldquo;freigeschaltet&amp;rdquo; werden, indem in der php.ini (bzw. den anderen o.g. Orten), der folgende Parameter gesetzt ist:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;user_ini.filename = .user.ini
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Ob das der Fall ist, erfährst du, wie immer, mithilfe von phpinfo();. Dort siehst du unter &amp;ldquo;Additional .ini files parsed&amp;rdquo; auch, ob sich im aktuellen Ordner eine .user.ini befindet und diese gelesen wurde:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-4.png&#34;&gt;&lt;img src=&#34;images/grafik-4-700x164.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Überprüfen, welche .ini-Dateien PHP gelesen hat&lt;/p&gt;
+&lt;p&gt;Wenn das alles passt, verwendest du die .user.ini wie die php.ini und setzt das Speicherlimit demnach folgenermaßen:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;memory_limit=256M
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;für-jeden-ordner-mit-der-htaccess&#34;&gt;Für jeden Ordner mit der .htaccess&lt;/h3&gt;
+&lt;p&gt;Diese Option wiederum steht dir nur mit Apache2 zur Verfügung, da nginx keine .htaccess-Dateien unterstützt. Du setzt das Limit in der .htaccess-Datei folgendermaßen:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;php_value memory_limit = 256M
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;das-memory-limit-auf-applikations-ebene-setzen&#34;&gt;Das Memory-Limit auf Applikations-Ebene setzen&lt;/h2&gt;
+&lt;p&gt;WordPress verwendet standardmäßig eine Memory Limit von &lt;strong&gt;40&lt;/strong&gt; &lt;strong&gt;MByte&lt;/strong&gt; im Frontend (bzw. 64 MByte bei einem Multi-Site-Setup) sowie (mindestens) &lt;strong&gt;256 MByte&lt;/strong&gt; für das Backend. Wenn du diese Werte ändern möchtest, kannst du dafür die beiden folgenden Konstanten in der &lt;strong&gt;wp-config.php&lt;/strong&gt; setzen - achte darauf, diese Konstanten vor der Einbindung von &lt;strong&gt;wp-settings.php&lt;/strong&gt; zu definieren:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;define(&amp;#39;WP_MEMORY_LIMIT&amp;#39;, &amp;#39;256M&amp;#39;);
+define(&amp;#39;WP_MAX_MEMORY_LIMIT&amp;#39;, &amp;#39;256M&amp;#39;);
+[...]
+require_once(ABSPATH . &amp;#39;wp-settings.php&amp;#39;);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;WordPress nutzt intern allerdings auch nur die PHP-Funktion ini_set um das Memory Limit festzulegen:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ini_set( &amp;#39;memory_limit&amp;#39;, WP_MEMORY_LIMIT );
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;das-memory-limit-auf-datei-ebene-setzen&#34;&gt;Das Memory-Limit auf Datei-Ebene setzen&lt;/h2&gt;
+&lt;p&gt;Zum Abschluss gibt es auch die Möglichkeiten das Memory Limit in jedem Script individuell zu setzen. Diese Möglichkeit steht an letzter Stelle und überschreibt damit alle vorhergehenden Einstellungen:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ini_set(&amp;#39;memory_limit&amp;#39;,&amp;#39;256M&amp;#39;);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Durch die Verwendung von &lt;strong&gt;include()&lt;/strong&gt;, &lt;strong&gt;require_once()&lt;/strong&gt; oder &lt;strong&gt;require()&lt;/strong&gt; lassen sich andere PHP-Dateien innnerhalb eines Scripts einzubinden. Grundsätzlich wird das Memory Limit dann zwar vererbt. Was nicht heißt, dass es durch später eingebundene Scripte überschrieben werden kann. Das macht sich z.B. auch bei WordPress bemerkbar: Du kannst das Memory Limit zwar mit WP_MEMORY_LIMIT für WordPress definieren, ein Plugin oder Theme kann das Limit aber trotzdem später überschreiben.&lt;/p&gt;
+&lt;p&gt;Ein Beispiel: So sieht die Datei &lt;strong&gt;index.php&lt;/strong&gt; aus:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;?php  ini_set(&amp;#39;memory_limit&amp;#39;,&amp;#39;256M&amp;#39;);  (...aufwendige Operation...);  include(&amp;#39;file.php&amp;#39;); 
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Die Datei &lt;strong&gt;file.php&lt;/strong&gt; sieht folgendermaßen aus:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt; &amp;lt;?php
+ echo ini_get(&amp;#39;memory_limit&amp;#39;);
+ (…aufwendige Operation…)
+ ini_set(&amp;#39;memory_limit&amp;#39;,&amp;#39;32M&amp;#39;);
+ (…aufwendige Operation…);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Die zweite Zeile in der file.php gibt als Rückgabe &lt;strong&gt;256M&lt;/strong&gt; aus. Das Memory-Limit wird vererbt. Die vierte Zeile setzt das Limit allerdings auf 32 MByte und überschreibt damit den Wert von 256 MByte. Belegt die &amp;ldquo;aufwendige Operation&amp;rdquo; in index.php nur &lt;strong&gt;12 MByte&lt;/strong&gt;, in der file.php nur jeweils &lt;strong&gt;5 MByte&lt;/strong&gt;, funktioniert das gesamte Script einwandfrei. Wenn die &amp;ldquo;aufwendige Operation&amp;rdquo; in der Datei index.php z.B. mehr als &lt;strong&gt;22 MByte&lt;/strong&gt; beansprucht, bricht PHP die Verarbeitung des Scripts ab. Warum? Weil das Limit nachträglich nach unten korrigiert wurde.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Fokussierter Drill-Down mit Tableau</title>
+      <link>https://nickyreinert.de/blog/2019/07/15/fokussierter-drill-down-mit-tableau/</link>
+      <pubDate>Mon, 15 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickyreinert.de/blog/2019/07/15/fokussierter-drill-down-mit-tableau/</guid>
+      
+      <description>&lt;p&gt;In Tableau gibt es die eigentlich sehr nützliche Möglichkeit, Dimensionen beliebig zu kombinieren und in einer Hierarchie zusammenzufassen. Diese Funktion ist sehr intuitiv hat aber einen Haken: Wenn man bei großen Datenmengen und Dimensionen mit hoher Kardinalität einen Drill Down macht, werden die Abfragen nicht nur irrsinnig langsam, je tiefer man kommt. Die Übersicht geht auch komplett verloren.&lt;/p&gt;
+&lt;p&gt;Um das zu demonstrieren habe ich eine Datenquelle mit 1 Mio. Zeilen und 10 Dimensionen erzeugt. Der Drill-Down auf Ebene 8 dauert hier auf normaler Hardware über 20 Sekunden und das Ergebnis ist&amp;hellip; nun ja: Für eine schnellen Überblick kaum zu gebrauchen:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik.png&#34;&gt;&lt;img src=&#34;images/grafik-700x380.png&#34; alt=&#34; Drill-Down auf die 8. Ebene einer Hierarchie mit hoher Kardinalität: Übersicht ade &#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Drill-Down auf die 8. Ebene einer Hierarchie mit hoher Kardinalität: Übersicht ade&lt;/p&gt;
+&lt;p&gt;Im Folgenden beschreibe ich einen Weg, wie man einen fokussierten Drill-Down ermöglicht, der weitaus performanter und vor allem übersichtlicher ist. Man könnte zwar die eingebaute Quick-Filter-Funktion nutzen, das ist dann aber relativ umständlich, da man je Ebene mindestens zwei Klicks benötigt und vor allem immer noch nicht übersichtlich:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-2.png&#34;&gt;&lt;img src=&#34;images/grafik-2.png&#34; alt=&#34;Die Quick-Filter-Funktion bei mehreren Dimensionen in einer Hierarchie&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Drill-Down bei mehreren Dimensionen einer Hierarchie unter Verwendung des Quick-Filters: Unpraktisch&lt;/p&gt;
+&lt;p&gt;Bevor ich die Schritte im einzelnen erkläre, möchte ich zeigen, was das Ziel der ganzen Übung sein soll:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-1.png&#34;&gt;&lt;img src=&#34;images/grafik-1-700x526.png&#34; alt=&#34;Schematische Darstellung der Logik&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Schematische Darstellung der Logik&lt;/p&gt;
+&lt;p&gt;Die Namen der einzelnen Dimensonen werden für jedes Level zusammengefasst. Jede Dimension in der Hierarchie wird außerdem durch einen &lt;strong&gt;Index&lt;/strong&gt; repräsentiert, der die Tiefe wiederspiegelt. Dadurch entsteht ein Pfad nach dem Schema &lt;strong&gt;nameA.nameB.NameC.nameD.nameX&lt;/strong&gt; usw. Diese Pfad soll als Filter dienen. So kann ich mit einem einzigen Filter mehrere Dimensionen abdecken.&lt;/p&gt;
+&lt;p&gt;Ein Klick auf eine Zeile im Arbeitsblatt &amp;ldquo;&lt;strong&gt;main&lt;/strong&gt;&amp;rdquo; soll dafür sorgen, dass der Index für die aktuelle Ebene um 1 hochgezählt wird - man also tiefer in den Baum hineingeht. Außerdem wird der Pfad für die entsprechende Ebene als Filter genutzt. Dadurch erhalte ich eine Ansicht, die einem kombinierten Filter gleicht, immer nur die Zeilen anzeigt, die ich beim Drill-Down ausgewählt habe. Klicke ich auf das zweite Arbeitsblatt, wird der Index heruntergezählt, also immer die nächsthöhere Ebene angezeigt. Außerdem wird bei dem zusammengesetzten Pfad das letzte Element entfernt, wodurch sich gleichzeitig die Filterbedingung ändert.&lt;br&gt;
+Um diese Mechanik umzusetzen, benötigen wir also zwei Felder, eines enthält immer den aktuellen &lt;strong&gt;Index + 1&lt;/strong&gt; für die nächste Ebene und &lt;strong&gt;Index - 1&lt;/strong&gt; für die nächst höhere Ebene. Außerdem gibt es ein Feld, dass den aktuellen Pfad enthält, also z.B. &lt;strong&gt;nameA.nameB.nameC&lt;/strong&gt;. Ein weiteres Feld enthält den nächsten Pfad, je nachdem wo der Nutzer klickt, also z.B. &lt;strong&gt;nameA.nameB.nameC.nameD&lt;/strong&gt; und ein Feld enthält den Pfad für die zuvor ausgewählte Ebene, also z.B. &lt;strong&gt;nameA.nameB&lt;/strong&gt;. Das ganze wird mit ein paar Aktionen und Filtern so miteinander kombiniert, dass der Benutzer interaktiv durch die Hierarchie reisen kann.&lt;br&gt;
+Klar soweit? Los geht&amp;rsquo;s:&lt;/p&gt;
+&lt;p&gt;Du benötigst zwei Arbeitsblätter und ein Dashboard, das die beiden Arbeitsbelätter beherbergt. Als Namen wähle ich &amp;ldquo;&lt;strong&gt;main&lt;/strong&gt;&amp;rdquo; für die eigentliche Darstellung der KPIs und &amp;ldquo;&lt;strong&gt;go back&lt;/strong&gt;&amp;rdquo; für die Navigation. Wir beginnen mit der Erstellung der beiden Parameter.&lt;br&gt;
+Der Parameter &amp;ldquo;&lt;strong&gt;current level index&lt;/strong&gt;&amp;rdquo; enthält, entsprechend der Anzahl der Dimensionen, die Ziffern 1 bis 10. Der Parameter &amp;ldquo;&lt;strong&gt;level name concatenated&lt;/strong&gt;&amp;rdquo; dient später als Filter-Element und enthält den oben erwähnten Pfad:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/fokussierter-drill-down-mit-breadcrumb-navigation-in-tableau/parameter_level_name_concatenated.png&#34;&gt;&lt;img src=&#34;images/parameter_level_name_concatenated.png&#34; alt=&#34;Parameter level name concatenated&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Parameter level name concatenated&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/fokussierter-drill-down-mit-breadcrumb-navigation-in-tableau/parameter_current_level_index.png&#34;&gt;&lt;img src=&#34;images/parameter_current_level_index.png&#34; alt=&#34;Parameter current level index&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Parameter current level index&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Nun erstellst du einen Filter, der sich auf den Parameter &amp;ldquo;&lt;strong&gt;level name concatenated&lt;/strong&gt;&amp;rdquo; bezieht. Das vereinfacht den weiteren Prozess ungemein, da du kein Filter-Aktion anlegen musst, sondern Tableau den Filter immer dynamisch anpasst. Dazu legst du einen Filter für das Arbeitsblatt &amp;ldquo;&lt;strong&gt;main&lt;/strong&gt;&amp;rdquo; an und wählst im Reiter &amp;ldquo;Bedingung&amp;rdquo; die Option &amp;ldquo;nach Formel&amp;rdquo; aus. Als Formel verwendest du diese:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[level name concatenated] = [current level filter]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;So sollte der Filter dann in Tableau aussehen:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-4.png&#34;&gt;&lt;img src=&#34;images/grafik-4.png&#34; alt=&#34;Filter mit einer Formel als Bedingung&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Filter mit einer Formel als Bedingung&lt;/p&gt;
+&lt;p&gt;Weiter geht es mit ein paar berechneten Feldern:&lt;/p&gt;
+&lt;p&gt;Das erste Feld nennt sich &amp;ldquo;&lt;strong&gt;current level&lt;/strong&gt;&amp;rdquo;, dass den Parameter &amp;ldquo;&lt;strong&gt;current level index&lt;/strong&gt;&amp;rdquo; nutzt um die entsprechende Dimension darzustellen. Die Formel dazu ist simpel:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;IF     [current level index] = 1 THEN [Dimension1] 
+ELSEIF [current level index] = 2 THEN [Dimension2]
+ELSEIF [current level index] = 3 THEN [Dimension3]
+ELSEIF [current level index] = 4 THEN [Dimension4] 
+ELSEIF [current level index] = 5 THEN [Dimension5] 
+ELSEIF [current level index] = 6 THEN [Dimension6] 
+ELSEIF [current level index] = 7 THEN [Dimension7] 
+ELSEIF [current level index] = 8 THEN [Dimension8] 
+ELSEIF [current level index] = 9 THEN [Dimension9] 
+ELSEIF [current level index] = 10 THEN [Dimension10] 
+END
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Als nächstes gibt es zwei Felder, die auch mit einer einfachen Formel auskommen: &amp;ldquo;&lt;strong&gt;previous level index&lt;/strong&gt;&amp;rdquo; und &amp;ldquo;&lt;strong&gt;next level index&lt;/strong&gt;&amp;rdquo;. Previous level index dient dazu, den Index herunter zu zählen. Hier könnte man sicherlich eine eleganter Lösung nutzen, um das Prinzip zu verdeutlichen, habe ich das mit einer einfachen Wenn-Dann-Bedingung realisiert:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;IF [current level index] = 1 then 1
+ELSEIF [current level index] = 2 then 1
+ELSEIF [current level index] = 3 then 2
+ELSEIF [current level index] = 4 then 3
+ELSEIF [current level index] = 5 then 4
+ELSEIF [current level index] = 6 then 5
+ELSEIF [current level index] = 7 then 6
+ELSEIF [current level index] = 8 then 7
+ELSEIF [current level index] = 9 then 8
+ELSEIF [current level index] = 10 then 9
+END
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Bei &amp;ldquo;&lt;strong&gt;next level index&lt;/strong&gt;&amp;ldquo;läuft es genau anders rum:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;IF     [current level index] = 1 THEN 2
+ELSEIF [current level index] = 2 THEN 3
+ELSEIF [current level index] = 3 THEN 4
+ELSEIF [current level index] = 4 THEN 5
+ELSEIF [current level index] = 5 THEN 6
+ELSEIF [current level index] = 6 THEN 7
+ELSEIF [current level index] = 7 THEN 8
+ELSEIF [current level index] = 8 THEN 9
+ELSEIF [current level index] = 9 THEN 10
+END
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Weiter geht es mit den Pfaden, die wir für den Filter benötigen. Jetzt wird es etwas komplizierter: Das Feld &amp;ldquo;&lt;strong&gt;current level concat&lt;/strong&gt;&amp;rdquo; fasst zunächst, entsprechen der aktuell ausgewählten Ebene, die Namen der vorherigen Ebenen zusammen. So entsteht der Pfad:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;IF     [current level index] = 1  THEN [Dimension1] 
+ELSEIF [current level index] = 2  THEN [Dimension1] + &amp;#34;.&amp;#34; + [Dimension2]
+ELSEIF [current level index] = 3  THEN [Dimension1] + &amp;#34;.&amp;#34; + [Dimension2] + &amp;#34;.&amp;#34; + [Dimension3]
+ELSEIF [current level index] = 4  THEN [Dimension1] + &amp;#34;.&amp;#34; + [Dimension2] + &amp;#34;.&amp;#34; + [Dimension3] + &amp;#34;.&amp;#34; + [Dimension4]
+ELSEIF [current level index] = 5  THEN [Dimension1] + &amp;#34;.&amp;#34; + [Dimension2] + &amp;#34;.&amp;#34; + [Dimension3] + &amp;#34;.&amp;#34; + [Dimension4] + &amp;#34;.&amp;#34; + [Dimension5]
+ELSEIF [current level index] = 6  THEN [Dimension1] + &amp;#34;.&amp;#34; + [Dimension2] + &amp;#34;.&amp;#34; + [Dimension3] + &amp;#34;.&amp;#34; + [Dimension4] + &amp;#34;.&amp;#34; + [Dimension5] + &amp;#34;.&amp;#34; + [Dimension6]
+ELSEIF [current level index] = 7  THEN [Dimension1] + &amp;#34;.&amp;#34; + [Dimension2] + &amp;#34;.&amp;#34; + [Dimension3] + &amp;#34;.&amp;#34; + [Dimension4] + &amp;#34;.&amp;#34; + [Dimension5] + &amp;#34;.&amp;#34; + [Dimension6] + &amp;#34;.&amp;#34; + [Dimension7]
+ELSEIF [current level index] = 8  THEN [Dimension1] + &amp;#34;.&amp;#34; + [Dimension2] + &amp;#34;.&amp;#34; + [Dimension3] + &amp;#34;.&amp;#34; + [Dimension4] + &amp;#34;.&amp;#34; + [Dimension5] + &amp;#34;.&amp;#34; + [Dimension6] + &amp;#34;.&amp;#34; + [Dimension7] + &amp;#34;.&amp;#34; + [Dimension8]
+ELSEIF [current level index] = 9  THEN [Dimension1] + &amp;#34;.&amp;#34; + [Dimension2] + &amp;#34;.&amp;#34; + [Dimension3] + &amp;#34;.&amp;#34; + [Dimension4] + &amp;#34;.&amp;#34; + [Dimension5] + &amp;#34;.&amp;#34; + [Dimension6] + &amp;#34;.&amp;#34; + [Dimension7] + &amp;#34;.&amp;#34; + [Dimension8] + &amp;#34;.&amp;#34; + [Dimension9]
+ELSEIF [current level index] = 10 THEN [Dimension1] + &amp;#34;.&amp;#34; + [Dimension2] + &amp;#34;.&amp;#34; + [Dimension3] + &amp;#34;.&amp;#34; + [Dimension4] + &amp;#34;.&amp;#34; + [Dimension5] + &amp;#34;.&amp;#34; + [Dimension6] + &amp;#34;.&amp;#34; + [Dimension7] + &amp;#34;.&amp;#34; + [Dimension8] + &amp;#34;.&amp;#34; + [Dimension9] + &amp;#34;.&amp;#34; + [Dimension10]
+END
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Das Feld &amp;ldquo;&lt;strong&gt;current level filter&lt;/strong&gt;&amp;rdquo; ist ähnlich aufgebaut. Da der Filter sich aber strenggenommen auf die vorherige Eben bezieht, sieht der Pfad etwas anders aus:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;IF     [current level index] = 1 THEN &amp;#34;.&amp;#34; 
+ELSEIF [current level index] = 2 THEN [Dimension1] 
+ELSEIF [current level index] = 3 THEN [Dimension1] + &amp;#34;.&amp;#34; + [Dimension2]
+ELSEIF [current level index] = 4 THEN [Dimension1] + &amp;#34;.&amp;#34; + [Dimension2] + &amp;#34;.&amp;#34; + [Dimension3]
+ELSEIF [current level index] = 5 THEN [Dimension1] + &amp;#34;.&amp;#34; + [Dimension2] + &amp;#34;.&amp;#34; + [Dimension3] + &amp;#34;.&amp;#34; + [Dimension4]
+ELSEIF [current level index] = 6 THEN [Dimension1] + &amp;#34;.&amp;#34; + [Dimension2] + &amp;#34;.&amp;#34; + [Dimension3] + &amp;#34;.&amp;#34; + [Dimension4] + &amp;#34;.&amp;#34; + [Dimension5]
+ELSEIF [current level index] = 7 THEN [Dimension1] + &amp;#34;.&amp;#34; + [Dimension2] + &amp;#34;.&amp;#34; + [Dimension3] + &amp;#34;.&amp;#34; + [Dimension4] + &amp;#34;.&amp;#34; + [Dimension5] + &amp;#34;.&amp;#34; + [Dimension6]
+ELSEIF [current level index] = 8 THEN [Dimension1] + &amp;#34;.&amp;#34; + [Dimension2] + &amp;#34;.&amp;#34; + [Dimension3] + &amp;#34;.&amp;#34; + [Dimension4] + &amp;#34;.&amp;#34; + [Dimension5] + &amp;#34;.&amp;#34; + [Dimension6] + &amp;#34;.&amp;#34; + [Dimension7]
+ELSEIF [current level index] = 9 THEN [Dimension1] + &amp;#34;.&amp;#34; + [Dimension2] + &amp;#34;.&amp;#34; + [Dimension3] + &amp;#34;.&amp;#34; + [Dimension4] + &amp;#34;.&amp;#34; + [Dimension5] + &amp;#34;.&amp;#34; + [Dimension6] + &amp;#34;.&amp;#34; + [Dimension7] + &amp;#34;.&amp;#34; + [Dimension8]
+ELSEIF [current level index] = 10 THEN [Dimension1] + &amp;#34;.&amp;#34; + [Dimension2] + &amp;#34;.&amp;#34; + [Dimension3] + &amp;#34;.&amp;#34; + [Dimension4] + &amp;#34;.&amp;#34; + [Dimension5] + &amp;#34;.&amp;#34; + [Dimension6] + &amp;#34;.&amp;#34; + [Dimension7] + &amp;#34;.&amp;#34; + [Dimension8] + &amp;#34;.&amp;#34; + [Dimension9]
+END
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Beim Feld &amp;ldquo;&lt;strong&gt;previous level concat&lt;/strong&gt;&amp;rdquo; wird es schon etwas schwieriger, da ich hier immer das letzte Element des Pfades entfernen muss. Das erinnert ein wenig an eine aus dem Ruder gelaufene Excel-Funktion, ist leider aber - nach meinem aktuellen Kenntnisstand - nicht einfacher zu realisieren, da die Behandlung von Strings in Tableau eben eingeschränkt sit. Sachdienliche Hinweise werden dankbar entgegen genommen.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;IF [current level index] = 1 THEN 
+    &amp;#34;.&amp;#34;
+ELSEIF [current level index] = 2 THEN
+    &amp;#34;.&amp;#34;
+ELSEIF [current level index] = 3 THEN
+    LEFT([level name concatenated], FIND([level name concatenated], &amp;#39;.&amp;#39;, 1) - 1)
+ELSEIF [current level index] = 4 THEN
+    LEFT([level name concatenated], FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, 1) + 1) - 1)
+ELSEIF [current level index] = 5 THEN
+    LEFT([level name concatenated], FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, 1) + 1) + 1) - 1)
+ELSEIF [current level index] = 6 THEN
+    LEFT([level name concatenated], FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, 1) + 1)) + 1) + 1) - 1)
+ELSEIF [current level index] = 7 THEN
+    LEFT([level name concatenated], FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, 1) + 1) + 1)) + 1) + 1) - 1)
+ELSEIF [current level index] = 8 THEN
+    LEFT([level name concatenated], FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, 1) + 1) + 1) + 1)) + 1) + 1) - 1)
+ELSEIF [current level index] = 9 THEN
+    LEFT([level name concatenated], FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, 1) + 1) + 1) + 1) + 1)) + 1) + 1) - 1)
+ELSEIF [current level index] = 10 THEN
+    LEFT([level name concatenated], FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, FIND([level name concatenated], &amp;#39;.&amp;#39;, 1) + 1) + 1) + 1) + 1) + 1)) + 1) + 1) - 1)
+END
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Das gröbste ist somit erledigt, du solltest nun die folgenden Felder und Parameter haben. Achte darauf, dass du die Felder als Dimension nutzt:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-3.png&#34;&gt;&lt;img src=&#34;images/grafik-3.png&#34; alt=&#34;Alle berechneten Felder und Parameter auf einen Blick&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Alle berechneten Felder und Parameter auf einen Blick&lt;/p&gt;
+&lt;p&gt;Nun ziehst du die Felder &amp;ldquo;&lt;strong&gt;next level index&lt;/strong&gt;&amp;rdquo;, &amp;ldquo;&lt;strong&gt;current level&lt;/strong&gt;&amp;rdquo; und &amp;ldquo;&lt;strong&gt;current level concat&lt;/strong&gt;&amp;rdquo; auf das Arbeitsblatt &amp;ldquo;&lt;strong&gt;main&lt;/strong&gt;&amp;rdquo;, die Felder &amp;ldquo;&lt;strong&gt;previous level index&lt;/strong&gt;&amp;rdquo; und &amp;ldquo;&lt;strong&gt;previous level concat&lt;/strong&gt;&amp;rdquo; gehören auf das Arbeitsblatt &amp;ldquo;&lt;strong&gt;go back&lt;/strong&gt;&amp;rdquo;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-5-700x172.png&#34;&gt;&lt;img src=&#34;images/grafik-5-700x172.png&#34; alt=&#34;Arbeitsblatt main mit allen nötigen Feldern&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Arbeitsblatt main mit allen nötigen Feldern&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-6.png&#34;&gt;&lt;img src=&#34;images/grafik-6.png&#34; alt=&#34;Arbeitsblatt &amp;amp;ldquo;go back&amp;amp;rdquo; mit allen nötigen Feldern&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Arbeitsblatt &amp;ldquo;go back&amp;rdquo; mit allen nötigen Feldern&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;das-dashboard-mit-leben-füllen&#34;&gt;Das Dashboard mit Leben füllen&lt;/h3&gt;
+&lt;p&gt;Abschließend geht es an die Aktionen um das Dashboard mit Leben zu füllen. Insgesamt benötigen wir vier Aktionen zur Änderung eines Parameters. Die ersten beiden Aktionen sorgen dafür, dass der aktuelle Index entsprechen hoch- und runtergezählt wird. Die Aktion &amp;ldquo;&lt;strong&gt;increase level index&lt;/strong&gt;&amp;rdquo; nutzt als Quellblatt &amp;ldquo;&lt;strong&gt;main&lt;/strong&gt;&amp;rdquo; sowie das Feld &amp;ldquo;&lt;strong&gt;next level index&lt;/strong&gt;&amp;rdquo; und verweist auf den Parameter &amp;ldquo;&lt;strong&gt;current level index&lt;/strong&gt;&amp;rdquo;. Und vice versa die Aktion &amp;ldquo;&lt;strong&gt;decrease level index&lt;/strong&gt;&amp;rdquo; mit dem Quellblatt &amp;ldquo;&lt;strong&gt;go back&lt;/strong&gt;&amp;rdquo;, dem Feld &amp;ldquo;&lt;strong&gt;previous level index&amp;rdquo;&lt;/strong&gt; und ebenfalls dem Ziel-Parameter &amp;ldquo;&lt;strong&gt;current level index&lt;/strong&gt;&amp;rdquo;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-7.png&#34;&gt;&lt;img src=&#34;images/grafik-7.png&#34; alt=&#34;Aktion zur Parameter-Steuerng: Den Level-Index um 1 erhöhen&amp;amp;hellip;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Aktion zur Parameter-Steuerng: Den Level-Index um 1 erhöhen&amp;hellip;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-8.png&#34;&gt;&lt;img src=&#34;images/grafik-8.png&#34; alt=&#34;&amp;amp;hellip;und um eins verringern&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&amp;hellip;und um eins verringern&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Danach benötigen wir eine Aktion, um den Filter-Parameter &amp;ldquo;&lt;strong&gt;level name concatenated&lt;/strong&gt;&amp;rdquo; zu setzen: Dieser erhält den Wert aus dem berechneten Feld &amp;ldquo;&lt;strong&gt;current level concat&lt;/strong&gt;&amp;rdquo;, wenn man auf das Arbeitsblatt &amp;ldquo;&lt;strong&gt;main&lt;/strong&gt;&amp;rdquo; klickt. Und beim Arbeitsblatt &amp;ldquo;&lt;strong&gt;go back&lt;/strong&gt;&amp;rdquo; ist es wieder genau andersrum: Hier kommt der Wert aus dem Feld &amp;ldquo;&lt;strong&gt;previous level concat&lt;/strong&gt;&amp;rdquo;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-9.png&#34;&gt;&lt;img src=&#34;images/grafik-9.png&#34; alt=&#34;Die Aktion um den Filter für die nächsttiefere Eben zu setzen..&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Die Aktion um den Filter für die nächsttiefere Eben zu setzen..&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-10.png&#34;&gt;&lt;img src=&#34;images/grafik-10.png&#34; alt=&#34;&amp;amp;hellip; und für die darüberliegende Ebene&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&amp;hellip; und für die darüberliegende Ebene&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;et-voila&#34;&gt;Et voila&lt;/h3&gt;
+&lt;p&gt;Das war es. Du kannst nun das Dashboard nutzen, um beliebig durch deine Dimensionen zu klicken. Hier und da lässt sich das ganze sicherlich noch etwas optimieren. Zuerst kannst du z.B. die &amp;ldquo;Steuerfelder&amp;rdquo; ausblenden, um nur die relevanten Informationen zu präsentieren (in der Regel über rechte Maustaste &amp;ldquo;&lt;strong&gt;Kopfzeile ausblenden&lt;/strong&gt;&amp;rdquo;). Außerdem kann man die Formeln optimieren und z.B. verhindern, dass der Nutzer tiefer klickt, als die verwendete Anzahl von Dimensionen. Das sind aber nur kleinere Baustellen. Das wichtigste Ziel sollte erreicht sein: Die Darstellung ist weitaus übersichtlicher und vor allem kann man nun in Sekundenbruchteilen bis zur letzten Eben navigieren.&lt;br&gt;
+Natürlich kann man das ganze auch mit einem Chart kombinieren, was der Sache noch etwas mehr Glanz verleiht. Auf Tableau Public habe ich eine Dashboard veröffentlicht, dass das ganze in Aktion zeigt. Aus Gründen ist die Datenquelle dort allerdings nur 100.000 Zeilen groß:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://public.tableau.com/profile/nr1871#!/vizhome/focussedDrillDown/dashboard&#34;&gt;https://public.tableau.com/profile/nr1871#!/vizhome/focussedDrillDown/dashboard&lt;/a&gt;&lt;/p&gt;
+</description>
+      
+    </item>
+    
+  </channel>
+</rss>

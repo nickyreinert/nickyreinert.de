@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death-und-http-500 on Nicky Reinert</title>
+    <link>https://nickyreinert.de/tags/wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death-und-http-500/</link>
+    <description>Recent content in wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death-und-http-500 on Nicky Reinert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>de-DE</language>
+    <lastBuildDate>Sun, 18 Nov 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death-und-http-500/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Wordpress Debugging und Wartung oder: Keine Panik vor dem White Screen of Death und HTTP 500</title>
+      <link>https://nickyreinert.de/blog/2018/11/18/wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death-und-http-500/</link>
+      <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickyreinert.de/blog/2018/11/18/wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death-und-http-500/</guid>
+      
+      <description>&lt;p&gt;Deine Wordpress-Seite besteht nur aus einem weißen Bildschirm, dem &lt;strong&gt;HTTP-Fehlercode 500&lt;/strong&gt; oder lädt irsinnig langsam? &lt;strong&gt;White Screen of Death&lt;/strong&gt; (WSoD), die berüchtigten &lt;strong&gt;500´er&lt;/strong&gt; sowie lange &lt;strong&gt;Ladezeiten&lt;/strong&gt; scheinen zu den größten Herausforderungen im Umgang mit WordPress zu gehören und sie hinterlassen regelmäßig lange Gesichter. Zwar gehören Ladezeit, PHP- und HTTP-Fehler nicht unbedingt zusammen, sie erfordern aber in der Regel das gleiche Vorgehen: Nämlich die &lt;strong&gt;Analyse&lt;/strong&gt;, was da im &lt;strong&gt;Hintergrund&lt;/strong&gt; so passiert.&lt;br&gt;
+Die Suche nach der Ursache ist oft relativ simpel. Es sagt einem oft nur niemand. Der beliebteste Tipp bei Wordpress lautet oft:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;&amp;ldquo;Deaktiviere mal alle Plugins und aktiviere sie nacheinander wieder.&amp;rdquo;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Anonymer Ratgeber, Mai 2018&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Das ist alles andere als effizient, ja nicht einmal effektiv: Du erfährst nach 27 Minuten und zwei Tassen Kaffe, dass das Plugin &amp;ldquo;Foobar&amp;rdquo; für den Fehler verantwortlich ist, weil das den &lt;strong&gt;WSoD&lt;/strong&gt; auslöst. Aber dann weißt du immer noch nicht, was genau der Fehler ist. Danke für nichts?&lt;/p&gt;
+&lt;p&gt;Tatsächlich gibt es nur &lt;strong&gt;drei Dinge&lt;/strong&gt;, die dir helfen können, dir selber zu helfen, wenn WordPress dich mal wieder im Stich lässt. Und diese drei Werkzeuge zur &lt;strong&gt;Fehlersuche&lt;/strong&gt; und &lt;strong&gt;Diagnose&lt;/strong&gt; langsamer Wordpress-Installation stelle ich jetzt einmal vor:&lt;/p&gt;
+&lt;h2 id=&#34;1-die-entwickler-konsole-deines-browsers&#34;&gt;1. Die Entwickler-Konsole deines Browsers&lt;/h2&gt;
+&lt;p&gt;Dieses Werkzeug bringt mittlerweile jeder moderne Browser mit und das sollte auch die &lt;strong&gt;erste Anlaufstelle&lt;/strong&gt; für dich sein. Welche Entwicklerkonsole du verwendest, ist deinem Geschmack überlassen, in der Funktionalität unterscheiden sie sich kaum. Du öffnest die Entwicklerkonsole auf vielfältige Weise über&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;das Kontextmenü (Rechte Maustaste -&amp;gt; Element untersuchen) oder&lt;/li&gt;
+&lt;li&gt;über mit der Funktionstaste F12 oder&lt;/li&gt;
+&lt;li&gt;mit dem Shortcut CTRL+SHIFT+I (Windows) / CMD+OPT+I (OS X)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;[gallery link=&amp;ldquo;file&amp;rdquo; columns=&amp;ldquo;4&amp;rdquo; ids=&amp;ldquo;2356,2357,2358,2359&amp;rdquo;]&lt;/p&gt;
+&lt;h2 id=&#34;2-der-query-monitor---warum-ist-dein-wordpress-so-langsam&#34;&gt;2. Der Query Monitor - warum ist dein Wordpress so langsam?&lt;/h2&gt;
+&lt;p&gt;Der &lt;a href=&#34;https://de.wordpress.org/plugins/query-monitor/&#34;&gt;Query Monitor&lt;/a&gt; ist ein wirklich nützliches &lt;strong&gt;Plugin&lt;/strong&gt; für Wordpress. Eines der wenigen. Du fragst dich, warum deine Seite so lange lädt und die Entwicklerkonsole gibt nicht vielmehr her als ein &lt;strong&gt;TTFB&lt;/strong&gt; (Time To First Byte) von 60 Sekunden?&lt;/p&gt;
+&lt;p&gt;Die Entwicklerkonsole sagt dir nur, wie lange der Browser auf den Inhalt wartet. Hier kann maximal identifiziert werden, dass die reine Wartezeit (&lt;strong&gt;TTFB&lt;/strong&gt;) 60 Sekunden beträgt und der Inhalt in 10 Sekunden heruntergeladen wird (die ganzen anderen Nerd-Kennzahlen jetzt mal außen vor gelassen). Letzteres liegt ziemlich wahrscheinlich an der Internetleitung von dir oder dem Hoster. Aber TTFB? Das ist im Grunde die Zeit, die der Server benötigt um die Ausgabe einmal zusammenzuschustern und zu deinem Browser zu schicken. Also das ganze PHP-Gedöns einmal &amp;ldquo;interpretieren&amp;rdquo; und ein paar Datenbankabfragen durchführen. Je umfangreicher deine WordPress-Seite ist (sprich Plugin-Vielfalt), desto mehr gibt es hier zu tun. Und was da im Hintergrund genau passiert, sagt dir der &lt;strong&gt;Query Monitor&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;[gallery link=&amp;ldquo;file&amp;rdquo; columns=&amp;ldquo;2&amp;rdquo; ids=&amp;ldquo;2354,2355&amp;rdquo;]&lt;/p&gt;
+&lt;p&gt;Nach der Installation siehst du in der Admin-Toolbar erstmal ein paar oberflächliche Zahlen: &lt;strong&gt;Ladezeit,&lt;/strong&gt; &lt;strong&gt;Größe&lt;/strong&gt; und &lt;strong&gt;Anzahl der Queries.&lt;/strong&gt; Wirklich spannend wird es, wenn du mal auf diese Zahlen klickst. Dann öffnet sich eine &amp;ldquo;&lt;em&gt;Entwickler-Konsole&amp;rdquo;,&lt;/em&gt; die deiner WordPress-Seite mal gehörig unter die Haube schaut. Du siehst &lt;strong&gt;Datenbankabfragen,&lt;/strong&gt; &lt;strong&gt;Scripte,&lt;/strong&gt; &lt;strong&gt;Funktionen&lt;/strong&gt; und alle möglichen Diagnostiken - einfach alles. Du kannst nun relativ zügig erkennen, ob manche Abfragen einfach nur doppelte durchgeführt wurden oder die Datenbank grundsätzlich zu langsam ist.&lt;/p&gt;
+&lt;h2 id=&#34;3-der-debug-modus&#34;&gt;3. Der Debug-Modus&lt;/h2&gt;
+&lt;p&gt;DasBbeste zum Schluss - der Debug-Modus verrät dir wirklich alles und ist eigentlich der Premium-Weg der Problemlösung.&lt;/p&gt;
+&lt;p&gt;Du wirst nur selten erleben, dass Wordpress bzw. dein Server dich wirklich gar nicht mit einer Fehlermeldung erhellen will. Der unliebsame &lt;strong&gt;White Screen of Death&lt;/strong&gt; und der gefürchtete &lt;strong&gt;HTTP-Fehler 500&lt;/strong&gt; sind im Grunde nur der Standardeinstellungen geschuldet. Du kannst dann entweder ein Ticket bei deinem Hoster öffnen und im nächsten Jahr mit einer Antwort rechnen oder versuchen, selber an die Fehlermeldung zu gelangen und das Problem eigenständig zu analysieren: &lt;strong&gt;Der geheime Trick&lt;/strong&gt; lautet nämlich, einfach mal das Internet nach der Fehlermeldung zu durchsuchen. &lt;strong&gt;In 99,99% der Fälle&lt;/strong&gt; bist du bei weitem nicht der erste mit diesem banalen Problem..&lt;/p&gt;
+&lt;p&gt;Die wahre Herausforderung ist allerdings, dass die Ausgabe von Fehlermeldungen eben standardmäßig unterdrückt  wird. Aus Gründen der Sicherheit und Bedienbarkeit ist das grundsätzlich nicht verkehrt. Wenn du doch mal wissen willst, woher der &lt;strong&gt;White Screen of Death&lt;/strong&gt; wirklich kommt, gehst du folgendermaßen vor:&lt;/p&gt;
+&lt;h3 id=&#34;a-du-aktivierst-die-fehlerausgabe-von-wordpress&#34;&gt;A: Du aktivierst die Fehlerausgabe von Wordpress&lt;/h3&gt;
+&lt;p&gt;Dazu öffnest du die Datei wp-config.php, nachdem du sie lokal gespeichert hast, und setzt folgenden Parameter direkt an den Anfang, aber hinter das &lt;em&gt;&amp;lt;?php&lt;/em&gt;:&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+</description>
+      
+    </item>
+    
+  </channel>
+</rss>

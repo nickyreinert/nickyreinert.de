@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="Jeder kennt das Problem: Man hat stundenlang an einem Stylesheet auf dem Staging-Server rumgebastelt, will es nun auf den Live-Server kopieren und die Änderung ist nicht sichtbar. Die Fehlersuche beginnt. Man prüft den Cache. Vom Browser. Vom Server. Ist man überhaupt auf dem richtigen Server? Hat der Upload geklappt? Und so weiter. Eric Meyer hat das ganze Dilemma 2009 treffend beschrieben und auch eine Lösung mitgeliefert, von der ich noch nicht gehört habe:">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/favicon.ico">
+
+  
+  
+  <meta name="keywords" content=" hugo  latex  theme ">
+  
+
+  
+  
+
+  
+  <meta property="og:title" content="CSS über den HTTP-Header ausspielen" />
+<meta property="og:description" content="Jeder kennt das Problem: Man hat stundenlang an einem Stylesheet auf dem Staging-Server rumgebastelt, will es nun auf den Live-Server kopieren und die Änderung ist nicht sichtbar. Die Fehlersuche beginnt. Man prüft den Cache. Vom Browser. Vom Server. Ist man überhaupt auf dem richtigen Server? Hat der Upload geklappt? Und so weiter. Eric Meyer hat das ganze Dilemma 2009 treffend beschrieben und auch eine Lösung mitgeliefert, von der ich noch nicht gehört habe:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://nickyreinert.de/blog/2020/06/04/css-%C3%BCber-den-http-header-ausspielen/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-06-04T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-06-04T00:00:00+00:00" />
+
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/blog/2020/06/04/css-%C3%BCber-den-http-header-ausspielen/">
+
+  
+  
+  <meta itemprop="name" content="CSS über den HTTP-Header ausspielen">
+<meta itemprop="description" content="Jeder kennt das Problem: Man hat stundenlang an einem Stylesheet auf dem Staging-Server rumgebastelt, will es nun auf den Live-Server kopieren und die Änderung ist nicht sichtbar. Die Fehlersuche beginnt. Man prüft den Cache. Vom Browser. Vom Server. Ist man überhaupt auf dem richtigen Server? Hat der Upload geklappt? Und so weiter. Eric Meyer hat das ganze Dilemma 2009 treffend beschrieben und auch eine Lösung mitgeliefert, von der ich noch nicht gehört habe:"><meta itemprop="datePublished" content="2020-06-04T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2020-06-04T00:00:00+00:00" />
+<meta itemprop="wordCount" content="181">
+<meta itemprop="keywords" content="css,http," />
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>CSS über den HTTP-Header ausspielen - Nicky Reinert</title>
+  
+
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CSS über den HTTP-Header ausspielen"/>
+<meta name="twitter:description" content="Jeder kennt das Problem: Man hat stundenlang an einem Stylesheet auf dem Staging-Server rumgebastelt, will es nun auf den Live-Server kopieren und die Änderung ist nicht sichtbar. Die Fehlersuche beginnt. Man prüft den Cache. Vom Browser. Vom Server. Ist man überhaupt auf dem richtigen Server? Hat der Upload geklappt? Und so weiter. Eric Meyer hat das ganze Dilemma 2009 treffend beschrieben und auch eine Lösung mitgeliefert, von der ich noch nicht gehört habe:"/>
+
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <h1>
+    <a href="https://nickyreinert.de/">Nicky Reinert</a>
+  </h1>
+
+  <nav>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/">Post</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/post/">Archives</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/about/">About</a>
+    </span>
+    
+  </nav>
+</header>
+
+    
+<main id="main" class="post">
+  
+  
+  <h1>CSS über den HTTP-Header ausspielen</h1>
+  
+  <div>
+    <b>Keywords: </b>
+    
+    <a class="link" href='https://nickyreinert.de/tags/css'>#css</a>
+    
+    <a class="link" href='https://nickyreinert.de/tags/http'>#http</a>
+    
+  </div>
+  
+  
+  <article class="content">
+    
+    <p>Jeder kennt das Problem: Man hat stundenlang an einem Stylesheet auf dem Staging-Server rumgebastelt, will es nun auf den Live-Server kopieren und die Änderung ist nicht sichtbar. Die Fehlersuche beginnt. Man prüft den Cache. Vom Browser. Vom Server. Ist man überhaupt auf dem richtigen Server? Hat der Upload geklappt? Und so weiter. Eric Meyer hat das ganze Dilemma 2009 treffend beschrieben und auch eine Lösung mitgeliefert, von der ich noch nicht gehört habe:</p>
+<p>Nutze doch einfach die HTTP-Header um deine Staging- und Live-Umgebung eindeutig voneinander zu unterscheiden. Der Link-Parameter im HTTP-Header nämlich auch die Angabe von Style-Sheet-Dateien. Und das sieht dann so aus:</p>
+<pre tabindex="0"><code>Header add Link &#34;&lt;/staging.css&gt;;rel=stylesheet;type=text/css;media=all&#34;
+</code></pre><p>In nginx kann man das folgendermaßen im Server-Block implementieren:</p>
+<pre tabindex="0"><code>add_header Link &#34;&lt;/wp-content/themes/nickyreinert/style.header.css&gt;;rel=stylesheet;type=text/css;media=all&#34;;
+</code></pre><p>Wer Apache nutzt, setzt den &ldquo;CSS-Header&rdquo; folgendermaßen:</p>
+<pre tabindex="0"><code>Header add Link &#34;&lt;/wp-content/themes/nickyreinert/style.header.css&gt;;rel=stylesheet;type=text/css;media=all&#34;
+</code></pre><p>Natürlich habe ich die Spielerei gleich bei mir eingebaut:</p>
+<p><img src="images/grafik-700x382.png" alt=""></p>
+<p>CSS-Datei im HTTP-Header ausgeliefert</p>
+<p>Damit lässt sich grundsätzlich auch das Stylesheet deines Wordpress-Themes ausliefern: Da WordPress aber die style.css nutzt, um Theme-Informationen zu verarbeiten, musst du auf dieses kleine Feature dann verzichten. Außerdem wird CSS im Link-Header nicht von jedem Browser unterstützt.</p>
+
+    
+  </article>
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/blog/2020/05/11/how-to-create-a-maze-algorithm-with-javascript/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/blog/2020/06/09/wordpress-word-cloud-2.0/">next →</a>
+    
+  </div>
+  <div class="comment">
+    
+    
+    
+    
+    
+    
+  </div>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 2019</span> - <span>2023</span>
+  </div>
+
+  <div>
+    <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a>
+    <span> 🍦 Theme </span>
+    <a class="link" href="https://github.com/queensferryme/hugo-theme-texify">TeXify</a>
+  </div>
+
+  <div class="footnote">
+    <span>Follow me on <a class=link href=https://github.com/queensferryme>GitHub</a>,
+<a class=link href=https://twitter.com/queensferryme>Twitter</a> or
+<a class=link href=/index.xml>RSS</a> |
+<a class=link href=https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh target=_blank rel=noopener>CC BY-NC-SA 4.0</a>
+</span>
+  </div>
+</footer>
+
+  </div>
+
+  
+  
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>

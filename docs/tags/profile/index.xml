@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>profile on Nicky Reinert</title>
+    <link>https://nickyreinert.de/tags/profile/</link>
+    <description>Recent content in profile on Nicky Reinert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>de-DE</language>
+    <lastBuildDate>Fri, 24 Aug 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/profile/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Die OS X - Bash</title>
+      <link>https://nickyreinert.de/blog/2018/08/24/die-os-x-bash/</link>
+      <pubDate>Fri, 24 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickyreinert.de/blog/2018/08/24/die-os-x-bash/</guid>
+      
+      <description>&lt;p&gt;Da ich mit meinem Mac sehr oft auf der Kommandozeile unterwegs bin (dazu empfehle ich übrigens &lt;a href=&#34;https://www.iterm2.com/&#34;&gt;iTerm2&lt;/a&gt; - ein Terminal-Ersatz der alle anderen Anwendungen dieser Art auch auf Linux und Windows aussticht) habe ich mir dafür ein paar kleine Einstellungen zusammengesammelt, die das Leben und Arbeiten auf der Kommandozeile etwas erleichtern.&lt;/p&gt;
+&lt;h2 id=&#34;was-ist-bash&#34;&gt;Was ist Bash?&lt;/h2&gt;
+&lt;p&gt;Bash steht für &amp;ldquo;Bourn again shell&amp;rdquo; und ist eine Erweiterung der älteren Bourne-Shell, eine Shell die auf Unix-(ähnlichen) Systemen als Benutzerschnittstelle dient. Und diese ist vor allem daran erkennbar, dass die Steuerung des Systems nur über die Tastatur, ohne Maus und Fenster funktioniert.&lt;/p&gt;
+&lt;p&gt;Seit der Version 10.3 ist Bash auch Bestandteil von Mac OS X und bringt damit eine Menge Vorteile für die Arbeit auf der Kommandozeile mit sich.&lt;/p&gt;
+&lt;h2 id=&#34;die-bash-konfigurationsdateien&#34;&gt;Die Bash Konfigurationsdateien&lt;/h2&gt;
+&lt;p&gt;Die globalen Einstellungen für die Bash befinden sich in der Datei &lt;strong&gt;/etc/bashrc&lt;/strong&gt; und der &lt;strong&gt;/etc/profile&lt;/strong&gt;. Wer Einstellungen auf bestimmte Benutzer beschränken will, kann im Benutzerverzeichnis (du gelangst mit &lt;em&gt;cd ~&lt;/em&gt; dorthin) eine Datei mit dem Name &lt;strong&gt;.profile&lt;/strong&gt;, &lt;strong&gt;.bash_login&lt;/strong&gt; oder &lt;strong&gt;.bash_profile&lt;/strong&gt; anlegen. Beachte, dass &lt;strong&gt;.profile&lt;/strong&gt; nur geladen wird, wenn &lt;strong&gt;.bash_login&lt;/strong&gt; nicht existiert, welche wiederum durch &lt;strong&gt;.bash_profile&lt;/strong&gt; überschrieben wird. Das gilt allerdings nicht, wenn du dich als &lt;strong&gt;root-Benutzer&lt;/strong&gt; anmeldest - dann wird nur die Datei &lt;strong&gt;.profile&lt;/strong&gt; gelesen. Der Grund ist, dass der Root-Benutzer nicht &lt;strong&gt;bash&lt;/strong&gt; sondern &lt;strong&gt;sh&lt;/strong&gt; ausführt, wodurch nur die &lt;strong&gt;~/.profile&lt;/strong&gt;-Datei berücksichtigt wird.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/image-8.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Hierarchie der Bash-Konfigurations-Dateien&lt;/p&gt;
+&lt;p&gt;Daneben gibt es theoretisch auch die Möglichkeit, im Benutzerverzeichnis eine Datei mit dem Namen &lt;strong&gt;.bashrc&lt;/strong&gt; anzulegen. Diese wird jedoch nur dann geladen, wenn Bash ausgeführt wird, ohne dass sich ein Benutzer dazu anmeldet (die sogenannte &lt;em&gt;non-login-shell&lt;/em&gt;). Im OS X-Umfeld wird das aber nicht benötigt. Du kannst das erzwingen, indem du auf der Kommandozeile &lt;strong&gt;/bin/bash&lt;/strong&gt; ausführst - wir wollen die jetzt schon komplizierte Geschichte aber nicht unnötigen verkomplizieren. ;)&lt;/p&gt;
+&lt;h2 id=&#34;die-bash-aufhübschen&#34;&gt;Die Bash aufhübschen&lt;/h2&gt;
+&lt;p&gt;Nach der langweiligen aber notwendige Theorie, gibts jetzt ein paar Zeilen Code, mit denen die Kommandozeile gleich viel besser aussieht. Ich hab aus oben genannten Gründen das Ganze in die Datei &lt;strong&gt;~/.profile&lt;/strong&gt; gepackt. Zunächst einmal ein paar Aliase um die Verzeichnislisten etwas übersichtlicher zu gestalten oder auch das oft benutzte &lt;strong&gt;cd&lt;/strong&gt; (&lt;em&gt;change dir&lt;/em&gt;) zu vereinfachen.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;alias l=&amp;#39;ls -alCFGA&amp;#39;
+alias ll=&amp;#34;ls -CFGla&amp;#34;
+alias h=&amp;#34;history&amp;#34;
+alias .=&amp;#34;cd ~&amp;#34;
+alias ..=&amp;#34;cd ..&amp;#34;
+alias ...=&amp;#34;cd ../..&amp;#34;
+# -p: erzeuge Unterverzeichnis, falls sie nicht existieren
+# -v: gebe erzeugtes Verzeichnis zurück
+alias mkdir=&amp;#34;mkdir -pv&amp;#34;
+# grep Ausgabe farbig gestalten
+alias grep=&amp;#39;grep --color=auto&amp;#39;
+alias fgrep=&amp;#39;fgrep --color=auto&amp;#39;
+alias egrep=&amp;#39;egrep --color=auto&amp;#39;
+# das aktuelle Verzeichnis im Finder öffnen
+alias f=&amp;#39;open -a Finder ./&amp;#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Die folgende Zeile ist kein Alias sondern eine Funktion. Damit wird ein Verzeichnis (mit allen benötigten Unterverzeichnissen erstellt) und dann mit cd direkt in das Verzeichnis gewechselt:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;mcd () { mkdir -p &amp;#34;$1&amp;#34; &amp;amp;&amp;amp; cd &amp;#34;$1&amp;#34;; }
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Als nächstes will ich die Darstellung der zuletzt benutzten Befehle (&lt;strong&gt;history&lt;/strong&gt; bzw. jetzt &lt;strong&gt;h&lt;/strong&gt;) etwas anpassen:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# Duplikate ignorieren
+HISTCONTROL=ignoreboth
+# Befehle anhängen und die Historie nicht jedes mal neu überschreiben
+shopt -s histappend
+# die maximale Größe bzw. Länge der Historie erhöhen
+HISTSIZE=1000
+HISTFILESIZE=2000
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Der folgende Befehl sorgt dafür, dass sich die Anzahl der dargestellten &lt;strong&gt;Spalten und Zeilen&lt;/strong&gt; an die Fenstergröße anpasst. Die Funktion sollte per default aktiviert sein, zur Sicherheit legen wir das hier trotzdem fest! Mit dem Parameter -u kann die Option übrigens wieder deaktiviert werden.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;shopt -s checkwinsize
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Hiermit wird das Aussehen und die Farbe der Kommandozeile geändert. Ich hab mich für eine relativ bunte Variante entschieden. Die Einstellung für den sog. Prompt wird in der globalen Variable &lt;strong&gt;PS1&lt;/strong&gt; (&lt;em&gt;prompt statement 1&lt;/em&gt;) gespeichert. Die folgenden Parameter sind hier geläufig:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;\u - Benutzername&lt;/li&gt;
+&lt;li&gt;\h - Name des Hosts / Computers&lt;/li&gt;
+&lt;li&gt;\w - der komplette aktuelle Pfad&lt;/li&gt;
+&lt;li&gt;\n  - Ein Zeilenumbruch&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Mit &lt;strong&gt;PS2&lt;/strong&gt;, &lt;strong&gt;PS3&lt;/strong&gt;, &lt;strong&gt;PS4&lt;/strong&gt; lassen sich noch andere Prompts konfigurieren, wie z.B. der für interaktive Eingaben in Bash-Scripten. Die Variable &lt;strong&gt;PROMPT_COMMAND&lt;/strong&gt; wird sogar noch vor &lt;strong&gt;PS1&lt;/strong&gt; dargestellt. Wer mehr dazu erfahren möchte, &lt;a href=&#34;https://wiki.ubuntuusers.de/Bash/Prompt/#source-2&#34;&gt;schaut einfach mal dort vorbei&lt;/a&gt;.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;export PS1=&amp;#34;$(date +%k:%m:%S) \[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ &amp;#34;
+
+# Diese Konstanten steuern die Farben für die Ausgabe von cd.
+export CLICOLOR=1
+export LSCOLORS=ExFxBxDxCxegedabagacad
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Das ganze sieht dann so aus:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/image-9.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Eine bunte aber informative Kommandozeile&lt;/p&gt;
+&lt;p&gt;Diese Funktion zeigt alle Prozesse, die unter dem aktuellen Benutzer aktiv sind:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;me() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Als nächstes ein paar Aliase um das Netzwerk ein bisschen einfacher im Griff zu behalten:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# alle Verbindungen, die gerade &amp;#34;Lauschen&amp;#34;
+alias cons=&amp;#39;sudo lsof -i | grep LISTEN&amp;#39;
+# alle offenen Sockets
+alias socks=&amp;#39;sudo /usr/sbin/lsof -i -P&amp;#39;
+# alle offenen TCP/IP-Sockets
+alias tsocks=&amp;#39;lsof -i&amp;#39;
+# alle offenen UDP-Sockets
+alias usocks=&amp;#39;sudo /usr/sbin/lsof -nP | grep UDP&amp;#39;
+# alle offenen TCP-Sockets
+alias lsocks=&amp;#39;sudo /usr/sbin/lsof -nP | grep TCP&amp;#39; 
+# grundlegende Netzwerkeinstellungen
+alias net=&amp;#39;ipconfig getpacket en0&amp;#39;
+
+# den DNS-Cache leeren
+alias cleardns=&amp;#39;dscacheutil -flushcache&amp;#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Die ganzen Inhalte gibt es hier noch einmal in kompakter Version:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+alias l=&amp;#39;ls -alCFGA&amp;#39;
+alias ll=&amp;#34;ls -CFGla&amp;#34;
+alias h=&amp;#34;history&amp;#34;
+alias .=&amp;#34;cd ~&amp;#34;
+alias ..=&amp;#34;cd ..; pwd&amp;#34;
+alias ...=&amp;#34;cd ../..; pwd&amp;#34;
+alias mkdir=&amp;#34;mkdir -pv&amp;#34;
+alias grep=&amp;#39;grep --color=auto&amp;#39;
+alias fgrep=&amp;#39;fgrep --color=auto&amp;#39;
+alias egrep=&amp;#39;egrep --color=auto&amp;#39;
+alias f=&amp;#39;open -a Finder ./&amp;#39;
+
+HISTCONTROL=ignoreboth
+shopt -s histappend
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+shopt -s checkwinsize
+
+case &amp;#34;$TERM&amp;#34; in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+export PS1=&amp;#34;$(date +%k:%m:%S) \[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ &amp;#34;
+export CLICOLOR=1
+export LSCOLORS=ExFxBxDxCxegedabagacad
+
+mcd () { mkdir -p &amp;#34;$1&amp;#34; &amp;amp;&amp;amp; cd &amp;#34;$1&amp;#34;; }
+me() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }
+
+alias cons=&amp;#39;sudo lsof -i | grep LISTEN&amp;#39;
+alias socks=&amp;#39;sudo /usr/sbin/lsof -i -P&amp;#39;
+alias tsocks=&amp;#39;lsof -i&amp;#39;
+alias usocks=&amp;#39;sudo /usr/sbin/lsof -nP | grep UDP&amp;#39;
+alias lsocks=&amp;#39;sudo /usr/sbin/lsof -nP | grep TCP&amp;#39;
+alias net=&amp;#39;ipconfig getpacket en0&amp;#39;
+alias cleardns=&amp;#39;dscacheutil -flushcache&amp;#39;
+&lt;/code&gt;&lt;/pre&gt;</description>
+      
+    </item>
+    
+  </channel>
+</rss>

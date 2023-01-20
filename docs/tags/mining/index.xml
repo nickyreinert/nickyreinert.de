@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mining on Nicky Reinert</title>
+    <link>https://nickyreinert.de/tags/mining/</link>
+    <description>Recent content in mining on Nicky Reinert</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>de-DE</language>
+    <lastBuildDate>Sun, 31 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/mining/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&amp;nbsp;2/2)</title>
+      <link>https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teilnbsp2/2/</link>
+      <pubDate>Sun, 31 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teilnbsp2/2/</guid>
+      
+      <description>&lt;p&gt;Wenn du &lt;a href=&#34;https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/&#34;&gt;den ersten Teil&lt;/a&gt; erfolgreich verarbeitet hast, bist du bestens gewappnet, um in diesem Teil zu erfahren, wie die einzelnen Komponenten bzw. Funktionen nun zusammenspielen.&lt;/p&gt;
+&lt;h3 id=&#34;vorbemerkung&#34;&gt;Vorbemerkung&lt;/h3&gt;
+&lt;p&gt;Bevor es los geht möchte ich noch einmal die Zusammenhänge verdeutlichen: Wir werden gleich eine Nachricht (&lt;strong&gt;Message&lt;/strong&gt;) erzeugen, deren Länge einem Vielfachen von &lt;strong&gt;512 Bit&lt;/strong&gt; entspricht; im Beispiel genau &lt;strong&gt;512 Bit&lt;/strong&gt;. Die Nachricht wird in &lt;strong&gt;Message-Blocks&lt;/strong&gt; zerlegt, die exakt &lt;strong&gt;512 Bit&lt;/strong&gt; lang sind. Jeder Message-Block wird wiederum zu einer &lt;strong&gt;Message-Schedule&lt;/strong&gt; zerlegt, mit &lt;strong&gt;16 Wörtern&lt;/strong&gt; (Words) zu je &lt;strong&gt;32 Bit&lt;/strong&gt; Länge. Die Länge der Wörter muss und wird immer &lt;strong&gt;32 Bit&lt;/strong&gt; sein! Der Message-Schedule wird dann aber erweitert, um &lt;strong&gt;64 Wörter zu&lt;/strong&gt; enthalten. Seine Länge dann: &lt;strong&gt;2.048 Bit&lt;/strong&gt;. Und grafisch:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*Gx3ZYmks_2_VW-xi_48uPg.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Wichtige Zusammenhänge&lt;/p&gt;
+&lt;h3 id=&#34;dekompressions&#34;&gt;Dekompressions&lt;/h3&gt;
+&lt;p&gt;Wir wollen also aus einer Nachricht eine &lt;strong&gt;SHA-256&lt;/strong&gt;-konforme Prüfsumme, den Hash, berechnen. Dazu muss die Nachricht, also der String, zunächst vorbereitet werden. Unsere Nachricht ist, klischeegerecht:&lt;/p&gt;
+&lt;p&gt;message = &amp;lsquo;hello_world&amp;rsquo;&lt;/p&gt;
+&lt;p&gt;Zunächst müssen wir für jeden Buchstabend die Position in der Zeichentabelle herausbekommen, sprich die Buchstaben (bzw genauer jedes Zeichen) in ihre numerische Repräsentation umwandeln:&lt;/p&gt;
+&lt;p&gt;dec_message = []&lt;br&gt;
+for char in message:&lt;br&gt;
+dec_message.append(ord(char))&lt;/p&gt;
+&lt;p&gt;Das Ergegnis ist eine Liste mit Integern:&lt;/p&gt;
+&lt;p&gt;[104, 101, 108, 108, 111, 95, 119, 111, 114, 108, 100]&lt;/p&gt;
+&lt;p&gt;Und da wir im ersten Teil so viel Spaß am Umgang mit binären Werten hatten, wandeln wir die Liste in binäre Werte um, die wir schlicht miteinander verknüpfen:&lt;/p&gt;
+&lt;p&gt;bin_message = &amp;rsquo;&amp;rsquo;&lt;br&gt;
+for decimal in dec_message:&lt;br&gt;
+bin_message += &amp;lsquo;0&amp;rsquo; + bin(decimal)[2:&lt;/p&gt;
+&lt;p&gt;Das Ergebnis:&lt;/p&gt;
+&lt;p&gt;0110100001100101011011000110110001101111010111110111011101101111011100100110110001100100&lt;/p&gt;
+&lt;p&gt;Hier gibt es allerdings eine Stolperfalle, und es widerstrebt mir das so stehen zu lassen, für die ich noch keine Erklärung gefunden habe: Bei der Umwandlung in die binäre Entsprechung stellen wir jedem binären Wert eine 0 voran. Aus &lt;strong&gt;104&lt;/strong&gt; wird also nicht &lt;strong&gt;1101000&lt;/strong&gt; sondern &lt;strong&gt;01101000&lt;/strong&gt;, uswf.&lt;/p&gt;
+&lt;p&gt;Außerdem hängen wir an dieses Datum eine 1 heran, sozusagen als Trennzeichen für das, was jetzt gleich kommt.&lt;/p&gt;
+&lt;p&gt;Als nächstes berechnen wir die Länge dieser binären Zahl:&lt;/p&gt;
+&lt;p&gt;len_bin_message = len(bin_message)&lt;/p&gt;
+&lt;p&gt;Die Längenangabe darf bzw muss exakt &lt;strong&gt;64 Bit&lt;/strong&gt; belegen. Wir wandeln sie also auch in eine binäre Zahl um hängen vorne ein paar Nullen ran um genau 64 Stellen zu erhalten:&lt;/p&gt;
+&lt;p&gt;rest_to_64 = 64 - len(bin(len_bin_message)[2:])&lt;/p&gt;
+&lt;p&gt;bin_message_len = &amp;lsquo;0&amp;rsquo; * rest_to_64 + bin(len_bin_message)[2:]&lt;/p&gt;
+&lt;p&gt;Nun müssen wir diese drei binären Informationen, Nachricht, trennende Eins und Längenangabe nicht nur verbinden, sondern auch mit so vielen Nullen auffüllen, damit die Gesamtlänge ein vielfaches von 512 ist.&lt;/p&gt;
+&lt;p&gt;payload = bin_message + &amp;lsquo;1&amp;rsquo; + bin_message_len&lt;/p&gt;
+&lt;p&gt;len_payload = len(payload)&lt;/p&gt;
+&lt;p&gt;pad_string = int(512 - (len_payload % 512))&lt;/p&gt;
+&lt;p&gt;full_message = bin_message + &amp;lsquo;1&amp;rsquo; + (&amp;lsquo;0&amp;rsquo; * pad_string) + bin_message_len&lt;/p&gt;
+&lt;p&gt;In unserem Beispiel belegen die drei Informationen 153 Bit. Wir müssen also 359 Nullen dazupacken. Genau genommen kommen die zwischen Nachricht und Längenangabe. Das Ergebnis ist immer &lt;strong&gt;n* 512 Bits&lt;/strong&gt; lang:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*uU6ACP1ZLNPL-7Aa3HWp-w.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Aufbau einer vorkodierten Nachricht&lt;/p&gt;
+&lt;p&gt;Zu guter Letzt nehmen wir diese sehr, sehr, sehr, sehr….sehr, sehr große Zahl (sie ist sehr groß, du solltest sie auch nicht als Zahl sehen, sondern als &lt;strong&gt;Bitfolge&lt;/strong&gt;!) und teilen sie in sogenannte Message Blocks mit einer Länge von jeweils &lt;strong&gt;512 Bits&lt;/strong&gt; auf:&lt;/p&gt;
+&lt;p&gt;message_block_length = 512&lt;br&gt;
+message_blocks = [full_message[i:i+message_block_length] for i in range(0, len(full_message), message_block_length)]&lt;/p&gt;
+&lt;p&gt;Schnapp dir einen Kaffee, geh noch mal frische Luft schnappen, schüttel den Stuhl aus. Jetzt geht es los.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/0*8c7oAT9LgDy48Ox4.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;8 Bits sind keine Bitfolge&lt;/p&gt;
+&lt;h3 id=&#34;die-schleife&#34;&gt;Die Schleife!&lt;/h3&gt;
+&lt;p&gt;Da es einfacher ist, den Vorgang ohne Schleife zu erklären, hier nur eine Schleife. Die programmatische Schleife findest du trotzdem auf &lt;a href=&#34;https://gist.github.com/nickyreinert/00d631fe9a90108924b1df6e911c8cd5&#34;&gt;&lt;strong&gt;Github&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*wWCFfBhvejAwbg3k0NpKGA.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Es folgt: Eine Schleife&lt;/p&gt;
+&lt;p&gt;Da unsere Nachricht genau 512 Bit groß ist und wir auch ohne Schleife arbeiten, können wir direkt in die Vollen gehen: Die mühsam zusammengeklebte Nachricht wird nun in den sog. Message Schedule zerlegt: Sprich in &lt;strong&gt;16 Wörter&lt;/strong&gt; mit jeweils 32 Bit Länge.&lt;/p&gt;
+&lt;p&gt;Im ersten Durchlauf nehmen wir vier Wörter und führen folgende Modifikationen aus:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;σ1&lt;/strong&gt; wird auf &lt;strong&gt;Wort 1&lt;/strong&gt; an Position 14 angewendet,&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Wort 2&lt;/strong&gt; von Position 9 bleibt unverändert,&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;σ0&lt;/strong&gt; wird auf &lt;strong&gt;Wort 3&lt;/strong&gt; an Position 1 angewendet und&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Wort 4&lt;/strong&gt; an Position 0 bleibt wieder unberührt&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Die Werte werden zunächst addiert und jetzt gibt es wieder einen &lt;strong&gt;wichtigen Punkt&lt;/strong&gt; zu beachten: Wir müssen strikt dafür sorgen, dass die Wörter nicht länger als &lt;strong&gt;32 Bit&lt;/strong&gt; sind. Denn nur so können wir sicherstellen, dass der finale Hash immer die gleiche länge hat. Und spätestens jetzt, bei der &lt;strong&gt;Addition großer Werte&lt;/strong&gt;, können wir die &lt;strong&gt;32 Bit&lt;/strong&gt; recht schnell überschreiten. Das ist auch aus technischer Sicht eine Hürde. Deswegen gilt: Hier und bei allen Additionen müssen wir abschließend &lt;strong&gt;Modulo 2&lt;/strong&gt;³² anwenden. Und jetzt kommt der dritte hoffentlich positive Knick in der Lernkurve: Auch für Modulo hält das binäre Universum eine schöne Vereinfachung parat: &lt;strong&gt;Das logische Und&lt;/strong&gt; mit 2³²–1 (bzw 4.294.967.295, das ist eine sehr große Zahl, nicht so groß wie die im ersten Teil, sondern genau einen Zähler kleiner) führt zum gleichen Ergebnis.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*Nr7Iqokxipq969FtGzuWRg.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Berechnung des ersten Schritts&lt;/p&gt;
+&lt;p&gt;Damit wäre der Message-Schedule vorbereitet und enthält nun &lt;strong&gt;64 wunderschöne Wörter&lt;/strong&gt; zu &lt;strong&gt;je 32 Bit&lt;/strong&gt;. Wir haben die Informationen aus dem Message Block also zunächst aufgeplustert und von &lt;strong&gt;512 Bit auf 2.048 Bit&lt;/strong&gt; erweitert- sie sind aber immer noch lesbar:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*nWnncmNCGjwqb8nPiCGF8Q.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Der erweiterte Message Schedule&lt;/p&gt;
+&lt;p&gt;Aber damit ist jetzt Schluss, wir kommen zum nächsten und wichtigsten Schritt:&lt;/p&gt;
+&lt;h3 id=&#34;die-kompression&#34;&gt;Die Kompression&lt;/h3&gt;
+&lt;p&gt;Der erweiterte Message-Schedule wird in diesem Schritt nicht direkt modifiziert, die Wörter werden vielmehr als Grundlage für die Modifikation der anfangs erzeugten &lt;strong&gt;Kompressions-Konstanten&lt;/strong&gt; verwendet.&lt;/p&gt;
+&lt;p&gt;In 64 Schleifen-Durchläufen gehen wir durch den Message-Schedule. Aus jedem Wort des Schedules (also unserer ursprünglichen Nachricht) wird zusammen mit den &lt;strong&gt;64 Ergebnis-Konstanten&lt;/strong&gt; und den &lt;strong&gt;8 Kompressions-Konstanten&lt;/strong&gt; ein neues Wort berechnet. Das neue Wort wird dann den Kompressions-Konstanten vorangestellt, gleichzeitig wird der letzte Eintrag gelöscht. So enthält die Liste immer genau 8 Einträge.&lt;/p&gt;
+&lt;p&gt;new_compression_constants = compression_constants.copy()&lt;/p&gt;
+&lt;p&gt;for i, word in enumerate(message_schedule):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;term1 = (int(upper\_sigma1(new\_compression\_constants\[4\]), 2) + \\  
+            int(choose(new\_compression\_constants\[4\], new\_compression\_constants\[5\], new\_compression\_constants\[6\]), 2) + \\  
+            int(new\_compression\_constants\[7\], 2) + \\  
+            int(result\_constants\[i\], 2) + \\  
+            int(word, 2)) \\  
+            &amp;amp; int(&#39;11111111111111111111111111111111&#39;, 2)
+
+term2 = (int(upper\_sigma0(new\_compression\_constants\[0\]), 2) + \\  
+            int(majority(new\_compression\_constants\[0\], new\_compression\_constants\[1\], new\_compression\_constants\[2\]), 2)) &amp;amp; int(&#39;11111111111111111111111111111111&#39;, 2)
+
+new\_compression\_constants.insert(0, 1)  
+new\_compression\_constants.pop()
+
+new\_compression\_constants\[0\] = bin(  
+            (term1 + term2) &amp;amp; int(&#39;11111111111111111111111111111111&#39;, 2)  
+            )\[2:\].zfill(32)
+
+new\_compression\_constants\[4\] = bin(  
+            (int(new\_compression\_constants\[4\], 2) + term1) &amp;amp; int(&#39;11111111111111111111111111111111&#39;, 2)  
+            )\[2:\].zfill(32)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Zunächst ein paar Berechnungen:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Term 1&lt;/strong&gt; berechnet sich aus den Kompressions-Konstanten, einer der Ergebnis-Konstanten und dem jeweiligen Wort. Wir verwenden hier auf Bitebene und &lt;strong&gt;Σ1&lt;/strong&gt; (upper_sigma1) sowie &lt;strong&gt;choose&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Term 2&lt;/strong&gt; ist eine Summe zweier anderer Kompressions-Konstanten, die mithilfe von &lt;strong&gt;Σ0&lt;/strong&gt; (upper_sigma0) sowie &lt;strong&gt;majority&lt;/strong&gt; modifiziert werden.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Und jetzt achte mal drauf, dass die ursprüngliche Nachricht Teil des 1. Terms ist — in der Abbildung rot markiert:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*L43gXddhAhk3udz82iykqw.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Im ersten Schritt erfolgt die Berechnung zweier Terme&lt;/p&gt;
+&lt;p&gt;Die beiden Terme werden nun wiederum addiert (und wie immer mit &lt;strong&gt;Modulo 2³²&lt;/strong&gt; auf 32 Bit-Kurs gebracht) und an den Anfang der Kompressions-Konstanten gestellt. Der erste Term wird außerdem mit der 4. Position dieser nun 9 Wörter langen List summiert:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*-BcRv8_DRt_qP8qvpe_Bqw.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Im zweiten Schritt wird die Listse der Kompression-Konstanten aktualisiert&lt;/p&gt;
+&lt;p&gt;Als nächstes wird der letzte Eintrag der Liste gelöscht, sie umfasst nun &lt;strong&gt;8 komplett neue Kompressions-Konstanten&lt;/strong&gt; (wenn du aufmerksam aufgepasst hast, wird dir nicht entgangen sein, dass sie gar nicht mal so konstant sind).&lt;/p&gt;
+&lt;p&gt;Ein Teil der ursprünglichen Nachricht befindet sich nun an als &lt;strong&gt;Summand von Term 1&lt;/strong&gt; and den &lt;strong&gt;Positionen 0 und 4&lt;/strong&gt; und. Diese werden in den nächsten Durchläufen Teil der gleichen Berechnungen und immer weiter nach unten rutschen. So verteilt sich die ursprüngliche, bisher noch halbwegs lesbare Nachricht, über die gesamte Liste.&lt;/p&gt;
+&lt;p&gt;Diese Liste ist also die Grundlage für den zweiten Durchlauf, der sie erneut “durchrotiert”, um wiederum eine komplett neue Liste für den dritten Durchlauf zu erzeugen. Und so weiter, bis alle 64 Wörter des Message-Schedules verarbeitet wurden. Das Ergebnis sollte in etwa so aussehen:&lt;/p&gt;
+&lt;p&gt;11100010000000010111101011011001&lt;br&gt;
+01000110110100101000001000010100&lt;br&gt;
+11100011111110010111100001001011&lt;br&gt;
+01110001100001100000010000011110&lt;br&gt;
+01001000000111100100000000011000&lt;br&gt;
+00011111110001101011001000110101&lt;br&gt;
+11101001110010001101110111110100&lt;br&gt;
+00001001011011110000111011111011&lt;/p&gt;
+&lt;p&gt;Oder in Hexadezimal:&lt;/p&gt;
+&lt;p&gt;0xe2017ad9 0x46d28214 0xe3f9784b 0x7186041e 0x481e4018 0x1fc6b235 0xe9c8ddf4 0x96f0efb&lt;/p&gt;
+&lt;p&gt;Abschließend gehen wird durch genau diese Liste der 8. Kompressions-Konstanten und addieren jede Positionen mit dem entsprechenden Wort der Ausgangs-Liste:&lt;/p&gt;
+&lt;p&gt;result = []&lt;/p&gt;
+&lt;p&gt;for i in range(0, 8):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;result.append(  
+    bin(int(compression\_constants\[i\], 2) +   
+    int(new\_compression\_constants\[i\], 2)  &amp;amp;      
+    int(&#39;11111111111111111111111111111111&#39;, 2))\[2:\].zfill(32))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Und im Klartext:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*L88ZRRaNpEkeBBkwRJ6-Ew.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Letzter Schritt: Addieren der Listen&lt;/p&gt;
+&lt;p&gt;Die neue Liste ist nun die &lt;strong&gt;Ausgangs-Liste&lt;/strong&gt; für den nächsten Message-Schedule. Da wir die Schleife hier aber nicht implementieren, war es das fürs erste. Im Folgenden noch mal eine beispielhafte Zusammenfassung der Schritte:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/1*Sj_AxftysVj_J6uSJX4z-w.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Schematische Darstellung des SHA-256 Algorithmus’&lt;/p&gt;
+&lt;h3 id=&#34;haschee-gesundheit-was&#34;&gt;Haschee. Gesundheit. Was?&lt;/h3&gt;
+&lt;p&gt;Wir haben es geschafft. Du hast es geschafft. Herzlichen Glückwunsch.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/0*KeZ2dcUvVLeN60uE.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Quelle: memecreator.org&lt;/p&gt;
+&lt;p&gt;Nun können wir den Hash entweder als Hex-Wert ausgeben oder wieder in binärer Schreibweise darstellen, je nach Anwendungszweck.&lt;/p&gt;
+&lt;p&gt;for word in result:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;print(hex(int(word, 2))\[2:\].zfill(8) + &#39;&#39;, end = &#39;&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Das Ergebnis kann sich in jedem Fall sehen lassen.&lt;/p&gt;
+&lt;p&gt;35072c1ae546350e0bfa7ab11d49dc6f129e72ccd57ec7eb671225bbd197c8f1&lt;/p&gt;
+&lt;p&gt;Oder&lt;/p&gt;
+&lt;p&gt;110101000001110010110000011010111001010100011000110101000011101011111110100111101010110001111010100100111011100011011111001010011110011100101100110011010101011111101100011111101011110011100010010001001011011101111010001100101111100100011110001&lt;/p&gt;
+&lt;h3 id=&#34;epilog&#34;&gt;Epilog&lt;/h3&gt;
+&lt;p&gt;Eine komplette Implementierung, inklusive einer Schleife, um auch große Nachrichten zu verarbeiten, findest &lt;a href=&#34;https://gist.github.com/nickyreinert/00d631fe9a90108924b1df6e911c8cd5&#34;&gt;du in diesem Gist&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Freilich ist Python nicht dazu geeignet, den SHA-256 Prozess zu optimieren, wohl aber um den Prozess zu verstehen und den Umgang mit elementaren binären Rechenoperation zu lernen.&lt;/p&gt;
+&lt;p&gt;Willst du den Prozess noch etwas interaktiver nachvollziehen, möchte ich dir &lt;a href=&#34;https://www.youtube.com/watch?v=f9EbD6iY9zI&#34;&gt;dieses Video&lt;/a&gt; empfehlen. Dort wird der Algorithmus in Ruby nachgebaut und die einzelnen Rechenschritte auch etwas genauer erklärt.&lt;/p&gt;
+&lt;p&gt;Und warum ist SHA-256 für das Mining von Kryptowährungen jetzt so wichtig? Kurz: Der Hash validiert die Gültigkeit des &lt;em&gt;Kassenbuches&lt;/em&gt;. Beim Mining geht es darum, aus einer gegebenen Nachricht und einem frei wählbaren Zusatz exakt einen gegebenen Ziel-Hash zu berechnen. Der Algorithmus muss also wahnsinng oft durchlaufen werden. Da das sehr aufwendig ist, kostet das Zeit und wird entsprechend belohnt.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+  </channel>
+</rss>
