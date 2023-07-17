@@ -6,7 +6,124 @@
     <description>Recent content in nerdenz on Nicky Reinert</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de-DE</language>
-    <lastBuildDate>Mon, 30 Jan 2023 12:19:31 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/categories/nerdenz/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 07 Mar 2023 12:19:31 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/categories/nerdenz/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Die Nerd Enzyklopädie 5 - Gesehen, gelacht, F8</title>
+      <link>https://nickyreinert.de/blog/2023/03/07/die-nerd-enzyklop%C3%A4die-5-gesehen-gelacht-f8/</link>
+      <pubDate>Tue, 07 Mar 2023 12:19:31 +0100</pubDate>
+      
+      <guid>https://nickyreinert.de/blog/2023/03/07/die-nerd-enzyklop%C3%A4die-5-gesehen-gelacht-f8/</guid>
+      
+      <description>&lt;p&gt;Dieser fröhliche Ausspruch geht auf eine populäre Software zurück bzw. auf eine ganze Software-Familie: Die alternativen Dateimanager. Einer ihrer ältesten und wichtigsten Vertreter ist der sagenumwobene &lt;strong&gt;Norton Commander&lt;/strong&gt;. Jeder Nerd sollte bei diesem Anblick feuchte Augen bekommen:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;image.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Der Norton Commander Version 5 (1995) [&lt;a href=&#34;https://de.wikipedia.org/wiki/Norton_Commander&#34;&gt;WIKI3&lt;/a&gt;]&lt;/p&gt;
+&lt;p&gt;Der Norton Commander wurde 1984 unter dem Namen &lt;strong&gt;VisualDOS&lt;/strong&gt; (VDOS, DOS steht für Disc Operating System) von &lt;strong&gt;John Socha&lt;/strong&gt; entwickelt und später von &lt;strong&gt;Peter Norton Computing&lt;/strong&gt; vertrieben. DOS war seinerzeit ein Betriebsystem, das ohne grafische Benutzeroberfläche auskam. Für viele Anwender*innnen heutzutage vermutlich eine seltsame Vorstellung.&lt;/p&gt;
+&lt;p&gt;Mithilfe des Norton Commanders konnte man nicht nur Dateioperationen bequem durchführen, sondern hatte auch andere nützliche Funktionen an zentraler Stelle zur Verfügung. Selbst als mit &lt;strong&gt;Microsoft Windows&lt;/strong&gt; eine grafische Benutzeroberfläche zur Verfügung stand, galt der Norton Commander noch als willkommene Alternative zum hauseigenem und etwas sperrigen Dateimanager. Der Norton Commander wird seit 2000 nicht mehr weiterentwickelt. Mittlerweile gibt es zahlreiche Ableger und Klone für alle gängigen Betriebssysteme und sogar für Smartphones. Der &lt;a href=&#34;https://www.ghisler.com/deutsch.htm&#34;&gt;&lt;strong&gt;Total Commander&lt;/strong&gt; von Christian Ghisler&lt;/a&gt; dürfte wohl zum bekanntesten Vertreter dieser Gattung gehören.&lt;/p&gt;
+&lt;p&gt;Wie dem auch sei: Dateien und Ordner ließen sich schnell über die &lt;strong&gt;Funktionstaste F8&lt;/strong&gt; löschen. Ein Tastenkürzel, das von den meisten Norton-Commander-Klonen weiterhin unterstützt wird. Wenn man vom Unterhaltungswert eines Spiels, einer Software oder eines Videos enttäuscht war, wurde es so einfach vom Computer entfernt. So entstand der Ausruf „gesehen“ (das Spiel getestet, das Video angesehen, …) „gelacht“ (im Sinne einer abwertenden Beurteilung) und „F8“ (Löschen!).&lt;/p&gt;
+&lt;p&gt;Gesehen. Gelacht. F8…&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Die Nerd Enzyklopädie 5 - RegExen — Jetzt hast du zwei Probleme</title>
+      <link>https://nickyreinert.de/blog/2023/03/04/die-nerd-enzyklop%C3%A4die-5-regexen-jetzt-hast-du-zwei-probleme/</link>
+      <pubDate>Sat, 04 Mar 2023 12:19:31 +0100</pubDate>
+      
+      <guid>https://nickyreinert.de/blog/2023/03/04/die-nerd-enzyklop%C3%A4die-5-regexen-jetzt-hast-du-zwei-probleme/</guid>
+      
+      <description>&lt;p&gt;Reguläre Ausdrücke sind umstritten: Geliebt als vielseitiges Werkzeug, verdammt als undurchschaubare Fehlerquelle. Nicht ohne Grund heißt es: Reguläre Ausdrücke lösen ein Problem und schaffen zwei neue.&lt;br&gt;
+Woher kommt diese Hassliebe?&lt;/p&gt;
+&lt;h2 id=&#34;eine-exotische-tierart&#34;&gt;Eine exotische Tierart&lt;/h2&gt;
+&lt;p&gt;Reguläre Ausdrücke, kurz RegExen, sind mitunter schwer zu entwickeln und irgendwann kaum noch lesbar. Das erschwert das Debugging, also die Fehlersuche. Wie wäre es zum Beispiel mit diesem Schmuckstück:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&amp;amp;*])(?=.*[0–9].*[0–9])(?=.*[a-z].*[a-z].*[a-z]).{8}$
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Na, erkannt? Diese RegExe überprüft ob eine Passwort-Zeichenfolge bestimmten Sicherheitsanforderungen entspricht. Diesen Hinweis kann man im Quellcode vielleicht noch dokumentieren. Aber was wenn sich die Sicherheitsanforderungen im Detail ändern?&lt;/p&gt;
+&lt;h2 id=&#34;mit-kanonen-auf-spatzen&#34;&gt;Mit Kanonen auf Spatzen…&lt;/h2&gt;
+&lt;p&gt;RegExen werden außerdem gerne dort eingesetzt, wo eigentlich bessere, standardisierte Lösungen vorhanden sind, wie z.B. für das Parsen von XML [&lt;a href=&#34;https://flapenguin.me/xml-regex&#34;&gt;FLAP1&lt;/a&gt;]:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;\s*  
+(?(?=&amp;lt;)  
+  (?&amp;lt;opentag&amp;gt;  
+    &amp;lt; \s*  
+    (?&amp;lt;tagname&amp;gt;\w+)  
+    (?&amp;lt;attibute&amp;gt;  
+      \s+  
+      (?&amp;lt;attrname&amp;gt;[^\s&amp;gt;]+)  
+      =  
+      (?&amp;lt;attrquote&amp;gt;&amp;quot;|&#39;|)  
+      (?&amp;lt;attrvalue&amp;gt;[^\s&amp;quot;&#39;&amp;gt;]+)  
+      (\k{attrquote})  
+    )*  
+    \s*  
+    (?&amp;lt;selfclosing&amp;gt;\/\s*)?  
+    &amp;gt;  
+  )  
+  (?(&amp;lt;selfclosing&amp;gt;)|  
+    (?&amp;lt;children&amp;gt;(?R))  
+    (?&amp;lt;closetag&amp;gt;&amp;lt;\s* \/ \s* \k{tagname} \s*&amp;gt;)  
+  )  
+|  
+  (?&amp;lt;text&amp;gt;[^&amp;lt;]*)  
+)*  
+\s*
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Was aussieht als wäre deine Katze auf der Tastatur eingeschlafen, ist eine funktionsfähige RegExe. Mit genau einem Vorteil: Wenn man den Ausdruck Stück für Stück zerpflückt, um ihn zu verstehen, kann man viel über die Möglichkeiten regulärer Ausdrücke lernen. Im produktiven Betrieb sollte man trotzdem auf alternative Ansätze zurückgreifen, um mit XML-Daten zu arbeiten. Wie z.B. XML-Parser, die soll es ja wirklich geben.&lt;/p&gt;
+&lt;h2 id=&#34;backtracking&#34;&gt;Backtracking&lt;/h2&gt;
+&lt;p&gt;RegExen können auch zu handfesten Sicherheitsproblemen führen. Die Ursache liegt in der Art, wie RegExen verarbeitet werden. Sie durchlaufen einen String zeichenweise, bis eine Bedingung nicht mehr erfüllt wird und springen dann zu dem Zeichen zurück, an dem der Ausdruck vielleicht einen anderen Lösungsweg nehmen kann. Dieses Vorgehen nennt man &lt;strong&gt;Backtracking&lt;/strong&gt;, also Rückverfolgung. Diese Funktion kann aber zu einem Rückkopplungs-Effekt führen, wodurch die Dauer der Verarbeitung exponentiell ansteigt. Die Folge nennt man „Catastrophic Backtracking“, eine wichtige Grundlage für &lt;a href=&#34;https://medium.com/@nitinpatel_20236/what-are-evil-regexes-7b21058c747e&#34;&gt;ReDOS&lt;/a&gt; (&lt;a href=&#34;https://medium.com/@nitinpatel_20236/what-are-evil-regexes-7b21058c747e&#34;&gt;Regular Expression Denial Of Service&lt;/a&gt;) Angriffe [&lt;a href=&#34;https://www.regular-expressions.info/catastrophic.html&#34;&gt;REGU1&lt;/a&gt;]. Ein einfaches Beispiel ist dieser reguläre Ausdruck [&lt;a href=&#34;https://medium.com/@nitinpatel_20236/what-are-evil-regexes-7b21058c747e&#34;&gt;MEDI1&lt;/a&gt;]:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(x+x+)+y.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Diese RegExe lässt sich sicherlich optimieren, sie soll auch nur zeigen, wie schnell die Verarbeitung eskalieren kann. Als Test-String dient diese einfache Zeichenkette:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;xxxxxy
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Die Verarbeitung erfordert in diesem Fall in &lt;strong&gt;123 Schritte&lt;/strong&gt;. Passen wir die Zeichenkette nun etwas an:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;xxxxxxxxxxxxxy
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Mehr als &lt;strong&gt;38.000 Schritte&lt;/strong&gt; sind jetzt erforderlich, um den regulären Ausdruck zu prüfen. Mit dem richtigen regulären Ausdruck und der passenden Zeichenkette kann ein Browser „mühelos“ zum Absturz gebracht werden.&lt;/p&gt;
+&lt;p&gt;Der Einsatz von regulären Ausdrücken ist also streitbar. Übrigens: Dem Netscape Entwickler &lt;strong&gt;Jamie Zawinski&lt;/strong&gt; wird zugeschrieben, diese Erkenntnis als erster in Worte gefasst zu haben. Er stellte bereits &lt;strong&gt;1997&lt;/strong&gt; fest [&lt;a href=&#34;https://blog.codinghorror.com/regular-expressions-now-you-have-two-problems/&#34;&gt;CODI1&lt;/a&gt;]:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Some people, when confronted with a problem, think “I know, I’ll use regular expressions.” Now they have two problems.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Dieser Ausspruch geht wiederum auf &lt;strong&gt;David Tilbrook&lt;/strong&gt; zurück, der sich (selber nur vage) erinnert, wie er &lt;strong&gt;1985&lt;/strong&gt; auf einer Konferenz in &lt;strong&gt;Dublin&lt;/strong&gt; die Nutzung des Kommandozeilen-Tools &lt;strong&gt;awk&lt;/strong&gt; kommentiert [&lt;a href=&#34;http://regex.info/blog/2006-09-15/247&#34;&gt;REGE1&lt;/a&gt;]:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;“If you have a problem and you think awk is the solution, then you have two problems.”&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;RegExen&lt;/strong&gt; und &lt;strong&gt;awk&lt;/strong&gt; sind nicht die einzigen zweifelhaften Tools, auch &lt;a href=&#34;http://regex.info/blog/2006-09-15/247&#34;&gt;Perl&lt;/a&gt; hat einen gewissen Ruf. Aber vermutlich ist das nur eine besondere Art von Nerd-Humor, vor der niemand sicher ist:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;image.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Bildquelle [&lt;a href=&#34;https://xkcd.com/1171/&#34;&gt;XKCD1&lt;/a&gt;]&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Die Nerd Enzyklopädie - 640K Speicher sind genug</title>
+      <link>https://nickyreinert.de/blog/2023/03/01/die-nerd-enzyklop%C3%A4die-640k-speicher-sind-genug/</link>
+      <pubDate>Wed, 01 Mar 2023 12:19:31 +0100</pubDate>
+      
+      <guid>https://nickyreinert.de/blog/2023/03/01/die-nerd-enzyklop%C3%A4die-640k-speicher-sind-genug/</guid>
+      
+      <description>&lt;p&gt;Diese Aussage gehört wohl in jedes gut gepflegte Informatik-Seminar: Bill Gates unterlag anscheinend dem Irrglauben, dass 640 KByte Arbeitsspeicher für Computer genügen würden. Wir alle wissen, dass selbst unsere Armbanduhren ein vielfaches davon benötigen.&lt;/p&gt;
+&lt;p&gt;Bereits 1981 soll sich Bill Gates dieses umstrittene Bonmot abgerungen haben und es kursiert immer noch  durch das Internet und ominöse IT-Vorlesungen.Dabei erklärte Gates knapp 15 Jahre später, dass die Aussage gar nicht von ihm stammt. Seine Erklärung ergibt durchaus Sinn: Der damals erschienene IBM PC konnte mit bis zu 640 KB Arbeitsspeicher ausgerüstet werden. Kam es jemals vor, dass sich Software-Entwickler mit den gegebenen Ressourcen zufrieden geben? Das Ausreizen technischer Grenzen ist wohl eher eine sportliche Disziplin in der IT. Man kann also annehmen, dass Gates eher der gegenteiligen Ansicht war [&lt;a href=&#34;https://abcnews.go.com/Technology/PCWorld/story?id=5214635&#34;&gt;GO1&lt;/a&gt;]:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;Do you realize the pain the industry went through while the IBM PC was limited to 640K? The machine was going to be 512K at one point, and we kept pushing it up. I never said that statement &amp;mdash; I said the opposite of that.”&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Bill Gates gegenüber Bloomberg Business News, 1996&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Woher stammt das angebliche Zitat? Ein erster Hinweis findet sich in der Zeitschrift &amp;ldquo;InfoWorld” vom 29. April 1985 [&lt;a href=&#34;https://books.google.de/books?id=2C4EAAAAMBAJ&amp;amp;lpg=PA5&amp;amp;vq=%22nobody%20would%22&amp;amp;pg=PA5&#34;&gt;INFOW1&lt;/a&gt;] - allerdings ohne Hinweis auf ein eventuell statt gefundenes Interview:&lt;/p&gt;
+&lt;p&gt;When we set the upper limit of PC-DOS at 640K, we thought nobody would ever need that much memory.&lt;/p&gt;
+&lt;p&gt;William Gates, chairman of Microsoft in InfoWorld, 1985&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;Unbekannt2.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Von dem zweifelhaften Kontext abgesehen, ist diese Aussage auch weit entfernt von: &amp;ldquo;640 KByte sind genug&amp;rdquo;. Das gleiche Magazin veröffentlichte einige Jahre später ein ähnliches Zitat - aber auch hier ohne Hinweis auf den Kontext, wie z.B. ein Interview:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;640K ought to be enough for anyone”&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Bill Gates, InfoWorld, 1990&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Knapp fünf Jahre später griff die Washington Post die Aussage im Rahmen einer Zitatesammlung mit dem Titel &amp;ldquo;If They Only Knew&amp;rdquo; (&amp;ldquo;Wenn sie nur wüssten&amp;rdquo;) auf. Hier hieß es, dass Gates die besagte Aussage 1981 machte.&lt;/p&gt;
+&lt;p&gt;Es folgte eine Kaskade von Referenzen, wie z.B. im Buch &amp;ldquo;The Experts Speak: The Definitive Compendium of Authoritative Misinformation” mit einem Verweis auf die Washing Post [&lt;a href=&#34;https://quoteinvestigator.com/2011/09/08/640k-enough/1&#34;&gt;QUOTE1&lt;/a&gt;].&lt;/p&gt;
+&lt;p&gt;Die Beweislage ist also relativ dünn und sogar widersprüchlich. Der Recherche-Blog Quote Investigator hat den Wahrheitsgehalt untersucht - und gibt ausreichend Anlass zur Skepsis [&lt;a href=&#34;https://quoteinvestigator.com/2011/09/08/640k-enough/1&#34;&gt;QUOTE1&lt;/a&gt;]. Trotzdem hält sich das Gerücht hartnäckig; das Computer-Magazin chip glaubte noch 2016 daran [&lt;a href=&#34;https://www.chip.de/news/640-kB-sollten-genug-sein-Die-groessten-Technik-Irrtuemer-der-Geschichte_92787690.html&#34;&gt;CHIP1&lt;/a&gt;]:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;Unbekannt.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+</description>
+      
+    </item>
+    
     <item>
       <title>Die Nerd Enzyklopädie - Computer sind nicht pünktlich</title>
       <link>https://nickyreinert.de/blog/2023/01/30/die-nerd-enzyklop%C3%A4die-computer-sind-nicht-p%C3%BCnktlich/</link>
@@ -14,9 +131,107 @@
       
       <guid>https://nickyreinert.de/blog/2023/01/30/die-nerd-enzyklop%C3%A4die-computer-sind-nicht-p%C3%BCnktlich/</guid>
       
-      <description>&lt;p&gt;Computer sind nicht nur notorisch unpünktlich, sie haben ein grundsätzliches Problem mit der Zeit. Aber warum? Es ist die Art, wie Computer Zeit messen bzw. Zeitangaben verarbeiten. Stell dir vor, du könntest bis 2.000 zählen. Welches Jahr haben wir jetzt? Für viele Computer beginnt die Zeitrechnung zwar erst 1970, trotzdem könnten sie bereits im Jahr 2038 an ihre Grenzen stoßen.&lt;/p&gt;
-&lt;p&gt;Ursprünglich wählte man als Beginn der Zeitrechnung den 1. Januar 1971. Die Zeit sollte durch einen Zähler repräsentiert werden, der an diesem Tag bei 0 beginnt und dann in regelmäßigen Abständen (Takten) um 1 erhöht wird. Die eingebaute Uhr der damaligen Computer bot sich als Taktgeber an. Sie arbeitete mit einer Frequenz von 60 Hz, also 60 Takten pro Sekunde. Daran orientierte man sich. Der Zeitzähler wurde 60 mal pro Sekunde erhöht bzw. jede Sekunde um den Wert  60.&lt;/p&gt;
-&lt;p&gt;Die Obergrenze von 4.294.967.295 ergibt sich aus der Größe einer einzelnen Speicherstelle: 32 Bit. Wenn man am 1. Januar 1971 bei 0 anfängt zu zählen, in dem man  60 mal pro Sekunde 1 dazu addiert, erreicht man die 32 Bit-Grenze nach 71.582.788 Sekunden. Das entspricht 1.193.046 Minuten, 19.884 Stunden oder in etwa 2,5 Jahre. Man die Zeit also nur  bis 1973 messen können -  ein Bug, der schon bei der Beschreibung des entsprechenden Datentyps bekannt war:&lt;/p&gt;
+      <description>&lt;h2 id=&#34;es-war-einmal-im-jahr-2000-und-23&#34;&gt;Es war einmal im Jahr 2000 und 23…&lt;/h2&gt;
+&lt;p&gt;Computer sind nicht nur notorisch unpünktlich, sie haben grundsätzliche ein Problem mit “Zeit”. Aber warum? Es ist die Art, wie Computer Zeit messen bzw. Zeitangaben verarbeiten. Stell dir vor, du könntest bis 2.000 zählen. Welches Jahr haben wir jetzt? 2000… und 23? Gesprochen klingt das noch ganz gut, aber spätestens beim Aufschreiben wird es unübersichtlich. Bei Computern ist es noch etwas komplizierter.&lt;/p&gt;
+&lt;h2 id=&#34;the-epoch&#34;&gt;The Epoch&lt;/h2&gt;
+&lt;p&gt;Schauen wir uns mal „The Epoch“ oder auch die „Unixzeit“ an. Damit wird das Startdatum der Zeitrechnung der meisten Computer bezeichnet: Der 1. Januar 1970.&lt;/p&gt;
+&lt;p&gt;Ursprünglich wählte man als Beginn der Zeitrechnung den 1. Januar 1971. Die Zeit sollte durch einen Zähler repräsentiert werden, der an diesem Tag bei 0 beginnt und dann in regelmäßigen Abständen (Takten) um 1 erhöht wird. Die eingebaute Uhr der damaligen Computer bot sich als Taktgeber an. Sie arbeitete mit einer Frequenz von 60 Hz, also 60 Takten pro Sekunde. Das entspricht nicht nur zufällig der Frequenz der Stromnetze in Nordamerika. Der Zeitzähler wurde also 60 mal pro Sekunde erhöht bzw. jede Sekunde um den Wert 60.&lt;/p&gt;
+&lt;p&gt;Die Obergrenze von 4.294.967.295 ergibt sich aus der Größe einer einzelnen Speicherstelle: 32 Bit . Wenn man am 1. Januar 1971 bei 0 anfängt zu zählen indem man 60 mal pro Sekunde 1 dazu addiert, erreicht man die 32 Bit-Grenze nach 71.582.788 Sekunden. Das entspricht 1.193.046 Minuten, 19.884 Stunden oder in etwa 2,5 Jahre. Man hätte die Zeit also damals schon nur bis 1973 messen können — ein Bug, der bereits bei der Beschreibung des entsprechenden Datentyps bekannt war:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;image.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Quelle: Unix Programmer’s Manual, System calls, Teil 2 (Bell Labs, 3.11.1971, Seite 13) [&lt;a href=&#34;https://www.bell-labs.com/usr/dmr/www/pdfs/man22.pdf&#34;&gt;BELL&lt;/a&gt;]&lt;/p&gt;
+&lt;p&gt;Also änderte man kurze Zeit später die Zählfrequenz auf 1 Sekunde und setzte das Startdatum auf den 01.01.1970. Gleichzeit entschied man sich aber auch für einen “vorzeichenbehafteten“ Zähler, ein sogenannter „signed integer”: Das erste der 32 Bit wird als Vorzeichen verwendet. Ist es auf 1 gesetzt, interpretiert der Computer die gesamte Zahl als negativ. So ist man in der Lage, die Zeit auch rückwärts zu erfassen.&lt;/p&gt;
+&lt;p&gt;Da nun nur noch 31 Bit zur Verfügung stehen, reduzierte sich die Obergrenze für die Zeitzählung auf 2.147.483.647. Mit der außerdem angepassten Zählfrequenz von 1 Sekunde war der Computer in der Lage 68 Jahre lang die die Zeit sekundengenau zu messen. Das neue Enddatum für die Zeitrechnung ist damit der 19. Januar 2038. An diesem Dienstag um 3 Uhr nachts, 14 Minuten und 7 Sekunden mitteleuropäischer Zeit wird der Zähler den Wert 2³¹ erreichen. In binärer Schreibweise sehen die 3 Sekunden um diesen Zeitpunkt herum so aus:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Dienstag, 19. Januar 2038 04:14:07:   
+01111111111111111111111111111111 (dezimal: 2147483647)  
+Dienstag, 19. Januar 2038 04:14:08:   
+10000000000000000000000000000000 (dezimal: 2147483648)  
+Dienstag, 19. Januar 2038 04:14:09:   
+10000000000000000000000000000001 (dezimal: 2147483649)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;es-war-einmal-in-1901&#34;&gt;Es war einmal in 1901…&lt;/h2&gt;
+&lt;p&gt;Das erste Bit, das Vorzeichen-Bit, ist ab dann auf 1 gesetzt. Der Wert der restlichen 31 Bit wird als negativ interpretiert. Um 04:14:09 liest der Computer also -1. Und zieht damit eine Sekunde vom Startdatum “The Epoch” ab: Das Datum errechnet sich dann aus 1. Januar 1970, 00:00 Uhr minus 1 Sekunde, 2 Sekunden und so weiter. 68 Jahre lang, bis zum Freitag, den 13. Dezember 1901, 20:45:52 (in der Realität irgendwann in 2106). Die iterierte Quersumme dieser Uhrzeit ist übrigens die 9, die göttliche Zahl. Mythischer kann ein Bug wohl kaum sein.&lt;/p&gt;
+&lt;h2 id=&#34;apokalypse&#34;&gt;Apokalypse!&lt;/h2&gt;
+&lt;p&gt;Doch damit ist es noch nicht getan. Du erinnerst dich vielleicht an die Panik kurz vor der Jahrtausendwende? Man nahm an, dass Computer, die ja gerade erst anfingen unsere Alltagsroutinen zu optimieren, den Wechsel in das Jahr 2000 nicht vertragen würden. Aus zwei Gründen:&lt;/p&gt;
+&lt;p&gt;Erstens war es üblich die Jahreszahl verkürzt darzustellen, um Speicherplatz zu sparen und vielleicht auch aus analoger Bequemlichkeit. Anstatt 1986 erfasste man also nur die 86. Mit dem Wechsel in das Jahr 2000 war dann aber nicht mehr so ganz klar, worauf sich z.B. die Angabe 00 beziehen würde — auf das Jahr 1900 oder 2000?&lt;/p&gt;
+&lt;p&gt;Die zweite Ursache ergibt sich aus der Berechnung der Schaltjahre. Dass ein Schaltjahr durch vier teilbar ist, dürfte landläufig bekannt sein. Es gibt aber außerdem die Regel, dass ein Jahr, welches durch 100 teilbar ist, kein Schaltjahr ist. Und das ist noch nicht alles: Ist das Jahr außerdem durch 400 teilbar, ist es eben doch ein Schaltjahr. Zwei Regeln, die nicht sonderlich weit verbreitet waren und vermutlich immer noch nicht sind. Excel denkt selbst in 2022 noch, dass das Jahr 1900 ein Schaltjahr sei. Bug-Alarm! [&lt;a href=&#34;https://learn.microsoft.com/en-us/office/troubleshoot/excel/wrongly-assumes-1900-is-leap-year&#34;&gt;MICR1&lt;/a&gt;]&lt;/p&gt;
+&lt;p&gt;Die Abhängigkeit von den Computern war seinerzeit vielleicht noch nicht so weit gediehen wie heute. Trotzdem vertrauten Versicherungen, Fluggesellschaften und Krankenkassen auf die „elektronische Datenverarbeitung“ (bei den öffentlichen Behörden lässt das papierlose Büro zum Glück noch eine Weile auf sich warten). Man erwartet also nichts geringeres als: Die Apokalypse!&lt;/p&gt;
+&lt;p&gt;Die US-Regierung rechnete mit Kosten zwischen 400 Millionen und 600 Millarden USD [&lt;a href=&#34;https://www.congress.gov/105/crpt/hrpt827/CRPT-105hrpt827.pdf&#34;&gt;CON1&lt;/a&gt;]. Bei einem verfügbaren Haushaltsbudget von 3,4 Billionen USD (1999) nicht gerade ein Pappenstiel. Letztlich beliefen sich die Kosten für die Vorbereitungen auf immer noch erstaunliche 300 Mrd. USD [&lt;a href=&#34;http://news.bbc.co.uk/2/hi/talking_point/586938&#34;&gt;BBC1&lt;/a&gt;] und noch mal 308 Mrd. USD für die Beseitigung der Schäden [&lt;a href=&#34;https://www.computerworld.com/article/2522197/y2k--the-good--the-bad-and-the-crazy.html&#34;&gt;COMP1&lt;/a&gt;] — weltweit.&lt;/p&gt;
+&lt;p&gt;Trotz aller Sorgen sind wir recht glimpflich davon gekommen, nicht zuletzt aufgrund der immensen Anstrengungen, die Systeme und die Software mit Updates auf den Jahreswechsel vorzubereiten.&lt;/p&gt;
+&lt;p&gt;Ganz ohne Problem ging der Jahreswechseln jedoch nicht an uns vorüber. In Singapur versagten Taxameter ihren Dienst [&lt;a href=&#34;https://money.cnn.com/1999/01/12/technology/y2k_moneyline/&#34;&gt;MONEY1&lt;/a&gt;], in Australien fielen Fahrscheinautomaten aus. In den USA funktionierten einige Lotterie-Maschinen nicht mehr und in Frankreich wurde die Wettervorhersage für den 01.01.1900 angezeigt [&lt;a href=&#34;http://news.bbc.co.uk/2/hi/science/nature/586620.stm&#34;&gt;BBC2&lt;/a&gt;].&lt;/p&gt;
+&lt;h2 id=&#34;es-war-einmal-in-1975&#34;&gt;Es war einmal… in 1975…&lt;/h2&gt;
+&lt;p&gt;Das (vermutlich) erste Problem mit der Verarbeitung von Datumsangaben geht übrigens auf das Jahr 1964 zurück. Die Zeitrechnung des DEC PDP-10 — ein recht populärer Computer zu dieser Zeit — begann am 1. Januar 1964. Dem PDP-10 standen aber nur 12 Bit zur Verfügung. Auch wenn es nur um die taggenaue Zeitrechnung ging, endete sie aus oben genannten Gründen für den PDP-10 am 4. Januar 1975: mit 12 Bit lassen sich 4.095 Tage zählen [&lt;a href=&#34;http://catless.ncl.ac.uk/Risks/4.45.html&#34;&gt;CATL1&lt;/a&gt;].&lt;/p&gt;
+&lt;h2 id=&#34;und-2010&#34;&gt;…und 2010…&lt;/h2&gt;
+&lt;p&gt;2010 führte ein Problem mit der Verarbeitung von Datumsangaben dazu, dass in Deutschland mehr als 30 Mio. Bankkarten unbrauchbar wurden [&lt;a href=&#34;https://www.spiegel.de/wirtschaft/unternehmen/kartenpanne-franzoesische-firma-schuld-an-2010-fehler-a-670400.html&#34;&gt;SPON1&lt;/a&gt;].&lt;br&gt;
+Exchange, der E-Mail-Server von Microsoft, hatte beim Übergang in das Jahr 2022 ein Problem: Hier wurden Uhrzeit und Tag schlicht zusammengesetzt: Aus dem 1. Februar 2022 12:34 Uhr wurde 2201021234 — zu groß für einen vorzeichenbehafteten 32 Bit Integer [&lt;a href=&#34;https://www.golem.de/news/e-mail-server-microsoft-behebt-exchange-y2k22-fehler-2201-162124.html&#34;&gt;GOLEM1&lt;/a&gt;].&lt;/p&gt;
+&lt;h2 id=&#34;und-es-wird-einmal-sein-in-292277026596&#34;&gt;Und es wird einmal sein in 292.277.026.596…&lt;/h2&gt;
+&lt;p&gt;Und auch in der fernen Zukunft werden wir immer wieder mit den Grenzen der „modernen“ Informationstechnologie konfrontiert, seien es die Jahre 2040, 2080, 2137 und so weiter [&lt;a href=&#34;https://en.wikipedia.org/wiki/Time_formatting_and_storage_bugs&#34;&gt;WIKI1&lt;/a&gt;]. Das Jahr 10.000 ist das erste fünfstellige Jahr. Das stellt die bis gewohnte 4-stellige Schreibweise für Jahre vor ein Problem. Das Jahr 30.828 wird von Windows nicht als Systemdatum akzeptiert und selbst im Jahr 292.277.026.596, wenn weder Erde noch Sonne und vielleicht nicht einmal das Universum existieren, an einem bitterkalten Winter-Sonntag, dem 4. Dezember, zur besten Kaffee- und Kuchenzeit vor dem Kamin, um 15.30 Uhr und 8 Sekunden, werden auch die heute üblichen 64 Bit Computer ihren Dienst versagen. Aus oben erklärten Gründen.&lt;/p&gt;
+&lt;h2 id=&#34;die-schaltsekunde&#34;&gt;Die Schaltsekunde&lt;/h2&gt;
+&lt;p&gt;Als wäre die Verarbeitung Zeitangaben und Schaltjahre nicht schon Herausforderung genug: Die Rotation der Erde um ihre eigene Achse dauert nicht immer exakt 24 Stunden. Sie ist in der Regel langsamer, in 2020 war sie sogar schneller. Die kaum berühmte aber dennoch berüchtigte Schaltsekunde!&lt;/p&gt;
+&lt;p&gt;Seit Beginn der „Computerzeitrechnung“ in 1972 (dort wurde ja erst „The Epoch„ definiert) sind hier bereits 37 Sekunden fällig geworden [&lt;a href=&#34;https://de.wikipedia.org/wiki/Schaltsekunde&#34;&gt;WIKI2&lt;/a&gt;]. Nur: Die Geschwindigkeit der Erde unterliegt „nichtperiodischen Schwankungen“. Wir können heute also noch nicht sagen, wieviele Schaltsekunden bis 2.100 anfallen werden. Das macht jede Kalendererinnerung für die Zukunft sehr unzuverlässig. Computer sind unpünktlich&lt;/p&gt;
+&lt;h2 id=&#34;unwahrheiten&#34;&gt;Unwahrheiten&lt;/h2&gt;
+&lt;p&gt;Das Thema “Zeitrechnung“ ist von zahlreichen Missverständnisse geprägt und diese Lanze muss man für die Computer dann doch brechen: Das Problem sitzt nicht zuletzt vor dem Monitor. Und deswegen haben sich fleißige Entickler&lt;em&gt;innen und Expert&lt;/em&gt;innen die Mühe gemacht, die Probleme mit der Verarbeitung von Daten und Zeiten in einem Gist zu sammeln: [&lt;a href=&#34;https://gist.github.com/timvisee/fcda9bbdff88d45cc9061606b4b923ca&#34;&gt;GIST1&lt;/a&gt;].&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Die Nerd Enzyklopädie - Warum ist 1 Byte 8 Bit groß?</title>
+      <link>https://nickyreinert.de/blog/2023/01/30/die-nerd-enzyklop%C3%A4die-warum-ist-1-byte-8-bit-gro%C3%9F/</link>
+      <pubDate>Mon, 30 Jan 2023 12:19:31 +0100</pubDate>
+      
+      <guid>https://nickyreinert.de/blog/2023/01/30/die-nerd-enzyklop%C3%A4die-warum-ist-1-byte-8-bit-gro%C3%9F/</guid>
+      
+      <description>&lt;p&gt;Die Einführung in das Binärsystem dürfte Gegenstand jeder Informatik-Vorlesung sein und schon für viele verzweifelte Gesichter gesorgt haben. Sei es drum: Um einen kleinen Ausflug in das Binär-System kommen wir nicht herum, wenn wir die Frage nach dem Byte klären wollen. Und da uns das binäre Zahlensystem noch öfter begegnen wird, steht dieses Kapitel ganz am Anfang.&lt;/p&gt;
+&lt;p&gt;Der Begriff Byte kam bereits 1956 auf und wurde von Werner Buchholz geprägt. Buchholz arbeitete für IBM an dem Supercomputer IBM 7030,  Projektname &amp;ldquo;Stretch&amp;rdquo;. In einem Konzeptpapier beschrieb er den Einsatz von &amp;ldquo;characters, or &amp;lsquo;bytes&amp;rsquo; as we have called them&amp;rdquo;. Buchholz leitete Byte vom englischen &amp;ldquo;bite&amp;rdquo; für &amp;ldquo;der Bissen&amp;rdquo; ab und wählte die Schreibweise mit dem Y, um eine Verwechselung mit  dem Bit zu vermeiden. Er definierte Bytes damals als Folge von 2 bis 6 Bits [&lt;a href=&#34;https://blog.hnf.de/bitte-ein-byte/&#34;&gt;HNF1&lt;/a&gt;].&lt;/p&gt;
+&lt;p&gt;Das Bit ist ein Kofferwort aus &lt;em&gt;&lt;strong&gt;b&lt;/strong&gt;inary&lt;/em&gt; und &lt;em&gt;dig&lt;strong&gt;it&lt;/strong&gt;.&lt;/em&gt; - zweiwertige Ziffer. 0 und 1. Bit ist aber auch ein englisches Wort und heißt übersetzt &amp;ldquo;das Bisschen&amp;rdquo;. Es geht hier also um Bisschen und Bissen. Guten Appetit.&lt;/p&gt;
+&lt;p&gt;Der begriffliche Vorgänger des Bytes nennt sich übrigens Syllable, kurz Slab. Aber auch die Slabs unterwarfen sich keiner einheitlichen Ordnung. Der Computer der Saturn V Rakete arbeitet z.B. mit 13 Bit großen Syllables.&lt;/p&gt;
+&lt;p&gt;Aber zurück zu den Bits und Bytes und der Frage, warum 1 Byte genau 8 Bit groß ist.&lt;/p&gt;
+&lt;p&gt;Ein Computer versteht genau zwei Zustände: Entweder fließt ein Strom oder es fließt  kein Strom. Aus oder An (damit ignorieren wir übrigens komplett die Architektur der sogenannten Quanten-Computer).&lt;/p&gt;
+&lt;p&gt;Mithilfe dieses Prinzips kann ein Computer Informationen speichern, verarbeiten und wiedergeben. Es handelt sich um die kleinste Informationseinheit: 1 Bit. Stellen wir uns einfach vor, dass es sich hierbei um kleine Lämpchen handelt, die entweder an oder aus sind und diesen Zustand beschreiben wir mit 0 für aus und 1 für an. Hier sind 8 Lämpchen nebeneinander:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;0000 0000
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So sieht es aus, wenn das kleine Lämpchen ganz rechts an ist:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;0000 0001
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Und daraus kann man nun einen Zahlenwert ablesen, indem man Potenzen bildet - und das ist ein Stück faszinierende Mathematik. Da es genau zwei Zustände gibt (aus oder an), ist die Basis der Potenz 2. Die Position des aktivierten Lämpchens dient als Exponent. Gezählt wird von rechts nach links und wir fangen bei 0 an - 0 ist ja auch ein Wert, wenngleich kein großer.&lt;/p&gt;
+&lt;p&gt;Damit lautet die Rechnung  2^0 und das ist 1! Die 1 ganz rechts steht für den Wert 1. Ok, das war noch einfach. Was ist mit der 2?&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;0000 0010
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Nun ist das Lämpchen an der 1. Position an. 2^1^. Oder: 2. Das mit den Einsen und Nulle ist eigentlich gar nicht so schwer, oder? Manchmal frage ich mich, warum wir uns überhaupt mit dem Dezimalsystem abmühen.&lt;/p&gt;
+&lt;p&gt;Jetzt bist du dran. Welchen Wert sehen wir hier?&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;0000 0011
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Korrekt: 3. Warum? Man summiert die Werte der einzelnen Positionen:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;2¹ + 2⁰ = 2 + 1 = 3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Bravo. Du hast das binäre System verstanden. Je mehr Lämpchen leuchten, desto größere Zahlen können wir abbilden. Die kleinen Lämpchen im Computer geben natürlich kein sichtbares Licht ab, dafür aber Wärme. Jetzt weißt du, warum dein Handy manchmal so heiß wird.&lt;/p&gt;
+&lt;p&gt;Mit 8 Bit lassen sich z.B. Werte bis zu 2⁸ - 1 verarbeiten. Warum -1? Da man die Positionen von 0 anfängt zu zählen, ist die größte Position 7.  Das ist also der größte Exponent. Sind also alle Bits aktiviert (auf 1 gesetzt), berechnet man den Wert folgendermaßen:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;128 + 64 + 32 + 16 + 8 + 4 + 2 + 1 = 255
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Und für die 255 gibt es eine kleine Abkürzung: Das ist nämlich nichts anderes als 2⁸ - 1.&lt;/p&gt;
+&lt;p&gt;Den höchsten Wert darf man allerdings nicht mit der Anzahl möglicher Werte verwechseln. Die 0 ist auch Teil der kleinen Familie. Damit gibt es 256 unterschiedliche Werte.&lt;/p&gt;
+&lt;p&gt;Nach dieser rührenden Familienzusammenführung gebe ich mit der folgenden Frage zurück ins Hauptstadtstudio: Warum hat 1 Byte denn nun ausgerechnet 8 Bit?&lt;/p&gt;
+&lt;p&gt;Wir können mit den Bits zwar beliebige Zahlen abbilden, aber wie sieht es mit  Buchstaben aus? Die Lösung ist so fantastisch simpel: Wir legen eine Tabelle an, eine Zeichentabelle, auch Codetabelle genannt. Jeder Buchstabe wird durch eine Zahl repräsentiert:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1 A
+2 B
+3 C
+...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Die minimale Größe der Tabelle ist zunächst naheliegend: Wir brauchen mindestens 26 Einträge. Um ein einfaches Alphabet abbilden zu können, muss der Speicher also mindestens 5 Bit groß sein:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;2⁵ = 32 Einträge
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;(Warum nicht 2⁵ - 1 = 31 Einträge? Weil die 0 in einer Code-Tabelle theoretisch auch als Verweis dienen kann, denk an die Familie!)&lt;/p&gt;
+&lt;p&gt;5 Bit entspricht der Größe der ersten Codetabelle mit dem Namen Baudot-Code bzw. Baudot-Murray-Code. Auf der 0. Position befand sich tatsächlich nichts. Die Position 1 (00001) verweist auf Buchstaben E &amp;mdash;weil das der häufigste Buchstabe ist. A wird mit der 3 codiert (00011) und so weiter. &lt;/p&gt;
+&lt;p&gt;Das erklärt aber immer noch nicht warum 1 Byte genau 8 Bit groß ist. Also weiter in der Geschichte:&lt;/p&gt;
+&lt;p&gt;Der Baudot-Murray-Code hatte für die elektronische Datenverarbeitung noch keine große Bedeutung. Man konnte nicht zwischen Groß- und Kleinschreibung unterscheiden, die Zahlen 0 bis 9 waren nicht darstellbar  und was ist mit den ganzen Satzzeichen? Man brauchte eigentlich eine Tabelle mit mindestens 26 + 26 + 10, also 62 Einträgen.&lt;/p&gt;
+&lt;p&gt;Das Militär entwickelte 1956 im Rahmen des FIELDATA-Projekts eine Zeichentabelle mit 6 Bit, also 64 Einträgen, die auch als Basis für den UNIVAC 1100 diente [&lt;a href=&#34;https://de.wikipedia.org/wiki/Fieldata&#34;&gt;WIKI9&lt;/a&gt;]. Diese Tabelle ermöglichte zwar keine Kleinschreibung, dafür aber Satzzeichen,  Ziffern und Steuerzeichen.
+Wozu Steuerzeichen? Da eine Zeichentabelle als Grundlage zur Darstellung auf den Monitor dient, muss sie auch Anweisungen wie z.B. Leerzeichen, Entfernen und so weiter enthalten.&lt;/p&gt;
+&lt;p&gt;Für den wirklich praktischen Gebrauch kamen also nur 7 Bit infrage. Und genau das ist auch die Länge der berühmt-berüchtigten ASCII-Codetabelle von 1963, die uns noch eine ganze Weile begleiteten wird. Um nicht zu sagen: ASCI wird dir auch in 2023 noch begegnen.&lt;/p&gt;
+&lt;p&gt;Aus den 7 Bits für ein sinnvollen Zeichensatz wurden recht schnell 8 Bit und zwar aus vielen Gründen: Die 8 ist ein vielfaches von 2. Und das ist in einem binären System viel schöner als die 7. Außerdem konnte man das zusätzliche Bit für andere Funktionen nutzen, wie zB. zur Fehlerkontrolle (&amp;ldquo;Parity-Bit”) oder um den Umfang der Tabelle zu erhöhen. Und dann kam auch noch IBM um die Ecke und brachte 1981 den allerersten und extrem erfolgreichen Personal Computer (PC) auf den Markt. IBM stattete diesen mit einer 8 Bit-Zeichentabelle aus. Der Name: Code Page 437. In den folgenden Jahren hat sich so die Größe von 8 Bit für 1 Byte als Quasi-Standard etabliert.&lt;/p&gt;
+&lt;p&gt;Tatsächlich konnte ein Byte aber alles sein: Angefangen bei einem 1 Bit bis zu dem, was Mitte des 20. Jahrhunderts als Speicher so verfügbar war: 6 Bit, 9 Bit, 10 Bit.  Beim Nixdorf 820 betrug die Größe eines Bytes 12 Bit. Es gibt Systeme, bei denen die Byte-Größe sogar frei wählbar war und immer noch ist. Der PDP-10 erlaubte eine wählbare Größe zwischen 1 und 36 Bit [&lt;a href=&#34;https://de.wikipedia.org/wiki/Byte&#34;&gt;WIKI10&lt;/a&gt;].&lt;/p&gt;
+&lt;p&gt;Die traurige Wahrheit lautet also: Es gab sehr lange gar keine einheitliche Definition für die Größe von 1 Byte. Anfang der 1990er Jahre, als Computer begannen die privaten Haushalte zu erobern, rang man sich dann doch noch zu einem offiziellen Standard durch: In der ISO/IEC 2382-1:1993 wurde die Byte-Größe mit 8 Bit definiert.&lt;/p&gt;
+&lt;p&gt;Allerdings halten sich auch heute nicht alle ans diesen Standard. Viele Programmiersprachen erlauben die Anzahl von Bits individuell festzulegen. Um das Byte mit seiner unsteten Beziehung zu den Bits zu unterscheiden, wurde mit dem Standard IEC 60027-2 in 1999 die Bezeichnung Oktet eingeführt. Ein Oktet entspricht immer 8 Bits.&lt;/p&gt;
+&lt;p&gt;Wenn du also auf Nummer Sicher gehen willst, solltest du dich nicht darauf verlassen, dass 1 Byte genau 8 Bit enthält.&lt;/p&gt;
 </description>
       
     </item>
