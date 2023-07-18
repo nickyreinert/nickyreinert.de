@@ -6,7 +6,99 @@
     <description>Recent content in Posts on Nicky Reinert</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de-DE</language>
-    <lastBuildDate>Tue, 07 Mar 2023 12:19:31 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 16 Mar 2023 12:19:31 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Die Nerd Enzyklopädie 8 - Hello World hat einen Bug</title>
+      <link>https://nickyreinert.de/blog/2023/03/16/die-nerd-enzyklop%C3%A4die-8-hello-world-hat-einen-bug/</link>
+      <pubDate>Thu, 16 Mar 2023 12:19:31 +0100</pubDate>
+      
+      <guid>https://nickyreinert.de/blog/2023/03/16/die-nerd-enzyklop%C3%A4die-8-hello-world-hat-einen-bug/</guid>
+      
+      <description>&lt;h2 id=&#34;hello-world-hat-einenbug&#34;&gt;Hello World! hat einen Bug&lt;/h2&gt;
+&lt;p&gt;Solltest du jemals in den erhabenen Genuss kommen eine Programmiersprache  erlernen zu dürfen, wird deine erste Lektion vermutlich die Ausgabe von „hello world!“ behandeln.  Ein Klassiker, beliebt bei Jung und Alt und so etwas wie der Running Gag in der Programmierer-Szene. (Das Verständnis für Nerd-Humor muss man sich übrigens hart erarbeiten.)&lt;/p&gt;
+&lt;p&gt;Der erste nachvollziehbare Beleg für diese Tradition geht auf Brian Kernighan zurück. Dieser verfasste für die Bell Laboratories eine Anleitung zur Programmierung mit B (Überraschung: der Nachfolger von B ist übrigens C). Dort wurde „hello, world“ aber nur als Beispiel-Ausgabe eines Programmes verwendet. Erst in einer späteren Anleitung für die Programmiersprache C von 1978 führte Kernighan dann die heute gewohnte Variante ein:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;main( ) \{
+
+printf(&amp;quot;hello, world\\n“);
+
+\}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;(Das \n am Ende steht für „new line“).&lt;/p&gt;
+&lt;p&gt;Wie dem auch sei: Die Umsetzung dieses einfachen Beispiel ist in den allermeisten Programmiersprachen nicht korrekt, sie hat einen Bug. Aber warum? &lt;/p&gt;
+&lt;p&gt;Unter Linux gibt es unter /dev das Gerät /dev/null — sendet man Ausgaben an dieses Gerät, passiert in der Regel gar nichts. /dev/null hat einen weniger bekannten Verwandten, nämlich /dev/full, das einen vollen Speicher simulieren soll. Sendet man eine Nachricht an diese Gerät, gibt es die Fehlermeldung zurück, das kein Speicher verfügbar ist:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;echo &amp;quot;Hello World!&amp;quot; \&amp;gt; /dev/full  
+echo: write error: No space left on device1  
+echo $?  
+1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Die Rückmeldung ist 1, was soviel bedeutet wie: Ein Fehler ist aufgetreten. Die Idee dahinter ist, dass man prüfen kann, wie ein Programm auf Fehlermeldungen reagiert. Was aber passiert, wenn man die Ausgabe der C-Implementierung von „hello, world“ zu diesem Gerät schickt?&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gcc hello.c -o hello  
+./hello \&amp;gt; /dev/full  
+echo $?  
+0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Die Rückmeldung ist 0  - also: „Kein Fehler aufgetreten„, was natürlich nicht stimmen kann. Auch die Implementierungen in anderen mitunter sehr populären Sprachen zeigen dieses Verhalten.&lt;/p&gt;
+&lt;p&gt;Das Hello-World-Programm ist zwar simpel und erfüllt seinen Zweck; setzt man allerdings strenge Qualitäts-Maßstäbe an, erfordert das die Berücksichtigung aller denkbaren Situationen. Und das ist hier nicht der Fall. „hello, world„ hat also - streng genommen - einen Bug.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Die Nerd Enzyklopädie 7 - Das allererste Easter-Egg</title>
+      <link>https://nickyreinert.de/blog/2023/03/13/die-nerd-enzyklop%C3%A4die-7-das-allererste-easter-egg/</link>
+      <pubDate>Mon, 13 Mar 2023 12:19:31 +0100</pubDate>
+      
+      <guid>https://nickyreinert.de/blog/2023/03/13/die-nerd-enzyklop%C3%A4die-7-das-allererste-easter-egg/</guid>
+      
+      <description>&lt;h2 id=&#34;das-allererste-easter-egg&#34;&gt;Das allererste Easter-Egg&lt;/h2&gt;
+&lt;p&gt;Als Easter Egg - also Osterei - wird eine versteckte Botschaft, Feature oder Gimmick in einem Programm, Computerspiel und eigentlich überall bezeichnet. Der Kreativität sind keine Grenzen gesetzt. So z.B. der Aufkleber mit dem Intel-Logo auf der CPU-Verpackung, der auf der Rückseite wie das Innenleben einer CPU aussieht [REDDI1].&lt;/p&gt;
+&lt;p&gt;Das erste bekannte Easter Egg überhaupt  befindet sich im &lt;strong&gt;make&lt;/strong&gt;-Befehl der Computer &lt;strong&gt;PDP-6&lt;/strong&gt; und &lt;strong&gt;PDP-10.&lt;/strong&gt; Führte man den Befehl mit dem Argument &lt;strong&gt;love&lt;/strong&gt; gab es die Ausgabe &lt;strong&gt;not war&lt;/strong&gt; zurück, bevor es die Ausführung fortführte:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ make love
+
+not war
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Moonlander (1973)&lt;/strong&gt; von &lt;strong&gt;Jack Burness&lt;/strong&gt; von &lt;strong&gt;DEC&lt;/strong&gt; (Digital Equipment Corporation) war das erste Spiel mit einer versteckten Funktion. Bewegte man sich lange genug horizontal, erschien irgendwann ein McDonalds Restaurant. Das Spiel wurde für den &lt;strong&gt;GT40&lt;/strong&gt; entwickelt und diente eher dazu, die Fähigkeiten des Terminals zu demonstrieren. 1979 adaptierte &lt;strong&gt;Atari&lt;/strong&gt; mit &lt;strong&gt;Lunar Lander&lt;/strong&gt; das Konzept und entwickelte daraus ein „echtes“ Spiel.&lt;/p&gt;
+&lt;p&gt;Der Begriff Easter Egg wurde allerdings erst in &lt;strong&gt;1979&lt;/strong&gt; geprägt und zwar bei eben jenem Unternehmen: &lt;strong&gt;Atari&lt;/strong&gt;. Das Management von Atari hatte ja bekanntermaßen ein schwieriges Verhältnis zu seinen Mitarbeitern (siehe —&amp;gt; Die Entstehungsgeschichte von Activision). Einerseits war man nicht an Gehaltsverhandlungen interessiert, andererseits hielt man es nicht für nötig, die Namen der Entwickler beim Abspann der Spiele zu erwähnen. Heutzutage eine Selbstverständlichkeit. Also die Erwähnung, nicht die Nicht-Erwähnung.&lt;/p&gt;
+&lt;p&gt;Der Grund für diese Praxis: Man wollte verhindern, dass die Konkurrenz weiß, wen sie bei Atari abwerben muss. Der Entwickler des Spiels &lt;strong&gt;Adventure&lt;/strong&gt;, &lt;strong&gt;Warren Roinett&lt;/strong&gt;, wählte eine ganz besondere Form des Protests: Er verewigte sich mit diesen Worten innerhalb eines Raum, der im Spiel nur schwer zu erreichen war:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;Adventure_EastereggPNG.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;„Created by Warren Robinett“ in Ataris Adventure, 1979 [WIKI4]&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Das Easter Egg wurde erst nach dem Weggang von &lt;strong&gt;Robinett&lt;/strong&gt; entdeckt. Der 15-jährige &lt;strong&gt;Adam Clayton&lt;/strong&gt; aus Salt Lake City fand die „geheime Botschaft“ und beschrieb in einem Brief an Atari, welche Schritte notwendig waren, um in den versteckten Raum zu gelangen (ob jemand anders die Entdeckung vor ihm gemacht hat, ist nicht übermittelt). &lt;strong&gt;Adam Clayton&lt;/strong&gt; wurde später selber Software-Entwickler, entwickelte sogar Spiele für die Atari-System und arbeitet heute für &lt;strong&gt;Warner Bros Entertainment&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Die Begeisterung seitens Atari hielt sich in Grenzen. Da Robinett das Unternehmen bereits verlassen hat, machte man sich im Quellcode auf die Suche nach dem Easter Egg. &lt;strong&gt;Brad Stewart&lt;/strong&gt; fand die entsprechende Stelle, tat sich aber auch schwer damit, die Nachricht zu entfernen. Weniger aus technischer Sicht, vielmehr aus rebellischem Antrieb. Er hielt mehr davon, die Nachricht durch „Fixed by Brad Stewart“ zu ersetzen [WARR1].&lt;/p&gt;
+&lt;p&gt;Atari verzichtete schließlich auf die Anpassung des Spiels, nicht nur, weil die Herstellung eines neue ROM-Masters - sozusagen die Vorlage für die Massenproduktion - etwa &lt;strong&gt;10.000 USD&lt;/strong&gt; gekostet hätte. &lt;strong&gt;Steve Wright&lt;/strong&gt;, damals Direktor für Software Development bei Atari, fand Gefallen an der Idee einer versteckten Botschaft und wählte dafür den Begriff „Easter Egg“. In vielen Spielem (und wie gesagt auch in anderen Produkten) sollten fortan diese kleinen versteckten Botschaften zu finden sein.&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Die Nerd Enzyklopädie 6 - Die Entstehungsgeschichte von Activision</title>
+      <link>https://nickyreinert.de/blog/2023/03/10/die-nerd-enzyklop%C3%A4die-6-die-entstehungsgeschichte-von-activision/</link>
+      <pubDate>Fri, 10 Mar 2023 12:19:31 +0100</pubDate>
+      
+      <guid>https://nickyreinert.de/blog/2023/03/10/die-nerd-enzyklop%C3%A4die-6-die-entstehungsgeschichte-von-activision/</guid>
+      
+      <description>&lt;h2 id=&#34;die-entstehungsgeschichte-vonactivision&#34;&gt;Die Entstehungsgeschichte von Activision&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Activision&lt;/strong&gt; gehört zu den erfolgreichsten Unternehmen der Videospiel-Industrie und die Entstehung ist eng verknüpft mit dem Untergang eines Videospiel-Pioniers: &lt;strong&gt;Atari&lt;/strong&gt;. Der Grund: Fehlentscheidungen und Ignoranz [&lt;a href=&#34;https://www.gameinformer.com/b/features/archive/2013/02/26/activisionaries-how-four-programmers-changed-the-game-industry-forever.aspx&#34;&gt;GAME1&lt;/a&gt;].&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;IMAGE1.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Nein, nicht Facebooks Metaverse, sondern Pitfall von Activision!&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Aber von Anfang an: Atari wurde 1972 von &lt;strong&gt;Nolan Bushnell&lt;/strong&gt; und &lt;strong&gt;Ted Dabney&lt;/strong&gt; gegründet. Atari produzierte sowohl Spielecomputer als auch Spiele und war zu der Zeit genau das, was man heute als „Start-Up“ bezeichnen würde: Gute Stimmung, gutes Produkt.&lt;/p&gt;
+&lt;p&gt;Das wohl erste populäre Computerspiel &lt;strong&gt;Pong&lt;/strong&gt; stammte von Atari. Der &lt;strong&gt;Atari 2600&lt;/strong&gt; ist eine der ersten Konsolen und kann wohl mit Fug und Recht als Kulturgut bezeichnet werden. Ab Mai 1974 arbeitete sogar der spätere Apple-Gründer &lt;strong&gt;Steve Jobs&lt;/strong&gt; für Atari. Kurzum: Es lief bei Atari.&lt;/p&gt;
+&lt;p&gt;Trotz des Erfolg des Unternehmens konnte nicht genug Kapital aufgebracht werden, um die Forschung für neue Technologien voranzutreiben. Das Unternehmen wurde deshalb 1976 an &lt;strong&gt;Warner Communications&lt;/strong&gt; verkauft — schon damals ein bedeutender Player in der Unterhaltungsindustrie.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Bushnell&lt;/strong&gt; musste das Unternehmen 1978 verlassen, um Platz zu machen für &lt;strong&gt;Raymond Kassar&lt;/strong&gt;. Und mit Warner und Kassar endete die lockere Start-Up-Mentalität. Kostenoptimierung und Disziplin standen von nun an auf der Tagesordnung. „&lt;strong&gt;The days of hot-tubbing in the office were over&lt;/strong&gt;“, so Crane [&lt;a href=&#34;https://www.gamedeveloper.com/business/the-history-of-activision&#34;&gt;GAME2&lt;/a&gt;].&lt;/p&gt;
+&lt;p&gt;Die Sparkur hatte Erfolg: Anfang 1979 veröffentlichte das Management die Zahlen für das Vorjahr. Das Unternehmen machte mit dem Verkauf von Spiele-Cartridges einen Gewinn von &lt;strong&gt;100 Mio. USD&lt;/strong&gt;. Es ging steil bergauf.&lt;/p&gt;
+&lt;p&gt;Die vier Top-Programmierer &lt;strong&gt;David Crane&lt;/strong&gt;, &lt;strong&gt;Larry Kaplan&lt;/strong&gt;, &lt;strong&gt;Alan Miller&lt;/strong&gt;, and &lt;strong&gt;Bob Whitehead&lt;/strong&gt; konnten sich darüber nicht so richtig freuen. Zusammen hatten die vier mehr als die Hälfte der Spiele produziert, gleichzeitig verdienten sie aber gerade einmal &lt;strong&gt;22.000 USD pro Jahr.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Sie beschwerten sich bei Kassar und forderten ihren Anteil am Erfolg. Doch der winkte ab. Für ihn war die Entwicklungsarbeit nicht wertvoller als z.B. die Montage der Cartridges am Fließband [&lt;a href=&#34;https://www.gamedeveloper.com/business/the-history-of-activision&#34;&gt;GAME2&lt;/a&gt;]. Seine Devise lautete „Kostenreduzierung um jeden Preis“. Gehaltserhöhungen und Boni kamen für ihn nicht infrage. Eine fatale Fehlentscheidung.&lt;/p&gt;
+&lt;p&gt;Die vier Entwickler verließen das Unternehmen, um &lt;strong&gt;Activision&lt;/strong&gt; zu gründen. 1981 verließ auch &lt;strong&gt;Jay Miner&lt;/strong&gt;, Chefentwickler für die Atari-Heimcomputer, das Unternehmen und gründete seinerseits &lt;strong&gt;Amiga&lt;/strong&gt; — ein weiteres populäres Videospiel-Unternehmen.&lt;/p&gt;
+&lt;p&gt;In einem Interview mit der InfoWorld in 1983 beschrieben Kaplan und Cane die damalige Situation und wie Kassar auf ihre Gehaltsforderungen reagierte:&lt;/p&gt;
+&lt;p&gt;‘I’ve dealt with your kind before. You’re a dime a dozen. You’re not unique. Anybody can do ­a ­cartridge.’” (Kassar laut Kaplan in InfoWorld, 1983)&lt;/p&gt;
+&lt;p&gt;Zwischen den beiden Unternehmen entbrannte ein Konflikt, vermutlich auch getrieben durch den angekratzten Stolz von Atari. Dabei gab es dafür keinen Grund: Die Spiele von Activision waren durchaus erfolgreich und wirkten sich so auch auf den Verkauf der Atari-Konsolen aus.&lt;/p&gt;
+&lt;p&gt;Kassar musste Atari 1983 nach einem Börsenskandal verlassen. Das Unternehmen versank in der Folge in der Bedeutungslosigkeit, wechselte mehrfach den Besitzer und meldete 2013 Insolvenz an. Dank einer Crowdfunding Kampagne in 2020 gelang mit der Retro-Konsole &lt;strong&gt;Atari VCS&lt;/strong&gt; die, naja, sagen wir mal “Rückkehr”. Atari ist neben Nintendo, Sony oder Microsoft eher ein kleines Licht am Entertainment-Firmament.&lt;/p&gt;
+&lt;p&gt;Activision war 3 Jahre nach seiner Gründung bereits &lt;strong&gt;300 Mio. USD&lt;/strong&gt; wert. Der Erfolg von Activision beflügelte die ganze Branche. Nachahmer überschwemmten den Markt mit Spielen, die lange nicht mit der Qualität von Activision mithalten konnten. Ein Preiskampf entbrannte und schließlich platzte die Blase. Viele Spiele-Hersteller gingen pleite und auch Activision machte ein paar harte Jahr durch.&lt;/p&gt;
+&lt;p&gt;Das Unternehmen wurde umbenannt, aufgekauft, musste ebenfalls Insolvenz anmelden und erweiterte sein Portfolio. Mitte der 1980er Jahre hatten die vier Gründer das Unternehmen schon wieder verlassen. Miller und Whitehead gründeten &lt;strong&gt;Accolade&lt;/strong&gt;. Kaplan kehrte als Vizepräsident zurück zu Atari. Crane verließt Activision als letzter und gründete mit &lt;strong&gt;Gary Kitzen&lt;/strong&gt; &lt;strong&gt;Absolute Entertainment&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Heute ist Activision der zweitgrößte Spielehersteller der Welt mit über 4.000 Mitarbeitern.&lt;/p&gt;
+</description>
+      
+    </item>
+    
     <item>
       <title>Die Nerd Enzyklopädie 5 - Gesehen, gelacht, F8</title>
       <link>https://nickyreinert.de/blog/2023/03/07/die-nerd-enzyklop%C3%A4die-5-gesehen-gelacht-f8/</link>
@@ -26,11 +118,11 @@
     </item>
     
     <item>
-      <title>Die Nerd Enzyklopädie 5 - RegExen — Jetzt hast du zwei Probleme</title>
-      <link>https://nickyreinert.de/blog/2023/03/04/die-nerd-enzyklop%C3%A4die-5-regexen-jetzt-hast-du-zwei-probleme/</link>
+      <title>Die Nerd Enzyklopädie 4 - RegExen — Jetzt hast du zwei Probleme</title>
+      <link>https://nickyreinert.de/blog/2023/03/04/die-nerd-enzyklop%C3%A4die-4-regexen-jetzt-hast-du-zwei-probleme/</link>
       <pubDate>Sat, 04 Mar 2023 12:19:31 +0100</pubDate>
       
-      <guid>https://nickyreinert.de/blog/2023/03/04/die-nerd-enzyklop%C3%A4die-5-regexen-jetzt-hast-du-zwei-probleme/</guid>
+      <guid>https://nickyreinert.de/blog/2023/03/04/die-nerd-enzyklop%C3%A4die-4-regexen-jetzt-hast-du-zwei-probleme/</guid>
       
       <description>&lt;p&gt;Reguläre Ausdrücke sind umstritten: Geliebt als vielseitiges Werkzeug, verdammt als undurchschaubare Fehlerquelle. Nicht ohne Grund heißt es: Reguläre Ausdrücke lösen ein Problem und schaffen zwei neue.&lt;br&gt;
 Woher kommt diese Hassliebe?&lt;/p&gt;
