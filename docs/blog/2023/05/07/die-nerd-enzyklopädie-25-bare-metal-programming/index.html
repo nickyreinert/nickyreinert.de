@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="Bare Metal Programming Übersetzt heißt „bare metal programming“ etwa so viel wie „Programmieren am reinen Metall“. Gemeint ist damit, dass man eine Software entwickelt, die direkt mit der Hardware kommuniziert, ohne Umwege über Bibliotheken, Schnittstellen oder ein Betriebssystem.
+Ein Entwickler, dessen Name nicht überliefert ist, weshalb das ganze vielleicht eher der Kategorie „sympathische Legende“ zuzuordnen ist, nahm den Begriff des „Bare Metal Programmings“ Ende der der 1980er etwas zu wörtlich. Er arbeitete an einem „discrete component“ Computer, also einem Computer, bei dem die Transistoren sichtbar im Gerät verbaut sind (der erste Supercomputer, der IBM 7030 von 1961, bestand aus 169.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/favicon.ico">
+
+  
+  
+  <meta name="keywords" content=" hugo  latex  theme ">
+  
+
+  
+  
+
+  
+  <meta property="og:title" content="Die Nerd Enzyklopädie 25 - Bare Metal Programming" />
+<meta property="og:description" content="Bare Metal Programming Übersetzt heißt „bare metal programming“ etwa so viel wie „Programmieren am reinen Metall“. Gemeint ist damit, dass man eine Software entwickelt, die direkt mit der Hardware kommuniziert, ohne Umwege über Bibliotheken, Schnittstellen oder ein Betriebssystem.
+Ein Entwickler, dessen Name nicht überliefert ist, weshalb das ganze vielleicht eher der Kategorie „sympathische Legende“ zuzuordnen ist, nahm den Begriff des „Bare Metal Programmings“ Ende der der 1980er etwas zu wörtlich. Er arbeitete an einem „discrete component“ Computer, also einem Computer, bei dem die Transistoren sichtbar im Gerät verbaut sind (der erste Supercomputer, der IBM 7030 von 1961, bestand aus 169." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://nickyreinert.de/blog/2023/05/07/die-nerd-enzyklop%C3%A4die-25-bare-metal-programming/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-05-07T12:19:31+01:00" />
+<meta property="article:modified_time" content="2023-05-07T12:19:31+01:00" />
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/blog/2023/05/07/die-nerd-enzyklop%C3%A4die-25-bare-metal-programming/">
+
+  
+  
+  <meta itemprop="name" content="Die Nerd Enzyklopädie 25 - Bare Metal Programming">
+<meta itemprop="description" content="Bare Metal Programming Übersetzt heißt „bare metal programming“ etwa so viel wie „Programmieren am reinen Metall“. Gemeint ist damit, dass man eine Software entwickelt, die direkt mit der Hardware kommuniziert, ohne Umwege über Bibliotheken, Schnittstellen oder ein Betriebssystem.
+Ein Entwickler, dessen Name nicht überliefert ist, weshalb das ganze vielleicht eher der Kategorie „sympathische Legende“ zuzuordnen ist, nahm den Begriff des „Bare Metal Programmings“ Ende der der 1980er etwas zu wörtlich. Er arbeitete an einem „discrete component“ Computer, also einem Computer, bei dem die Transistoren sichtbar im Gerät verbaut sind (der erste Supercomputer, der IBM 7030 von 1961, bestand aus 169."><meta itemprop="datePublished" content="2023-05-07T12:19:31+01:00" />
+<meta itemprop="dateModified" content="2023-05-07T12:19:31+01:00" />
+<meta itemprop="wordCount" content="254">
+<meta itemprop="keywords" content="" />
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>Die Nerd Enzyklopädie 25 - Bare Metal Programming - Nicky Reinert</title>
+  
+
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Die Nerd Enzyklopädie 25 - Bare Metal Programming"/>
+<meta name="twitter:description" content="Bare Metal Programming Übersetzt heißt „bare metal programming“ etwa so viel wie „Programmieren am reinen Metall“. Gemeint ist damit, dass man eine Software entwickelt, die direkt mit der Hardware kommuniziert, ohne Umwege über Bibliotheken, Schnittstellen oder ein Betriebssystem.
+Ein Entwickler, dessen Name nicht überliefert ist, weshalb das ganze vielleicht eher der Kategorie „sympathische Legende“ zuzuordnen ist, nahm den Begriff des „Bare Metal Programmings“ Ende der der 1980er etwas zu wörtlich. Er arbeitete an einem „discrete component“ Computer, also einem Computer, bei dem die Transistoren sichtbar im Gerät verbaut sind (der erste Supercomputer, der IBM 7030 von 1961, bestand aus 169."/>
+
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <h1>
+    <a href="https://nickyreinert.de/">Nicky Reinert</a>
+  </h1>
+
+  <div class="footnote">
+    <span class="nav-bar-item">
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">Not-A-Brand Apparel</a>
+    </span>
+  </div>
+
+  <hr/>
+  <nav>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/">alles</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/nerdenz/">nerdenz</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/blog/">blog</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/anleitungen/">anleitungen</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/development/">development</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/hosting/">hosting</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/projekte/">projekte</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/tools/">tools</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/wordpress/">wordpress</a>
+    </span>
+    
+  </nav>
+
+
+</header>
+
+    
+<main id="main" class="post">
+  
+  
+  <h1>Die Nerd Enzyklopädie 25 - Bare Metal Programming</h1>
+  
+  
+  <article class="content">
+    
+    <h2 id="bare-metal-programming">Bare Metal Programming</h2>
+<p><img src="image1.png" alt=""></p>
+<p>Übersetzt heißt „bare metal programming“ etwa so viel wie „Programmieren am reinen Metall“. Gemeint ist damit, dass man eine Software entwickelt, die direkt mit der Hardware kommuniziert, ohne Umwege über Bibliotheken, Schnittstellen oder ein Betriebssystem.</p>
+<p>Ein Entwickler, dessen Name nicht überliefert ist, weshalb das ganze vielleicht eher der Kategorie „sympathische Legende“ zuzuordnen ist, nahm den Begriff des „Bare Metal Programmings“ Ende der der 1980er etwas zu wörtlich. Er arbeitete an einem „discrete component“ Computer, also einem Computer, bei dem die Transistoren sichtbar im Gerät verbaut sind (der erste Supercomputer, der IBM 7030 von 1961, bestand aus 169.100 Transistoren. Damit benötigte alleine die CPU eine Fläche von knapp 83qm [<a href="http://ed-thelen.org/comp-hist/vs-ibm-stretch.html">EDTH1</a>].)</p>
+<p>Das Programm unseres Entwicklers schien jedenfalls einen Bug zu haben, weshalb er versucht hat das Programm zu stoppen. Was ihm nicht gelang, da das System — bugbedingt — alle Steuersignale ignorierte. Auch der Versuch den Computer selber anzuhalten, war nicht von Erfolg gekrönt. Da er das Gerät — aus Angst vor Datenverlust — nicht einfach ausschalten wollte, rief er einen Techniker dazu.</p>
+<p>Bei dieser Art von Computern konnte man recht leicht feststellen, an welcher Stelle ein Programm bzw. eine einzelne Anweisung verarbeitet wurde, da die zuständigen Komponenten ja buchstäblich sicht- und greifbar waren. Man sah sich also zu einer ungewöhnlichen Maßnahme gezwungen, die wohl nicht deutlicher zeigen konnte, wie „Bare Metal Programming“ auch aussehen kann: Der Computer wurde geöffnet, um mit einem Schraubenzieher einen Kurzschluss an der Komponente zu erzeugen, von der man annahm, dass sie für den Bug verantwortlich war [<a href="https://yarchive.net/comp/tales.html">YARC1</a>].</p>
+
+    
+  </article>
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/blog/2023/05/04/die-nerd-enzyklop%C3%A4die-24-zeichenketten-braten/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/blog/2023/05/10/die-nerd-enzyklop%C3%A4die-26-focal/">next →</a>
+    
+  </div>
+  <div class="comment">
+    
+    
+    
+    
+    
+    
+  </div>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 2019</span> - <span>2023</span>
+  </div>
+
+  <div>
+    <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a>
+    <span> 🍦 Theme </span>
+    <a class="link" href="https://github.com/queensferryme/hugo-theme-texify">TeXify</a>
+  </div>
+
+  <div class="footnote">
+    <span>Follow me on <a class=link href=https://github.com/queensferryme>GitHub</a>,
+<a class=link href=https://twitter.com/queensferryme>Twitter</a> or
+<a class=link href=/index.xml>RSS</a> |
+<a class=link href=https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh target=_blank rel=noopener>CC BY-NC-SA 4.0</a>
+</span>
+  </div>
+</footer>
+
+  </div>
+
+  
+  
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>

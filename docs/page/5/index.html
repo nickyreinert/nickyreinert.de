@@ -131,151 +131,18 @@
   
   <div class="post">
     <h2>
-      <a href="https://nickyreinert.de/blog/2019/10/11/apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/">Apache und nginx parallel betreiben und mit ApacheBench gegeneinander antreten lassen</a>
-      <time>Fri, Oct 11, 2019</time>
-    </h2>
-    
-    <div class="content">
-      
-      Mein Ziel ist es, nginx und Apache als Webserver auf einem System laufen zu lassen. Alle HTTP/HTTPS-Anfragen werden von nginx beantwortet. Anfragen an den Port 8080 (für HTTP) oder 4443 (HTTPS) werden von Apache beantwortet. So kann ich nginx und Apache in einem Benchmark vergleichen, indem ich einfach nur die Ports ändere. Das Setup ist aber auch für andere Zwecke sinnvoll, wenn du z.B. die Burst-Einstellungen von nginx in Aktion sehen oder bestimmte Web-Dienste strikt mit Apache bedienen willst.
-      
-    </div>
-  </div>
-  
-  <div class="post">
-    <h2>
-      <a href="https://nickyreinert.de/blog/2019/10/02/mehrere-virtuelle-server-mit-nginx-und-php-fpm-f%C3%BCr-wordpress-teil-3-/-3/">Mehrere virtuelle Server mit nginx und PHP-FPM für Wordpress (Teil 3 / 3)</a>
-      <time>Wed, Oct 2, 2019</time>
-    </h2>
-    
-    <div class="content">
-      
-      Im letzten Teil geht es um die Einrichtung von PHP-FPM und ich gebe eine kleine Zusammenfassung bzw. Überblick über die Struktur des gesamten Setups. Wenn alles korrekt eingerichtet ist, solltet ihr nun einen gut funktionierenden Webserver auf Basis von nginx haben, der PHP-FPM nutzt und gut mit Wordpress laufen sollte. Der Server arbeitet für mehrere unterschiedliche Domains, die so gut wie möglich im System getrennt sind.
-Die Einrichtung der PHP-Pools Um den ganzen Bums zum Laufen zu bringen fehlt jetzt nur noch PHP.
-      
-    </div>
-  </div>
-  
-  <div class="post">
-    <h2>
-      <a href="https://nickyreinert.de/blog/2019/10/01/mehrere-virtuelle-server-mit-nginx-und-php-fpm-f%C3%BCr-wordpress-teil-2-/-3/">Mehrere virtuelle Server mit nginx und PHP-FPM für Wordpress (Teil 2 / 3)</a>
-      <time>Tue, Oct 1, 2019</time>
-    </h2>
-    
-    <div class="content">
-      
-      Im zweiten Teil geht es um die individuelle Einrichtung der virtuellen Server für nginx.
-Server oder virtual hosts? Im Gegensatz zu den &ldquo;virtual hosts&rdquo; von Apache spricht man bei nginx von &ldquo;servern&rdquo;. Ich möchte das Aufgreifen und nutze im Folgenden einfach nur von &ldquo;Server&rdquo; wenn ich von einem individuellen Host oder virtuellem Server spreche. Wie bei Apache werden diese idealerweise in eigenständigen Konfig-Dateien definiert. Hier gibt es verschiedene Vorlieben, ob die Konfig-Dateien unter /etc/nginx/sites-available oder /etc/nginx/conf.
-      
-    </div>
-  </div>
-  
-  <div class="post">
-    <h2>
-      <a href="https://nickyreinert.de/blog/2019/08/02/warum-es-tage-dauern-kann-wenn-du-dich-von-einer-e-mail-verteilerliste-entfernen-l%C3%A4sst/">Warum es Tage dauern kann, wenn du dich von einer E-Mail-Verteilerliste entfernen lässt</a>
-      <time>Fri, Aug 2, 2019</time>
-    </h2>
-    
-    <div class="content">
-      
-      Im Vereinigten Königreich gibt es wohl eine mittelgroße Bank, die, wie sicher viele andere Unternehmen auch, Newsletter verschickt. Was passiert, wenn man als Empfänger bei diesem Newsletter auf &ldquo;Abmelden&rdquo; klickt? Folgendes:
-Der Klick auf den &ldquo;Abmelden&rdquo;-Link ruft einen uralten Webservice auf.
-Der Webservice schickt eine E-Mail an einen internen E-Mail-Empfänger, der seit 5 Jahren nicht mehr in der Bank arbeitet.
-Diese E-Mail-Adresse konnte man allerdings nicht ändern, da sie im Sourcecode fest angeben wurde (hardcoded) und man den originalen Sourcode zum kompilieren nicht mehr hatte.
-      
-    </div>
-  </div>
-  
-  <div class="post">
-    <h2>
-      <a href="https://nickyreinert.de/blog/2019/07/15/fokussierter-drill-down-mit-tableau/">Fokussierter Drill-Down mit Tableau</a>
-      <time>Mon, Jul 15, 2019</time>
-    </h2>
-    
-    <div class="content">
-      
-      In Tableau gibt es die eigentlich sehr nützliche Möglichkeit, Dimensionen beliebig zu kombinieren und in einer Hierarchie zusammenzufassen. Diese Funktion ist sehr intuitiv hat aber einen Haken: Wenn man bei großen Datenmengen und Dimensionen mit hoher Kardinalität einen Drill Down macht, werden die Abfragen nicht nur irrsinnig langsam, je tiefer man kommt. Die Übersicht geht auch komplett verloren.
-Um das zu demonstrieren habe ich eine Datenquelle mit 1 Mio. Zeilen und 10 Dimensionen erzeugt.
-      
-    </div>
-  </div>
-  
-  <div class="post">
-    <h2>
-      <a href="https://nickyreinert.de/blog/2019/07/13/wie-kannst-du-ssh-sicherer-machen-security-through-obscurity/">Wie kannst du SSH sicherer machen? Security through obscurity?</a>
-      <time>Sat, Jul 13, 2019</time>
-    </h2>
-    
-    <div class="content">
-      
-      Diese Abbildung, meine geneigten Freunde, zeigt die Zugriffsversuche für SSH auf meinen Server. Zugegeben: Es ist nicht viel und wird sich vermutlich kaum auf die Performance des gesamten Systems auswirken. Mit diesem Grundrauschen muss aber eigentlich jeder leben, der einen SSH-Dienst über den Standard-Port 22 betreibt.
-SSH-Zugriff der letzten 30 Tage
-Wenn sich diese Zugriffe nicht auf die Performance auswirken, macht es dann wenigstens aus Sicherheitsgründen Sinn, diese Zugriffe zu unterbinden?
-      
-    </div>
-  </div>
-  
-  <div class="post">
-    <h2>
-      <a href="https://nickyreinert.de/blog/2019/05/13/abbreviator-tm-lange-texte-automatisch-abk%C3%BCrzen/">AbbreViator (tm) - Lange Texte automatisch abkürzen</a>
-      <time>Mon, May 13, 2019</time>
-    </h2>
-    
-    <div class="content">
-      
-      Wenn bei deiner Abschlussarbeit, Masterarbeit, Hausarbeit oder Doktorabeit Qualität mehr zählt als Quantität, dann ist der AbbreViator (tm) für dich genau das richtige. Der AbbreViator (tm) ist für wissenschaftliche und nicht-wissenschaftliche Texte geeigent. Das Werkzeug ersetzt alle Wörter durch Abkürzungen und liefert dir dein komplettes Pamphlet zurück, dass inhaltlich nicht weniger wert ist, als das Original, dafür aber umso kompakter präsentiert werden kann. Natürlich erhälst du auch das passende Abkürzungsverzeichnis dazu, dass du deiner schriftlichen Arbeit dann anfügen kannst.
-      
-    </div>
-  </div>
-  
-  <div class="post">
-    <h2>
-      <a href="https://nickyreinert.de/blog/2019/04/29/lorem-picsum-der-generator-f%C3%BCr-zuf%C3%A4llige-bilder/">Lorem Picsum - Der Generator für zufällige Bilder</a>
-      <time>Mon, Apr 29, 2019</time>
-    </h2>
-    
-    <div class="content">
-      
-      Lorem Ipsum kennt jeder. Das sind diese lateinisch anmutenden Texte, die man als Platzhalter verwenden kann. Zu einem richtigen Layout gehören aber nicht nur Texte, sondern auch Bilder. Doch woher nehmen, wenn nicht stehlen? Lorem Picsum heißt die Antwort naheliegenderweise. Dabei handelt es sich um eine kostenlose und unkomplizierte API, um Bilder in deine Seite bzw. dein Layout einzubinden. Die Bilder werden dabei bei jedem Aufruf zufällig neu ausgewählt:
-Das schöne: Du kannst die Bilder relativ zielgenau aussuchen.
-      
-    </div>
-  </div>
-  
-  <div class="post">
-    <h2>
-      <a href="https://nickyreinert.de/blog/2019/04/24/den-korrekten-mysql-odbc-treiber-f%C3%BCr-deinen-linux-server-installieren/">Den korrekten MySQL ODBC-Treiber für deinen Linux-Server installieren</a>
-      <time>Wed, Apr 24, 2019</time>
-    </h2>
-    
-    <div class="content">
-      
-      Wenn du denkst, du hast alles richtig gemacht, nachdem du einer der halb vollständigen Anleitungen da draußen gefolgt bist, und dann wirst du nach der mühseligen Installation von ein paar ODBC-Treibern doch mit der folgenden Fehlermeldung begrüßt:
-[ISQL]ERROR: Could not SQLDriverConnect [01000][unixODBC][Driver Manager]Can&#39;t open lib &#39;/usr/local/lib/libmyodbc8w.so&#39; : file not found [ISQL]ERROR: Could not SQLDriverConnect Doch tatsächlich existiert die Datei. Die Fehlermeldung ist nur etwas unpräzise und vermutlich hast du die falschen Treiber heruntergeladen.
-      
-    </div>
-  </div>
-  
-  <div class="post">
-    <h2>
-      <a href="https://nickyreinert.de/blog/2019/04/18/wordpress-tag-cloud-mit-umlauten-%C3%A4%C3%B6%C3%BC-korrekt-sortieren-oder-der-wordpress-filter-im-live-beispiel-erkl%C3%A4rt/">WordPress Tag Cloud mit Umlauten (äöü) korrekt sortieren - Oder: Der WordPress Filter im Live-Beispiel erklärt</a>
-      <time>Thu, Apr 18, 2019</time>
+      <a href="https://nickyreinert.de/blog/2020/11/05/wie-funktionieren-dateirechte/">Wie funktionieren Dateirechte?</a>
+      <time>Thu, Nov 5, 2020</time>
     </h2>
     
     <div>
       <b>Keywords: </b>
       
-      <a class="link" href='https://nickyreinert.de/tags/anleitung'>#anleitung</a>
+      <a class="link" href='https://nickyreinert.de/tags/chmod'>#chmod</a>
       
-      <a class="link" href='https://nickyreinert.de/tags/filter'>#filter</a>
+      <a class="link" href='https://nickyreinert.de/tags/dateirechte'>#dateirechte</a>
       
-      <a class="link" href='https://nickyreinert.de/tags/php'>#php</a>
-      
-      <a class="link" href='https://nickyreinert.de/tags/tagcloud'>#tagcloud</a>
-      
-      <a class="link" href='https://nickyreinert.de/tags/tutorial'>#tutorial</a>
-      
-      <a class="link" href='https://nickyreinert.de/tags/wordcloud'>#wordcloud</a>
+      <a class="link" href='https://nickyreinert.de/tags/sysop'>#sysop</a>
       
       <a class="link" href='https://nickyreinert.de/tags/wordpress'>#wordpress</a>
       
@@ -283,7 +150,245 @@ Das schöne: Du kannst die Bilder relativ zielgenau aussuchen.
     
     <div class="content">
       
-      WordPress bringt von Hause aus ein Widget mit, dass die verwendeten Tags als Cloud darstellt (wer es ein wenig schöner mag, greift auf mein WordCloud Plugin zurück). Das Ganze hat nur einen Haken: Die entsprechende WordPress-Funktion wp_generate_tag_cloud nutzt aosort() als Sortierfunktion. Und die kommt mit Umlauten nicht sonderlich gut klar. Eine Lösung wäre also, die Umlaute für die Sortierung zu übersetzen, also Ä ind Ae, ö in oe und so weiter.
+      Die korrekten Dateirechte sollten eine wichtige Rolle spielen, wenn du an einem Sicherheitskonzept für deine Webseite bzw. Wordpress arbeitest. Leider wird das Thema Dateirechte oft stiefmütterlich behandelt, nicht zuletzt weil es fälschlicherweise als zu kompliziert angesehen wird. Dabei muss es das gar nicht sein: Das Grundprinzip ist einfach: Du willst nicht, dass jedermann Dateien ändern, ausführen oder lesen kann. Sicherlich gibt es feine Abstufungen. und genau die möchte ich hier erklären.
+      
+    </div>
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="https://nickyreinert.de/blog/2020/10/24/online-marketing-killed-the-internet-star/">Online Marketing killed the Internet Star</a>
+      <time>Sat, Oct 24, 2020</time>
+    </h2>
+    
+    <div>
+      <b>Keywords: </b>
+      
+      <a class="link" href='https://nickyreinert.de/tags/internet'>#internet</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/online-marketing'>#online-marketing</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/www'>#www</a>
+      
+    </div>
+    
+    <div class="content">
+      
+      Das Internet. Unendliche Weiten. Wir schreiben das Jahr 2020. Das Internet hat eine beachtliche Menge populärer Dienste groß gemacht: E-Mail. Video-Streaming. Vernetzte Kühlschränke. Smart-TV. Und allen voran das World Wide Web, kurz WWW oder auch das Web - für die meisten wohl der Star des Internets.
+Online Marketing hat das Web vielleicht nicht umgebracht, aber mindestens nachhaltig geprägt. Doch der Song von The Buggles heißt nun mal nicht Video hat den Radio-Star nachhaltig geprägt&hellip;
+      
+    </div>
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="https://nickyreinert.de/blog/2020/10/23/das-memory-limit-von-php-und-wordpress-erh%C3%B6hen-die-vollst%C3%A4ndige-anleitung/">Das Memory Limit von PHP und WordPress erhöhen - die vollständige Anleitung</a>
+      <time>Fri, Oct 23, 2020</time>
+    </h2>
+    
+    <div>
+      <b>Keywords: </b>
+      
+      <a class="link" href='https://nickyreinert.de/tags/apache'>#apache</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/apache2'>#apache2</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/memory-limit'>#memory-limit</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/nginx'>#nginx</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/php'>#php</a>
+      
+    </div>
+    
+    <div class="content">
+      
+      Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. Viele Anleitungen sind oft unvollständig, und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:
+super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM oder global in der httpd.
+      
+    </div>
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="https://nickyreinert.de/blog/2020/10/08/automatisierte-wordpress-installation/">Automatisierte WordPress Installation</a>
+      <time>Thu, Oct 8, 2020</time>
+    </h2>
+    
+    <div>
+      <b>Keywords: </b>
+      
+      <a class="link" href='https://nickyreinert.de/tags/automatiierung'>#automatiierung</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/bash'>#bash</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/installation'>#installation</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/script'>#script</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/setup'>#setup</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/wordpress'>#wordpress</a>
+      
+    </div>
+    
+    <div class="content">
+      
+      Et voilá. Ein BASH Script, um WordPress automatisiert über die Kommandozeile zu installieren, inklusive Theme und beliebigen Plugins sowie - wenn benötigt - zufälligen Beiträgen, Kategorien, Tags und Bildern.
+Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und unbedingt Backups nutzen. Das Script verwendet, wenn der entsprechende Parameter gesetzt ist, den Befehl &ldquo;rm -rf&rdquo;, um einen Ordner komplett zu löschen. Dieser Schritt lässt sich nicht widerrufen.
+      
+    </div>
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="https://nickyreinert.de/blog/2020/09/09/das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/">Das Ticket-Preis-System der Deutschen Bahn - oder: wie findest du den optimalen Fahrschein-Preis?</a>
+      <time>Wed, Sep 9, 2020</time>
+    </h2>
+    
+    <div>
+      <b>Keywords: </b>
+      
+      <a class="link" href='https://nickyreinert.de/tags/analyse'>#analyse</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/deutsche-bahn'>#deutsche-bahn</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/fahrscheine'>#fahrscheine</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/mobilitaet'>#mobilitaet</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/statistik'>#statistik</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/tickets'>#tickets</a>
+      
+    </div>
+    
+    <div class="content">
+      
+      Update 3.10.2020 - Flexpreis Plus, siehe Teil 1
+Ich reise gerne. Nicht viel, aber gerne. Am liebsten jage ich mit einem Porsche Cayenne quer durch die Republik. Auf der linken Spur der Autobahn. Mit 250 Sachen. Der linke Blinker im Dauerbetrieb. Den Finger am Hebel für die Lichthupe, wie an einem Abzug.
+Die Sache hat natürlich einen kleinen Haken: Ich habe weder einen Porsche noch eine Tankkarte mit Flatrate. Ich hab nicht mal ein Auto, das 250 km/h fährt.
+      
+    </div>
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="https://nickyreinert.de/blog/2020/07/01/leitfaden-f%C3%BCr-ein-sicheres-und-schnelles-wordpress-setup/">Leitfaden für ein sicheres und schnelles WordPress-Setup</a>
+      <time>Wed, Jul 1, 2020</time>
+    </h2>
+    
+    <div>
+      <b>Keywords: </b>
+      
+      <a class="link" href='https://nickyreinert.de/tags/einstellungen'>#einstellungen</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/setup'>#setup</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/wordpress'>#wordpress</a>
+      
+    </div>
+    
+    <div class="content">
+      
+      Das Thema Geschwindigkeit liegt bei uns allen ganz weit oben auf der Agenda. Oft allerdings nur passiv, wenn man ungeduldig auf der Tastatur trommelt und auf das Laden einer Internetseite wartet. Aktiv fehlt oft der richtige Impuls. Was kann man noch tun, außer die Bilder kleinzuhalten, um WordPress zu beschleunigen?
+Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit deiner WordPress-Seite zu optimieren. Und da neben der Geschwindigkeit die Sicherheit ein weiteres beliebtes Thema ist, werde ich auch dazu ein paar kleine Kniffe mit großer Wirkung zeigen.
+      
+    </div>
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="https://nickyreinert.de/blog/2020/06/22/dinge-die-nicht-existieren/">Dinge, die nicht existieren</a>
+      <time>Mon, Jun 22, 2020</time>
+    </h2>
+    
+    <div>
+      <b>Keywords: </b>
+      
+      <a class="link" href='https://nickyreinert.de/tags/ai'>#ai</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/ki'>#ki</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/kuenstliche-intelligenz'>#kuenstliche-intelligenz</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/uebersicht'>#uebersicht</a>
+      
+    </div>
+    
+    <div class="content">
+      
+      Dinge, die nicht existieren, weil sie mit künstlicher Intelligenz, Deep Learning bzw. Algorithmen erschaffen wurden. Dabei handelt es sich nicht nur um Bilder von Personen, sondern auch Texte, Animationen, Musik, Dialoge und&hellip;Füße. Viel Spaß.
+Personen https://thispersondoesnotexist.com/
+Das ist wohl der Klassiker und aus meiner Sicht das beeindruckenste Werk. Bei jedem Aufruf der Seite wird ein neues Foto eines Menschen erstellt, der nicht existiert. Die Darstellung ist dennoch verblüffend realistisch. Diese Seite stammt von Phillip Wang, einem Ingeni eur bei Uber.
+      
+    </div>
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="https://nickyreinert.de/blog/2020/06/09/wordpress-word-cloud-2.0/">WordPress Word Cloud 2.0</a>
+      <time>Tue, Jun 9, 2020</time>
+    </h2>
+    
+    <div>
+      <b>Keywords: </b>
+      
+      <a class="link" href='https://nickyreinert.de/tags/wordpress-word-cloud-2-0'>#wordpress-word-cloud-2-0</a>
+      
+    </div>
+    
+    <div class="content">
+      
+      Mein Word Cloud Plugin für WordPress liegt in einer neuen Version vor! Die Word Cloud unterstützt nun OCR, Tags, interne und externe Quellen und vieles mehr. Da ich also sehr viele grundlegende Änderungen vorgenommen habe, gibt es an dieser Stelle eine komplett neue Dokumentation. Viel Spass.
+Was ist eine Word Cloud? Eine Word Cloud, auch Schlagwortwolke, Wortwolke usw., dient der besseren Visualisierung von Texten. Um eine Word Cloud zu erstellen, werden die Vorkommen von Wörtern eines Textes gezählt.
+      
+    </div>
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="https://nickyreinert.de/blog/2020/06/04/css-%C3%BCber-den-http-header-ausspielen/">CSS über den HTTP-Header ausspielen</a>
+      <time>Thu, Jun 4, 2020</time>
+    </h2>
+    
+    <div>
+      <b>Keywords: </b>
+      
+      <a class="link" href='https://nickyreinert.de/tags/css'>#css</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/http'>#http</a>
+      
+    </div>
+    
+    <div class="content">
+      
+      Jeder kennt das Problem: Man hat stundenlang an einem Stylesheet auf dem Staging-Server rumgebastelt, will es nun auf den Live-Server kopieren und die Änderung ist nicht sichtbar. Die Fehlersuche beginnt. Man prüft den Cache. Vom Browser. Vom Server. Ist man überhaupt auf dem richtigen Server? Hat der Upload geklappt? Und so weiter. Eric Meyer hat das ganze Dilemma 2009 treffend beschrieben und auch eine Lösung mitgeliefert, von der ich noch nicht gehört habe:
+      
+    </div>
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="https://nickyreinert.de/blog/2020/05/11/how-to-create-a-maze-algorithm-with-javascript/">How to create a maze algorithm with JavaScript</a>
+      <time>Mon, May 11, 2020</time>
+    </h2>
+    
+    <div>
+      <b>Keywords: </b>
+      
+      <a class="link" href='https://nickyreinert.de/tags/anleitung'>#anleitung</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/javascript'>#javascript</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/labyrinth'>#labyrinth</a>
+      
+    </div>
+    
+    <div class="content">
+      
+      Meine Herangehensweise, um ein Labyrinth in JavaScript zu bauen, ist weitaus ausführlicher auf Medium in Englisch veröffentlicht worden:
+https://medium.com/swlh/how-to-create-a-maze-with-javascript-36f3ad8eebc1
       
     </div>
   </div>
