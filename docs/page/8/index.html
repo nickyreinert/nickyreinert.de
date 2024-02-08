@@ -2,7 +2,7 @@
 <html lang="de-DE">
 
 <head>
-	<meta name="generator" content="Hugo 0.111.3">
+	<meta name="generator" content="Hugo 0.122.0">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -33,6 +33,7 @@
 <meta property="og:url" content="https://nickyreinert.de/" />
 
 
+
   
   <link rel="canonical" href="https://nickyreinert.de/">
 
@@ -53,8 +54,7 @@
   
 
   
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Nicky Reinert"/>
+  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Nicky Reinert"/>
 <meta name="twitter:description" content="..."/>
 
 
@@ -128,6 +128,64 @@
     
 <main id="main" class="index">
   
+  
+  <div class="post">
+    <h2>
+      <a href="https://nickyreinert.de/blog/2019/10/02/mehrere-virtuelle-server-mit-nginx-und-php-fpm-f%C3%BCr-wordpress-teil-3-/-3/">Mehrere virtuelle Server mit nginx und PHP-FPM für Wordpress (Teil 3 / 3)</a>
+      <time>Wed, Oct 2, 2019</time>
+    </h2>
+    
+    <div class="content">
+      
+      Im letzten Teil geht es um die Einrichtung von PHP-FPM und ich gebe eine kleine Zusammenfassung bzw. Überblick über die Struktur des gesamten Setups. Wenn alles korrekt eingerichtet ist, solltet ihr nun einen gut funktionierenden Webserver auf Basis von nginx haben, der PHP-FPM nutzt und gut mit Wordpress laufen sollte. Der Server arbeitet für mehrere unterschiedliche Domains, die so gut wie möglich im System getrennt sind.
+Die Einrichtung der PHP-Pools Um den ganzen Bums zum Laufen zu bringen fehlt jetzt nur noch PHP.
+      
+    </div>
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="https://nickyreinert.de/blog/2019/10/01/mehrere-virtuelle-server-mit-nginx-und-php-fpm-f%C3%BCr-wordpress-teil-2-/-3/">Mehrere virtuelle Server mit nginx und PHP-FPM für Wordpress (Teil 2 / 3)</a>
+      <time>Tue, Oct 1, 2019</time>
+    </h2>
+    
+    <div class="content">
+      
+      Im zweiten Teil geht es um die individuelle Einrichtung der virtuellen Server für nginx.
+Server oder virtual hosts? Im Gegensatz zu den &ldquo;virtual hosts&rdquo; von Apache spricht man bei nginx von &ldquo;servern&rdquo;. Ich möchte das Aufgreifen und nutze im Folgenden einfach nur von &ldquo;Server&rdquo; wenn ich von einem individuellen Host oder virtuellem Server spreche. Wie bei Apache werden diese idealerweise in eigenständigen Konfig-Dateien definiert. Hier gibt es verschiedene Vorlieben, ob die Konfig-Dateien unter /etc/nginx/sites-available oder /etc/nginx/conf.
+      
+    </div>
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="https://nickyreinert.de/blog/2019/08/02/warum-es-tage-dauern-kann-wenn-du-dich-von-einer-e-mail-verteilerliste-entfernen-l%C3%A4sst/">Warum es Tage dauern kann, wenn du dich von einer E-Mail-Verteilerliste entfernen lässt</a>
+      <time>Fri, Aug 2, 2019</time>
+    </h2>
+    
+    <div class="content">
+      
+      Im Vereinigten Königreich gibt es wohl eine mittelgroße Bank, die, wie sicher viele andere Unternehmen auch, Newsletter verschickt. Was passiert, wenn man als Empfänger bei diesem Newsletter auf &ldquo;Abmelden&rdquo; klickt? Folgendes:
+Der Klick auf den &ldquo;Abmelden&rdquo;-Link ruft einen uralten Webservice auf.
+Der Webservice schickt eine E-Mail an einen internen E-Mail-Empfänger, der seit 5 Jahren nicht mehr in der Bank arbeitet.
+Diese E-Mail-Adresse konnte man allerdings nicht ändern, da sie im Sourcecode fest angeben wurde (hardcoded) und man den originalen Sourcode zum kompilieren nicht mehr hatte.
+      
+    </div>
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="https://nickyreinert.de/blog/2019/07/15/fokussierter-drill-down-mit-tableau/">Fokussierter Drill-Down mit Tableau</a>
+      <time>Mon, Jul 15, 2019</time>
+    </h2>
+    
+    <div class="content">
+      
+      In Tableau gibt es die eigentlich sehr nützliche Möglichkeit, Dimensionen beliebig zu kombinieren und in einer Hierarchie zusammenzufassen. Diese Funktion ist sehr intuitiv hat aber einen Haken: Wenn man bei großen Datenmengen und Dimensionen mit hoher Kardinalität einen Drill Down macht, werden die Abfragen nicht nur irrsinnig langsam, je tiefer man kommt. Die Übersicht geht auch komplett verloren.
+Um das zu demonstrieren habe ich eine Datenquelle mit 1 Mio. Zeilen und 10 Dimensionen erzeugt.
+      
+    </div>
+  </div>
   
   <div class="post">
     <h2>
@@ -230,63 +288,6 @@ Das schöne: Du kannst die Bilder relativ zielgenau aussuchen.
     </div>
   </div>
   
-  <div class="post">
-    <h2>
-      <a href="https://nickyreinert.de/blog/2019/04/10/php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/">PHP - Mit welcher Methode durchsucht man ein Array am schnellsten?</a>
-      <time>Wed, Apr 10, 2019</time>
-    </h2>
-    
-    <div class="content">
-      
-      Das schöne an PHP: Viele Wege führen nach Rom.
-Das Problem mit PHP: Viele Wege führen nach Rom.
-Denn diese Vielfallt stellt den Entwickler von Welt mituner vor eine schwierige Frage: Welcher Weg ist der kürzeste? Will man z.B. einen Wert (needle) in einem Array (haystack) suchen, gibt es in PHP zehn verschiedene Methoden. Du hast richtig gelesen: Zehn. Ich unterscheide einerseits auch die strikten und nicht-strikten Vergleiche, andererseits lasse ich die wirklich exotischen Methoden außen vor.
-      
-    </div>
-  </div>
-  
-  <div class="post">
-    <h2>
-      <a href="https://nickyreinert.de/blog/2019/01/26/dateien-von-einem-kaputten-android-smartphone-retten/">Dateien von einem kaputten Android-Smartphone retten</a>
-      <time>Sat, Jan 26, 2019</time>
-    </h2>
-    
-    <div class="content">
-      
-      Ich hab hier gerade ein altes LG Nexus auf dem Tisch liegen, bei dem das Display in der unteren Hälfte nach einem Sturz nicht mehr funktioniert. Und das ist ja eigentlich der Supergau. Denn für gewöhnlich schützt man sein Gerät ja mit einer Geste vor fremden Zugriffen. Das Problem ist also: Wenn früh um sechs Uhr der voreingestellte Wecker angeht, kannst du ihn nicht mehr deaktivieren. Und außerdem kommst du nicht mehr an deine Dateien ran, wenn das Smartphone, wie eben das Nexus von LG, seine Daten nicht gerade auf einer externen Speicherkarte ablegt.
-      
-    </div>
-  </div>
-  
-  <div class="post">
-    <h2>
-      <a href="https://nickyreinert.de/blog/2018/11/28/zugriff-nicht-loggen-wenn-ein-bestimmter-http-request-header-gesetzt-ist/">Zugriff nicht loggen, wenn ein bestimmter HTTP-Request-Header gesetzt ist</a>
-      <time>Wed, Nov 28, 2018</time>
-    </h2>
-    
-    <div class="content">
-      
-      OK, ich tu mich etwas schwer, das folgende in einen Titel zu gießen, der nicht länger ist, als die eigentlich Anleitung. Wenn du an deiner Webseite arbeitest, möchtest du vielleicht vermeiden, dass deine Aufrufe mit deinem Browser im Log-File von nginx landen. Dafür gibt es eine Menge Möglichkeiten, ich mag die folgende aber besonders.
-Zuerst benötigst du dafür ein Plugin, um den HTTP-Request-Header zu modifizieren. Ich nutze dafür ModHeader für Firefox, für Chrome gibt es ähnliche Plugins.
-      
-    </div>
-  </div>
-  
-  <div class="post">
-    <h2>
-      <a href="https://nickyreinert.de/blog/2018/11/23/ein-blasendiagramm-/-bubble-chart-mit-nominal-skala-in-excel/">Ein Blasendiagramm / Bubble Chart mit Nominal-Skala in Excel</a>
-      <time>Fri, Nov 23, 2018</time>
-    </h2>
-    
-    <div class="content">
-      
-      OK. Erstmal zu den Grundlagen, damit du überhaupt weißt, warum du hier bist: Eine Blasendiagramm oder Bubble Chart erlaubt dir, Informationen mit drei Dimensionen in einem Diagramm darzustellen. Zwei Dimensionen bestimmen die Position im Diagramm anhand der X- und Y-Achse, die dritte Dimension legt fest, wie groß die Blase - neudeutsch Bubble - ist.
-[caption id=&ldquo;attachment_2370&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;] Blasendiagramm bzw. Bubble Chart in Excel[/caption]
-Das Problem ist aber, dass dieses Blasendiagramm metrische oder mindestens ordinale Daten erfordert.
-      
-    </div>
-  </div>
-  
   
   <div class="paginator">
     
@@ -302,7 +303,7 @@ Das Problem ist aber, dass dieses Blasendiagramm metrische oder mindestens ordin
 
     <footer id="footer">
   <div>
-    <span>© 2019</span> - <span>2023</span>
+    <span>© 2019</span> - <span>2024</span>
   </div>
 
   <div>
