@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>umzug on Nicky Reinert</title>
+    <title>Umzug on Nicky Reinert</title>
     <link>https://nickyreinert.de/tags/umzug/</link>
-    <description>Recent content in umzug on Nicky Reinert</description>
+    <description>Recent content in Umzug on Nicky Reinert</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de-DE</language>
     <lastBuildDate>Sat, 25 Aug 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/umzug/index.xml" rel="self" type="application/rss+xml" />
@@ -15,63 +15,7 @@
       <guid>https://nickyreinert.de/blog/2018/08/25/checkliste-wordpress-umzug/</guid>
       
       <description>&lt;p&gt;Du hast Wordpress auf eine neue Domain oder einen neuen Hoster umgezogen und der Blog ist noch nicht erreichbar oder die Adresse verweist noch auf eine alte Installation, obwohl du an alles gedacht hast? Da fragst du dich zurecht: Wo hängt&amp;rsquo;s? Oder du hast den Umzug erst vor dir und willst wissen, woran du denken musst?&lt;/p&gt;
-&lt;p&gt;Dafür habe ich dir hier eine Checkliste der gängigen Fehlerquellen aufgestellt, die dir beim nächsten Mal helfen soll.&lt;/p&gt;
-&lt;h3 id=&#34;vom-browser-zum-server&#34;&gt;Vom Browser zum Server&lt;/h3&gt;
-&lt;p&gt;Um die potentiellen Fehler zu erkennen und zu verstehen ist es sehr hilfreich, den &lt;strong&gt;groben Ablauf&lt;/strong&gt; zu kennen: Was passiert, wenn du deine Domain in den Browser eingibst? Denn meistens steckt der Fehler im Detail und man hat nur vergessen, an einer Stelle die nötigen Anpassungen vorzunehmen. Was passiert also, wenn ein Benutzer deine Website im Browser aufruft? Ich habe das ganze einmal sehr laienhaft und stark reduziert in einer Grafik zusammengefasst. Wenn du weißt, worum es geht, überspringe diesen Absatz oder schlage danach einmal die Hände über dem Kopf zusammen.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/aufruf-einer-website-vereinfacht.png&#34;&gt;&lt;img src=&#34;images/aufruf-einer-website-vereinfacht-300x132.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Was passiert beim Aufruf einer Webseite im Browser&lt;/p&gt;
-&lt;p&gt;Der Browser, oder vielmehr der Computer, muss die Adresse der Website zunächst in die sogenannte IP-Adresse übersetzen lassen - durch einen &lt;strong&gt;DNS-Server&lt;/strong&gt;. Anhand der &lt;strong&gt;IP-Adresse&lt;/strong&gt; findet der Browser dann den Weg zum eigentlich &lt;strong&gt;Webserver&lt;/strong&gt;. Dieser muss dann  wissen, dass die Website bei ihm existiert und kann deshalb auch auf den entsprechenden &lt;strong&gt;Ordner&lt;/strong&gt; im Dateisystem verweisen. Dort wird die &lt;strong&gt;Web-Anwendung&lt;/strong&gt;, also z.B. &lt;strong&gt;Wordpress&lt;/strong&gt;, ausgeführt. Hier erfolgen auch die Zugriffe auf die Datenbank. Die &lt;em&gt;index.php&lt;/em&gt; ist der zentrale &lt;strong&gt;Einstiegspunkt&lt;/strong&gt;, von dem aus noch viele andere, vornehmlich PHP-Dateien, eingebunden werden.&lt;/p&gt;
-&lt;h2 id=&#34;potentielle-fehlerquellen&#34;&gt;Potentielle Fehlerquellen&lt;/h2&gt;
-&lt;h3 id=&#34;dein-computer-und-der-dns-cache&#34;&gt;Dein Computer und der DNS-Cache&lt;/h3&gt;
-&lt;p&gt;Damit dein Computer und der Browser nicht jedes mal beim DNS-Server nachfragen müssen, welche IP-Adresse zu einer Website gehört, gibt es hier sog. &lt;strong&gt;Zwischenspeicher&lt;/strong&gt;, auch &lt;strong&gt;Cache&lt;/strong&gt; genannt. In &lt;strong&gt;Chrome&lt;/strong&gt; kannst du diesen folgendermaßen deaktivieren.&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Rufe diese Adresse auf: chrome://net-internals/#dns&lt;/li&gt;
-&lt;li&gt;Klicke dort den Button &amp;ldquo;Clear host cache&amp;rdquo;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;In &lt;strong&gt;Firefox&lt;/strong&gt; löschst du den DNS-Cache über die Datenschutz-Optionen in den Einstellung.&lt;/p&gt;
-&lt;p&gt;In beiden Browsern gibt es übrigens die Möglichkeit, den Cache permanent zu deaktivieren. Dazu musst du die &lt;strong&gt;Entwicklerkonsole&lt;/strong&gt; öffnen (ALT+F12 oder Alt+Apfel+I) und die Checkbox &amp;ldquo;&lt;em&gt;Cache deaktivieren&lt;/em&gt;&amp;rdquo; aktivieren. Diese Funktion ist aber nur so lange aktiv, bis die Entwicklerkonsole wieder geschlossen wird:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/image-2.png&#34;&gt;&lt;img src=&#34;images/image-2-700x232.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Außerdem legt auch dein &lt;strong&gt;Betriebssystem&lt;/strong&gt; einen Cache an. In Windows wird dieser folgendermaßen geleert:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ipconfig /flushdns
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Auch in Apples Betriebssystem OS X kann man den Cache per Hand leeren (ab 10.12 Sierra):&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;sudo killall -HUP mDNSResponder
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;dein-router-und-dein-internetanbieter&#34;&gt;Dein Router und dein Internetanbieter&lt;/h3&gt;
-&lt;p&gt;Bestimmte &lt;strong&gt;Router-Modelle&lt;/strong&gt; und mit Sicherheit auch dein &lt;strong&gt;Internet-Anbieter&lt;/strong&gt; (ISP) speichern ebenfalls die Kombination aus Domain Name und IP-Adresse. Den DNS-Cache des Routers kannst du ggf. leeren, indem du ihn neu startest. Den deines ISP kannst du mit Sicherheit nicht beeinflussen. Du kannst aber in den Netzwerkeinstellungen einen anderen &lt;strong&gt;DNS-Server&lt;/strong&gt; einrichten, wie z.B. den von Google (8.8.8.8). Wenn dir das zu aufwendig ist, rufe die Seite über dein Handy auf, wenn es &lt;strong&gt;nicht mit deinem WLAN verbunden&lt;/strong&gt; ist. Dann nutzt du den Internetzugang deines Handy-Anbieters, der vielleicht schon einen anderen DNS-Eintrag kennt. Jeder DNS-Eintrag ist übrigens für gewöhnlich mit einem sog. TTL versehen - einem Eintrag für das &lt;strong&gt;Time-To-Live.&lt;/strong&gt; Dieser beträgt z.B. 24 Stunden und besagt, wie lange ein entsprechender Eintrag gültig ist. Willst du wissen, wie groß dieser Wert ist, hilft dir die &lt;a href=&#34;https://mxtoolbox.com/SuperTool.aspx?action=a%3awww.example.com&amp;amp;run=toolpage&#34;&gt;mxtoolbox&lt;/a&gt; weiter.&lt;/p&gt;
-&lt;h3 id=&#34;der-hoster&#34;&gt;Der Hoster&lt;/h3&gt;
-&lt;p&gt;Das ist der schwierigste Punkt, da es hier erstmal zwei Möglichkeiten gibt:&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Grundsätzlich&lt;/strong&gt; gilt: Damit ein Domain-Name auf (d)einen Web-Server zeigt, sind mindestens &lt;strong&gt;zwei Schritte&lt;/strong&gt; nötig:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;die Domain muss registriert und einer IP-Adresse zugeordnet werden&lt;/li&gt;
-&lt;li&gt;die Domain muss dem Web-Server &amp;ldquo;mitgeteilt&amp;rdquo; werden&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Nun gibt es allerdings mindestens &lt;strong&gt;drei Szenarien&lt;/strong&gt;, wie das umgesetzt wird:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Dein Hoster stellt den Webspace unter einer Hosting-Domain zur Verfügung (&lt;em&gt;c123123.hoster.com&lt;/em&gt;) und die &amp;ldquo;echte&amp;rdquo; Domain (&lt;em&gt;example.com&lt;/em&gt;) wird bei einem anderen Anbieter verwaltet. Die Hosting-Domain zeigt hier bereits direkt auf deinen Webspace. Wenn deine Anwendung dort in einem anderen Ordner liegt, musst die &amp;ldquo;echte&amp;rdquo; Domain direkt darauf zeigen, also z.B: &lt;em&gt;example.com -&amp;gt; c123123.hoster.com/wordpress&lt;/em&gt;_/_.&lt;/li&gt;
-&lt;li&gt; Dein Hoster stellt den Webspace unter einer IP-Adresse zur Verfügung (bzw. du nutzt einen Managed- oder Root-Server) und die Domain wird bei einem anderen Anbieter verwaltet. In diesem Fall muss der Hoster wissen, welche Domain auf die IP-Adresse deines Webspaces zeigt. Er kann diese Domain dann einem Ordner auf dem Webspace zuordnen.&lt;/li&gt;
-&lt;li&gt;Das &lt;strong&gt;Gesamtpaket&lt;/strong&gt;: Dein Hoster stellt den Webspace und verwaltet deine Domain.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/image-6.png&#34;&gt;&lt;img src=&#34;images/image-6-700x493.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Hosting-Varianten im Vergleich&lt;/p&gt;
-&lt;p&gt;Bei den Gesamt-Paketen wird das ganze Konstrukt wie gesagt sehr simpel zusammengefasst. Bei &lt;strong&gt;all-inkl.com&lt;/strong&gt; erfolgt das z.B. über das KAS über den Menüpunkt &lt;strong&gt;Domains&lt;/strong&gt;, wo der Ort im Dateisystem angegeben werden kann. Der Verweis zu einem anderen, fremden Webspace erfolgt über die Option &amp;ldquo;Redirect&amp;rdquo;. Dann wird diese Domain mit einem HTTP-Statuscode 301, 302 oder 307 an einen anderen Server weitergeleitet.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/domain-ziel-bei-all-inkl.png&#34;&gt;&lt;img src=&#34;images/domain-ziel-bei-all-inkl-700x344.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Domain-Ziel bei all-inkl.com einrichten&lt;/p&gt;
-&lt;p&gt;Bei Strato ist das Formular etwas anders aufgebaut, hat aber natürlich die gleiche Funktion. Im Menü &lt;strong&gt;Domain / Domainverwaltung&lt;/strong&gt; legst du fest, auf welchen Ordner deine Domain zeigen soll. Über die DNS-Einstellungen kannst du auch hier auf einen anderen Server zeigen lassen:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/image.png&#34;&gt;&lt;img src=&#34;images/image-281x300.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Domain-Ziel bei Strato einrichten&lt;/p&gt;
-&lt;p&gt;Wenn du Zugriff auf die &lt;strong&gt;Konsole&lt;/strong&gt; hast (z.B. mit SSH), kannst du mit folgendem Befehl prüfen, ob der Server deine Domain überhaupt &amp;ldquo;kennt&amp;rdquo;:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;apache2ctl -S
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Die Ausgabe sollte in etwa folgenden Aufbau haben und mindestens deine Domain enthalten und auch auf den korrekten Ordner Grundsätzlich hilft auch hier erstmal die &lt;a href=&#34;https://mxtoolbox.com/SuperTool.aspx?action=a%3awww.example.com&amp;amp;run=toolpage&#34;&gt;mxtoolbox&lt;/a&gt; weiter, um zu erkennen, ob der Eintrag schon existiert:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/apachectl-ausgabe.png&#34;&gt;&lt;img src=&#34;images/apachectl-ausgabe-700x298.png&#34; alt=&#34;Ausgabe von apachectl , Liste der virtuellen Hosts in Apache&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;die-wordpress-konfiguration&#34;&gt;Die Wordpress-Konfiguration&lt;/h3&gt;
-&lt;p&gt;Und schließlich muss natürlich auch die Wordpress-Installation vollständig und korrekt eingerichtet und angepasst sein. Hier gibt es zwei Stellen, an denen der Domain-Name eingerichtet werden kann. Der einfachste Weg ist über das Backend von Wordpress. Damit wird deine Adresse direkt in der Datenbank abgelegt:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/image-3.png&#34;&gt;&lt;img src=&#34;images/image-3-300x61.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Wenn du auf das Backend keinen Zugriff hast, wählst du den direkten Weg über die &lt;em&gt;wp-config.php&lt;/em&gt;. Die Änderungen hier überschreiben die Einstellungen im Backend.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;define(&amp;#39;WP_HOME&amp;#39;,&amp;#39;https://www.nickyreinert.de&amp;#39;);
-define(&amp;#39;WP_SITEURL&amp;#39;,&amp;#39;https://www.nickyreinert.de&amp;#39;);
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;In der Datenbank befinden sich sehr oft noch andere Verweise auf deine Domain. Bei einem Umzug müssen auch diese angepasst werden. Da das aber ein sehr umfangreicher Prozess ist, empfehle ich dazu das Wordpress-Plugin &amp;ldquo;&lt;a href=&#34;https://de.wordpress.org/plugins/better-search-replace/&#34;&gt;Better Search Replace&lt;/a&gt;&amp;rdquo;.&lt;/p&gt;
-&lt;h3 id=&#34;fazit&#34;&gt;Fazit&lt;/h3&gt;
-&lt;p&gt;Wenn du die hier genannten Punkte berücksichtigt hast, hast du eigentlich an alles gedacht. Oft ist es der lokale Cache, der die neue Adresse noch nicht kennt und dann die Sorgenfalten auf die Stirn treibt. Wenn ich einen Punkt vergessen haben sollte oder etwas unklar ist, hinterlasse mir gerne ein Kommentar.&lt;/p&gt;
-</description>
+&lt;p&gt;Dafür habe ich dir hier eine Checkliste der gängigen Fehlerquellen aufgestellt, die dir beim nächsten Mal helfen soll.&lt;/p&gt;</description>
       
     </item>
     

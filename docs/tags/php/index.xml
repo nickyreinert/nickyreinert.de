@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>php on Nicky Reinert</title>
+    <title>Php on Nicky Reinert</title>
     <link>https://nickyreinert.de/tags/php/</link>
-    <description>Recent content in php on Nicky Reinert</description>
+    <description>Recent content in Php on Nicky Reinert</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de-DE</language>
     <lastBuildDate>Fri, 23 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/php/index.xml" rel="self" type="application/rss+xml" />
@@ -24,120 +24,7 @@
 &lt;li&gt;auf Applikations-Ebene über die WordPress-Konstanten WP_MEMORY_LIMIT und WP_MAX_MEMORY_LIMIT&lt;/li&gt;
 &lt;li&gt;oder auf Datei-Ebene im Script mit ini_set();&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-7.png&#34;&gt;&lt;img src=&#34;images/grafik-7-700x246.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Unterschiedliche Orte, um das PHP Memory Limit (und andere Parameter) zu setzen&lt;/p&gt;
-&lt;p&gt;Die Reihenfolge entspricht übrigens der Hierarchie. Wird das Limit also im PHP-Script mit ini_set() gesetzt, überschreibt das die Einstellung in der &lt;strong&gt;httpd.conf&lt;/strong&gt; oder &lt;strong&gt;server.conf&lt;/strong&gt;. Wie sich das vermeiden lässt, dazu unten mehr. Das trifft natürlich nicht nur auf das Memory Limit, sondern so ziemlich jede PHP-Einstellung zu.&lt;/p&gt;
-&lt;p&gt;Außerdem hängen die Möglichkeiten stark davon ab, wie du PHP nutzt, also ob als Modul oder über CGI. Um das Vorgehen besser zu verdeutlichen, gehe ich im Folgenden von zwei WordPress-Setups aus. Einmal wird nginx als HTTP-Server genutzt und dort PHP-FPM über CGI angesprochen. Das zweite Setup nutzt Apache2 als HTTP-Server und dort PHP als Modul (php-mod).&lt;/p&gt;
-&lt;h2 id=&#34;was-bedeutet-das-memory-limit-von-php&#34;&gt;Was bedeutet das Memory Limit von PHP?&lt;/h2&gt;
-&lt;p&gt;Jeder Dienst benötigt für seine Ausführung Platz im Arbeitsspeicher. So auch PHP. Und mit jedem Aufruf eines PHP-Scripts wird PHP aktiviert und fordert somit Platz im Arbeitsspeicher ein. Und genau dort spielt die Speichergrenze eine Rolle: Um zu vermeiden, dass bei der Verarbeitung &lt;strong&gt;eines PHP-Scripts&lt;/strong&gt; zu viel Speicher verbraucht und damit der ganze Server in Mitleidenschaft gezogen wird, legt man eine Obergrenze fest, das &lt;strong&gt;memory_limit&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;Diese Grenze gilt &lt;strong&gt;für jeden einzelnen Script-Aufruf&lt;/strong&gt;. Ein Beispiel: Dein Server hat 8 GByte (&lt;strong&gt;8.192 MByte&lt;/strong&gt;) Arbeitsspeicher. Der Aufruf der Datei index.php, die eine sehr aufwendige Datenbankabfrage durchführt und damit viele Daten verarbeitet, erfordert 10 MByte Arbeitsspeicher (das ist übrigens relativ viel und &lt;a href=&#34;https://www.deimeke.net/dirk/blog/index.php?/archives/304-Bytes-auf-Papier-....html&#34;&gt;entspricht etwa 5.000 bedruckten A4 Seiten&lt;/a&gt;). Das Memory-Limit ist auf &lt;strong&gt;32 MByte&lt;/strong&gt; eingestellt. Das physikalische Limit beträgt allerdings &lt;strong&gt;8.192 MByte&lt;/strong&gt;. Die index.php kann also &lt;strong&gt;819 mal&lt;/strong&gt; gleichzeitig (!) aufgerufen werden; erst dann ist der Arbeitsspeicher voll. Das Memory-Limit hat hier also keine Auswirkungen.&lt;/p&gt;
-&lt;p&gt;Gehen wir nun davon aus, dass bei einem der &lt;strong&gt;819&lt;/strong&gt; Aufrufe bestimmte Parameter gesetzt werden, die eine weitaus größere Datenmenge in der Datenbank abfragen. Die Datenmenge erhöht sich auf &lt;strong&gt;40 MByte&lt;/strong&gt;. An dieser Stelle wird das memory_limit aktiv. Der Aufruf dieses Scripts wird abgebrochen mit der Fehlermeldung, dass die erlaubte Speichergrenze überschritten wurde. PHP wird in diesem Fall eine Fehlermeldung wie diese anzeigen:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Fatal error: Allowed memory size of 33554432 bytes exhausted…” followed by something like “(tried to allocate 8388608 bytes) in /home/www/index.php on line 42.”
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Das Gute daran: Der Aufruf der anderen Scripte wird davon nicht in Mitleidenschaft gezogen.&lt;/p&gt;
-&lt;p&gt;Es gibt sehr viele Wege, das Speicherlimit zu setzen. Das hat Vorteile aber auch Nachteile: So wird die Suche nach den gesetzen Einstellungen oft zur Suche nach der berühmten Nadel im Heuhaufen. Der Vorteil: Du kannst das Speicherlimit sehr granular an die Anforderungen deiner verschiedenen Anwendungen anpassen. Bereit? Los gehts&amp;hellip;&lt;/p&gt;
-&lt;h2 id=&#34;grundsätzliches&#34;&gt;Grundsätzliches&lt;/h2&gt;
-&lt;p&gt;Der Wert, den du für das Memory Limit übermittelst, kann als einfache Ziffer übergeben werden und legt die Speichergrenze somit in &lt;strong&gt;Byte&lt;/strong&gt; fest. PHP unterstützt darüber hinaus einige &lt;strong&gt;&lt;a href=&#34;https://www.php.net/manual/de/faq.using.php#faq.using.shorthandbytes&#34;&gt;Kurzschreibweisen&lt;/a&gt;&lt;/strong&gt;, also z.B. K für Kilobyte (32K), M für Megabyte (256M) und G für Gigabye (2G).&lt;/p&gt;
-&lt;p&gt;Willst du verhindern möchtest, dass die Speichergrenze später an anderer Stelle überschrieben wird, definierst du sie mithilfe von &lt;strong&gt;php_admin_value&lt;/strong&gt; anstatt nur &lt;strong&gt;php_value&lt;/strong&gt;. Also z.B.:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;php_admin_value[memory_limit] = 256M
-# oder
-fastcgi_param PHP_ADMIN_VALUE &amp;#34;memory_limit = 256M&amp;#34;;
-# oder
-php_admin_value memory_limit = 256M
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Willst du das Memory LImit komplett deaktivieren, dann setzt du es auf -1:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;memory_limit = -1
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Aber Achtung: Zu Testzwecken mag das sinnvoll sein, in einer Live-Umgebung solltest du immer mit einer Obergrenze arbeiten.&lt;/p&gt;
-&lt;p&gt;Und abschließend noch der Verweis auf zwei nützliche Funktionen, die eigentlich bekannt sein sollten:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;echo ini_get(&amp;#39;memory_limit&amp;#39;); // zeigt das aktuell gesetzte Memory Limit
-phpinfo(); // zeigt alle relevanten Parameter, u.a. Memory Limit und verwendete .ini-Dateien
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-1.png&#34;&gt;&lt;img src=&#34;images/grafik-1-700x25.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Wichtig&lt;/strong&gt;: Derartige Funktionen dienen der Fehlersuche und sollten im Live-System nicht unbedingt öffentlich abrufbar sein!&lt;/p&gt;
-&lt;h2 id=&#34;das-memory-limit-in-php-einstellen&#34;&gt;Das Memory Limit in PHP einstellen&lt;/h2&gt;
-&lt;h3 id=&#34;super-global-in-der-phpini&#34;&gt;Super global in der php.ini&lt;/h3&gt;
-&lt;p&gt;Die erste &amp;ldquo;Konfigurations-Stufe&amp;rdquo; befindet sich natürlich direkt innerhalb von PHP. Wenn du wissen willst, wo sich die Einstellungen für PHP befinden, nutze ganz einfach phpinfo(); Die entsprechende Datei heißt &lt;strong&gt;php.ini&lt;/strong&gt; und befindet sich in der Regel in /etc/php/7.0/apache2/php.ini (für PHP als Modul, z.B. in &lt;strong&gt;Apache2&lt;/strong&gt;) oder /etc/php/7.4/fpm/php.ini (für PHP als Dienst, z.B. in &lt;strong&gt;nginx&lt;/strong&gt;). Der Parameter ist in beiden Fällen gleich:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;memory_limit = 256M
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Wenn du PHP als Modul unter Apache nutzt, musst du Apache2 neustarten, bzw. die Konfiguration neu einlesen lassen:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;service apache2 restart 
-service apache2 reload
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Analog, bei PHP als Dienst, wie z.B. in nginx, erfolgt das Neustarten folgendermaßen (In der Regel reicht es aus, mit reload nur die Konfiguration neu zu laden. Sollte es zu Komplikationen kommen, hilft ein kompletter Neustart des Dienstes eventuell weiter).&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;service php7.0-fpm restart
-service php7.0-fpm reload
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;für-jeden-php-fpm-pool-in-der-poolconf&#34;&gt;Für jeden PHP-FPM Pool in der pool.conf&lt;/h3&gt;
-&lt;p&gt;Nutzt du PHP-FPM über CGI (also mein erstes Setup mit nginx), gibt es für jeden Server (bzw. virtuellen Host) einen eigenen &lt;strong&gt;Pool&lt;/strong&gt;, lies eine Art eigene getrennte PHP-Umgebung für jeden einzelnen virtuellen Host. Die Einstellungen dazu befinden sich z.B. unter &lt;strong&gt;/etc/php/7.4/fpm/pool/my_host.conf&lt;/strong&gt;. Hier wird der entsprechende Parameter folgendermaßen gesetzt:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[my_host_de]
-...
-php_value[memory_limit] = 1024M
-...
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Die Einstellung an dieser Stelle überschreibt den Wert in der &lt;strong&gt;php.ini&lt;/strong&gt;. Nach der Änderung muss der PHP-Dienst natürlich neu gestartet werden.&lt;/p&gt;
-&lt;h2 id=&#34;das-memory-limit-in-apache2-und-nginx-setzen&#34;&gt;Das Memory-Limit in Apache2 und nginx setzen&lt;/h2&gt;
-&lt;h3 id=&#34;super-global-in-der-nginxconf--httpdconf&#34;&gt;Super global in der nginx.conf / httpd.conf&lt;/h3&gt;
-&lt;p&gt;Für die beiden HTTP-Server nginx und Apache2 gibt es die beiden globalen Einstellungsdateien &lt;strong&gt;/etc/nginx/nginx.conf&lt;/strong&gt; bzw. &lt;strong&gt;/etc/apache2/httpd.conf&lt;/strong&gt;. In nginx kann das PHP-Limit im sogenannten &lt;strong&gt;http-Kontext&lt;/strong&gt; gesetzt werden und gilt damit für die komplette Nginx-Instanz. Ich gehe hier und im Folgenden übrigens davon aus, dass nginx den PHP-Interpreter über FastCGI anspricht und PHP eigenständig als FPM läuft.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;http {
-
-  fastcgi_param PHP_VALUE &amp;#34;memory_limit = 256M&amp;#34;;
-
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Im Falle von Apache2 gehe ich davon aus, dass PHP als Modul konfiguriert ist. Hier wird das PHP Limit in der &lt;strong&gt;httpd.conf&lt;/strong&gt; folgendermaßen gesetzt:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;php_value memory_limit = 256M
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;global-für-jeden-virtuellen-host&#34;&gt;Global für jeden virtuellen Host&lt;/h3&gt;
-&lt;p&gt;In nginx lässt sich die entsprechende Einstellung auch innerhalb des Server-Blocks setzen und gilt somit für einen ganzen virtuelle Host. Üblicherweise findest du diese Einstellung in &lt;strong&gt;/etc/nginx/conf.d/my_host.conf:&lt;/strong&gt;&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;server {
-
-  fastcgi_param PHP_VALUE &amp;#34;memory_limit = 256M&amp;#34;;
-
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Nutzt du Apache2, findest du die entsprechende Einstellungs-Datei in der Regel unter &lt;strong&gt;/etc/apache2/sites-enabled/my_host.conf&lt;/strong&gt;:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;VirtualHost&amp;gt;
-
-php_value memory_limit 256M
-
-&amp;lt;/VirtualHost&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;global-für-jeden-ordner&#34;&gt;Global für jeden Ordner&lt;/h3&gt;
-&lt;p&gt;Weiter geht es mit dem Ordner-Spezifische Memory-Limit in nginx im location-Kontext (die Datei dürfte in der Regel unverändert sein).&lt;/p&gt;
-&lt;p&gt;Achtung: &lt;a href=&#34;http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html&#34;&gt;In nginx kann die Direktive fastcgi_param&lt;/a&gt; auch im übergeordneten http-Kontext oder auf Ordner-Ebene innerhalb des location-Blocks gesetzt werden:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;location ~ .(php|php.*)$ {
-
-  fastcgi_param PHP_VALUE &amp;#34;memory_limit = 256M&amp;#34;;
-
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Analog dazu kannst du in Apache2 das Limit global in apache2.conf oder auf Ordner-Ebene in der my_host.conf:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;Directory&amp;#34;/var/www/example_de/htdocs/&amp;#34;&amp;gt;
-php_value memory_limit 256M
-&amp;lt;/Directory&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;das-memory-limit-auf-ordner-ebene-setzen&#34;&gt;Das Memory-Limit auf Ordner-Ebene setzen&lt;/h2&gt;
-&lt;h3 id=&#34;für-jeden-ordner-mit-der-userini&#34;&gt;Für jeden Ordner mit der .user.ini&lt;/h3&gt;
-&lt;p&gt;Mit der Datei &lt;strong&gt;.super.ini&lt;/strong&gt; kannst du PHP-Einstellungen für beliebige Ordner individuell konfigurieren. Dieser Weg steht dir allerdings nur offen, &lt;a href=&#34;https://www.php.net/manual/en/configuration.file.per-user.php&#34;&gt;wenn du PHP nicht als Modul nutzt, sondern über CGI/FastCGI&lt;/a&gt;. In meinem Beispiel-Setup mit Apache2 und php-mod fällt diese Option also weg.&lt;/p&gt;
-&lt;p&gt;Du kannst die Datei in jedem Ordner anlegen und dort Parameter so einstellen, wie du es von der php.ini gewohnt bist. Dieser Weg muss allerdings vorher &amp;ldquo;freigeschaltet&amp;rdquo; werden, indem in der php.ini (bzw. den anderen o.g. Orten), der folgende Parameter gesetzt ist:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;user_ini.filename = .user.ini
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Ob das der Fall ist, erfährst du, wie immer, mithilfe von phpinfo();. Dort siehst du unter &amp;ldquo;Additional .ini files parsed&amp;rdquo; auch, ob sich im aktuellen Ordner eine .user.ini befindet und diese gelesen wurde:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-4.png&#34;&gt;&lt;img src=&#34;images/grafik-4-700x164.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Überprüfen, welche .ini-Dateien PHP gelesen hat&lt;/p&gt;
-&lt;p&gt;Wenn das alles passt, verwendest du die .user.ini wie die php.ini und setzt das Speicherlimit demnach folgenermaßen:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;memory_limit=256M
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;für-jeden-ordner-mit-der-htaccess&#34;&gt;Für jeden Ordner mit der .htaccess&lt;/h3&gt;
-&lt;p&gt;Diese Option wiederum steht dir nur mit Apache2 zur Verfügung, da nginx keine .htaccess-Dateien unterstützt. Du setzt das Limit in der .htaccess-Datei folgendermaßen:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;php_value memory_limit = 256M
-&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;das-memory-limit-auf-applikations-ebene-setzen&#34;&gt;Das Memory-Limit auf Applikations-Ebene setzen&lt;/h2&gt;
-&lt;p&gt;WordPress verwendet standardmäßig eine Memory Limit von &lt;strong&gt;40&lt;/strong&gt; &lt;strong&gt;MByte&lt;/strong&gt; im Frontend (bzw. 64 MByte bei einem Multi-Site-Setup) sowie (mindestens) &lt;strong&gt;256 MByte&lt;/strong&gt; für das Backend. Wenn du diese Werte ändern möchtest, kannst du dafür die beiden folgenden Konstanten in der &lt;strong&gt;wp-config.php&lt;/strong&gt; setzen - achte darauf, diese Konstanten vor der Einbindung von &lt;strong&gt;wp-settings.php&lt;/strong&gt; zu definieren:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;define(&amp;#39;WP_MEMORY_LIMIT&amp;#39;, &amp;#39;256M&amp;#39;);
-define(&amp;#39;WP_MAX_MEMORY_LIMIT&amp;#39;, &amp;#39;256M&amp;#39;);
-[...]
-require_once(ABSPATH . &amp;#39;wp-settings.php&amp;#39;);
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;WordPress nutzt intern allerdings auch nur die PHP-Funktion ini_set um das Memory Limit festzulegen:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ini_set( &amp;#39;memory_limit&amp;#39;, WP_MEMORY_LIMIT );
-&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;das-memory-limit-auf-datei-ebene-setzen&#34;&gt;Das Memory-Limit auf Datei-Ebene setzen&lt;/h2&gt;
-&lt;p&gt;Zum Abschluss gibt es auch die Möglichkeiten das Memory Limit in jedem Script individuell zu setzen. Diese Möglichkeit steht an letzter Stelle und überschreibt damit alle vorhergehenden Einstellungen:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ini_set(&amp;#39;memory_limit&amp;#39;,&amp;#39;256M&amp;#39;);
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Durch die Verwendung von &lt;strong&gt;include()&lt;/strong&gt;, &lt;strong&gt;require_once()&lt;/strong&gt; oder &lt;strong&gt;require()&lt;/strong&gt; lassen sich andere PHP-Dateien innnerhalb eines Scripts einzubinden. Grundsätzlich wird das Memory Limit dann zwar vererbt. Was nicht heißt, dass es durch später eingebundene Scripte überschrieben werden kann. Das macht sich z.B. auch bei WordPress bemerkbar: Du kannst das Memory Limit zwar mit WP_MEMORY_LIMIT für WordPress definieren, ein Plugin oder Theme kann das Limit aber trotzdem später überschreiben.&lt;/p&gt;
-&lt;p&gt;Ein Beispiel: So sieht die Datei &lt;strong&gt;index.php&lt;/strong&gt; aus:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;?php  ini_set(&amp;#39;memory_limit&amp;#39;,&amp;#39;256M&amp;#39;);  (...aufwendige Operation...);  include(&amp;#39;file.php&amp;#39;); 
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Die Datei &lt;strong&gt;file.php&lt;/strong&gt; sieht folgendermaßen aus:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt; &amp;lt;?php
- echo ini_get(&amp;#39;memory_limit&amp;#39;);
- (…aufwendige Operation…)
- ini_set(&amp;#39;memory_limit&amp;#39;,&amp;#39;32M&amp;#39;);
- (…aufwendige Operation…);
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Die zweite Zeile in der file.php gibt als Rückgabe &lt;strong&gt;256M&lt;/strong&gt; aus. Das Memory-Limit wird vererbt. Die vierte Zeile setzt das Limit allerdings auf 32 MByte und überschreibt damit den Wert von 256 MByte. Belegt die &amp;ldquo;aufwendige Operation&amp;rdquo; in index.php nur &lt;strong&gt;12 MByte&lt;/strong&gt;, in der file.php nur jeweils &lt;strong&gt;5 MByte&lt;/strong&gt;, funktioniert das gesamte Script einwandfrei. Wenn die &amp;ldquo;aufwendige Operation&amp;rdquo; in der Datei index.php z.B. mehr als &lt;strong&gt;22 MByte&lt;/strong&gt; beansprucht, bricht PHP die Verarbeitung des Scripts ab. Warum? Weil das Limit nachträglich nach unten korrigiert wurde.&lt;/p&gt;
-</description>
+&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-7.png&#34;&gt;&lt;img src=&#34;images/grafik-7-700x246.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;</description>
       
     </item>
     
@@ -148,54 +35,7 @@ require_once(ABSPATH . &amp;#39;wp-settings.php&amp;#39;);
       
       <guid>https://nickyreinert.de/blog/2019/04/18/wordpress-tag-cloud-mit-umlauten-%C3%A4%C3%B6%C3%BC-korrekt-sortieren-oder-der-wordpress-filter-im-live-beispiel-erkl%C3%A4rt/</guid>
       
-      <description>&lt;p&gt;WordPress bringt von Hause aus ein Widget mit, dass die verwendeten Tags als Cloud darstellt (wer es ein wenig schöner mag, &lt;a href=&#34;https://www.nickyreinert.de/wordpress-word-cloud-2-0/&#34;&gt;greift auf mein WordCloud Plugin zurück&lt;/a&gt;). Das Ganze hat nur einen Haken: Die entsprechende WordPress-Funktion &lt;strong&gt;&lt;a href=&#34;https://developer.wordpress.org/reference/functions/wp_generate_tag_cloud/&#34;&gt;wp_generate_tag_cloud&lt;/a&gt;&lt;/strong&gt; nutzt &lt;strong&gt;aosort()&lt;/strong&gt; als Sortierfunktion. Und die kommt mit Umlauten nicht sonderlich gut klar. Eine Lösung wäre also, die Umlaute für die Sortierung zu übersetzen, also Ä ind Ae, ö in oe und so weiter.&lt;/p&gt;
-&lt;p&gt;Das schöne an WordPress: Sehr viele Funktionalitäten lassen sich über &lt;strong&gt;Hooks&lt;/strong&gt; und &lt;strong&gt;Filter&lt;/strong&gt; modifizieren. So bietet auch der Sortier-Algorithmus die Möglichkeit an, den Array mit einer eigenen Funktion zu filtern. Die perfekte Gelegenheit, um sich mit dem Thema &lt;strong&gt;Filter mal&lt;/strong&gt; etwas näher zu beschäftigen. Ein Blick in den Source-Code von &lt;strong&gt;wp_generate_tag_cloud()&lt;/strong&gt; zeigt ab Zeile 875 (seit Version 4.8.0):&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;    /**
-     * Filters how the items in a tag cloud are sorted.
-     *
-     * @since 2.8.0
-     *
-     * @param WP_Term[] $tags Ordered array of terms.
-     * @param array     $args An array of tag cloud arguments.
-     */
-
-    $tags_sorted = apply_filters( &amp;#39;tag_cloud_sort&amp;#39;, $tags, $args );
-
-    if ( empty( $tags_sorted ) ) {
-        return $return;
-    }
-
-...
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Die Tags lassen sich also über den &lt;strong&gt;Filter&lt;/strong&gt; &lt;strong&gt;tag_cloud_sort&lt;/strong&gt; mit einer eigenen Funktion sortieren. Gesagt, getan. Folgendes packen wir in die &lt;strong&gt;functions.php&lt;/strong&gt; unseres Child Themes (wir ignorieren dabei mal die Vorgabe, Funktionalitäten nicht im Theme unterzubringen):&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;add_filter(&amp;#39;tag_cloud_sort&amp;#39;, &amp;#39;custom_tag_sort&amp;#39;, 10, 2);
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Der zweite Parameter verweist auf unsere eigene Sortier-Funktion. Die 10 beschreibt die Priorität und mit 2 wird die Anzahl der Funktions-Parmaeter festgelegt, nämlich &lt;strong&gt;$tags und $args&lt;/strong&gt;. Unsere eigene Sortier-Funktion sieht dann folgendermaßen aus (in Ahnlehnung an &lt;a href=&#34;http://www.marcokrings.de/arrays-sortieren-mit-umlauten/&#34;&gt;&amp;ldquo;Arrays sortieren mit Umlauten&amp;rdquo;&lt;/a&gt;).&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;function custom_tag_sort($tags, $args) {
-        
-    if (count($tags) == 0) { return $tags; }
-    $tagsSorted = array();
-    $tagsReturn   = array();
-    $search   = array(&amp;#34;Ä&amp;#34;,&amp;#34;ä&amp;#34;,&amp;#34;Ö&amp;#34;,&amp;#34;ö&amp;#34;,&amp;#34;Ü&amp;#34;,&amp;#34;ü&amp;#34;,&amp;#34;ß&amp;#34;);
-    $replace  = array(&amp;#34;Ae&amp;#34;,&amp;#34;ae&amp;#34;,&amp;#34;Oe&amp;#34;,&amp;#34;oe&amp;#34;,&amp;#34;Ue&amp;#34;,&amp;#34;ue&amp;#34;,&amp;#34;ss&amp;#34;);
-    
-    foreach($tags as $key =&amp;gt; $val) {
-        $tagsSorted[$key] = str_replace($search, $replace, $val-&amp;gt;name);
-    }
-
-    natcasesort($tagsSorted);
-    
-    foreach($tagsSorted as $key =&amp;gt; $val) {
-        $tagsReturn[$key] = $tags[$key];
-    }
-
-    return $tagsReturn;
-        
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Am Anfang schauen wir, ob überhaupt Tags übergeben werden, andernfalls gehts gleich wieder zurück. Danach initialisieren wir unsere Variablen. Von Interesse dürften hier vor allem &lt;strong&gt;$search&lt;/strong&gt; und &lt;strong&gt;$replace&lt;/strong&gt; sein. Damit legen wir fest, welche &lt;strong&gt;Umlaute und Sonderzeichen&lt;/strong&gt; ersetzt werden sollen. Die Liste darfst du natürlich beliebig erweitern.&lt;/p&gt;
-&lt;p&gt;In der ersten foreach-Schleife durchlaufen wir die Tag-Liste und ersetzen ganz schlicht die Umlaute entsprechend der Vorgabe.&lt;/p&gt;
-&lt;p&gt;Danach sortieren wir unsere &amp;ldquo;bereinigte&amp;rdquo; Tag-List mit der alternativen Sortier-Funktion &lt;a href=&#34;https://www.php.net/manual/de/function.natcasesort.php&#34;&gt;&lt;strong&gt;natcasesort()&lt;/strong&gt;.&lt;/a&gt; &lt;em&gt;natcase&lt;/em&gt; steht für &lt;em&gt;natural sort, case insensitive&lt;/em&gt;. Sprich: Natürliche &lt;em&gt;Sortierung, Ignorieren der Groß-/Kleinschreibung&lt;/em&gt;. Natürliche Sortierung heißt ganz einfach: So wie ein Mensch sortieren würde.&lt;/p&gt;
-&lt;p&gt;In der letzten Schleife sorgen wir dafür, dass die nun sortierte Tag-Liste wieder unsere ursprünglichen Umlaute enthält und geben die sortierte Liste dann zurück.&lt;/p&gt;
-&lt;p&gt;Das war es auch schon. Unsere Liste ist, unter Berücksichtigung der deutschen Umlaute, sauber sortiert. Ab dort übernimmt WordPress die weitere Verarbeitung. Und wir haben gelernt, wie wir einen &lt;strong&gt;einfachen Filter&lt;/strong&gt; in WordPress implementieren.&lt;/p&gt;
-</description>
+      <description>&lt;p&gt;WordPress bringt von Hause aus ein Widget mit, dass die verwendeten Tags als Cloud darstellt (wer es ein wenig schöner mag, &lt;a href=&#34;https://www.nickyreinert.de/wordpress-word-cloud-2-0/&#34;&gt;greift auf mein WordCloud Plugin zurück&lt;/a&gt;). Das Ganze hat nur einen Haken: Die entsprechende WordPress-Funktion &lt;strong&gt;&lt;a href=&#34;https://developer.wordpress.org/reference/functions/wp_generate_tag_cloud/&#34;&gt;wp_generate_tag_cloud&lt;/a&gt;&lt;/strong&gt; nutzt &lt;strong&gt;aosort()&lt;/strong&gt; als Sortierfunktion. Und die kommt mit Umlauten nicht sonderlich gut klar. Eine Lösung wäre also, die Umlaute für die Sortierung zu übersetzen, also Ä ind Ae, ö in oe und so weiter.&lt;/p&gt;</description>
       
     </item>
     
@@ -207,37 +47,7 @@ require_once(ABSPATH . &amp;#39;wp-settings.php&amp;#39;);
       <guid>https://nickyreinert.de/blog/2017/10/26/wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/</guid>
       
       <description>&lt;p&gt;Um Weiterleitungen kommt man fast nicht herum. Vor allem im Bereich der Suchmaschinenoptimierung (SEO) sollte man vermeiden, dass es auf der Website zu 404-Fehlern kommt - also Ressourcen, die nicht (mehr) vorhanden sind.&lt;/p&gt;
-&lt;p&gt;Ein Weg, um das zu beheben, ist die Einrichtung einer Weiterleitung von der alten, nicht mehr vorhandenen Ressource auf die neue Ressource.  Der HTTP-Statuscode dafür ist entweder 301 (temporär) oder 302 (für eine dauerhafte Weiterleitung). Weiterleitungen können z.B. mit einer .htaccess Datei eingerichtet werden. Dazu aktiviert man zunächst die sogenannte RewriteEngine, um eine URL zu einer anderen URL &amp;ldquo;weiterzuleiten&amp;rdquo;. Dann kann man beliebig viele, Regeln nach folgendem Prinzip festlegen (freilich gibt es noch weitaus mehr Möglichkeiten, wie z.B. reguläre Ausdrücke):&lt;/p&gt;
-&lt;p&gt;RewriteEngine On
-Redirect 302 /redirect0r/foobar/1/ /redirect0r/foobar/index.php
-Redirect 302 /redirect0r/foobar/2/ /redirect0r/foobar/index.php&lt;/p&gt;
-&lt;p&gt;Wenn man nun von einem System (z.B. Joomla) auf ein anderes System (z.B. Wordpress) umzieht und dabei nicht nur auf eine veraltete URL sondern auf 100 URLs stößt, die im neuen System nicht mehr existieren, stellt sich oft die Frage: Was mache ich mit all den alten URLs, die ich im neuen System nicht exakt abbilden kann? Macht es Sinn, die htaccess-Datei mit zahllosen Weiterleitungen zu überfluten? Es kommen zu ersten Zweifeln: Die htaccess-Datei wird bei jedem Aufruf der Website geladen. Kann eine große htaccess-Datei sich also negativ auf die Performance der Seite auswirken?&lt;/p&gt;
-&lt;p&gt;Die Frage hat auch mich beschäftigt und deshalb habe ich ein kleines PHP-Script geschrieben, dass helfen soll, die Antwort zu finden.&lt;/p&gt;
-&lt;h2 id=&#34;funktion&#34;&gt;Funktion&lt;/h2&gt;
-&lt;p&gt;Der Quellcode für das PHP-Script ist über &lt;a href=&#34;https://github.com/nickyreinert/redirect0r&#34;&gt;github&lt;/a&gt; verfügbar. Das Script kann im Browser oder über die Kommandozeile aufgerufen werden. Sämtliche Einstellungen werden in einer JSON-Datei vorgenommen.&lt;/p&gt;
-&lt;p&gt;Der Ablauf des Scripts ist relativ einfach. In einer Schleife schreibt es eine beliebige Anzahl von Weiterleitungs-Regeln in eine htaccess-Datei. Diese Regeln haben folgenden Aufbau:&lt;/p&gt;
-&lt;p&gt;Redirect 302 /foobar/&lt;strong&gt;&lt;em&gt;i&lt;/em&gt;&lt;/strong&gt;/ /foobar/index.php&lt;/p&gt;
-&lt;p&gt;/foobar ist der Ordner, der für die Messung verwendet wird. In diesem Ordner befindet sich auch die htaccess-Datei. i ist eine fortlaufende Ziffer, die mit jedem Schleifendurchlauf inkrementiert wird. Schließlich wird das Ziel der Weiterleitung mit /foobar/index.php angegeben. Der Ordner und die Zieldatei sowie der Inhalt der Zieldatei können angepasst werden.&lt;/p&gt;
-&lt;p&gt;Nicht jeder Schleifendurchlauf schreibt in die htaccess-Datei und ruft Test-URL sofort auf. Das geschieht in definierbaren Abschnitten. Diese Schrittweite ist definierbar. Die Zeit für den Aufruf wird schließlich gemessen .&lt;/p&gt;
-&lt;p&gt;Weiterhin ist es möglich, die Aufrufe innerhalb einer Schrittweite zu wiederholen, also mehrere Abfragen nacheinander, um z.B. in der späteren Auswertung aus den Ergebnissen einen Mittelwert zu errechnen. Nach jeder Abfrage kann außerdem eine cool-down-Phase stattfinden, bevor der nächste Abruf stattfindet..&lt;/p&gt;
-&lt;h2 id=&#34;messergebnisse&#34;&gt;Messergebnisse&lt;/h2&gt;
-&lt;p&gt;Die Messergebnisse offenbaren keine Überraschung. Je größer die Datei, desto größer die Antwortzeiten.  Im Detail heißt das:&lt;/p&gt;
-&lt;p&gt;Gemessen wurden mit drei verschiedenen Methoden:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;auf einem lokalen Webserver (MacBook Pro mit 16 GByte RAM und 2,7 GHz i5) per Aufruf im Browser (local server)&lt;/li&gt;
-&lt;li&gt;auf einem gehosteten Webserver (unbekannte Hardware) per Aufruf im Browser (remote server)&lt;/li&gt;
-&lt;li&gt;auf einem gehosteten Webserver per Aufruf auf der Kommandozeile (remote server CLI)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Als Zeilenlimitin der htaccess-Datei wurden 100.000 Zeilen gewählt. Die Schrittweite beträgt 5.000. Nach jedem Aufruf gab es eine Pause von 3 Sekunden. Insgesamt gab es drei Aufrufe je Zeilenanzahl. Über diese 3 Aufrufe zu einer bestimmten Zeilenanzahl wurde schließlich der Mittelwert errechnet.&lt;/p&gt;
-&lt;p&gt;Bei 10.000 Zeilen wurde bei allen Methoden ca. 90 ms gemessen. Bei 20.000 Zeilen in der htaccess-Datei beträgt die Reaktionszeiten knapp das doppelte, aber immer noch recht unauffällige 185 ms. Ab da gehen die gemessenen Zeit leicht auseinander, der lokale Server scheint die schlechtere Performance zu haben.&lt;/p&gt;
-&lt;p&gt;Bei 60.000 Zeilen wird bei allen Methoden die &amp;ldquo;magische&amp;rdquo; Grenze von 1 Sekunde überschritten. Die Antwortzeiten steigen jetzt nicht mehr proportional. Bei 100.000 Zeilen benötigt der lokale Server schon über 4 Sekunden für die Antwort. Der gehostete Webserver braucht dafür über knapp 3 Sekunden.&lt;/p&gt;
-&lt;p&gt;[caption id=&amp;ldquo;attachment_1580&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;a href=&#34;https://www.nickyreinert.de/files/wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/htaccess-geschwindigkeit.png&#34;&gt;&lt;img src=&#34;images/htaccess-geschwindigkeit-300x186.png&#34; alt=&#34;Geschwindigkeit bei wachsender htaccess-Datei&#34;&gt;&lt;/a&gt; Geschwindigkeit bei wachsender htaccess-Datei[/caption]&lt;/p&gt;
-&lt;h2 id=&#34;fazit&#34;&gt;Fazit&lt;/h2&gt;
-&lt;p&gt;Natürlich wirkt sich eine große htaccess-Datei auf die Performance des Servers auf. Denn wie bereits bemerkt, muss der Webserver diese Datei bei jeder Anfrage öffnen und verarbeiten. Allerdings ist der negative Einfluss ziemlich gering und macht sich erst bei einer sehr großen Anzahl von Zeilen bemerkbar.&lt;/p&gt;
-&lt;p&gt;Eine htaccess-Datei mit 10.000 Zeilen verringert die Antwortzeit kaum. Allerdings steigt die Antwortzeit überproportional an. Bei 100.000 Zeilen ist sie bereits 50 mal langsamer.&lt;/p&gt;
-&lt;p&gt;Im Bereich ab 40.000 Zeilen dürfte der Einfluss auch nach außen hin spürbar sein. Natürlich hängt auch diese Erkenntnis stark von der verwendeten Hardware ab: Der lokale Webserver ist bei meinen Messungen etwas langsamer als der Server des Hosters.&lt;/p&gt;
-&lt;p&gt;Wer eine htaccess-Datei mit 10.000 Weiterleitungen pflegt sollte grundsätzlich sein Konzept überdenken. Oft lässt sich das entweder durch einen sauberen Umzug bzw. eine Anpassung des neuen Systems oder durch Weiterleitungen mit regulären Ausdrücken besser lösen. Am besten ist es natürlich, wenn man gar nicht erst in die Verlegenheit kommt, Weiterleitungen nutzen zu müssen.&lt;/p&gt;
-</description>
+&lt;p&gt;Ein Weg, um das zu beheben, ist die Einrichtung einer Weiterleitung von der alten, nicht mehr vorhandenen Ressource auf die neue Ressource.  Der HTTP-Statuscode dafür ist entweder 301 (temporär) oder 302 (für eine dauerhafte Weiterleitung). Weiterleitungen können z.B. mit einer .htaccess Datei eingerichtet werden. Dazu aktiviert man zunächst die sogenannte RewriteEngine, um eine URL zu einer anderen URL &amp;ldquo;weiterzuleiten&amp;rdquo;. Dann kann man beliebig viele, Regeln nach folgendem Prinzip festlegen (freilich gibt es noch weitaus mehr Möglichkeiten, wie z.B. reguläre Ausdrücke):&lt;/p&gt;</description>
       
     </item>
     
@@ -249,43 +59,7 @@ Redirect 302 /redirect0r/foobar/2/ /redirect0r/foobar/index.php&lt;/p&gt;
       <guid>https://nickyreinert.de/blog/2017/10/19/xampp-startet-nicht-mehr-nachdem-eine-php-extension-hinzugef%C3%BCgt-wurde/</guid>
       
       <description>&lt;p&gt;Ich hatte hier neulich das Problem, dass ich die mongodb Extension für PHP aktivieren wollte und sich danach der Apache-Dienst nicht mehr starten ließ. Aber der Reihe nach:&lt;/p&gt;
-&lt;p&gt;Das System ist OS 10.12.6 und ich nutze das XAMPP-Paket 7.1.9 mit entsprechend PHP 7.1. Außerdem habe ich mir homebrew installiert, da die Installation von pecl zu Umständlich (ich hätte alle möglichen  Abhängigkeiten installieren müssen). Mit homebrew habe ich mir also den aktuellen mongodb-Treiber installiert, das geht recht einfach mit:&lt;/p&gt;
-&lt;p&gt;brew update
-brew install php71-mongodb&lt;/p&gt;
-&lt;p&gt;Danach lässt sich die Extension in der /Applications/XAMPP/xamppfiles/etc/php.ini Datei aktivieren:&lt;/p&gt;
-&lt;p&gt;extension=&amp;quot;/usr/local/opt/php71-mongodb/mongodb.so&amp;quot;&lt;/p&gt;
-&lt;p&gt;Soweit. So einfach. Das Problem: Nachdem ich diese Zeile in der php.ini Datei hinzugefügt hatte, ließ sich der Apache-Dienst nicht mehr über die XAMPP-Oberfläche starten, obwohl diese mit root-Rechten ausgeführt wird. Leider gab auch die Log-Datei /Applications/XAMPP/xamppfiles/logs/error_log nicht viel her. Und auch nachdem ich die Zeile aus der php.ini-Datei entfernt habe, trat das Problem weiter auf. Ich bekam den Web-Server also nicht zum laufen und an keiner Stelle in den Log-Dateien war ersichtlich, was nicht stimmte.&lt;/p&gt;
-&lt;p&gt;[caption id=&amp;ldquo;attachment_1567&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;a href=&#34;https://www.nickyreinert.de/files/xampp-startet-nicht-mehr-nachdem-eine-php-extension-hinzugefuegt-wurde/XAMPP-UI-in-OS-X.png&#34;&gt;&lt;img src=&#34;images/XAMPP-UI-in-OS-X-300x209.png&#34; alt=&#34;XAMPP UI in OS X um den Web-Server zu starten&#34;&gt;&lt;/a&gt; XAMPP UI in OS X um den Web-Server zu starten[/caption]&lt;/p&gt;
-&lt;h2 id=&#34;recherche-der-aufgerufenen-kommandos&#34;&gt;Recherche der aufgerufenen Kommandos&lt;/h2&gt;
-&lt;p&gt;Also musste ich mich auf die Fehlersuche machen. Und das ist recht umständlich, denn der Klick auf den Button im XAMPP-UI stößt eine etwas längere Befehlskette an an deren Ende der Start des http-Daemons steht:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;/Applications/XAMPP/xamppfiles/ctlscript.sh start apache
--&amp;gt; 
-/Applications/XAMPP/xamppfiles/apache2/scripts/ctl.sh start
--&amp;gt;
-/Applications/XAMPP/xamppfiles/xampp startapache 
--&amp;gt; 
-/Applications/XAMPP/xamppfiles/bin/apachectl -k start -E /Applications/XAMPP/xamppfiles/logs/error_log -DSSL -DPHP
--&amp;gt;
-/Applications/XAMPP/xamppfiles/bin/httpd -k start -E /Applications/XAMPP/xamppfiles/logs/error_log -DSSL -DPHP
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Ich hab mir also den letzten Aufruf geschnappt und auf der Konsole ausgeführt. Dort erhielt ich den ersten entscheidenen Hinweis - die log-Dateien waren nicht schreibbar:&lt;/p&gt;
-&lt;p&gt;(13)Permission denied: AH00086: httpd: could not open error log file /Applications/XAMPP/xamppfiles/logs/error_log.
-AH00548: NameVirtualHost has no effect and will be removed in the next release /Applications/XAMPP/xamppfiles/etc/extra/httpd-vhosts.conf:40
-(13)Permission denied: AH00072: make_sock: could not bind to address [::]:80
-(13)Permission denied: AH00072: make_sock: could not bind to address 0.0.0.0:80
-no listening sockets available, shutting down&lt;/p&gt;
-&lt;p&gt;Das lässt sich schnell mit folgendem Aufruf beheben:&lt;/p&gt;
-&lt;p&gt;sudo chmod a+w /Applications/XAMPP/xamppfiles/logs/error_log&lt;/p&gt;
-&lt;p&gt;Damit war es natürlich noch nicht getan. Erst jetzt konnte ich dem error.log entnehmen, was das eigentliche Problem war:&lt;/p&gt;
-&lt;p&gt;AH00548: NameVirtualHost has no effect and will be removed in the next release /Applications/XAMPP/xamppfiles/etc/extra/httpd-vhosts.conf:40
-(13)Permission denied: AH00072: make_sock: could not bind to address [::]:80
-(13)Permission denied: AH00072: make_sock: could not bind to address 0.0.0.0:80
-no listening sockets available, shutting down
-AH00015: Unable to open logs&lt;/p&gt;
-&lt;h2 id=&#34;lösung---fehlende-rechte&#34;&gt;Lösung - fehlende Rechte&lt;/h2&gt;
-&lt;p&gt;Im Grunde war ja schon klar, was getan werden musste: Der Aufruf mit sudo. Damit lässt sich der Apache-Dienst also zumindest erstmal starten:&lt;/p&gt;
-&lt;p&gt;sudo /Applications/XAMPP/xamppfiles/bin/httpd -k start -E /Applications/XAMPP/xamppfiles/logs/error_log -DSSL -DPHP&lt;/p&gt;
-&lt;p&gt;Das eigentliche Problem bleibt freilich bestehen: Was hat das mit der php-Extension zu tun? Liegt es an dem mongodb-Treiber selber oder ist es ein generelles Problem? Bisher bin ich noch nicht dahinter gestiegen. Aber zumindest lässt sich der Web-Server erstmal wieder starten.&lt;/p&gt;
-</description>
+&lt;p&gt;Das System ist OS 10.12.6 und ich nutze das XAMPP-Paket 7.1.9 mit entsprechend PHP 7.1. Außerdem habe ich mir homebrew installiert, da die Installation von pecl zu Umständlich (ich hätte alle möglichen  Abhängigkeiten installieren müssen). Mit homebrew habe ich mir also den aktuellen mongodb-Treiber installiert, das geht recht einfach mit:&lt;/p&gt;</description>
       
     </item>
     
@@ -297,68 +71,7 @@ AH00015: Unable to open logs&lt;/p&gt;
       <guid>https://nickyreinert.de/blog/2017/10/14/ssl-verifizierung-mit-php-schl%C3%A4gt-fehlt-fehler-14090086/</guid>
       
       <description>&lt;p&gt;Wenn dich PHP mit dieser Fehlermeldung (oder einer ähnlichen Fehlernummer) begrüßt, dann liegt es wohl daran, dass beim Abruf einer SSL-Ressource die Identität nicht verifiziert werden konnte. Und das ist auch gut so, denn der Sinn von SSL ist ja das Herstellen einer gesicherten Verbindung.&lt;br&gt;
-So sieht die Fehlermeldung bei Verwendung von &lt;em&gt;file_get_contents();&lt;/em&gt; aus. Aber auch andere Funktionen, mit denen man auf externe Ressourcen verweisen kann, werfen diesen Fehler, wie z.B. &lt;em&gt;imagecreatefrompng();&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;Warning: file_get_contents(): SSL operation failed with code 1.
-OpenSSL Error messages:
-error:14090086:SSL routines:ssl3_get_server_certificate:certificate
-verify failed in /website/script.php
-on line 50&lt;/p&gt;
-&lt;p&gt;Warning: file_get_contents():
-Failed to enable crypto in /website/script.php&lt;br&gt;
-on line 50&lt;/p&gt;
-&lt;p&gt;Warning: file_get_contents(&lt;a href=&#34;https://www.nickyreinert.de/foobar.json)&#34;&gt;https://www.nickyreinert.de/foobar.json)&lt;/a&gt;:
-failed to open stream: operation failed in /website/script.php&lt;br&gt;
-on line 50&lt;/p&gt;
-&lt;p&gt;Die Erklärung ist simpel: PHP kennt den Aussteller des Zertifikates für &lt;a href=&#34;https://www.nickyreinert.de&#34;&gt;https://www.nickyreinert.de&lt;/a&gt; nicht und verweigert aus Sicherheitsgründen den Aufbau einer Verbindung. Die Ursachen hingegen können vielfältig sein, oft ist der Aussteller des Zertifikats z.B. nicht bekannt. Wir müssen also entweder dafür sorgen, dass PHP dem Aussteller vertraut oder festlegen, dass PHP die Zertifikate gar nicht erst prüft.&lt;/p&gt;
-&lt;h2 id=&#34;verifizierung-des-ssl-hosts-unterdrücken&#34;&gt;Verifizierung des SSL Hosts unterdrücken&lt;/h2&gt;
-&lt;p&gt;Das ist die quick&amp;rsquo;n&amp;rsquo;dirty Lösung. Zumindest &lt;em&gt;file_get_contents()&lt;/em&gt;; kann mit Parametern gefüttert werden, die die Verifizierung der Ressource unterdrücken:&lt;/p&gt;
-&lt;p&gt;$stream = stream_context_create(array(    
-$stream = stream_context_create(array(
-&amp;ldquo;ssl&amp;rdquo;=&amp;gt;array(     
-&amp;ldquo;verify_peer&amp;rdquo;=&amp;gt; false,    
-&amp;ldquo;verify_peer_name&amp;rdquo;=&amp;gt; false, ),
-&amp;lsquo;http&amp;rsquo; =&amp;gt; array(    
-&amp;rsquo;timeout&amp;rsquo; =&amp;gt; 30     ) )     );&lt;/p&gt;
-&lt;p&gt;$result = file_get_contents($url, 0, $stream);&lt;/p&gt;
-&lt;p&gt;Wer auf eine eigene Ressource zurückgreift, z.B. im lokalen Netz oder zu Testzwecken, kann damit leben. Aus Sicherheitsgründen ist die Lösung allerdings nicht zu empfehlen. Außerdem erlaubt nicht jede Funktion die Angabe eines Stream-Contextes, wie z.B. &lt;em&gt;imagecreatefromjpeg();&lt;/em&gt;&lt;/p&gt;
-&lt;h2 id=&#34;die-zertifikatskette-manuell-einrichten&#34;&gt;Die Zertifikatskette manuell einrichten&lt;/h2&gt;
-&lt;p&gt;Man kommt also nicht darum, die saubere Lösung zu nutzen. Dazu muss man wissen, dass es in den allermeisten Fällen nicht nur um das eine Zertifikat geht, sondern um die gesamte Zertifikatskette. Diese beinhaltet auch die Zertifikate der Stellen, die dem infragekommenden Server, also &lt;a href=&#34;https://www.nickyreinert.de&#34;&gt;https://www.nickyreinert.de&lt;/a&gt;, das Zertifikat ausgestellt haben. Wenn PHP diese Stellen nicht kennt, geht es auch davon aus, dass die von dort ausgestellten Zertifikate nicht gültig sind.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/1561/ssl-zertifikats-kette.png&#34;&gt;&lt;img src=&#34;images/ssl-zertifikats-kette-300x219.png&#34; alt=&#34; SSL Zertifikats-Kette mit den Intermediate Zertifikaten&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;SSL Zertifikats-Kette mit den Intermediate Zertifikaten&lt;/p&gt;
-&lt;p&gt;Um die Zertifikatskette zu erhalten, kannst du einen Service wie &lt;a href=&#34;https://whatsmychaincert.com/&#34;&gt;https://whatsmychaincert.com/&lt;/a&gt; nutzen. Dieser liefert dir eine Datei mit der  kompletten Zertifikatskette. Oder du machst dich selber auf die Suche. Jedes Zertfikat enthält den Namen des Ausstellers bzw. den Typ des Zertifikats. Damit lassen sich die notwendigen Zwischenzertifkate auch manuell zusammenstellen.&lt;/p&gt;
-&lt;h2 id=&#34;php-die-zertifikatskette-mitteilen&#34;&gt;PHP die Zertifikatskette mitteilen&lt;/h2&gt;
-&lt;p&gt;Die Datei mit der Zertifikatskette gehört nun, oh Wunder, an einen Ort, den PHP erreichen kann. Dann musst du PHP noch mitteilen, dass es auch diese Zertifikatskette berücksichtigen soll. Auch das passiert über den Stream-Context, den ich oben schon angesprochen habe. Doch diesmal erlauben wir PHP, den SSL-Host zu verfizieren und verweisen auf die Zertifikatskette, die wir oben erstellt haben:&lt;/p&gt;
-&lt;p&gt;$stream = stream_context_create(array(
-&amp;ldquo;ssl&amp;rdquo;=&amp;gt;array(    
-&amp;ldquo;cafile&amp;rdquo; =&amp;gt; &amp;ldquo;&lt;a href=&#34;https://www.nickyreinert.de.pem&#34;&gt;www.nickyreinert.de.pem&lt;/a&gt;&amp;rdquo;,    
-&amp;ldquo;verify_peer&amp;rdquo;=&amp;gt; true,    
-&amp;ldquo;verify_peer_name&amp;rdquo;=&amp;gt; true, ),&amp;lsquo;http&amp;rsquo; =&amp;gt; array(    
-&amp;rsquo;timeout&amp;rsquo; =&amp;gt; $this-&amp;gt;configUrlTimeOut     ) )
-;
-$config = file_get_contents($url, 0, $stream);&lt;/p&gt;
-&lt;p&gt;Geschafft. PHP sollte nun, zur Laufzeit, den SSL-Host überprüfen und dabei auf die Zertifikate zurückgreifen, die die Authentizität einwandfrei bestätigen.&lt;/p&gt;
-&lt;p&gt;Man kann den Verweis auch an anderer Stelle global definieren. Die PHP-Funktion openssl_get_cert_locations(); teilt uns direkt mit, wo PHP nach gültigen Zertifikaten sucht:&lt;/p&gt;
-&lt;p&gt;Array
-(
-[default_cert_file] =&amp;gt; /Applications/XAMPP/xamppfiles/share/openssl/cert.pem
-[default_cert_file_env] =&amp;gt; SSL_CERT_FILE
-[default_cert_dir] =&amp;gt; /Applications/XAMPP/xamppfiles/share/openssl/certs
-[default_cert_dir_env] =&amp;gt; SSL_CERT_DIR
-[default_private_dir] =&amp;gt; /Applications/XAMPP/xamppfiles/share/openssl/private
-[default_default_cert_area] =&amp;gt; /Applications/XAMPP/xamppfiles/share/openssl
-[ini_cafile] =&amp;gt; /Applications/XAMPP/xamppfiles/share/curl/curl-ca-bundle.crt
-[ini_capath] =&amp;gt;
-)&lt;/p&gt;
-&lt;p&gt;Der entscheidende Parameter lautet &lt;strong&gt;ini_cafile&lt;/strong&gt;. Diese wird in der php.ini mit dem Parameter&lt;/p&gt;
-&lt;p&gt;openssl.cafile=/Applications/XAMPP/xamppfiles/share/curl/curl-ca-bundle.crt&lt;/p&gt;
-&lt;p&gt;gesetzt. Die gleiche Info erhältst du auch über die bekannte Funktion phpinfo(), dort lautet der Parameter &lt;strong&gt;openssl.cafile&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;In der entsprechenden Datei liegen eine Menge von Root-Zertifikaten, bzw. Certificate-Authorities. Sprich die Aussteller, denen PHP grundsätzlich vertraut. Mitunter macht es mehr Sinn, diese Einstellung in der php.ini zu nutzen, damit auch curl() darauf zurückgreifen kann.&lt;/p&gt;
-&lt;p&gt;Wenn du PHP-FPM benutzt, musst du den Parameter übrigens folgendermaßen ansprechen:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;php_admin_value[openssl.cafile] = /Applications/XAMPP/xamppfiles/share/curl/curl-ca-bundle.crt
-&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;zusammenfassung&#34;&gt;Zusammenfassung&lt;/h2&gt;
-&lt;p&gt;Die SSL-Fehlermeldung hat ihren Sinn. PHP ist nicht in der Lage, die Authentizität des Servers zu überprüfen. Der korrekte Weg das Problem zu beheben, ist das Zertifikat der entsprechenden Seite herunterzuladen, die Intermediate-Zertifikate und das Root-Zertifikat zu besorgen und alle Zertifikate im PEM-Format in eine Text-Datei zu packen.&lt;br&gt;
-Danach kannst du entweder auf die URL zugreifen und über den Stream-Kontext auf diese Datei mit der Zertifikats-Kette verweisen, oder du legst in den globalen PHP-Einstellungen fest, dass PHP diese Datei beim nächsten Mal berücksichtigen soll.&lt;/p&gt;
-</description>
+So sieht die Fehlermeldung bei Verwendung von &lt;em&gt;file_get_contents();&lt;/em&gt; aus. Aber auch andere Funktionen, mit denen man auf externe Ressourcen verweisen kann, werfen diesen Fehler, wie z.B. &lt;em&gt;imagecreatefrompng();&lt;/em&gt;.&lt;/p&gt;</description>
       
     </item>
     

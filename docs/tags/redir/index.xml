@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>redir on Nicky Reinert</title>
+    <title>Redir on Nicky Reinert</title>
     <link>https://nickyreinert.de/tags/redir/</link>
-    <description>Recent content in redir on Nicky Reinert</description>
+    <description>Recent content in Redir on Nicky Reinert</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de-DE</language>
     <lastBuildDate>Thu, 26 Oct 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/redir/index.xml" rel="self" type="application/rss+xml" />
@@ -15,37 +15,7 @@
       <guid>https://nickyreinert.de/blog/2017/10/26/wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/</guid>
       
       <description>&lt;p&gt;Um Weiterleitungen kommt man fast nicht herum. Vor allem im Bereich der Suchmaschinenoptimierung (SEO) sollte man vermeiden, dass es auf der Website zu 404-Fehlern kommt - also Ressourcen, die nicht (mehr) vorhanden sind.&lt;/p&gt;
-&lt;p&gt;Ein Weg, um das zu beheben, ist die Einrichtung einer Weiterleitung von der alten, nicht mehr vorhandenen Ressource auf die neue Ressource.  Der HTTP-Statuscode dafür ist entweder 301 (temporär) oder 302 (für eine dauerhafte Weiterleitung). Weiterleitungen können z.B. mit einer .htaccess Datei eingerichtet werden. Dazu aktiviert man zunächst die sogenannte RewriteEngine, um eine URL zu einer anderen URL &amp;ldquo;weiterzuleiten&amp;rdquo;. Dann kann man beliebig viele, Regeln nach folgendem Prinzip festlegen (freilich gibt es noch weitaus mehr Möglichkeiten, wie z.B. reguläre Ausdrücke):&lt;/p&gt;
-&lt;p&gt;RewriteEngine On
-Redirect 302 /redirect0r/foobar/1/ /redirect0r/foobar/index.php
-Redirect 302 /redirect0r/foobar/2/ /redirect0r/foobar/index.php&lt;/p&gt;
-&lt;p&gt;Wenn man nun von einem System (z.B. Joomla) auf ein anderes System (z.B. Wordpress) umzieht und dabei nicht nur auf eine veraltete URL sondern auf 100 URLs stößt, die im neuen System nicht mehr existieren, stellt sich oft die Frage: Was mache ich mit all den alten URLs, die ich im neuen System nicht exakt abbilden kann? Macht es Sinn, die htaccess-Datei mit zahllosen Weiterleitungen zu überfluten? Es kommen zu ersten Zweifeln: Die htaccess-Datei wird bei jedem Aufruf der Website geladen. Kann eine große htaccess-Datei sich also negativ auf die Performance der Seite auswirken?&lt;/p&gt;
-&lt;p&gt;Die Frage hat auch mich beschäftigt und deshalb habe ich ein kleines PHP-Script geschrieben, dass helfen soll, die Antwort zu finden.&lt;/p&gt;
-&lt;h2 id=&#34;funktion&#34;&gt;Funktion&lt;/h2&gt;
-&lt;p&gt;Der Quellcode für das PHP-Script ist über &lt;a href=&#34;https://github.com/nickyreinert/redirect0r&#34;&gt;github&lt;/a&gt; verfügbar. Das Script kann im Browser oder über die Kommandozeile aufgerufen werden. Sämtliche Einstellungen werden in einer JSON-Datei vorgenommen.&lt;/p&gt;
-&lt;p&gt;Der Ablauf des Scripts ist relativ einfach. In einer Schleife schreibt es eine beliebige Anzahl von Weiterleitungs-Regeln in eine htaccess-Datei. Diese Regeln haben folgenden Aufbau:&lt;/p&gt;
-&lt;p&gt;Redirect 302 /foobar/&lt;strong&gt;&lt;em&gt;i&lt;/em&gt;&lt;/strong&gt;/ /foobar/index.php&lt;/p&gt;
-&lt;p&gt;/foobar ist der Ordner, der für die Messung verwendet wird. In diesem Ordner befindet sich auch die htaccess-Datei. i ist eine fortlaufende Ziffer, die mit jedem Schleifendurchlauf inkrementiert wird. Schließlich wird das Ziel der Weiterleitung mit /foobar/index.php angegeben. Der Ordner und die Zieldatei sowie der Inhalt der Zieldatei können angepasst werden.&lt;/p&gt;
-&lt;p&gt;Nicht jeder Schleifendurchlauf schreibt in die htaccess-Datei und ruft Test-URL sofort auf. Das geschieht in definierbaren Abschnitten. Diese Schrittweite ist definierbar. Die Zeit für den Aufruf wird schließlich gemessen .&lt;/p&gt;
-&lt;p&gt;Weiterhin ist es möglich, die Aufrufe innerhalb einer Schrittweite zu wiederholen, also mehrere Abfragen nacheinander, um z.B. in der späteren Auswertung aus den Ergebnissen einen Mittelwert zu errechnen. Nach jeder Abfrage kann außerdem eine cool-down-Phase stattfinden, bevor der nächste Abruf stattfindet..&lt;/p&gt;
-&lt;h2 id=&#34;messergebnisse&#34;&gt;Messergebnisse&lt;/h2&gt;
-&lt;p&gt;Die Messergebnisse offenbaren keine Überraschung. Je größer die Datei, desto größer die Antwortzeiten.  Im Detail heißt das:&lt;/p&gt;
-&lt;p&gt;Gemessen wurden mit drei verschiedenen Methoden:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;auf einem lokalen Webserver (MacBook Pro mit 16 GByte RAM und 2,7 GHz i5) per Aufruf im Browser (local server)&lt;/li&gt;
-&lt;li&gt;auf einem gehosteten Webserver (unbekannte Hardware) per Aufruf im Browser (remote server)&lt;/li&gt;
-&lt;li&gt;auf einem gehosteten Webserver per Aufruf auf der Kommandozeile (remote server CLI)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Als Zeilenlimitin der htaccess-Datei wurden 100.000 Zeilen gewählt. Die Schrittweite beträgt 5.000. Nach jedem Aufruf gab es eine Pause von 3 Sekunden. Insgesamt gab es drei Aufrufe je Zeilenanzahl. Über diese 3 Aufrufe zu einer bestimmten Zeilenanzahl wurde schließlich der Mittelwert errechnet.&lt;/p&gt;
-&lt;p&gt;Bei 10.000 Zeilen wurde bei allen Methoden ca. 90 ms gemessen. Bei 20.000 Zeilen in der htaccess-Datei beträgt die Reaktionszeiten knapp das doppelte, aber immer noch recht unauffällige 185 ms. Ab da gehen die gemessenen Zeit leicht auseinander, der lokale Server scheint die schlechtere Performance zu haben.&lt;/p&gt;
-&lt;p&gt;Bei 60.000 Zeilen wird bei allen Methoden die &amp;ldquo;magische&amp;rdquo; Grenze von 1 Sekunde überschritten. Die Antwortzeiten steigen jetzt nicht mehr proportional. Bei 100.000 Zeilen benötigt der lokale Server schon über 4 Sekunden für die Antwort. Der gehostete Webserver braucht dafür über knapp 3 Sekunden.&lt;/p&gt;
-&lt;p&gt;[caption id=&amp;ldquo;attachment_1580&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;a href=&#34;https://www.nickyreinert.de/files/wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/htaccess-geschwindigkeit.png&#34;&gt;&lt;img src=&#34;images/htaccess-geschwindigkeit-300x186.png&#34; alt=&#34;Geschwindigkeit bei wachsender htaccess-Datei&#34;&gt;&lt;/a&gt; Geschwindigkeit bei wachsender htaccess-Datei[/caption]&lt;/p&gt;
-&lt;h2 id=&#34;fazit&#34;&gt;Fazit&lt;/h2&gt;
-&lt;p&gt;Natürlich wirkt sich eine große htaccess-Datei auf die Performance des Servers auf. Denn wie bereits bemerkt, muss der Webserver diese Datei bei jeder Anfrage öffnen und verarbeiten. Allerdings ist der negative Einfluss ziemlich gering und macht sich erst bei einer sehr großen Anzahl von Zeilen bemerkbar.&lt;/p&gt;
-&lt;p&gt;Eine htaccess-Datei mit 10.000 Zeilen verringert die Antwortzeit kaum. Allerdings steigt die Antwortzeit überproportional an. Bei 100.000 Zeilen ist sie bereits 50 mal langsamer.&lt;/p&gt;
-&lt;p&gt;Im Bereich ab 40.000 Zeilen dürfte der Einfluss auch nach außen hin spürbar sein. Natürlich hängt auch diese Erkenntnis stark von der verwendeten Hardware ab: Der lokale Webserver ist bei meinen Messungen etwas langsamer als der Server des Hosters.&lt;/p&gt;
-&lt;p&gt;Wer eine htaccess-Datei mit 10.000 Weiterleitungen pflegt sollte grundsätzlich sein Konzept überdenken. Oft lässt sich das entweder durch einen sauberen Umzug bzw. eine Anpassung des neuen Systems oder durch Weiterleitungen mit regulären Ausdrücken besser lösen. Am besten ist es natürlich, wenn man gar nicht erst in die Verlegenheit kommt, Weiterleitungen nutzen zu müssen.&lt;/p&gt;
-</description>
+&lt;p&gt;Ein Weg, um das zu beheben, ist die Einrichtung einer Weiterleitung von der alten, nicht mehr vorhandenen Ressource auf die neue Ressource.  Der HTTP-Statuscode dafür ist entweder 301 (temporär) oder 302 (für eine dauerhafte Weiterleitung). Weiterleitungen können z.B. mit einer .htaccess Datei eingerichtet werden. Dazu aktiviert man zunächst die sogenannte RewriteEngine, um eine URL zu einer anderen URL &amp;ldquo;weiterzuleiten&amp;rdquo;. Dann kann man beliebig viele, Regeln nach folgendem Prinzip festlegen (freilich gibt es noch weitaus mehr Möglichkeiten, wie z.B. reguläre Ausdrücke):&lt;/p&gt;</description>
       
     </item>
     
@@ -57,33 +27,7 @@ Redirect 302 /redirect0r/foobar/2/ /redirect0r/foobar/index.php&lt;/p&gt;
       <guid>https://nickyreinert.de/blog/2016/09/25/welche-m%C3%B6glichkeiten-habe-ich-um-weiterleitungen-anzulegen/</guid>
       
       <description>&lt;h2 id=&#34;was-sind-weiterleitungen&#34;&gt;Was sind Weiterleitungen?&lt;/h2&gt;
-&lt;p&gt;Du hast von einem alten Shop oder Content Management System auf ein neues System gewechselt, willst eine neue Permalink-Struktur einführen oder hast einfach nur Inhalte verschoben? Das Problem in solchen Szenarien ist, dass die Verzeichnisstruktur nicht exakt übernommen werden kann. Doch keine Panik. Dass sich Inhalte und Verlinkungen im Internet ändern, gehört zum Konzept des WWW dazu. Wichtig ist, dass man diese Dynamik entsprechend berücksichtigt und dafür sorgt, dass eingehender Traffic auf die eigene Seite nicht auf die nicht-vorhandene Seiten stößt. Mit sogenannten Weiterleitungen.&lt;/p&gt;
-&lt;h2 id=&#34;suchmaschinen-index-und-backlinks&#34;&gt;Suchmaschinen-Index und Backlinks&lt;/h2&gt;
-&lt;p&gt;Zwei Arten von eingehenden Traffic kann man grundsätzlich unterscheiden: Erstens gibt es den Traffic der von einer Suchmaschine (&lt;strong&gt;organischer Traffic&lt;/strong&gt;) kommt. Die Suchmaschine nutzt dafür einen Index, der sich aber nach bestimmten Regeln aktualisiert. Daneben gibt es Traffic über &lt;strong&gt;Backlinks&lt;/strong&gt; von externen Seiten, die keine Suchmaschinen sind. Diese Backlinks sind natürlich auch veränderbar, aber, wenn man es so nennen will, redaktionell gepflegt. Streng genommen könnte man natürlich noch anderen Traffic unterscheiden, wie z.B. den aus der Suchmaschinen-Werbung (SEA). Doch da dieser Teil der eigenen Online-Marketing-Kampagne ist, versteht es sich von selber, dass die Links dort ordentlich gepflegt werden müssen.&lt;/p&gt;
-&lt;h2 id=&#34;wann-benötige-ich-eine-weiterleitung&#34;&gt;Wann benötige ich eine Weiterleitung?&lt;/h2&gt;
-&lt;p&gt;Die Suchmaschinen lassen sich eigentlich relativ unkompliziert mit einer aktuellen Sitemap befriedigen, die ja als aktuelles Verzeichnis der eigenen Seite. Google bietet in der Search Console sogar an, die Seite &lt;a href=&#34;https://www.google.com/webmasters/tools/home?hl=de&#34;&gt;neu zu indizieren&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Doch was ist mit den andern Suchmaschinen und vor allem all den wertvollen Backlinks, die nicht mehr gültig sind? Nicht jeder eingehend Link lässt sich so einfach aktualisieren und führt im ungünstigen Fall zum HTTP-Fehlercode 404 &amp;ldquo;not found&amp;rdquo;. Dieser sollte aus SEO-Sicht unbedingt vermieden werden. Mit eben jenen erwähnten Weiterleitungen.&lt;/p&gt;
-&lt;p&gt;Um diese zu implementieren, gibt es freilich mehrere Möglichkeiten. Zunächst sollte man prüfen, welche Backlinks auf die eigene Seite überhaupt existieren. Je nachdem, wie viele Backlinks es gibt und wie die URL-Struktur der eigenen Seite beschaffen ist, bieten sich andere Möglichkeiten an. Man unterscheidet übrigens zwischen der temporären (HTTP-Statuscode 302) und der permanenten Weiterleitung(HTTP-Statuscode 302) . Die temporäre Weiterleitung kommt für unseren Fall nicht unbedingt infrage, da wir ja einen Umzug vor uns haben.&lt;/p&gt;
-&lt;h2 id=&#34;weiterleitung-per-header-in-einer-php-datei&#34;&gt;Weiterleitung per header() in einer PHP-Datei&lt;/h2&gt;
-&lt;p&gt;Eine ziemlich pragmatische und wenngleich effektive Methode ist es, die alte Ordner-Struktur per Hand nachzubilden und entsprechend PHP-Dateien anzulegen, die jeweils eine 301-Weiterleitung auf die neue URL enthalten (&amp;quot;&lt;a href=&#34;http://php.net/manual/de/function.header.php&#34;&gt;header&lt;/a&gt;&amp;quot;). Das kann man machen, wird bei größeren System aber sehr schnell sehr aufwendig. Die PHP-Datei sollte unter dem Namen &amp;ldquo;index.php&amp;rdquo; in den jeweiligen Ordnern abgelegt werden und folgenden Code enthalten. Es folgt ein Beispiel für eine PHP-Datei befindet, die unter &lt;em&gt;&lt;a href=&#34;https://www.deine-seite.de/altes-ziel/index.php&#34;&gt;https://www.deine-seite.de/altes-ziel/index.php&lt;/a&gt;&lt;/em&gt; abgelegt ist. Diese enthält folgenden Code:&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;Das ist nicht nur mühsam, sondern auch nicht dynamisch. Die nächste Variante nutzt eine Weiterleitung mit .htaccess.&lt;/p&gt;
-&lt;h2 id=&#34;weiterleitung-per-htaccess&#34;&gt;Weiterleitung per .htaccess&lt;/h2&gt;
-&lt;p&gt;In einer .htaccess-Datei gibt es erstmal zwei Möglichkeiten, eine Weiterleitung einzurichten. Nutzt man einen regulären Ausdruck, wird entsprechend jeder passende eingehende Traffic abgefangen und an die gewünschte Hauptseite weitergeleitet.&lt;/p&gt;
-&lt;p&gt;Eine andere, etwas ausgefeiltere Möglichkeit ist es, die  alten Unterverzeichnisse bei Abfrage durch den Browser abzufangen und deren Namen als Suchparameter an das neue System weiterzuleiten.&lt;/p&gt;
-&lt;p&gt;Hier zum Beispiel der Unterordner &amp;ldquo;foobar&amp;rdquo;, der als Suchparameter genutzt werden soll:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.deine-seite.de/&#34;&gt;www.deine-seite.de/&lt;/a&gt;&lt;strong&gt;foobar&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Der Name soll nun als Suchparameter folgendermaßen genutzt werden:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.deine-seite.de/index.php?search=&#34;&gt;www.deine-seite.de/index.php?search=&lt;/a&gt;&lt;strong&gt;foobar&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;So sieht die dafür notwendige .htaccess-Datei aus:&lt;/p&gt;
-&lt;p&gt;RewriteEngine On&lt;/p&gt;
-&lt;p&gt;RewriteRule ^(/?)([a-zA-Z0-9]+)?([\.html]+)?/?$ /index.php?search=$2 [R=301,NC]&lt;/p&gt;
-&lt;p&gt;RewriteRule ^(/?)([a-zA-Z0-9]+)?/([a-zA-Z0-9]+)?([\.html]+)?/?$ /index.php?search=$2\ $3 [L,R=301,NC]&lt;/p&gt;
-&lt;p&gt;Die erste Regel fängt Aufrufe der ersten Pfad-Ebene ab. Die zweite Regel kann auch die Namen der darunter liegenden Pfade abgreifen und daraus einen kombinierten Suchbegriff erzeugen. Das ist z.B. hilfreich, wenn man die Pfade eines Shop-Systems nutzen will um daraus im neuen Shop die Suche zu erzeugen.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.shop.de/foobar/hello&#34;&gt;www.shop.de/foobar/hello&lt;/a&gt;_world.html -&amp;gt; &lt;a href=&#34;https://www.shop.de/index.php?search=foobar%20hello&#34;&gt;www.shop.de/index.php?search=foobar%20hello&lt;/a&gt;_world&lt;/p&gt;
-&lt;p&gt;Die .htaccess-Datei muss sich im Unterordner /foobar befinden, der auch physisch vorhanden sein muss. Man könnte die Weiterleitung auch im Root-Verzeichnis anlegen und bräuchte dann den Unterordner nicht. So vermeidet man aber unnötigen Overhead, da die Regel nicht bei den regulären Aufrufen aktiviert wird.&lt;/p&gt;
-</description>
+&lt;p&gt;Du hast von einem alten Shop oder Content Management System auf ein neues System gewechselt, willst eine neue Permalink-Struktur einführen oder hast einfach nur Inhalte verschoben? Das Problem in solchen Szenarien ist, dass die Verzeichnisstruktur nicht exakt übernommen werden kann. Doch keine Panik. Dass sich Inhalte und Verlinkungen im Internet ändern, gehört zum Konzept des WWW dazu. Wichtig ist, dass man diese Dynamik entsprechend berücksichtigt und dafür sorgt, dass eingehender Traffic auf die eigene Seite nicht auf die nicht-vorhandene Seiten stößt. Mit sogenannten Weiterleitungen.&lt;/p&gt;</description>
       
     </item>
     

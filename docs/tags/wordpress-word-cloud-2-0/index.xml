@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>wordpress-word-cloud-2-0 on Nicky Reinert</title>
+    <title>Wordpress-Word-Cloud-2-0 on Nicky Reinert</title>
     <link>https://nickyreinert.de/tags/wordpress-word-cloud-2-0/</link>
-    <description>Recent content in wordpress-word-cloud-2-0 on Nicky Reinert</description>
+    <description>Recent content in Wordpress-Word-Cloud-2-0 on Nicky Reinert</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de-DE</language>
     <lastBuildDate>Tue, 09 Jun 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/wordpress-word-cloud-2-0/index.xml" rel="self" type="application/rss+xml" />
@@ -16,152 +16,7 @@
       
       <description>&lt;p&gt;Mein Word Cloud Plugin für WordPress liegt in einer neuen Version vor! Die Word Cloud unterstützt nun &lt;strong&gt;OCR&lt;/strong&gt;, &lt;strong&gt;Tags&lt;/strong&gt;, &lt;strong&gt;interne&lt;/strong&gt; und &lt;strong&gt;externe Quellen&lt;/strong&gt; und vieles mehr. Da ich also sehr viele grundlegende Änderungen vorgenommen habe, gibt es an dieser Stelle eine komplett neue Dokumentation. Viel Spass.&lt;/p&gt;
 &lt;h2 id=&#34;was-ist-eine-word-cloud&#34;&gt;Was ist eine Word Cloud?&lt;/h2&gt;
-&lt;p&gt;Eine &lt;strong&gt;Word Cloud&lt;/strong&gt;, auch &lt;strong&gt;Schlagwortwolke&lt;/strong&gt;, &lt;strong&gt;Wortwolke&lt;/strong&gt; usw., dient der besseren Visualisierung von Texten. Um eine Word Cloud zu erstellen, werden die Vorkommen von Wörtern eines Textes gezählt. Die Wörter mit der größten &lt;strong&gt;Häufigkeit&lt;/strong&gt; werden groß dargestellt, Wörter mit geringerer Häufigkeit weniger groß. Und das ganze wird dann in einer &lt;strong&gt;Wolkenform&lt;/strong&gt; dargestellt, mit den größten Wörtern in der Mitte.&lt;/p&gt;
-&lt;p&gt;So ist es möglich auf einen Blick zu erkennen, welche Wörter in einem Text am häufigsten vorkommen. Das ist nicht nur bei der Analyse von Texten sondern auch von Webseiten nützlich. So kannst du z.B. bei WordPress eine Word Cloud aus Tags erstellen (&lt;strong&gt;Tag Cloud&lt;/strong&gt;), anhand der man sehen kann, welche Tags auf einer Seite am meisten verwendet wurden.&lt;/p&gt;
-&lt;p&gt;Die folgende Word Cloud zeigt auf einen Artikel, &lt;a href=&#34;https://www.nickyreinert.de/wie-erstelle-ich-ein-labyrinth-mit-javascript/&#34;&gt;in dem ich einen Algorithmus beschreibe, um in JavaScript ein Labyrinth zu erstellen&lt;/a&gt;:&lt;/p&gt;
-&lt;p&gt;[wp-word-cloud source-type=&amp;ldquo;id&amp;rdquo; id=&amp;ldquo;demo1&amp;rdquo; size-factor=50 min-alpha=0.5 count-words=1]3334[/wp-word-cloud]&lt;/p&gt;
-&lt;h2 id=&#34;was-kann-dieses-plugin&#34;&gt;Was kann dieses Plugin?&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;WP Word Cloud&lt;/strong&gt; stellt einen Shortcode zur Verfügung, mit dem du beliebig viele &lt;strong&gt;Word Clouds&lt;/strong&gt; auf deinen Seiten einfügen kannst. Du kannst verschiedene Quellen nutzen, um dort die Wörter zu zählen und in einer &lt;strong&gt;Word Cloud&lt;/strong&gt; darstellen zu lassen.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;inline - du gibst den Text direkt im Shortcode im Beitrag an&lt;/li&gt;
-&lt;li&gt;url - ein Verweis auf eine Internetadresse&lt;/li&gt;
-&lt;li&gt;id - der Verweis auf eine Seite / einen Beitrag&lt;/li&gt;
-&lt;li&gt;sql - eine SQL-Abfrage um Text aus der Datenbank zu lesen&lt;/li&gt;
-&lt;li&gt;custom-field - Text aus einem custom field des Beitrages / der Seite&lt;/li&gt;
-&lt;li&gt;Text, den der Besucher der Webseite selber eingeben kann&lt;/li&gt;
-&lt;li&gt;Text von einem Bild, das der Besucher der Website hochlädt&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Das Plugin greift auf zwei sehr großartige Bibliotheken zurück: WodCloud2.js von TimDream (&lt;a href=&#34;https://github.com/timdream/wordcloud2.js/&#34;&gt;github.com&lt;/a&gt;). Sowie die Offline-Implementierung von Tesseract in JavaScript (&lt;strong&gt;&lt;a href=&#34;https://github.com/jeromewu/tesseract.js-offline&#34;&gt;github.com&lt;/a&gt;&lt;/strong&gt;).&lt;/p&gt;
-&lt;h2 id=&#34;installation&#34;&gt;Installation&lt;/h2&gt;
-&lt;h3 id=&#34;über-die-kommandozeile&#34;&gt;Über die Kommandozeile&lt;/h3&gt;
-&lt;p&gt;Wenn du Zugriff auf deinen Server über SSH hast, kannst du das Plugin folgendermaßen installieren:&lt;/p&gt;
-&lt;p&gt;Wechsle in den Plugin-Ordner deiner WordPress-Installation und lege dort einen neuen Ordner an: WP-Word-Cloud, wechsle danach in diesen Ordner:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;mkdir /htdocs/wp-content/plugins/WP-Word-Cloud
-cd /htdocs/wp-content/plugins/WP-Word-Cloud
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Danach kannst du das Plugin-Repository mit git klonen:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;git clone https://github.com/nickyreinert/wordCloud-for-Wordpress.git .
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Wenn du git nicht benutzen möchtest oder kannst, kannst du das Plugin auch mit wget herunterladen und dann entpacken. Dann musst du den Plugin-Ordner allerdings nicht selber erstellen:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;cd /htdocs/wp-content/plugins/
-wget https://github.com/nickyreinert/wordCloud-for-Wordpress/archive/wordCloud-for-wordPress-2.zip --no-check-certificate
-unzip wordCloud-for-wordPress-2.zip -d WP-Word-Cloud
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;mit-einem-ftp-programm&#34;&gt;Mit einem FTP-Programm&lt;/h3&gt;
-&lt;p&gt;Wenn du keinen Zugriff auf die Kommandozeile hast, kannst du das Plugin von dieser Adresse herunterladen:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/nickyreinert/wordCloud-for-Wordpress/archive/wordCloud-for-wordPress-2.zip&#34;&gt;https://github.com/nickyreinert/wordCloud-for-Wordpress/archive/wordCloud-for-wordPress-2.zip&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Danach entpackst du das Archiv und lädst den kompletten Ordner in das Plugin-Verzeichnis deiner WordPress-Installation. Du kannst den Ordner mit dem FTP-Programm dann umbenennen:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;images/grafik.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;p&gt;Der Order für das Word Cloud Plugin&lt;/p&gt;
-&lt;h2 id=&#34;abschluss-der-installation&#34;&gt;Abschluss der Installation&lt;/h2&gt;
-&lt;p&gt;Abschließend muss das Plugin noch im Backend von WordPress aktiviert werden. Dazu suchst du im Plugin-Bereich nach dem Eintrag &amp;ldquo;WP Word Cloud&amp;rdquo; und klickst auf &amp;ldquo;aktivieren&amp;rdquo;. Fertig.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;images/grafik-1-700x70.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;p&gt;Aktiviere das Plugin in der Plugin-Übersicht von WordPress&lt;/p&gt;
-&lt;h2 id=&#34;erste-verwendung&#34;&gt;Erste Verwendung&lt;/h2&gt;
-&lt;p&gt;Das Plugin aktiviert für deine WordPress-Installation einen neuen Shortcode: &lt;strong&gt;[ wp-word-cloud ]&lt;/strong&gt;. Diesen kannst du nun auf jeder Seite und in jedem Beitrag beliebig oft einfügen. Wenndu den &lt;strong&gt;Gutenberg-Editor&lt;/strong&gt; verwendest, benötigst du dafür den Block &amp;ldquo;&lt;strong&gt;Shortcode&lt;/strong&gt;&amp;rdquo;. Im konventionellen Editor kannst du den Shortcode einfach in deinen Text einfügen.&lt;br&gt;
-Eine einfache Implementierung sieht z.B. so aus:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;[ wp-word-cloud source-type=&amp;quot;url&amp;quot; id=&amp;quot;meine-word-cloud&amp;quot; ]https://www.spiegel.de[ /wp-word-cloud ]&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Es gibt &lt;strong&gt;drei Parameter&lt;/strong&gt;, die du &lt;strong&gt;immer&lt;/strong&gt; angeben musst:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;id&lt;/strong&gt;, eine eindeutige Id, mit der die &lt;strong&gt;Word Cloud&lt;/strong&gt; auf deiner Seite angesprochen wird, z.B. &lt;strong&gt;meine-word-cloud&lt;/strong&gt; oder einfach nur &lt;strong&gt;test&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;source-type&lt;/strong&gt;, welcher Art die Quelle für die Word Cloud ist, also z.B. von einer &lt;strong&gt;url&lt;/strong&gt; oder den &lt;strong&gt;tags&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;sowie Inline-Text, als Verweis auf die Quelle, von wo der Inhalt für die Word Cloud kommt, also z.B. die URL &lt;strong&gt;&lt;a href=&#34;https://www.spiegel.de&#34;&gt;https://www.spiegel.de&lt;/a&gt;&lt;/strong&gt; oder die Id eines Beitrages (123)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;zusätzliche-einstellungen&#34;&gt;Zusätzliche Einstellungen&lt;/h2&gt;
-&lt;p&gt;Natürlich gibt es noch &lt;strong&gt;eine Menge weiterer Parameter&lt;/strong&gt;, mit denen du das Erscheinungsbild der Word Cloud steuern kannst. Das Plugin setzt bei der ersten Installation für all diese Parameter &lt;strong&gt;Standard-Einstellungen&lt;/strong&gt; fest. Diese sind grundsätzlich &lt;strong&gt;global gültig&lt;/strong&gt; und können auf der Einstellungseite angepasst werden:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;images/grafik-2.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;p&gt;In den Einstellungen findest du eine eigene Seite für das WP Word Cloud Plugin - wunderbar!&lt;/p&gt;
-&lt;p&gt;Jeden dieser globalen Parameter kannst du auch in deinem Shortcode verwenden. So wir die globale Einstellung überschrieben. So ist die &lt;strong&gt;Hintergrundfarbe&lt;/strong&gt; z.B. standardmäßig &lt;strong&gt;transparent&lt;/strong&gt; eingestellt. Möchtest du sie für die aktuelle Word Cloud auf &lt;strong&gt;grün und halbtransparent&lt;/strong&gt; ändern, übergibst du einfach den Parameter &lt;strong&gt;background-color&lt;/strong&gt; folgendermaßen:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;[ wp-word-cloud source-type=&amp;quot;url&amp;quot; id=&amp;quot;meine-word-cloud&amp;quot; background-color=&amp;quot;rgba(0,255,255,0.5)&amp;quot; ]https://www.spiegel.de[ /wp-word-cloud ]&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Eine genaue Beschreibung aller Parameter folgt jetzt:&lt;/p&gt;
-&lt;h2 id=&#34;parameter&#34;&gt;Parameter&lt;/h2&gt;
-&lt;h3 id=&#34;id&#34;&gt;id&lt;/h3&gt;
-&lt;p&gt;Dieser Parameter ist für jeden Shortcode, den du einfügst, &lt;strong&gt;verpflichtend&lt;/strong&gt;! Die Id adressiert jede Word Cloud auf einer Seite oder in einem Beitrag. Damit ist es möglich, mehrere Word Clouds gleichzeitig einzubinden. Mit der Id kannst du außerdem das Aussehen der Word Cloud mit CSS steuern. Beispiel:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;[ wp-word-cloud source-type=&amp;quot;inline&amp;quot; id=&amp;quot;wordcloud1&amp;quot; ]Lorem Ipsum[ /wp-word-cloud ]&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;[ wp-word-cloud source-type=&amp;quot;inline&amp;quot; id=&amp;quot;wordcloud2&amp;quot; ]Lorem Ipsum[ /wp-word-cloud ]&lt;/code&gt;&lt;/p&gt;
-&lt;h3 id=&#34;source-type&#34;&gt;&lt;strong&gt;source-type&lt;/strong&gt;&lt;/h3&gt;
-&lt;p&gt;Damit legst du fest, um was für eine Quelle es sich handelt. Dieser Parameter ist &lt;strong&gt;verpflichtend&lt;/strong&gt;. Die folgenden Quellen werden unterstützt:&lt;/p&gt;
-&lt;h4 id=&#34;source-typeinline&#34;&gt;source-type=inline&lt;/h4&gt;
-&lt;p&gt;Der Text wird innerhalb des Shortcodes übermittelt, z.B:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;[ wp-word-cloud source-type=inline id=&amp;quot;demo&amp;quot; ]Lorem Ipsum[ /wp-word-cloud ]&lt;/code&gt;&lt;/p&gt;
-&lt;h4 id=&#34;source-typeurl&#34;&gt;source-type=&lt;strong&gt;url&lt;/strong&gt;&lt;/h4&gt;
-&lt;p&gt;Im Shortcode wird eine URL angegeben, von der der Text abgerufen wird, z.B:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;[ wp-word-cloud source-type=url id=&amp;quot;demo&amp;quot; ]https://www.spiegel.de[ /wp-word-cloud ]&lt;/code&gt;&lt;/p&gt;
-&lt;h4 id=&#34;source-typeid&#34;&gt;**source-type=**id&lt;/h4&gt;
-&lt;p&gt;Im Shortcode wird eine Id übergeben, die auf eine Seite oder einen Beitrag deiner Webseite verweist, z.B:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;[ wp-word-cloud source-type=id id=&amp;quot;demo&amp;quot; ]123[ /wp-word-cloud ]&lt;/code&gt;&lt;/p&gt;
-&lt;h4 id=&#34;source-typesql&#34;&gt;source-type=sql&lt;/h4&gt;
-&lt;p&gt;Im Shortcode wird eine SQL-Abfrage übergeben, die eine bereits gezählte Wortliste zurück gibt, z.B:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;[ wp-word-cloud source-type=sql id=&amp;quot;demo&amp;quot;]SELECT word,count FROM table;[ /wp-word-cloud]&lt;/code&gt;&lt;/p&gt;
-&lt;h4 id=&#34;source-typetags&#34;&gt;source-type=tags&lt;/h4&gt;
-&lt;p&gt;Die Word Cloud zeigt alle Tags deiner Seite an, hier musst du im Shortcode nichts weiter übergeben:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;[ wp-word-cloud source-type=tags id=&amp;quot;demo&amp;quot;]SELECT word,count FROM table;[ /wp-word-cloud]&lt;/code&gt;&lt;/p&gt;
-&lt;h4 id=&#34;source-typecustom-field&#34;&gt;source-type=custom-field&lt;/h4&gt;
-&lt;p&gt;Im Shortcode wird auf ein custom field, also benutzerdefiniertes bzw. eigenes Feld verwiesen, z.B:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;[ wp-word-cloud source-type=custom-field id=&amp;quot;demo&amp;quot;]my-custom-field[ /wp-word-cloud]&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Die Darstellung der &lt;strong&gt;eigenen Felder&lt;/strong&gt; musst du im Gutenberg-Edito ggf. erst aktivieren. Klicke dazu das Punkt-Menü und dann ganz unten auf &amp;ldquo;Ansicht anpassen&amp;rdquo;. Es öffnet sich nun eine Liste, in der du die &amp;ldquo;eigenen Felder&amp;rdquo; aktivieren kannst:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;img src=&#34;images/grafik-10.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;img src=&#34;images/grafik-11-700x1059.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Anzeigen der benutzerdefinierten Felder im Gutenberg-Editor&lt;/p&gt;
-&lt;h3 id=&#34;count-words&#34;&gt;&lt;strong&gt;count-words&lt;/strong&gt;&lt;/h3&gt;
-&lt;p&gt;Wenn die im Shortcode angegebene Quelle einen kompletten Text enthält, müssen die Wörter darin erst gezählt werden. Dazu muss &lt;strong&gt;count-words&lt;/strong&gt; auf &lt;strong&gt;1&lt;/strong&gt; gesetzt werden. Ist &lt;strong&gt;count-words=0&lt;/strong&gt; gesetzt, erwartet das Plugin eine List mit gezählten Wörtern.&lt;/p&gt;
-&lt;h3 id=&#34;enable-frontend-edit&#34;&gt;&lt;strong&gt;enable-frontend-edit&lt;/strong&gt;&lt;/h3&gt;
-&lt;p&gt;Ist dieser Parameter auf 1 gesetzt, wird auf der Seite ein Textfeld angezeigt. Das Textfeld enthält den Text, der mit dem Shortcode definiert wurde. Der Besucher kann den Text dann beliebig verändern oder eigenen Text hinzufügen, um so die &lt;strong&gt;Word Cloud&lt;/strong&gt; selber zu steuern. Die Berechnung der &lt;strong&gt;Word Cloud&lt;/strong&gt; findet im Browser statt. Im folgenden Beispiel kommt der Text von einem benutzerdefiniertem Feld im Backend. Er wird an das Frontend ausgeliefert und dort in der Word Cloud dargestellt. Gleichzeitig kann man den Text aber auch anpassen und die Wolke neu zeichnen lassen:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;[ wp-word-cloud source-type=&amp;quot;custom-field&amp;quot; enable-frontend-edit&lt;/code&gt;=1 &lt;code&gt;id=&amp;quot;demo&amp;quot;]my-custom-field[ /wp-word-cloud]&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;images/grafik-8-700x755.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;p&gt;Ein Textfeld für die Besucher deiner Webseite&lt;/p&gt;
-&lt;h3 id=&#34;ocr---texterkennung&#34;&gt;OCR - Texterkennung&lt;/h3&gt;
-&lt;h4 id=&#34;enable-ocr&#34;&gt;&lt;strong&gt;enable-ocr&lt;/strong&gt;&lt;/h4&gt;
-&lt;p&gt;Ist dieser Parameter auf 1 gesetzt, kann der Benutzer auf der Webseite ein Bild hochladen oder mit der Kamera aufnehmen. Im Browser findet dann eine Text-Erkennung statt. Die Wörter werden dann gezählt und die Word Cloud darauf basierend gezeichnet. Wenn &lt;strong&gt;enable-frontend-edit&lt;/strong&gt; nicht aktiv ist, hat dieser Parameter keine Wirkung.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;[ wp-word-cloud source-type=&amp;quot;custom-field&amp;quot; enable-frontend-edit=1 enable-ocr=1 id=&amp;quot;demo&amp;quot;]my-custom-field[ /wp-word-cloud]&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Für diese Funktionalität greift das Plugin auf die &lt;a href=&#34;https://tesseract.projectnaptha.com/&#34;&gt;Tesseract-Bibliothek&lt;/a&gt; zurück. Diese ermöglicht die Texterkennung von abfotografierten Dokumenten in verschiedenen Sprachen. Die Texterkennung erfolgt komplett im Browser, also beim Besucher der Webseite. Das Bild wird &lt;strong&gt;nicht zum Server hochgeladen&lt;/strong&gt;.&lt;/p&gt;
-&lt;h4 id=&#34;ocr-language&#34;&gt;ocr-language&lt;/h4&gt;
-&lt;p&gt;Mit diesem Parameter legst du fest, welche Sprache(n) das ORC-Modul unterstützen soll. Standardmäßig ist hier deu eingestellt. Du kannst mehre Sprachen angeben, wenn du sie mit einem + trennst, z.B. Deutsch + Englisch:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;`[ wp-word-cloud source-type=&amp;quot;custom-field&amp;quot; enable-frontend-edit=1 enable-ocr=1 ocr-language=&amp;quot;deu+eng&amp;quot; id=&amp;quot;demo&amp;quot;]my-custom-field[ /wp-word-cloud]`&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Eine Liste aller unterstützten Sprachpakete findest du hier:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://tesseract-ocr.github.io/tessdoc/Data-Files#data-files-for-version-400-november-29-2016&#34;&gt;https://tesseract-ocr.github.io/tessdoc/Data-Files#data-files-for-version-400-november-29-2016&lt;/a&gt;&lt;/p&gt;
-&lt;h4 id=&#34;ocr-local-libraries&#34;&gt;ocr-local-libraries&lt;/h4&gt;
-&lt;p&gt;Das OCR-Modul lädt einige, größere Dateien von einem anderen Server nach, unter anderem auch die Sprachpakete. Du kannst diese Dateien auch auf deinem Server anbieten. Dazu musst du die folgenden Dateien herunterladen und im Unterordner &amp;ldquo;&lt;strong&gt;lib&lt;/strong&gt;&amp;rdquo; innerhalb des Plugin-Ordners ablegen:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;[https://unpkg.com/tesseract.js@v2.0.0/dist/worker.min.js](&lt;a href=&#34;https://unpkg.com/tesseract.js@v2.0.0/dist/worker.min.js&#39;&#34;&gt;https://unpkg.com/tesseract.js@v2.0.0/dist/worker.min.js&#39;&lt;/a&gt; defer=&amp;lsquo;defer)&lt;/li&gt;
-&lt;li&gt;[https://unpkg.com/tesseract.js-core@v2.0.0/tesseract-core.wasm.js](&lt;a href=&#34;https://unpkg.com/tesseract.js-core@v2.0.0/tesseract-core.wasm.js&#39;&#34;&gt;https://unpkg.com/tesseract.js-core@v2.0.0/tesseract-core.wasm.js&#39;&lt;/a&gt; defer=&amp;lsquo;defer)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Außerdem benötigst du die von dir konfigurierten Sprachpakete. Diese kannst &lt;a href=&#34;https://tesseract-ocr.github.io/tessdoc/Data-Files#data-files-for-version-400-november-29-2016&#34;&gt;du hier für die Version 4 herunterladen&lt;/a&gt;. Die Sprachpakete gehören ebenfalls in den Unterordner &amp;ldquo;lib&amp;rdquo;. Außerdem &lt;strong&gt;musst du manuell&lt;/strong&gt; die Dateiendung &amp;ldquo;.gz&amp;rdquo; anhängen.&lt;/p&gt;
-&lt;h3 id=&#34;eingrenzen-der-wortliste&#34;&gt;Eingrenzen der Wortliste&lt;/h3&gt;
-&lt;h4 id=&#34;min-word-length&#34;&gt;min-word-length&lt;/h4&gt;
-&lt;p&gt;Hiermit legst du fest, wie lang ein Wort mindestens sein soll, um beim Zählen berücksichtigt zu werden. Diese Einstellung wird &lt;strong&gt;nicht&lt;/strong&gt; berücksichtigt, wenn du eine fertige Wortliste als Quelle angibst. In diesem Beispiel wird das Wort Foo beim Zählen ignoriert.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;`[ wp-word-cloud source-type=&amp;quot;inline&amp;quot; count-words=1 min-word-lenght=4 id=&amp;quot;demo&amp;quot;]Lorem Ipsum Foo[ /wp-word-cloud]`&lt;/code&gt;&lt;/p&gt;
-&lt;h4 id=&#34;min-word-occurence&#34;&gt;min-word-occurence&lt;/h4&gt;
-&lt;p&gt;Mit diesem Parameter legst du fest, wie oft ein Wort mindestens vorkommen muss, um in der word cloud dargestellt zu werden. Diese Einstellung wird &lt;strong&gt;immer&lt;/strong&gt; berücksichtigt, auch wenn du eine fertige Wortliste als Quelle angibst. Im Beispiel werden nur Wörter in der word cloud dargestellt, die mindestens 2 mal vorkommen:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;`[ wp-word-cloud source-type=&amp;quot;inline&amp;quot; count-words=1 min-word-occurence=2 id=&amp;quot;demo&amp;quot;]Lorem Ipsum Foo[ /wp-word-cloud]`&lt;/code&gt;&lt;/p&gt;
-&lt;h4 id=&#34;black-list-und-enable-black-list&#34;&gt;black-list und enable-black-list&lt;/h4&gt;
-&lt;p&gt;Die Blacklist enthält Wörter, die beim Zählen nicht berücksichtigt werden dürfen. Das können z.B. Funktionswörter oder Fremdwörter sein, die du nicht in der word cloud sehen möchtest. Die Wörter werden mit einem Leerzeichen getrennt angegeben. Wenn du den Parameter im Shortcode angibst, wird die globale Einstellung komplett ignoriert. Die Blacklist wird nur verwendet, wenn der Parameter enable-black-list auf 1 gesetzt ist. Im Beispiel wird das Wort &amp;ldquo;Lorem&amp;rdquo; beim Zählen ignoriert, das es sich auf der Blacklist befindet.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;`[ wp-word-cloud source-type=&amp;quot;inline&amp;quot; count-words=1 enable-black-list`&lt;/code&gt;=1 &lt;code&gt;`black-list=&amp;quot;Lorem&amp;quot; id=&amp;quot;demo&amp;quot;]Lorem Ipsum Foo[ /wp-word-cloud]`&lt;/code&gt;&lt;/p&gt;
-&lt;h4 id=&#34;enable-custom-black-list&#34;&gt;enable-custom-black-list&lt;/h4&gt;
-&lt;p&gt;Ist dieser Parameter aktiviert, kann der Besucher deiner Webseite Wörter in der word cloud anklicken, um sie aus der word cloud zu entfernen. Die Wörter erscheinen dann unter der word cloud in einer &amp;ldquo;benutzerdefinierten&amp;rdquo; Blacklist. Wenn sie dort erneut angeklickt werden, erscheinen sie wieder in der word cloud.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;images/grafik-9-700x569.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;p&gt;Eine word cloud mit benutzerdefinierter Blacklist, so schön!&lt;/p&gt;
-&lt;h4 id=&#34;persistent-custom-black-list&#34;&gt;persistent-custom-black-list&lt;/h4&gt;
-&lt;p&gt;Hiermit kannst du festlegen, dass die Blacklist erhalten bleibt, wenn der Besucher einen neuen Text in das Eingabefeld eingibt. Ist der Parameter deaktiviert, wird die benutzerdefnierte Blacklist gelöscht, sobald der Besucher einen neuen Text eingibt. Dieser Parameter ist nur wirksam, wenn auch das Textfeld aktiviert ist.&lt;/p&gt;
-&lt;h4 id=&#34;ignore-chars&#34;&gt;ignore-chars&lt;/h4&gt;
-&lt;p&gt;Mit diesem Parameter legst du fest, welche Zeichen aus dem Text entfernt werden, bevor er gezählt wird. Hier wird ein regulärer Ausdruck dieser Form erwartet:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;ignore-chars=&amp;quot;\(\)\[\]\,\.;&amp;quot;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Auf diese Art kannst du ungewollte Satzzeichen, Sonderzeichen oder Steuerzeichen entfernen.&lt;/p&gt;
-&lt;h3 id=&#34;erscheinungsbild-anpassen&#34;&gt;Erscheinungsbild anpassen&lt;/h3&gt;
-&lt;h4 id=&#34;style&#34;&gt;style&lt;/h4&gt;
-&lt;h4 id=&#34;text-transform&#34;&gt;text-transform&lt;/h4&gt;
-&lt;p&gt;Hiermit kannst du festlegen, dass der Text beim Darstellen in der word cloud groß oder kleingeschrieben werden soll. Dieser Parameter kann dementsprechend drei Werte annehmen:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;uppercas (alle Wörter groß schreiben)&lt;/li&gt;
-&lt;li&gt;lowercase (alle Wörter klein schreiben)&lt;/li&gt;
-&lt;li&gt;none (keine Änderung)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Diese word cloud nutzt als Ressource die aktuellen Mitteilungen von &lt;a href=&#34;http://blog.fefe.de&#34;&gt;fefe&lt;/a&gt;:&lt;/p&gt;
-&lt;p&gt;[wp-word-cloud source-type=&amp;ldquo;url&amp;rdquo; id=&amp;ldquo;demo2&amp;rdquo; count-words=1 min-word-occurence=1 min-word-length=3 size-factor=100 min-alpha=0.5 count-words=1]https://blog.fefe.de[/wp-word-cloud]&lt;/p&gt;
-</description>
+&lt;p&gt;Eine &lt;strong&gt;Word Cloud&lt;/strong&gt;, auch &lt;strong&gt;Schlagwortwolke&lt;/strong&gt;, &lt;strong&gt;Wortwolke&lt;/strong&gt; usw., dient der besseren Visualisierung von Texten. Um eine Word Cloud zu erstellen, werden die Vorkommen von Wörtern eines Textes gezählt. Die Wörter mit der größten &lt;strong&gt;Häufigkeit&lt;/strong&gt; werden groß dargestellt, Wörter mit geringerer Häufigkeit weniger groß. Und das ganze wird dann in einer &lt;strong&gt;Wolkenform&lt;/strong&gt; dargestellt, mit den größten Wörtern in der Mitte.&lt;/p&gt;</description>
       
     </item>
     

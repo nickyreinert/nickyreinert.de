@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>wordpress on Nicky Reinert</title>
+    <title>Wordpress on Nicky Reinert</title>
     <link>https://nickyreinert.de/categories/wordpress/</link>
-    <description>Recent content in wordpress on Nicky Reinert</description>
+    <description>Recent content in Wordpress on Nicky Reinert</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de-DE</language>
     <lastBuildDate>Thu, 05 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/categories/wordpress/index.xml" rel="self" type="application/rss+xml" />
@@ -14,160 +14,7 @@
       
       <guid>https://nickyreinert.de/blog/2020/11/05/wie-funktionieren-dateirechte/</guid>
       
-      <description>&lt;p&gt;Die korrekten &lt;strong&gt;Dateirechte&lt;/strong&gt; sollten eine wichtige Rolle spielen, wenn du an einem Sicherheitskonzept für deine Webseite bzw. Wordpress arbeitest. Leider wird das Thema Dateirechte oft stiefmütterlich behandelt, nicht zuletzt weil es fälschlicherweise als zu kompliziert angesehen wird. Dabei muss es das gar nicht sein: Das Grundprinzip ist einfach: Du willst nicht, dass jedermann Dateien &lt;strong&gt;ändern&lt;/strong&gt;, &lt;strong&gt;ausführen&lt;/strong&gt; oder &lt;strong&gt;lesen&lt;/strong&gt; kann. Sicherlich gibt es feine Abstufungen. und genau die möchte ich hier erklären.&lt;/p&gt;
-&lt;p&gt;Achtung: Das Ziel dieses Beitrags ist nicht, dir eine fertige Lösung für deine WordPress-Installation bzw. dein Projekt zu geben. Das ist nicht möglich. Warum? Es gibt zig unterschiedliche Konfigurationen. Es mag allgemeingültige Lösungen geben, diese sind aber bei weitem nicht sicher. Stichwort: chmod 777 * -R&lt;/p&gt;
-&lt;p&gt;Du solltest nach der Lektüre aber das Konzept verstehen und vielleicht sogar in der Lage sein, die Dateirechte selbstständig zu setzen.&lt;/p&gt;
-&lt;h2 id=&#34;die-grundlagen-wie-verarbeitet-ein-web-server-anfragen&#34;&gt;Die Grundlagen: Wie verarbeitet ein Web-Server Anfragen?&lt;/h2&gt;
-&lt;p&gt;Jetzt fragst du dich sicherlich, was das mit Dateirechten zu tun hat? Was passiert, wenn du auf einer Webseite surfst? Folgende Vereinfachung dürfte das konzept hilfreich beschreibe: Der Web-Server schickt eine Datei an deinen Browser. Und du kannst Dateien an den Web-Server schicken, sprich hochladen. Wer also verstehen will, wie Dateirechte gesetzt werden müssen, sollte das Grundkonzept eines Servers verstehen.&lt;/p&gt;
-&lt;p&gt;Wie sieht diese Kommunikation mit dem Server also im Detail aus? Du schickst über deinen Browser eine Anfrage (&lt;a href=&#34;https://nickyreinert.de/index.html&#34;&gt;http://nickyreinert.de/index.html&lt;/a&gt;) an den Server (was auch nur irgendein anderer Computer auf der Welt ist, egal ob in der Cloud oder in einem Keller). Auf dem Server laufen verschiedene Dienste - die verwirrenderweise auch als Server bezeichnet werden.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://pbs.twimg.com/media/D864DxrWsAAmvXi?format=png&amp;amp;name=small&#34; alt=&#34;Bild&#34;&gt;&lt;/p&gt;
-&lt;p&gt;Die Cloud ist auch nur der Computer von jemand anders&lt;/p&gt;
-&lt;p&gt;Einer dieser Dienste ist der &lt;strong&gt;&lt;a href=&#34;https://de.wikipedia.org/wiki/Internetdienst#Die_Internetdienste_im_Einzelnen&#34;&gt;HTTP-Dienst&lt;/a&gt;&lt;/strong&gt;. Sehr verbreitet sind &lt;strong&gt;Apache2&lt;/strong&gt; und &lt;strong&gt;nginx&lt;/strong&gt;. Das Konzept ist bei beiden gleich: Sie empfangen deine Anfrage und schicken dir eine Antwort. Bei dieser Antwort unterscheidet man grob zwischen &lt;strong&gt;statische Inhalten&lt;/strong&gt; (HTML-Datei, Texte, Bilder, &amp;hellip;), die der &lt;strong&gt;HTTP-Dienst&lt;/strong&gt; direkt zurückschickt und &lt;strong&gt;dynamischen Inhalten&lt;/strong&gt;. Dynamische Inhalte müssen auf dem Server erst verarbeitet werden, wie z.B. Datenbankabfragen oder ganz simpel die Darstellung der aktuellen Uhrzeit: &lt;a href=&#34;https://nickyreinert.de/dynamisch.php&#34;&gt;https://nickyreinert.de/dynamisch.php&lt;/a&gt;. Das ermöglicht ein &lt;strong&gt;PHP-Dienst&lt;/strong&gt; bzw. &lt;strong&gt;PHP-Interpreter&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;Im Kontext der Dateirechte muss man hier eine wichtige Unterscheidung treffen: Der PHP-Interpreter ist entweder Teil des HTTP-Dienstes (&lt;strong&gt;PHP-Modul&lt;/strong&gt;). Damit ist z.B. &lt;strong&gt;Apache2&lt;/strong&gt; in der Lage, die PHP-Datei quasi selber zu interpretieren, und den dynamischen Inhalt für die Antwort zu erzeugen. Oder der PHP-Dienst ist ein getrennt laufender Dienst bzw. Prozess, der über eine Schnittstelle (CGI) vom HTTP-Dienst angesprochen wird (&lt;a href=&#34;http://www.php-faq.de/q/q-php-cgi-vs-modul.html&#34;&gt;mehr dazu hier&lt;/a&gt;).&lt;/p&gt;
-&lt;p&gt;Um Informationen auf dem Server zu speichern, gibt es zwei Möglichkeiten: Zum einen wäre da die Datenbank, wie z.B. &lt;strong&gt;MySQL&lt;/strong&gt; oder &lt;strong&gt;MariaDB&lt;/strong&gt;. Der PHP-Dienst nutzt die Datenbank, um Informationen abzulegen, die in der Regel volatil sind. Wie z.B. Kommentare oder Texte für deinen Blog. Und es gibt das &lt;strong&gt;Dateisystem&lt;/strong&gt;. Ganz banal ausgedrückt ist das die Festplatte des Servers. Und genau dort brauchst du Dateirechte. Die folgende Abbildung zeigt die beiden oben erwähnten Konfigurationen: In der ersten Konfiguration sind HTTP- und PHP-Dienst getrennte Dienste, in der zweiten Konfiguration nutzt der HTTP-Dienst PHP als integriertes Modul.&lt;/p&gt;
-&lt;p&gt;Die Abbildung zeigt außerdem ein beispielhaftes Dateisystem mit einigen ausgewählten Dateien und Ordnern, die dir von WordPress bekannt vorkommen dürften.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/Folie1.png&#34;&gt;&lt;img src=&#34;images/Folie1-700x394.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/Folie2.png&#34;&gt;&lt;img src=&#34;images/Folie2-700x394.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Der vierte Dienst im Bunde ist übrigens der &lt;strong&gt;FTP-Dienst&lt;/strong&gt;. Dieser ermöglicht es (in der Regel dem Web-Entwickler) sich per &lt;strong&gt;FTP&lt;/strong&gt; auf den Server zu verbinden und Dateien über einen FTP-Client hochzuladen, zu bearbeiten oder zu löschen.&lt;/p&gt;
-&lt;h2 id=&#34;lesen-schreiben-ausführen---was-bedeutet-das-eigentlich&#34;&gt;Lesen, Schreiben, Ausführen - Was bedeutet das eigentlich?&lt;/h2&gt;
-&lt;p&gt;Wenn es um die Fähigkeit &amp;ldquo;Ausführen&amp;rdquo; geht, muss man streng zwischen Ordnern und Dateien unterscheiden. Das &lt;strong&gt;Ausführen&lt;/strong&gt; von Dateien, egal welche Endung sie haben, ist in &lt;strong&gt;keiner Konfiguration notwendig&lt;/strong&gt;! Das Ausführen von Ordern hingegen ermöglicht den Zugriff auf den Ordner. Jeder Ordner deiner WordPress-Installation darf also ausführbar sein.&lt;/p&gt;
-&lt;p&gt;Das &lt;strong&gt;Lesen&lt;/strong&gt; eines Ordners ermöglicht einem Dienst, die Ordner-Inhalte aufzulisten. Das Lesen einer Datei ermöglicht einem Dienst den Inhalt einer Datei darzustellen. Und das ist bereits ein sicherheitskritisches Merkmal: Nicht jeder Dienst muss bzw. darf jede Datei lesen. Der HTTP-Dienst benötigt z.B. keinen lesenden Zugriff auf PHP-Dateien. Und erst Recht nicht auf z.B. die wp-config.php - in der sich ja das Passwort für die Datenbank befindet. Der HTTP-Dienst reicht die Anfrage für die dynamische PHP-Datei in der Regel an den PHP-Dienst weiter. Gleichwohl muss der HTTP-Dienst statische Inhalte lesen können. Vor allem bei den Leserechten gibt es also sehr viele Feinheiten zu beachten.&lt;/p&gt;
-&lt;p&gt;Wer &lt;strong&gt;Schreibrechte&lt;/strong&gt; für einen Ordner hat, kann darin Dateien anlegen bzw. den Ordner löschen oder umbenennen. Das Schreibrecht für eine Datei ermöglicht das Löschen der Datei und das Ändern der Inhalte. Grundsätzlich sollte kein Dienst Schreibrechte im Dateisystem besitzen. So vermeidet man z.B., dass jemand Schadcode in eine PHP-Datei einfügt. Der PHP-Dienst kann Informationen in der Datenbank ablegen und für den HTTP-Dienst gibt es erstmal keinen Grund, überhaupt Dateien ändern oder anlegen zu müssen.&lt;/p&gt;
-&lt;p&gt;Natürlich gibt es Ausnahmen. Z.B. benötigt der PHP-Dienst Schreibrechte, wenn Dateien von WordPress oder der Plugins aktualisiert werden müssen. Oder ein Nutzer Dateien hochladen möchte (Hier kommt übrigens eine andere wichtige Sicherheitseinstellung zum Tragen: Man kann unterbinden, dass der PHP-Dienst Dateien aus dem Upload-Ordner als PHP-Dateien verarbeitet.)&lt;/p&gt;
-&lt;p&gt;Wie wir diese Dateirechte setzen, dazu gleich mehr.&lt;/p&gt;
-&lt;h2 id=&#34;besitzrechte-einer-datei&#34;&gt;Besitzrechte einer Datei&lt;/h2&gt;
-&lt;p&gt;Vorher schauen wir uns noch die Besitzverhältnisse von Dateien und Ordnern an. Diese lassen sich einem &lt;strong&gt;Besitzer&lt;/strong&gt; und einer &lt;strong&gt;Gruppe&lt;/strong&gt; zuordnen. Jeder der oben genannten Dienste kann, ganz abstrakt betracht, als &lt;strong&gt;&lt;em&gt;Nutzer&lt;/em&gt;&lt;/strong&gt; verstanden werden. Und damit entweder &lt;strong&gt;direkt Besitzer&lt;/strong&gt; einer Datei oder eines Ordners sein. Oder &lt;strong&gt;indirekt&lt;/strong&gt;, über die &lt;strong&gt;Gruppenzugehörigkeit&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;Eine Datei gehört also zu einem Besitzer und zu einer Gruppe von Besitzern. Der Besitzer muss nicht zwingend Teil der Gruppe sein. Der &lt;strong&gt;Besitzer&lt;/strong&gt; kann bestimmte Rechte für diese Datei besitzen, wie z.B. &lt;strong&gt;Lesen&lt;/strong&gt; und &lt;strong&gt;Schreiben&lt;/strong&gt;. Einer &lt;strong&gt;Gruppe&lt;/strong&gt; von Besitzern werden auch individuelle Rechte zugesprochen, wie z.B. nur das &lt;strong&gt;Lesen&lt;/strong&gt;. Und dann gibt es noch &amp;ldquo;&lt;strong&gt;alle anderen&lt;/strong&gt;&amp;rdquo;, die vielleicht gar &lt;strong&gt;keine Zugriffsrechte&lt;/strong&gt; auf eine Datei haben. Am Beispiel von &lt;strong&gt;index.html&lt;/strong&gt; sieht das folgendermaßen aus:&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;index.html:&lt;/em&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Besitzer&lt;/strong&gt;: FTP-Dienst, darf lesen und schreiben,&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Gruppe&lt;/strong&gt;: WWW-Data, darf lesen,&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;alle andern&lt;/strong&gt;: keine Rechte&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Und das enstpricht auch schon der klassischen Rechtevergabe von Dateien. Schreibrechte werden nur dem Besitzer eingeräumt. Die Gruppe darf bestenfalls lesen. Natürlich gibt es Sonderfälle, wie das Aktualisieren von WordPress oder von Plugins, dazu später mehr.&lt;/p&gt;
-&lt;h2 id=&#34;wie-funktionieren-chown-und-chmod&#34;&gt;Wie funktionieren chown und chmod?&lt;/h2&gt;
-&lt;p&gt;Du wirst es sicher schon mal gehört haben: Dateirechte werden mit &lt;strong&gt;chown&lt;/strong&gt; und &lt;strong&gt;chmod&lt;/strong&gt; konfiguriert. chown steht für &amp;ldquo;change owner&amp;rdquo; - also &amp;ldquo;ändere den Besitzer&amp;rdquo; und chmod für &amp;ldquo;change mode&amp;rdquo;, &amp;ldquo;ändere den Modus&amp;rdquo;.&lt;/p&gt;
-&lt;p&gt;Zu Demonstrationszwecken gehen wir von der folgenden Konfiguration aus, die zwar bei weitem nicht die sicherste, dafür aber weit verbreitet ist:&lt;/p&gt;
-&lt;p&gt;Die &lt;em&gt;Nutzer&lt;/em&gt; für den PHP- und HTTP-Dienst sind in der Gruppe &lt;strong&gt;www-data&lt;/strong&gt; zusammengefasst. Daneben gibt es den FTP-Dienst (&lt;strong&gt;ftp-user&lt;/strong&gt;).&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Ftp-user&lt;/strong&gt; bekommt alle Rechte: Lesen, Schreiben, usw. Die Nutzer der Gruppe &lt;strong&gt;www-data&lt;/strong&gt; bekommen nur lesenden Zugriff - vorerst!&lt;/p&gt;
-&lt;p&gt;Jede Datei und jeder Ordner sollen dem &lt;strong&gt;ftp-user&lt;/strong&gt; gehören, gleichzeitig aber auch zur Gruppe &lt;strong&gt;www-data&lt;/strong&gt;. Das lässt sich mit &lt;strong&gt;chown&lt;/strong&gt; folgendermaßen bewerkstelligen:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;chown ftp-user:www-data /var/nginx/www/* --recursive
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Der erste Parameter definiert den Besitzer (ftp-user) und die Gruppenzugehörigkeit (www-data), immer getrent mit einem Doppelpunkt. Danach folgt der betroffene Ordner bzw. die Datei. Mit &lt;strong&gt;--recursive&lt;/strong&gt; (oder kürzer &lt;strong&gt;-R&lt;/strong&gt;) werden auch alle Unterordner und darin befindlichen Dateien angesprochen.&lt;/p&gt;
-&lt;p&gt;Bei den Dateirechten wird es etwas aufwendiger, zunächst der Aufruf:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;chmod 640 /var/nginx/www/* -R
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Hier nutzen wir die Kurzschreibweise -R um alle Dateien und Ordner rekursiv zu ändern. Wichtig ist für uns die Ziffer hinter chmod: 640. Genau genommen handelt es sich um drei (oktale) Ziffern, nämlich 6, 4 und 0. Entsprechend der Position regeln sie die Zugriffsrechte für den&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Besitzer&lt;/strong&gt; (ftp-user, die 6 an erster Stelle),&lt;/li&gt;
-&lt;li&gt;die &lt;strong&gt;Gruppe&lt;/strong&gt; (www-data) samt ihrer Mitglieder (HTTP-Dienst, die 4 an zweiter Stelle)&lt;/li&gt;
-&lt;li&gt;und an letzter Stelle alle anderen (&lt;strong&gt;others&lt;/strong&gt; - die 0).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Und wie entstehen die Ziffern 6, 4 und 0? Wir erinnern uns an die drei Zugriffsrechte:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;lesen,&lt;/li&gt;
-&lt;li&gt;schreiben sowie&lt;/li&gt;
-&lt;li&gt;ausführen.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Jedes Recht besitzt einen Wert:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Lesen (bzw. r für read) = 4&lt;/li&gt;
-&lt;li&gt;Schreiben (bzw. w für write) = 2&lt;/li&gt;
-&lt;li&gt;Ausführen (bzw. x für eXecute) = 1&lt;/li&gt;
-&lt;li&gt;Kein Recht = 0&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/2227/berechnung-der-Dateirechte-fu%CC%88r-chmod.png&#34;&gt;&lt;img src=&#34;images/berechnung-der-Dateirechte-fu%CC%88r-chmod-300x167.png&#34; alt=&#34;Die Berechnung der Dateirechte für chmod&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Die Berechnung der Dateirechte für chmod&lt;/p&gt;
-&lt;p&gt;Um Rechte zu kombinieren, bildet man deren Summe. Will man also alle Rechte vergeben, erechnet sich das folgendermaßen:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Lesen + Schreiben + Ausführen = 4 + 2+ 1 = 7&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Nur Lese- und Schreibzugriff errechnet sich demnach so:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Lesen + Schreiben = 6&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Die obene genannte chmod-Anweisung setzt also die folgenden Rechte um:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Besitzer (ftp-user): 6 (Lesen, Schreiben)&lt;/li&gt;
-&lt;li&gt;Gruppe (www-data): 4 (Lesen)&lt;/li&gt;
-&lt;li&gt;Alle anderen (others): 0 (keine Rechte)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Was heißt das? Der FTP-Nutzer darf als Besitzer alles: Dateien hochladen, löschen, bearbeiten usw. Jedes Mitglied der Gruppe www-data darf Dateien nur lesen. Jeder andere Nutzer (bzw. Dienst) darf gar nicht auf die Dateien in deinem WordPress-Projekt zugreifen. Das klingt sehr sicher, führt allerdings zu einem Problem: Dein Server dürfte so nicht funktionieren. Nimm als Beispiel diesen Aufruf: &lt;a href=&#34;https://nickyreinert.de/ordner/&#34;&gt;https://nickyreinert.de/ordner/&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Die HTTP-Fehlermeldung &lt;strong&gt;403 Forbidden&lt;/strong&gt; erscheint. Das sind die Zugriffsrechte für den Ordner, so wie wir sie eben gesetzt haben:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;drw-r----- 2 ftp-user www-data   4096 Okt 14 11:48 ordner/
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;In der zweiten Spalte sehen wir: Der Ordner gehört &lt;strong&gt;ftp-user&lt;/strong&gt; und der Gruppe &lt;strong&gt;www-data&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;Das &lt;strong&gt;d&lt;/strong&gt; ganz am Anfang steht für &lt;strong&gt;directory&lt;/strong&gt;, lies Ordner. Dann folgen die Dateirechte, die wir eben schon festgelegt haben: Zunächst drei Zeichen, die die Zugriffsrechte für den Besitzer (&lt;strong&gt;ftp-user&lt;/strong&gt;) beschreiben: &lt;strong&gt;rw-&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Also Lesen (&lt;strong&gt;read)&lt;/strong&gt; und Schreiben (&lt;strong&gt;write&lt;/strong&gt;) (würde anstelle des &lt;strong&gt;-&lt;/strong&gt; ein &lt;strong&gt;x&lt;/strong&gt; stehen (&lt;strong&gt;eXecute)&lt;/strong&gt;, stünde das für &lt;strong&gt;Ausführen&lt;/strong&gt;). Die Gruppe &lt;strong&gt;www-data&lt;/strong&gt; und alle ihre Mitglieder dürfen nur Lesen (r&amp;ndash;). Alle anderen dürfen gar nichts (&amp;mdash;).&lt;/p&gt;
-&lt;p&gt;Nun handelt es sich aber um einen Ordner. Ein Ordner kann aber nur &amp;ldquo;betreten&amp;rdquo; werden, wenn man die Genehmigung zum &lt;strong&gt;Ausführen&lt;/strong&gt; hat. Weder der Besitzer noch die Gruppe hat diese Genehmigung. Unsere obere Anweisung reicht also nicht aus! Tatsächlich sollte man also &lt;strong&gt;Zugriffsrechte für Dateien und Ordner immer getrennt&lt;/strong&gt; festlegen!&lt;/p&gt;
-&lt;p&gt;Berechtigung für alle Dateien:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;chmod 640 /var/nginx/www/* -R
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Berechtigung für alle Ordner:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;chmod 750 /var/nginx/www/* -R
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Du siehst, dass das Ermöglichen des Ausführens einfach durch das Addieren von 1 für die beiden ersten Positionen ermöglicht wird.&lt;/p&gt;
-&lt;p&gt;Tatsächlich findest du diese beiden Befehle auch in vielen Anleitungen zu Dateirechten und damit endet die Anleitung oft auch schon. Doch damit hast du ein Problem. Denn die zweite Anweisung überschreibt das Ergebnis der ersten Anweisung. Aber wir wollen doch Dateien und Ordner individuell einrichten! Abhilfe schafft der Befehl &lt;strong&gt;find&lt;/strong&gt;, um Dateien und Ordner getrennt anzusprechen:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;find /var/nginx/htdocs/. -type f -exec chmod 640 -- {} +
-find /var/nginx/htdocs/. -type d -exec chmod 750 -- {} +
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Der Parameter &lt;strong&gt;-type f&lt;/strong&gt; liefert alle Dateien im angegeben Ordner zurück (f wie file, Datei). Der Punkt hinter htdocs in der ersten Zeile sorgt dafür, dass auch versteckte Dateien, wie z.B. die .htaccess-Datei, gefunden werden. Mit &lt;strong&gt;exec&lt;/strong&gt; übergebe ich das Resultat von find, eine Liste die alle gefundenen Dateien enthält, an einen anderen Befehl. In dem Fall also &lt;strong&gt;chmod&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;Vice versa für alle Ordner, die mit &lt;strong&gt;-type d&lt;/strong&gt; gefunden werden. Hier wird mit chmod auch das Recht zum Ausführen vergeben.&lt;/p&gt;
-&lt;h2 id=&#34;dateirechte-in-der-realität&#34;&gt;Dateirechte in der Realität&lt;/h2&gt;
-&lt;p&gt;Das klingt erstmal recht einfach, hat aber drei Haken:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Es gibt Dateien, die nur für den PHP-Dienst relevant sind, andere wiederum nur für den HTTP-Dienst. Man muss die Besitzrechte also etwas granularer vergeben.&lt;/li&gt;
-&lt;li&gt;Bei einem Update der Plugins oder WordPress müssen Dateien für die Gruppe www-data wenigstens temporär schreibbar sein.&lt;/li&gt;
-&lt;li&gt;Wenn man den Upload von Dateien zulassen möchte, muss der Ordner /wp-content/uploads dauerhaft beschreibbar sein.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Es gibt also verschiedene &lt;strong&gt;Ordner- und Datei-Kategorien&lt;/strong&gt;, die verschiedene Rechte erfordern. Die folgende Matrix zeigt, am Beispiel von WordPress, eine &lt;strong&gt;ideale&lt;/strong&gt; Konfiguration:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/grafik-4.png&#34;&gt;&lt;img src=&#34;images/grafik-4-700x315.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Die **.htaccess-**Datei muss für den PHP-Dienst gar nicht sichtbar, geschweige denn beschreibbar sein. Die Datei &lt;strong&gt;wp-config.php&lt;/strong&gt; wiederum sollte für den HTTP-Dienst unsichtbar sein. Generell müssen PHP-Dateien, also dynamische Ressourcen, für den HTTP-Dienst gar nicht sichtbar sein. Der Upload-Ordner ist hier beschreibbar, um das Hochladen von Datein zu ermöglichen. Wird ein Cache verwendet, muss natürlich auch dieser Ordner beschreibbar sein.&lt;/p&gt;
-&lt;p&gt;Solltest du, z.B. auf deinem eigenen Webspace, die Möglichkeit haben, Besitzrechte derart granular zu konfigurieren, kann dir die Matrix vielleicht als Inspiration dienen. In der Realität hilft das aber nicht weiter, da der PHP-Dienst als Modul entweder innerhalb des HTTP-Dienstes läuft oder beide Dienste unter einer Gruppe (www-data) laufen (&lt;a href=&#34;https://binary-butterfly.de/artikel/dateirechte-wie-stelle-ich-das-bei-meinem-hoster-ein/&#34;&gt;hier wird das Problem noch etwas genauer beleuchtet&lt;/a&gt;). Die Konfiguration sieht dann in etwa so aus:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/grafik-5.png&#34;&gt;&lt;img src=&#34;images/grafik-5-700x288.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Nun stellst du dir sicher die Frage, wie du ein derartiges Setup möglichst unkompliziert einrichten kannst. Eins Vorweg: Ohne Zugriff auf die Shell wird das ziemlich aufwendig. Mit Zugriff auf die Kommandozeile kannst du die Dateirechte z.B. folgendermaßen setzen:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;find /var/nginx/htdocs/. -type f -exec chmod 640 -- {} +
-find /var/nginx/htdocs/. -type d -exec chmod 750 -- {} +
-find /var/nginx/htdocs/wp-content/uploads/. -type f -exec chmod 660 -- {} +
-find /var/nginx/htdocs/wp-content/uploads/. -type d -exec chmod 770 -- {} +
-find /var/nginx/htdocs/wp-content/cache/. -type f -exec chmod 660 -- {} +
-find /var/nginx/htdocs/wp-content/cache/. -type d -exec chmod 770 -- {} +
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Wenn du Themes oder Plugins aktualisieren willst, musst du die Rechte folgendermaßen anpassen und somit Datein und Ordner schreibbar machen:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;find /var/nginx/htdocs/wp-content/themes/. -type f -exec chmod 660 -- {} +
-find /var/nginx/htdocs/wp-content/themes/. -type d -exec chmod 770 -- {} +
-find /var/nginx/htdocs/wp-content/plugins/. -type f -exec chmod 660 -- {} +
-find /var/nginx/htdocs/wp-content/plugins/. -type d -exec chmod 770 -- {} +
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Beim Update von WordPress trifft das natürlich auf die ganze Installation zu:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;find /var/nginx/htdocs/. -type f -exec chmod 660 -- {} +
-find /var/nginx/htdocs/. -type d -exec chmod 770 -- {} +
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Wenn du keinen Zugriff auf die Kommandozeile hast, kannst du auch PHP nutzen, insofern du die Rechte dazu hast. Die Funktion lautet &lt;a href=&#34;https://www.php.net/manual/de/function.chmod.php&#34;&gt;chmod()&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&#34;ausführen-von-php-code-in-bestimmten-ordnern-unterbinden&#34;&gt;Ausführen von PHP-Code in bestimmten Ordnern unterbinden&lt;/h2&gt;
-&lt;p&gt;Oben hatte ich das Problem mit dem Upload-Ordner angesprochen. Wenn Nutzer in der Lage sind, dort Dateien zu modifizieren oder abzulegen, ist das ein Sicherheitsrisiko. Du kannst das Risiko aber eindämmen, indem du dafür sorgst, dass Dateien in diesem Ordner schlicht nicht von PHP interpretiert, sprich ausgeführt, werden können.&lt;/p&gt;
-&lt;p&gt;So kann der Ordner beschreibbar bleiben, das Sicherheitsrisiko wird aber trotzdem reduziert. Dazu erstellst du eine .htaccess-Datei im uploads-Ordner mit diesem Inhalt:&lt;/p&gt;
-&lt;p&gt;SetHandler !
-RemoveHandler .php .phtml .php3
-RemoveType .php .phtml .php3
-php_admin_value engine Off
-php_flag engine off&lt;/p&gt;
-&lt;p&gt;Die beiden letzten Zeile sind redundant zu den vorherigen. Sie soll sicherstellen, dass PHP hier wirklich nicht funktioniert. Ein Angreifer ist somit vielleicht in der Lage, PHP-Code in diesem Ordner abzulegen aber nicht mehr, diesen auch auszuführen.&lt;/p&gt;
-&lt;p&gt;Bei nginx kannst du den Upload-Ordner einfach implizit von PHP abnabeln:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;if ($uri !~ &amp;#34;^/uploads/&amp;#34;) {
-
-   fastcgi_pass unix:/run/php/php-fpm-$server.sock;
-
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;fs_method&#34;&gt;FS_METHOD&lt;/h2&gt;
-&lt;p&gt;Wenn du meinst, die Dateirechte korrekt vergeben zu haben und trotzdem fordert dich Wordpress beim Updaten auf, die FTP-Zugangsdaten einzugeben, setze diesen Parameter in der Datei wp-config.php:&lt;/p&gt;
-&lt;p&gt;define(&amp;lsquo;FS_METHOD&amp;rsquo;, &amp;lsquo;direct&amp;rsquo;);&lt;/p&gt;
-&lt;p&gt;WordPress weiß nun, dass es Dateien direkt anfassen darf, ohne den Umweg über den FTP-Nutzer zu gehen.&lt;/p&gt;
-&lt;p&gt;Dieser Parameter kann recht nützlich sein, wenn du die Dateirechte noch restriktiver vergeben willst, sprich: PHP gar keine Schreibrechte einräumst. Du musst dann einen FTP-Nutzer anlegen, über den WordPress sozusagen indirekt auf das Dateisystem zugreifen kann.&lt;/p&gt;
-&lt;h2 id=&#34;wenig-aufwand-viel-nutzen&#34;&gt;Wenig Aufwand, viel Nutzen&lt;/h2&gt;
-&lt;p&gt;Die Einarbeitung in die Benutzerrechte mit &lt;strong&gt;chmod&lt;/strong&gt; mag anfangs vielleicht ungewohnt sein, mit etwa Übung hat man den Dreh aber recht schnell raus. Der Nutzen ist immens, denn die falsche Rechte-Vergabe ist ein häufiger Grund, warum bösartige Software sich überhaupt auf einem Server verbreiten kann. Es gibt noch eine Handvoll andere Maßnahmen, die relativ simpel und effektiv sind, denen ich mich in einem anderen Beitrag widmen möchte.&lt;/p&gt;
-&lt;p&gt;Zuguter Letzt: Willst du wissen, ob die Dateirechte in deiner Installation korrekt gesetzt wurden, kannst du auf dieses Script zurückgreifen. Ich habe dazu das Script von &lt;a href=&#34;https://binary-butterfly.de/artikel/dateirechte-warum-eigentlich/&#34;&gt;Ernesto Ruge&lt;/a&gt; etwas überarbeitet, in der Funktionalität aber unverändert gelassen:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/grafik-7.png&#34;&gt;&lt;img src=&#34;images/grafik-7-700x366.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Die korrekten Datei und Ordner-Rechte für WordPress prüfen&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/testFileFolderPermissions.php_-1.zip&#34;&gt;testFileFolderPermissions.php_-1&lt;/a&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/testFileFolderPermissions.php_-1.zip&#34;&gt;Herunterladen&lt;/a&gt;&lt;/p&gt;
-</description>
+      <description>&lt;p&gt;Die korrekten &lt;strong&gt;Dateirechte&lt;/strong&gt; sollten eine wichtige Rolle spielen, wenn du an einem Sicherheitskonzept für deine Webseite bzw. Wordpress arbeitest. Leider wird das Thema Dateirechte oft stiefmütterlich behandelt, nicht zuletzt weil es fälschlicherweise als zu kompliziert angesehen wird. Dabei muss es das gar nicht sein: Das Grundprinzip ist einfach: Du willst nicht, dass jedermann Dateien &lt;strong&gt;ändern&lt;/strong&gt;, &lt;strong&gt;ausführen&lt;/strong&gt; oder &lt;strong&gt;lesen&lt;/strong&gt; kann. Sicherlich gibt es feine Abstufungen. und genau die möchte ich hier erklären.&lt;/p&gt;</description>
       
     </item>
     
@@ -180,87 +27,7 @@ php_flag engine off&lt;/p&gt;
       
       <description>&lt;p&gt;Et voilá. Ein BASH Script, um WordPress automatisiert über die Kommandozeile zu installieren, inklusive Theme und beliebigen Plugins sowie - wenn benötigt - zufälligen Beiträgen, Kategorien, Tags und Bildern.&lt;/p&gt;
 &lt;h2 id=&#34;warnung&#34;&gt;Warnung!&lt;/h2&gt;
-&lt;p&gt;Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und unbedingt &lt;strong&gt;Backups&lt;/strong&gt; nutzen. Das Script verwendet, wenn der entsprechende Parameter gesetzt ist, den Befehl &amp;ldquo;&lt;strong&gt;rm -rf&lt;/strong&gt;&amp;rdquo;, um einen Ordner komplett zu &lt;strong&gt;löschen&lt;/strong&gt;. Dieser Schritt lässt sich nicht widerrufen. Außerdem wird, sofern per Parameter gefordert, eine Datenbank mit &amp;ldquo;&lt;strong&gt;DROP DATABASE&lt;/strong&gt;&amp;rdquo; komplett entfernt. Wenn du das Script auf eine existierende WordPress-Installation oder Datenbank anwendest, können existierende Daten &lt;strong&gt;überschrieben&lt;/strong&gt; werden!&lt;/p&gt;
-&lt;h2 id=&#34;funktionsweise&#34;&gt;Funktionsweise&lt;/h2&gt;
-&lt;p&gt;Das Script wird über die Kommandozeile aufgerufen und nutzt die &lt;a href=&#34;https://wp-cli.org/de/&#34;&gt;WordPress Kommandozeilen-Benutzeroberfläche,&lt;/a&gt; um &lt;strong&gt;WordPress&lt;/strong&gt; zu installieren sowie samt &lt;strong&gt;Themes&lt;/strong&gt; und &lt;strong&gt;Plugins&lt;/strong&gt; einzurichten. Du kannst außerdem beliebig viele &lt;strong&gt;Beiträge&lt;/strong&gt; anlegen. Die Inhalte für die Beiträge stammen von einem Online-Dienst für zufällige englische Texte: &lt;a href=&#34;http://metaphorpsum.com/paragraphs&#34;&gt;metaphorpsum.com/paragraphs&lt;/a&gt;. Außerdem werden zufällige &lt;strong&gt;Textauszüge&lt;/strong&gt; (Excerpts) sowie &lt;strong&gt;Schlagwörter&lt;/strong&gt; (Tags) und sogar &lt;strong&gt;Bilder&lt;/strong&gt; jedem Beitrag hinzugefügt. Beiträge werden außerdem Kategorien zugeordnet. Diese werden ebenfalls &lt;strong&gt;zufällig&lt;/strong&gt; bis zu einer Tiefe von 2 Ebenen erzeugt.&lt;/p&gt;
-&lt;h2 id=&#34;installation&#34;&gt;Installation&lt;/h2&gt;
-&lt;p&gt;Du findest den Sourcecode auf github: &lt;a href=&#34;https://github.com/nickyreinert/AutomatedWordPressInstallation&#34;&gt;https://github.com/nickyreinert/AutomatedWordPressInstallation&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Nach der Installation kopierst du die Datei settings-template zu .settings, um in dieser Datei die Einstellungen für deine WordPress-Installation vorzunehmen. Du startest den Prozess mit &lt;strong&gt;bash start.sh&lt;/strong&gt; oder setzt den Ausführen-Flag für bash.sh um diese direkt auszuführen:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;chmod u+x bash.sh
-./bash.sh
-&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;zufällige-inhalte&#34;&gt;Zufällige Inhalte&lt;/h2&gt;
-&lt;p&gt;Das Script ermöglicht das Anlegen von beliebig vielen zufälligen Beiträgen in beliebig vielen zufälligen Kategorien. Was genau dabei passiert, beschreibe ich hier kurz:&lt;/p&gt;
-&lt;p&gt;Zunächst wird eine Kategorie erzeugt. Dazu wird von der folgenden API ein zufälliges Wort abgerufen: &lt;a href=&#34;https://random-word-api.herokuapp.com/word?swear=0&amp;amp;number=&#34;&gt;https://random-word-api.herokuapp.com/word?swear=0&amp;amp;number=&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Dieser Kategorie wird dann ein Beitrag wird mit einer beliebigen Anzahl von &lt;strong&gt;Absätzen&lt;/strong&gt; von dieser API zugeordnet: &lt;a href=&#34;http://metaphorpsum.com/paragraphs/&#34;&gt;http://metaphorpsum.com/paragraphs/&lt;/a&gt;. Der Beitrag erhält einen zufälligen Titel (von dort: &lt;a href=&#34;http://metaphorpsum.com/sentences/&#34;&gt;http://metaphorpsum.com/sentences&lt;/a&gt;), einen Textauszug (gleiche API), sowie eine beliebige Anzahl zufälliger Tags (Schlagwörter), ebenfalls von &lt;a href=&#34;https://random-word-api.herokuapp.com/word?swear=0&amp;amp;number=&#34;&gt;random-word-api.herokuapp.com&lt;/a&gt;. Dann werden für diesen Beitrag Revisionen erzeugt - auch diese in beliebiger Höhe. Abschließend erhält jeder Beitrag ein zufälliges Featured Image sowie ein weiteres zufälliges Bild am Ende des Fließtextes.&lt;/p&gt;
-&lt;p&gt;Je nachdem, wieviele Beiträge und Kategorien bzw. Sub-Kategorien eingerichtet werden soll, wird dieser Prozess natürlich wiederholt.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;(Bisher werden die Inhalte leider nur auf Englisch eingefügt)&lt;/em&gt;&lt;/p&gt;
-&lt;h2 id=&#34;einstellungen&#34;&gt;Einstellungen&lt;/h2&gt;
-&lt;p&gt;Alle Einstellungen befinden sich in der Datei &lt;strong&gt;.settings&lt;/strong&gt; und werden im Folgenden beschrieben. Der PROJECT-Parameter kann im weiteren Verlauf als Platzhalter verwendet werden und sollte keine Leerzeichen oder Sonderzeichen enthalten:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;PROJECT=myWordPressBlog
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;datenbank&#34;&gt;Datenbank&lt;/h3&gt;
-&lt;p&gt;Du kannst eine neue Datenbank anlegen (CREATE_DB) oder auf eine existierende Datenbank zurückgreifen.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;DB_DROP=yes|no
-CREATE_DB=yes|no
-DB_ROOT=root
-DB_ROOT_PASSWORD=secret
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Willst du eine frische Datenbank anlegen, solltest du die alte Datenbank mit DB_DROP=yes löschen. Soll eine neue Datenbank angelegt werden, müssen die Zugangsdaten für einen privilegierten Nutzer angegeben werden: Mit den folgenden Parameter legst du fest, wie WordPress auf die Datenbank zugreift:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;DB_HOST=127.0.0.1
-DB_NAME=&amp;#34;${PROJECT}_database&amp;#34;
-DB_PREFIX=&amp;#34;wp_&amp;#34;
-
-ADD_DB_USER=yes|no
-DB_USER=&amp;#34;${PROJECT}_dbuser&amp;#34;
-DB_USER_PASSWORD=$(cat /dev/urandom | tr -dc &amp;#39;a-zA-Z0-9&amp;#39; | fold -w 32 | head -n 1)
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Das Passwort wird im Beispiel zufällig erzeugt, willst du ein eigenes Passwort verwenden, kannst du den Parameter überschreiben, z.B:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;DB_USER_PASSWORT=secret
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Der DB-Nutzer wird natürlich nur angelegt, wenn ADD_DB_USER=yes gesetzt ist. Andernfalls musst du hier die passenden Zugangsdaten angeben.&lt;/p&gt;
-&lt;h3 id=&#34;wordpress&#34;&gt;WordPress&lt;/h3&gt;
-&lt;p&gt;Du kannst auf eine existierende Installation zurückgreifen, um z.B. dort Beiträge hinzuzufügen, oder WordPress komplett neu installieren. Hier kannst du z.B. auch den oben festgelegten PROJECT-Parameter nutzen:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;WP_PATH=&amp;#34;/var/nginx/htdocs/${PROJECT}/&amp;#34;
-INSTALL_CORE=yes|no
-WP_DROP=yes|no
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Mit WP_DROP kannst du festlegen, dass der Ordner WP_PATH komplett gelöscht wird. &lt;strong&gt;Vorsicht&lt;/strong&gt; ist hier also geboten! Die folgenden Parameter betreffen deine allgemeinen WordPress-Einstellungen. Bei der URL kannst du wieder den PROJECT-Platzhalter nutzen.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;WP_TITLE=&amp;#39;WordPress Test&amp;#39;
-URL=&amp;#34;https://blog.example.org/${PROJECT}&amp;#34;
-WP_ADMIN_NAME=admin
-WP_ADMIN_EMAIL=mail@example.org
-WP_ADMIN_PASSWORD=secret
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Willst du ein eigene Passwort vergeben, kannst du auch hier ein zufälliges Passwort erzeugen lassen:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;WP_ADMIN_PASSWORD=$(cat /dev/urandom | tr -dc &amp;#39;a-zA-Z0-9&amp;#39; | fold -w 32 | head -n 1)
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;theme-und-plugins&#34;&gt;Theme und Plugins&lt;/h3&gt;
-&lt;p&gt;Mit den folgenden Parametern legst du fest, welches Theme eingerichtet und welche Plugins installiert werden sollen. Der Theme-Name ist der Slug des Themes:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;INSTALL_THEME=yes|no
-THEME=&amp;#34;elementor&amp;#34;
-
-INSTALL_PLUGINS=no
-PLUGINS=&amp;#34;elementor wordpress-seo tinymce-advanced ninja-forms shortcodes-ultimate instagram-feed ml-slider the-events-calendar amp contact-widgets coblocks woocommerce&amp;#34;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Du kannst mehrere Plugins angeben, wenn diese per Leerzeichen voneinander getrennt sind.&lt;/p&gt;
-&lt;h3 id=&#34;inhalte&#34;&gt;Inhalte&lt;/h3&gt;
-&lt;p&gt;Der nächste Abschnitt regelt das (zufällige) Anlegen von Beiträgen, Kategorien usw. Natürlich musst du keine Inhalte anlegen. Ist &lt;strong&gt;RANDOMIZE_EVERY_ITEM&lt;/strong&gt; auf &lt;strong&gt;yes&lt;/strong&gt; gesetzt, wird jeder Beitrag wie oben zufällig erzeugt. Da das eine Menge HTTP-Requests erfordert, kannst du den Parameter auch auf no setzen. In dem Fall wird jede Zufalls-API genau einmal abgerufen. Der ganze Prozess wird dadurch maßgeblich beschleunigt.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ADD_CONTENT=yes|no
-META_INPUT=&amp;#34;&amp;#34;
-RANDOMIZE_EVERY_ITEM=yes|no
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Manche Themes, wie z.B. &lt;strong&gt;Elementor&lt;/strong&gt;, fügen den Inhalten, also Beiträgen, bestimmte Meta-Informationen hinzu. Beim automatisierten Anlegen von Beiträgen passiert das allerdings nicht automatisch. Du kannst das hier also entsprechend einrichten. Der Wert wird als JSON übergeben. Achte auf das einfache Anführungszeichen.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;META_INPUT=&amp;#39;{&amp;#34;_elementor_edit_mode&amp;#34;:&amp;#34;&amp;lt;![CDATA[builder]]&amp;gt;&amp;#34;,&amp;#34;_elementor_template_type&amp;#34;:&amp;#34;&amp;lt;![CDATA[kit]]&amp;gt;&amp;#34;,&amp;#34;_elementor_version&amp;#34;:&amp;#34;&amp;lt;![CDATA[2.9.13]]&amp;gt;&amp;#34;}&amp;#39;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Die folgenden Paremeter legen fest, wieviele Inhalte du erzeugen möchtest:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;COUNT_CATEGORIES_LEVEL1=10
-COUNT_CATEGORIES_LEVEL2=5
-
-COUNT_POSTS=100
-COUNT_PARAGRAPHS=20
-COUNT_POST_REVISIONS=5
-COUNT_TAGS=20
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Im Beispiel werden 10 Haupt-Kategorien mit jeweils 5 Unter-Kategorien angelegt. Jede Kategorie wird mit 100 Posts befüllt und jeder Post erhält 20 Tags und 5 Revisionen. Das ergibt also 10 * 5 * 100 * 5 Beiträge = 25.000 Beiträge! In diesem Fall macht es Sinn RANDOMIZE_EVERY_ITEM auf no zu setzen, da du sonst mehre tausende Anfragen an die Zufalls-APIs generieren würdest. COUNT_PARAGRAPHS legt die Länge jedes Beitrags in Absätzen fest.&lt;/p&gt;
-&lt;h3 id=&#34;standard-parameter&#34;&gt;Standard-Parameter&lt;/h3&gt;
-&lt;p&gt;Die folgenden Parameter musst du in der Regel nicht anpassen. WP_CLI legt den Pfad zur WordPress Kommandozeilen Oberfläche fest. Wird die Datei nicht gefunden, muss WP CLI installiert werden. Dazu dient der Parameter WP_CLI_SOURCE.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;WP_CLI_EXEC=~/wp-cli.phar
-WP_CLI_SOURCE=https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Im folgenden werden die Quellen für die APIs festgelegt. Hier solltest du nichts ändern, da das Script für die Zusammenarbeit mit diesen Quellen eingerichtet ist. Einzig beim Parameter RANDOM_IMAGE_API_URI kannst du bei Bedarf in der URL die Auflösung der abgefragten Bilder festlegen.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;RANDOM_WORD_API_URL=&amp;#39;https://random-word-api.herokuapp.com/word?swear=0&amp;amp;number=&amp;#39;
-RANDOM_SENTENCE_API_URL=&amp;#39;http://metaphorpsum.com/sentences/&amp;#39;
-RANDOM_TEXT_API_URL=&amp;#39;http://metaphorpsum.com/paragraphs/&amp;#39;
-RANDOM_IMAGE_API_URI=&amp;#39;https://picsum.photos/200/300.jpg&amp;#39;
-&lt;/code&gt;&lt;/pre&gt;</description>
+&lt;p&gt;Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und unbedingt &lt;strong&gt;Backups&lt;/strong&gt; nutzen. Das Script verwendet, wenn der entsprechende Parameter gesetzt ist, den Befehl &amp;ldquo;&lt;strong&gt;rm -rf&lt;/strong&gt;&amp;rdquo;, um einen Ordner komplett zu &lt;strong&gt;löschen&lt;/strong&gt;. Dieser Schritt lässt sich nicht widerrufen. Außerdem wird, sofern per Parameter gefordert, eine Datenbank mit &amp;ldquo;&lt;strong&gt;DROP DATABASE&lt;/strong&gt;&amp;rdquo; komplett entfernt. Wenn du das Script auf eine existierende WordPress-Installation oder Datenbank anwendest, können existierende Daten &lt;strong&gt;überschrieben&lt;/strong&gt; werden!&lt;/p&gt;</description>
       
     </item>
     
@@ -273,64 +40,7 @@ RANDOM_IMAGE_API_URI=&amp;#39;https://picsum.photos/200/300.jpg&amp;#39;
       
       <description>&lt;p&gt;Im letzten Teil geht es um die Einrichtung von PHP-FPM und ich gebe eine kleine Zusammenfassung bzw. Überblick über die Struktur des gesamten Setups. Wenn alles korrekt eingerichtet ist, solltet ihr nun einen gut funktionierenden Webserver auf Basis von nginx haben, der PHP-FPM nutzt und gut mit Wordpress laufen sollte. Der Server arbeitet für mehrere unterschiedliche Domains, die so gut wie möglich im System getrennt sind.&lt;/p&gt;
 &lt;h2 id=&#34;die-einrichtung-der-php-pools&#34;&gt;Die Einrichtung der PHP-Pools&lt;/h2&gt;
-&lt;p&gt;Um den ganzen Bums zum Laufen zu bringen fehlt jetzt nur noch PHP. Den Großteil haben wir schon geschafft, weshalb ich die Einrichtung von PHP nicht in einen neuen Beitrag gepackt habe.&lt;/p&gt;
-&lt;p&gt;Wie im ersten Teil schon angedeutet, nutze ich PHP-FPM. Die Einstellungen jedes einzelen virtuellen Servers befinden sich demnach in &lt;strong&gt;/etc/php/7.3/fpm/pool.d/&lt;/strong&gt; und hat die Endung .conf.&lt;/p&gt;
-&lt;p&gt;Mit dem Parameter &lt;strong&gt;listen&lt;/strong&gt; stellst du die Verbindung zu nginx her. Es wird ein Socket erstellt, über den nginx und PHP-FPM Informationen austauschen. Die Variable &lt;strong&gt;$pool&lt;/strong&gt; enthält den Namen des Pools. Mit &lt;strong&gt;prefix&lt;/strong&gt; legst du Standard-Ordner dieses Pools fest.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# der Namen des Pools (kann mit $pool referenziert werden
-[example_com]
-listen = /run/php/php-fpm-$pool.sock
-prefix = /var/nginx/$pool
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Jetzt gibt ein paar wichtige Sicherheitsfeatures: Jeder &lt;strong&gt;Pool&lt;/strong&gt; hat seinen eigenen Benutzer. Hierzu muss man nicht viel erklären: Der Vorteil hier ist, dass sich die PHP-Prozesse verschiedener Server, da sie ja unterschiedlichen Nutzer &amp;ldquo;gehören&amp;rdquo; grundsätzlich erstmal nicht in die Quere kommen können:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;user = $pool-php
-group = www-data
-listen.owner = $pool-php
-listen.group = www-data
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Mit chdir und chroot schließt du diesen Pool in einen bestimmten Ordner ein. Ich hatte oben ja bereits &lt;strong&gt;$prefix&lt;/strong&gt; definiert. Diese Parameter arbeiten eng mit den FastCGI-Einstellungen von &lt;strong&gt;nginx&lt;/strong&gt; zusammen und sind eine beliebte Fehlerquelle. Mit chroot denkt PHP, dass dieser Ordner der Root-Ordner ist. Warum ist das wichtig? Unsere Root-Ordner liegen (siehe Teil 1) alle in einem eigenen Unterordner. So kann PHP nicht ausbrechen und z.B. auf &lt;strong&gt;sensible Systembereiche&lt;/strong&gt; oder die Unterordner anderer Pools / Server zugreifen. Der Parameter &lt;strong&gt;chdir&lt;/strong&gt; legt lediglich fest, dass root auch wirklich root ist. Hier könnte man htdocs als Root festlegen. Da wir in der nginx-Einstellung aber &lt;strong&gt;htdocs&lt;/strong&gt; als Pfad voranstellen, kann das hier so bleiben. Bedenke, dass sich alle folgenden Pfadangaben immer relativ zu den hier festgelegten Einstellungen stattfinden.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;chdir = /
-chroot = /var/nginx/example1
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Weiter geht es mit der Konfiguration der PHP-Prozesse. Mit &lt;strong&gt;pm=dynamic&lt;/strong&gt; legen wir fest, dass der Prozess-Manager prozesse dynamisch starten kann. Mit &lt;strong&gt;pm=static&lt;/strong&gt; startest du immer eine feste Anzahl von Prozessen. (Bei Servern mit hoher Last kann das durchaus Sinn machen, &lt;a href=&#34;https://haydenjames.io/php-fpm-tuning-using-pm-static-max-performance/&#34;&gt;wie hier beschrieben wird&lt;/a&gt;). Bei einer kleineren Seite reicht &lt;strong&gt;pm=ondemand&lt;/strong&gt; völlig aus. Wir erinnern uns: Die Prozesse dienen als Interpretor für unsere PHP-Scripte. Ein Prozess bearbeitet eine Anfrage. Wenn du mehr Traffic erwartest, solltest du diese Werte also erhöhen.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;max_children&lt;/strong&gt; gibt die Obergrenze dafür fest. &lt;strong&gt;start_servers=1&lt;/strong&gt; besagt, dass mindestens 1 Prozess sofort gestartet wird. Mit &lt;strong&gt;min_spare_servers&lt;/strong&gt; legst du fest, wieviele Prozesse mindestens &amp;ldquo;vorrätig&amp;rdquo; sind, &lt;strong&gt;max_spare_servers&lt;/strong&gt; legt dafür die Obergrenze fest. Wie viele Prozesse du maximale starten solltest, errechnest du ganz einfach folgender maßen:&lt;/p&gt;
-&lt;p&gt;Rufe den folgenden Code auf um den Speicherverbrauch deines PHP-Services zu erhalten:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ps --no-headers -o &amp;#34;rss,cmd&amp;#34; -C php-fpm7.3 | awk &amp;#39;{ sum+=$1 } END { printf (&amp;#34;%d%s\n&amp;#34;, sum/NR/1024,&amp;#34;Mb&amp;#34;) }&amp;#39;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Den freien Speicher lässt du folgendermaßen anzeigen:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;free -h
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Angenommen, du hast 4.096 MByte freien Speicher zur Verfügung und ein PHP-Prozess verbraucht 4 MByte, dann kannst du insgesamt 1.024 Prozesse starten. Wenn du mehrere virtuelle Server betreibst, teilen diese sich natürlich dieses Kontingent. Im folgenden ein Beispiel: Es werden maximal 1.024 Prozesse gestartet. 100 Prozesse sind immer aktiv, auch wenn sie ungenutzt sind. Sind alle 100 Prozesse beschäftigt, werden mindestens 50 Prozesse gestartet, aber niemals mehr als 200 - das Spiel funktioniert so lange, bis das Kontingent von 1.024 ausgeschöpft ist.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;pm = dynamic
-pm.max_children = 1024
-pm.start_servers = 100
-pm.min_spare_servers = 50
-pm.max_spare_servers = 200
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Wenn dein Server relativ klein ist, solltest du den &lt;strong&gt;On-Demand-Modus&lt;/strong&gt; nutzen. Hier wird ein Prozess nur dann gestartet, wenn der Bedarf da ist. Das spart Speicher und ist in der Regel auch nicht merkbar langsamer.&lt;/p&gt;
-&lt;p&gt;Der Parameter &lt;strong&gt;catch_workers_output&lt;/strong&gt; steuert die Ausgabe des PHP-Prozesses. Wie alle Log-Einstellungen, kann &lt;a href=&#34;https://twitter.com/leofeyer/status/486862436948250624&#34;&gt;dieser erhebliche Auswirkungen auf die Performance haben&lt;/a&gt;. Falls du also noch ein paar Millisekunden mehr herausholen willst, setze diesen Wert auf &lt;strong&gt;no&lt;/strong&gt;.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;catch_workers_output = yes
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Die folgenden Einstellungen werden eigentlich in der php.ini vorgenommen. Ich will sie hier aber auf Server-Ebene definieren, da die virtuellen Server ja durchaus unterschiedliche Ansprüche haben.&lt;/p&gt;
-&lt;h3 id=&#34;sessions-cookies-und-referrer&#34;&gt;Sessions, Cookies und Referrer&lt;/h3&gt;
-&lt;p&gt;Wenn du eine zusätzliche Sicherheitshürde einbauen willst, kannst du den Pfad der &lt;strong&gt;PHP-Sessions&lt;/strong&gt; hier ändern. Wenn du in deiner Web-Anwendung nicht mit &lt;strong&gt;JavaScript&lt;/strong&gt; auf &lt;strong&gt;Cookies&lt;/strong&gt; zugreifen willst, kannst du den Cookie-Zugriff außerdem nur auf HTTP einschränken. Und schließlich macht es Sinn, dass eine Session nur vom eigenen Server genutzt werden kann, wenn also dein Server im Referrer übermittelt wird.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;php_value[session.save_path] = /sessions
-php_value[session.cookie_httponly] = 1
-php_value[session.referer_check] = example.com
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Sehr nützlich und ein wichtiges Sicherheitsfeature ist &lt;strong&gt;disable_functions&lt;/strong&gt;. Es gibt eine nicht geringe Anzahl von PHP-Funktionen, mit denen sich Systemfunktionen steuern lassen. Diese solltest du grundsätzlich nicht zulassen. Ein weiteres Sicherheitsfeature sind &lt;strong&gt;allow_url_fopen&lt;/strong&gt; und &lt;strong&gt;allow_url_include&lt;/strong&gt;. Damit unterbindest du das Einbinden von schadhaften Code.&lt;br&gt;
-Die Einstellungen zum Log werde ich nicht weiter erläuter, da sie wie so oft selbsterklärend sind. Beachte, dass das Logging immer auch gewisse Auswirkungen auf die Performance haben. Andererseits kann die regelmäßige Log-Analyse aber auch rechzeitig wichtige Hinweise auf (Sicherheits-)Probleme deines Systems liefern!&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;php_admin_value[disable_functions] = php_uname, getmyuid, getmypid, passthru, leak, listen, diskfreespace, tmpfile, link, ignore_user_abord, shell_exec, dl, set_time_limit, exec, system, high$
-php_admin_flag[allow_url_fopen] = on
-php_admin_flag[allow_url_include] = off
-
-# das Speicherlimit pro Script-Aufrufeinstellen
-php_admin_value[memory_limit] = 256M
-
-# Logging-Einstellung
-php_flag[display_errors] = off
-php_admin_value[error_log] = /var/log/php-fpm/$pool.log
-php_admin_flag[log_errors] = on
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Die Einstellung von PHP ist damit abgeschlossen. Zum Abschluss gönne &lt;strong&gt;PHP&lt;/strong&gt; und &lt;strong&gt;nginx&lt;/strong&gt; noch einen Neustart. Danach sollte dein System rund laufen.&lt;/p&gt;
-&lt;h2 id=&#34;zusammenfassung&#34;&gt;Zusammenfassung&lt;/h2&gt;
-&lt;p&gt;Wenn du es bis hierhin geschafft hast, unterstützt dein Setup nun einen relativ performanten Server für mehrere Domains (aka virtuelle Server, virtual Hosts), der PHP-FPM nutzt und eine ziemlich solide Sicherheits-Grundeinstellung mitbringt.&lt;/p&gt;
-&lt;p&gt;Jeder einzelne virtuelle Server hat seine eigene Umgebung im Dateisystem, aus der er kaum ausbrechen kann. Die PHP-Prozesse sind voneinander getrennt, genauso wie die Speicherbereiche für den Cache. Außerdem ist das ganze darauf ausgerichtet, möglichst gut mit Wordpress zu laufen. Um das ganze System für Wordpress perfekt abzurunden, gibt es noch eine Handvoll Möglichkeiten, die ich gesondert vorstellen werden.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;images/zusammenfassung-700x394.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;p&gt;Grobe schematische Übersicht des Setups für mehrere virtuelle Server mit nginx und PHP-FPM&lt;/p&gt;
-&lt;h2 id=&#34;nachtrag&#34;&gt;Nachtrag&lt;/h2&gt;
-&lt;p&gt;Wenn du noch ein paar zusätzliche Informatioen benötigst, sei dir der der ähnlich ausgerichtete Artikel auf &lt;a href=&#34;https://binary-butterfly.de/artikel/das-perfekte-php-wordpress-setup/&#34;&gt;binary-butterfly.de&lt;/a&gt; empfohlen. Die Einstellungen für nginx und PHP unterscheiden sich kaum, dafür erfährst du dort auch, wie du zusätzlich mehrere SSH-Nutzer mit ins Boot holen kannst.&lt;/p&gt;
-</description>
+&lt;p&gt;Um den ganzen Bums zum Laufen zu bringen fehlt jetzt nur noch PHP. Den Großteil haben wir schon geschafft, weshalb ich die Einrichtung von PHP nicht in einen neuen Beitrag gepackt habe.&lt;/p&gt;</description>
       
     </item>
     
@@ -343,249 +53,7 @@ php_admin_flag[log_errors] = on
       
       <description>&lt;p&gt;Im zweiten Teil geht es um die individuelle Einrichtung der virtuellen Server für nginx.&lt;/p&gt;
 &lt;h2 id=&#34;server-oder-virtual-hosts&#34;&gt;Server oder virtual hosts?&lt;/h2&gt;
-&lt;p&gt;Im Gegensatz zu den &amp;ldquo;&lt;strong&gt;virtual hosts&lt;/strong&gt;&amp;rdquo; von Apache spricht man bei nginx von &amp;ldquo;&lt;strong&gt;servern&lt;/strong&gt;&amp;rdquo;. Ich möchte das Aufgreifen und nutze im Folgenden einfach nur von &amp;ldquo;&lt;strong&gt;Server&lt;/strong&gt;&amp;rdquo; wenn ich von einem individuellen Host oder virtuellem Server spreche. Wie bei Apache werden diese idealerweise in eigenständigen Konfig-Dateien definiert. Hier gibt es verschiedene Vorlieben, ob die Konfig-Dateien unter &lt;strong&gt;/etc/nginx/sites-available&lt;/strong&gt; oder &lt;strong&gt;/etc/nginx/conf.d&lt;/strong&gt; abgelegt werden.&lt;/p&gt;
-&lt;p&gt;Aus technischer Sicht macht es wirklich überhaupt &lt;strong&gt;gar keinen Unterschied&lt;/strong&gt;. Bei der ersten Variante wird im Ordner &lt;strong&gt;/etc/nginx/sites-enabled&lt;/strong&gt; mit einem symbolischen Link auf die tatsächliche Konfig-Datei an einem anderen Ort verwiesen. Um sie zu de-aktivieren, wird dann einfach der symbolische Link gelöscht. Das ist auch der klassische Apache-Weg.&lt;/p&gt;
-&lt;p&gt;Bei der zweiten Variante muss man die Konfig-Dateien im Order &lt;strong&gt;/etc/nginx/conf.d&lt;/strong&gt; mit der Endung &lt;strong&gt;conf&lt;/strong&gt; anlegen. Um den Server zu deaktivieren, &lt;strong&gt;entfernt man die Endung .conf&lt;/strong&gt;. Entscheide selber, was dir lieber ist.&lt;/p&gt;
-&lt;p&gt;Eine beispielhafte Konfiguration für einen Server ist folgendermaßen aufgebaut. Die interessante Parameter beschreibe ich weiter unten etwas ausführlicher. Ich versuche möglichst viel mit &lt;strong&gt;Platzhaltern&lt;/strong&gt; zu arbeiten (&lt;em&gt;set $server &amp;ldquo;example_com;&lt;/em&gt;) um die Nutzung für neue Server zu vereinfachen. Leider funktioniert das bei nginx nicht für jeder &lt;strong&gt;Direktive&lt;/strong&gt;. (So werden in nginx die Parameter genannt. Warum? Weil eine Direktive selber auch Parameter besitzen kann, wie du gleich sehen wirst.)&lt;/p&gt;
-&lt;p&gt;Außerdem habe aus Gründen der Übersicht sich wiederholdene Einstellungen in Dateien (sogenannte &lt;strong&gt;Snippets&lt;/strong&gt;) ausgelagert. Diese befinden sich im Ordner &lt;strong&gt;/etc/nginx/snippets/&lt;/strong&gt;. Diese Snippets werden an der entsprechenden Stelle mit &lt;strong&gt;include&lt;/strong&gt; eingebunden.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;fastcgi_cache_path /var/nginx/example_com/cache use_temp_path=off levels=1:2:2 keys_zone=cache_example_com:100m inactive=60m max_size=2048m;
-
-server {
-    # der erste Server-Block ist für HTTP 
-    # mit listen lege ich die Ports fest, die zweite Zeile wird für IPv6 benötigt
-    listen 80;
-    listen [::]:80;
-
-    # über welche Domain-Namen wird der Server angesprochen?
-    server_name example.com www.example.com;
-
-    # da ich HTTPS erzwinge, wird direkt dahin weitergeleitet
-    return 301 https://$server_name$request_uri;
-
-}
-
-server {
-    # der zweite Server-Block ist für HTTPS gedacht, hier gehts ans Eingemachte
-    # siehe oben
-    server_name nickyreinert.de www.nickyreinert.de;
-
-    # Platzhalter setzen
-    set $server &amp;#34;nickyreinert_de&amp;#34;;
-
-    # in welchem Ordner befinden sich die (öffentlichen) Dateien des Servers
-    root /var/nginx/nickyreinert_de/htdocs;
-
-    # diese Einstellungen musst du nicht selber vornehmen, der Certbot kümmert sich darum, siehe unten
-    ssl_certificate /etc/letsencrypt/live/www.example.com/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/www.example.com/privkey.pem; # managed by Certbot
-	
-    # natürlich nutzen wir auch individuelle Log-Dateien:
-    access_log /var/nginx/nickyreinert_de/logs/access.log main if=$log_this;
-    error_log /var/nginx/nickyreinert_de/logs/error.log error;
-	
-    # an der Stelle binde ich die restlichen Einstellungen ein
-    include snippets/default_https.conf;
-    include snippets/gzip.conf;
-    include snippets/wordpress.conf;
-    include snippets/logging.conf;
-    include snippets/caching.conf;
-    include snippets/fastcgi-php.conf;
-    include snippets/sitemap.conf;
-    include snippets/safety.conf;
-
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;der-cache&#34;&gt;Der Cache&lt;/h3&gt;
-&lt;h3 id=&#34;was-soll-gecached-werden&#34;&gt;Was soll gecached werden?&lt;/h3&gt;
-&lt;p&gt;Im 1. Teil habe ich das Thema ja schon kurz angerissen und zwei Direktiven beschrieben. Auf Server-Ebene will ich den Cache nun noch etwa feiner einstellen. Zunächst geht es an ein paare globale Einstellungen, die ich im Snippet &lt;strong&gt;/etc/nginx/snippets/caching.conf&lt;/strong&gt; abgelegt habe.&lt;/p&gt;
-&lt;p&gt;Nicht jede Anfrage darf gecached werden, wie z.B. POST-Requests, die ja tendentiel eher unterschiedliche Daten bei jeder Anfrage enthalten. Für diese Unterscheidung nutze ich die Variable &lt;strong&gt;$no_cache.&lt;/strong&gt; So kann ich mit einfachen if-Abfragen festlegen, welche Requests vom Cache ignoriert werden sollen, wie z.B:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;POST-Requests&lt;/li&gt;
-&lt;li&gt;Requests, die einen Query-String enthalten (GET)&lt;/li&gt;
-&lt;li&gt;Requests, deren URL auf ein bestimmtes Muster passen&lt;/li&gt;
-&lt;li&gt;Requests von eingeloggten Bentzern (Wordpress-Spezifisch!)&lt;/li&gt;
-&lt;li&gt;Requests, bei denen das Cookie PHPSESSID gesetzt ist&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;set $no_cache 0;
-
-if ($request_method = POST)
-{
-	set $no_cache 1;
-}
-
-if ($query_string != &amp;#34;&amp;#34;)
-{
-	set $no_cache 1;
-}
-
-if ($request_uri ~* &amp;#34;/wp-admin/|/xmlrpc.php|wp-.*.php|/feed/|index.php|sitemap(_index)?.xml&amp;#34;) {
-	set $no_cache 1;
-}   
-
-if ($http_cookie ~* &amp;#34;comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_no_cache|wordpress_logged_in&amp;#34;) {
-	set $no_cache 1;
-}
-
-if ($http_cookie = &amp;#34;PHPSESSID&amp;#34;)
-{
-	set $no_cache 1;
-}  
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;wie-soll-gecached-werden&#34;&gt;Wie soll gecached werden?&lt;/h3&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;fastcgi_cache_path /var/nginx/example_com/cache use_temp_path=off levels=1:2:2 keys_zone=cache_example_com:100m inactive=60m max_size=2048m;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Um den Zweck der Parameter hinter &lt;a href=&#34;http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_cache_key&#34;&gt;fastcgi_cache_path&lt;/a&gt; zu verstehen, werde ich grob erklären, wie der nginx-Cache funktioniert:&lt;/p&gt;
-&lt;p&gt;Über &lt;strong&gt;FastCGI&lt;/strong&gt; wird zunächst die PHP-Datei an den PHP-Interpreter übergeben. Das Ergebnis, z.B. ein HTML-Dokument geht dann an den Empfänger. Ist diese Ressource als &amp;ldquo;&lt;strong&gt;cachable&lt;/strong&gt;&amp;rdquo; markiert, legt nginx das zu Ergbnis außerdem in &lt;strong&gt;temporär&lt;/strong&gt; in einen Ordner ab und kopiert es von dort in den &lt;strong&gt;eigentlich Cache-Ordner&lt;/strong&gt;. Damit diese Resource später wiedergefunden wird, wird ein &lt;strong&gt;Schlüssel&lt;/strong&gt; erstellt. Ein Liste (&amp;ldquo;Cache-Verzeichnis&amp;rdquo;) dieser Schlüssel und ein paar Meta-Daten (z.B. der letzte Abruf) werden im &lt;strong&gt;Arbeitsspeicher&lt;/strong&gt; abgelegt.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;images/grafik-700x222.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;p&gt;Zugegeben: Eine wirklich stark vereinfachte Darstellung des Cachings mit nginx&lt;/p&gt;
-&lt;p&gt;Mit &lt;strong&gt;fastcgi_cache_path&lt;/strong&gt; legst du also den eigentlichen Cache-Ordner fest. Danach deaktivierst du mit &lt;strong&gt;use_temp_path=off&lt;/strong&gt; die Zwischenspeicherung in einem temporären Ordner, um den Cache-Prozess zu beschleunigen. Mit &lt;strong&gt;levels&lt;/strong&gt; kannst du die Tiefe des Cache-Ordners festlegen. Jede Position steht zwischen den Doppelpunkten für ein Level, drei Level sind möglich. Die Ziffer legt fest, wieviel Zeichen die Dateinamen enthalten. Folgende Angabe reduziert die Tiefe z.B. auf 2 Level deren Ordnernamen 1 Zeichen enthalten:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;levels=1:1
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Der Parameter &lt;strong&gt;keys_zone&lt;/strong&gt; gibt dem Bereich im Arbeitsspeicher einen eindeutigen Namen, der das &amp;ldquo;Cache-Verzeichnis&amp;rdquo; enthält. Das ist notwendig, da du auch andere Cache-Bereich anlegen kannst (z.b. den &lt;a href=&#34;http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache&#34;&gt;proxy_cache&lt;/a&gt;). Die Ziffer hinter dem Doppelpunkt gibt die Größe der Liste an. 1 MByte entspricht etwa 8.000 cache keys - mit 100 MB solltest du also eine Weile auskommen.&lt;/p&gt;
-&lt;p&gt;Mit &lt;strong&gt;inactive=60m&lt;/strong&gt; legst du fest, wie lange ein Objekt im Cache gültig ist, in diesem Fall 60 Minuten. Wenn du mit Inhalten arbeitest, die sich sehr oft ändern, solltest du diesen Wert natürlich verkleinern. Schließlich kannst du mit &lt;strong&gt;max_size&lt;/strong&gt; die tatsächlicheGröße des Caches im Dateisystem begrenzen.&lt;/p&gt;
-&lt;p&gt;Die Direktive &lt;strong&gt;fastcgi_cache_path&lt;/strong&gt; wird &lt;strong&gt;nicht auf Server-Ebene&lt;/strong&gt; angegeben, sondern global unter &lt;strong&gt;http&lt;/strong&gt;. Du kannst damit beliebig viele Caches anlegen, musst aber unbedingt auf die &lt;strong&gt;Unterscheidbarkeit&lt;/strong&gt; achten, damit nginx die Caches deiner unterschiedlichen Server nicht zusammenhaut. Wie macht sich das bemerkbar? Wenn du eine deiner Seiten lädst (&lt;strong&gt;&lt;a href=&#34;https://www.example.com&#34;&gt;www.example.com&lt;/a&gt;&lt;/strong&gt;) und plötzlich auf einer völlig anderen deiner Seiten (Domain) landest (&lt;strong&gt;&lt;a href=&#34;https://www.test.com&#34;&gt;www.test.com&lt;/a&gt;&lt;/strong&gt;), solltest du dir die Direktiven fastcgi_cache_path oder fastcgi_cache_key noch mal genauer anschauen.&lt;/p&gt;
-&lt;h2 id=&#34;die-php-einstellungen&#34;&gt;Die PHP-Einstellungen&lt;/h2&gt;
-&lt;p&gt;Jetzt wird es spannend um nicht zu sagen: etwas kompliziert. Die Einstellungen für den PHP-Interpreter in &lt;strong&gt;fastcgi-php.conf&lt;/strong&gt;. Diese bezieht sich alleine auf Dateien, deren Dateiendung ich in &lt;strong&gt;location&lt;/strong&gt; festlege. Zunächst nutzen wir ein paar Standard-Einstellungen aus der bei nginx mitgelieferten fastcgi.conf-Datei. Hier werden einige Werte festgelegt, wie z.B. Document Root, Protokolle usw. Das muss zwingend zu Beginn passieren, da wir einige Parameter weiter unten überschreiben. Außerdem wird noch die Standard-Script-Datei festgelegt, sollte keine Datei in der URL mitgegeben werden.&lt;/p&gt;
-&lt;p&gt;Mit &lt;a href=&#34;http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_cache&#34;&gt;fastcgi_cache&lt;/a&gt; verweise ich nun auf &lt;strong&gt;Cache-Zone&lt;/strong&gt;, die ich oben bereits definiert habe. Hier kannst du mit Parameter arbeiten ($server). Mit &lt;a href=&#34;http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_cache_valid&#34;&gt;fastcgi_cache_valid&lt;/a&gt; kann ich für jeden HTTP-Antwortcode festlegen, wie lange der Cache gültig ist. Ich verweise hier nur auf erfolgreiche Anfragen (HTTP 200). Weiter oben habe ich bereits festgelegt, welche Anfragen überhaupt gecached werden, hier kann ich diese Anfragen mit &lt;a href=&#34;http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_cache_bypass&#34;&gt;fastcgi_cache_bypass&lt;/a&gt; nun explizit ausklammern.&lt;/p&gt;
-&lt;p&gt;Danach folgt eine wordpress-exklusive Einstellung: Die PHP-Datei wird nur an den PHP-Interpreter weitergereicht, wenn sie sich &lt;strong&gt;nicht&lt;/strong&gt; im Ordner &amp;ldquo;uploads&amp;rdquo; befinden. Das ist ein Sicherheitsfeature: Sollte irgendwie eine PHP-Datei mit schadhaften Code in den (üblicherweise) schreibbaren Ordner &amp;ldquo;Uploads&amp;rdquo; gelangen, wird nginx diesen &lt;strong&gt;niemals&lt;/strong&gt; an PHP weitergeben.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;location ~ \.(php|php.*)$ {
-
-        include fastcgi.conf;
-	fastcgi_index index.php;
-
-        fastcgi_cache cache_$server
-	fastcgi_cache_valid 200 60m;
-	fastcgi_cache_bypass $no_cache;
-	fastcgi_no_cache $no_cache;
-
-	if ($uri !~ &amp;#34;^/uploads/&amp;#34;) {
-
-		fastcgi_pass unix:/run/php/php-fpm-$server.sock;
-
-	}
-
-	# die URL in $fastcgi_script_name und $fastcgi_path aufbrechen:
-	fastcgi_split_path_info ^(.+\.php)(/.+)$;
-
-	# try_files setzt $fastcgi_path_info zurück, deshalb neu festlegen
-        set $path_info $fastcgi_path_info;
-
-	# PHP-Dateien nur verarbeiten, wenn sie überhaupt existieren:
-	try_files $fastcgi_script_name =404;
-
-	fastcgi_param PATH_INFO $path_info;
-	fastcgi_param SCRIPT_FILENAME /htdocs/$fastcgi_script_name;
-	fastcgi_param SCRIPT_NAME $fastcgi_script_name;
-
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Weiter geht es mit einer wichtigen Einstellung für Sicherheit und Geschwindigkeit. Wir haben oben zwar schon grob festgelegt, welche Dateien nicht als Script zu PHP geschickt werden. Das ist aber noch ziemlich wacklig (warum, &lt;a href=&#34;https://www.digitalocean.com/community/tutorials/understanding-and-implementing-fastcgi-proxying-in-nginx&#34;&gt;das ist hier ganz gut beschrieben&lt;/a&gt;): Was wir bisher nicht vermeiden, ist der Aufruf von z.B. /test.jpg/index.php - die Datei index.php würde vom Interpreter nicht gefunden werden. Er würde demnach versuchen, test.jpg auszuführen und den Anhang als Parameter verstehen. Das wollen wir vermeiden.&lt;/p&gt;
-&lt;p&gt;Es gibt viele Möglichkeiten, das zu verhindern. Einige davon werden wir hier nutzen.&lt;/p&gt;
-&lt;p&gt;Mit &lt;strong&gt;fastcgi_split_path_info&lt;/strong&gt; zerlegst du die URL in den Pfad und den Dateinamen um zielsicher zu erkennen, welcher Teil der URL auf eine Datei zeigt und was als Ordner verstanden wird. Die RegExe beinhaltet deswegen zwei Capture-Gruppen. Der Inhalt der ersten Gruppe (.+.php) wird in der Variable &lt;strong&gt;$fastcgi_script_name&lt;/strong&gt; abgelegt, der der zweiten Gruppe (/.+) landet in &lt;strong&gt;$fastcgi_path_info&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;Mit &lt;strong&gt;try_files&lt;/strong&gt; bestimmst du nun, dass nur PHP-Dateien verarbeitet werden, die überhaupt exisiterien. Das Problem dabei ist, dass dadurch der Parameter &lt;strong&gt;$fastcgi_path_info&lt;/strong&gt; zurückgesetzt wird (&lt;a href=&#34;http://trac.nginx.org/nginx/ticket/321&#34;&gt;siehe auch hier&lt;/a&gt;). Deshalb wird dessen Inhalt einen Schritt davor in die Variable &lt;strong&gt;$path_info&lt;/strong&gt; geschrieben. Danach legen die Parameter für FastCGI fest und greifen nun auf die eben per RegExe extrahierten Infos für das Script und den Pfad zurück:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;fastcgi_param PATH_INFO $path_info;
-fastcgi_param SCRIPT_FILENAME /htdocs/$fastcgi_script_name;
-fastcgi_param SCRIPT_NAME $fastcgi_script_name;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Damit das ganze wirklich reibungslos funktioniert, musst du in der php.ini den Parameter &lt;strong&gt;&lt;a href=&#34;https://www.php.net/manual/de/ini.core.php#ini.cgi.fix-pathinfo&#34;&gt;cgi.fix_pathinfo&lt;/a&gt;&lt;/strong&gt; auf 1 setzen - das ist zwar die Standardeinstellungen, schau aber trotzdem noch mal nach:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;cgi.fix_pathinfo=1
-&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;die-https-einstellungen&#34;&gt;Die HTTPS-Einstellungen&lt;/h2&gt;
-&lt;p&gt;Die nächsten Parameter sind wieder etwas unkompliziert und auch selbsterklärend. Wir kommen zu den HTTP- und HTTPS-Einstellungen, die ich in einer Datei zusammengefasst habe (&lt;strong&gt;default_https.conf&lt;/strong&gt;). Hier werden nur die Port-Einstellungen festgelegt, SSL korrekt eingerichtet und auf eine Standard-Datei verwiesen, wenn die Anfrage nicht auf eine Datei verweist:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# welche Datei wird standardmäßig aufgerufen?
-index index.php;
-
-# Nutze 443 als Port für HTTPS und aktiviere HTTP2
-listen 443 ssl http2;
-listen [::]:443 ssl http2;
-# Verweis von Let&amp;#39;s Encrypt:
-include /etc/letsencrypt/options-ssl-nginx.conf;
-ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;die-gzip-einstellungen&#34;&gt;Die GZIP-Einstellungen&lt;/h3&gt;
-&lt;p&gt;Auch die Datei gzip.conf bedarf keiner großen Erklärung. Einen Großteil habe ich bereits global konfiguriert, hier werden auf Server-Ebene noch einige Einstellungen vorgenommen. Dabei setze ich das Kompressions-Level auf 3 und lege fest, welche Ressourcen komprimiert werden. Welches Level du wählst, hängt von deiner Hardware ab. Die Kompression kann die Auslieferung deiner Seite auf jeden Fall beschleunigen, einen etwas ausführlicheren Beitrag dazu findest du bei &lt;a href=&#34;https://royal.pingdom.com/can-gzip-compression-really-improve-web-performance/&#34;&gt;pingdom.com&lt;/a&gt;.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;gzip             on;
-gzip_comp_level  3;
-gzip_types       text/plain text/html text/css application/javascript image/*;
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;die-wordpress-einstellungen&#34;&gt;Die Wordpress-Einstellungen&lt;/h3&gt;
-&lt;p&gt;Weiter geht es mit der Datei &lt;strong&gt;wordpress.conf&lt;/strong&gt; und noch ein paar Sicherheitsfeatures:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# Maximale Dateigröße für Uploads
-client_max_body_size 64M;
-
-location / {
-	# Permalinks wieder funktionsfähig machen
-	try_files $uri $uri/ /index.php?$args;
-        limit_req zone=one burst=10;
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Wie du siehst beziehe ich mir hier erneut auf die Rate Limit Einstellung aus dem ersten Teil in der Datei &lt;strong&gt;nginx.conf&lt;/strong&gt;. Mit Verweis auf meine Zone (&lt;strong&gt;one&lt;/strong&gt;) beschränke ich die Warteschlange auf 10: &lt;strong&gt;burst=10;&lt;/strong&gt; Wenn als mehr Anfragen als erlaubt ankommen (ich hatte 5 pro Sekunde zugelassen), werden bis zu 10 der darauf folgenden Anfragen in eine Warteschlange gepackt. Die anderen Parameter habe ich inline erklärt.&lt;/p&gt;
-&lt;h3 id=&#34;die-logging-einstellungen&#34;&gt;Die Logging-Einstellungen&lt;/h3&gt;
-&lt;p&gt;Auf zur Datei &lt;strong&gt;logging.conf&lt;/strong&gt;. Diese Einstellungen betreffen nicht nur das Log-Verhalten ansich, sondern haben auch Auswirkungen auf &lt;strong&gt;Geschwindigkeit&lt;/strong&gt; und &lt;strong&gt;Sicherheit&lt;/strong&gt;. Ich lege nämlich fest, welche Anfragen nicht ins Log-File geschrieben werden bzw. gänzlich ignoriert werden. Eine aus führliche Dokumentation findest du auf &lt;a href=&#34;https://www.if-not-true-then-false.com/2011/nginx-and-php-fpm-configuration-and-optimizing-tips-and-tricks&#34;&gt;diesem Blog&lt;/a&gt;. Die Einträge sind inline beschrieben und erklären sich, so blöd das klingt, eigentlich selber. Nicht jeder Aufruf muss auch im Log dokumentiert werden. Uns interessieren ja eigentlich nur Fehler oder ungewöhnliche Anfragen.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# nicht loggen: Bilder, XML, CSS, usw.
-# außerdem das Cache-Datum auf 360 Tage setzen
-location ~* \.(jpg|jpeg|gif|png|css|js|ico|xml)$ {
-	access_log        off;
-	log_not_found     off;
-	expires           360d;
-}    
-
-# noch mehr nicht loggen: Doc, XLS, EXE, uvm.
-# außerdem: den Cache komplett deaktivieren!
-location ~* .(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|css|rss|atom|js|jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)$ {
-	expires max;
-	log_not_found off;
-	access_log off;
-}
-
-# nicht loggen: versteckte Dateien die mit . anfange
-# außerdem: Den Zugriff verweigern!
-location ~ /\. {
-	access_log off;
-	log_not_found off; 
-	deny all;
-}
-
-# nicht loggen: robots.txt
-location = /robots.txt {
-	access_log off;
-	log_not_found off;
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;eine-sitemap-korrekt-einbinden&#34;&gt;Eine Sitemap korrekt einbinden&lt;/h2&gt;
-&lt;p&gt;Die Einstellungen im Snippet sitemap.conf kommen ein wenig den berühmten &amp;ldquo;Kanonen auf Spatzen&amp;rdquo; gleich. Im Grunde bilde ich eine ganze Reihe von Spezialfällen ab, die beim Betrieb von Wordpress und Sitemaps auftreten. Du kannst hier sicher einige Zeilen auslassen oder die Datei ganz ignorieren, wenn du ein komplett anderes Setup nutzt:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;rewrite ^/sitemap_index.xml$ /index.php?sitemap=1 last;
-rewrite ^/([^/]+?)-sitemap([0-9]+)?.xml$ /index.php?sitemap=$1&amp;amp;sitemap_n=$2 last;
-location ~ ([^/]*)sitemap(.*).x(m|s)l$ {
-        rewrite ^/sitemap.xml$ /sitemap_index.xml permanent;
-        rewrite ^/([a-z]+)?-?sitemap.xsl$ /index.php?xsl=$1 last;
-        rewrite ^/sitemap_index.xml$ /index.php?sitemap=1 last;
-        rewrite ^/([^/]+?)-sitemap([0-9]+)?.xml$ /index.php?sitemap=$1&amp;amp;sitemap_n=$2 last;
-}
-rewrite ^/sitemap(-+([a-zA-Z0-9_-]+))?\.xml$ &amp;#34;/index.php?xml_sitemap=params=$2&amp;#34; last;
-rewrite ^/sitemap(-+([a-zA-Z0-9_-]+))?\.xml\.gz$ &amp;#34;/index.php?xml_sitemap=params=$2;zip=true&amp;#34; last;
-rewrite ^/sitemap(-+([a-zA-Z0-9_-]+))?\.html$ &amp;#34;/index.php?xml_sitemap=params=$2;html=true&amp;#34; last;
-rewrite ^/sitemap(-+([a-zA-Z0-9_-]+))?\.html.gz$ &amp;#34;/index.php?xml_sitemap=params=$2;html=true;zip=true&amp;#34; last;
-&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;sicherheits-features&#34;&gt;Sicherheits-Features&lt;/h2&gt;
-&lt;p&gt;Zum Abschluss will ich noch ein paar Sicherheitsfeatures implementieren. In der Datei &lt;strong&gt;safety.conf&lt;/strong&gt; passiert nicht viel, außer dass ich den Zugriff auf bestimmte kritische Dateien verbiete. Einiges davon bezieht sich explizit auf eine Wordpress-Installation. Was du aus diesen Einstellungen mitnehmen solltest, ist die Info, wie du mit &lt;strong&gt;location&lt;/strong&gt;, einer &lt;strong&gt;RegExe&lt;/strong&gt; und &lt;strong&gt;deny all&lt;/strong&gt; den Zugriff auf bestimmte Ressourcen verbietest.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# Den Upload-Ordner zusätzlich sichern und nur den Zugriff auf HTML- und Medien-Dateien zulassen:
-location ~* ^/wp-content/uploads/.*.(html|htm|shtml|php|js|swf)$ {
-        deny all;
-}
-
-# In Wordpress die XML-RPC Schnittstelle deaktivieren, die ein beliebtes Angriffsziel darstellt:
-location ^~ /xmlrpc.php {
-        deny all;
-
-}
-
-# Apache nutzt unter anderem .htaccess - das ist für uns vielleicht nicht relevant, sollte sich aber trotzdem mal eine derartige Datei in unser Dateisystem verirren, schützen wir sie vor ungewollten Blicken und zwar für alle Dateien die mit einem Punkt anfangen:
-location ~ /\. { {
-        deny all;
-}
-
-# Theoretisch ist es nicht möglich, dass der Nutzer im Browser den Inhalt von PHP-Dateien sieht - trotzdem schaffen wir zusätzliche Sicherheit, indem wir die wp-config.php gar nicht erst ausliefern
-location ~* wp-config.php {
-        deny all;
-}
-
-# Brutforce erschweren, siehe unten
-location ~ /wp-login.php {
-        limit_req zone=one burst=1 nodelay;
-        fastcgi_pass unix:/run/php/php-fpm-$server.sock;
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Natürlich wollen wir nicht nur den Zugriff auf kritische Ressourcen verhindern, sondern ggf. auch andere Angriffsvektoren erschweren, wie z.B. BruteForce-Attacken. In einer Wordpress-Installation ist ein beliebter Angriffspunkt z.B. die Datei &lt;strong&gt;wp-login.php&lt;/strong&gt;. Weiter oben haben wir schon mal festgelegt, wie oft eine Ressouce abgefragt werden kann. Für &lt;strong&gt;wp-login.php&lt;/strong&gt; wollen wir diese Grenze noch etwa enger ziehen. Unser Setup erlaubt 5 Anfragen / Sekunde. Mit Burst verkürze ich zuerst die Warteschlange auf 1. Mit &lt;strong&gt;nodelay&lt;/strong&gt; sorge ich nun dafür, dass Anfragen sofort beantwortet werden, aber der Slot in de Warteschlange nicht gleich wieder frei wird. Ergo werden direkt darauf folgende Zugriffe im erlaubten Zeitfenster mit dem &lt;strong&gt;HTTP-Fehler 503&lt;/strong&gt; (Service temporarly not available) abgelehnt.&lt;/p&gt;
-&lt;p&gt;Weiter gehts abschließend mit der Einrichtung von &lt;a href=&#34;https://www.nickyreinert.de/mehrere-virtuelle-server-mit-nginx-und-php-fpm-fuer-wordpress-teil-3-3/&#34;&gt;PHP in Teil 3.&lt;/a&gt;&lt;/p&gt;
-</description>
+&lt;p&gt;Im Gegensatz zu den &amp;ldquo;&lt;strong&gt;virtual hosts&lt;/strong&gt;&amp;rdquo; von Apache spricht man bei nginx von &amp;ldquo;&lt;strong&gt;servern&lt;/strong&gt;&amp;rdquo;. Ich möchte das Aufgreifen und nutze im Folgenden einfach nur von &amp;ldquo;&lt;strong&gt;Server&lt;/strong&gt;&amp;rdquo; wenn ich von einem individuellen Host oder virtuellem Server spreche. Wie bei Apache werden diese idealerweise in eigenständigen Konfig-Dateien definiert. Hier gibt es verschiedene Vorlieben, ob die Konfig-Dateien unter &lt;strong&gt;/etc/nginx/sites-available&lt;/strong&gt; oder &lt;strong&gt;/etc/nginx/conf.d&lt;/strong&gt; abgelegt werden.&lt;/p&gt;</description>
       
     </item>
     
@@ -597,34 +65,7 @@ location ~ /wp-login.php {
       <guid>https://nickyreinert.de/blog/2018/11/18/wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death-und-http-500/</guid>
       
       <description>&lt;p&gt;Deine Wordpress-Seite besteht nur aus einem weißen Bildschirm, dem &lt;strong&gt;HTTP-Fehlercode 500&lt;/strong&gt; oder lädt irsinnig langsam? &lt;strong&gt;White Screen of Death&lt;/strong&gt; (WSoD), die berüchtigten &lt;strong&gt;500´er&lt;/strong&gt; sowie lange &lt;strong&gt;Ladezeiten&lt;/strong&gt; scheinen zu den größten Herausforderungen im Umgang mit WordPress zu gehören und sie hinterlassen regelmäßig lange Gesichter. Zwar gehören Ladezeit, PHP- und HTTP-Fehler nicht unbedingt zusammen, sie erfordern aber in der Regel das gleiche Vorgehen: Nämlich die &lt;strong&gt;Analyse&lt;/strong&gt;, was da im &lt;strong&gt;Hintergrund&lt;/strong&gt; so passiert.&lt;br&gt;
-Die Suche nach der Ursache ist oft relativ simpel. Es sagt einem oft nur niemand. Der beliebteste Tipp bei Wordpress lautet oft:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;em&gt;&amp;ldquo;Deaktiviere mal alle Plugins und aktiviere sie nacheinander wieder.&amp;rdquo;&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;Anonymer Ratgeber, Mai 2018&lt;/em&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Das ist alles andere als effizient, ja nicht einmal effektiv: Du erfährst nach 27 Minuten und zwei Tassen Kaffe, dass das Plugin &amp;ldquo;Foobar&amp;rdquo; für den Fehler verantwortlich ist, weil das den &lt;strong&gt;WSoD&lt;/strong&gt; auslöst. Aber dann weißt du immer noch nicht, was genau der Fehler ist. Danke für nichts?&lt;/p&gt;
-&lt;p&gt;Tatsächlich gibt es nur &lt;strong&gt;drei Dinge&lt;/strong&gt;, die dir helfen können, dir selber zu helfen, wenn WordPress dich mal wieder im Stich lässt. Und diese drei Werkzeuge zur &lt;strong&gt;Fehlersuche&lt;/strong&gt; und &lt;strong&gt;Diagnose&lt;/strong&gt; langsamer Wordpress-Installation stelle ich jetzt einmal vor:&lt;/p&gt;
-&lt;h2 id=&#34;1-die-entwickler-konsole-deines-browsers&#34;&gt;1. Die Entwickler-Konsole deines Browsers&lt;/h2&gt;
-&lt;p&gt;Dieses Werkzeug bringt mittlerweile jeder moderne Browser mit und das sollte auch die &lt;strong&gt;erste Anlaufstelle&lt;/strong&gt; für dich sein. Welche Entwicklerkonsole du verwendest, ist deinem Geschmack überlassen, in der Funktionalität unterscheiden sie sich kaum. Du öffnest die Entwicklerkonsole auf vielfältige Weise über&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;das Kontextmenü (Rechte Maustaste -&amp;gt; Element untersuchen) oder&lt;/li&gt;
-&lt;li&gt;über mit der Funktionstaste F12 oder&lt;/li&gt;
-&lt;li&gt;mit dem Shortcut CTRL+SHIFT+I (Windows) / CMD+OPT+I (OS X)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;[gallery link=&amp;ldquo;file&amp;rdquo; columns=&amp;ldquo;4&amp;rdquo; ids=&amp;ldquo;2356,2357,2358,2359&amp;rdquo;]&lt;/p&gt;
-&lt;h2 id=&#34;2-der-query-monitor---warum-ist-dein-wordpress-so-langsam&#34;&gt;2. Der Query Monitor - warum ist dein Wordpress so langsam?&lt;/h2&gt;
-&lt;p&gt;Der &lt;a href=&#34;https://de.wordpress.org/plugins/query-monitor/&#34;&gt;Query Monitor&lt;/a&gt; ist ein wirklich nützliches &lt;strong&gt;Plugin&lt;/strong&gt; für Wordpress. Eines der wenigen. Du fragst dich, warum deine Seite so lange lädt und die Entwicklerkonsole gibt nicht vielmehr her als ein &lt;strong&gt;TTFB&lt;/strong&gt; (Time To First Byte) von 60 Sekunden?&lt;/p&gt;
-&lt;p&gt;Die Entwicklerkonsole sagt dir nur, wie lange der Browser auf den Inhalt wartet. Hier kann maximal identifiziert werden, dass die reine Wartezeit (&lt;strong&gt;TTFB&lt;/strong&gt;) 60 Sekunden beträgt und der Inhalt in 10 Sekunden heruntergeladen wird (die ganzen anderen Nerd-Kennzahlen jetzt mal außen vor gelassen). Letzteres liegt ziemlich wahrscheinlich an der Internetleitung von dir oder dem Hoster. Aber TTFB? Das ist im Grunde die Zeit, die der Server benötigt um die Ausgabe einmal zusammenzuschustern und zu deinem Browser zu schicken. Also das ganze PHP-Gedöns einmal &amp;ldquo;interpretieren&amp;rdquo; und ein paar Datenbankabfragen durchführen. Je umfangreicher deine WordPress-Seite ist (sprich Plugin-Vielfalt), desto mehr gibt es hier zu tun. Und was da im Hintergrund genau passiert, sagt dir der &lt;strong&gt;Query Monitor&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;[gallery link=&amp;ldquo;file&amp;rdquo; columns=&amp;ldquo;2&amp;rdquo; ids=&amp;ldquo;2354,2355&amp;rdquo;]&lt;/p&gt;
-&lt;p&gt;Nach der Installation siehst du in der Admin-Toolbar erstmal ein paar oberflächliche Zahlen: &lt;strong&gt;Ladezeit,&lt;/strong&gt; &lt;strong&gt;Größe&lt;/strong&gt; und &lt;strong&gt;Anzahl der Queries.&lt;/strong&gt; Wirklich spannend wird es, wenn du mal auf diese Zahlen klickst. Dann öffnet sich eine &amp;ldquo;&lt;em&gt;Entwickler-Konsole&amp;rdquo;,&lt;/em&gt; die deiner WordPress-Seite mal gehörig unter die Haube schaut. Du siehst &lt;strong&gt;Datenbankabfragen,&lt;/strong&gt; &lt;strong&gt;Scripte,&lt;/strong&gt; &lt;strong&gt;Funktionen&lt;/strong&gt; und alle möglichen Diagnostiken - einfach alles. Du kannst nun relativ zügig erkennen, ob manche Abfragen einfach nur doppelte durchgeführt wurden oder die Datenbank grundsätzlich zu langsam ist.&lt;/p&gt;
-&lt;h2 id=&#34;3-der-debug-modus&#34;&gt;3. Der Debug-Modus&lt;/h2&gt;
-&lt;p&gt;DasBbeste zum Schluss - der Debug-Modus verrät dir wirklich alles und ist eigentlich der Premium-Weg der Problemlösung.&lt;/p&gt;
-&lt;p&gt;Du wirst nur selten erleben, dass Wordpress bzw. dein Server dich wirklich gar nicht mit einer Fehlermeldung erhellen will. Der unliebsame &lt;strong&gt;White Screen of Death&lt;/strong&gt; und der gefürchtete &lt;strong&gt;HTTP-Fehler 500&lt;/strong&gt; sind im Grunde nur der Standardeinstellungen geschuldet. Du kannst dann entweder ein Ticket bei deinem Hoster öffnen und im nächsten Jahr mit einer Antwort rechnen oder versuchen, selber an die Fehlermeldung zu gelangen und das Problem eigenständig zu analysieren: &lt;strong&gt;Der geheime Trick&lt;/strong&gt; lautet nämlich, einfach mal das Internet nach der Fehlermeldung zu durchsuchen. &lt;strong&gt;In 99,99% der Fälle&lt;/strong&gt; bist du bei weitem nicht der erste mit diesem banalen Problem..&lt;/p&gt;
-&lt;p&gt;Die wahre Herausforderung ist allerdings, dass die Ausgabe von Fehlermeldungen eben standardmäßig unterdrückt  wird. Aus Gründen der Sicherheit und Bedienbarkeit ist das grundsätzlich nicht verkehrt. Wenn du doch mal wissen willst, woher der &lt;strong&gt;White Screen of Death&lt;/strong&gt; wirklich kommt, gehst du folgendermaßen vor:&lt;/p&gt;
-&lt;h3 id=&#34;a-du-aktivierst-die-fehlerausgabe-von-wordpress&#34;&gt;A: Du aktivierst die Fehlerausgabe von Wordpress&lt;/h3&gt;
-&lt;p&gt;Dazu öffnest du die Datei wp-config.php, nachdem du sie lokal gespeichert hast, und setzt folgenden Parameter direkt an den Anfang, aber hinter das &lt;em&gt;&amp;lt;?php&lt;/em&gt;:&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
-</description>
+Die Suche nach der Ursache ist oft relativ simpel. Es sagt einem oft nur niemand. Der beliebteste Tipp bei Wordpress lautet oft:&lt;/p&gt;</description>
       
     </item>
     
@@ -636,63 +77,7 @@ Die Suche nach der Ursache ist oft relativ simpel. Es sagt einem oft nur niemand
       <guid>https://nickyreinert.de/blog/2018/08/25/checkliste-wordpress-umzug/</guid>
       
       <description>&lt;p&gt;Du hast Wordpress auf eine neue Domain oder einen neuen Hoster umgezogen und der Blog ist noch nicht erreichbar oder die Adresse verweist noch auf eine alte Installation, obwohl du an alles gedacht hast? Da fragst du dich zurecht: Wo hängt&amp;rsquo;s? Oder du hast den Umzug erst vor dir und willst wissen, woran du denken musst?&lt;/p&gt;
-&lt;p&gt;Dafür habe ich dir hier eine Checkliste der gängigen Fehlerquellen aufgestellt, die dir beim nächsten Mal helfen soll.&lt;/p&gt;
-&lt;h3 id=&#34;vom-browser-zum-server&#34;&gt;Vom Browser zum Server&lt;/h3&gt;
-&lt;p&gt;Um die potentiellen Fehler zu erkennen und zu verstehen ist es sehr hilfreich, den &lt;strong&gt;groben Ablauf&lt;/strong&gt; zu kennen: Was passiert, wenn du deine Domain in den Browser eingibst? Denn meistens steckt der Fehler im Detail und man hat nur vergessen, an einer Stelle die nötigen Anpassungen vorzunehmen. Was passiert also, wenn ein Benutzer deine Website im Browser aufruft? Ich habe das ganze einmal sehr laienhaft und stark reduziert in einer Grafik zusammengefasst. Wenn du weißt, worum es geht, überspringe diesen Absatz oder schlage danach einmal die Hände über dem Kopf zusammen.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/aufruf-einer-website-vereinfacht.png&#34;&gt;&lt;img src=&#34;images/aufruf-einer-website-vereinfacht-300x132.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Was passiert beim Aufruf einer Webseite im Browser&lt;/p&gt;
-&lt;p&gt;Der Browser, oder vielmehr der Computer, muss die Adresse der Website zunächst in die sogenannte IP-Adresse übersetzen lassen - durch einen &lt;strong&gt;DNS-Server&lt;/strong&gt;. Anhand der &lt;strong&gt;IP-Adresse&lt;/strong&gt; findet der Browser dann den Weg zum eigentlich &lt;strong&gt;Webserver&lt;/strong&gt;. Dieser muss dann  wissen, dass die Website bei ihm existiert und kann deshalb auch auf den entsprechenden &lt;strong&gt;Ordner&lt;/strong&gt; im Dateisystem verweisen. Dort wird die &lt;strong&gt;Web-Anwendung&lt;/strong&gt;, also z.B. &lt;strong&gt;Wordpress&lt;/strong&gt;, ausgeführt. Hier erfolgen auch die Zugriffe auf die Datenbank. Die &lt;em&gt;index.php&lt;/em&gt; ist der zentrale &lt;strong&gt;Einstiegspunkt&lt;/strong&gt;, von dem aus noch viele andere, vornehmlich PHP-Dateien, eingebunden werden.&lt;/p&gt;
-&lt;h2 id=&#34;potentielle-fehlerquellen&#34;&gt;Potentielle Fehlerquellen&lt;/h2&gt;
-&lt;h3 id=&#34;dein-computer-und-der-dns-cache&#34;&gt;Dein Computer und der DNS-Cache&lt;/h3&gt;
-&lt;p&gt;Damit dein Computer und der Browser nicht jedes mal beim DNS-Server nachfragen müssen, welche IP-Adresse zu einer Website gehört, gibt es hier sog. &lt;strong&gt;Zwischenspeicher&lt;/strong&gt;, auch &lt;strong&gt;Cache&lt;/strong&gt; genannt. In &lt;strong&gt;Chrome&lt;/strong&gt; kannst du diesen folgendermaßen deaktivieren.&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Rufe diese Adresse auf: chrome://net-internals/#dns&lt;/li&gt;
-&lt;li&gt;Klicke dort den Button &amp;ldquo;Clear host cache&amp;rdquo;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;In &lt;strong&gt;Firefox&lt;/strong&gt; löschst du den DNS-Cache über die Datenschutz-Optionen in den Einstellung.&lt;/p&gt;
-&lt;p&gt;In beiden Browsern gibt es übrigens die Möglichkeit, den Cache permanent zu deaktivieren. Dazu musst du die &lt;strong&gt;Entwicklerkonsole&lt;/strong&gt; öffnen (ALT+F12 oder Alt+Apfel+I) und die Checkbox &amp;ldquo;&lt;em&gt;Cache deaktivieren&lt;/em&gt;&amp;rdquo; aktivieren. Diese Funktion ist aber nur so lange aktiv, bis die Entwicklerkonsole wieder geschlossen wird:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/image-2.png&#34;&gt;&lt;img src=&#34;images/image-2-700x232.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Außerdem legt auch dein &lt;strong&gt;Betriebssystem&lt;/strong&gt; einen Cache an. In Windows wird dieser folgendermaßen geleert:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ipconfig /flushdns
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Auch in Apples Betriebssystem OS X kann man den Cache per Hand leeren (ab 10.12 Sierra):&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;sudo killall -HUP mDNSResponder
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;dein-router-und-dein-internetanbieter&#34;&gt;Dein Router und dein Internetanbieter&lt;/h3&gt;
-&lt;p&gt;Bestimmte &lt;strong&gt;Router-Modelle&lt;/strong&gt; und mit Sicherheit auch dein &lt;strong&gt;Internet-Anbieter&lt;/strong&gt; (ISP) speichern ebenfalls die Kombination aus Domain Name und IP-Adresse. Den DNS-Cache des Routers kannst du ggf. leeren, indem du ihn neu startest. Den deines ISP kannst du mit Sicherheit nicht beeinflussen. Du kannst aber in den Netzwerkeinstellungen einen anderen &lt;strong&gt;DNS-Server&lt;/strong&gt; einrichten, wie z.B. den von Google (8.8.8.8). Wenn dir das zu aufwendig ist, rufe die Seite über dein Handy auf, wenn es &lt;strong&gt;nicht mit deinem WLAN verbunden&lt;/strong&gt; ist. Dann nutzt du den Internetzugang deines Handy-Anbieters, der vielleicht schon einen anderen DNS-Eintrag kennt. Jeder DNS-Eintrag ist übrigens für gewöhnlich mit einem sog. TTL versehen - einem Eintrag für das &lt;strong&gt;Time-To-Live.&lt;/strong&gt; Dieser beträgt z.B. 24 Stunden und besagt, wie lange ein entsprechender Eintrag gültig ist. Willst du wissen, wie groß dieser Wert ist, hilft dir die &lt;a href=&#34;https://mxtoolbox.com/SuperTool.aspx?action=a%3awww.example.com&amp;amp;run=toolpage&#34;&gt;mxtoolbox&lt;/a&gt; weiter.&lt;/p&gt;
-&lt;h3 id=&#34;der-hoster&#34;&gt;Der Hoster&lt;/h3&gt;
-&lt;p&gt;Das ist der schwierigste Punkt, da es hier erstmal zwei Möglichkeiten gibt:&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Grundsätzlich&lt;/strong&gt; gilt: Damit ein Domain-Name auf (d)einen Web-Server zeigt, sind mindestens &lt;strong&gt;zwei Schritte&lt;/strong&gt; nötig:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;die Domain muss registriert und einer IP-Adresse zugeordnet werden&lt;/li&gt;
-&lt;li&gt;die Domain muss dem Web-Server &amp;ldquo;mitgeteilt&amp;rdquo; werden&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Nun gibt es allerdings mindestens &lt;strong&gt;drei Szenarien&lt;/strong&gt;, wie das umgesetzt wird:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Dein Hoster stellt den Webspace unter einer Hosting-Domain zur Verfügung (&lt;em&gt;c123123.hoster.com&lt;/em&gt;) und die &amp;ldquo;echte&amp;rdquo; Domain (&lt;em&gt;example.com&lt;/em&gt;) wird bei einem anderen Anbieter verwaltet. Die Hosting-Domain zeigt hier bereits direkt auf deinen Webspace. Wenn deine Anwendung dort in einem anderen Ordner liegt, musst die &amp;ldquo;echte&amp;rdquo; Domain direkt darauf zeigen, also z.B: &lt;em&gt;example.com -&amp;gt; c123123.hoster.com/wordpress&lt;/em&gt;_/_.&lt;/li&gt;
-&lt;li&gt; Dein Hoster stellt den Webspace unter einer IP-Adresse zur Verfügung (bzw. du nutzt einen Managed- oder Root-Server) und die Domain wird bei einem anderen Anbieter verwaltet. In diesem Fall muss der Hoster wissen, welche Domain auf die IP-Adresse deines Webspaces zeigt. Er kann diese Domain dann einem Ordner auf dem Webspace zuordnen.&lt;/li&gt;
-&lt;li&gt;Das &lt;strong&gt;Gesamtpaket&lt;/strong&gt;: Dein Hoster stellt den Webspace und verwaltet deine Domain.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/image-6.png&#34;&gt;&lt;img src=&#34;images/image-6-700x493.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Hosting-Varianten im Vergleich&lt;/p&gt;
-&lt;p&gt;Bei den Gesamt-Paketen wird das ganze Konstrukt wie gesagt sehr simpel zusammengefasst. Bei &lt;strong&gt;all-inkl.com&lt;/strong&gt; erfolgt das z.B. über das KAS über den Menüpunkt &lt;strong&gt;Domains&lt;/strong&gt;, wo der Ort im Dateisystem angegeben werden kann. Der Verweis zu einem anderen, fremden Webspace erfolgt über die Option &amp;ldquo;Redirect&amp;rdquo;. Dann wird diese Domain mit einem HTTP-Statuscode 301, 302 oder 307 an einen anderen Server weitergeleitet.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/domain-ziel-bei-all-inkl.png&#34;&gt;&lt;img src=&#34;images/domain-ziel-bei-all-inkl-700x344.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Domain-Ziel bei all-inkl.com einrichten&lt;/p&gt;
-&lt;p&gt;Bei Strato ist das Formular etwas anders aufgebaut, hat aber natürlich die gleiche Funktion. Im Menü &lt;strong&gt;Domain / Domainverwaltung&lt;/strong&gt; legst du fest, auf welchen Ordner deine Domain zeigen soll. Über die DNS-Einstellungen kannst du auch hier auf einen anderen Server zeigen lassen:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/image.png&#34;&gt;&lt;img src=&#34;images/image-281x300.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Domain-Ziel bei Strato einrichten&lt;/p&gt;
-&lt;p&gt;Wenn du Zugriff auf die &lt;strong&gt;Konsole&lt;/strong&gt; hast (z.B. mit SSH), kannst du mit folgendem Befehl prüfen, ob der Server deine Domain überhaupt &amp;ldquo;kennt&amp;rdquo;:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;apache2ctl -S
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Die Ausgabe sollte in etwa folgenden Aufbau haben und mindestens deine Domain enthalten und auch auf den korrekten Ordner Grundsätzlich hilft auch hier erstmal die &lt;a href=&#34;https://mxtoolbox.com/SuperTool.aspx?action=a%3awww.example.com&amp;amp;run=toolpage&#34;&gt;mxtoolbox&lt;/a&gt; weiter, um zu erkennen, ob der Eintrag schon existiert:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/apachectl-ausgabe.png&#34;&gt;&lt;img src=&#34;images/apachectl-ausgabe-700x298.png&#34; alt=&#34;Ausgabe von apachectl , Liste der virtuellen Hosts in Apache&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;die-wordpress-konfiguration&#34;&gt;Die Wordpress-Konfiguration&lt;/h3&gt;
-&lt;p&gt;Und schließlich muss natürlich auch die Wordpress-Installation vollständig und korrekt eingerichtet und angepasst sein. Hier gibt es zwei Stellen, an denen der Domain-Name eingerichtet werden kann. Der einfachste Weg ist über das Backend von Wordpress. Damit wird deine Adresse direkt in der Datenbank abgelegt:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/image-3.png&#34;&gt;&lt;img src=&#34;images/image-3-300x61.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Wenn du auf das Backend keinen Zugriff hast, wählst du den direkten Weg über die &lt;em&gt;wp-config.php&lt;/em&gt;. Die Änderungen hier überschreiben die Einstellungen im Backend.&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;define(&amp;#39;WP_HOME&amp;#39;,&amp;#39;https://www.nickyreinert.de&amp;#39;);
-define(&amp;#39;WP_SITEURL&amp;#39;,&amp;#39;https://www.nickyreinert.de&amp;#39;);
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;In der Datenbank befinden sich sehr oft noch andere Verweise auf deine Domain. Bei einem Umzug müssen auch diese angepasst werden. Da das aber ein sehr umfangreicher Prozess ist, empfehle ich dazu das Wordpress-Plugin &amp;ldquo;&lt;a href=&#34;https://de.wordpress.org/plugins/better-search-replace/&#34;&gt;Better Search Replace&lt;/a&gt;&amp;rdquo;.&lt;/p&gt;
-&lt;h3 id=&#34;fazit&#34;&gt;Fazit&lt;/h3&gt;
-&lt;p&gt;Wenn du die hier genannten Punkte berücksichtigt hast, hast du eigentlich an alles gedacht. Oft ist es der lokale Cache, der die neue Adresse noch nicht kennt und dann die Sorgenfalten auf die Stirn treibt. Wenn ich einen Punkt vergessen haben sollte oder etwas unklar ist, hinterlasse mir gerne ein Kommentar.&lt;/p&gt;
-</description>
+&lt;p&gt;Dafür habe ich dir hier eine Checkliste der gängigen Fehlerquellen aufgestellt, die dir beim nächsten Mal helfen soll.&lt;/p&gt;</description>
       
     </item>
     
@@ -706,24 +91,7 @@ define(&amp;#39;WP_SITEURL&amp;#39;,&amp;#39;https://www.nickyreinert.de&amp;#39
       <description>&lt;p&gt;Du willst z.B. ein Glossar aufbauen und dabei mithilfe von Links innerhalb der Seite zu bestimmten Punkten springen? Das geht einfacher, als vermutet, mit dem Ankerlink, der fester Bestandteil von HTML ist.&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;#dasEnde&#34;&gt;An&amp;rsquo;s Ende springen&lt;/a&gt; oder weiterlesen:&lt;/p&gt;
 &lt;h2 id=&#34;den-zielpunkt-festlegen&#34;&gt;Den Zielpunkt festlegen&lt;/h2&gt;
-&lt;p&gt;Dazu setzt du an beliebiger Stelle deines Textes, für gewöhnlich verwendet man dafür ja Überschriften, eine Sprungmarke indem du der Überschrift eine Id verpasst. Das ganze musst du im Text-Editor und nicht im visuellen Editor von Wordpress machen:&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;Also z.B. so:&lt;/p&gt;
-&lt;p&gt;[caption id=&amp;ldquo;attachment_1775&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;a href=&#34;https://www.nickyreinert.de/files/einen-ankerlink-in-wordpress-setzen/ankerlink-in-wordpress-definieren.png&#34;&gt;&lt;img src=&#34;images/ankerlink-in-wordpress-definieren-300x88.png&#34; alt=&#34;Im Wordpress-Texteditor einen Ankerlink definieren&#34;&gt;&lt;/a&gt; Im Wordpress-Texteditor einen Ankerlink definieren[/caption]&lt;/p&gt;
-&lt;h2 id=&#34;den-link-zum-ziel-einfügen&#34;&gt;Den Link zum Ziel einfügen&lt;/h2&gt;
-&lt;p&gt;Danach wechselst du zurück zum visuellen Editor und fügst am Anfang des Beitrages den Verweis ein. Der besteht aus einer Raute und der Id, die du eben vergeben hast. Fertig ist dein Ankerlink:&lt;/p&gt;
-&lt;p&gt;[caption id=&amp;ldquo;attachment_1772&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;a href=&#34;https://www.nickyreinert.de/files/einen-ankerlink-in-wordpress-setzen/ankerlink-in-wordpress-setzen.png&#34;&gt;&lt;img src=&#34;images/ankerlink-in-wordpress-setzen-300x122.png&#34; alt=&#34;Im Wordpress Editor den Verweis auf den Ankerlink einfügen&#34;&gt;&lt;/a&gt; Im Wordpress Editor den Verweis auf den Ankerlink einfügen[/caption]&lt;/p&gt;
-&lt;p&gt;Möchtest du mit einer URL direkt auf den Anker verweisen, hängst du die Raute und die Id einfach an die URL an:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/einen-ankerlink-in-wordpress-setzen#dasEnde&#34;&gt;https://www.nickyreinert.de/einen-ankerlink-in-wordpress-setzen#dasEnde&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;den-verweis-in-einem-menü-unterbringen&#34;&gt;Den Verweis in einem Menü unterbringen&lt;/h2&gt;
-&lt;p&gt;Natürlich kannst du den Verweis auch an anderen Stellen verwenden, wie z.B. im Menü oder der Sidebar. Das hat den Vorteil, das entsprechende Template vorausgesetzt, dass sich die Verweise an einer prominenten und gut sichtbaren Stelle befinden.&lt;/p&gt;
-&lt;p&gt;In einem Menü musst du dazu anstatt einer kompletten URL einfach nur die Raute und die Id angeben:&lt;/p&gt;
-&lt;p&gt;[caption id=&amp;ldquo;attachment_1778&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;a href=&#34;https://www.nickyreinert.de/files/einen-ankerlink-in-wordpress-setzen/ankerlink-im-menue-festlegen.png&#34;&gt;&lt;img src=&#34;images/ankerlink-im-menue-festlegen-300x263.png&#34; alt=&#34;Ankerziel in einem Wordpress-Menü festlegen&#34;&gt;&lt;/a&gt; Ankerziel in einem Wordpress-Menü festlegen[/caption]&lt;/p&gt;
-&lt;p&gt;Den letzten Feinschliff verpasst du dem Ganzen nun, wenn du das Menü nur einer bestimmten Seite zuordnest. Dafür brauchst du dann aber tatsächlich entweder ein Plugin oder entsprechendes Template.&lt;/p&gt;
-&lt;p&gt;Früher hat man anstatt des Id-Attributes übrigens das Name-Attribut verwendet. Aber das ist nur zusätzliches unnützes Wissen. Wie die folgenden Abschnitte.&lt;/p&gt;
-&lt;h2 id=&#34;das-ende&#34;&gt;Das Ende&lt;/h2&gt;
-&lt;p&gt;Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.&lt;/p&gt;
-</description>
+&lt;p&gt;Dazu setzt du an beliebiger Stelle deines Textes, für gewöhnlich verwendet man dafür ja Überschriften, eine Sprungmarke indem du der Überschrift eine Id verpasst. Das ganze musst du im Text-Editor und nicht im visuellen Editor von Wordpress machen:&lt;/p&gt;</description>
       
     </item>
     
@@ -736,38 +104,7 @@ define(&amp;#39;WP_SITEURL&amp;#39;,&amp;#39;https://www.nickyreinert.de&amp;#39
       
       <description>&lt;p&gt;Diese Version ist veraltet, bitte verwende absofort diese Version:&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/wordpress-word-cloud-2-0/&#34;&gt;https://www.nickyreinert.de/wordpress-word-cloud-2-0/&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Wer träumt nicht davon, eine Wolke aus Wörtern in Wordpress darstellen zu können? Der Fachmann spricht hier von einer sogenannten Word-Cloud. Ich meine hier übrigens ausdrücklich nicht die bekannten TagClouds, bei denen schlicht die verwendeten Wordpress-Tags in einer Wolke anklickbar angezeigt werden. Hier geht es einfach um die Darstellung von Wörtern, die entsprechend der Vorkommen verschieden groß dargestellt werden. Leider gab es genau für diesen Zweck bisher kein Wordpress-Plugin. Dafür habe ich aber eine sehr leicht zu bedienende &lt;a href=&#34;https://github.com/timdream/wordcloud2.js/blob/gh-pages/API.md&#34;&gt;JavaScript-Bibliothek von Tim Dream: wordCloud2.js&lt;/a&gt; gefunden, auf der ich das Plugin aufgebaut habe.&lt;/p&gt;
-&lt;h2 id=&#34;installation&#34;&gt;Installation&lt;/h2&gt;
-&lt;p&gt;Der ganze Spaß steht &lt;a href=&#34;https://github.com/nickyreinert/wordCloud-for-Wordpress&#34;&gt;auf GitHub zur Verfügung&lt;/a&gt;. Du musst lediglich den Source-Code herunterladen und in einen Unterordner in wp-content/plugins entpacken. Wenn du das Plugin im Backend aktiviert hast, kannst du auf jeder Seite und jedem Beitrag den Shortcode [ word-cloud ] nutzen.&lt;/p&gt;
-&lt;p&gt;Die folgenden Parameter kannst du im Shortcode übergeben. Der Parameter &lt;strong&gt;target-id&lt;/strong&gt; ist dabei immer notwendig, alle anderen sind nicht verpflichtend.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;target-id&lt;/strong&gt; - damit wird jede Instanz von word-cloud adressiert. Du kannst je Seite mehrere Word-Clouds erstellen, die Target-Id wird auch als CSS-Id verwendet&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;source&lt;/strong&gt; -wenn du eine eigene SQL-Abfrage verwenden möchtest, musst du diesen Parameter auf &amp;ldquo;sql&amp;rdquo; setzen, andernfalls wird versucht, ein Custom-Field auszulesen&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;source-id&lt;/strong&gt; - wenn sich die Wortliste in einem Custom-Field befindet, musst du mit diesem Parameter den Namen des Felds angeben&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;query&lt;/strong&gt; - wenn du eine SQL-Abfrage verwendest, nutzt du dafür diesen Parameter&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;backgroundColor&lt;/strong&gt; - die Hintergrundfarbe der Cloud, z.B. #123123&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;gridSize&lt;/strong&gt; - ein ganze Zahl, mit der die Lücke zwischen den Wörtern gesteuert werden kann&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;fontFamily&lt;/strong&gt; - welcher Font soll verwendet werden&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;fontWeight&lt;/strong&gt; - das Gewicht der Schriften, also z.B. bold oder normal&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;minRotation&lt;/strong&gt; - eine ganze Zahl, die das Mindestmaß der Rotation bestimmt, ist der Wert 0, wird die Rotation deaktiviert&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;maxRotation&lt;/strong&gt; - das gleiche, nur für die Obergrenze der Rotation&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;weightFactor&lt;/strong&gt; - eine ganze Zahl, um die Gewichtung der Wörter zu beeinflussen, also ein Multiplikator für die Größe&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;shape&lt;/strong&gt; - die Form der Wolke, hier kannst du folgende Formen verwenden: circle (Standard), cardioid (Apfel bzw. Herz), diamond, square, triangle-forward, triangle, pentagon und star&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;beispiel&#34;&gt;Beispiel&lt;/h2&gt;
-&lt;h3 id=&#34;wörter-aus-einer-mysql-tabelle-nutzen&#34;&gt;Wörter aus einer MySQL-Tabelle nutzen&lt;/h3&gt;
-&lt;p&gt;Die folgende Word-Cloud verwendet eine Liste von 100 Wörtern aus einer Datenbank-Abfrage:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[ word-cloud target-id=&amp;#34;myWordCloud1&amp;#34; source=&amp;#34;sql&amp;#34; query=&amp;#34;SELECT word, SUM(count) AS count FROM augenblicke.001_words GROUP BY word ORDER BY count DESC LIMIT 0,100&amp;#34; ]
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Hier siehst du eine Word-Cloud, die auf eine kleinere Liste zurückgreift, die ich in einem Custom-Field übergebe:&lt;/p&gt;
-&lt;p&gt;[word-cloud target-id=&amp;ldquo;myWordCloud2&amp;rdquo; source-id=&amp;ldquo;word-cloud&amp;rdquo;]&lt;/p&gt;
-&lt;h3 id=&#34;wörter-aus-einem-benutzerdefinierten-feld-nutzen&#34;&gt;Wörter aus einem benutzerdefinierten Feld nutzen&lt;/h3&gt;
-&lt;p&gt;Achtung: Dieser Weg funktioniert mit dem neuen Gutenberg-Editor (ab Wordpress 5) nicht, da dieser (Stand Januar 2019) keine benutzerdefinierten Felder anzeigt.&lt;/p&gt;
-&lt;p&gt;Wenn du auf eine Liste mit Wörter aus einem benutzerdefinierten Feld zugreifen willst, übergibst du als source-id den Namen des benutzerdefinierten Feldes:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[word-cloud target-id=&amp;#34;myWordCloud2&amp;#34; source-id=&amp;#34;word-cloud&amp;#34;]
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Das benutzerdefinierte Feld legst du dann mit genau diesem Namen an und füllst es mit den Wörter und den Werten, die die Größe represäntieren sollen:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.nickyreinert.de/files/grafik-13.png&#34;&gt;&lt;img src=&#34;images/grafik-13-700x74.png&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Benutzerdefiniertes Feld mit eigener Wortliste im klassischen Editor&lt;/p&gt;
-</description>
+&lt;p&gt;Wer träumt nicht davon, eine Wolke aus Wörtern in Wordpress darstellen zu können? Der Fachmann spricht hier von einer sogenannten Word-Cloud. Ich meine hier übrigens ausdrücklich nicht die bekannten TagClouds, bei denen schlicht die verwendeten Wordpress-Tags in einer Wolke anklickbar angezeigt werden. Hier geht es einfach um die Darstellung von Wörtern, die entsprechend der Vorkommen verschieden groß dargestellt werden. Leider gab es genau für diesen Zweck bisher kein Wordpress-Plugin. Dafür habe ich aber eine sehr leicht zu bedienende &lt;a href=&#34;https://github.com/timdream/wordcloud2.js/blob/gh-pages/API.md&#34;&gt;JavaScript-Bibliothek von Tim Dream: wordCloud2.js&lt;/a&gt; gefunden, auf der ich das Plugin aufgebaut habe.&lt;/p&gt;</description>
       
     </item>
     
@@ -780,15 +117,7 @@ define(&amp;#39;WP_SITEURL&amp;#39;,&amp;#39;https://www.nickyreinert.de&amp;#39
       
       <description>&lt;p&gt;&lt;em&gt;data-heatmap&lt;/em&gt; dient zur Darstellung einer Heatmap als Wordpress Plugin. Dabei werden entsprechende Quell-Daten in einer HTML-Tabelle als Heatmap darzustellen. Das Ergebnis kann z.B. so aussehen:&lt;/p&gt;
 &lt;p&gt;[data-heatmap transpose=&amp;ldquo;yes&amp;rdquo; hide-xaxis=&amp;ldquo;no&amp;rdquo; hide-yaxis=&amp;ldquo;no&amp;rdquo; hide-values=&amp;ldquo;yes&amp;rdquo; sort-yaxis=&amp;ldquo;yes&amp;rdquo; source-for-gradiation=&amp;ldquo;y&amp;rdquo;]&lt;/p&gt;
-&lt;p&gt;Die Daten stammen aus einer Tabelle mit drei Spalten. Es handelt sich um die Bus- und Bahn-Linien der öffentlichen Verkehrsmittel in Berlin (Spalte x), die Tageszeiten von 0 bis 23 Uhr (Spalte y) und die Anzahl von Beiträgen in einem Portal (Spalte v). Die Heatmap zeigt also, wieviele Beiträge zu einer bestimmten Uhrzeit in einer bestimmten Linie abgegeben wurden.&lt;/p&gt;
-&lt;p&gt;y,x,v
-0, BUS, 49
-1, EXPRES-BUS, 4
-1, METRO-BUS, 28
-4, METRO-TRAM, 59
-&amp;hellip;&lt;/p&gt;
-&lt;p&gt;Das Plugin steht auf &lt;a href=&#34;https://github.com/nickyreinert/data-heatmap&#34;&gt;github.com&lt;/a&gt; zur freien Verwendung zur Verfügung.&lt;/p&gt;
-</description>
+&lt;p&gt;Die Daten stammen aus einer Tabelle mit drei Spalten. Es handelt sich um die Bus- und Bahn-Linien der öffentlichen Verkehrsmittel in Berlin (Spalte x), die Tageszeiten von 0 bis 23 Uhr (Spalte y) und die Anzahl von Beiträgen in einem Portal (Spalte v). Die Heatmap zeigt also, wieviele Beiträge zu einer bestimmten Uhrzeit in einer bestimmten Linie abgegeben wurden.&lt;/p&gt;</description>
       
     </item>
     
@@ -799,78 +128,7 @@ define(&amp;#39;WP_SITEURL&amp;#39;,&amp;#39;https://www.nickyreinert.de&amp;#39
       
       <guid>https://nickyreinert.de/blog/2018/03/11/wie-richte-in-ein-staging-system-f%C3%BCr-wordpress-ein/</guid>
       
-      <description>&lt;p&gt;Wordpress hat den Ruf sehr unkompliziert zu sein. Zurecht. Doch oft bleibt es nicht dabei, dass man ein paar Beiträge verfasst. Die Seite kann schnell von einem einfachen Blog zu einem großen CMS heranwachsen und wird dann nicht nur mit Texten und Bildern, sondern dank eines riesigen Angebotes an Plugins und Template auch mit Funktionalitäten gefüllt. Und dann wird man mit einem Konflikt konfrontiert, dass die gesamte Seite bedroht: Updates und Inkompatibilität. Es ist nämlich gar nicht so selbstverständlich, dass die eigenen Anpassungen mit alle Wordpress-, Plugin- und Template-Versionen oder gar der Hosting-Umgebung harmonieren. Je angepasster die eigene Wordpress-Installation ist, desto komplexer sind im Hintergrund die Abhängigkeiten. Ein kleines Update kann im schlimmsten Fall die gesamte Seite gefährden. Ein Staging-System für Wordpress kann da helfen.&lt;/p&gt;
-&lt;h2 id=&#34;zwei-wege-und-drei-plugins-führen-nach-rom&#34;&gt;Zwei Wege und drei Plugins führen nach Rom&lt;/h2&gt;
-&lt;p&gt;Deswegen ist es ratsam, sich möglichst früh um eine Testumgebung Gedanken zu machen. Das Ziel soll eine sogenannte Staging-Umgebung sein, die synchron zum öffentlichen Live-System betrieben werden kann. Gleiche Inhalte, gleiche Templates, gleiche Plugins. Auf diesem Staging-System kann dann jedes Update und jede Änderung auf Kompatibilität getestet werden. Bei Erfolg installiert man das Update auch auf dem Live-System. Die gute Nachricht: Das Lesen des Beitrages wird dich vermutlich mehr Zeit kosten, als der ganze Prozess. Je nach Größe des Blogs kannst du ein Staging-System für Wordpress in 5 bis 10 Minuten aufsetzen.&lt;/p&gt;
-&lt;p&gt;Es gibt viele Möglichkeiten (sprich Plugins), die versprechen, Wordpress-Installationen zu kopieren oder in irgendeiner Form zu synchronisieren. Doch keines erfüllt das Ziel wirklich komfortabel, nämlich:&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;per Knopfdruck im Wordpress-Backend Dateien und Datenbank an einen anderen Ort kopieren&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;Ich will an dieser Stelle zwei Wege und drei Plugins vorstellen, die ich als sehr nützlich betrachte und die die Aufgabe zumindest in Teilen erfüllen.&lt;/p&gt;
-&lt;h3 id=&#34;welche-plugins-kommen-für-das-staging-system-für-wordpress-in-frage&#34;&gt;Welche Plugins kommen für das Staging-System für Wordpress in Frage&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Der &lt;strong&gt;1. Weg&lt;/strong&gt;: &lt;a href=&#34;https://github.com/wp-sync-db/wp-sync-db&#34;&gt;WP Sync DB&lt;/a&gt; ist ein Plugin, dass zwar sehr bequem nur über das Backend läuft, aber eben auch nur den Inhalt der Datenbank kopiert. Praktisch ist allerdings, dass immerhin auch die Medien-Bibliothek komplett übertragen wird. Außerdem: Der &lt;a href=&#34;http://snapcreek.com/duplicator/&#34;&gt;Duplicator&lt;/a&gt; ist ein sehr mächtiges, teilweise kostenpflichtiges Plugin; allerdings reicht für diese Zwecke auch die kostenlose Variante aus. Damit werden sämtliche Dateien und Tabellen aus der Datenbank in ein Archiv gepackt, aus dem dann an anderer Stelle eine eigenständige Installation erstellt wird. Leider muss dazu auch per FTP oder der Shell hantiert werden. Mit der  Kombination aus beiden Plugins lässt sich das o.g. Ziel jedenfalls schon recht gut erreichen. Zusammen mit WP Sync DB lassen sich die Installationen aber halbwegs komfortabel synchron halten.&lt;/li&gt;
-&lt;li&gt;Das dritte Plugin (für den &lt;strong&gt;2. Weg&lt;/strong&gt;) heißt &lt;a href=&#34;https://de.wordpress.org/plugins/wp-staging/&#34;&gt;WP Staging&lt;/a&gt;. Damit kann man sehr bequem eine komplette Kopie von Wordpress erstellen. Der Vorteil: Das Plugin übernimmt den ganzen Prozess und wird nur über das Backend bedient. Der Nachteil aus meiner Sicht: Das Staging-System wird unterhalb des Live-Systems in einem Unterverzeichnis erstellt und es wird die exakt gleiche Datenbank verwendet. Für meinen Geschmack ist die Trennung zwischen Live- und Test-System damit nicht strikt genug.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Zuerst beschreibe ich die Vorbereitung auf dem Server. Danach gehe ich auf die Installation der jeweiligen Tools ein. Und abschließend fasse ich im &lt;a href=&#34;#fazit&#34;&gt;Fazit&lt;/a&gt; noch einmal zusammen, wie unser Live-Staging-System nun genutzt werden kann. Wer also wissen will, was auf ihn zukommt, fängt ausnahmsweise mal von unten an zu lesen.. ;)&lt;/p&gt;
-&lt;h2 id=&#34;vorbereitung&#34;&gt;Vorbereitung&lt;/h2&gt;
-&lt;p&gt;Bevor ich mich an die Plugins mache, möchte ich eine Sub-Domain und einen getrennten Ort im Dateisystem einrichten (Für den zweiten Weg ist das &lt;em&gt;nicht&lt;/em&gt; notwendig). Außerdem soll der Zugriff auf das Staging-System mit htaccess geschützt werden.&lt;/p&gt;
-&lt;p&gt;Ich gehe im folgenden davon aus, dass die Seite bei einem Shared-Hosting-Anbieter eingerichtet ist. Wer einen Dedicated, V- oder Managed-Server nutzt, dem räume ich einfach mal genügend Sachverstand ein, die Schritte auch auf so einem System nachvollziehen zu können. Ansonsten werde ich versuchen, diese Anleitung so detailliert und einfach wie möglich zu gestalten.&lt;/p&gt;
-&lt;p&gt;Los geht es mit einem zusätzlichen Ordner auf unserem Webspace, der natürlich nicht unterhalb unseres aktuellen Live-System liegen darf. Nun richte ich mir eine Sub-Domain ein, die auf diesen Ordner zeigen soll. Das passiert in zwei Schritten. 1. Anlegen der Subdomain und 2. Einstellen des Verweises auf den entsprechenden Ordner, in meinem Fall also &lt;em&gt;staging&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;[caption id=&amp;ldquo;attachment_1684&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;a href=&#34;https://www.nickyreinert.de/files/wie-richte-in-ein-staging-system-fuer-wordpress-ein/strato-subdomain-umleitung-einrichten.png&#34;&gt;&lt;img src=&#34;images/strato-subdomain-umleitung-einrichten-300x157.png&#34; alt=&#34;Ziel für die Sub-Domain einrichten am Beispiel von Strato&#34;&gt;&lt;/a&gt; Ziel für die Sub-Domain einrichten am Beispiel von Strato[/caption]&lt;/p&gt;
-&lt;p&gt;Die Installation von Wordpress können wir uns sparen, das übernimmt gleich der &lt;em&gt;Duplicator&lt;/em&gt;. Den Verzeichnisschutz können wir übrigens erst nach einrichten, nachdem wir Wordpress einmal &amp;ldquo;dupliziert&amp;rdquo; haben. Dazu also später mehr.&lt;/p&gt;
-&lt;h2 id=&#34;mit-duplicator-einen-ganzen-blog-umziehen&#34;&gt;Mit Duplicator einen ganzen Blog umziehen&lt;/h2&gt;
-&lt;p&gt;Weiter geht es auf dem aktuellen Live-System, wo wir uns den Duplicator installieren und sofort aktivieren. Im Hauptmenü gelangst man über &amp;ldquo;Duplicator&amp;rdquo; und den Punkt &amp;ldquo;Archive&amp;rdquo; zu &amp;ldquo;Neues erstellen&amp;rdquo; Zuerst wird die System-Umgebung geprüft. Damit das Plugin funktioniert, sollten natürlich alle Anforderungen erfüllt sein. Hier kann es z.B. passieren, dass das &amp;ldquo;ZIP-Archiv&amp;rdquo; für PHP fehlt.&lt;/p&gt;
-&lt;p&gt;Wenn du Shell-Zugriff auf deinen Server hast, kannst du das Problem sehr einfach beheben, indem du das entsprechende PHP-Modul installierst und den Web-Server neu startest.&lt;/p&gt;
-&lt;p&gt;apt-get install php-zip
-service apache2 restart&lt;/p&gt;
-&lt;p&gt;Ansonsten kannst du dieses Paket ggf. im Backend deines Hosting-Paketes aktivieren oder deinen Provider fragen, ob er dir das Modul einrichtet. Nun solltest du über den gleichen Dialog die weiteren Einstellungen vornehmen können. Den Speicher-Ort musst du nicht ändern. In der Pro-Version kannst du hier auch einen FTP-Server oder sogar eine Dropbox-Freigabe auswählen. Unter &amp;ldquo;Archive&amp;rdquo; musst du ebenfalls keine Einschränkungen vornehmen, es geht ja darum, die komplette Installation inklusive aller Dateien zu kopieren.&lt;/p&gt;
-&lt;p&gt;Natürlich kann es hilfreich sein, hier bereits die Verbindungsdaten zur MySQL-Datenbank zu hinterlegen. Das Passwort muss bei der späteren  Installation aber dennoch nachgereicht werden.&lt;/p&gt;
-&lt;p&gt;[caption id=&amp;ldquo;attachment_1686&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;a href=&#34;https://www.nickyreinert.de/files/wie-richte-in-ein-staging-system-fuer-wordpress-ein/duplicator-grundeinstellungen.png&#34;&gt;&lt;img src=&#34;images/duplicator-grundeinstellungen-300x137.png&#34; alt=&#34;Duplicator - Grundeinstellungen&#34;&gt;&lt;/a&gt; Duplicator - Grundeinstellungen[/caption]&lt;/p&gt;
-&lt;p&gt;Weiter geht es sodann mit dem &amp;ldquo;Scan&amp;rdquo;. Hier werden Datenbank und Dateisystem auf mögliche Fehlerquellen gescannt, wie z.B. Sonderzeichen in den Dateinamen. Wenn es zu Warnungen kommt, muss man diese per Häkchen aktiv &amp;ldquo;ignorieren&amp;rdquo;. Und kann dann den sogenannten &amp;ldquo;Build-Prozess&amp;rdquo; starten.&lt;/p&gt;
-&lt;p&gt;[caption id=&amp;ldquo;attachment_1687&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;a href=&#34;https://www.nickyreinert.de/files/wie-richte-in-ein-staging-system-fuer-wordpress-ein/duplicator-archiv-erstellen.png&#34;&gt;&lt;img src=&#34;images/duplicator-archiv-erstellen-300x111.png&#34; alt=&#34;Duplicator - Das Archiv wird erstelllt&#34;&gt;&lt;/a&gt; Duplicator - Das Archiv wird erstelllt[/caption]&lt;/p&gt;
-&lt;p&gt;Nach dem Build-Prozess lädt man nur noch den Installer und das Archiv herunter, die man direkt in den neu angelegten Staging-Ordner kopiert. Die installer.php ruft man nun im Browser auf und startet das &amp;ldquo;Deployment&amp;rdquo;.&lt;/p&gt;
-&lt;h3 id=&#34;das-deployment---das-staging-system-wird-zum-leben-erweckt&#34;&gt;Das Deployment - Das Staging-System wird zum Leben erweckt&lt;/h3&gt;
-&lt;p&gt;Dabei wird das Archiv entpackt und alle Dateien von Wordpress in das Dateisystem geschrieben. Wenn  keine Warnungen dazwischen kommen. Wie z.B. fehlende Schreibrechte, die man natürlich korrigieren muss.&lt;/p&gt;
-&lt;p&gt;Im 2. Schritt wird die Datenbankverbindung eingestellt. Natürlich wollen wir, aus bereits genannten Gründen, unbedingt eine &lt;strong&gt;getrennte&lt;/strong&gt; Datenbank nutzen, um den Live-Betrieb nicht zu gefährden. Außerdem würden alle Tabellen in der Datenbank gelöscht werden. Hier muss also &lt;strong&gt;unbedingt eine leere Datenbank&lt;/strong&gt; angegeben werden. Natürlich kann man auch eine Datenbank anlegen lassen, benötigt dazu aber einen Benutzer mit den entsprechenden Rechten.&lt;/p&gt;
-&lt;p&gt;[caption id=&amp;ldquo;attachment_1688&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;a href=&#34;https://www.nickyreinert.de/files/wie-richte-in-ein-staging-system-fuer-wordpress-ein/duplicator-Einstellungen-der-Datenbank-.png&#34;&gt;&lt;img src=&#34;images/duplicator-Einstellungen-der-Datenbank--300x152.png&#34; alt=&#34;Duplicator - Einstellungen der Datenbank&#34;&gt;&lt;/a&gt; Duplicator - Einstellungen der Datenbank[/caption]&lt;/p&gt;
-&lt;p&gt;Nachdem also auch die Datenbank mit den Inhalten unserer Seite gefüllt, geht es in Schritt 4 abschließend noch an die Pfade für Wordpress. In den Zusatzoptionen sollte man prüfen, ob alles korrekt eingestellt ist. Als Titel der Seite wähle ich natürlich &amp;ldquo;Staging&amp;rdquo; aus. Alle anderen Einstellungen bleiben unverändert - ich will eine exakte Kopie erhalten.&lt;/p&gt;
-&lt;p&gt;Grundsätzlich war es das. Unter der Staging-URL ist nun eine exakte Kopie des Live-Systems erreichbar. Zum Schluß richten wir aber noch einen Verzeichnisschutz ein, damit die Staging-Umgebung erstens nicht von außen erreichbar ist und zweitens auch nicht von Suchmaschinen besucht wird und unsere SEO-Stratgie stört. Dazu brauchen wir zweit Dateien im staging-Ordner: .htaccess und .htpasswd&lt;/p&gt;
-&lt;p&gt;Die Datei .htaccess sollte bereits vorhanden sein, da diese auch von Wordpress genutzt wird. Diese wird um die folgenden Zeilen ergänzt:&lt;/p&gt;
-&lt;p&gt;AuthName &amp;ldquo;Staging&amp;rdquo;
-AuthType Basic
-AuthUserFile ./.htpasswd
-require valid-user&lt;/p&gt;
-&lt;p&gt;Die .htpasswd-Datei musst du selber erstellen. Dort hinterlegst du deine Zugangsdaten - einen Benutzernamen und ein sicheres Passwort, wie z.B:&lt;/p&gt;
-&lt;p&gt;benutzer1:afasdfgasdfg&lt;/p&gt;
-&lt;p&gt;Das ist natürlich nicht das Passwort im Klartext, sondern verschlüsselt. Das kannst du dir &lt;a href=&#34;http://www.homepage-kosten.de/htaccess.php&#34;&gt;auf dieser Seite&lt;/a&gt; erstellen lassen.&lt;/p&gt;
-&lt;p&gt;Beim ersten Aufruf des Staging-Systems wird man noch dazu aufgefordert, die Installationsdateien zu entfernen. Fertig.&lt;/p&gt;
-&lt;p&gt;[caption id=&amp;ldquo;attachment_1685&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;a href=&#34;https://www.nickyreinert.de/files/wie-richte-in-ein-staging-system-fuer-wordpress-ein/duplicator-dateien-bereinigen.png&#34;&gt;&lt;img src=&#34;images/duplicator-dateien-bereinigen-300x76.png&#34; alt=&#34;Duplicator - Bereinigen der Installationsdateien&#34;&gt;&lt;/a&gt; Duplicator - Bereinigen der Installationsdateien[/caption]&lt;/p&gt;
-&lt;h2 id=&#34;mit-wp-sync-db-die-datenbanken-kopieren&#34;&gt;Mit WP Sync DB die Datenbanken kopieren&lt;/h2&gt;
-&lt;p&gt;Zwar haben wir jetzt schon eine vollständige Kopie, allerdings wird unser Live-System in der Zukunft ja durchaus wachsen. Deshalb benötigen wir nun &lt;em&gt;WP Sync DB&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;Leider ist das Plugin nicht über das Wordpress-Repository verfügbar. Die Installation ist deshalb aber nicht viel komplizierter: Man lädt sich das Archiv des Plugins von &lt;a href=&#34;https://github.com/wp-sync-db/wp-sync-db-media-files&#34;&gt;github.com&lt;/a&gt; herunter, entpackt es, lädt die Dateien auf den FTP-Server in den Ordner /wp-content/plugins/wp-sync/ der Staging-Umgebung und kann es dann wie gewohnt im Backend von Wordpress aktivieren. Genauso sollte man auch mit dem Plugin verfahren, dass Medien-Datein synchronisieren kann. Das ist auch nur über &lt;a href=&#34;https://github.com/wp-sync-db/wp-sync-db-media-files&#34;&gt;github.com&lt;/a&gt; erhältlich. Mit der Live-Installation verfährt man danach genauso: Einfach die Dateien in den jeweiligen Ordner im plugin-Verzeichnis kopieren und schließlich im Backend aktivieren.&lt;/p&gt;
-&lt;p&gt;Als nächstes starten wir die allererste Synchronisation der beiden Seiten. Dabei ist es egal, ob wir das vom Live-System oder aus der Test-Umgebung heraus machen.&lt;/p&gt;
-&lt;p&gt;Im ersten Schritt benötigt ihr die &amp;ldquo;Connection Info&amp;rdquo; eures Live-Systems.  Diese befindet sich bei den Werkzeugen unter Migrate DB und dort unter Settings. Außerdem muss der Haken bei &amp;ldquo;Accept &lt;strong&gt;pull&lt;/strong&gt; requests allow this database to be exported and downloaded&amp;rdquo; gesetzt sein. Damit erlaubt ihr, dass die Daten von außerhalb heruntergeladen bzw. &amp;ldquo;gezogen&amp;rdquo; (pull) werden dürfen. Das ist eine zusätzliche Sicherheit, um das Kopieren der gesamten Daten von außen zu verhindern. Aus Sicherheitsgründen ist es ratsam, diese Funktion nach der Synchronisierung wieder zu deaktivieren und immer nur bei Bedarf zu aktivieren.&lt;/p&gt;
-&lt;p&gt;[caption id=&amp;ldquo;attachment_1683&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;a href=&#34;https://www.nickyreinert.de/files/wie-richte-in-ein-staging-system-fuer-wordpress-ein/wp-sync-connection-info.png&#34;&gt;&lt;img src=&#34;images/wp-sync-connection-info-300x133.png&#34; alt=&#34;WP Sync Connection Info des Live-Systems&#34;&gt;&lt;/a&gt; WP Sync Connection Info des Live-Systems[/caption]&lt;/p&gt;
-&lt;h3 id=&#34;die-anbindung-zum-staging-system&#34;&gt;Die Anbindung zum Staging-System&lt;/h3&gt;
-&lt;p&gt;Im Staging-System müsst ihr nun die Connection-Info hinterlegen. Das passiert auf der gleichen Einstellungsseite unter dem Reiter &amp;ldquo;Migrate&amp;rdquo;. Hier können außerdem einige andere Einstellungen vorgenommen werden. Wichtig, und für gewöhnlich automatisch ausgefüllt, ist natürlich die Anpassung der URL und der Pfade in der Datenbank. Hier lassen sich weitere Felder hinterlegen.&lt;/p&gt;
-&lt;p&gt;[caption id=&amp;ldquo;attachment_1682&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;a href=&#34;https://www.nickyreinert.de/files/wie-richte-in-ein-staging-system-fuer-wordpress-ein/wp-sync-migrate-connection-info-hinterlegen.png&#34;&gt;&lt;img src=&#34;images/wp-sync-migrate-connection-info-hinterlegen-300x155.png&#34; alt=&#34;WP Synch Connection Info hinterlegen&#34;&gt;&lt;/a&gt; WP Synch Connection Info hinterlegen[/caption]&lt;/p&gt;
-&lt;p&gt;Außerdem könnt ihr auswählen, ob bestimmte Tabellen oder Spam-Kommentare beim Kopieren ignoriert werden sollen. Es gibt eine Menge weitere Optionen. Ich empfehle zunächst den Haken bei &amp;ldquo;Backup the local database before replacing it&amp;rdquo; zu setzen. Sollte jetzt, aus welchen Gründen auch immer, irgendetwas schief gehen, gibt es immer noch ein Backup. Grundsätzlich sollte ihr aber sowieso ein regelmäßiges Backup mit einem anderen Werkzeug anlegen.&lt;/p&gt;
-&lt;p&gt;Außerdem sollen auch Medien-Dateien synchronisiert werden. Vorsicht: Wer hier einen großen Bestand an Dateien hat, muss natürlich dafür sorgen, dass genügend Speicher frei ist.&lt;/p&gt;
-&lt;p&gt;Abschließend speichern wir die getroffenen Einstellungen für die nächste Synchronisierung indem wir  &lt;em&gt;Save Migration Profile&lt;/em&gt; aktivieren.&lt;/p&gt;
-&lt;p&gt;Wer übrigens einen anderen Tabellen-Präfix bei der Installation von Wordpress angegeben hat, wird unten eine Warnung erhalten.&lt;/p&gt;
-&lt;p&gt;Warning: Different Table Prefixes
-Whoa! We&amp;rsquo;ve detected that the database table prefix differs between installations. Clicking the Migrate DB button below will create new database tables in your local database with prefix &amp;ldquo;foobar_&amp;rdquo;.&lt;/p&gt;
-&lt;p&gt;Das ist allerdings kein Problem. Das Tabellen-Präfix der Live-Datenbank wird verwendet und man muss nach dem Prozess den Präfix manuell in der wp-config.php nachtragen:&lt;/p&gt;
-&lt;p&gt;$table_prefix  = &amp;lsquo;foobar_&amp;rsquo;;&lt;/p&gt;
-&lt;p&gt;Und dann gehts mit &lt;em&gt;Migrate DB and Save&lt;/em&gt; auch schon los. Bei mir hat der Kopiervorgang nur einige Sekunden gedauert. Kurze Zeit danach erscheint das Login-Fenster von Wordpress.&lt;/p&gt;
-&lt;p&gt;[caption id=&amp;ldquo;attachment_1680&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;a href=&#34;https://www.nickyreinert.de/files/wie-richte-in-ein-staging-system-fuer-wordpress-ein/wp-sync-synchronisierungs-prozess.png&#34;&gt;&lt;img src=&#34;images/wp-sync-synchronisierungs-prozess-300x93.png&#34; alt=&#34;WP Synch Synchronisierungsprozess&#34;&gt;&lt;/a&gt; WP Synch Synchronisierungsprozess[/caption]&lt;/p&gt;
-&lt;h2 id=&#34;mit-wp-staging-und-einem-klick-eine-kopie-erstellen&#34;&gt;Mit WP Staging und einem Klick eine Kopie erstellen&lt;/h2&gt;
-&lt;p&gt;WP Staging erscheint auf den ersten Blick sehr benutzerfreundlich und unkompliziert. Nachdem man einen Namen für die Staging-Seite angegeben hat, legt das Plugin eine komplette Kopie in einem Unterverzeichnis der Haupt-Domain an, also &lt;a href=&#34;https://www.nickyreinert.de/staging&#34;&gt;https://www.nickyreinert.de/staging&lt;/a&gt;. Das ist verblüffend komfortabel. Aber leider auch nicht ganz ohne Probleme. Erstens funktionieren Permalinks nicht ohne weiteres. So ist der Beitrag https://www.nickyreinert.de/staging/coii/ nur über den Direkt-Link erreichbar &lt;a href=&#34;https://www.nickyreinert.de/staging/?p=1643&#34;&gt;https://www.nickyreinert.de/staging/?p=1643&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Außerdem befindet sich die Dateien des Staging-System innerhalb des Ordners vom Live-Systen, genauso wird die gleiche Datenbank benutzt. Das finde ich persönlich etwas unsauber und widerspricht außerdem meiner Vorstellung eines getrennten Test-Systems.&lt;/p&gt;
-&lt;p&gt;Freilich kann (bzw. sollte) man auch diesen Unterordner noch mit einem Passwortschutz versehen, wie ich es weiter oben schon beschrieben habe.&lt;/p&gt;
-&lt;h2 id=&#34;wie-nutze-ich-das-live-staging-system&#34;&gt;Wie nutze ich das Live-Staging-System?&lt;/h2&gt;
-&lt;p&gt;Wenn du dich für den zweiten Weg mit dem WP Staging-Plugin entschieden hast, ist der Prozess natürlich relativ einfach: Per Knopfdruck erzeugst du eine Kopie auf der du Updates auf Kompatibilität testen kannst. Außerdem kannst du hier natürlich auch Änderungen am Layout prüfen, bevor du sie ins Live-System übernimmst. Das ist bequem, aber wie gesagt für meinen Geschmack nicht &amp;ldquo;abgetrennt&amp;rdquo; genug.&lt;/p&gt;
-&lt;p&gt;Der erste Weg ist etwas anfangs etwas aufwendiger, aber meiner Meinung nach auch sicherer. Den umständlichen Schritt zur Vorbereitung mit dem Duplicator muss man nur einmal ausführen. Danach kann man mit WP Sync DB die Datenbank und sämtliche Mediendateien kopieren, um das Staging-System für Wordpress auf den aktuellen Stand zu bringen. Jetzt lassen sich dort ebenfalls Plugins und Updates auf Kompatibilität prüfen um sie erst danach im Live-System zu installieren.&lt;/p&gt;
-</description>
+      <description>&lt;p&gt;Wordpress hat den Ruf sehr unkompliziert zu sein. Zurecht. Doch oft bleibt es nicht dabei, dass man ein paar Beiträge verfasst. Die Seite kann schnell von einem einfachen Blog zu einem großen CMS heranwachsen und wird dann nicht nur mit Texten und Bildern, sondern dank eines riesigen Angebotes an Plugins und Template auch mit Funktionalitäten gefüllt. Und dann wird man mit einem Konflikt konfrontiert, dass die gesamte Seite bedroht: Updates und Inkompatibilität. Es ist nämlich gar nicht so selbstverständlich, dass die eigenen Anpassungen mit alle Wordpress-, Plugin- und Template-Versionen oder gar der Hosting-Umgebung harmonieren. Je angepasster die eigene Wordpress-Installation ist, desto komplexer sind im Hintergrund die Abhängigkeiten. Ein kleines Update kann im schlimmsten Fall die gesamte Seite gefährden. Ein Staging-System für Wordpress kann da helfen.&lt;/p&gt;</description>
       
     </item>
     
@@ -883,17 +141,7 @@ Whoa! We&amp;rsquo;ve detected that the database table prefix differs between in
       
       <description>&lt;p&gt;COII ist ein Plugin für Wordpress mit dem du dem Besucher deiner Seite die Möglichkeit gibst, dem Tracking durch z.B. Google Analytics bzw. Cookies zuzustimmen.&lt;/p&gt;
 &lt;h2 id=&#34;cookies-und-tracking&#34;&gt;Cookies und Tracking&lt;/h2&gt;
-&lt;p&gt;Grundsätzlich sind &lt;strong&gt;Cookies&lt;/strong&gt; nicht verkehrt. Dabei handelt es sich um kleine Text-Dateien, die von einem Server auf dem Computer des Benutzers gespeichert werden, um Informationen zwischenzuspeichern. Für den Betrieb vieler Seiten sind sie oft unerlässlich. Dabei ist es wichtig zu wissen, dass nur der Server auf ein Cookie zugreifen darf, der es auch gesetzt hat. Grundsätzlich kann man zwei Arten unterscheiden: &lt;strong&gt;1st-Party- und 3rd-Party-Cookies&lt;/strong&gt;. 1st-Party-Cookies werden von dem Server gespeichert, auf den der Besucher der Website gerade zugreift. Aktuell wäre das für dich z.B. ein Cookie von &lt;a href=&#34;https://www.nickyreinert.de&#34;&gt;www.nickyreinert.de&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;3rd-Party-Cookies&lt;/strong&gt; werden von Dritten auf deinem Computer gespeichert. Das ist möglich, weil ich auf meiner Seite z.B. JavaScript von fremden Websiten einbinde. Diese &amp;ldquo;rufen&amp;rdquo; den anderen Server an. Sehr weit verbreitet ist z.B. Google Analytics. Google kann dann als dritte Partei ein Cookie auf deinem Computer speichern. Wenn du eine andere Website besuchst, die auch das JavaScript von Google Analytics einsetzt, darf Google auf genau diesen Cookie zugreifen und kann dann die Verknüpfung herstellen: Der Besuch meiner Seite, der Besuch der anderen Seite und vermutlich der Besuch vieler weiterer Seiten. Diese Art von Cookies kann man deswegen als Tracking-Cookie bezeichnen.&lt;/p&gt;
-&lt;p&gt;Das Problem an der Sache sind die &amp;ldquo;&lt;strong&gt;personenbezogene Daten&lt;/strong&gt;&amp;rdquo;. Eigentlich hat niemand ein Problem mit Cookies - so lange sie keine personenbezogenen Daten enthalten. Erst dann betritt man den rechtlich relevanten Raum des Datenschutzes.  Und mit der vor der Tür stehenden &lt;strong&gt;DSGVO&lt;/strong&gt; bzw. der &lt;strong&gt;ePrivacy-Verordnung&lt;/strong&gt; wird der Betreiber der Website (vermutlich) noch mehr in der Pflicht genommen, die personenbezogenen Daten seiner Besucher zu schützen. Oder: Im explizit das Wahlrecht zu geben: Lässt er das Tracking zu?&lt;/p&gt;
-&lt;p&gt;Und dabei soll dir &lt;strong&gt;COII&lt;/strong&gt; helfen.&lt;/p&gt;
-&lt;h2 id=&#34;funktionsweise-voncookies&#34;&gt;Funktionsweise von Cookies&lt;/h2&gt;
-&lt;p&gt;Beim ersten Besuch deiner Seite sieht der Benutzer einen einfachem Dialog, in dem er dem Tracking zustimmen kann. Oder eben widersprechen.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;COII&lt;/strong&gt; speichert die Information wiederum in einem Cookie und lädt die Seite automatisch neu. Wurde dem Tracking zugestimmt, wird das entsprechende Tracking-Pixel (JavaScript) geladen. Sonst nicht. COII  unterscheidet dabei allerdings vorerst nicht zwischen 1st- und 3rd-Party-Cookies.&lt;/p&gt;
-&lt;p&gt;In den Einstellungen kannst du (bzw. musst du initial) den Text für den Dialog und die Buttons anpassen. Außerdem solltest du natürlich dein Tracking-Pixel hinterlegen. Sonst brauchst du dieses Plugin  nicht.&lt;/p&gt;
-&lt;p&gt;Außerdem kannst du den Shortcode [ coii_dialogue ] auf jeder Seite oder jedem Beitrag - wie z.B. deiner Datenschutzbestimmung - nutzen, um dort die gleiche Abfrage darzustellen.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;COII&lt;/strong&gt; kannst du dir &lt;a href=&#34;https://github.com/nickyreinert/coii/edit/master/README.txt&#34;&gt;bei Github&lt;/a&gt; oder direkt über das &lt;a href=&#34;https://wordpress.org/plugins/cookie-optin-interface/&#34;&gt;Wordpress-Repository&lt;/a&gt; herunterladen.&lt;/p&gt;
-</description>
+&lt;p&gt;Grundsätzlich sind &lt;strong&gt;Cookies&lt;/strong&gt; nicht verkehrt. Dabei handelt es sich um kleine Text-Dateien, die von einem Server auf dem Computer des Benutzers gespeichert werden, um Informationen zwischenzuspeichern. Für den Betrieb vieler Seiten sind sie oft unerlässlich. Dabei ist es wichtig zu wissen, dass nur der Server auf ein Cookie zugreifen darf, der es auch gesetzt hat. Grundsätzlich kann man zwei Arten unterscheiden: &lt;strong&gt;1st-Party- und 3rd-Party-Cookies&lt;/strong&gt;. 1st-Party-Cookies werden von dem Server gespeichert, auf den der Besucher der Website gerade zugreift. Aktuell wäre das für dich z.B. ein Cookie von &lt;a href=&#34;https://www.nickyreinert.de&#34;&gt;www.nickyreinert.de&lt;/a&gt;.&lt;/p&gt;</description>
       
     </item>
     
@@ -904,23 +152,7 @@ Whoa! We&amp;rsquo;ve detected that the database table prefix differs between in
       
       <guid>https://nickyreinert.de/blog/2016/11/24/wordpress-slideshow-im-header-abh%C3%A4ngig-vom-inhalt/</guid>
       
-      <description>&lt;p&gt;Heute bastelen wir uns in Wordpress einen Header, der eine Slideshow mit Bildern anzeigt, abhängig von der Seite die gerade angezeigt wird. Die Slideshow soll sich die Bilder aus Gallerien holen, die der einzelnen Seite zugeordnet ist. Dazu greifen wir auf die &amp;ldquo;&lt;a href=&#34;http://codex.wordpress.org/Custom_Fields&#34;&gt;Benutzerdefinierten Felder&lt;/a&gt;&amp;rdquo; in Wordpress sowie die beiden großartigen Wordpress-Plugins &amp;ldquo;&lt;a href=&#34;http://alexrabe.de/wordpress-plugins/nextgen-gallery/&#34;&gt;NextGen Gallery&lt;/a&gt;&amp;rdquo; von Alex Raabe und &amp;ldquo;&lt;a href=&#34;http://uninuni.com/wordpress-plugin-nextgen-smooth-gallery/&#34;&gt;Smooth Gallery&lt;/a&gt;&amp;rdquo; von uniuni zurück. Wichtig ist, dass man diese &amp;ldquo;dynamischen Header&amp;rdquo; ohne großen Aufwand auf jeder beliebigen Seite nutzen kann, damit der Gelegenheitsautor mit möglichst wenig technischen Kenntnissen damit umgehen kann.&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Wir benötigen mehrere Gallerien - voll mit Bildern.  Wie das funktioniert möchte ich hier nicht erklären, da das auf der Seite von Alex Raabe sehr gut getan wird. Jede Gallerie ist über eine ID eindeutig identifizierbar; ich merke mir erstmal die ID meiner ersten Gallery, die 1.&lt;/li&gt;
-&lt;li&gt;Wir benötigen bei allen unseren Seiten ein benutzerdefiniertes Feld, ich nenne es &amp;ldquo;gallery-id&amp;rdquo; und fülle das Feld mit der ID meiner ersten Gallery: 1.&lt;/li&gt;
-&lt;li&gt;Wir benötigen in der header.php folgenden Code dort, wo wir ihn benötigen ;) (macht z.B. im Header-Container Sinn)&lt;/li&gt;
-&lt;/ol&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;Nun würden wir aber immer die Gallery mit der ID 1 anzeigen, wir wollen aber die Gallery sehen, deren ID auf der Seite  im benutzerdefinierten Feld genannt wurde. Diesen Wert liest man folgendermaßen aus:&lt;/p&gt;
-&lt;p&gt;get_post_meta($post-&amp;gt;ID, &amp;lsquo;gallery-id&amp;rsquo;, true);&lt;/p&gt;
-&lt;p&gt;$post-&amp;gt;ID gibt die ID der aktuellen Seite zurück (nicht zu verwechseln mit der Gallery-ID!)&lt;/p&gt;
-&lt;p&gt;&amp;lsquo;gallery-id&amp;rsquo; ist der Name unseres benutzerdefinierten Felds&lt;/p&gt;
-&lt;p&gt;true gibt  an, dass ein &lt;em&gt;String&lt;/em&gt; und kein &lt;em&gt;Array&lt;/em&gt; zurück gegeben wird - wichtig!&lt;/p&gt;
-&lt;p&gt;Und wenn diese Zeile nun mit der ersten Code-Zeile kombiniert wird, sieht es folgendermaßen aus:&lt;/p&gt;
-&lt;p&gt;echo apply_filters( &amp;ldquo;the_content&amp;rdquo;, &amp;lsquo;[smooth=id:&amp;rsquo;. get_post_meta($post-&amp;gt;ID, &amp;lsquo;gallery-id&amp;rsquo;, true) .&amp;rsquo;;]&amp;rsquo; );&lt;/p&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;Fertig. Nun muss der Autor der Seiten nur noch daran denken, das benutzerdefinierte Feld der jeweiligen Seite mit der gewünschten Gallery-ID zu füllen.&lt;/p&gt;
-</description>
+      <description>&lt;p&gt;Heute bastelen wir uns in Wordpress einen Header, der eine Slideshow mit Bildern anzeigt, abhängig von der Seite die gerade angezeigt wird. Die Slideshow soll sich die Bilder aus Gallerien holen, die der einzelnen Seite zugeordnet ist. Dazu greifen wir auf die &amp;ldquo;&lt;a href=&#34;http://codex.wordpress.org/Custom_Fields&#34;&gt;Benutzerdefinierten Felder&lt;/a&gt;&amp;rdquo; in Wordpress sowie die beiden großartigen Wordpress-Plugins &amp;ldquo;&lt;a href=&#34;http://alexrabe.de/wordpress-plugins/nextgen-gallery/&#34;&gt;NextGen Gallery&lt;/a&gt;&amp;rdquo; von Alex Raabe und &amp;ldquo;&lt;a href=&#34;http://uninuni.com/wordpress-plugin-nextgen-smooth-gallery/&#34;&gt;Smooth Gallery&lt;/a&gt;&amp;rdquo; von uniuni zurück. Wichtig ist, dass man diese &amp;ldquo;dynamischen Header&amp;rdquo; ohne großen Aufwand auf jeder beliebigen Seite nutzen kann, damit der Gelegenheitsautor mit möglichst wenig technischen Kenntnissen damit umgehen kann.&lt;/p&gt;</description>
       
     </item>
     
@@ -931,8 +163,7 @@ Whoa! We&amp;rsquo;ve detected that the database table prefix differs between in
       
       <guid>https://nickyreinert.de/blog/2014/04/16/woocommerce-und-permalinks/</guid>
       
-      <description>&lt;p&gt;Für gewöhnlich versucht man in WordPress SEO-freundliche Permalinks zu verwenden. Dies geschieht über die Einstellungen der Permalinks und dort z.B. über die Option &amp;ldquo;Beitragsname&amp;rdquo;. Nutzt man nun WooCommerce und ändert auch dort die Darstellung der Permalinks (im gleichen Menü) auf z.B. Shop-Basis, lassen sich zunächst die Produkte wie gewohnt mit den &amp;ldquo;hübschen&amp;rdquo; Permalinks darstellen. Doch leider funktioniert die Verlinkung der Kategorien nicht. Wordpress zeigt einen 404-Fehler an. Das Problem zu beheben ist allerdings recht einfach: In den Einstellungen der Permalinks muss im Bereich &amp;ldquo;Optional&amp;rdquo; ein Wert für &amp;ldquo;Kategorie-Basis Produkte&amp;rdquo; angegeben werden. Jetzt sollten die Permalinks auch für die Kategorien funktionieren!&lt;/p&gt;
-</description>
+      <description>&lt;p&gt;Für gewöhnlich versucht man in WordPress SEO-freundliche Permalinks zu verwenden. Dies geschieht über die Einstellungen der Permalinks und dort z.B. über die Option &amp;ldquo;Beitragsname&amp;rdquo;. Nutzt man nun WooCommerce und ändert auch dort die Darstellung der Permalinks (im gleichen Menü) auf z.B. Shop-Basis, lassen sich zunächst die Produkte wie gewohnt mit den &amp;ldquo;hübschen&amp;rdquo; Permalinks darstellen. Doch leider funktioniert die Verlinkung der Kategorien nicht. Wordpress zeigt einen 404-Fehler an. Das Problem zu beheben ist allerdings recht einfach: In den Einstellungen der Permalinks muss im Bereich &amp;ldquo;Optional&amp;rdquo; ein Wert für &amp;ldquo;Kategorie-Basis Produkte&amp;rdquo; angegeben werden. Jetzt sollten die Permalinks auch für die Kategorien funktionieren!&lt;/p&gt;</description>
       
     </item>
     
@@ -944,109 +175,7 @@ Whoa! We&amp;rsquo;ve detected that the database table prefix differs between in
       <guid>https://nickyreinert.de/blog/2000/01/01/wordpress-security-checkliste/</guid>
       
       <description>&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch kriminelle Geister an und so schwirren immer wieder Nachrichten über Sicherheitslücken und gehackte WP-Seiten durch die einschlägigen Medien. Aus diesem Grund will ich mal meine Erfahrungen in Bezug auf Wordpress-Sicherheit an dieser Stelle zusammenfassen und zwar so kompakt wie möglich, damit diese Information als Checkliste genutzt werden kann.&lt;/p&gt;
-&lt;p&gt;Wenn du Betreiber einer Wordpress-Seite bist, gibt es dafür drei Wege und unterschiedliche Freiheiten, sich selber um die Sicherheit der WP-Installation zu nutzen - im folgenden die &amp;ldquo;Freiheitsgrade&amp;rdquo; genannt: Bei &amp;ldquo;wordpress as a service&amp;rdquo; greifst du auf einen Angebot zurück, das bekannteste ist wordpress.com, bei dem du nur Zugriff auf das Backend hast und dementsprechend wenig Konfigurationsmöglichkeiten. Als Nutzer eines Shared Hosting hast du zusätzlich die Möglichkeit, per FTP oder SSH auf den Webspace zu gelangen und dort Einstellungen vorzunehmen. Und schließlich gibt es noch die Möglichkeit, einen eigenen Server zu nutzen, bei dem du dich auch um die Konfiguration auf Systemebene, also des Webserver kümmern musst. In dieser Reihenfolge möchte ich nun im folgenden Zusammenfassen, welche Möglichkeiten du hast, deine WP-Installation etwas sicherer zu gestalten.&lt;/p&gt;
-&lt;h2 id=&#34;aktuelle-updates&#34;&gt;Aktuelle Updates&lt;/h2&gt;
-&lt;p&gt;Zunächst zum Offensichtlichen: Sicherheitsupdates. Die automatischen Updates des WP-Cores (also dem, was WP ausmacht) sind mit jedem Freiheitsgrad konfigurierbar, bergen aber auch Risikos. So hatte z.B. das Update auf Version 4.9.3 Anfang 2018 den Auto-Update-Mechanismus deaktiviert. Spätere Sicherheitsupdates würden also ignoriert werden. Grundsätzlich ist das Auto-Update nur für sog. Minor-Versionen zu empfehlen, wodurch Sicherheitlücken und Bugs behoben werden. Wer diese Funktion auf einem Test-System auch für Major-Versionen aktivieren möchte, muss in der wp-config.php folgenden Parameter setzen:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;define( &amp;#39;WP_AUTO_UPDATE_CORE&amp;#39;, &amp;#39;true&amp;#39; );
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;(der Parameter ist per default auf &lt;em&gt;minor&lt;/em&gt; gesetzt.) Grundsätzlich ist das aber nicht zu empfehlen: Denn: Bevor ein großes Update eingespielt wird, sollte das auf Herz &amp;amp; Nieren und natürlich Kompatibilität mit den vorhandenen Themes und Plugins getestet werden. Dazu sollte man ein Staging-System einrichten, worauf ich im nächsten Absatz eingehe.&lt;/p&gt;
-&lt;h2 id=&#34;ein-staging-system-nutzen&#34;&gt;Ein Staging-System nutzen&lt;/h2&gt;
-&lt;p&gt;Die Sicherheit der WP-Installation kann nicht nur durch Malware oder Angriffe von außen versehrt werden, sondern auch durch Bedienfehler. Ein wichtiger Baustein ist also ein Staging-System. Das ist im weitesten Sinne eine exakte Kopie der aktuelle WP-Installation. Das Staging-System erfüllt eine Reihe von Funktionen:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Testen von Plugins &amp;amp; Updates auf Kompatibilität&lt;/li&gt;
-&lt;li&gt;Referenz-System zum Erkennen von verdächtigen Änderungen&lt;/li&gt;
-&lt;li&gt;Testen von Änderungen am Theme&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Wie ein Staging-System eingerichtet wird, habe ich hier genauer erklärt. Was es mit dem 2. Punkt auf sich hat, erkläre ich weiter unten.&lt;/p&gt;
-&lt;h2 id=&#34;regelmäßige-backups&#34;&gt;Regelmäßige Backups&lt;/h2&gt;
-&lt;p&gt;Auch Backups sind ein wichtiger Teil eines Sicherheitskonzeptes. Hier gibt es je nach  Freiheitsgrad verschiedene Möglichkeiten. Als Plugin empfehle ich zunächst das sehr weit verbreitete Updraft. Das Backup sollte unbedingt auf einen anderen Ort kopiert werden. Updraft unterstützt in der kostenlosen Version z.B. FTP. Wer kein Problem mit Dropbox oder Google Drive hat, kann natürlich auch die Cloud nutzen. Updraft unterstützt die Verschlüsselung der Datenbank-Sicherung nur in der bezahlten Version. Wer mit personenbezogenen Daten hantiert, sollte sich diese Funktion unbedingt zulegen!&lt;/p&gt;
-&lt;p&gt;Eine bessere Alternative, die aber nur ab dem 2. Freiheitsgrad möglich ist, ist das Backup über die Kommandozeile. Das ist vor allem dann unumgänglich, wenn die WP-Installation sehr groß ist und nicht mehr mit den gängigen Plugins durchführbar ist. Außerdem funktioniert das unabhängig von Wordpress und kann demnach auch nicht durch andere Plugins beeinträchtigt werden. Wie genau man das einrichtet und vor allem auch die Wiederherstellung habe ich in diesem Beitrag genauer beschrieben.&lt;/p&gt;
-&lt;h2 id=&#34;plugin-sparsamkeit&#34;&gt;Plugin-Sparsamkeit&lt;/h2&gt;
-&lt;p&gt;Hierunter ist eher ein Konzept als eine konkrete Handlungsempfehlung zu verstehen. Vor allem technisch unbedarfte Nutzer tendieren dazu, sofort ein Plugin zu installieren, wenn eine bestimmte Funktion benötigt wird. Doch gerade unsaubere, nicht gepflegte Plugins bieten eine Angriffsfläche und noch dazu wirkt sich ein zunehmendes Plugin-Portfolio negativ auf die Performance aus. Wer ein Plugin installieren möchte, sollte dazu nur auf vertrauenswürdige und bekannte Quellen zurückgreifen. Im Klartext: https://de.wordpress.org/plugins/&lt;/p&gt;
-&lt;h2 id=&#34;die-offensichtlichen&#34;&gt;Die offensichtlichen&lt;/h2&gt;
-&lt;ol start=&#34;2&#34;&gt;
-&lt;li&gt;Admin-Benutzer umbenennen&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&#34;die-technischen&#34;&gt;Die technischen&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;Admin-Bereich mit .htaccess schützen&lt;/li&gt;
-&lt;li&gt;Dateirechte korrekt setzen&lt;/li&gt;
-&lt;li&gt;PHP-Ausführung in bestimmten Unterordner deaktivieren&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&#34;plugins-und-themes&#34;&gt;Plugins und Themes&lt;/h2&gt;
-&lt;p&gt;Ein zentrales Element und der größte Vorteil von Wordpress ist seine fast unerreichbar funktionale Erweiterbarkeit und sehr große Community. Das zieht allerdings auch schwarze Schafe an.&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Installiere nicht wahllos Plugins, weil du eine bestimmte Funktion benötigst&lt;/li&gt;
-&lt;li&gt;Installiere Plugins nur von vertrauenswürdigen Quellen&lt;/li&gt;
-&lt;li&gt;Räume deinen Plugin-Ordner regelmäßig auf&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&#34;die-mutigen&#34;&gt;Die mutigen&lt;/h2&gt;
-&lt;h3 id=&#34;php-ini-parameter&#34;&gt;PHP ini-Parameter&lt;/h3&gt;
-&lt;p&gt;Es dürfte kein Geheimnis sein, dass PHP über die php.ini gesteuert wird. Es gibt allerdings einige sicherheitsrelevante Parameter, um die man sich allerdings selber kümmern muss. Die wichtigsten möchte ich hier vorstellen.&lt;/p&gt;
-&lt;p&gt;Um die Übersicht über manuelle Änderungen nicht zu  verlieren, solltest du die Einstellungen in einer separaten Datei (z.B. &lt;em&gt;security.ini&lt;/em&gt;) speichern. Auf der Kommandozeile zeigt dir der folgende Befehl, aus welchem zusätzlichen Ordner PHP zusätzliche ini-Dateien liest:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;php --ini
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;In den meisten Fällen dürfte das /etc/php/7.1/apache2/conf.d/&lt;/p&gt;
-&lt;p&gt;Eine einfache aber sehr wirksame Maßnahme ist das deaktivieren potentiell gefährlicher PHP-Funktionen. Wie z.B. &lt;a href=&#34;http://php.net/manual/en/function.shell-exec.php&#34;&gt;shell_exec()&lt;/a&gt; - im Wordpress-Umfeld gibt es kaum ein Szenario, in dem diese Funktion nützlich sein könnte.  Um PHP-Funktionen zu deaktivieren, kannst du den ini-Parameter &lt;a href=&#34;http://php.net/manual/de/ini.core.php#ini.disable-functions&#34;&gt;disable_functions&lt;/a&gt; nutzen.&lt;/p&gt;
-&lt;p&gt;Dort legst du die &lt;em&gt;security.ini&lt;/em&gt; ab und füllst sie entsprechend:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.damianschwyrz.de/php-backdoors-und-shells-finden-eine-kurze-anleitung&#34;&gt;https://www.damianschwyrz.de/php-backdoors-und-shells-finden-eine-kurze-anleitung&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;siehe auch&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://binary-butterfly.de/artikel/wordpress-login-security-eine-stahltuer-in-der-wellblechhuette/&#34;&gt;https://binary-butterfly.de/artikel/wordpress-login-security-eine-stahltuer-in-der-wellblechhuette/&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;IP-Filter&lt;/p&gt;
-&lt;p&gt;Den Admin-Bereich verstecken&lt;/p&gt;
-&lt;p&gt;&amp;lt;IfModule mod_rewrite.c&amp;gt;
-RewriteEngine on
-RewriteBase /
-# Move Wordpress login to /cms.
-RewriteRule ^cms wp-login.php?cms=unlocked [L]
-RewriteCond %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
-RewriteCond %{QUERY_STRING} !^cms=unlocked
-RewriteCond %{QUERY_STRING} !^action=logout
-RewriteCond %{QUERY_STRING} !^loggedout=true
-RewriteCond %{REQUEST_METHOD} !POST
-RewriteRule ^(.*)$ - [R=403,L]&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;RewriteCond %{REQUEST\_URI} ^(.\*)?wp-login\\.php(.\*)$
-RewriteCond %{QUERY\_STRING} ^loggedout=true
-RewriteRule ^(.\*) ./cms? \[R=302,NC,L\]
-
-RewriteCond %{REQUEST\_URI} ^(.\*)?wp-login\\.php(.\*)$
-RewriteCond %{HTTP\_REFERER} !cms$
-RewriteCond %{REQUEST\_METHOD} POST
-RewriteRule ^(.\*)$ - \[R=403,L\]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;&lt;a href=&#34;https://wordpress.stackexchange.com/a/292691/132138&#34;&gt;https://wordpress.stackexchange.com/a/292691/132138&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Die unnötigen&lt;/p&gt;
-&lt;p&gt;Sicherheits-Plugins&lt;/p&gt;
-&lt;p&gt;siehe auch&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.kuketz-blog.de/basisschutz-wordpress-absichern-teil1&#34;&gt;https://www.kuketz-blog.de/basisschutz-wordpress-absichern-teil1&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://fastwp.de/487&#34;&gt;https://fastwp.de/487&lt;/a&gt;&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;chown user:user -R *
-find . -type d -exec chmod 755 {} \;
-find . -type f -exec chmod 644 {} \;
-
-chown www-data:www-data wp-content
-
-## Disable Editing in Dashboard
-define(&amp;#39;DISALLOW_FILE_EDIT&amp;#39;, true);
-
-&amp;lt;Directory /var/www/nickyreinert.de/www&amp;gt;
-# prevent   var_dump(scandir(&amp;#39;/etc&amp;#39;));
-# see http://php.net/manual/de/ini.core.php#ini.open-basedir
-# alternativ: php für jeden virtuellen host mit separatem user ausführen und die dateirechte anpassen
-php_admin_value open_basedir &amp;#34;/var/www/nickyreinert.de/www&amp;#34;
-
-&amp;lt;/Directory&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# disable_functions in php.ini
-# list of function to disable globally #
-disable_functions =exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;PHP-FPM?&lt;/p&gt;
-&lt;p&gt;Normalerweise ruft der Apache-Webserver den PHP-Interpreter jedes mal erneut auf. Der Nachteil: Viel Speicehrverbruahc, lange Ladezeiten und ein globaler Benutzer. Etwas schneller ist FastCGI. Dabei läuft der Interpreter permanent im Hintergrund. FPM startet nicht nur einen sondern mehrere PHP-Prozesse im Hintergrund.&lt;/p&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;//&lt;/p&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://stackoverflow.com/questions/45152483/php-fpm-open-basedir-vs-chroot&#34;&gt;https://stackoverflow.com/questions/45152483/php-fpm-open-basedir-vs-chroot&lt;/a&gt;&lt;/p&gt;
-</description>
+&lt;p&gt;Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch kriminelle Geister an und so schwirren immer wieder Nachrichten über Sicherheitslücken und gehackte WP-Seiten durch die einschlägigen Medien. Aus diesem Grund will ich mal meine Erfahrungen in Bezug auf Wordpress-Sicherheit an dieser Stelle zusammenfassen und zwar so kompakt wie möglich, damit diese Information als Checkliste genutzt werden kann.&lt;/p&gt;</description>
       
     </item>
     
