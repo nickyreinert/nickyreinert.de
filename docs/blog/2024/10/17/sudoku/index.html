@@ -61,7 +61,7 @@ Follow my journey on how to build an algorithm that lets you create or solve Sud
   <meta itemprop="description" content="How to build a brute force Sudoku solver Follow my journey on how to build an algorithm that lets you create or solve Sudoku puzzles!">
   <meta itemprop="datePublished" content="2024-10-17T12:34:56+01:00">
   <meta itemprop="dateModified" content="2024-10-17T12:34:56+01:00">
-  <meta itemprop="wordCount" content="3758">
+  <meta itemprop="wordCount" content="3776">
   <meta itemprop="keywords" content="Projekte">
 
   
@@ -160,16 +160,16 @@ Follow my journey on how to build an algorithm that lets you create or solve Sud
 <p>Follow my journey on how to build an algorithm that lets you create or solve Sudoku puzzles!</p>
 <p>Follow my steps or jump ahead — this is the Jupyter notebook: <a href="https://gist.github.com/nickyreinert/966299333429ef685338e5feb5056126">https://gist.github.com/nickyreinert/966299333429ef685338e5feb5056126</a></p>
 <h1 id="warmup--introduction"><strong>Warmup — introduction</strong></h1>
-<p>Before we start, we need to get familiar with how Sudoku works. I suggest we number each cell in the giant grid from 1 to 81. This way, we can programmatically loop from the top-left to the bottom-right to find valid solutions:</p>
+<p>Before we start, we need to get familiar with how <strong>Sudoku</strong> works. I suggest we number each cell in the giant grid from <code>1</code> to <code>81</code>. This way, we can programmatically loop <strong>from the top-left to the bottom-right</strong> to find valid solutions:</p>
 <p><img src="sudoku_positions.png" alt="sudoku positions"></p>
-<p>Sudoku has three rules: a number can’t exist twice in the same column, row, or section. So, first, we need a way to identify the column, row, and section for each position.</p>
-<p>Every row contains 9 cells, so the row index is simply:</p>
+<p><strong>Sudoku</strong> has three rules: a number can’t exist twice in the same <strong>column</strong>, <strong>row</strong>, or <strong>section</strong>. So, first, we need a way to identify the column, row, and section for each position.</p>
+<p>Every row contains <code>9</code> cells, so the row index is simply:</p>
 <pre><code>ceil(position / 9)
 </code></pre>
-<p>Or if you prefer double slash (//), which works like a “floor” function:</p>
+<p>Or if you prefer double slash (<code>//</code>), which works like a “floor” function:</p>
 <pre><code>((position — 1) // 9) + 1
 </code></pre>
-<p>Columns probably also have something to do with 9 (because 9 is kind of a big deal in Sudoku). The first 9 cells are exactly addressing their corresponding columns, obviously. So, in the upcoming rows (positions 10 and onward), we just need to reduce it back to 1–9. We can use modulo for that!</p>
+<p>Columns probably also have something to do with <code>9</code> (because <code>9</code> is kind of a big deal in Sudoku). The first nine cells are exactly addressing their corresponding columns, obviously. So, in the upcoming rows (positions <code>10</code> and onward), we just need to reduce it back to <code>1</code> to <code>9</code>. We can use <strong>modulo</strong> for that!</p>
 <pre><code>((position — 1) % 9) + 1
 </code></pre>
 <p>The section index is a little trickier. It’s a combo of the row and column index and some tweaks. There’s probably a clever mathematical approach, or you can just trial-and-error your way through (my usual strategy). Here’s a starting point:</p>
@@ -182,9 +182,9 @@ Follow my journey on how to build an algorithm that lets you create or solve Sud
 <h1 id="first-steps">First steps</h1>
 <p>Well, now that we know how to address each row, column, and section, let’s dive into the actual algorithm.</p>
 <h2 id="solution-approach">Solution approach</h2>
-<p>The basic idea is to iterate through the positions up to 81. At every step, we choose a number from 1 to 9 and check if it already exists in the corresponding row, column, or section (we’ll call these “containers”). If it does, the number is “blocked” for the current position, and we have to check the next number. If we can’t find a valid number for the current position, we need to roll back to the previous one and choose a different number. We repeat this process until we either reach position 81 — meaning we’ve found a valid Sudoku — or have to backtrack more.</p>
+<p>The basic idea is to <strong>iterate through the positions</strong> up to <code>81</code>. At every step, we choose a number from <code>1</code> to <code>9</code> and check if it already exists in the corresponding row, column, or section (we’ll call these <strong>containers</strong>). If it does, the number is <strong>blocked</strong> for the current position, and we have to check the next number. If we can’t find a valid number for the current position, we need to <strong>roll back</strong> to the previous one and choose a <strong>different number</strong>. We repeat this process until we either reach position <code>81</code> — meaning we’ve found a valid Sudoku — or have to backtrack more.</p>
 <h2 id="implementation-in-python">Implementation in Python</h2>
-<p>We start by initializing four dictionaries to keep track of the numbers in each <em>container</em>. The solutions dictionary holds (surprise!) the valid numbers for the entire grid.</p>
+<p>We start by initializing four dictionaries to keep track of the numbers in each <strong>container</strong>. The <code>solutions</code> dictionary holds (surprise!) the valid numbers for the entire grid.</p>
 <pre><code>def reset_containers():  
     global rows, cols, sections, solutions  
     rows = {i: [] for i in range(1, 10)}  
@@ -205,7 +205,7 @@ print(sections, '\n', rows, '\n', cols)
 <pre><code>def visualize(solution):  
     # see Jupyter notebook referenced on the top
 </code></pre>
-<p>We’ve already figured out how to get the actual row, column, or section from a given position. Now, let’s translate those Excel formulas into Python and check if we’re on the right track:</p>
+<p>We’ve already figured out how to get the actual <strong>row</strong>, <strong>column</strong>, or <strong>section</strong> from a given position. Now, let’s translate into Python and check if we’re on the right track:</p>
 <pre><code>print('pos', '\t', 'row', '\t', 'col', '\t', 'section')  
 for position in range(1, 82):  
     idx_row = math.ceil(position / 9)  
@@ -227,7 +227,7 @@ for position in range(1, 82):
 10   2   1   1  
 ...
 </code></pre>
-<p>Yes, we are! Every position is correctly mapped to the correct <em>container</em>!</p>
+<p>Yes, we are! Every position is correctly mapped to the correct <strong>container</strong>!</p>
 <h2 id="solution-checking-and-iterating">Solution checking and iterating</h2>
 <p>The first version is quite simple: We iterate through the positions and add a number that does not exist in one of the corresponding containers.</p>
 <pre><code>reset_containers()  
@@ -366,10 +366,7 @@ while True:
         cols[idx_col].remove(solutions[position])  
         sections[idx_section].remove(solutions[position])  
         del solutions[position]  
-
-        # print(dead_ends)  
-        # sys.exit()  
-
+    
     else:  
         position += 1  
 
@@ -786,7 +783,9 @@ visualize(solutions[len(solutions) - 1])
 </code></pre>
 <p>And that’s our achievment:</p>
 <p><img src="sudoku_multiple_solutions.png" alt="sudoku multiple solutions"></p>
-<p>Our brute-force Sudoku solving algorithm is ready! Well, I bet there are a couple of steps to optimize — not only code-style-wise, but also to make it run faster. I’d say that’s your homework. There are <strong>6,670,903,752,021,072,936,960</strong> possible paths (that’s 6 sextillion and a bit more). Can you catch them all? How long does it take on your machine to get 1 million solutions?</p>
+<p>Our brute-force Sudoku solving algorithm is ready! Well, I bet there are a couple of steps to optimize — not only code-style-wise, but also to make it run faster. I’d say that’s your homework. There are <strong>6,670,903,752,021,072,936,960</strong> possible paths (that’s 6 sextillion and a bit more, it can be writte as ~6 x 10^21, which is a reference to Blade Runner: Dr. Ana Stelline was born on the 10/6/21). Can you catch them all? How long does it take on your machine to get 1 million solutions?</p>
+<p><img src="blade_runner_stelline.png" alt="blade runner stelline"></p>
+<!-- raw HTML omitted -->
 <p>Just one more thing… I asked ChatGPT to build a small function that checks if all solutions are valid. Wait, what? ChatGPT? Why haven’t we asked it earlier?</p>
 <p>Because developing algorithms is fun?</p>
 <p>You got it! Whatever, here we go:</p>
@@ -808,7 +807,7 @@ visualize(solutions[len(solutions) - 1])
     <a class="link" href="https://nickyreinert.de/blog/2024/10/01/the-bitcoin-puzzle/">← prev</a>
     
     
-    <a></a>
+    <a class="link" href="https://nickyreinert.de/blog/2024/11/06/beruflicher-evolutionszyklus-das-cira-model/">next →</a>
     
   </div>
   <div class="comment">

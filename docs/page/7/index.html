@@ -58,8 +58,8 @@
   
   <meta itemprop="name" content="Nicky Reinert">
   <meta itemprop="description" content="...">
-  <meta itemprop="datePublished" content="2024-10-17T12:34:56+01:00">
-  <meta itemprop="dateModified" content="2024-10-17T12:34:56+01:00">
+  <meta itemprop="datePublished" content="2024-11-06T12:34:56+02:00">
+  <meta itemprop="dateModified" content="2024-11-06T12:34:56+02:00">
 
   
   <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
@@ -147,6 +147,47 @@
     
 <main id="main" class="index">
   
+  
+  <div class="post">
+    <h2>
+      <a href="https://nickyreinert.de/blog/2020/10/23/das-memory-limit-von-php-und-wordpress-erh%C3%B6hen-die-vollst%C3%A4ndige-anleitung/">Das Memory Limit von PHP und WordPress erhöhen - die vollständige Anleitung</a>
+      <time>Fri, Oct 23, 2020</time>
+    </h2>
+    
+    <div>
+      <b>Keywords: </b>
+      
+      <a class="link" href='https://nickyreinert.de/tags/apache'>#apache</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/apache2'>#apache2</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/memory-limit'>#memory-limit</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/nginx'>#nginx</a>
+      
+      <a class="link" href='https://nickyreinert.de/tags/php'>#php</a>
+      
+    </div>
+    
+    <a class="conten" href="https://nickyreinert.de/blog/2020/10/23/das-memory-limit-von-php-und-wordpress-erh%C3%B6hen-die-vollst%C3%A4ndige-anleitung/" style="text-decoration: none; padding-left: 0; margin-left: 0; color: black;">
+
+      
+      <p>Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. <a href="https://wp-ninjas.de/wordpress-php-memory-limit">Viele</a> <a href="https://www.hosttest.de/artikel/was-ist-das-php-memory-limit-1411.html">Anleitungen</a> <a href="https://socialmediadozent.com/php-memory-limit-erhoehen/#Drei_Loesungen_um_das_PHP_Memory_Limit_zu_erhoehen">sind</a> <a href="https://www.how-to-wordpress.de/php-memory-limit/">oft</a> <a href="http://juliusbeckmann.de/blog/php-memory-limit-erhohen.html">unvollständig</a>, und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:</p>
+<ul>
+<li>super-global in der php.ini</li>
+<li>global in der pool.conf, bei Verwendung von PHP-FPM</li>
+<li>oder global in der httpd.conf (Apache) oder server.conf (nginx)</li>
+<li>auf Ordner-Ebene in der user.ini</li>
+<li>auf Ordner-Ebene in der .htaccess-Datei</li>
+<li>auf Applikations-Ebene über die WordPress-Konstanten WP_MEMORY_LIMIT und WP_MAX_MEMORY_LIMIT</li>
+<li>oder auf Datei-Ebene im Script mit ini_set();</li>
+</ul>
+<p><a href="https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-7.png"><img src="images/grafik-7-700x246.png" alt=""></a></p>
+      
+
+  </a>
+
+  </div>
   
   <div class="post">
     <h2>
@@ -466,23 +507,6 @@
 
       
       <p>Ich mag meine Differenzen mit Sony haben, aber trotzdem bin ich nach wie vor großer Fan der Smartphone-Serie von Sony: Xperia. Sony hat sich bisher immer ein wenig von der Masse abgehoben und mir war bisher nicht ganz klar, warum Sony mit seinen Smartphones so schlechte Verkaufszahlen einfährt. Die compact-Serie z.B. ist eines der selten gewordenen kleinen Smartphones, das auch in meine winzigen spillerigen Kinderfinger passt. Es bringt außerde eine recht passable Noise-Reduction mit und ist wie ganz selbstverständlich wasserdicht. Und das zu einem bisher immer sehr gutem Preis. Trotzdem ist der Absatz nach wie vor miserabel. Woran liegt das? Vermutlich an dem Dschungel aus Modellbezeichnungen der jeden ambitionierten Käufer verschreckt.</p>
-      
-
-  </a>
-
-  </div>
-  
-  <div class="post">
-    <h2>
-      <a href="https://nickyreinert.de/blog/2019/11/05/fefes-blog-eine-analyse/">Fefes Blog - Eine Analyse</a>
-      <time>Tue, Nov 5, 2019</time>
-    </h2>
-    
-    <a class="conten" href="https://nickyreinert.de/blog/2019/11/05/fefes-blog-eine-analyse/" style="text-decoration: none; padding-left: 0; margin-left: 0; color: black;">
-
-      
-      <p>Nach der gar nicht mal so großen öffentlichen Wahrnehmung meiner laienhaften <a href="https://www.nickyreinert.de/augenblicke-eine-statistische-analyse-des-flirt-portals-der-bvg/">statistischen Analyse des Flirtportals der BVG &ldquo;Augenblicke&rdquo;</a>, habe ich mich mal einem anderem Projekt gewidmet. Es geht um <a href="http://blog.fefe.de">Fefes Blog</a>, einer meiner ersten Anlaufstellen, wenn ich mir die tägliche Nachrichtendosis gebe. Inspiriert wurde ich dazu durch eine <a href="https://www.netaction.de/datenvisualisierung-von-fefes-blogzeiten/">Analyse der Blogzeiten von Fefe</a>, die allerdings schon acht Jahre zurück liegt.<br>
-Für meine Analyse des BVG-Portal hatte ich damals noch PHP gewählt, um die Seiten auszulesen und in eine Datenbank zu hauen. Das war ziemlich aufwendig. Diesmal wollte ich es mit Python probieren und damit auch gleich mein erstes Projekt in dieser Sprache realisieren (der Quellcode steht <a href="https://github.com/nickyreinert/fefeScrape">auf Github</a> zur Verfügung).</p>
       
 
   </a>
