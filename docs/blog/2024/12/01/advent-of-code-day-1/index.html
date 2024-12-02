@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  
+  <link rel="preconnect" href="https://dev.visualwebsiteoptimizer.com" />
+  <script type='text/javascript' id='vwoCode'>
+  window._vwo_code || (function() {
+  var account_id=917486,
+  version=2.1,
+  settings_tolerance=2000,
+  hide_element='body',
+  hide_element_style = 'opacity:0 !important;filter:alpha(opacity=0) !important;background:none !important',
+   
+  f=false,w=window,d=document,v=d.querySelector('#vwoCode'),cK='_vwo_'+account_id+'_settings',cc={};try{var c=JSON.parse(localStorage.getItem('_vwo_'+account_id+'_config'));cc=c&&typeof c==='object'?c:{}}catch(e){}var stT=cc.stT==='session'?w.sessionStorage:w.localStorage;code={use_existing_jquery:function(){return typeof use_existing_jquery!=='undefined'?use_existing_jquery:undefined},library_tolerance:function(){return typeof library_tolerance!=='undefined'?library_tolerance:undefined},settings_tolerance:function(){return cc.sT||settings_tolerance},hide_element_style:function(){return'{'+(cc.hES||hide_element_style)+'}'},hide_element:function(){if(performance.getEntriesByName('first-contentful-paint')[0]){return''}return typeof cc.hE==='string'?cc.hE:hide_element},getVersion:function(){return version},finish:function(e){if(!f){f=true;var t=d.getElementById('_vis_opt_path_hides');if(t)t.parentNode.removeChild(t);if(e)(new Image).src='https://dev.visualwebsiteoptimizer.com/ee.gif?a='+account_id+e}},finished:function(){return f},addScript:function(e){var t=d.createElement('script');t.type='text/javascript';if(e.src){t.src=e.src}else{t.text=e.text}d.getElementsByTagName('head')[0].appendChild(t)},load:function(e,t){var i=this.getSettings(),n=d.createElement('script'),r=this;t=t||{};if(i){n.textContent=i;d.getElementsByTagName('head')[0].appendChild(n);if(!w.VWO||VWO.caE){stT.removeItem(cK);r.load(e)}}else{var o=new XMLHttpRequest;o.open('GET',e,true);o.withCredentials=!t.dSC;o.responseType=t.responseType||'text';o.onload=function(){if(t.onloadCb){return t.onloadCb(o,e)}if(o.status===200){_vwo_code.addScript({text:o.responseText})}else{_vwo_code.finish('&e=loading_failure:'+e)}};o.onerror=function(){if(t.onerrorCb){return t.onerrorCb(e)}_vwo_code.finish('&e=loading_failure:'+e)};o.send()}},getSettings:function(){try{var e=stT.getItem(cK);if(!e){return}e=JSON.parse(e);if(Date.now()>e.e){stT.removeItem(cK);return}return e.s}catch(e){return}},init:function(){if(d.URL.indexOf('__vwo_disable__')>-1)return;var e=this.settings_tolerance();w._vwo_settings_timer=setTimeout(function(){_vwo_code.finish();stT.removeItem(cK)},e);var t;if(this.hide_element()!=='body'){t=d.createElement('style');var i=this.hide_element(),n=i?i+this.hide_element_style():'',r=d.getElementsByTagName('head')[0];t.setAttribute('id','_vis_opt_path_hides');v&&t.setAttribute('nonce',v.nonce);t.setAttribute('type','text/css');if(t.styleSheet)t.styleSheet.cssText=n;else t.appendChild(d.createTextNode(n));r.appendChild(t)}else{t=d.getElementsByTagName('head')[0];var n=d.createElement('div');n.style.cssText='z-index: 2147483647 !important;position: fixed !important;left: 0 !important;top: 0 !important;width: 100% !important;height: 100% !important;background: white !important;';n.setAttribute('id','_vis_opt_path_hides');n.classList.add('_vis_hide_layer');t.parentNode.insertBefore(n,t.nextSibling)}var o='https://dev.visualwebsiteoptimizer.com/j.php?a='+account_id+'&u='+encodeURIComponent(d.URL)+'&vn='+version;if(w.location.search.indexOf('_vwo_xhr')!==-1){this.addScript({src:o})}else{this.load(o+'&x=true')}}};w._vwo_code=code;code.init();})();
+  </script>
+  
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="As the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. I am not explaining the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let&rsquo;s see how far I get.
+Disclaimer: Of course, I am using AI to get the actual syntax, but not for the algorithm itself. I usually use ClaudeAI for that, as I&rsquo;ve experienced the best results with the free version there.">
+  
+
+  
+  <link rel="icon" href="http://localhost:1313/">
+
+  
+  
+  <meta name="keywords" content="">
+  
+
+  
+  
+
+  
+  <meta property="og:url" content="http://localhost:1313/blog/2024/12/01/advent-of-code-day-1/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Advent of Code - Day 1">
+  <meta property="og:description" content="As the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. I am not explaining the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let’s see how far I get.
+Disclaimer: Of course, I am using AI to get the actual syntax, but not for the algorithm itself. I usually use ClaudeAI for that, as I’ve experienced the best results with the free version there.">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2024-12-01T12:34:56+02:00">
+    <meta property="article:modified_time" content="2024-12-01T12:34:56+02:00">
+
+
+  
+  <link rel="canonical" href="http://localhost:1313/blog/2024/12/01/advent-of-code-day-1/">
+
+  
+  
+  
+  <meta itemprop="name" content="Advent of Code - Day 1">
+  <meta itemprop="description" content="As the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. I am not explaining the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let’s see how far I get.
+Disclaimer: Of course, I am using AI to get the actual syntax, but not for the algorithm itself. I usually use ClaudeAI for that, as I’ve experienced the best results with the free version there.">
+  <meta itemprop="datePublished" content="2024-12-01T12:34:56+02:00">
+  <meta itemprop="dateModified" content="2024-12-01T12:34:56+02:00">
+  <meta itemprop="wordCount" content="521">
+  <meta itemprop="keywords" content="Blog,Aoc2024">
+
+  
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/common.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/content.css'>
+
+  
+  
+  <title>Advent of Code - Day 1 - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Advent of Code - Day 1">
+  <meta name="twitter:description" content="As the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. I am not explaining the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let’s see how far I get.
+Disclaimer: Of course, I am using AI to get the actual syntax, but not for the algorithm itself. I usually use ClaudeAI for that, as I’ve experienced the best results with the free version there.">
+
+
+  
+<link rel="stylesheet" href='http://localhost:1313/css/single.css'>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <h1>
+    <a href="http://localhost:1313/">Nicky Reinert</a>
+  </h1>
+
+  <div class="footnote">
+    <span class="nav-bar-item">
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">Not-A-Brand Apparel</a>
+    </span>
+  </div>
+
+  <hr/>
+  <nav>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/">alles</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/nerdenz/">nerdenz</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/blog/">blog</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/anleitungen/">anleitungen</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/development/">development</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/hosting/">hosting</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/projekte/">projekte</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/tools/">tools</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/wordpress/">wordpress</a>
+    </span>
+    
+  </nav>
+
+
+</header>
+
+    
+<main id="main" class="post">
+  
+  
+  <h1>Advent of Code - Day 1</h1>
+  
+  
+  <article class="content">
+    
+    <p>As the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. I am not explaining the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let&rsquo;s see how far I get.</p>
+<p>Disclaimer: Of course, I am using AI to get the actual syntax, but not for the algorithm itself. I usually use ClaudeAI for that, as I&rsquo;ve experienced the best results with the free version there.</p>
+<p>On the first day, I&rsquo;m starting with F# — the sister of C# — which focuses on functional programming.
+Setting Up the Development Environment</p>
+<p>First, I need to set up my development environment. Since I don’t want to pollute my system with tons of different interpreters, I prefer to work in Docker containers. Above all, this requires <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers">the Dev Containers extension</a>. To make VS Code ready for F#, I also need <a href="https://marketplace.visualstudio.com/items?itemName=Ionide.Ionide-fsharp">the Ionide extension</a>.</p>
+<p>Here is the Dockerfile for a containerized F# environment:</p>
+<pre><code># Use official .NET SDK image with F# support
+FROM mcr.microsoft.com/dotnet/sdk:8.0
+
+# Install additional tools
+RUN apt-get update &amp;&amp; \
+    apt-get install -y \
+    git \
+    curl \
+    vim \
+    sudo
+
+# Create vscode user with sudo permissions
+RUN groupadd -r vscode \
+    &amp;&amp; useradd -m -s /bin/bash -g vscode -G sudo vscode \
+    &amp;&amp; echo &quot;vscode ALL=(ALL) NOPASSWD:ALL&quot; &gt;&gt; /etc/sudoers.d/vscode \
+    &amp;&amp; chmod 0440 /etc/sudoers.d/vscode
+
+# Set working directory and ensure proper ownership
+WORKDIR /app
+RUN chown -R vscode:vscode /app
+
+# Ensure .NET tools are in PATH
+ENV PATH=&quot;/home/vscode/.dotnet/tools:${PATH}&quot;
+
+# Set the default user to vscode
+USER vscode
+
+# Ensure .NET tools are installed for the vscode user
+RUN dotnet tool list --global || true
+
+# Default command
+CMD [&quot;/bin/bash&quot;]
+</code></pre>
+<p>Developing inside a container requires /.devcontainer/devcontainer.json to look like this:</p>
+<pre><code>{
+    &quot;name&quot;: &quot;F# Dev Environment&quot;,
+    &quot;build&quot;: {
+        &quot;dockerfile&quot;: &quot;../Dockerfile&quot;,
+        &quot;context&quot;: &quot;..&quot;
+    },
+    &quot;remoteUser&quot;: &quot;vscode&quot;,
+    &quot;workspaceFolder&quot;: &quot;/app&quot;,
+    &quot;customizations&quot;: {
+        &quot;vscode&quot;: {
+            &quot;extensions&quot;: [
+                &quot;Ionide.ionide-fsharp&quot;,
+                &quot;ms-dotnettools.csharp&quot;
+            ]
+        }
+    },
+    &quot;mounts&quot;: [
+        &quot;source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached&quot;
+    ],
+    &quot;containerUser&quot;: &quot;vscode&quot;,
+    &quot;remoteEnv&quot;: {
+        &quot;DOTNET_CLI_HOME&quot;: &quot;/app&quot;
+    }
+}
+</code></pre>
+<p>Now, after building and running the container with <code>docker-compose build; docker-compose up -d</code>, I can connect to the container by either pressing <code>CMD+SHIFT+P</code> or using the small blue button on the bottom left, selecting the option &ldquo;<em>Connect to Dev Container.</em>&rdquo;</p>
+<h2 id="day-1---about-differences-and-products">Day 1 - About differences and products</h2>
+<p>(<a href="https://adventofcode.com/2024/day/1">task</a> - <a href="https://github.com/nickyreinert/aoc2024/blob/main/solutions/day1.fsx">solution</a>)</p>
+<p>The first day consists of two simple tasks, so I won’t go into too much detail:</p>
+<ol>
+<li>Order two lists incrementally, then get the difference for each list item and sum all differences up.</li>
+<li>For each item on the first list, count the occurrences on the second list, compute the product <code>i * frequency(i)</code>, and then get the sum of all products.</li>
+</ol>
+<h2 id="what-i-like-about-f">What I Like About F#</h2>
+<p>One of the things I really like about <code>F#</code> is how they pipe different steps together:</p>
+<pre><code>let readListFromFile (filePath: string) =
+    File.ReadAllLines(filePath) 
+    |&gt; Array.map int
+    |&gt; Array.toList
+</code></pre>
+<p>The pipe operator <code>|&gt;</code> takes the output of the previous command and passes it as input to the next command, resulting in a clearer and more concise coding style.</p>
+<p>See you next day&hellip;</p>
+
+    
+  </article>
+  <div class="paginator">
+    
+    <a class="link" href="http://localhost:1313/blog/2024/11/06/beruflicher-evolutionszyklus-das-cira-model/">← prev</a>
+    
+    
+    <a></a>
+    
+  </div>
+  <div class="comment">
+    
+    
+    
+    
+    
+    
+  </div>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© </span> - <span>2024</span>
+  </div>
+
+  <div>
+    <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a>
+    <span> 🍦 Theme </span>
+    <a class="link" href="https://github.com/queensferryme/hugo-theme-texify">TeXify</a>
+  </div>
+
+  <div class="footnote">
+    <span></span>
+  </div>
+  Abgelegt unter: 
+
+</footer>
+
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>
