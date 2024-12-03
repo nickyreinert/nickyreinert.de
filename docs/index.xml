@@ -6,15 +6,48 @@
     <description>Recent content on Nicky Reinert</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de-DE</language>
-    <lastBuildDate>Sun, 01 Dec 2024 12:34:56 +0200</lastBuildDate><atom:link href="https://nickyreinert.de:1313/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 Dec 2024 12:34:56 +0200</lastBuildDate><atom:link href="https://nickyreinert.de:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Advent of Code - Day 1 - Differences and Products</title>
-      <link>https://nickyreinert.de:1313/blog/2024/12/01/advent-of-code-day-1-differences-and-products/</link>
+      <title>Advent of Code - Day 2 - Increasing and decreasing (Rust)</title>
+      <link>https://nickyreinert.de:1313/blog/2024/12/02/advent-of-code-day-2-increasing-and-decreasing-rust/</link>
+      <pubDate>Mon, 02 Dec 2024 12:34:56 +0200</pubDate>
+      
+      <guid>https://nickyreinert.de:1313/blog/2024/12/02/advent-of-code-day-2-increasing-and-decreasing-rust/</guid>
+      
+      <description>&lt;p&gt;&lt;a href=&#34;https://adventofcode.com/2024/day/2&#34;&gt;This task&lt;/a&gt; is about testing if integers on a list are increasing or decreasing. I&amp;rsquo;ll try &lt;code&gt;Rust&lt;/code&gt; and it assume that I need nerves of steel for that excercise.&lt;/p&gt;
+&lt;h2 id=&#34;setting-up-the-development-environment&#34;&gt;Setting Up the Development Environment&lt;/h2&gt;
+&lt;p&gt;Rust comes in a container, too. That&amp;rsquo;s the Dockerfile:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Dockerfile
+FROM rust:latest
+
+# Install additional tools you might need
+RUN apt-get update &amp;amp;&amp;amp; apt-get install -y \
+    git \
+    curl \
+    wget \
+    build-essential
+
+# Set the working directory
+WORKDIR /workspace
+
+# Copy project files (if any)
+COPY . .
+
+# Default command
+CMD [&amp;quot;bash&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And the devcontainer.json to develop inside that container made of steel:&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Advent of Code - Day 1 - Differences and Products (F#)</title>
+      <link>https://nickyreinert.de:1313/blog/2024/12/01/advent-of-code-day-1-differences-and-products-f/</link>
       <pubDate>Sun, 01 Dec 2024 12:34:56 +0200</pubDate>
       
-      <guid>https://nickyreinert.de:1313/blog/2024/12/01/advent-of-code-day-1-differences-and-products/</guid>
+      <guid>https://nickyreinert.de:1313/blog/2024/12/01/advent-of-code-day-1-differences-and-products-f/</guid>
       
-      <description>&lt;p&gt;As the challenge at &lt;a href=&#34;https://adventofcode.com/&#34;&gt;AoC&lt;/a&gt; is not about the syntax but the algorithm, I decided to try a different approach this year: &lt;strong&gt;a new language every day&lt;/strong&gt;. I am probably not going to explain the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let&amp;rsquo;s see how far I get.&lt;/p&gt;
+      <description>&lt;p&gt;As the challenge at &lt;a href=&#34;https://adventofcode.com/&#34;&gt;AoC&lt;/a&gt; is not about the syntax but the algorithm, I decided to try a different approach this year: &lt;strong&gt;a new language every day&lt;/strong&gt;. I am probably not going to explain the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let&amp;rsquo;s see how far I get. Please don&amp;rsquo;t take my judgement to serious.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Disclaimer: Of course, I am using AI to get the actual syntax, but not for the algorithm itself. I usually use ClaudeAI for that, as I&amp;rsquo;ve experienced the best results with the free version there.&lt;/p&gt;</description>
       

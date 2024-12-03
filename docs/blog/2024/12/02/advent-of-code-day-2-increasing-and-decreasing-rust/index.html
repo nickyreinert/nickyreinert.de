@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  
+  <link rel="preconnect" href="https://dev.visualwebsiteoptimizer.com" />
+  <script type='text/javascript' id='vwoCode'>
+  window._vwo_code || (function() {
+  var account_id=917486,
+  version=2.1,
+  settings_tolerance=2000,
+  hide_element='body',
+  hide_element_style = 'opacity:0 !important;filter:alpha(opacity=0) !important;background:none !important',
+   
+  f=false,w=window,d=document,v=d.querySelector('#vwoCode'),cK='_vwo_'+account_id+'_settings',cc={};try{var c=JSON.parse(localStorage.getItem('_vwo_'+account_id+'_config'));cc=c&&typeof c==='object'?c:{}}catch(e){}var stT=cc.stT==='session'?w.sessionStorage:w.localStorage;code={use_existing_jquery:function(){return typeof use_existing_jquery!=='undefined'?use_existing_jquery:undefined},library_tolerance:function(){return typeof library_tolerance!=='undefined'?library_tolerance:undefined},settings_tolerance:function(){return cc.sT||settings_tolerance},hide_element_style:function(){return'{'+(cc.hES||hide_element_style)+'}'},hide_element:function(){if(performance.getEntriesByName('first-contentful-paint')[0]){return''}return typeof cc.hE==='string'?cc.hE:hide_element},getVersion:function(){return version},finish:function(e){if(!f){f=true;var t=d.getElementById('_vis_opt_path_hides');if(t)t.parentNode.removeChild(t);if(e)(new Image).src='https://dev.visualwebsiteoptimizer.com/ee.gif?a='+account_id+e}},finished:function(){return f},addScript:function(e){var t=d.createElement('script');t.type='text/javascript';if(e.src){t.src=e.src}else{t.text=e.text}d.getElementsByTagName('head')[0].appendChild(t)},load:function(e,t){var i=this.getSettings(),n=d.createElement('script'),r=this;t=t||{};if(i){n.textContent=i;d.getElementsByTagName('head')[0].appendChild(n);if(!w.VWO||VWO.caE){stT.removeItem(cK);r.load(e)}}else{var o=new XMLHttpRequest;o.open('GET',e,true);o.withCredentials=!t.dSC;o.responseType=t.responseType||'text';o.onload=function(){if(t.onloadCb){return t.onloadCb(o,e)}if(o.status===200){_vwo_code.addScript({text:o.responseText})}else{_vwo_code.finish('&e=loading_failure:'+e)}};o.onerror=function(){if(t.onerrorCb){return t.onerrorCb(e)}_vwo_code.finish('&e=loading_failure:'+e)};o.send()}},getSettings:function(){try{var e=stT.getItem(cK);if(!e){return}e=JSON.parse(e);if(Date.now()>e.e){stT.removeItem(cK);return}return e.s}catch(e){return}},init:function(){if(d.URL.indexOf('__vwo_disable__')>-1)return;var e=this.settings_tolerance();w._vwo_settings_timer=setTimeout(function(){_vwo_code.finish();stT.removeItem(cK)},e);var t;if(this.hide_element()!=='body'){t=d.createElement('style');var i=this.hide_element(),n=i?i+this.hide_element_style():'',r=d.getElementsByTagName('head')[0];t.setAttribute('id','_vis_opt_path_hides');v&&t.setAttribute('nonce',v.nonce);t.setAttribute('type','text/css');if(t.styleSheet)t.styleSheet.cssText=n;else t.appendChild(d.createTextNode(n));r.appendChild(t)}else{t=d.getElementsByTagName('head')[0];var n=d.createElement('div');n.style.cssText='z-index: 2147483647 !important;position: fixed !important;left: 0 !important;top: 0 !important;width: 100% !important;height: 100% !important;background: white !important;';n.setAttribute('id','_vis_opt_path_hides');n.classList.add('_vis_hide_layer');t.parentNode.insertBefore(n,t.nextSibling)}var o='https://dev.visualwebsiteoptimizer.com/j.php?a='+account_id+'&u='+encodeURIComponent(d.URL)+'&vn='+version;if(w.location.search.indexOf('_vwo_xhr')!==-1){this.addScript({src:o})}else{this.load(o+'&x=true')}}};w._vwo_code=code;code.init();})();
+  </script>
+  
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="This task is about testing if integers in a list are increasing or decreasing. I&rsquo;ll try Rust, and I assume I need nerves of steel for this exercise.
+Setting Up the Development Environment
+Rust comes in a container, too. Here&rsquo;s the Dockerfile:
+# Dockerfile
+FROM rust:latest
+
+# Install additional tools you might need
+RUN apt-get update &amp;&amp; apt-get install -y \
+    git \
+    curl \
+    wget \
+    build-essential
+
+# Set the working directory
+WORKDIR /workspace
+
+# Copy project files (if any)
+COPY . .
+
+# Default command
+CMD [&#34;bash&#34;]
+And here&rsquo;s the devcontainer.json to develop inside that container made of steel:">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de:1313/">
+
+  
+  
+  <meta name="keywords" content="">
+  
+
+  
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de:1313/blog/2024/12/02/advent-of-code-day-2-increasing-and-decreasing-rust/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Advent of Code - Day 2 - Increasing and decreasing (Rust)">
+  <meta property="og:description" content="This task is about testing if integers in a list are increasing or decreasing. I’ll try Rust, and I assume I need nerves of steel for this exercise.
+Setting Up the Development Environment Rust comes in a container, too. Here’s the Dockerfile:
+# Dockerfile FROM rust:latest # Install additional tools you might need RUN apt-get update &amp;&amp; apt-get install -y \ git \ curl \ wget \ build-essential # Set the working directory WORKDIR /workspace # Copy project files (if any) COPY . . # Default command CMD [&#34;bash&#34;] And here’s the devcontainer.json to develop inside that container made of steel:">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2024-12-02T12:34:56+02:00">
+    <meta property="article:modified_time" content="2024-12-02T12:34:56+02:00">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de:1313/blog/2024/12/02/advent-of-code-day-2-increasing-and-decreasing-rust/">
+
+  
+  
+  
+  <meta itemprop="name" content="Advent of Code - Day 2 - Increasing and decreasing (Rust)">
+  <meta itemprop="description" content="This task is about testing if integers in a list are increasing or decreasing. I’ll try Rust, and I assume I need nerves of steel for this exercise.
+Setting Up the Development Environment Rust comes in a container, too. Here’s the Dockerfile:
+# Dockerfile FROM rust:latest # Install additional tools you might need RUN apt-get update &amp;&amp; apt-get install -y \ git \ curl \ wget \ build-essential # Set the working directory WORKDIR /workspace # Copy project files (if any) COPY . . # Default command CMD [&#34;bash&#34;] And here’s the devcontainer.json to develop inside that container made of steel:">
+  <meta itemprop="datePublished" content="2024-12-02T12:34:56+02:00">
+  <meta itemprop="dateModified" content="2024-12-02T12:34:56+02:00">
+  <meta itemprop="wordCount" content="354">
+  <meta itemprop="keywords" content="Blog,Aoc2024">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de:1313/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de:1313/css/content.css'>
+
+  
+  
+  <title>Advent of Code - Day 2 - Increasing and decreasing (Rust) - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Advent of Code - Day 2 - Increasing and decreasing (Rust)">
+  <meta name="twitter:description" content="This task is about testing if integers in a list are increasing or decreasing. I’ll try Rust, and I assume I need nerves of steel for this exercise.
+Setting Up the Development Environment Rust comes in a container, too. Here’s the Dockerfile:
+# Dockerfile FROM rust:latest # Install additional tools you might need RUN apt-get update &amp;&amp; apt-get install -y \ git \ curl \ wget \ build-essential # Set the working directory WORKDIR /workspace # Copy project files (if any) COPY . . # Default command CMD [&#34;bash&#34;] And here’s the devcontainer.json to develop inside that container made of steel:">
+
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de:1313/css/single.css'>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <h1>
+    <a href="https://nickyreinert.de:1313/">Nicky Reinert</a>
+  </h1>
+
+  <div class="footnote">
+    <span class="nav-bar-item">
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">Not-A-Brand Apparel</a>
+    </span>
+  </div>
+
+  <hr/>
+  <nav>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/">alles</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/nerdenz/">nerdenz</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/blog/">blog</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/anleitungen/">anleitungen</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/development/">development</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/hosting/">hosting</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/projekte/">projekte</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/tools/">tools</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/wordpress/">wordpress</a>
+    </span>
+    
+  </nav>
+
+
+</header>
+
+    
+<main id="main" class="post">
+  
+  
+  <h1>Advent of Code - Day 2 - Increasing and decreasing (Rust)</h1>
+  
+  
+  <article class="content">
+    
+    <p><a href="https://adventofcode.com/2024/day/2">This task</a> is about testing if integers in a list are increasing or decreasing. I&rsquo;ll try <code>Rust</code>, and I assume I need nerves of steel for this exercise.</p>
+<h2 id="setting-up-the-development-environment">Setting Up the Development Environment</h2>
+<p>Rust comes in a container, too. Here&rsquo;s the Dockerfile:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#75715e"># Dockerfile</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> rust:latest</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Install additional tools you might need</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> apt-get update <span style="color:#f92672">&amp;&amp;</span> apt-get install -y <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    git <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    curl <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    wget <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    build-essential<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Set the working directory</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /workspace</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Copy project files (if any)</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> . .<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Default command</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;bash&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>And here&rsquo;s the <code>devcontainer.json</code> to develop inside that container made of steel:</p>
+<pre tabindex="0"><code>{
+    &#34;name&#34;: &#34;Rust Development Container&#34;,
+    &#34;build&#34;: {
+        &#34;dockerfile&#34;: &#34;../Dockerfile&#34;
+    },
+    &#34;customizations&#34;: {
+        &#34;vscode&#34;: {
+            &#34;extensions&#34;: [
+                &#34;rust-lang.rust-analyzer&#34;,
+                &#34;serayuzgur.crates&#34;,
+                &#34;tamasfe.even-better-toml&#34;
+            ]
+        }
+    },
+    &#34;remoteUser&#34;: &#34;root&#34;,
+    &#34;features&#34;: {
+        &#34;ghcr.io/devcontainers/features/rust:1&#34;: {}
+    }
+}
+</code></pre><p>Rust also requires a <code>Cargo.toml</code> file that defines your project and dependencies:</p>
+<pre tabindex="0"><code># Cargo.toml
+[package]
+name = &#34;rust-docker-project&#34;
+version = &#34;0.1.0&#34;
+edition = &#34;2024&#34;
+
+[dependencies]
+# none, ehehe
+</code></pre><p>That&rsquo;s all we need. Build it with <code>docker build</code> and connect VS Code. The source file is located inside the <code>src</code> folder. You can run your code like this</p>
+<pre tabindex="0"><code>cargo build
+cargo run
+</code></pre><p>The algorithm itself isn&rsquo;t that tricky. <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day2%20-%20rust/src">You&rsquo;ll find everything on Github</a>.</p>
+<h2 id="whats-up-rust">Whats up, Rust?</h2>
+<p><em>4 of 12, wouldn&rsquo;t use freely</em></p>
+<h2 id="whats-up-with-rust">What&rsquo;s Up with Rust?</h2>
+<p><strong>Rating: 4/12 – Wouldn&rsquo;t use it freely</strong></p>
+<p>Don&rsquo;t get me started. I didn&rsquo;t know that Rust has so many strange rules. There’s this interesting concept of <strong>ownership</strong>: values belong to a variable as long as you don&rsquo;t assign that variable to another variable. If you pass a value from one vector to another, you can&rsquo;t access it in the original vector anymore.</p>
+<p>And then there are many important operators scattered across the code, like:</p>
+<ul>
+<li><code>&amp;</code> for <strong>borrowing</strong> (referencing a value without taking ownership)</li>
+<li><code>*</code> for <strong>de-referencing</strong> (accessing the value a reference points to)</li>
+</ul>
+<p>What I <em>do</em> like, though, is the error handling. Rust uses <code>Ok</code> and <code>Err</code> to make handling errors much cleaner and explicit:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>Err(<span style="color:#e6db74">&#34;Value not valid&#34;</span>)
+</span></span><span style="display:flex;"><span>Ok(())
+</span></span></code></pre></div><p>This approach forces you to handle potential issues early on, which is great for reliability.</p>
+<p>See you next day&hellip;</p>
+
+    
+  </article>
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de:1313/blog/2024/12/01/advent-of-code-day-1-differences-and-products-f/">← prev</a>
+    
+    
+    <a></a>
+    
+  </div>
+  <div class="comment">
+    
+    
+    
+    
+    
+    
+  </div>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© </span> - <span>2024</span>
+  </div>
+
+  <div>
+    <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a>
+    <span> 🍦 Theme </span>
+    <a class="link" href="https://github.com/queensferryme/hugo-theme-texify">TeXify</a>
+  </div>
+
+  <div class="footnote">
+    <span></span>
+  </div>
+  Abgelegt unter: 
+
+</footer>
+
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>
