@@ -24,7 +24,9 @@
 
   
   
-  <meta name="description" content="...">
+  <meta name="description" content="(task)
+It&rsquo;s the fifth day of our outrageous adventure, and we are dealing with printer updates. To solve this riddle, we are getting back to the roots and our good ol&rsquo; friend Bash!
+The good news here is that I don&rsquo;t need to set up any particular environment because, thankfully, Bash is available on most systems out of the box.">
   
 
   
@@ -39,26 +41,33 @@
   
 
   
-  <meta property="og:url" content="https://nickyreinert.de/categories/">
+  <meta property="og:url" content="https://nickyreinert.de/blog/2024/12/05/advent-of-code-day-5-printer-updates-bash/">
   <meta property="og:site_name" content="Nicky Reinert">
-  <meta property="og:title" content="Categories">
-  <meta property="og:description" content="...">
+  <meta property="og:title" content="Advent of Code - Day 5 - Printer Updates (Bash)">
+  <meta property="og:description" content="(task)
+It’s the fifth day of our outrageous adventure, and we are dealing with printer updates. To solve this riddle, we are getting back to the roots and our good ol’ friend Bash!
+The good news here is that I don’t need to set up any particular environment because, thankfully, Bash is available on most systems out of the box.">
   <meta property="og:locale" content="de_DE">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2024-12-05T12:34:56+02:00">
+    <meta property="article:modified_time" content="2024-12-05T12:34:56+02:00">
 
 
   
-  <link rel="canonical" href="https://nickyreinert.de/categories/">
+  <link rel="canonical" href="https://nickyreinert.de/blog/2024/12/05/advent-of-code-day-5-printer-updates-bash/">
 
   
   
-  <link rel="alternate" type="application/rss+xml" href="https://nickyreinert.de/categories/index.xml" title="Nicky Reinert" />
   
-  
-  <meta itemprop="name" content="Categories">
-  <meta itemprop="description" content="...">
+  <meta itemprop="name" content="Advent of Code - Day 5 - Printer Updates (Bash)">
+  <meta itemprop="description" content="(task)
+It’s the fifth day of our outrageous adventure, and we are dealing with printer updates. To solve this riddle, we are getting back to the roots and our good ol’ friend Bash!
+The good news here is that I don’t need to set up any particular environment because, thankfully, Bash is available on most systems out of the box.">
   <meta itemprop="datePublished" content="2024-12-05T12:34:56+02:00">
   <meta itemprop="dateModified" content="2024-12-05T12:34:56+02:00">
+  <meta itemprop="wordCount" content="334">
+  <meta itemprop="keywords" content="Blog,Aoc2024">
 
   
   <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
@@ -66,18 +75,20 @@
 
   
   
-  <title>Categories - Nicky Reinert</title>
+  <title>Advent of Code - Day 5 - Printer Updates (Bash) - Nicky Reinert</title>
   
 
   
   
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Categories">
-  <meta name="twitter:description" content="...">
+  <meta name="twitter:title" content="Advent of Code - Day 5 - Printer Updates (Bash)">
+  <meta name="twitter:description" content="(task)
+It’s the fifth day of our outrageous adventure, and we are dealing with printer updates. To solve this riddle, we are getting back to the roots and our good ol’ friend Bash!
+The good news here is that I don’t need to set up any particular environment because, thankfully, Bash is available on most systems out of the box.">
 
 
   
-<link rel="stylesheet" href='https://nickyreinert.de/css/list.css'>
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
 
 </head>
 
@@ -148,12 +159,52 @@
 </header>
 
     
-<main id="main" class="archive">
+<main id="main" class="post">
   
   
-  <div class="post-group">
-    <h2>...</h2>
+  <h1>Advent of Code - Day 5 - Printer Updates (Bash)</h1>
+  
+  
+  <article class="content">
+    
+    <p>(<a href="https://adventofcode.com/2024/day/5/">task</a>)</p>
+<p>It&rsquo;s the fifth day of our outrageous adventure, and we are dealing with printer updates. To solve this riddle, we are getting back to the roots and our good ol&rsquo; friend <code>Bash</code>!</p>
+<p>The good news here is that I don&rsquo;t need to set up any particular environment because, thankfully, <code>Bash</code> is available on most systems out of the box.</p>
+<h3 id="solution-to-the-first-part">Solution to the First Part</h3>
+<p>The solution is quite straightforward: We need to read the rules and the updates into an array, loop through all updates, and check if they somehow break the rules. That&rsquo;s nothing too complicated. The only thing that I am probably doing <em>unconventionally</em> is how I check.</p>
+<p>I am using a regular expression that is the opposite of the rule. If it matches, I know the update is invalid:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ae81ff">61.</span><span style="color:#f92672">*</span><span style="color:#960050;background-color:#1e0010">?</span>(,<span style="color:#ae81ff">29</span>)(,<span style="color:#f92672">|</span><span style="color:#960050;background-color:#1e0010">$</span>)
+</span></span></code></pre></div><p>In this example, <code>29</code> is the actual rule name, and <code>61</code> should come after <code>29</code>. With <code>.*?</code>, I am <em>ungreedy</em> checking for any characters in between, and the closing group just makes sure that after <code>29</code>, there&rsquo;s either another number or the end of the update.</p>
+<p>Simple thing.</p>
+<h3 id="solution-to-the-second-part">Solution to the Second Part</h3>
+<p>The second part looks way easier. They just want us to switch the position of the pages that we identified as erroneous.</p>
+<p>Basically, it&rsquo;s just something like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>updates<span style="color:#f92672">[</span>page_index<span style="color:#f92672">]=</span>$subsequent_page
+</span></span><span style="display:flex;"><span>updates<span style="color:#f92672">[</span>subsequent_page_index<span style="color:#f92672">]=</span>$page
+</span></span></code></pre></div><p>But&hellip; yeah, that&rsquo;s the first bump in my journey. My code isn&rsquo;t resulting in the correct answer, and it seems like I am missing a detail. To avoid wasting any more time, I&rsquo;ll proceed to the next day&hellip; sorry folks :(</p>
+<h2 id="whats-up-bash">Whats up, Bash?</h2>
+<p><strong>Rating: 8/12 – weird operators and syntax</strong></p>
+<p>The boss of all scripting languages: <code>Bash</code>. I still don&rsquo;t understand most of the syntax rules, but thanks to AI, it&rsquo;s not too hard to get things done in <code>Bash</code>. When working as a sysadmin, I loved automating processes and even building small user interfaces to make life on the command line easier. However, I guess there are better ways for that.</p>
+<p>See you next day!</p>
+    
+  </article>
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/blog/2024/12/04/advent-of-code-day-4-finding-patters-excel/">← prev</a>
+    
+    
+    <a></a>
+    
   </div>
+  <div class="comment">
+    
+    
+    
+    
+    
+    
+  </div>
+  
 </main>
 
     <footer id="footer">
