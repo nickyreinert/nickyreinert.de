@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  
+  <link rel="preconnect" href="https://dev.visualwebsiteoptimizer.com" />
+  <script type='text/javascript' id='vwoCode'>
+  window._vwo_code || (function() {
+  var account_id=917486,
+  version=2.1,
+  settings_tolerance=2000,
+  hide_element='body',
+  hide_element_style = 'opacity:0 !important;filter:alpha(opacity=0) !important;background:none !important',
+   
+  f=false,w=window,d=document,v=d.querySelector('#vwoCode'),cK='_vwo_'+account_id+'_settings',cc={};try{var c=JSON.parse(localStorage.getItem('_vwo_'+account_id+'_config'));cc=c&&typeof c==='object'?c:{}}catch(e){}var stT=cc.stT==='session'?w.sessionStorage:w.localStorage;code={use_existing_jquery:function(){return typeof use_existing_jquery!=='undefined'?use_existing_jquery:undefined},library_tolerance:function(){return typeof library_tolerance!=='undefined'?library_tolerance:undefined},settings_tolerance:function(){return cc.sT||settings_tolerance},hide_element_style:function(){return'{'+(cc.hES||hide_element_style)+'}'},hide_element:function(){if(performance.getEntriesByName('first-contentful-paint')[0]){return''}return typeof cc.hE==='string'?cc.hE:hide_element},getVersion:function(){return version},finish:function(e){if(!f){f=true;var t=d.getElementById('_vis_opt_path_hides');if(t)t.parentNode.removeChild(t);if(e)(new Image).src='https://dev.visualwebsiteoptimizer.com/ee.gif?a='+account_id+e}},finished:function(){return f},addScript:function(e){var t=d.createElement('script');t.type='text/javascript';if(e.src){t.src=e.src}else{t.text=e.text}d.getElementsByTagName('head')[0].appendChild(t)},load:function(e,t){var i=this.getSettings(),n=d.createElement('script'),r=this;t=t||{};if(i){n.textContent=i;d.getElementsByTagName('head')[0].appendChild(n);if(!w.VWO||VWO.caE){stT.removeItem(cK);r.load(e)}}else{var o=new XMLHttpRequest;o.open('GET',e,true);o.withCredentials=!t.dSC;o.responseType=t.responseType||'text';o.onload=function(){if(t.onloadCb){return t.onloadCb(o,e)}if(o.status===200){_vwo_code.addScript({text:o.responseText})}else{_vwo_code.finish('&e=loading_failure:'+e)}};o.onerror=function(){if(t.onerrorCb){return t.onerrorCb(e)}_vwo_code.finish('&e=loading_failure:'+e)};o.send()}},getSettings:function(){try{var e=stT.getItem(cK);if(!e){return}e=JSON.parse(e);if(Date.now()>e.e){stT.removeItem(cK);return}return e.s}catch(e){return}},init:function(){if(d.URL.indexOf('__vwo_disable__')>-1)return;var e=this.settings_tolerance();w._vwo_settings_timer=setTimeout(function(){_vwo_code.finish();stT.removeItem(cK)},e);var t;if(this.hide_element()!=='body'){t=d.createElement('style');var i=this.hide_element(),n=i?i+this.hide_element_style():'',r=d.getElementsByTagName('head')[0];t.setAttribute('id','_vis_opt_path_hides');v&&t.setAttribute('nonce',v.nonce);t.setAttribute('type','text/css');if(t.styleSheet)t.styleSheet.cssText=n;else t.appendChild(d.createTextNode(n));r.appendChild(t)}else{t=d.getElementsByTagName('head')[0];var n=d.createElement('div');n.style.cssText='z-index: 2147483647 !important;position: fixed !important;left: 0 !important;top: 0 !important;width: 100% !important;height: 100% !important;background: white !important;';n.setAttribute('id','_vis_opt_path_hides');n.classList.add('_vis_hide_layer');t.parentNode.insertBefore(n,t.nextSibling)}var o='https://dev.visualwebsiteoptimizer.com/j.php?a='+account_id+'&u='+encodeURIComponent(d.URL)+'&vn='+version;if(w.location.search.indexOf('_vwo_xhr')!==-1){this.addScript({src:o})}else{this.load(o+'&x=true')}}};w._vwo_code=code;code.init();})();
+  </script>
+  
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="(task | solution)
+This is the kind of task I really enjoy: finding algorithms for simple mathematical challenges! Let&rsquo;s go—this time in&hellip; C&#43;&#43;! (Phew!)
+You&rsquo;ll find my .devcontainer and Dockerfile on GitHub. Once again, I don&rsquo;t want to bloat my system with additional compiler setups. It turns out, this is working like a charm.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de:1313/">
+
+  
+  
+  <meta name="keywords" content="">
+  
+
+  
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de:1313/blog/2024/12/07/advent-of-code-day-7-missing-operators-c-/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Advent of Code - Day 7 - Missing Operators (C&#43;&#43;)">
+  <meta property="og:description" content="(task | solution)
+This is the kind of task I really enjoy: finding algorithms for simple mathematical challenges! Let’s go—this time in… C&#43;&#43;! (Phew!)
+You’ll find my .devcontainer and Dockerfile on GitHub. Once again, I don’t want to bloat my system with additional compiler setups. It turns out, this is working like a charm.">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2024-12-07T12:34:56+02:00">
+    <meta property="article:modified_time" content="2024-12-07T12:34:56+02:00">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de:1313/blog/2024/12/07/advent-of-code-day-7-missing-operators-c-/">
+
+  
+  
+  
+  <meta itemprop="name" content="Advent of Code - Day 7 - Missing Operators (C&#43;&#43;)">
+  <meta itemprop="description" content="(task | solution)
+This is the kind of task I really enjoy: finding algorithms for simple mathematical challenges! Let’s go—this time in… C&#43;&#43;! (Phew!)
+You’ll find my .devcontainer and Dockerfile on GitHub. Once again, I don’t want to bloat my system with additional compiler setups. It turns out, this is working like a charm.">
+  <meta itemprop="datePublished" content="2024-12-07T12:34:56+02:00">
+  <meta itemprop="dateModified" content="2024-12-07T12:34:56+02:00">
+  <meta itemprop="wordCount" content="519">
+  <meta itemprop="keywords" content="Blog,Aoc2024">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de:1313/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de:1313/css/content.css'>
+
+  
+  
+  <title>Advent of Code - Day 7 - Missing Operators (C&#43;&#43;) - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Advent of Code - Day 7 - Missing Operators (C&#43;&#43;)">
+  <meta name="twitter:description" content="(task | solution)
+This is the kind of task I really enjoy: finding algorithms for simple mathematical challenges! Let’s go—this time in… C&#43;&#43;! (Phew!)
+You’ll find my .devcontainer and Dockerfile on GitHub. Once again, I don’t want to bloat my system with additional compiler setups. It turns out, this is working like a charm.">
+
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de:1313/css/single.css'>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <h1>
+    <a href="https://nickyreinert.de:1313/">Nicky Reinert</a>
+  </h1>
+
+  <div class="footnote">
+    <span class="nav-bar-item">
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">Not-A-Brand Apparel</a>
+    </span>
+  </div>
+
+  <hr/>
+  <nav>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/">alles</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/nerdenz/">nerdenz</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/blog/">blog</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/anleitungen/">anleitungen</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/aoc2024/">advent of code</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/development/">development</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/hosting/">hosting</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/projekte/">projekte</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/tools/">tools</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/wordpress/">wordpress</a>
+    </span>
+    
+  </nav>
+
+
+</header>
+
+    
+<main id="main" class="post">
+  
+  
+  <h1>Advent of Code - Day 7 - Missing Operators (C&#43;&#43;)</h1>
+  
+  
+  <article class="content">
+    
+    <p>(<a href="https://adventofcode.com/2024/day/7/">task</a> | <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day7%20-%20c%2B%2B">solution</a>)</p>
+<p>This is the kind of task I really enjoy: finding algorithms for simple mathematical challenges! Let&rsquo;s go—this time in&hellip; C++! (Phew!)</p>
+<p>You&rsquo;ll find my <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day7%20-%20c%2B%2B/.devcontainer">.devcontainer and Dockerfile</a> on GitHub. Once again, I don&rsquo;t want to <em>bloat</em> my system with additional compiler setups. It turns out, this is working like a charm.</p>
+<h3 id="solution-to-the-first-part">Solution to the First Part</h3>
+<p>Well, the idea is quite easy: We got a list of <code>operands</code> and need to find the correct combination of <code>+</code> and <code>*</code> to get a target result. What we basically need to do is: Loop through all given equations, get all possible permutations of <code>+</code> and <code>*</code> for <code>n</code> given operands, and then do the math.</p>
+<p>The first tricky thing here is: They are providing a lot of huge numbers. So using 32-bit integers isn&rsquo;t sufficient. You not only need 64-bit integers, but also <strong>unsigned</strong> to work with numbers like <code>175.033.602.122.656</code>.</p>
+<p>But they also hid a little pitfall in the list of possible equations: There is <strong>one</strong> (exactly <strong>one</strong>!) duplicate entry. Which makes it hard to find. Would it be ten, 42, or 100 duplicate entries, you would somehow stumble over it. But now it took me a while, and I was close to throwing this task away. I started debugging and I wondered why I am only processing 849 equations instead of 850. At first glance, it looks like one of those classic &ldquo;indexing starts at zero&rdquo; bugs. But then I did, what you usually do when filling dictionaries: You check if the entry you want to add already exists. And it does.</p>
+<p>And while this wouldn&rsquo;t lead to a valid equation&hellip;</p>
+<pre tabindex="0"><code>1095: 8 5 9 3 231
+</code></pre><p>This line certainly does</p>
+<pre tabindex="0"><code>1095: 8 1 2 7 95 8 2 7 2 2 99
+</code></pre><p>And so I found the missing value for the final result&hellip;</p>
+<h3 id="solution-to-the-second-part">Solution to the Second Part</h3>
+<p>Well, the second part took me a while because I was somehow trying to build this concatenation part into the current algorithm. We now have three operators, <code>*</code>, <code>+</code>, and <code>||</code> — but the last one should connect two integers.</p>
+<p>Eventually, I had my <em>heureka</em> moment: Concatenation could be implemented as a mathematical operation, too.</p>
+<p>If the left number is <code>123</code> followed by <code>45</code>, we need to multiply <code>123</code> with <code>10^2</code> and then just add <code>45</code>. Easy math.</p>
+<p><strong>Side note</strong>: I was cheating a little. I now know that <code>1095</code> is a duplicated entry, and I know it would lead to a valid result, so I am adding it hard-coded to get the final result.</p>
+<h2 id="whats-up-c">Whats up, C++?</h2>
+<p><strong>Rating: 6/12 – painful</strong></p>
+<p>Well, <code>C++</code> is undoubtedly a powerful language, but for a reason it&rsquo;s not beating all those scripting languages out there. Simple things are complicated because you have to implement them on your own. 5 out of 12 seems to be unfair for such a grown-up programming language, but this is simply my point of view. For me, right now, there&rsquo;s no reason to use C++. Which absolutely does not mean that this language is not important! Nevertheless, using it felt like an adult pro developer. ;)</p>
+    
+  </article>
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de:1313/blog/2024/12/06/advent-of-code-day-6-walking-the-map-javascript/">← prev</a>
+    
+    
+    <a></a>
+    
+  </div>
+  <div class="comment">
+    
+    
+    
+    
+    
+    
+  </div>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© </span> - <span>2024</span>
+  </div>
+
+  <div>
+    <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a>
+    <span> 🍦 Theme </span>
+    <a class="link" href="https://github.com/queensferryme/hugo-theme-texify">TeXify</a>
+  </div>
+
+  <div class="footnote">
+    <span></span>
+  </div>
+  Abgelegt unter: 
+
+</footer>
+
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>
