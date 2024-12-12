@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+
+<head>
+  
+  <link rel="preconnect" href="https://dev.visualwebsiteoptimizer.com" />
+  <script type='text/javascript' id='vwoCode'>
+  window._vwo_code || (function() {
+  var account_id=917486,
+  version=2.1,
+  settings_tolerance=2000,
+  hide_element='body',
+  hide_element_style = 'opacity:0 !important;filter:alpha(opacity=0) !important;background:none !important',
+   
+  f=false,w=window,d=document,v=d.querySelector('#vwoCode'),cK='_vwo_'+account_id+'_settings',cc={};try{var c=JSON.parse(localStorage.getItem('_vwo_'+account_id+'_config'));cc=c&&typeof c==='object'?c:{}}catch(e){}var stT=cc.stT==='session'?w.sessionStorage:w.localStorage;code={use_existing_jquery:function(){return typeof use_existing_jquery!=='undefined'?use_existing_jquery:undefined},library_tolerance:function(){return typeof library_tolerance!=='undefined'?library_tolerance:undefined},settings_tolerance:function(){return cc.sT||settings_tolerance},hide_element_style:function(){return'{'+(cc.hES||hide_element_style)+'}'},hide_element:function(){if(performance.getEntriesByName('first-contentful-paint')[0]){return''}return typeof cc.hE==='string'?cc.hE:hide_element},getVersion:function(){return version},finish:function(e){if(!f){f=true;var t=d.getElementById('_vis_opt_path_hides');if(t)t.parentNode.removeChild(t);if(e)(new Image).src='https://dev.visualwebsiteoptimizer.com/ee.gif?a='+account_id+e}},finished:function(){return f},addScript:function(e){var t=d.createElement('script');t.type='text/javascript';if(e.src){t.src=e.src}else{t.text=e.text}d.getElementsByTagName('head')[0].appendChild(t)},load:function(e,t){var i=this.getSettings(),n=d.createElement('script'),r=this;t=t||{};if(i){n.textContent=i;d.getElementsByTagName('head')[0].appendChild(n);if(!w.VWO||VWO.caE){stT.removeItem(cK);r.load(e)}}else{var o=new XMLHttpRequest;o.open('GET',e,true);o.withCredentials=!t.dSC;o.responseType=t.responseType||'text';o.onload=function(){if(t.onloadCb){return t.onloadCb(o,e)}if(o.status===200){_vwo_code.addScript({text:o.responseText})}else{_vwo_code.finish('&e=loading_failure:'+e)}};o.onerror=function(){if(t.onerrorCb){return t.onerrorCb(e)}_vwo_code.finish('&e=loading_failure:'+e)};o.send()}},getSettings:function(){try{var e=stT.getItem(cK);if(!e){return}e=JSON.parse(e);if(Date.now()>e.e){stT.removeItem(cK);return}return e.s}catch(e){return}},init:function(){if(d.URL.indexOf('__vwo_disable__')>-1)return;var e=this.settings_tolerance();w._vwo_settings_timer=setTimeout(function(){_vwo_code.finish();stT.removeItem(cK)},e);var t;if(this.hide_element()!=='body'){t=d.createElement('style');var i=this.hide_element(),n=i?i+this.hide_element_style():'',r=d.getElementsByTagName('head')[0];t.setAttribute('id','_vis_opt_path_hides');v&&t.setAttribute('nonce',v.nonce);t.setAttribute('type','text/css');if(t.styleSheet)t.styleSheet.cssText=n;else t.appendChild(d.createTextNode(n));r.appendChild(t)}else{t=d.getElementsByTagName('head')[0];var n=d.createElement('div');n.style.cssText='z-index: 2147483647 !important;position: fixed !important;left: 0 !important;top: 0 !important;width: 100% !important;height: 100% !important;background: white !important;';n.setAttribute('id','_vis_opt_path_hides');n.classList.add('_vis_hide_layer');t.parentNode.insertBefore(n,t.nextSibling)}var o='https://dev.visualwebsiteoptimizer.com/j.php?a='+account_id+'&u='+encodeURIComponent(d.URL)+'&vn='+version;if(w.location.search.indexOf('_vwo_xhr')!==-1){this.addScript({src:o})}else{this.load(o+'&x=true')}}};w._vwo_code=code;code.init();})();
+  </script>
+  
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="(task | solution)
+The first time I read through the riddle, I was like: &ldquo;Phew, no way, I&rsquo;m going to skip this!&rdquo; I looked at the example and the description, and it didn’t make sense at all. But when I’m stuck like that at the very beginning, the best approach to get a grip is: Visualize! (A concept I didn&rsquo;t learn from Daniel Bourke&rsquo;s course about machine learning, but he perfected it!)
+However, I thought it might be a good idea to use Ruby this time — my first time with this language. I won’t bother you with the environment setup. Again, I’m just using a containerized environment, which makes things so much easier.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/">
+
+  
+  
+  <meta name="keywords" content="">
+  
+
+  
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/blog/1/01/01/advent-of-code-day-8-missing-operators-ruby/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Advent of Code - Day 8 - Missing Operators (Ruby)">
+  <meta property="og:description" content="(task | solution)
+The first time I read through the riddle, I was like: “Phew, no way, I’m going to skip this!” I looked at the example and the description, and it didn’t make sense at all. But when I’m stuck like that at the very beginning, the best approach to get a grip is: Visualize! (A concept I didn’t learn from Daniel Bourke’s course about machine learning, but he perfected it!)
+However, I thought it might be a good idea to use Ruby this time — my first time with this language. I won’t bother you with the environment setup. Again, I’m just using a containerized environment, which makes things so much easier.">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/blog/1/01/01/advent-of-code-day-8-missing-operators-ruby/">
+
+  
+  
+  
+  <meta itemprop="name" content="Advent of Code - Day 8 - Missing Operators (Ruby)">
+  <meta itemprop="description" content="(task | solution)
+The first time I read through the riddle, I was like: “Phew, no way, I’m going to skip this!” I looked at the example and the description, and it didn’t make sense at all. But when I’m stuck like that at the very beginning, the best approach to get a grip is: Visualize! (A concept I didn’t learn from Daniel Bourke’s course about machine learning, but he perfected it!)
+However, I thought it might be a good idea to use Ruby this time — my first time with this language. I won’t bother you with the environment setup. Again, I’m just using a containerized environment, which makes things so much easier.">
+  <meta itemprop="wordCount" content="584">
+  <meta itemprop="keywords" content="Blog,Aoc2024">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>Advent of Code - Day 8 - Missing Operators (Ruby) - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Advent of Code - Day 8 - Missing Operators (Ruby)">
+  <meta name="twitter:description" content="(task | solution)
+The first time I read through the riddle, I was like: “Phew, no way, I’m going to skip this!” I looked at the example and the description, and it didn’t make sense at all. But when I’m stuck like that at the very beginning, the best approach to get a grip is: Visualize! (A concept I didn’t learn from Daniel Bourke’s course about machine learning, but he perfected it!)
+However, I thought it might be a good idea to use Ruby this time — my first time with this language. I won’t bother you with the environment setup. Again, I’m just using a containerized environment, which makes things so much easier.">
+
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <h1>
+    <a href="https://nickyreinert.de/">Nicky Reinert</a>
+  </h1>
+
+  <div class="footnote">
+    <span class="nav-bar-item">
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">Not-A-Brand Apparel</a>
+    </span>
+  </div>
+
+  <hr/>
+  <nav>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/">alles</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/nerdenz/">nerdenz</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/blog/">blog</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/anleitungen/">anleitungen</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/aoc2024/">advent of code</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/development/">development</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/hosting/">hosting</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/projekte/">projekte</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/tools/">tools</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/categories/wordpress/">wordpress</a>
+    </span>
+    
+  </nav>
+
+
+</header>
+
+    
+<main id="main" class="post">
+  
+  
+  <h1>Advent of Code - Day 8 - Missing Operators (Ruby)</h1>
+  
+  
+  <article class="content">
+    
+    <p>(<a href="https://adventofcode.com/2024/day/8/">task</a> | <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day8%20-%20ruby">solution</a>)</p>
+<p>The first time I read through the riddle, I was like: &ldquo;Phew, no way, I&rsquo;m going to skip this!&rdquo; I looked at the example and the description, and it didn’t make sense at all. But when I’m stuck like that at the very beginning, the best approach to get a grip is: Visualize! (A concept I didn&rsquo;t learn from <a href="https://www.learnhuggingface.com/">Daniel Bourke&rsquo;s course about machine learning</a>, but he perfected it!)</p>
+<p>However, I thought it might be a good idea to use Ruby this time — my first time with this language. I won’t bother you with the environment setup. Again, I’m just using a containerized environment, which makes things so much easier.</p>
+<h3 id="solution-to-the-first-part">Solution to the First Part</h3>
+<p>So, what is this about? It’s about finding siblings on a surface, connecting them with a straight line, and then extending this line to find two symmetric points. The total number of all those points forms the solution to this riddle. The green and red cells represent two categories of siblings on the map, and the blue cells represent the symmetric points (called <code>antinodes</code>) that we need to find. If you connect them (with red lines), you’ll see how all of them pass through two cells of the same color:</p>
+<p><img src="image-2.png" alt="alt text"></p>
+<p>Looks difficult, right? Don’t tell me, it took me a while to understand the &ldquo;gibberish&rdquo; of the riddle – no offense, riddle master.</p>
+<p>But wait until we add row and column numbers to the map and focus on just one group:</p>
+<p><img src="image-1.png" alt="alt text"></p>
+<p>Now it seems quite easy: We just need to somehow identify the row and column distance between two siblings and use that to place the corresponding <code>antinode</code>.</p>
+<p>Let me just throw my solution into the ring. It’s not the most elegant, but it gets the job done:</p>
+<ul>
+<li>First, I use two loops to find two siblings.</li>
+<li>Then, I calculate the row and column indexes for both siblings.</li>
+<li>From there, I can calculate the row and column indexes for both <code>antinodes</code>.</li>
+<li>Finally, I just check if they are within the boundaries before adding them to a dictionary.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ruby" data-lang="ruby"><span style="display:flex;"><span>from_char_array<span style="color:#f92672">.</span>each_with_index <span style="color:#66d9ef">do</span> <span style="color:#f92672">|</span>from_char, from_index<span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">next</span> <span style="color:#66d9ef">if</span> from_char <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;.&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    from_char_array<span style="color:#f92672">[</span>(from_index <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>)<span style="color:#f92672">..-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">].</span>each_with_index <span style="color:#66d9ef">do</span> <span style="color:#f92672">|</span>to_char, to_index<span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">next</span> <span style="color:#66d9ef">unless</span> from_char <span style="color:#f92672">==</span> to_char
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        from_row <span style="color:#f92672">=</span> (from_index <span style="color:#f92672">/</span> map_height)<span style="color:#f92672">.</span>floor
+</span></span><span style="display:flex;"><span>        from_col <span style="color:#f92672">=</span> from_index <span style="color:#f92672">-</span> (from_row <span style="color:#f92672">*</span> map_width)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        to_row <span style="color:#f92672">=</span> ((from_index <span style="color:#f92672">+</span> to_index <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">/</span> map_height)<span style="color:#f92672">.</span>floor
+</span></span><span style="display:flex;"><span>        to_col <span style="color:#f92672">=</span> (from_index <span style="color:#f92672">+</span> to_index <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">-</span> (to_row <span style="color:#f92672">*</span> map_width)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        puts <span style="color:#e6db74">&#34;Found couple of </span><span style="color:#e6db74">#{</span>from_char<span style="color:#e6db74">}</span><span style="color:#e6db74"> at </span><span style="color:#e6db74">#{</span>from_row<span style="color:#e6db74">}</span><span style="color:#e6db74">/</span><span style="color:#e6db74">#{</span>from_col<span style="color:#e6db74">}</span><span style="color:#e6db74"> and at </span><span style="color:#e6db74">#{</span>to_row<span style="color:#e6db74">}</span><span style="color:#e6db74">/</span><span style="color:#e6db74">#{</span>to_col<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        first_antinode_row <span style="color:#f92672">=</span> from_row <span style="color:#f92672">-</span> (to_row <span style="color:#f92672">-</span> from_row)
+</span></span><span style="display:flex;"><span>        second_antinode_row <span style="color:#f92672">=</span> to_row <span style="color:#f92672">+</span> (to_row <span style="color:#f92672">-</span> from_row)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        first_antinode_col <span style="color:#f92672">=</span> from_col <span style="color:#f92672">+</span> (from_col <span style="color:#f92672">-</span> to_col)
+</span></span><span style="display:flex;"><span>        second_antinode_col <span style="color:#f92672">=</span> to_col <span style="color:#f92672">+</span> (to_col <span style="color:#f92672">-</span> from_col)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> first_antinode_row<span style="color:#f92672">.</span>between?(<span style="color:#ae81ff">0</span>, map_height <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">&amp;&amp;</span> first_antinode_col<span style="color:#f92672">.</span>between?(<span style="color:#ae81ff">0</span>, map_width <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>            antinodes<span style="color:#f92672">[</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#{</span>first_antinode_row<span style="color:#e6db74">}</span><span style="color:#e6db74">/</span><span style="color:#e6db74">#{</span>first_antinode_col<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;#&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> second_antinode_row<span style="color:#f92672">.</span>between?(<span style="color:#ae81ff">0</span>, map_height <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">&amp;&amp;</span> second_antinode_col<span style="color:#f92672">.</span>between?(<span style="color:#ae81ff">0</span>, map_width <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>            antinodes<span style="color:#f92672">[</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#{</span>second_antinode_row<span style="color:#e6db74">}</span><span style="color:#e6db74">/</span><span style="color:#e6db74">#{</span>second_antinode_col<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;#&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p><em>If you&rsquo;re stuck on this one, no worries: I have to admit, although it&rsquo;s just roughly 20 lines of simple code, it took me a while to initially understand the task and then put everything together, because I was mixing up 0-based indexing, column calculation, and so on.</em></p>
+<p>And because I am already 4 days behind, I didn&rsquo;t even read the second part and continued to day 9&hellip;</p>
+<h2 id="whats-up-ruby">What&rsquo;s up, Ruby?</h2>
+<p><strong>Rating: 10/12 – underestimated diamond</strong></p>
+<p>I was honestly surprised at how easy it is to get something done in <code>Ruby</code>. It seems as simple and straightforward as <code>Python</code>, and if you&rsquo;re looking for a quick &rsquo;n&rsquo; dirty scripting language, I&rsquo;d say <code>Ruby</code> is definitely worth a try.</p>
+    
+  </article>
+  <div class="paginator">
+    
+    <a></a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/blog/2000/01/01/wordpress-security-checkliste/">next →</a>
+    
+  </div>
+  <div class="comment">
+    
+    
+    
+    
+    
+    
+  </div>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© </span> - <span>2024</span>
+  </div>
+
+  <div>
+    <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a>
+    <span> 🍦 Theme </span>
+    <a class="link" href="https://github.com/queensferryme/hugo-theme-texify">TeXify</a>
+  </div>
+
+  <div class="footnote">
+    <span></span>
+  </div>
+  Abgelegt unter: 
+
+</footer>
+
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>
