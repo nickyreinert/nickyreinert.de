@@ -24,9 +24,7 @@
 
   
   
-  <meta name="description" content="(task | solution)
-The first time I read through the riddle, I was like: &ldquo;Phew, no way, I&rsquo;m going to skip this!&rdquo; I looked at the example and the description, and it didn’t make sense at all. But when I’m stuck like that at the very beginning, the best approach to get a grip is: Visualize! (A concept I didn&rsquo;t learn from Daniel Bourke&rsquo;s course about machine learning, but he perfected it!)
-However, I thought it might be a good idea to use Ruby this time — my first time with this language. I won’t bother you with the environment setup. Again, I’m just using a containerized environment, which makes things so much easier.">
+  <meta name="description" content="(task | solution)">
   
 
   
@@ -41,32 +39,28 @@ However, I thought it might be a good idea to use Ruby this time — my first ti
   
 
   
-  <meta property="og:url" content="https://nickyreinert.de/blog/2024/12/08/advent-of-code-day-8-missing-operators-ruby/">
+  <meta property="og:url" content="https://nickyreinert.de/blog/2024/12/09/advent-of-code-day-9-defrag-basic/">
   <meta property="og:site_name" content="Nicky Reinert">
-  <meta property="og:title" content="Advent of Code - Day 8 - Missing Operators (Ruby)">
-  <meta property="og:description" content="(task | solution)
-The first time I read through the riddle, I was like: “Phew, no way, I’m going to skip this!” I looked at the example and the description, and it didn’t make sense at all. But when I’m stuck like that at the very beginning, the best approach to get a grip is: Visualize! (A concept I didn’t learn from Daniel Bourke’s course about machine learning, but he perfected it!)
-However, I thought it might be a good idea to use Ruby this time — my first time with this language. I won’t bother you with the environment setup. Again, I’m just using a containerized environment, which makes things so much easier.">
+  <meta property="og:title" content="Advent of Code - Day 9 -Defrag (BASIC)">
+  <meta property="og:description" content="(task | solution)">
   <meta property="og:locale" content="de_DE">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
-    <meta property="article:published_time" content="2024-12-08T12:34:56+02:00">
-    <meta property="article:modified_time" content="2024-12-08T12:34:56+02:00">
+    <meta property="article:published_time" content="2024-12-09T12:34:56+02:00">
+    <meta property="article:modified_time" content="2024-12-09T12:34:56+02:00">
 
 
   
-  <link rel="canonical" href="https://nickyreinert.de/blog/2024/12/08/advent-of-code-day-8-missing-operators-ruby/">
+  <link rel="canonical" href="https://nickyreinert.de/blog/2024/12/09/advent-of-code-day-9-defrag-basic/">
 
   
   
   
-  <meta itemprop="name" content="Advent of Code - Day 8 - Missing Operators (Ruby)">
-  <meta itemprop="description" content="(task | solution)
-The first time I read through the riddle, I was like: “Phew, no way, I’m going to skip this!” I looked at the example and the description, and it didn’t make sense at all. But when I’m stuck like that at the very beginning, the best approach to get a grip is: Visualize! (A concept I didn’t learn from Daniel Bourke’s course about machine learning, but he perfected it!)
-However, I thought it might be a good idea to use Ruby this time — my first time with this language. I won’t bother you with the environment setup. Again, I’m just using a containerized environment, which makes things so much easier.">
-  <meta itemprop="datePublished" content="2024-12-08T12:34:56+02:00">
-  <meta itemprop="dateModified" content="2024-12-08T12:34:56+02:00">
-  <meta itemprop="wordCount" content="584">
+  <meta itemprop="name" content="Advent of Code - Day 9 -Defrag (BASIC)">
+  <meta itemprop="description" content="(task | solution)">
+  <meta itemprop="datePublished" content="2024-12-09T12:34:56+02:00">
+  <meta itemprop="dateModified" content="2024-12-09T12:34:56+02:00">
+  <meta itemprop="wordCount" content="473">
   <meta itemprop="keywords" content="Blog,Aoc2024">
 
   
@@ -75,16 +69,14 @@ However, I thought it might be a good idea to use Ruby this time — my first ti
 
   
   
-  <title>Advent of Code - Day 8 - Missing Operators (Ruby) - Nicky Reinert</title>
+  <title>Advent of Code - Day 9 -Defrag (BASIC) - Nicky Reinert</title>
   
 
   
   
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Advent of Code - Day 8 - Missing Operators (Ruby)">
-  <meta name="twitter:description" content="(task | solution)
-The first time I read through the riddle, I was like: “Phew, no way, I’m going to skip this!” I looked at the example and the description, and it didn’t make sense at all. But when I’m stuck like that at the very beginning, the best approach to get a grip is: Visualize! (A concept I didn’t learn from Daniel Bourke’s course about machine learning, but he perfected it!)
-However, I thought it might be a good idea to use Ruby this time — my first time with this language. I won’t bother you with the environment setup. Again, I’m just using a containerized environment, which makes things so much easier.">
+  <meta name="twitter:title" content="Advent of Code - Day 9 -Defrag (BASIC)">
+  <meta name="twitter:description" content="(task | solution)">
 
 
   
@@ -162,14 +154,12 @@ However, I thought it might be a good idea to use Ruby this time — my first ti
 <main id="main" class="post">
   
   
-  <h1>Advent of Code - Day 8 - Missing Operators (Ruby)</h1>
+  <h1>Advent of Code - Day 9 -Defrag (BASIC)</h1>
   
   
   <article class="content">
     
-    <p>(<a href="https://adventofcode.com/2024/day/8/">task</a> | <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day8%20-%20ruby">solution</a>)</p>
-<p>The first time I read through the riddle, I was like: &ldquo;Phew, no way, I&rsquo;m going to skip this!&rdquo; I looked at the example and the description, and it didn’t make sense at all. But when I’m stuck like that at the very beginning, the best approach to get a grip is: Visualize! (A concept I didn&rsquo;t learn from <a href="https://www.learnhuggingface.com/">Daniel Bourke&rsquo;s course about machine learning</a>, but he perfected it!)</p>
-<p>However, I thought it might be a good idea to use Ruby this time — my first time with this language. I won’t bother you with the environment setup. Again, I’m just using a containerized environment, which makes things so much easier.</p>
+    <p>(<a href="https://adventofcode.com/2024/day/9/">task</a> | <a href="xxx">solution</a>)</p>
 <h3 id="solution-to-the-first-part">Solution to the First Part</h3>
 <p>So, what is this about? It’s about finding siblings on a surface, connecting them with a straight line, and then extending this line to find two symmetric points. The total number of all those points forms the solution to this riddle. The green and red cells represent two categories of siblings on the map, and the blue cells represent the symmetric points (called <code>antinodes</code>) that we need to find. If you connect them (with red lines), you’ll see how all of them pass through two cells of the same color:</p>
 <p><img src="image-2.png" alt="alt text"></p>
@@ -223,10 +213,10 @@ However, I thought it might be a good idea to use Ruby this time — my first ti
   </article>
   <div class="paginator">
     
-    <a class="link" href="https://nickyreinert.de/blog/2024/12/07/advent-of-code-day-7-missing-operators-c-/">← prev</a>
+    <a class="link" href="https://nickyreinert.de/blog/2024/12/08/advent-of-code-day-8-missing-operators-ruby/">← prev</a>
     
     
-    <a class="link" href="https://nickyreinert.de/blog/2024/12/09/advent-of-code-day-9-defrag-basic/">next →</a>
+    <a></a>
     
   </div>
   <div class="comment">

@@ -66,7 +66,7 @@ I Made It to Day 4!
 And today’s task perfectly fits Excel. Some—if not most—people don’t like Excel and would never consider it a serious tool for data analytics, exploration, or even “engineering.” Well, you’re wrong about Excel. It’s quite powerful if you know how to use it. Let me show you…">
   <meta itemprop="datePublished" content="2024-12-04T12:34:56+02:00">
   <meta itemprop="dateModified" content="2024-12-04T12:34:56+02:00">
-  <meta itemprop="wordCount" content="563">
+  <meta itemprop="wordCount" content="555">
   <meta itemprop="keywords" content="Blog,Aoc2024">
 
   
@@ -203,8 +203,7 @@ And today’s task perfectly fits Excel. Some—if not most—people don’t lik
 </code></pre><p>And now apply it to our testing dataset. Copy the cell (not the formula!) next to our matrix. It should refer to the first column in the first row. Then drag it to the right and down to cover the whole area. You should end up with something like this:</p>
 <p><img src="image-5.png" alt="alt text"></p>
 <p>The sum of the matrix is 18 — which is exactly the number of <code>XMAS</code> hidden in the test dataset. Now take the actual puzzle input, copy it to your sheet, and apply your <em>magic formula</em> to it. If you want to avoid dragging the formula to the right and down, you could use <code>SEQUENCE</code> again, but we&rsquo;ll save that for later&hellip;</p>
-<p>The good thing about the Excel approach is that the second part doesn&rsquo;t make it more complicated.</p>
-<p>The second part is not necessarily more complicated. We stick with our strategy and now just look for all possible variations of <code>X-MAS</code>. There are four:</p>
+<p>The good thing about the Excel approach is that the second part doesn&rsquo;t make it more complicated. We stick with our strategy and now just look for all possible variations of <code>X-MAS</code>. There are four:</p>
 <p><img src="image-6.png" alt="alt text"></p>
 <p>And our formula changes a little. We know that <code>A</code> has to be in the middle. We concatenate the surrounding four cells and just test for all four possible combinations of <code>S</code> and <code>M</code>, which leads us to something like this:</p>
 <pre tabindex="0"><code class="language-excel" data-lang="excel">=--(OR(CONCAT(F210;G209;G211;E211;E209)=&#34;AMSSM&#34;;
