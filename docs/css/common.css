@@ -87,14 +87,32 @@ time {
     background-color: #FAFAFA;
     display: flex;
     flex-direction: column;
-    font-family: 'Latin Modern Roman', 'Times New Roman', serif;
+    font-family: 'Courier New';
     min-height: 100vh;
     overflow-wrap: break-word;
     padding: 1rem;
 }
 
 .link {
-    color: #AA0000;
+    color: rgb(50, 50, 200);
+    text-decoration: none;
+}
+
+.archive .link {
+    font-size: 1rem;
+}
+a::before {
+    content: ':';
+    font-size: 0.8rem;
+}
+
+a#site-title::before {
+    content: '';
+}
+a#site-title:hover {
+    text-decoration: none;
+}
+a:hover {
     text-decoration: underline;
 }
 
@@ -123,13 +141,13 @@ time {
 /* header */
 
 #header {
-    align-items: center;
+    align-items: left;
     display: flex;
     flex-direction: column;
 }
 
 #header > h1 {
-    text-align: center;
+    text-align: left;
 }
 
 @media screen and (min-width: 768px) {
@@ -164,7 +182,7 @@ main.index, main.archive {
 }
 
 main.archive {
-    font-family: 'Latin Modern Mono', monospace;
+    font-family: monospace;
 }
 
 main.post {
@@ -190,6 +208,7 @@ main.post {
 }
 
 .post a {
+    color: rgb(50, 50, 200);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
