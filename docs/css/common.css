@@ -200,6 +200,7 @@ main.post {
     display: flex;
     align-items: center;
     margin-bottom: 1rem;
+    overflow: hidden; /* Prevent parent div from breaking out */
 }
 
 .post time {
@@ -212,9 +213,12 @@ main.post {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    flex-shrink: 0;
-    max-width: calc(100% - 150px);
+    flex-shrink: 1;
+    min-width: 0; /* Ensure the link can shrink */
+    max-width: 100%;
     font-size: 1em;
+    display: inline-block; /* Ensure ellipsis is applied */
+    vertical-align: bottom; /* Align text properly */
 }
 
 /* footer */
