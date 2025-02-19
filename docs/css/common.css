@@ -146,13 +146,18 @@ a:hover {
     flex-direction: column;
 }
 
+#header div.footnote {
+    max-width: 50%;
+    margin: 0 auto;
+    text-align: center;
+}
 #header > h1 {
     text-align: left;
 }
 
 @media screen and (min-width: 768px) {
     #header > h1 {
-        font-size: 2.8rem;
+        font-size: 1.8rem;
     }
 }
 
@@ -167,6 +172,40 @@ a:hover {
 
 #header > nav > span > a {
     font-size: 1.2rem;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.header-content p {
+    margin: 0;
+}
+.header-content .left {
+    text-align: left;
+    flex: 1;
+}
+.header-content .center {
+    text-align: center;
+    flex: 1;
+}
+.header-content .right {
+    text-align: right;
+    flex: 1;
+}
+@media (max-width: 600px) {
+    .header-content {
+        flex-direction: column;
+        align-items: center;
+    }
+    .header-content .left,
+    .header-content .center,
+    .header-content .right {
+        text-align: center;
+        flex: none;
+        width: 100%;
+    }
 }
 
 /* main */
