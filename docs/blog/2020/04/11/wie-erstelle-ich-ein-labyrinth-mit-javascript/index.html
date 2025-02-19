@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de-DE">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -15,7 +15,7 @@
   
 
   
-  <link rel="icon" href="http://localhost:1313/">
+  <link rel="icon" href="https://nickyreinert.de/">
 
   
   
@@ -26,7 +26,7 @@
   
 
   
-  <meta property="og:url" content="http://localhost:1313/blog/2020/04/11/wie-erstelle-ich-ein-labyrinth-mit-javascript/">
+  <meta property="og:url" content="https://nickyreinert.de/blog/2020/04/11/wie-erstelle-ich-ein-labyrinth-mit-javascript/">
   <meta property="og:site_name" content="Nicky Reinert">
   <meta property="og:title" content="Wie erstelle ich ein Labyrinth mit JavaScript?">
   <meta property="og:description" content="Durch Zufall bin ich irgendwann mal auf diesen BASIC-Einzeiler gestoßen, mit dem sich eine Art Pseudo-Labyrinth erstellen lässt. Ich habe versucht, das in Plain JavaScript halbwegs kompakt nachzubauen. Dabei kann man kaum übersehen, dass es sich keineswegs um ein richtiges Labyrinth handelt, sondern eher um eine zufällige Anordnung von Strichen ohne Lösungsweg. Also habe ich mich gefragt, wie schwer es wohl sein kann, ein Labyrinth programmatisch und vor allem kompakt zu erzeugen. Dazu gibt es zwar eine Menge Lösungsansätze, mein Ziel ist aber, die Herangehensweise zu beschreiben. Und da wir ja gerade alle zuhause abhängen, ist diese kleine Anleitung entstanden.">
@@ -41,7 +41,7 @@
 
 
   
-  <link rel="canonical" href="http://localhost:1313/blog/2020/04/11/wie-erstelle-ich-ein-labyrinth-mit-javascript/">
+  <link rel="canonical" href="https://nickyreinert.de/blog/2020/04/11/wie-erstelle-ich-ein-labyrinth-mit-javascript/">
 
   
   
@@ -54,8 +54,8 @@
   <meta itemprop="keywords" content="Anleitung,Javascript,Labyrinth">
 
   
-  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/common.css'>
-  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/content.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
 
   
   
@@ -70,7 +70,7 @@
 
 
   
-<link rel="stylesheet" href='http://localhost:1313/css/single.css'>
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
 
 </head>
 
@@ -78,7 +78,7 @@
   <div id="wrapper">
     <header id="header">
   <h1 class="header-content">
-    <p class="left"><a id="site-title" href="http://localhost:1313/">Nicky Reinert</a></p>
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
     <p class="center">//</p>
     <p class="right">Institut für digitale Herausforderungen</p>
   </h1>
@@ -86,63 +86,66 @@
   <br />
   
   <div class="footnote">
-    <span class="nav-bar-item">extern
-      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
-      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
-      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
-      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
-      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
-      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">Not-A-Brand Apparel</a>
-      <a target="_blank" class="link" href="https://institut-fdh.de/">Das Ministerium</a>
-      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de/">Das Institut</a>
-      <a target="_blank" class="link" href="https://Fantastokrat.de/">Der Fantastokrat</a>
+    <span class="nav-bar-item"><b>extern</b>&nbsp;&nbsp;
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>&nbsp;&nbsp;
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>&nbsp;&nbsp;
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>&nbsp;&nbsp;
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>&nbsp;&nbsp;
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>&nbsp;&nbsp;
+      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">Not-A-Brand Apparel</a>&nbsp;&nbsp;
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>&nbsp;&nbsp;
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>&nbsp;&nbsp;
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>&nbsp;&nbsp;
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>&nbsp;&nbsp;
     </span>
 
-    <span class="nav-bar-item">lit
-      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
-      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten (2024)</a>
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>&nbsp;&nbsp;
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>&nbsp;&nbsp;
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>&nbsp;&nbsp;
     </span>
     
-    <nav>intern
+    <nav><b>intern</b>&nbsp;&nbsp;
       
       <span class="nav-bar-item">
-        <a class="link" href="/">alles</a>
+        <a class="link" href="/">alles</a>&nbsp;&nbsp;
       </span>
       
       <span class="nav-bar-item">
-        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>&nbsp;&nbsp;
       </span>
       
       <span class="nav-bar-item">
-        <a class="link" href="/categories/blog/">blog</a>
+        <a class="link" href="/categories/blog/">blog</a>&nbsp;&nbsp;
       </span>
       
       <span class="nav-bar-item">
-        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>&nbsp;&nbsp;
       </span>
       
       <span class="nav-bar-item">
-        <a class="link" href="/categories/development/">development</a>
+        <a class="link" href="/categories/development/">development</a>&nbsp;&nbsp;
       </span>
       
       <span class="nav-bar-item">
-        <a class="link" href="/categories/hosting/">hosting</a>
+        <a class="link" href="/categories/hosting/">hosting</a>&nbsp;&nbsp;
       </span>
       
       <span class="nav-bar-item">
-        <a class="link" href="/categories/projekte/">projekte</a>
+        <a class="link" href="/categories/projekte/">projekte</a>&nbsp;&nbsp;
       </span>
       
       <span class="nav-bar-item">
-        <a class="link" href="/categories/tools/">tools</a>
+        <a class="link" href="/categories/tools/">tools</a>&nbsp;&nbsp;
       </span>
       
       <span class="nav-bar-item">
-        <a class="link" href="/categories/wordpress/">wordpress</a>
+        <a class="link" href="/categories/wordpress/">wordpress</a>&nbsp;&nbsp;
       </span>
       
       <span class="nav-bar-item">
-        <a class="link" href="/categories/autismus/">autismus</a>
+        <a class="link" href="/categories/autismus/">autismus</a>&nbsp;&nbsp;
       </span>
       
     </nav>
@@ -163,11 +166,11 @@
   <div>
     <b>Keywords: </b>
     
-    <a class="link" href='http://localhost:1313/tags/anleitung'>#anleitung</a>
+    <a class="link" href='https://nickyreinert.de/tags/anleitung'>#anleitung</a>
     
-    <a class="link" href='http://localhost:1313/tags/javascript'>#javascript</a>
+    <a class="link" href='https://nickyreinert.de/tags/javascript'>#javascript</a>
     
-    <a class="link" href='http://localhost:1313/tags/labyrinth'>#labyrinth</a>
+    <a class="link" href='https://nickyreinert.de/tags/labyrinth'>#labyrinth</a>
     
   </div>
   
@@ -892,10 +895,10 @@ currentCell.setAttribute(&#34;occupied&#34;, &#34;true&#34;);
   </article>
   <div class="paginator">
     
-    <a class="link" href="http://localhost:1313/blog/2020/02/24/sonys-xperia-modellchaos/">← prev</a>
+    <a class="link" href="https://nickyreinert.de/blog/2020/02/24/sonys-xperia-modellchaos/">← prev</a>
     
     
-    <a class="link" href="http://localhost:1313/blog/2020/05/11/how-to-create-a-maze-algorithm-with-javascript/">next →</a>
+    <a class="link" href="https://nickyreinert.de/blog/2020/05/11/how-to-create-a-maze-algorithm-with-javascript/">next →</a>
     
   </div>
   <div class="comment">
