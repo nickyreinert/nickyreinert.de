@@ -91,6 +91,11 @@ time {
     min-height: 100vh;
     overflow-wrap: break-word;
     padding: 1rem;
+    justify-content: space-between; /* Ensure footer stays at the bottom */
+}
+
+main.index, main.archive, main.post {
+    flex-grow: 1;
 }
 
 .link {
@@ -101,7 +106,8 @@ time {
 .archive .link {
     font-size: 1rem;
 }
-a::before {
+
+a:not(.prev):not(.next)::before {
     content: ':';
     font-size: 0.8rem;
 }
@@ -109,13 +115,31 @@ a::before {
 a#site-title::before {
     content: '';
 }
+
 a#site-title:hover {
     text-decoration: none;
 }
+
 a:hover {
     text-decoration: underline;
 }
 
+.link.prev:hover, .link.next:hover {
+    text-decoration: none;
+    color: red;
+}
+.link.prev, .link.next {
+    font-weight: bold;
+    color: black;
+
+}
+
+.post-date {
+    text-align: center;
+    font-style: italic;
+    color: gray;
+    font-size: 0.8rem;
+}
 .paginator {
     align-items: flex-end;
     display: flex;
@@ -144,19 +168,41 @@ a:hover {
     align-items: left;
     display: flex;
     flex-direction: column;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #000;
 }
 
 #header div.footnote {
-    max-width: 50%;
+    max-width: 90%;
     margin: 0 auto;
     text-align: center;
 }
-#header > h1 {
+
+#header > span {
     text-align: left;
+    margin: 1rem 0 1rem;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.navigation {
+
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+
+}
+
+.post-header {
+    margin: 1rem 0;
+}
+
+h1 {
+    padding: 0 1rem;
 }
 
 @media screen and (min-width: 768px) {
-    #header > h1 {
+    #header > span {
         font-size: 1.8rem;
     }
 }
@@ -239,7 +285,7 @@ main.post {
     display: flex;
     align-items: center;
     margin-bottom: 1rem;
-    overflow: hidden; /* Prevent parent div from breaking out */
+    overflow: hidden; 
 }
 
 .post time {
@@ -247,7 +293,7 @@ main.post {
     display: inline-block;
 }
 
-.post a {
+.post .content a {
     color: rgb(50, 50, 200);
     white-space: nowrap;
     overflow: hidden;
@@ -260,15 +306,25 @@ main.post {
     vertical-align: bottom; /* Align text properly */
 }
 
+.post .content img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* footer */
 
 #footer {
+    border-top: 1px solid #000;
+    padding-top: 1rem;
     align-items: center;
     display: flex;
     font-size: .9rem;
-    flex-direction: column;;
+    flex-direction: column;
+    margin-top: auto;
+    position: sticky; /* Ensure footer sticks to the bottom */
+    bottom: 0;
+    width: 100%;
+    background-color: #FAFAFA; /* Match the background color */
 }
 
-#footer > .footnote {
-    text-align: center;
-}
