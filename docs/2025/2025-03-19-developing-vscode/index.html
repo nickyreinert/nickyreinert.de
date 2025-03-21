@@ -52,7 +52,7 @@ To customize your shortcuts, press CMD &#43; K followed by CMD &#43; S or look u
 To customize your shortcuts, press CMD &#43; K followed by CMD &#43; S or look up “Keybindings” in the command palette (SHIFT &#43; CMD &#43; P). There’s a small icon on the right to open the actual JSON file, which makes configuration much easier. What about jumpin between the sidebar, editor, and terminal using the arrow keys while holding CTRL &#43; SHIFT?">
   <meta itemprop="datePublished" content="2025-03-19T12:34:56+02:00">
   <meta itemprop="dateModified" content="2025-03-19T12:34:56+02:00">
-  <meta itemprop="wordCount" content="1062">
+  <meta itemprop="wordCount" content="1237">
   <meta itemprop="keywords" content="Blog">
 
   
@@ -193,15 +193,30 @@ To customize your shortcuts, press CMD &#43; K followed by CMD &#43; S or look u
 </span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;workbench.action.focusActivityBar&#34;</span>
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>]
-</span></span></code></pre></div><p>Add more shortcuts to make your mouse-less life easier!</p>
-<h2 id="containers">Containers</h2>
+</span></span></code></pre></div><p>Add more shortcuts to make your mouse-less life easier. But thats not all, I also suggest to use a tool like <a href="https://espanso.org/">Espanso</a>! It&rsquo;s a very powerfull <em>text expander</em> with two main interesting features:</p>
+<ul>
+<li>if you start typing certin chars, it will automaticall expand them to something you configured</li>
+<li>it also provides a quick search feature that you can trigger with <code>OPTION + SPACE</code></li>
+</ul>
+<p>So here&rsquo;s my strategy, let&rsquo;s take some Python commands for example. I am not using unique trigger keywords, but the same one to define particular categories (<a href="https://gist.github.com/nickyreinert/91e67a7d054878338d1f1dc9fc592ae5">see a full example at this Gist</a>)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">matches</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">trigger</span>: <span style="color:#e6db74">&#34;#p1&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">replace</span>: <span style="color:#e6db74">&#34;source .venv/bin/activate&#34;</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">trigger</span>: <span style="color:#e6db74">&#34;#p&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">replace</span>: <span style="color:#e6db74">&#34;python3 -m venv ./.venv&#34;</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">trigger</span>: <span style="color:#e6db74">&#34;#p&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">replace</span>: <span style="color:#e6db74">&#34;pip3 install -r requirements.txt&#34;</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">trigger</span>: <span style="color:#e6db74">&#34;#p&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">replace</span>: <span style="color:#e6db74">&#34;pip3 freeze &gt; requirements.tx&#34;</span>
+</span></span></code></pre></div><p>When I open the quick search bar, I type <code>#p</code> to get all Python commands. Ofcourse you could also add unique trigger keywords, I prefer it like that because I don&rsquo;t remember all those keywords anywawys. Now I can just show quickly browse through commands for a given category, like JavaScript, Python, C# - you name it!</p>
+<h3 id="containers">Containers</h3>
 <blockquote>
 <p>Warning: Requires Docker!</p>
 </blockquote>
 <p>Next, let&rsquo;s talk about containers! I strongly recommend using containers for your projects. Not all of them, of course, sometimes a virtual environment is totally sufficient. But containers! Oh boy! They are quick, easy, and help keep your system clean. VS Code allows you to set up dev containers—a closed ecosystem where you can configure your development environment. This is especially useful when switching between different languages, frameworks, or systems.</p>
 <p>For example, if you want to test Ruby without installing all the dependencies on your system, create a <code>.devcontainer</code> folder within your workspace and place two files in it: <code>devcontainer.json</code> and <code>Dockerfile</code>.</p>
-<h3 id="example-setup-for-ruby">Example Setup for Ruby:</h3>
-<h4 id="dockerfile"><code>Dockerfile</code></h4>
+<h4 id="example-setup-for-ruby">Example Setup for Ruby:</h4>
+<h5 id="dockerfile"><code>Dockerfile</code></h5>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Dockerfile" data-lang="Dockerfile"><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> ruby:3.2</span><span style="color:#960050;background-color:#1e0010">
 </span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> LANG<span style="color:#f92672">=</span>C.UTF-8<span style="color:#960050;background-color:#1e0010">
 </span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> DEBIAN_FRONTEND<span style="color:#f92672">=</span>noninteractive
@@ -218,7 +233,7 @@ To customize your shortcuts, press CMD &#43; K followed by CMD &#43; S or look u
 </span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> gem install bundler<span style="color:#960050;background-color:#1e0010">
 </span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">EXPOSE</span><span style="color:#e6db74"> 3000</span><span style="color:#960050;background-color:#1e0010">
 </span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;irb&#34;</span>]<span style="color:#960050;background-color:#1e0010">
-</span></span></span></code></pre></div><h4 id="devcontainerjson"><code>devcontainer.json</code></h4>
+</span></span></span></code></pre></div><h5 id="devcontainerjson"><code>devcontainer.json</code></h5>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Ruby Development&#34;</span>,
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;build&#34;</span>: {
@@ -241,21 +256,21 @@ To customize your shortcuts, press CMD &#43; K followed by CMD &#43; S or look u
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Save everything, and VS Code will prompt you to create and open the dev container—no need to manage Docker manually! If you don&rsquo;t see the message, open the &ldquo;Remote&rdquo; container manually by clicking the blue icon in the bottom left corner or using the shortcut <code>OPT + COMMAND + O</code>.</p>
 <hr>
-<h2 id="git">Git</h2>
+<h3 id="git">Git</h3>
 <p>You don&rsquo;t necessarily need a GitHub account to store repositories remotely, but I encourage initializing a repository locally. This helps you track changes and maintain your work efficiently.</p>
-<h3 id="configuring-multiple-github-accounts">Configuring Multiple GitHub Accounts</h3>
+<h4 id="configuring-multiple-github-accounts">Configuring Multiple GitHub Accounts</h4>
 <p>If you use different GitHub accounts (e.g., for personal and professional projects), modify your Git config file:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#66d9ef">[user]</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">John Doe
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    email = john.doe@example.com</span>
-</span></span></code></pre></div><h3 id="branching-strategy">Branching Strategy</h3>
+</span></span></code></pre></div><h4 id="branching-strategy">Branching Strategy</h4>
 <p>If you don&rsquo;t use Git daily, consider a simple branch strategy:</p>
 <ol>
 <li>Use the <code>main</code> branch for stable code.</li>
 <li>Use a <code>debug</code> branch for hotfixes or minor fixes.</li>
 <li>Use a <code>dev</code> branch for new features.</li>
 </ol>
-<h4 id="example-workflow">Example Workflow:</h4>
+<h5 id="example-workflow">Example Workflow:</h5>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>git checkout dev
 </span></span><span style="display:flex;"><span>git pull origin main
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># Make changes</span>
@@ -267,7 +282,7 @@ To customize your shortcuts, press CMD &#43; K followed by CMD &#43; S or look u
 </span></span><span style="display:flex;"><span>git push origin main
 </span></span></code></pre></div><p>This keeps your codebase organized and reduces conflicts. If needed, Copilot can assist with Git commands!</p>
 <hr>
-<h2 id="copilot">Copilot</h2>
+<h3 id="copilot">Copilot</h3>
 <p>Copilot enhances your workflow with:</p>
 <ul>
 <li>Inline code completion</li>
@@ -276,16 +291,16 @@ To customize your shortcuts, press CMD &#43; K followed by CMD &#43; S or look u
 <li>General assistance via chat</li>
 <li>Commit message suggestions</li>
 </ul>
-<h3 id="improving-copilots-effectiveness">Improving Copilot&rsquo;s Effectiveness</h3>
+<h4 id="improving-copilots-effectiveness">Improving Copilot&rsquo;s Effectiveness</h4>
 <p>To help Copilot assist you better:</p>
 <ul>
 <li>Use meaningful function names.</li>
 <li>Add inline comments.</li>
 <li>Write clean, structured code.</li>
 </ul>
-<h3 id="customizing-copilot">Customizing Copilot</h3>
+<h4 id="customizing-copilot">Customizing Copilot</h4>
 <p>You can fine-tune Copilot&rsquo;s behavior by modifying your workspace settings. Create a <code>settings.json</code> file inside the <code>.vscode</code> folder and add custom configurations.</p>
-<h4 id="example-settings">Example Settings:</h4>
+<h5 id="example-settings">Example Settings:</h5>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#e6db74">&#34;github.copilot.chat.localeOverride&#34;</span><span style="color:#960050;background-color:#1e0010">:</span> <span style="color:#e6db74">&#34;fr&#34;</span><span style="color:#960050;background-color:#1e0010">,</span>
 </span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;github.copilot.chat.commitMessageGeneration.instructions&#34;</span><span style="color:#960050;background-color:#1e0010">:</span> [
 </span></span><span style="display:flex;"><span>    {<span style="color:#f92672">&#34;instruction&#34;</span>: <span style="color:#e6db74">&#34;Start every commit message with FOOBAR&#34;</span>}
@@ -300,7 +315,7 @@ To customize your shortcuts, press CMD &#43; K followed by CMD &#43; S or look u
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Include example data for testing.
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Use multiple files, grouping functions logically.
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Prefer class-based structures over standalone functions.
-</span></span></code></pre></div><h3 id="finding-more-rule-sets">Finding More Rule Sets</h3>
+</span></span></code></pre></div><h4 id="finding-more-rule-sets">Finding More Rule Sets</h4>
 <p>For additional guidance, check these resources:</p>
 <ul>
 <li><a href="https://github.com/PatrickJS/awesome-cursorrules/tree/main/rules">Awesome Cursor Rules</a></li>
@@ -308,7 +323,7 @@ To customize your shortcuts, press CMD &#43; K followed by CMD &#43; S or look u
 <li><a href="https://github.com/instructa/ai-prompts">Instructa AI Prompts</a></li>
 </ul>
 <hr>
-<h2 id="claude-chatgpt-gemini-and-probably-even-v0">Claude, ChatGPT, Gemini, and Probably Even v0!</h2>
+<h3 id="claude-chatgpt-gemini-and-probably-even-v0">Claude, ChatGPT, Gemini, and Probably Even v0!</h3>
 <p>It doesn’t end with <strong>Copilot</strong>. And again: <strong>You can achieve a lot with free plans!</strong> But if you really want to improve your process and build big things, consider using LLMs.</p>
 <p>Before diving in, heads up: <strong>Don’t make the same mistake</strong> <a href="https://x.com/leojr94_/status/1901560276488511759">as this poor guy</a>:</p>
 <blockquote>
