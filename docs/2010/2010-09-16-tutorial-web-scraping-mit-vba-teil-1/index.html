@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de-DE">
 
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -15,7 +15,7 @@
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/">
+  <link rel="icon" href="http://localhost:1313/">
 
   
   
@@ -26,7 +26,7 @@
   
 
   
-  <meta property="og:url" content="https://nickyreinert.de/2010/2010-09-16-tutorial-web-scraping-mit-vba-teil-1/">
+  <meta property="og:url" content="http://localhost:1313/2010/2010-09-16-tutorial-web-scraping-mit-vba-teil-1/">
   <meta property="og:site_name" content="Nicky Reinert">
   <meta property="og:title" content="Tutorial: Web-Scraping mit VBA - Teil 1">
   <meta property="og:description" content="In dieser kleinen Tutorial-Serie will ich anhand einer Online-Handy-Datenbank zeigen, wie man mit VBA Seiten aus dem Internet abruft und nach Informationen sucht, die sich dann in einer Tabelle abspeichern lassen. Warum VBA? Es gibt vermutlich elegantere Lösungen, doch Excel ist eine Software, die die meisten zuhause nutzen. Man benötigt also keine zusätzliche Entwicklungsumgebung. Außerdem hat diese Methode den Vorteil, dass die Daten sofort zur weiteren Verarbeitung verfügbar sind. VBA ist vielleicht nicht die performanteste Programmiersprache, dafür aber relativ leicht zu beherrschen.">
@@ -38,7 +38,7 @@
 
 
   
-  <link rel="canonical" href="https://nickyreinert.de/2010/2010-09-16-tutorial-web-scraping-mit-vba-teil-1/">
+  <link rel="canonical" href="http://localhost:1313/2010/2010-09-16-tutorial-web-scraping-mit-vba-teil-1/">
 
   
   
@@ -47,12 +47,12 @@
   <meta itemprop="description" content="In dieser kleinen Tutorial-Serie will ich anhand einer Online-Handy-Datenbank zeigen, wie man mit VBA Seiten aus dem Internet abruft und nach Informationen sucht, die sich dann in einer Tabelle abspeichern lassen. Warum VBA? Es gibt vermutlich elegantere Lösungen, doch Excel ist eine Software, die die meisten zuhause nutzen. Man benötigt also keine zusätzliche Entwicklungsumgebung. Außerdem hat diese Methode den Vorteil, dass die Daten sofort zur weiteren Verarbeitung verfügbar sind. VBA ist vielleicht nicht die performanteste Programmiersprache, dafür aber relativ leicht zu beherrschen.">
   <meta itemprop="datePublished" content="2010-09-16T00:00:00+00:00">
   <meta itemprop="dateModified" content="2010-09-16T00:00:00+00:00">
-  <meta itemprop="wordCount" content="1059">
+  <meta itemprop="wordCount" content="1060">
   <meta itemprop="keywords" content="Development,Office,Anleitungen">
 
   
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/common.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/content.css'>
 
   
   
@@ -67,7 +67,7 @@
 
 
   
-<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+<link rel="stylesheet" href='http://localhost:1313/css/single.css'>
 
 </head>
 
@@ -75,7 +75,7 @@
   <div id="wrapper">
     <header id="header">
   <span class="header-content">
-    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="left"><a id="site-title" href="http://localhost:1313/">Nicky Reinert</a></p>
     <p class="center">//</p>
     <p class="right">Institut für digitale Herausforderungen</p>
   </span>
@@ -261,7 +261,14 @@ Next oneElement1
 &rsquo;&rsquo;&rsquo;</p>
 <p>Wie bin ich vorgegangen? Ich habe mir zunächst den Quellcode der Seite angeschaut. Die Liste der Hersteller ist dort eine Tabelle mit den Logos der Unternehmen. Die gewünschte Information befindet sich in a-Elementen, die wiederum innerhalb eines div-Elements liegen. Das gemeinsame &ldquo;Oberelement&rdquo; ist ein div-Container mit der CSS-Klasse &ldquo;h_img&rdquo; bzw. einem weiterne div-Container (&ldquo;h_alle&rdquo;). Außerdem gibt es einen ausgeblendeten div-Container mit einer Liste von Tablet-Herstellern, diese haben den Begriff &ldquo;/tablet&rdquo; in der href-Angabe und müssen ignoriert werden.</p>
 <p>&lsquo;&lsquo;&lsquo;html</p>
-<!-- raw HTML omitted -->
+<div id="h\_alle">
+	<div class="h\_img">
+		<a href="/hersteller/xyz" title="Handys Hersteller: XYZ">
+			<img />
+		</a>
+	</div>
+</div>
+'''
 <p>Mit &ldquo;Set allElements1 = HTMLDoc.getElementsByTagName(&ldquo;a&rdquo;)&rdquo; lasse ich mir also erst alle a-Elemente aus dem Quellcode in meinen &ldquo;Container&rdquo; legen.</p>
 <p>Mit der ersten for-each-Schleife durchlaufe ich nun diesen Container und prüfe mit den ersten zwei if-Abfragen, ob sich das a-Element unterhalb der erwähnten div-Container befindet. Da auf der Seite noch ein weitere identische div-Container mit diesen css-Klassen für die Liste der Tablet-Hersteller existiert, muss ich mit einer dritten if-Abfrage die URL des a-Elements überprüfen. Erst dann kann ich das Attribut des a-Elements auslesen und in mein Excel-Worksheet schreiben.</p>
 <p>Fertig ist der erste Schritt - eine Liste der URL zu den jeweiligen Herstellern. Im nächsten Teil werde ich diese Liste durchgehen und von den jeweiligen Seiten die URL zu den Geräten auslesen.</p>

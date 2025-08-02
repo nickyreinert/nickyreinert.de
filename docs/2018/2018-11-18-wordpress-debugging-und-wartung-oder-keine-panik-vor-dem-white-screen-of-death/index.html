@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de-DE">
 
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -16,7 +16,7 @@ Die Suche nach der Ursache ist oft relativ simpel. Es sagt einem oft nur niemand
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/">
+  <link rel="icon" href="http://localhost:1313/">
 
   
   
@@ -27,7 +27,7 @@ Die Suche nach der Ursache ist oft relativ simpel. Es sagt einem oft nur niemand
   
 
   
-  <meta property="og:url" content="https://nickyreinert.de/2018/2018-11-18-wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death/">
+  <meta property="og:url" content="http://localhost:1313/2018/2018-11-18-wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death/">
   <meta property="og:site_name" content="Nicky Reinert">
   <meta property="og:title" content="Wordpress Debugging und Wartung oder: Keine Panik vor dem White Screen of Death und HTTP 500">
   <meta property="og:description" content="Deine Wordpress-Seite besteht nur aus einem weißen Bildschirm, dem HTTP-Fehlercode 500 oder lädt irsinnig langsam? White Screen of Death (WSoD), die berüchtigten 500´er sowie lange Ladezeiten scheinen zu den größten Herausforderungen im Umgang mit WordPress zu gehören und sie hinterlassen regelmäßig lange Gesichter. Zwar gehören Ladezeit, PHP- und HTTP-Fehler nicht unbedingt zusammen, sie erfordern aber in der Regel das gleiche Vorgehen: Nämlich die Analyse, was da im Hintergrund so passiert.
@@ -41,7 +41,7 @@ Die Suche nach der Ursache ist oft relativ simpel. Es sagt einem oft nur niemand
 
 
   
-  <link rel="canonical" href="https://nickyreinert.de/2018/2018-11-18-wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death/">
+  <link rel="canonical" href="http://localhost:1313/2018/2018-11-18-wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death/">
 
   
   
@@ -51,12 +51,12 @@ Die Suche nach der Ursache ist oft relativ simpel. Es sagt einem oft nur niemand
 Die Suche nach der Ursache ist oft relativ simpel. Es sagt einem oft nur niemand. Der beliebteste Tipp bei Wordpress lautet oft:">
   <meta itemprop="datePublished" content="2018-11-18T00:00:00+00:00">
   <meta itemprop="dateModified" content="2018-11-18T00:00:00+00:00">
-  <meta itemprop="wordCount" content="701">
+  <meta itemprop="wordCount" content="1703">
   <meta itemprop="keywords" content="Wordpress-Debugging-Und-Wartung-Oder-Keine-Panik-Vor-Dem-White-Screen-of-Death-Und-Http-500">
 
   
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/common.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/content.css'>
 
   
   
@@ -72,7 +72,7 @@ Die Suche nach der Ursache ist oft relativ simpel. Es sagt einem oft nur niemand
 
 
   
-<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+<link rel="stylesheet" href='http://localhost:1313/css/single.css'>
 
 </head>
 
@@ -80,7 +80,7 @@ Die Suche nach der Ursache ist oft relativ simpel. Es sagt einem oft nur niemand
   <div id="wrapper">
     <header id="header">
   <span class="header-content">
-    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="left"><a id="site-title" href="http://localhost:1313/">Nicky Reinert</a></p>
     <p class="center">//</p>
     <p class="right">Institut für digitale Herausforderungen</p>
   </span>
@@ -203,7 +203,99 @@ Die Suche nach der Ursache ist oft relativ simpel. Es sagt einem oft nur niemand
 <p>Die wahre Herausforderung ist allerdings, dass die Ausgabe von Fehlermeldungen eben standardmäßig unterdrückt  wird. Aus Gründen der Sicherheit und Bedienbarkeit ist das grundsätzlich nicht verkehrt. Wenn du doch mal wissen willst, woher der <strong>White Screen of Death</strong> wirklich kommt, gehst du folgendermaßen vor:</p>
 <h3 id="a-du-aktivierst-die-fehlerausgabe-von-wordpress">A: Du aktivierst die Fehlerausgabe von Wordpress</h3>
 <p>Dazu öffnest du die Datei wp-config.php, nachdem du sie lokal gespeichert hast, und setzt folgenden Parameter direkt an den Anfang, aber hinter das <em>&lt;?php</em>:</p>
-<!-- raw HTML omitted -->
+<?php
+define( 'WP\_DEBUG', true );
+define( 'WP\_DEBUG\_LOG', true ); 
+define('WP\_DEBUG\_DISPLAY', false);
+
+Der 1. Parameter ist für das debuggen _essentiell:_ Damit aktivierst du die Ausgabe von Fehlermeldungen.
+
+Mit dem 2. Parameter gibst du die Anweisung, dass die Fehlermeldungen in einer Datei gespeichert werden. Das ist aus zwei Gründen nützlich: Du kannst es später einfacher Nachvollziehen und außerdem solltest du vermeiden, dass Fehlermeldungen, die vielleicht sensible Informationen enthalten, direkt im Frontend landen.
+
+Die besagte Datei befindet sich um Order /wp-content und heißt **debug.log**. etzt du **WP\_DEBUG\_LOG** auf true, wird Wordpress Fehlermeldungen in die Date _/wp-content/debug.log_ schreiben. Für die nachträgliche Analyse ist das sehr praktisch. Das funktioniert natürlich nur, wenn der Ordner beschreibbar ist. Andernfalls musst du diesen Parameter und den folgenden weglassen.
+
+Der letzte Parameter sorgt noch einmal explizit dafür, dass die Fehlermeldungen nicht im Frontend angezeigt werden.
+
+Neben diesen 3 Parameter gibt es noch **SCRIPT\_DEBUG**. Mit true aktiviert, sorgt dieser Schalter dafür, dass Wordpress die "echten" CSS- und JS-Dateien liest, anstatt der minifizierten. Das wird dich nur in Spezialfällen betreffen, solltest du aber kennen. Der nächste **Spezialparameter** in der Riege ist **SAVEQUERIES** - hiermit wird dir WordPress die Datenbank-Anfragen ausgeben. Auch das ist in der Regel nicht notwendig, aber gut zu wissen.
+
+Denke daran, dass die Parameter im weiteren Verlauf der Config-Datei nicht wieder vorkommen und deine Einstellung so aufheben und vor allen, dass du die Parameter in einem Live-System nach der Fehlersuche **wieder auf _false_ zurücksetzen** solltest.
+
+### B: Du aktivierst die Fehlerausgabe deines Servers
+
+Eigentlich sollte dir **Nummero A** bereits weiterhelfen, denn damit wird auch die Fehlerausgabe von PHP aktiviert. Sollte deine Seite trotzdem weiß bleiben und dich nicht mit zusätzlichen Fehlernachrichten beglücken, kannst du etwas tiefer in die Trickkiste greifen. Diese Parameter machen im Grunde nichts anderes, als oben schon beschreiben ist, sie greifen allerdings etwas "früher" ein.
+
+Ergänze, ebenfalls direkt hinter dem _<?php_ der Datei _wp-config.php_ die folgenden Zeilen:
+
+<?php
+error\_reporting(E\_ALL);
+ini\_set('display\_errors', 1);
+ini\_set('display\_startup\_errors', 1);
+// ini\_set("log\_errors", 1);
+// ini\_set("error\_log", "/pfad/zu/wordpress/temp/php-error.log");
+
+Die beiden letzten Zeilen aktivieren, ähnlich wie oben, dass PHP Fehlermeldungen in eine Datei schreibt. Da die Log-Datei bei der ad hoc Fehlersuche nicht zwingend hilfreich ist, sind diese beiden Zeilen auskommentiert.
+
+Wenn du den Pfad zu deiner Installation nicht kennst, bekommst du sie mit folgendem PHP-Befehl heraus. Wenn du diese Information nicht mehr benötigst, entferne sie aber sofort aus deinem Script. **Security through obscurity** - das _Document Root_ geht niemanden außer dich etwas an!
+
+var\_dump($\_SERVER\["DOCUMENT\_ROOT"\]);
+
+Achtung: Auf manchen Seiten wird dir empfohlen, den Zeilen ein @ vorzustellen. Das ist **ziemlich kontraproduktiv** - denn [das @ am Anfang der Zeile unterbindet Fehlermeldungen](http://php.net/manual/de/language.operators.errorcontrol.php) und weshalb bist du hier? Genau...
+
+Das ist aber noch nicht alles - die Trickkiste ist noch tiefer. Doch obacht! Das folgende ist **Premium-Klasse-Debuggung** und auf den meisten Shared-Hostern gar nicht möglich. Die essentiellen Parameter befinden sich in der ersten Zeile. Die noch tiefergreifenden und wirklich nur in absoluten Sonderfällen benötigten Einstellungen sind darunter aufgeführt.
+
+Öffne die Datei **.htaccess** und ergänze die folgenden Zeilen - auch hier gilt, achte darauf, dass die Parameter nicht an anderer Stelle ungewollt überschrieben werden:
+
+\# Easy-Peasy Lemon-Squeezy:
+php\_flag display\_startup\_errors on
+php\_flag display\_errors on
+php\_flag html\_errors on
+php\_flag log\_errors on
+
+# Fürs Protokoll: Wenn du das volle Entertainment brauchst
+# nimm auch das hier mit - für alle Copy&Paste-Cowbowys, die 
+# den Warnhinweis nicht lesen, habe ich die Zeilen auskommentiert
+# php\_flag ignore\_repeated\_errors off
+# php\_flag ignore\_repeated\_source off
+# php\_flag report\_memleaks on
+# php\_flag track\_errors on
+# php\_value docref\_root 0
+# php\_value docref\_ext 0
+# php\_value error\_log /pfad/zu/wordpress/temp/php-error.log
+# php\_value error\_reporting -1
+# php\_value log\_errors\_max\_len 0
+
+# <Files php\_errors.log>
+#      Order allow,deny
+#      Deny from all
+#      Satisfy All
+# </Files>
+
+Warum A und warum B? Es ist möglich, dass die Server-Konfiguration es aus Sicherheitsgründen nicht zulässt, dass diese sogenannten **PHP-Direktiven** (aka Parameter) an beliebigen Stellen (aka .htaccess, in der PHP-Datei, ...) konfiguriert wird. Deshalb.  
+Und was ist mit C - der **php.ini**\-Datei? Gute Frage, werter Leser, die bei dir ein gewisses Grundwissen erkennen lässt. Chapeau. In dem Fall gehe ich sehr stark davon aus, dass du Zugriff auf eben diese Datei hast. Und wer Zugriff auf diese Datei hat, mit diesem Vorwissen, ist ziemlich sicher und hoffentlich mit der notwendigen Erfahrung ausgestattet. Andernfalls: Ruf deinen SysOp an. ;) Fühle dich trotzdem herzlich dazu eingeladen, diesen Beitrag mit etwas zuästzlichem Fachwissen in den **Kommentaren** zu bereichern.
+
+### C: Den Debug-Modus bei deinem Hoster aktivieren
+
+Bei der Einstellung des Debug-Modus gibt es eine Hierarchie. Die Debug-Einstellung in der PHP-Datei (**wp-config.php**) ist hierbei die oberste Ebene, darunter folgt die Einstellung in der **.htaccess-Datei** und auf unterster Ebene lässt sich diese Funktion in der Einstellung des Servers bzw. PHP-Interpreters direkt einstellen (z.B. **php.ini**). Damit unbedarfte Laien wie wir an dieser Datei nicht wahllos rumfingern, ist bleibt uns diese Möglichkeit entweder komplett verwehrt oder ist nur über das Interface bei deinem Hoster einstellbar. Dort kann der Hoster auch festlegen, dass diese Einstellung (in Fachkreisen gerne auch **Direktive** genannt) in den Ebenen darüber gar nicht anpassen werden darf - **Schritt A und B bleiben also unwirksam.** Das ist der Zeitpunkt, wenn du in den Einstellungen bei deinem Hoster nach dieser Einstellung suchst - oder den Hoster darum bittest, den Debug-Modus für dich zu aktivieren.
+
+Bei HostEurope kannst du das z.B. sehr leicht selber tun:
+
+[![Host Europe Debug Modus aktivieren ](images/host_europe_debug_aktivieren-300x232.png)](https://www.nickyreinert.de/files/wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death/host_europe_debug_aktivieren.png)
+
+Host Europe Debug Modus aktivieren
+
+## Freibier - Nachwort - Lies  mich!
+
+Das ist jetzt wirklich wichtig: Wie immer, und oben bereits erwähnt, gilt auch hier: **Security through obscurity**.
+
+> Wenn du den Debug-Modus auf dem Live-System nicht mehr benötigst, deaktiviere ihn. Basta.
+
+Auf **Live-Systemen** hat der **Debug-Modus nur in Ausnahmefällen** etwas verloren. Und Fehler sollten zur Ausnahme zählen. Und auch, wenn du hier nur ein wenig an den PHP-Dateien rumschraubst, wobei eigentlich nicht viel kaputt gehen kann:
+
+> Denke an die obligatorische Sicherungskopie.
+
+Und jetzt viel Spass beim d_ebuggen_...
+
+Ach ja - wenn all das da oben nicht funktioniert, dann kannst du tatsächlich auch mal den Holzhammer rausholen: **Plugins aktivieren und deaktivieren**. In der Regel helfen dir die hier geschilderten Schritte aber, genau diesen mühsamen Schritt zu übergehen.
 
   </article>
   

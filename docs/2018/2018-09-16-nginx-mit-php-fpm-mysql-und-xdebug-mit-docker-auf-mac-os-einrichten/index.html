@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de-DE">
 
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -15,7 +15,7 @@
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/">
+  <link rel="icon" href="http://localhost:1313/">
 
   
   
@@ -26,7 +26,7 @@
   
 
   
-  <meta property="og:url" content="https://nickyreinert.de/2018/2018-09-16-nginx-mit-php-fpm-mysql-und-xdebug-mit-docker-auf-mac-os-einrichten/">
+  <meta property="og:url" content="http://localhost:1313/2018/2018-09-16-nginx-mit-php-fpm-mysql-und-xdebug-mit-docker-auf-mac-os-einrichten/">
   <meta property="og:site_name" content="Nicky Reinert">
   <meta property="og:title" content="NGinx mit PHP-FPM, MySQL und Xdebug mit Docker auf Mac OS einrichten">
   <meta property="og:description" content="Ich habe mich eine ganze weile erfolgreich vor Docker als lokale Entwicklungsumgebung gedrückt. Der Grund: Ich nutze eine kommerzielle Parallels Lizenz, über die ich Ubuntu virtualisiert laufen lasse und bin damit bisher ganz gut gefahren. Bisher. Paralles hat nämlich immer wieder Problem gemacht. So konnte ich nach manchen Updates von Parallels oder Ubuntu die Parallels Tools nicht mehr nutzen und musste diese umständlich neu installieren. Da die Doku dazu auch nur unvollständig vorliegt, war das regelmäßig eine ziemliche Zeitverschwendung. Die Parallels Tools sind aber notwendig, um von Ubuntu aus auf die Dateien des Gastsystems, Mac OS X, zuzugreifen.">
@@ -38,7 +38,7 @@
 
 
   
-  <link rel="canonical" href="https://nickyreinert.de/2018/2018-09-16-nginx-mit-php-fpm-mysql-und-xdebug-mit-docker-auf-mac-os-einrichten/">
+  <link rel="canonical" href="http://localhost:1313/2018/2018-09-16-nginx-mit-php-fpm-mysql-und-xdebug-mit-docker-auf-mac-os-einrichten/">
 
   
   
@@ -51,8 +51,8 @@
   <meta itemprop="keywords" content="Development,Hosting">
 
   
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/common.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/content.css'>
 
   
   
@@ -67,7 +67,7 @@
 
 
   
-<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+<link rel="stylesheet" href='http://localhost:1313/css/single.css'>
 
 </head>
 
@@ -75,7 +75,7 @@
   <div id="wrapper">
     <header id="header">
   <span class="header-content">
-    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="left"><a id="site-title" href="http://localhost:1313/">Nicky Reinert</a></p>
     <p class="center">//</p>
     <p class="right">Institut für digitale Herausforderungen</p>
   </span>
@@ -253,7 +253,7 @@ echo xdebug.remote_log=/tmp/php-xdebug.log &raquo; /usr/local/etc/php/conf.d/xde
 <p>Cannot find autoconf. Please check your autoconf installation and the # $PHP_AUTOCONF environment variable. Then, rerun this script.</p>
 <p>Die Lösung ist, <em>phpize</em> im Voraus mit allen notwendigen Abhängigkeiten zu installieren. Dazu dient der Aufruf</p>
 <p>RUN apk add &ndash;no-cache &ndash;virtual .phpize-deps $PHPIZE_DEPS</p>
-<p>Das das nicht immer so umfangreich vonstatten gehen muss, soll die Installation des Texteditors <em>nano</em> zeigen: Man kann gewünschte Pakete auch einfach mit <em>apk add <!-- raw HTML omitted --></em> zum Docker-Image hinzufügen. Der apk-Parameter <em>--virtual</em> besagt, dass die genannten Pakete zu einem &ldquo;virtuellen Paket&rdquo; hinzugefügt werden, dass sich dann mit <em>apk del <!-- raw HTML omitted --></em> leicht wieder entfernen lässt. Danach schließlich kann <strong>xdebug</strong> mit <em>pecl install</em> installiert werden. Die letzten beiden RUN-Aufrufe sorgen dafür, dass eine Standard-Konfiguration für xdebug eingerichtet wird. Hier wird es tatsächlich noch etwas tricky, wenn es um den <em>remote_host</em> geht. Docker lässt den Container später in einem eigenen Netzwerk laufen. Der Docker-Host, also in meinem Fall OS X,erhält dafür eine eigene IP-Adresse, wie z.B. 172.17.0.1. Das Problem: Das ist nicht die IP-Adresse, unter der OS X bzw. der Debug-Client (z.B. Visual Studio Code) erreichbar ist. Jeder Debug-Versuch wurde (in meinem Fall) in <em>/tmp/php-xdebug.log</em> mit folgender Fehlermeldung quittiert:</p>
+<p>Das das nicht immer so umfangreich vonstatten gehen muss, soll die Installation des Texteditors <em>nano</em> zeigen: Man kann gewünschte Pakete auch einfach mit <em>apk add <paketname></em> zum Docker-Image hinzufügen. Der apk-Parameter <em>--virtual</em> besagt, dass die genannten Pakete zu einem &ldquo;virtuellen Paket&rdquo; hinzugefügt werden, dass sich dann mit <em>apk del <paketname></em> leicht wieder entfernen lässt. Danach schließlich kann <strong>xdebug</strong> mit <em>pecl install</em> installiert werden. Die letzten beiden RUN-Aufrufe sorgen dafür, dass eine Standard-Konfiguration für xdebug eingerichtet wird. Hier wird es tatsächlich noch etwas tricky, wenn es um den <em>remote_host</em> geht. Docker lässt den Container später in einem eigenen Netzwerk laufen. Der Docker-Host, also in meinem Fall OS X,erhält dafür eine eigene IP-Adresse, wie z.B. 172.17.0.1. Das Problem: Das ist nicht die IP-Adresse, unter der OS X bzw. der Debug-Client (z.B. Visual Studio Code) erreichbar ist. Jeder Debug-Versuch wurde (in meinem Fall) in <em>/tmp/php-xdebug.log</em> mit folgender Fehlermeldung quittiert:</p>
 <p>W: Creating socket for &lsquo;127.0.0.1:9000&rsquo;, poll success, but error: Operation in progress (29).</p>
 <p>Der Remote-Host ist also die tatsächliche IP-Adresse deines Hosts, unabhängig von Docker. Hier demnach die IP-Adresse <em>192.168.0.11</em>.</p>
 <p>Zum Abschluss muss das Dockerfile nur noch verarbeitet werden. Das passiert mit folgendem Aufruf:</p>

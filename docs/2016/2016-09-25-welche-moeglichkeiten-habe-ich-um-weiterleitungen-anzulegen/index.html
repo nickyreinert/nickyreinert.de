@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de-DE">
 
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -16,7 +16,7 @@ Du hast von einem alten Shop oder Content Management System auf ein neues System
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/">
+  <link rel="icon" href="http://localhost:1313/">
 
   
   
@@ -27,7 +27,7 @@ Du hast von einem alten Shop oder Content Management System auf ein neues System
   
 
   
-  <meta property="og:url" content="https://nickyreinert.de/2016/2016-09-25-welche-moeglichkeiten-habe-ich-um-weiterleitungen-anzulegen/">
+  <meta property="og:url" content="http://localhost:1313/2016/2016-09-25-welche-moeglichkeiten-habe-ich-um-weiterleitungen-anzulegen/">
   <meta property="og:site_name" content="Nicky Reinert">
   <meta property="og:title" content="Welche Möglichkeiten habe ich um Weiterleitungen anzulegen?">
   <meta property="og:description" content="Was sind Weiterleitungen? Du hast von einem alten Shop oder Content Management System auf ein neues System gewechselt, willst eine neue Permalink-Struktur einführen oder hast einfach nur Inhalte verschoben? Das Problem in solchen Szenarien ist, dass die Verzeichnisstruktur nicht exakt übernommen werden kann. Doch keine Panik. Dass sich Inhalte und Verlinkungen im Internet ändern, gehört zum Konzept des WWW dazu. Wichtig ist, dass man diese Dynamik entsprechend berücksichtigt und dafür sorgt, dass eingehender Traffic auf die eigene Seite nicht auf die nicht-vorhandene Seiten stößt. Mit sogenannten Weiterleitungen.">
@@ -42,7 +42,7 @@ Du hast von einem alten Shop oder Content Management System auf ein neues System
 
 
   
-  <link rel="canonical" href="https://nickyreinert.de/2016/2016-09-25-welche-moeglichkeiten-habe-ich-um-weiterleitungen-anzulegen/">
+  <link rel="canonical" href="http://localhost:1313/2016/2016-09-25-welche-moeglichkeiten-habe-ich-um-weiterleitungen-anzulegen/">
 
   
   
@@ -51,12 +51,12 @@ Du hast von einem alten Shop oder Content Management System auf ein neues System
   <meta itemprop="description" content="Was sind Weiterleitungen? Du hast von einem alten Shop oder Content Management System auf ein neues System gewechselt, willst eine neue Permalink-Struktur einführen oder hast einfach nur Inhalte verschoben? Das Problem in solchen Szenarien ist, dass die Verzeichnisstruktur nicht exakt übernommen werden kann. Doch keine Panik. Dass sich Inhalte und Verlinkungen im Internet ändern, gehört zum Konzept des WWW dazu. Wichtig ist, dass man diese Dynamik entsprechend berücksichtigt und dafür sorgt, dass eingehender Traffic auf die eigene Seite nicht auf die nicht-vorhandene Seiten stößt. Mit sogenannten Weiterleitungen.">
   <meta itemprop="datePublished" content="2016-09-25T00:00:00+00:00">
   <meta itemprop="dateModified" content="2016-09-25T00:00:00+00:00">
-  <meta itemprop="wordCount" content="644">
+  <meta itemprop="wordCount" content="713">
   <meta itemprop="keywords" content="Htaccess,Redir,Weiterleitung">
 
   
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/common.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/content.css'>
 
   
   
@@ -71,7 +71,7 @@ Du hast von einem alten Shop oder Content Management System auf ein neues System
 
 
   
-<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+<link rel="stylesheet" href='http://localhost:1313/css/single.css'>
 
 </head>
 
@@ -79,7 +79,7 @@ Du hast von einem alten Shop oder Content Management System auf ein neues System
   <div id="wrapper">
     <header id="header">
   <span class="header-content">
-    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="left"><a id="site-title" href="http://localhost:1313/">Nicky Reinert</a></p>
     <p class="center">//</p>
     <p class="right">Institut für digitale Herausforderungen</p>
   </span>
@@ -185,8 +185,11 @@ Du hast von einem alten Shop oder Content Management System auf ein neues System
 <p>Um diese zu implementieren, gibt es freilich mehrere Möglichkeiten. Zunächst sollte man prüfen, welche Backlinks auf die eigene Seite überhaupt existieren. Je nachdem, wie viele Backlinks es gibt und wie die URL-Struktur der eigenen Seite beschaffen ist, bieten sich andere Möglichkeiten an. Man unterscheidet übrigens zwischen der temporären (HTTP-Statuscode 302) und der permanenten Weiterleitung(HTTP-Statuscode 302) . Die temporäre Weiterleitung kommt für unseren Fall nicht unbedingt infrage, da wir ja einen Umzug vor uns haben.</p>
 <h2 id="weiterleitung-per-header-in-einer-php-datei">Weiterleitung per header() in einer PHP-Datei</h2>
 <p>Eine ziemlich pragmatische und wenngleich effektive Methode ist es, die alte Ordner-Struktur per Hand nachzubilden und entsprechend PHP-Dateien anzulegen, die jeweils eine 301-Weiterleitung auf die neue URL enthalten (&quot;<a href="http://php.net/manual/de/function.header.php">header</a>&quot;). Das kann man machen, wird bei größeren System aber sehr schnell sehr aufwendig. Die PHP-Datei sollte unter dem Namen &ldquo;index.php&rdquo; in den jeweiligen Ordnern abgelegt werden und folgenden Code enthalten. Es folgt ein Beispiel für eine PHP-Datei befindet, die unter <em><a href="https://www.deine-seite.de/altes-ziel/index.php">https://www.deine-seite.de/altes-ziel/index.php</a></em> abgelegt ist. Diese enthält folgenden Code:</p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
+<?php
+   header("Location:https://www.deine-seite.de/neues-ziel/", true, 301); 
+   exit;
+
+Der erste Parameter verweist auf die neue Seite. Der zweite Parameter (_true_) legt lediglich fest, ob ein vorheriger Header ersetzt werden soll. Der letzte Parameter schließlich ist der HTTP-Statuscode, der übermittelt werden soll - also 301. Das exit am Schluss sorgt dafür, dass das PHP-Script am Ende auch wirklich abgeschlossen wird und dient hier nur als doppelter Boden. Ein schließendes ?> [wird nicht benötigt](https://developer.sugarcrm.com/2011/05/06/why-we-dont-using-closing-php-tags/).
 <p>Das ist nicht nur mühsam, sondern auch nicht dynamisch. Die nächste Variante nutzt eine Weiterleitung mit .htaccess.</p>
 <h2 id="weiterleitung-per-htaccess">Weiterleitung per .htaccess</h2>
 <p>In einer .htaccess-Datei gibt es erstmal zwei Möglichkeiten, eine Weiterleitung einzurichten. Nutzt man einen regulären Ausdruck, wird entsprechend jeder passende eingehende Traffic abgefangen und an die gewünschte Hauptseite weitergeleitet.</p>
