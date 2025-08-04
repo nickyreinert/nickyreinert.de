@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de-DE">
 
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -15,7 +15,7 @@
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/">
+  <link rel="icon" href="http://localhost:1313/">
 
   
   
@@ -26,7 +26,7 @@
   
 
   
-  <meta property="og:url" content="https://nickyreinert.de/2018/2018-09-16-nginx-mit-php-fpm-mysql-und-xdebug-mit-docker-auf-mac-os-einrichten/">
+  <meta property="og:url" content="http://localhost:1313/2018/2018-09-16-nginx-mit-php-fpm-mysql-und-xdebug-mit-docker-auf-mac-os-einrichten/">
   <meta property="og:site_name" content="Nicky Reinert">
   <meta property="og:title" content="NGinx mit PHP-FPM, MySQL und Xdebug mit Docker auf Mac OS einrichten">
   <meta property="og:description" content="Ich habe mich eine ganze weile erfolgreich vor Docker als lokale Entwicklungsumgebung gedrückt. Der Grund: Ich nutze eine kommerzielle Parallels Lizenz, über die ich Ubuntu virtualisiert laufen lasse und bin damit bisher ganz gut gefahren. Bisher. Paralles hat nämlich immer wieder Problem gemacht. So konnte ich nach manchen Updates von Parallels oder Ubuntu die Parallels Tools nicht mehr nutzen und musste diese umständlich neu installieren. Da die Doku dazu auch nur unvollständig vorliegt, war das regelmäßig eine ziemliche Zeitverschwendung. Die Parallels Tools sind aber notwendig, um von Ubuntu aus auf die Dateien des Gastsystems, Mac OS X, zuzugreifen.">
@@ -38,7 +38,7 @@
 
 
   
-  <link rel="canonical" href="https://nickyreinert.de/2018/2018-09-16-nginx-mit-php-fpm-mysql-und-xdebug-mit-docker-auf-mac-os-einrichten/">
+  <link rel="canonical" href="http://localhost:1313/2018/2018-09-16-nginx-mit-php-fpm-mysql-und-xdebug-mit-docker-auf-mac-os-einrichten/">
 
   
   
@@ -51,8 +51,8 @@
   <meta itemprop="keywords" content="Development,Hosting">
 
   
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/common.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/content.css'>
 
   
   
@@ -67,7 +67,7 @@
 
 
   
-<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+<link rel="stylesheet" href='http://localhost:1313/css/single.css'>
 
 </head>
 
@@ -75,7 +75,7 @@
   <div id="wrapper">
     <header id="header">
   <span class="header-content">
-    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="left"><a id="site-title" href="http://localhost:1313/">Nicky Reinert</a></p>
     <p class="center">//</p>
     <p class="right">Institut für digitale Herausforderungen</p>
   </span>
@@ -173,7 +173,7 @@
   <article class="content">
     <p>Ich habe mich eine ganze weile erfolgreich vor <strong>Docker</strong> als lokale Entwicklungsumgebung gedrückt. Der Grund: Ich nutze eine kommerzielle Parallels Lizenz, über die ich Ubuntu virtualisiert laufen lasse und bin damit bisher ganz gut gefahren. Bisher. Paralles hat nämlich immer wieder Problem gemacht. So konnte ich nach manchen Updates von Parallels oder Ubuntu die <em>Parallels Tools</em> nicht mehr nutzen und musste diese umständlich neu installieren. Da die Doku dazu auch nur unvollständig vorliegt, war das regelmäßig eine ziemliche Zeitverschwendung. Die <em>Parallels Tools</em> sind aber notwendig, um von Ubuntu aus auf die Dateien des Gastsystems, Mac OS X, zuzugreifen.</p>
 <p>Beim letzten Update auf Ubuntu 18.04 ließen sich die <em>Parallels Tools</em> gar nicht mehr installieren. Die Ursache dafür ist wohl irgendeine Inkompatibilität eines abhängigen Paketes mit dem neuen Linux-Kernel. Wie auch immer: Ich war die Sorgen leid und auf der Suche nach einer Alternative. Weshalb ich <strong>Docker</strong> stieß. Der Vorteil: Docker ist weitaus performanter und portabler. Der Nachteil: Um damit eine funktionierende Entwicklungsumgebung zu schaffen, kommt man um die Shell nicht herum. Das mitgelieferte UI Kitematic liegt noch als Beta vor und lässt einige Funktionen einfach vermissen. Es gibt also einige kleinere Fallstricke, die es zu überwinde galt. Was mir gelungen ist. Wie, das werde ich nun genauer erläutern. <em>Viel Spass</em>.</p>
-<p>[caption id=&ldquo;attachment_2166&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/nginx-mit-php-fpm-und-mysql-mit-docker-auf-mac-os-einrichten/kitematic-scho%CC%88n-aber-noch-nutzlos.png"><img alt="Kitematic - schön aber (noch) weitestgehend nutzlos" src="images/kitematic-scho%CC%88n-aber-noch-nutzlos-300x181.png"></a> Kitematic - schön aber (noch) weitestgehend nutzlos[/caption]</p>
+<p>[caption id=&ldquo;attachment_2166&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/nginx-mit-php-fpm-und-mysql-mit-docker-auf-mac-os-einrichten/kitematic-scho%CC%88n-aber-noch-nutzlos.png"><img src="images/kitematic-scho%CC%88n-aber-noch-nutzlos-300x181.png" alt="Kitematic - schön aber (noch) weitestgehend nutzlos"></a> Kitematic - schön aber (noch) weitestgehend nutzlos[/caption]</p>
 <h2 id="erste-schritte">Erste Schritte</h2>
 <p>Grundsätzlich kann man bei der  Installation der Docker-Anwendung nicht viel falsch machen: Account anlegen, Docker herunterladen, installieren, anmelden - fertig. Auf die zugrunde liegende Technologie will ich hier nicht weiter eingehen, das machen andere weitaus besser (z.B. <a href="https://www.ab-heute-programmieren.de/docker-teil-1-was-ist-docker/">ist diese Anleitung sehr zu empfehlen</a>).</p>
 <p>Nur soviel soll gesagt sein: Du lädst ein <strong>Image</strong> herunter, dass du dann <em>starten</em> kannst. Dadurch erhältst du einen <strong>Container</strong>, der bestimmte Dienste bereitstellt. Dieser Container ist kein vollständiges Betriebssystem mit all seinem Ballast. So kannst du z.B. nicht ohne weiteres per SSH darauf zugreifen. Das funktioniert nur, wenn der entsprechende SSH-Dienst auch im Image vorgesehen ist. Das schöne an Docker ist aber, dass du das Image mit beliebigen Funktionalitäten über ein sogenanntes <strong>Dockerfile</strong> relativ unkompliziert nachrüsten kannst. Das erfordert zwar eine gewisse Umgewöhnung im Arbeitsablauf ab, bringt aber auch viele Vorteile mit sich.</p>
@@ -187,7 +187,7 @@ docker image ls</p>
 <h1 id="für-den-container-mit-dem-namen-mysql-das-setup-anzeigen">für den Container mit dem Namen &ldquo;mysql&rdquo; das Setup anzeigen</h1>
 <p>docker inspect mysql</p>
 <p>Für eine lokale Entwicklungsumgebung benötigt man zunächst einen <strong>HTTP- und einen MySQL-Server.</strong> Natürlich gehört zu jeder guten Entwicklungsumgebung auch ein Debugger - für PHP wäre das wohl <strong>xdebug</strong>. Ich nutze hier die beiden Images: <a href="https://hub.docker.com/r/richarvey/nginx-php-fpm/">nginx-php-fpm von Ric Harvey</a> und <a href="https://hub.docker.com/_/mysql/">das sehr aktuelle und offizielle MySQL-Image</a>, die ich erstmal ganz unkompliziert über Kitematic herunterlade. Das nginx-Image werde ich schließlich mit einem <strong>Dockerfile</strong> anpassen um auch <strong>xdebug</strong> nutzen zu können.</p>
-<p>[caption id=&ldquo;attachment_2167&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/nginx-mit-php-fpm-und-mysql-mit-docker-auf-mac-os-einrichten/kitematic-auswahl-von-images.png"><img alt="Die Auswahl neuer Images über Kitematic ist sehr bequem" src="/2018/2018-09-16-nginx-mit-php-fpm-mysql-und-xdebug-mit-docker-auf-mac-os-einrichten/images/kitematic-auswahl-von-images-300x152.png"></a> Die Auswahl neuer Images über Kitematic ist sehr bequem[/caption]</p>
+<p>[caption id=&ldquo;attachment_2167&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/nginx-mit-php-fpm-und-mysql-mit-docker-auf-mac-os-einrichten/kitematic-auswahl-von-images.png"><img src="/2018/2018-09-16-nginx-mit-php-fpm-mysql-und-xdebug-mit-docker-auf-mac-os-einrichten/images/kitematic-auswahl-von-images-300x152.png" alt="Die Auswahl neuer Images über Kitematic ist sehr bequem"></a> Die Auswahl neuer Images über Kitematic ist sehr bequem[/caption]</p>
 <p>Ab hier verlasse ich Kitematic allerdings wieder und werde Docker nur noch über die Kommandozeile und ein paar selbst geschriebene Scripte nutzen. Los gehts&hellip;</p>
 <h2 id="den-mysql-container-starten">Den MySQL-Container starten</h2>
 <p>&hellip; es mit dem MySQL-Container. Da der nginx-Container auf MySQL zugreift, muss der MySQL-Container auch zuerst dasein. Der Aufruf dafür sieht folgendermaßen aus:</p>
@@ -204,8 +204,7 @@ mysql</p>
 <p>Der Parameter <em>--env</em> dient dazu, Umgebungsvariablen zu setzen. Diese sind natürlich abhängig vom verwendeten Container. Für den MySQL-Container möchte ich hier zwei Parameter übergeben: Ich will eine Root-Benutzer ohne Passwort anlegen (<em>MYSQL_ALLOW_EMPTY_PASSWORD</em>) (das mag unsicher erscheinen, da ich hier aber lokal nur mit Testdaten arbeite, ist das erstmal einfach nur pragmatisch). Außerdem soll sich jeder Client verbinden können, also setzte ich <em>MYSQL_ROOT_HOST</em> auf %.</p>
 <p>Eine Besonderheit ist der Parameter <em>default-authentication-plugin</em>. Wenn du ein Root-Passwort vergibst, solltest du zusätzlich diesen Parameter setzen. Zur Erklärung: Es handelt sich hier um ein MySQL 8-Image. Dort wird als Authentifizierungs-Methode <em>caching_sha2_password</em> verwendet, was sich mit Docker leider nicht verträgt und mit dieser Fehlermeldung quittiert wird:</p>
 <blockquote>
-<p>Unable to load authentication plugin &lsquo;caching_sha2_password</p>
-</blockquote>
+<p>Unable to load authentication plugin &lsquo;caching_sha2_password</p></blockquote>
 <p>Und schließlich gibt es noch den Parameter &ndash;detach, der einfach dafür sorgt, dass der Container im Hintergrund gestartet wird.</p>
 <p>Das war es fast. Was jetzt noch fehlt, ist der Name des Images, dass die Grundlage für deinen neuen Container bilden soll: <em>mysql</em>. Wenn das Image lokal nicht vorhanden ist, lädt Docker es hilfsbereiterweise einfach herunter.</p>
 <p>Es empfiehlt sich, den Aufruf in ein Shell-Script zu packen und diese Zeilen voranzustellen. Beim Aufruf wird also ein vorhandener Container erst gestoppt und gelöscht und dann neu gestartet:</p>
@@ -279,7 +278,7 @@ echo xdebug.remote_log=/tmp/php-xdebug.log &raquo; /usr/local/etc/php/conf.d/xde
 ]
 }</p>
 <p>Fertig. Mit einem Klick auf den grünen Playbutton wird VSC sich nun mit xdebug verbinden.</p>
-<p>[caption id=&ldquo;attachment_2199&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/nginx-mit-php-fpm-und-mysql-mit-docker-auf-mac-os-einrichten/visual-studio-code-den-debugger-starten.png"><img alt="Visual Studio Code - den Debugger starten" src="/2018/2018-09-16-nginx-mit-php-fpm-mysql-und-xdebug-mit-docker-auf-mac-os-einrichten/images/visual-studio-code-den-debugger-starten-300x162.png"></a> Visual Studio Code - den Debugger starten[/caption]</p>
+<p>[caption id=&ldquo;attachment_2199&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/nginx-mit-php-fpm-und-mysql-mit-docker-auf-mac-os-einrichten/visual-studio-code-den-debugger-starten.png"><img src="/2018/2018-09-16-nginx-mit-php-fpm-mysql-und-xdebug-mit-docker-auf-mac-os-einrichten/images/visual-studio-code-den-debugger-starten-300x162.png" alt="Visual Studio Code - den Debugger starten"></a> Visual Studio Code - den Debugger starten[/caption]</p>
 <h2 id="fazit">Fazit</h2>
 <p>Docker hat mich voll überzeugt. Ich bereue es, dass ich nicht schon früher umgestiegen bin. Es läuft sauber und wenn man das Konzept erstmal verstanden hat, ist es auch sehr intuitiv zu bedienen und lässt vor allem keine Wünsche auf. Im Nachhinein betrachtet hat mich die komplette Einrichtung der virtuellen Maschine mit Ubuntu unter Parallels auch weitaus mehr Zeit - und Nerven! - gekostet. Was jetzt noch fehlt, ist das etwas dynamischere Verwalten mehrerer lokaler Websiten mit Docker. Dazu komme ich später - <em>stay tuned</em>.</p>
 <h2 id="referenzen">Referenzen</h2>

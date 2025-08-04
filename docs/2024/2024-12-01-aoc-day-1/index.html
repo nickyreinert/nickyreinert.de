@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de-DE">
 
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -11,12 +11,13 @@
 
   
   
-  <meta name="description" content="(task | solution)
-As the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. I am probably not going to explain the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let&rsquo;s see how far I get. Please don&rsquo;t take my judgement to serious.">
+  <meta name="description" content="&ldquo;en&rdquo;
+(task | solution)
+As the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. I am probably not going to explain the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let&rsquo;s see how far I get. Please don&rsquo;t take my judgement to s">
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/">
+  <link rel="icon" href="http://localhost:1313/">
 
   
   
@@ -27,11 +28,11 @@ As the challenge at AoC is not about the syntax but the algorithm, I decided to 
   
 
   
-  <meta property="og:url" content="https://nickyreinert.de/2024/2024-12-01-aoc-day-1/">
+  <meta property="og:url" content="http://localhost:1313/2024/2024-12-01-aoc-day-1/">
   <meta property="og:site_name" content="Nicky Reinert">
   <meta property="og:title" content="Advent of Code - Day 1 - Differences and Products (F#)">
-  <meta property="og:description" content="(task | solution)
-As the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. I am probably not going to explain the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let’s see how far I get. Please don’t take my judgement to serious.">
+  <meta property="og:description" content="“en” (task | solution)
+As the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. I am probably not going to explain the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let’s see how far I get. Please don’t take my judgement to s">
   <meta property="og:locale" content="de_DE">
   <meta property="og:type" content="article">
     <meta property="article:section" content="2024">
@@ -40,22 +41,22 @@ As the challenge at AoC is not about the syntax but the algorithm, I decided to 
 
 
   
-  <link rel="canonical" href="https://nickyreinert.de/2024/2024-12-01-aoc-day-1/">
+  <link rel="canonical" href="http://localhost:1313/2024/2024-12-01-aoc-day-1/">
 
   
   
   
   <meta itemprop="name" content="Advent of Code - Day 1 - Differences and Products (F#)">
-  <meta itemprop="description" content="(task | solution)
-As the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. I am probably not going to explain the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let’s see how far I get. Please don’t take my judgement to serious.">
+  <meta itemprop="description" content="“en” (task | solution)
+As the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. I am probably not going to explain the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let’s see how far I get. Please don’t take my judgement to s">
   <meta itemprop="datePublished" content="2024-12-01T12:34:56+02:00">
   <meta itemprop="dateModified" content="2024-12-01T12:34:56+02:00">
-  <meta itemprop="wordCount" content="553">
+  <meta itemprop="wordCount" content="554">
   <meta itemprop="keywords" content="Development,Aoc2024">
 
   
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/common.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/content.css'>
 
   
   
@@ -66,12 +67,12 @@ As the challenge at AoC is not about the syntax but the algorithm, I decided to 
   
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Advent of Code - Day 1 - Differences and Products (F#)">
-  <meta name="twitter:description" content="(task | solution)
-As the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. I am probably not going to explain the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let’s see how far I get. Please don’t take my judgement to serious.">
+  <meta name="twitter:description" content="“en” (task | solution)
+As the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. I am probably not going to explain the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let’s see how far I get. Please don’t take my judgement to s">
 
 
   
-<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+<link rel="stylesheet" href='http://localhost:1313/css/single.css'>
 
 </head>
 
@@ -79,7 +80,7 @@ As the challenge at AoC is not about the syntax but the algorithm, I decided to 
   <div id="wrapper">
     <header id="header">
   <span class="header-content">
-    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="left"><a id="site-title" href="http://localhost:1313/">Nicky Reinert</a></p>
     <p class="center">//</p>
     <p class="right">Institut für digitale Herausforderungen</p>
   </span>
@@ -175,8 +176,10 @@ As the challenge at AoC is not about the syntax but the algorithm, I decided to 
 
   
   <article class="content">
-    <p>(<a href="https://adventofcode.com/2024/day/1/">task</a> | <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day1%20-%20f%23">solution</a>)</p>
-<p>As the challenge at <a href="https://adventofcode.com/">AoC</a> is not about the syntax but the algorithm, I decided to try a different approach this year: <strong>a new language every day</strong>. I am probably not going to explain the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let&rsquo;s see how far I get. Please don&rsquo;t take my judgement to serious.</p>
+    <h2 id="en">&ldquo;en&rdquo;</h2>
+<p>(<a href="https://adventofcode.com/2024/day/1/">task</a> | <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day1%20-%20f%23">solution</a>)</p>
+<p>As the challenge at <a href="https://adventofcode.com/">AoC</a> is not about the syntax but the algorithm, I decided to try a different approach this year: <strong>a new language every day</strong>. I am probably not going to explain the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let&rsquo;s see how far I get. Please don&rsquo;t take my judgement to s</p>
+<p>-more&ndash;&gt;</p>
 <blockquote>
 <p>Disclaimer: Of course, I am using AI to get the actual syntax, but not for the algorithm itself. I usually use ClaudeAI for that, as I&rsquo;ve experienced the best results with the free version there.</p>
 </blockquote>
@@ -257,7 +260,7 @@ CMD [&#34;/bin/bash&#34;]
     |&gt; Array.map int
     |&gt; Array.toList
 </code></pre><p>This makes things quiete easy, resulting in a clearer and more concise coding style. Seems like F# is a good choice for hands one problem solving.</p>
-<p>See you next day&hellip;</p>
+<p>See you n</p>
   </article>
   
 </main>

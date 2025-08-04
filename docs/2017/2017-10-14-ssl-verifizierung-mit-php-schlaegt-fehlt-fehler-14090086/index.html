@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de-DE">
 
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -16,7 +16,7 @@ So sieht die Fehlermeldung bei Verwendung von file_get_contents(); aus. Aber auc
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/">
+  <link rel="icon" href="http://localhost:1313/">
 
   
   
@@ -27,7 +27,7 @@ So sieht die Fehlermeldung bei Verwendung von file_get_contents(); aus. Aber auc
   
 
   
-  <meta property="og:url" content="https://nickyreinert.de/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/">
+  <meta property="og:url" content="http://localhost:1313/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/">
   <meta property="og:site_name" content="Nicky Reinert">
   <meta property="og:title" content="SSL-Verifizierung mit PHP schlägt fehlt (Fehler 14090086)">
   <meta property="og:description" content="Wenn dich PHP mit dieser Fehlermeldung (oder einer ähnlichen Fehlernummer) begrüßt, dann liegt es wohl daran, dass beim Abruf einer SSL-Ressource die Identität nicht verifiziert werden konnte. Und das ist auch gut so, denn der Sinn von SSL ist ja das Herstellen einer gesicherten Verbindung.
@@ -46,7 +46,7 @@ So sieht die Fehlermeldung bei Verwendung von file_get_contents(); aus. Aber auc
 
 
   
-  <link rel="canonical" href="https://nickyreinert.de/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/">
+  <link rel="canonical" href="http://localhost:1313/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/">
 
   
   
@@ -60,8 +60,8 @@ So sieht die Fehlermeldung bei Verwendung von file_get_contents(); aus. Aber auc
   <meta itemprop="keywords" content="Certificate-Chain,Curl,Intermediate,Php,Ssl,Zertifikate,Zertifikatskette">
 
   
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/common.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/content.css'>
 
   
   
@@ -77,7 +77,7 @@ So sieht die Fehlermeldung bei Verwendung von file_get_contents(); aus. Aber auc
 
 
   
-<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+<link rel="stylesheet" href='http://localhost:1313/css/single.css'>
 
 </head>
 
@@ -85,7 +85,7 @@ So sieht die Fehlermeldung bei Verwendung von file_get_contents(); aus. Aber auc
   <div id="wrapper">
     <header id="header">
   <span class="header-content">
-    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="left"><a id="site-title" href="http://localhost:1313/">Nicky Reinert</a></p>
     <p class="center">//</p>
     <p class="right">Institut für digitale Herausforderungen</p>
   </span>
@@ -191,7 +191,7 @@ on line 50</p>
 <p>Warning: file_get_contents():
 Failed to enable crypto in /website/script.php<br>
 on line 50</p>
-<p>Warning: file_get_contents(<a href="https://www.nickyreinert.de/foobar.json)">https://www.nickyreinert.de/foobar.json)</a>:
+<p>Warning: file_get_contents(<a href="https://www.nickyreinert.de/foobar.json%29">https://www.nickyreinert.de/foobar.json)</a>:
 failed to open stream: operation failed in /website/script.php<br>
 on line 50</p>
 <p>Die Erklärung ist simpel: PHP kennt den Aussteller des Zertifikates für <a href="https://www.nickyreinert.de">https://www.nickyreinert.de</a> nicht und verweigert aus Sicherheitsgründen den Aufbau einer Verbindung. Die Ursachen hingegen können vielfältig sein, oft ist der Aussteller des Zertifikats z.B. nicht bekannt. Wir müssen also entweder dafür sorgen, dass PHP dem Aussteller vertraut oder festlegen, dass PHP die Zertifikate gar nicht erst prüft.</p>
@@ -208,7 +208,7 @@ $stream = stream_context_create(array(
 <p>Wer auf eine eigene Ressource zurückgreift, z.B. im lokalen Netz oder zu Testzwecken, kann damit leben. Aus Sicherheitsgründen ist die Lösung allerdings nicht zu empfehlen. Außerdem erlaubt nicht jede Funktion die Angabe eines Stream-Contextes, wie z.B. <em>imagecreatefromjpeg();</em></p>
 <h2 id="die-zertifikatskette-manuell-einrichten">Die Zertifikatskette manuell einrichten</h2>
 <p>Man kommt also nicht darum, die saubere Lösung zu nutzen. Dazu muss man wissen, dass es in den allermeisten Fällen nicht nur um das eine Zertifikat geht, sondern um die gesamte Zertifikatskette. Diese beinhaltet auch die Zertifikate der Stellen, die dem infragekommenden Server, also <a href="https://www.nickyreinert.de">https://www.nickyreinert.de</a>, das Zertifikat ausgestellt haben. Wenn PHP diese Stellen nicht kennt, geht es auch davon aus, dass die von dort ausgestellten Zertifikate nicht gültig sind.</p>
-<p><a href="https://www.nickyreinert.de/files/1561/ssl-zertifikats-kette.png"><img alt=" SSL Zertifikats-Kette mit den Intermediate Zertifikaten" src="/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/images/ssl-zertifikats-kette-300x219.png"></a></p>
+<p><a href="https://www.nickyreinert.de/files/1561/ssl-zertifikats-kette.png"><img src="/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/images/ssl-zertifikats-kette-300x219.png" alt=" SSL Zertifikats-Kette mit den Intermediate Zertifikaten"></a></p>
 <p>SSL Zertifikats-Kette mit den Intermediate Zertifikaten</p>
 <p>Um die Zertifikatskette zu erhalten, kannst du einen Service wie <a href="https://whatsmychaincert.com/">https://whatsmychaincert.com/</a> nutzen. Dieser liefert dir eine Datei mit der  kompletten Zertifikatskette. Oder du machst dich selber auf die Suche. Jedes Zertfikat enthält den Namen des Ausstellers bzw. den Typ des Zertifikats. Damit lassen sich die notwendigen Zwischenzertifkate auch manuell zusammenstellen.</p>
 <h2 id="php-die-zertifikatskette-mitteilen">PHP die Zertifikatskette mitteilen</h2>

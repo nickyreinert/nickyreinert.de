@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de-DE">
 
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -17,7 +17,7 @@ Im Gegensatz zu den &ldquo;virtual hosts&rdquo; von Apache spricht man bei nginx
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/">
+  <link rel="icon" href="http://localhost:1313/">
 
   
   
@@ -28,7 +28,7 @@ Im Gegensatz zu den &ldquo;virtual hosts&rdquo; von Apache spricht man bei nginx
   
 
   
-  <meta property="og:url" content="https://nickyreinert.de/2019/2019-10-01-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-2-3/">
+  <meta property="og:url" content="http://localhost:1313/2019/2019-10-01-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-2-3/">
   <meta property="og:site_name" content="Nicky Reinert">
   <meta property="og:title" content="Mehrere virtuelle Server mit nginx und PHP-FPM für Wordpress (Teil 2 / 3)">
   <meta property="og:description" content="Im zweiten Teil geht es um die individuelle Einrichtung der virtuellen Server für nginx.
@@ -41,7 +41,7 @@ Server oder virtual hosts? Im Gegensatz zu den “virtual hosts” von Apache sp
 
 
   
-  <link rel="canonical" href="https://nickyreinert.de/2019/2019-10-01-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-2-3/">
+  <link rel="canonical" href="http://localhost:1313/2019/2019-10-01-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-2-3/">
 
   
   
@@ -55,8 +55,8 @@ Server oder virtual hosts? Im Gegensatz zu den “virtual hosts” von Apache sp
   <meta itemprop="keywords" content="Hosting,Wordpress">
 
   
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/common.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/content.css'>
 
   
   
@@ -72,7 +72,7 @@ Server oder virtual hosts? Im Gegensatz zu den “virtual hosts” von Apache sp
 
 
   
-<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+<link rel="stylesheet" href='http://localhost:1313/css/single.css'>
 
 </head>
 
@@ -80,7 +80,7 @@ Server oder virtual hosts? Im Gegensatz zu den “virtual hosts” von Apache sp
   <div id="wrapper">
     <header id="header">
   <span class="header-content">
-    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="left"><a id="site-title" href="http://localhost:1313/">Nicky Reinert</a></p>
     <p class="center">//</p>
     <p class="right">Institut für digitale Herausforderungen</p>
   </span>
@@ -268,7 +268,7 @@ if ($http_cookie = &#34;PHPSESSID&#34;)
 <pre tabindex="0"><code>fastcgi_cache_path /var/nginx/example_com/cache use_temp_path=off levels=1:2:2 keys_zone=cache_example_com:100m inactive=60m max_size=2048m;
 </code></pre><p>Um den Zweck der Parameter hinter <a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_cache_key">fastcgi_cache_path</a> zu verstehen, werde ich grob erklären, wie der nginx-Cache funktioniert:</p>
 <p>Über <strong>FastCGI</strong> wird zunächst die PHP-Datei an den PHP-Interpreter übergeben. Das Ergebnis, z.B. ein HTML-Dokument geht dann an den Empfänger. Ist diese Ressource als &ldquo;<strong>cachable</strong>&rdquo; markiert, legt nginx das zu Ergbnis außerdem in <strong>temporär</strong> in einen Ordner ab und kopiert es von dort in den <strong>eigentlich Cache-Ordner</strong>. Damit diese Resource später wiedergefunden wird, wird ein <strong>Schlüssel</strong> erstellt. Ein Liste (&ldquo;Cache-Verzeichnis&rdquo;) dieser Schlüssel und ein paar Meta-Daten (z.B. der letzte Abruf) werden im <strong>Arbeitsspeicher</strong> abgelegt.</p>
-<p><img src="/2019/2019-10-01-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-2-3/images/grafik-700x222.png"></p>
+<p><img src="/2019/2019-10-01-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-2-3/images/grafik-700x222.png" alt=""></p>
 <p>Zugegeben: Eine wirklich stark vereinfachte Darstellung des Cachings mit nginx</p>
 <p>Mit <strong>fastcgi_cache_path</strong> legst du also den eigentlichen Cache-Ordner fest. Danach deaktivierst du mit <strong>use_temp_path=off</strong> die Zwischenspeicherung in einem temporären Ordner, um den Cache-Prozess zu beschleunigen. Mit <strong>levels</strong> kannst du die Tiefe des Cache-Ordners festlegen. Jede Position steht zwischen den Doppelpunkten für ein Level, drei Level sind möglich. Die Ziffer legt fest, wieviel Zeichen die Dateinamen enthalten. Folgende Angabe reduziert die Tiefe z.B. auf 2 Level deren Ordnernamen 1 Zeichen enthalten:</p>
 <pre tabindex="0"><code>levels=1:1

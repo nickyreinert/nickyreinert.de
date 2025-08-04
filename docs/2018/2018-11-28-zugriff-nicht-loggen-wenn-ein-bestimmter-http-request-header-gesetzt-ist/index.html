@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de-DE">
 
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -16,7 +16,7 @@ Zuerst benötigst du dafür ein Plugin, um den HTTP-Request-Header zu modifizier
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/">
+  <link rel="icon" href="http://localhost:1313/">
 
   
   
@@ -27,7 +27,7 @@ Zuerst benötigst du dafür ein Plugin, um den HTTP-Request-Header zu modifizier
   
 
   
-  <meta property="og:url" content="https://nickyreinert.de/2018/2018-11-28-zugriff-nicht-loggen-wenn-ein-bestimmter-http-request-header-gesetzt-ist/">
+  <meta property="og:url" content="http://localhost:1313/2018/2018-11-28-zugriff-nicht-loggen-wenn-ein-bestimmter-http-request-header-gesetzt-ist/">
   <meta property="og:site_name" content="Nicky Reinert">
   <meta property="og:title" content="Zugriff nicht loggen, wenn ein bestimmter HTTP-Request-Header gesetzt ist">
   <meta property="og:description" content="OK, ich tu mich etwas schwer, das folgende in einen Titel zu gießen, der nicht länger ist, als die eigentlich Anleitung. Wenn du an deiner Webseite arbeitest, möchtest du vielleicht vermeiden, dass deine Aufrufe mit deinem Browser im Log-File von nginx landen. Dafür gibt es eine Menge Möglichkeiten, ich mag die folgende aber besonders.
@@ -40,7 +40,7 @@ Zuerst benötigst du dafür ein Plugin, um den HTTP-Request-Header zu modifizier
 
 
   
-  <link rel="canonical" href="https://nickyreinert.de/2018/2018-11-28-zugriff-nicht-loggen-wenn-ein-bestimmter-http-request-header-gesetzt-ist/">
+  <link rel="canonical" href="http://localhost:1313/2018/2018-11-28-zugriff-nicht-loggen-wenn-ein-bestimmter-http-request-header-gesetzt-ist/">
 
   
   
@@ -54,8 +54,8 @@ Zuerst benötigst du dafür ein Plugin, um den HTTP-Request-Header zu modifizier
   <meta itemprop="keywords" content="Hosting">
 
   
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/common.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/content.css'>
 
   
   
@@ -71,7 +71,7 @@ Zuerst benötigst du dafür ein Plugin, um den HTTP-Request-Header zu modifizier
 
 
   
-<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+<link rel="stylesheet" href='http://localhost:1313/css/single.css'>
 
 </head>
 
@@ -79,7 +79,7 @@ Zuerst benötigst du dafür ein Plugin, um den HTTP-Request-Header zu modifizier
   <div id="wrapper">
     <header id="header">
   <span class="header-content">
-    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="left"><a id="site-title" href="http://localhost:1313/">Nicky Reinert</a></p>
     <p class="center">//</p>
     <p class="right">Institut für digitale Herausforderungen</p>
   </span>
@@ -177,7 +177,7 @@ Zuerst benötigst du dafür ein Plugin, um den HTTP-Request-Header zu modifizier
   <article class="content">
     <p>OK, ich tu mich etwas schwer, das folgende in einen Titel zu gießen, der nicht länger ist, als die eigentlich Anleitung. Wenn du an deiner Webseite arbeitest, möchtest du vielleicht vermeiden, dass deine Aufrufe mit deinem Browser im Log-File von <strong>nginx</strong> landen. Dafür gibt es eine Menge Möglichkeiten, ich mag die folgende aber besonders.</p>
 <p>Zuerst benötigst du dafür ein Plugin, um den <strong>HTTP-Request-Header</strong> zu modifizieren. Ich nutze dafür <a href="https://addons.mozilla.org/en-US/firefox/addon/modheader-firefox/">ModHeader für Firefox,</a> für Chrome gibt es ähnliche Plugins. Dort legst du einen benutzerdefinierten Header an, dem du z.B. &ldquo;true&rdquo; als Wert zuweist. Bei diesem Plugin kannst du außerdem festlegen, dass der Header nur auf einer bestimmten Seite hinzugefügt wird.</p>
-<p>[caption id=&ldquo;attachment_2395&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/zugriff-nicht-loggen-wenn-ein-bestimmter-request-header-gesetzt-ist/modHeader.png"><img alt="ModHeader Firefox Plugin" src="/2018/2018-11-28-zugriff-nicht-loggen-wenn-ein-bestimmter-http-request-header-gesetzt-ist/images/modHeader-300x163.png"></a> ModHeader Firefox Plugin[/caption]</p>
+<p>[caption id=&ldquo;attachment_2395&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/zugriff-nicht-loggen-wenn-ein-bestimmter-request-header-gesetzt-ist/modHeader.png"><img src="/2018/2018-11-28-zugriff-nicht-loggen-wenn-ein-bestimmter-http-request-header-gesetzt-ist/images/modHeader-300x163.png" alt="ModHeader Firefox Plugin"></a> ModHeader Firefox Plugin[/caption]</p>
 <p>Als nächstes definierst du in deiner nginx-Config eine Regel, die diesen Header ausliest:</p>
 <p>map $http_ignoreMe $log_this {</p>
 <pre><code>~true 0;

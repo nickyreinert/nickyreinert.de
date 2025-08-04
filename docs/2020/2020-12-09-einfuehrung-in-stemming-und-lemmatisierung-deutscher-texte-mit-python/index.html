@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de-DE">
 
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -15,7 +15,7 @@
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/">
+  <link rel="icon" href="http://localhost:1313/">
 
   
   
@@ -26,7 +26,7 @@
   
 
   
-  <meta property="og:url" content="https://nickyreinert.de/2020/2020-12-09-einfuehrung-in-stemming-und-lemmatisierung-deutscher-texte-mit-python/">
+  <meta property="og:url" content="http://localhost:1313/2020/2020-12-09-einfuehrung-in-stemming-und-lemmatisierung-deutscher-texte-mit-python/">
   <meta property="og:site_name" content="Nicky Reinert">
   <meta property="og:title" content="Einführung in Stemming und Lemmatisierung deutscher Texte mit Python">
   <meta property="og:description" content="Um beim Text Mining zusammengehörende Wörter zu gruppieren, bedient man sich im Natural Language Processing (NLP) zweier Methoden: Lemmatisierung (lemmatising) und Stemming. Das ist notwendig, um z.B. einen Text besser kategorisieren bzw. mit Stichworten versehen zu können. Eines der wichtigsten Anwendungsgebiete ist sicherlich die Indexierung von Dokumenten durch eine Suchmaschine. Ein ganz einfaches Beispiel: Enthält ein Dokument sehr oft das Wort Häuser und der Nutzer sucht nach dem Begriff Haus, wird das relevante Dokument wohl nicht in den Suchergebnissen auftauchen.">
@@ -38,7 +38,7 @@
 
 
   
-  <link rel="canonical" href="https://nickyreinert.de/2020/2020-12-09-einfuehrung-in-stemming-und-lemmatisierung-deutscher-texte-mit-python/">
+  <link rel="canonical" href="http://localhost:1313/2020/2020-12-09-einfuehrung-in-stemming-und-lemmatisierung-deutscher-texte-mit-python/">
 
   
   
@@ -51,8 +51,8 @@
   <meta itemprop="keywords" content="Blog">
 
   
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/common.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/content.css'>
 
   
   
@@ -67,7 +67,7 @@
 
 
   
-<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+<link rel="stylesheet" href='http://localhost:1313/css/single.css'>
 
 </head>
 
@@ -75,7 +75,7 @@
   <div id="wrapper">
     <header id="header">
   <span class="header-content">
-    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="left"><a id="site-title" href="http://localhost:1313/">Nicky Reinert</a></p>
     <p class="center">//</p>
     <p class="right">Institut für digitale Herausforderungen</p>
   </span>
@@ -259,10 +259,9 @@ IWNLP:Katze
 </code></pre><p>Mit <strong>pos_</strong> und <strong>_.iwnlp_lemmas</strong> bekommt man einerseits den Part-Of-Speech und in IWNLP sogar eine Liste aller denkbaren Lemmas - sofern zutreffend.</p>
 <p>Wer den Vergleich etwas hübscher aufbereitet für mehrer Wörter nutzen will, <a href="https://gist.github.com/nickyreinert/72548ce88d812f9203687ece93c608d8">kann dazu folgendes Jupyter-Notebook nutzen</a>. Ich hab das ganze mal <a href="https://www.spiegel.de/wissenschaft/mensch/uno-bericht-ueber-klimaziele-auf-dem-weg-zu-drei-grad-erderwaermung-a-05ecdcdb-2f84-4aa0-84b6-a7a2d8c71c80">für eine beliebige Schlagzeile von Spiegel Online</a> durchgespielt und folgendes Ergebnis erhalten. Der Original-Satz lautet:</p>
 <blockquote>
-<p>Der weltweite CO₂-Ausstoß steigt weiter – trotz Corona-Knick, heißt es im neuen Bericht des Uno-Umweltprogramms. Ohne grüne Konjunkturpakete sei das Pariser Zwei-Grad-Limit nicht mehr zu retten.</p>
-</blockquote>
+<p>Der weltweite CO₂-Ausstoß steigt weiter – trotz Corona-Knick, heißt es im neuen Bericht des Uno-Umweltprogramms. Ohne grüne Konjunkturpakete sei das Pariser Zwei-Grad-Limit nicht mehr zu retten.</p></blockquote>
 <p>Und das ist das Ergebnis nach dem <strong>Steming</strong> und <strong>Lemmatisieren</strong>:</p>
-<p><a href="https://www.nickyreinert.de/files/eine-kleine-einfuhrung-in-das-stemming-lemmatisieren-deutscher-texte/grafik.png"><img src="/2020/2020-12-09-einfuehrung-in-stemming-und-lemmatisierung-deutscher-texte-mit-python/images/grafik-700x249.png"></a></p>
+<p><a href="https://www.nickyreinert.de/files/eine-kleine-einfuhrung-in-das-stemming-lemmatisieren-deutscher-texte/grafik.png"><img src="/2020/2020-12-09-einfuehrung-in-stemming-und-lemmatisierung-deutscher-texte-mit-python/images/grafik-700x249.png" alt=""></a></p>
 <p>7 Methoden zum Stemming und Lemmatisieren im Vergleich</p>
 <p>Das Stemming liefert, naturgemäß, ein relativ grobes Ergebnis ab. Um die Wörter in einem Text schnell zu kategorisieren reicht das sicherlich aus. Bei der Lemmatisierung fällt auf, das SpaCy trotz deutscher Sprachpakete nicht ganz zufriedenstellend arbeitet. So wird aus &ldquo;das&rdquo; z.B. &ldquo;der&rdquo;. Dafür wird &ldquo;trotz&rdquo; korrekt &ldquo;trotzen&rdquo; zugeordenet - was dem HanTa nicht gelingt. HanTa wiederum kennt als einziger den Singular von Konjunkturpakete.</p>
 <h2 id="fazit">Fazit</h2>

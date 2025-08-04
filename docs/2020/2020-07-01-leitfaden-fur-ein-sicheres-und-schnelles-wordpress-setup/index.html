@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de-DE">
 
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -16,7 +16,7 @@ Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/">
+  <link rel="icon" href="http://localhost:1313/">
 
   
   
@@ -27,7 +27,7 @@ Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit
   
 
   
-  <meta property="og:url" content="https://nickyreinert.de/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/">
+  <meta property="og:url" content="http://localhost:1313/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/">
   <meta property="og:site_name" content="Nicky Reinert">
   <meta property="og:title" content="Leitfaden für ein sicheres und schnelles WordPress-Setup">
   <meta property="og:description" content="Das Thema Geschwindigkeit liegt bei uns allen ganz weit oben auf der Agenda. Oft allerdings nur passiv, wenn man ungeduldig auf der Tastatur trommelt und auf das Laden einer Internetseite wartet. Aktiv fehlt oft der richtige Impuls. Was kann man noch tun, außer die Bilder kleinzuhalten, um WordPress zu beschleunigen?
@@ -43,7 +43,7 @@ Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit
 
 
   
-  <link rel="canonical" href="https://nickyreinert.de/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/">
+  <link rel="canonical" href="http://localhost:1313/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/">
 
   
   
@@ -57,8 +57,8 @@ Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit
   <meta itemprop="keywords" content="Einstellungen,Setup,Wordpress">
 
   
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
-  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/common.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/content.css'>
 
   
   
@@ -74,7 +74,7 @@ Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit
 
 
   
-<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+<link rel="stylesheet" href='http://localhost:1313/css/single.css'>
 
 </head>
 
@@ -82,7 +82,7 @@ Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit
   <div id="wrapper">
     <header id="header">
   <span class="header-content">
-    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="left"><a id="site-title" href="http://localhost:1313/">Nicky Reinert</a></p>
     <p class="center">//</p>
     <p class="right">Institut für digitale Herausforderungen</p>
   </span>
@@ -279,7 +279,7 @@ add_action( &#39;init&#39;, &#39;disable_wp_emojicons&#39; );
 <p>Du kannnst die Nutzung der Gravatare auch in den Einstellungen deaktivieren. Ich bevorzuge aber die Variante in der functions.php, da man sich so ein kleines Boilerplate erstellen kann. So deaktivierst du die Gravatar-Funktion:</p>
 <pre tabindex="0"><code>add_filter( &#39;option_show_avatars&#39;, &#39;__return_false&#39; );
 </code></pre><p>Wie du siehst, spart uns das mindestens zwei Anfragen und ein paar Millisekunden ein:</p>
-<p><img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-700x57.png"></p>
+<p><img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-700x57.png" alt=""></p>
 <h2 id="gzip-und-deflate">GZIP und Deflate</h2>
 <p>Sehr naheliegend ist natürlich die Komprimierung von Dateien. Du nimmst diese Änderung in der .htaccess-Datei vor:</p>
 <pre tabindex="0"><code>&lt;IfModule mod_deflate.c&gt;
@@ -295,7 +295,7 @@ add_action( &#39;init&#39;, &#39;disable_wp_emojicons&#39; );
 <p>Bei jedem Aufruf der Seite wird ein internes Cron-Job-Script ausgeführt. Das ist vor allem für das Suchen nach Updates wichtig. Wenn dein Hoster Cron-Jobs anbietet, ist das natürlich unnötig und verlangsamt jeden Aufruf deiner Seite. Du kannst die Cron-Job-Aufrufe in der wp-config.php folgendermaßen deaktivieren:</p>
 <pre tabindex="0"><code>define(&#39;DISABLE_WP_CRON&#39;, true);
 </code></pre><p>Danach musst diese Anfrage aber trotzdem irgendwie ausführen. Das machst du im Backend deines Hosters, bei <strong>all-inkl z</strong>.B. im KAS unter Tools:</p>
-<p><img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-700x125.png"></p>
+<p><img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-700x125.png" alt=""></p>
 <p>Als Intervall genügt hier eigentlich stündlich.</p>
 <h2 id="scripte-im-footer-laden">Scripte im Footer laden</h2>
 <p>In der Regel müssen JavaScript-Dateien nicht sofort zur Verfügung stehen, da sie z.B: Benutzerinteraktion ermöglichen bzw. darauf reagieren. Trotzdem können Sie den Aufbau der Seite verzögern, wenn sie ganz am Anfang oder in der Mitte eingebunden werden.</p>
@@ -356,11 +356,11 @@ function dequeue_google_fonts_style() {
 Zunächst solltest du die Anzahl der Revisionen pro Beitrag eingrenzen. Dazu setzt du in der wp-config.php folgenden Parameter:</p>
 <pre tabindex="0"><code>define(&#39;WP_POST_REVISIONS&#39;, 5);
 </code></pre><p>Die Fünf beschreibt die Anzahl der erlaubten Revisionen. Du kannst die Zahl natürlich beliebig anpassen. Damit ist es aber noch nicht getan, du solltest die alten Revisionen natürlich noch aufräumen. Dazu kannst du dir das Plugin <a href="https://de.wordpress.org/plugins/wp-sweep/">WP Sweep installieren</a>. Du kannst nun ganz bequem alle Revisionen löschen:</p>
-<p><img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-2-700x102.png"></p>
+<p><img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-2-700x102.png" alt=""></p>
 <p>Alle Revisionen mit WP Sweep löschen</p>
 <h2 id="oembeds-deaktivieren">oEmbeds deaktivieren</h2>
 <p>Hierbei handelt es sich um ein Feature, das WordPress seit Version 4.4 mitbringt, die sogenannten Embeds. Dir ist es vielleicht schon mal aufgefallen: Beim Einfügen von URL in den Beitrag, wird nicht die URL angezeigt, sondern eine Art Snippet mit zusätzlichne Informationen und sogar einer Vorschau. Das sieht schick aus, braucht aber vielleicht nicht jeder. Wenn du Embed also nicht benötigst, erspart dir das wieder ein paar Zeilen im HTML-Header und sogar eine zusätzliche JavaScript-Bibliothek:</p>
-<p><img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-4-700x52.png"></p>
+<p><img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-4-700x52.png" alt=""></p>
 <p>Die Embed-Bibliothek von WordPress</p>
 <p>Füge dazu folgendes in die <strong>functions.php</strong> ein (<a href="https://kinsta.com/de/wissensdatenbank/deaktivierst-embeds-wordpress/#disable-embeds-code">Quelle</a>):</p>
 <pre tabindex="0"><code>add_action( &#39;init&#39;, &#39;disable_embeds_code_init&#39;, 9999 );
@@ -395,7 +395,7 @@ function disable_embeds_rewrites($rules) {
 </code></pre><p>Und so deaktivierst du den Spaß:</p>
 <pre tabindex="0"><code>remove_action( &#39;wp_head&#39;, &#39;wlwmanifest_link&#39;);
 </code></pre><p>Weiter geht es mit dem Verweis zum <strong>Shortlink</strong> des jeweiligen Beitrages. Shortlinks sind praktisch, um mit kurzem URL auf Inhalte deiner Webseite zu verweisen. Anstatt dem langen Permalink <a href="https://www.example.com/das-ist-mein-allererster-beitrag-hier-und-ich-liebe-es">www.example.com/das-ist-mein-allererster-beitrag-hier-und-ich-liebe-es</a> nutzt du z.B. einfach <strong><a href="https://www.example.com/?p=1">www.example.com/?p=1</a></strong>. Wenn du das nicht brauchst, entferne den Shortlink-Verweis aus dem HTML-Header und dem HTTP-Antwort-Header:</p>
-<p><img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-3-700x336.png"></p>
+<p><img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-3-700x336.png" alt=""></p>
 <p>Der Shortlink-Verweis im HTTP-Header</p>
 <pre tabindex="0"><code>remove_action( &#39;wp_head&#39;, &#39;wp_shortlink_wp_head&#39;);
 
