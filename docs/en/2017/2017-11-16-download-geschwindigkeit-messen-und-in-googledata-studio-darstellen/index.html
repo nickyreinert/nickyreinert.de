@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="Alles beginnt mit einer fixen Idee. Meine war es, die Download-Geschwindigkeit meines Internet-Anschlusses zu messen. Doch das ist nur aussagekräftig, wenn man es regelmäßig macht. Und um das ganze abzurunden, sollte man die Ergebnisse doch irgendwie noch in einem bunten Diagramm darstellen können. Aus der Idee wurde also ein Plan und schließlich ein Projekt.
+Die Aufgabe lautet also: Ein Script soll in regelmäßigen Abständen Test-Dateien herunterladen. Die Dauer dafür und der Zeitpunkt des Tests schreibe ich in eine CSV-Datei, die mit GoogleDrive synchronisiert ist. Von dort werden die Ergebnisse im DataStudio von Google automatisch ausgelesen.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/">
+
+  
+  
+  <meta name="keywords" content="">
+  
+
+  
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/en/2017/2017-11-16-download-geschwindigkeit-messen-und-in-googledata-studio-darstellen/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Download-Geschwindigkeit messen und in Google DataStudio darstellen">
+  <meta property="og:description" content="Alles beginnt mit einer fixen Idee. Meine war es, die Download-Geschwindigkeit meines Internet-Anschlusses zu messen. Doch das ist nur aussagekräftig, wenn man es regelmäßig macht. Und um das ganze abzurunden, sollte man die Ergebnisse doch irgendwie noch in einem bunten Diagramm darstellen können. Aus der Idee wurde also ein Plan und schließlich ein Projekt.
+Die Aufgabe lautet also: Ein Script soll in regelmäßigen Abständen Test-Dateien herunterladen. Die Dauer dafür und der Zeitpunkt des Tests schreibe ich in eine CSV-Datei, die mit GoogleDrive synchronisiert ist. Von dort werden die Ergebnisse im DataStudio von Google automatisch ausgelesen.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2017">
+    <meta property="article:published_time" content="2017-11-16T00:00:00+00:00">
+    <meta property="article:modified_time" content="2017-11-16T00:00:00+00:00">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/en/2017/2017-11-16-download-geschwindigkeit-messen-und-in-googledata-studio-darstellen/">
+
+  
+  
+  
+  <meta itemprop="name" content="Download-Geschwindigkeit messen und in Google DataStudio darstellen">
+  <meta itemprop="description" content="Alles beginnt mit einer fixen Idee. Meine war es, die Download-Geschwindigkeit meines Internet-Anschlusses zu messen. Doch das ist nur aussagekräftig, wenn man es regelmäßig macht. Und um das ganze abzurunden, sollte man die Ergebnisse doch irgendwie noch in einem bunten Diagramm darstellen können. Aus der Idee wurde also ein Plan und schließlich ein Projekt.
+Die Aufgabe lautet also: Ein Script soll in regelmäßigen Abständen Test-Dateien herunterladen. Die Dauer dafür und der Zeitpunkt des Tests schreibe ich in eine CSV-Datei, die mit GoogleDrive synchronisiert ist. Von dort werden die Ergebnisse im DataStudio von Google automatisch ausgelesen.">
+  <meta itemprop="datePublished" content="2017-11-16T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2017-11-16T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1062">
+  <meta itemprop="keywords" content="Development,Anleitungen">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>Download-Geschwindigkeit messen und in Google DataStudio darstellen - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Download-Geschwindigkeit messen und in Google DataStudio darstellen">
+  <meta name="twitter:description" content="Alles beginnt mit einer fixen Idee. Meine war es, die Download-Geschwindigkeit meines Internet-Anschlusses zu messen. Doch das ist nur aussagekräftig, wenn man es regelmäßig macht. Und um das ganze abzurunden, sollte man die Ergebnisse doch irgendwie noch in einem bunten Diagramm darstellen können. Aus der Idee wurde also ein Plan und schließlich ein Projekt.
+Die Aufgabe lautet also: Ein Script soll in regelmäßigen Abständen Test-Dateien herunterladen. Die Dauer dafür und der Zeitpunkt des Tests schreibe ich in eine CSV-Datei, die mit GoogleDrive synchronisiert ist. Von dort werden die Ergebnisse im DataStudio von Google automatisch ausgelesen.">
+
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institute for Digital Challenges</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+    
+<main id="main" class="post">
+  
+  <div class="post-header">
+  <div class="navigation">
+
+    
+    <a class="link prev" href="/en/2017/2017-11-02-thema-datenschutz-von-gesetzen-verordnungen-und-richtlinien/">&lt;&lt;&lt;</a>
+    
+    
+    <h1 style="flex-grow: 1; text-align: center;">Download-Geschwindigkeit messen und in Google DataStudio darstellen</h1>
+    
+    
+    <a class="link next" href="/en/2018/2018-03-02-wie-entwickelt-man-einen-amazon-bot-fuer-telegramm/">>>></a>
+    
+
+  </div>
+  </div>
+  <div class="post-date">November 16, 2017</div>
+
+  
+  <article class="content">
+    <p>Alles beginnt mit einer fixen Idee. Meine war es, die Download-Geschwindigkeit meines Internet-Anschlusses zu messen. Doch das ist nur aussagekräftig, wenn man es regelmäßig macht. Und um das ganze abzurunden, sollte man die Ergebnisse doch irgendwie noch in einem bunten Diagramm darstellen können. Aus der Idee wurde also ein Plan und schließlich ein Projekt.</p>
+<p>Die Aufgabe lautet also: Ein Script soll in regelmäßigen Abständen Test-Dateien herunterladen. Die Dauer dafür und der Zeitpunkt des Tests schreibe ich in eine CSV-Datei, die mit GoogleDrive synchronisiert ist. Von dort werden die Ergebnisse im DataStudio von Google automatisch ausgelesen.</p>
+<h2 id="schritt-1---das-automatisierte-download-script">Schritt 1 - das automatisierte Download-Script</h2>
+<p>Damit der Test möglichst unterschiedliche Szenarien abdeckt, wollte ich nicht nur eine sondern mehrere Dateien verschiedener Größe anbieten. Dazu habe ich auf http://speedtest.ftp.otenet.gr zurückgegriffen. Dort werden verschiedene Dateigrößen zum Download angeboten.</p>
+<p>Außerdem will ich jede Datei mehr als ein mal herunterladen und schließlich nach jedem Download eine Pause einlegen.</p>
+<p>Die Hauptfunktionen möchte ich kurz erläutern:</p>
+<ul>
+<li>In den ersten beiden Schleife wird jeder Eintrag aus <strong>sourceFileSizes</strong> einmal durchlaufen und zwar so oft, wie mit <strong>loops</strong> festgelegt:</li>
+</ul>
+<p>for sourceFileSize in &ldquo;${sourceFileSizes[@]}&rdquo;;
+do
+while [ $i -lt $loops ]; do
+&hellip;
+done
+done</p>
+<ul>
+<li>Innerhalb der Schleife wird im Grund nur die Test-Datei per wget an einen definierten Ort heruntergeladen. Außerdem soll natürlich die Dauer dafür gemessen werden. Das funktioniert ganz einfach und extrem präzise in Nanosekunden bzw. über den Unix-Timestamp.</li>
+</ul>
+<p>startTime=$(($(date +%s%N)))</p>
+<p>wget &ndash;quiet
+&ndash;output-document=$destinationFolder$sourceFileSize&quot;Mb.db.tmp&quot;
+$sourceBaseUrl$sourceFileSize&quot;Mb.db&quot;</p>
+<p>endTime=$(($(date +%s%N)))</p>
+<p>delayNsecs=$(($endTime - $startTime))</p>
+<ul>
+<li>Die Berechnung der Geschwindigkeit ist etwas kompliziert, da ich auf der Shell nicht ohne weiteres Dezimalzahlen (float numbers) verarbeiten kann. Ich muss also mit <strong>awk</strong> arbeiten. Awk hingegen greift nicht auf die lokalen Variablen zu. Diese muss ich mit dem Parameter -v erst explizit übergeben. Am Ende entstehen dann Zeile wie diese, die im Grunde nur MByte in MBit umrechnen (mit 8 multiplizieren) und dann durch die Dauer in Sekunden dividieren. Das Ergebnis ist dann die Geschwindigkeit <strong>MBit/Sekunde</strong> - und damit perfekt vergleichbar mit der versprochenen Geschwindigkeit des Anbieters.</li>
+</ul>
+<p>MBitPerSec=
+$(awk
+-v sourceFileSize=$sourceFileSize
+-v delayMSecs=$delaySecs
+&lsquo;BEGIN{printf &ldquo;%.4f\n&rdquo;, ( sourceFileSize * 8 / delayMSecs)}&rsquo;)</p>
+<ul>
+<li>Schließlich wird der ganze Spaß natürlich noch in die CSV-Datei geschrieben:</li>
+</ul>
+<p>echo &ldquo;$(date &lsquo;+%Y-%m-%d %H:%M:%S&rsquo;),
+$delayNsecs,
+$delaySecs,
+$MBitPerSec,
+$sourceFileSize&quot;MByte&rdquo;&quot;
+&raquo; $journalFile</p>
+<ul>
+<li>Am Ende wird entweder das Script verlassen, wenn zuletzt die 1GByte-Datei heruntergeladen wurde. Da das Script mehrmals am Tag läuft, will ich das Volumen nicht unnötig strapazieren. Oder es wird eine definierte Pause eingelegt, damit sich die Leitung abkühlen kann.</li>
+</ul>
+<p>Das komplette Script gibt es auf <a href="https://github.com/nickyreinert/speedTest/blob/master/speedTest.sh">github.</a></p>
+<p>Das ganze muss nun nur in der CronTabelle des Systems regelmäßig aufgerufen werden. Der Zielordner</p>
+<p>/share/Download/Speedtest/</p>
+<p>wird außerdem mit GoogleDrive synchronisiert.</p>
+<p>Die fertige Datei besitzt fünf Spalten, die den Zeitpunkt, die Dauer und die heruntergeladene Datei beinhalten:</p>
+<p>column1,column2,column3,column4,column5
+2017-10-31 11:48:36,1072562724,1.072562724,7.45877124105611,1MByte
+2017-10-31 11:48:37,899356112,0.899356112,8.89525282950432,1MByte
+2017-10-31 11:48:38,1002897956,1.002897956,7.97688334305469,1MByte</p>
+<p>Anmerkung: Ich nutze den Netzwerkspeicher von QNAP, das TS-431. Für diesen wird ein Backup &amp; Sync-Plugin angeboten, das lokale Ordner mit einem Ordner in GoogleDrive synchronisiert.</p>
+<h2 id="schritt-2---der-community-connector-für-das-datastudio">Schritt 2 - der Community Connector für das DataStudio</h2>
+<p>Das Google DataStudio bringt von Hause aus schon eine Reihe von Schnittstellen mit, über die es möglich ist, auf z.B. Datenbanken oder Online-Dienste zurückzugreifen um in Echzeit an allerlei Messreihen zu kommen. Doch leider fehlt hier bisher ein Verbindung zu CSV-Dateien. Den Connector musste ich mir also erst selber erstellen.</p>
+<p>Der Connector ist im Moment noch sehr einfach gehalten. Es ermöglicht keine großen Anpassungen und ist sicherlich noch verbesserungsfähig (<a href="https://datastudio.google.com/datasources/create?connectorId=AKfycbxxafV6ymAs6S2DRADTGKzJ2aNCdwrnMgRIMt-KJAzoO-YESKc19U9z2w">Link zum Connector</a>):</p>
+<p>function getConfig() {
+var config = {
+configParams: [
+{
+type: &ldquo;INFO&rdquo;,
+name: &ldquo;csvConnector&rdquo;,
+text: &ldquo;The CSV-Connector currently supports a fixed amount of three columns. Name them column1, column2 and column3. Column1 is the dimension, column2 holds the metrics and column3 may be used as an additional category. You may change the label in the next window.&rdquo;
+}
+,{
+type: &ldquo;TEXTINPUT&rdquo;,
+name: &ldquo;url&rdquo;,
+helpText: &ldquo;If you want to use a CSV-file from GoogleDrive, use this format where 123 at the end is your document id: <a href="https://drive.google.com/uc?export=download&amp;id=123%22">https://drive.google.com/uc?export=download&id=123"</a>,
+displayName: &ldquo;Provide the url to your csv file.&rdquo;
+}</p>
+<pre><code>\]
+</code></pre>
+<p>};
+return config;</p>
+<p>};</p>
+<p>var csvDataSchema = [
+{
+name: &lsquo;column1&rsquo;,
+label: &lsquo;column1&rsquo;,
+dataType: &lsquo;STRING&rsquo;,
+semantics: {
+conceptType: &lsquo;DIMENSION&rsquo;
+}
+},
+{
+name: &lsquo;column2&rsquo;,
+label: &lsquo;column2&rsquo;,
+dataType: &lsquo;NUMBER&rsquo;,
+semantics: {
+&ldquo;isReaggregatable&rdquo;: true,
+conceptType: &lsquo;METRIC&rsquo;
+}
+},{
+name: &lsquo;column3&rsquo;,
+label: &lsquo;column3&rsquo;,
+dataType: &lsquo;STRING&rsquo;,
+semantics: {
+&ldquo;isReaggregatable&rdquo;: false,
+conceptType: &lsquo;DIMENSION&rsquo;
+}</p>
+<p>}
+];</p>
+<p>function getSchema(request) {</p>
+<p>return {schema: csvDataSchema};</p>
+<p>};</p>
+<p>function isAdminUser() {
+return true;
+}</p>
+<p>function csvToObject(array) {</p>
+<p>var headers = array[0];</p>
+<p>var jsonData = [];
+for ( var i = 1, length = array.length; i &lt; length; i++ )
+{
+var row = array[i];
+var data = {};
+for ( var x = 0; x &lt; row.length; x++ )
+{
+data[headers[x]] = row[x];
+}
+jsonData.push(data);</p>
+<pre><code>}
+
+return jsonData;
+</code></pre>
+<p>}
+/*
+function stringToObject(string, separator)
+{
+var object = {};</p>
+<p>var array = string.split(separator);</p>
+<p>for (var i = 0; i &lt; array.length; i++) {</p>
+<pre><code>if (i % 2 === 0) { 
+
+  object\[array\[i\]\] = array\[i + 1\];
+
+} else { 
+
+  continue;
+  
+}
+</code></pre>
+<p>}</p>
+<p>return object
+}
+*/</p>
+<p>function getData(request) {</p>
+<p>/*
+I DONT GET SPLIT TO WORK SO FOR NOW THIS ONLY SUPPORTS PREPARED AND WORKING SHARING URL
+FOR GOOGLE DRIVE
+if (request.configParams.isGoogleDrive == &ldquo;true&rdquo;)
+{
+var urlString = request.configParams.url.toString();</p>
+<pre><code>var urlArray = urlString.split(&quot;?&quot;);
+
+  var params = stringToObject(urlArray, '&quot;');
+
+  var docId = params\[&quot;id&quot;\];
+
+  var url = &quot;https://drive.google.com/uc?export=download&amp;id=&quot; + docId;
+</code></pre>
+<p>} else {</p>
+<pre><code>  var url = request.configParams.url;
+</code></pre>
+<p>}
+*/</p>
+<p>var url = request.configParams.url;</p>
+<p>var dataSchema = [];</p>
+<p>request.fields.forEach(function(field) {
+for (var i = 0; i &lt; csvDataSchema.length; i++) {
+if (csvDataSchema[i].name === field.name) {
+dataSchema.push(csvDataSchema[i]);
+break;
+}
+}
+});</p>
+<p>var csvFile = UrlFetchApp.fetch(url);</p>
+<p>var csvData = Utilities.parseCsv(csvFile);</p>
+<p>var sourceData = csvToObject(csvData);</p>
+<p>var data = [];</p>
+<p>sourceData.forEach(function(row) {
+var values = [];
+dataSchema.forEach(function(field) {
+switch(field.name) {
+case &lsquo;column1&rsquo;:
+values.push(row.column1);
+break;
+case &lsquo;column2&rsquo;:
+values.push(row.column2);
+break;
+case &lsquo;column3&rsquo;:
+values.push(row.column3);
+break;
+default:
+values.push(&rsquo;&rsquo;);
+}
+});
+data.push({
+values: values
+});
+});</p>
+<p>return {
+schema: dataSchema,
+rows: data
+};</p>
+<p>};</p>
+<p>function getAuthType() {
+var response = {
+&ldquo;type&rdquo;: &ldquo;NONE&rdquo;
+};
+return response;
+}</p>
+<p> </p>
+<p>Leider unterstützt der Connector bisher nur drei Spalten mit vorgegebene Spalten-Namen. In einer nächsten Version sollte der Connector die Datei bereits im Vorfeld auslesen um die Spalten-Konfiguration selber zu erkennen.</p>
+<p> </p>
+<h2 id="schritt-3---darstellung-im-datastudio">Schritt 3 - Darstellung im DataStudio</h2>
+<p>Im Data Studio ein Diagramm erstellen, dass die Messwerte der regelmäßigen Test-Download darstellt: Darum muss ich mich noch kümmern.</p>
+<p> </p>
+<h2 id="links-und-noch-mehr-links">Links und noch  mehr Links</h2>
+<p><a href="https://github.com/nickyreinert/speedTest/blob/master/speedTest.sh">Link zu GitHub mit dem Quellcode</a></p>
+<p><a href="https://datastudio.google.com/datasources/create?connectorId=AKfycbxxafV6ymAs6S2DRADTGKzJ2aNCdwrnMgRIMt-KJAzoO-YESKc19U9z2w">Link zum Connector</a></p>
+<p><a href="https://developers.google.com/datastudio/connector/get-started">Einführung und Doku auf developers.google.com</a></p>
+<p><a href="https://www.benlcollins.com/data-studio/community-connector/">kleinere Beispiele auf benlcollins.com</a></p>
+<p><a href="https://github.com/google/datastudio">andere Projekte auf github.com</a></p>
+
+  </article>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>

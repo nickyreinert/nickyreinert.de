@@ -163,7 +163,7 @@ Follow my journey on how to build an algorithm that lets you create or solve Sud
     <h1 style="flex-grow: 1; text-align: center;">sudoku</h1>
     
     
-    <a class="link next" href="/en/2024/2024-12-01-aoc-day-1/">>>></a>
+    <a class="link next" href="/en/2024/2024-11-17-vier-zyklen/">>>></a>
     
 
   </div>
@@ -177,7 +177,7 @@ Follow my journey on how to build an algorithm that lets you create or solve Sud
 <p>Follow my steps or jump ahead — this is the Jupyter notebook: <a href="https://gist.github.com/nickyreinert/966299333429ef685338e5feb5056126">https://gist.github.com/nickyreinert/966299333429ef685338e5feb5056126</a></p>
 <h1 id="warmup--introduction"><strong>Warmup — introduction</strong></h1>
 <p>Before we start, we need to get familiar with how <strong>Sudoku</strong> works. I suggest we number each cell in the giant grid from <code>1</code> to <code>81</code>. This way, we can programmatically loop <strong>from the top-left to the bottom-right</strong> to find valid solutions:</p>
-<p><img src="sudoku_positions.png" alt="sudoku positions"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudoku_positions.png" alt="sudoku positions"></p>
 <p><strong>Sudoku</strong> has three rules: a number can’t exist twice in the same <strong>column</strong>, <strong>row</strong>, or <strong>section</strong>. So, first, we need a way to identify the column, row, and section for each position.</p>
 <p>Every row contains <code>9</code> cells, so the row index is simply:</p>
 <pre><code>ceil(position / 9)
@@ -189,9 +189,9 @@ Follow my journey on how to build an algorithm that lets you create or solve Sud
 <pre><code>((position — 1) % 9) + 1
 </code></pre>
 <p>The section index is a little trickier. It’s a combo of the row and column index and some tweaks. There’s probably a clever mathematical approach, or you can just trial-and-error your way through (my usual strategy). Here’s a starting point:</p>
-<p><img src="sudoku_cols_and_rows.png" alt="sudoku columns and rows"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudoku_cols_and_rows.png" alt="sudoku columns and rows"></p>
 <p>We take the floor of a third of each position now. It seems like we could just sum them to get the fitting section index, with a little adjustment. Here’s the magic:</p>
-<p><img src="sudouku_from_cols_and_rows_to_sections.png" alt="sudouku from cols and rows to sections"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudouku_from_cols_and_rows_to_sections.png" alt="sudouku from cols and rows to sections"></p>
 <p>And that’s the formula to get the section index:</p>
 <pre><code>(col // 3) + (((row // 3) — 1) * 3)
 </code></pre>
@@ -265,7 +265,7 @@ visualize(solutions)
 </code></pre>
 <p>Seems like our basic loop is working fine. Let’s add some fine-tuning and limit it to the numbers from 1 to 9. We can just introduce an inner loop to keep things simple:</p>
 <p>Output:</p>
-<p><img src="suduko_first_attempt.png" alt="suduko first attempt"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/suduko_first_attempt.png" alt="suduko first attempt"></p>
 <p>Seems like our basic loop is working fine. Let’s add some fine-tuning and limit it to the numbers from 1 to 9. We can just introduce an inner loop to keep things simple:</p>
 <pre><code>reset_containers()  
 
@@ -286,7 +286,7 @@ for position in range(1, 82):
 visualize(solutions)
 </code></pre>
 <p>Output:</p>
-<p><img src="sudoku_second_attempt.png" alt="sudoku second attempt"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudoku_second_attempt.png" alt="sudoku second attempt"></p>
 <p>There are a lot of empty spots in the grid, what are we missing? Let’s introduce a conditional that stops when there’s no solution:</p>
 <pre><code>reset_containers()  
 
@@ -310,7 +310,7 @@ for position in range(1, 82):
 visualize(solutions)
 </code></pre>
 <p>Output:</p>
-<p><img src="sudoku_third_attempt.png" alt="sudoku third attempt"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudoku_third_attempt.png" alt="sudoku third attempt"></p>
 <p>Quite good, but just stopping the loop when we hit a dead end probably won’t get us to a solution. We need to keep track of dead ends, and we need the ability to go back, choose another path, and try again. Let’s start with a container that holds “impossible” paths for each of our 81 positions.</p>
 <p>We’ll also switch from a limited <code>for-loop</code> to an &ldquo;infinite&rdquo; <code>while-loop</code> because now we’re not just incrementing from 1 to 81 — we’ll be going back and forth. Of course, it’s always a good idea to use a stop condition, like <code>max_iterations</code>, so we don’t accidentally run into an actual endless loop when using <code>while</code>.</p>
 <p>Let’s put all of that into a new “big” init function!</p>
@@ -393,7 +393,7 @@ print(f'Done after {iteration - 1:,.0f} iterations.')
 visualize(solutions)
 </code></pre>
 <p>Output:</p>
-<p><img src="sudoku_fail.png" alt="sudoku fail"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudoku_fail.png" alt="sudoku fail"></p>
 <p>An empty grid? Why for flux sake? Well, our housekeeping is incomplete — we didn’t properly clean up the dead end container:</p>
 <pre><code>dead_ends[position] = []
 </code></pre>
@@ -474,7 +474,7 @@ solve_game(max_iterations=10_000)
 visualize(solutions)
 </code></pre>
 <p>Output:</p>
-<p><img src="sudoku_finally_solved.png" alt="sudoku finally solved"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudoku_finally_solved.png" alt="sudoku finally solved"></p>
 <p>Wohaa! Looks like our little loop is already producing a valid result. But how does it perform when we add some numbers to the solution?</p>
 <p>To work with a pre-filled grid, we need to implement another container — let’s call it <code>target</code>. We’ll add a simple check: If the target contains the current position, we’ll treat it as a constant. Copy it over to the other containers and skip to the next position:</p>
 <pre><code>if position in target:   
@@ -577,7 +577,7 @@ solve_game(debug = False, max_iterations = 5_000, target = {16: 2})
 visualize(solutions)
 </code></pre>
 <p>Output:</p>
-<p><img src="sudoku_finally_working.png" alt="sudoku finally working"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudoku_finally_working.png" alt="sudoku finally working"></p>
 <p>Farn-tastic! But don’t get too hyped, we’re not there yet. What about different solutions, variations? When we reach the last cell at position 81, in row 9 and column 9, we find exactly one solution for each previous cell. But how do we check for other options? To understand our next approach, imagine the solution as a huge 81-digit number, with all possible solutions branching out like a massive tree. The leftmost branch is the smallest number, and we’re going to find “higher” numbers, which are also valid solutions.</p>
 <p>Let’s start with a simple idea: What if, as soon as we reach the end of the grid, we:</p>
 <ul>
@@ -798,9 +798,9 @@ solve_game(debug=False, max_iterations=1_000_000, target = {80: 7})
 visualize(solutions[len(solutions) - 1])
 </code></pre>
 <p>And that’s our achievment:</p>
-<p><img src="sudoku_multiple_solutions.png" alt="sudoku multiple solutions"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudoku_multiple_solutions.png" alt="sudoku multiple solutions"></p>
 <p>Our brute-force Sudoku solving algorithm is ready! Well, I bet there are a couple of steps to optimize — not only code-style-wise, but also to make it run faster. I’d say that’s your homework. There are <strong>6,670,903,752,021,072,936,960</strong> possible paths (that’s 6 sextillion and a bit more, it can be writte as ~6 x 10^21, which is a reference to Blade Runner: Dr. Ana Stelline was born on the 10/6/21). Can you catch them all? How long does it take on your machine to get 1 million solutions?</p>
-<p><img src="blade_runner_stelline.png" alt="blade runner stelline"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/blade_runner_stelline.png" alt="blade runner stelline"></p>
 <center><i>Blade Runner's `Dr. Ana Stelline` (c) Warner Bros https://www.warnerbros.com/movies/blade-runner-2049</i></center>
 <p>Just one more thing… I asked ChatGPT to build a small function that checks if all solutions are valid. Wait, what? ChatGPT? Why haven’t we asked it earlier?</p>
 <p>Because developing algorithms is fun?</p>
@@ -810,10 +810,10 @@ visualize(solutions[len(solutions) - 1])
     print('All good!')
 </code></pre>
 <p>Just kidding — you’ll find the actual implementation in the notebook. Before I send you off into your well-deserved time off, let’s quickly go over some visualizations. I “discovered” 295,295 solutions (took me 100 million iterations and roughly 45 seconds), and this is how they look like in an image:</p>
-<p><img src="sudoku_solutions_visualized.png" alt="sudoku solutions visualized"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudoku_solutions_visualized.png" alt="sudoku solutions visualized"></p>
 <p>Finding <strong>300,000 solutions</strong> out of <strong>6 sextillion possibilities</strong> is like picking a single grain of sand from all the sand on Earth.</p>
 <p>For the following visualization, I calculated the difference between each solution — remember, they’re all essentially enormous numbers!</p>
-<p><img src="sudoku_solutions_difference.png" alt="sudoku solutions difference"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudoku_solutions_difference.png" alt="sudoku solutions difference"></p>
 <p>There are some interesting points to observe. On the symlog scale of outliers, you can clearly see bands of numbers. There’s also one outlier way out of the region, meaning that from solution <strong>149,652</strong> to <strong>149,653</strong>, the loop has to revert to a very high position in our “solution tree.”</p>
 <p>Can you find any more salient features? Let me know!</p>
   </article>

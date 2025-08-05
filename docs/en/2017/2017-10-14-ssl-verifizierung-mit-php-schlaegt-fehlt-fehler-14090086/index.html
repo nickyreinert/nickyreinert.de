@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="Wenn dich PHP mit dieser Fehlermeldung (oder einer ähnlichen Fehlernummer) begrüßt, dann liegt es wohl daran, dass beim Abruf einer SSL-Ressource die Identität nicht verifiziert werden konnte. Und das ist auch gut so, denn der Sinn von SSL ist ja das Herstellen einer gesicherten Verbindung.
+So sieht die Fehlermeldung bei Verwendung von file_get_contents(); aus. Aber auch andere Funktionen, mit denen man auf externe Ressourcen verweisen kann, werfen diesen Fehler, wie z.B. imagecreatefrompng();.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/">
+
+  
+  
+  <meta name="keywords" content="">
+  
+
+  
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/en/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="SSL-Verifizierung mit PHP schlägt fehlt (Fehler 14090086)">
+  <meta property="og:description" content="Wenn dich PHP mit dieser Fehlermeldung (oder einer ähnlichen Fehlernummer) begrüßt, dann liegt es wohl daran, dass beim Abruf einer SSL-Ressource die Identität nicht verifiziert werden konnte. Und das ist auch gut so, denn der Sinn von SSL ist ja das Herstellen einer gesicherten Verbindung.
+So sieht die Fehlermeldung bei Verwendung von file_get_contents(); aus. Aber auch andere Funktionen, mit denen man auf externe Ressourcen verweisen kann, werfen diesen Fehler, wie z.B. imagecreatefrompng();.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2017">
+    <meta property="article:published_time" content="2017-10-14T00:00:00+00:00">
+    <meta property="article:modified_time" content="2017-10-14T00:00:00+00:00">
+    <meta property="article:tag" content="Certificate-Chain">
+    <meta property="article:tag" content="Curl">
+    <meta property="article:tag" content="Intermediate">
+    <meta property="article:tag" content="Php">
+    <meta property="article:tag" content="Ssl">
+    <meta property="article:tag" content="Zertifikate">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/en/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/">
+
+  
+  
+  
+  <meta itemprop="name" content="SSL-Verifizierung mit PHP schlägt fehlt (Fehler 14090086)">
+  <meta itemprop="description" content="Wenn dich PHP mit dieser Fehlermeldung (oder einer ähnlichen Fehlernummer) begrüßt, dann liegt es wohl daran, dass beim Abruf einer SSL-Ressource die Identität nicht verifiziert werden konnte. Und das ist auch gut so, denn der Sinn von SSL ist ja das Herstellen einer gesicherten Verbindung.
+So sieht die Fehlermeldung bei Verwendung von file_get_contents(); aus. Aber auch andere Funktionen, mit denen man auf externe Ressourcen verweisen kann, werfen diesen Fehler, wie z.B. imagecreatefrompng();.">
+  <meta itemprop="datePublished" content="2017-10-14T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2017-10-14T00:00:00+00:00">
+  <meta itemprop="wordCount" content="712">
+  <meta itemprop="keywords" content="Certificate-Chain,Curl,Intermediate,Php,Ssl,Zertifikate,Zertifikatskette">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>SSL-Verifizierung mit PHP schlägt fehlt (Fehler 14090086) - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="SSL-Verifizierung mit PHP schlägt fehlt (Fehler 14090086)">
+  <meta name="twitter:description" content="Wenn dich PHP mit dieser Fehlermeldung (oder einer ähnlichen Fehlernummer) begrüßt, dann liegt es wohl daran, dass beim Abruf einer SSL-Ressource die Identität nicht verifiziert werden konnte. Und das ist auch gut so, denn der Sinn von SSL ist ja das Herstellen einer gesicherten Verbindung.
+So sieht die Fehlermeldung bei Verwendung von file_get_contents(); aus. Aber auch andere Funktionen, mit denen man auf externe Ressourcen verweisen kann, werfen diesen Fehler, wie z.B. imagecreatefrompng();.">
+
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institute for Digital Challenges</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+    
+<main id="main" class="post">
+  
+  <div class="post-header">
+  <div class="navigation">
+
+    
+    <a class="link prev" href="/en/2017/2017-09-30-welche-arten-von-ssl-zertifikaten-gibt-es/">&lt;&lt;&lt;</a>
+    
+    
+    <h1 style="flex-grow: 1; text-align: center;">SSL-Verifizierung mit PHP schlägt fehlt (Fehler 14090086)</h1>
+    
+    
+    <a class="link next" href="/en/2017/2017-10-19-xampp-startet-nicht-mehr-nachdem-eine-php-extension-hinzugefuegt-wurde/">>>></a>
+    
+
+  </div>
+  </div>
+  <div class="post-date">October 14, 2017</div>
+
+  
+  <article class="content">
+    <p>Wenn dich PHP mit dieser Fehlermeldung (oder einer ähnlichen Fehlernummer) begrüßt, dann liegt es wohl daran, dass beim Abruf einer SSL-Ressource die Identität nicht verifiziert werden konnte. Und das ist auch gut so, denn der Sinn von SSL ist ja das Herstellen einer gesicherten Verbindung.<br>
+So sieht die Fehlermeldung bei Verwendung von <em>file_get_contents();</em> aus. Aber auch andere Funktionen, mit denen man auf externe Ressourcen verweisen kann, werfen diesen Fehler, wie z.B. <em>imagecreatefrompng();</em>.</p>
+<p>Warning: file_get_contents(): SSL operation failed with code 1.
+OpenSSL Error messages:
+error:14090086:SSL routines:ssl3_get_server_certificate:certificate
+verify failed in /website/script.php
+on line 50</p>
+<p>Warning: file_get_contents():
+Failed to enable crypto in /website/script.php<br>
+on line 50</p>
+<p>Warning: file_get_contents(<a href="https://www.nickyreinert.de/foobar.json%29">https://www.nickyreinert.de/foobar.json)</a>:
+failed to open stream: operation failed in /website/script.php<br>
+on line 50</p>
+<p>Die Erklärung ist simpel: PHP kennt den Aussteller des Zertifikates für <a href="https://www.nickyreinert.de">https://www.nickyreinert.de</a> nicht und verweigert aus Sicherheitsgründen den Aufbau einer Verbindung. Die Ursachen hingegen können vielfältig sein, oft ist der Aussteller des Zertifikats z.B. nicht bekannt. Wir müssen also entweder dafür sorgen, dass PHP dem Aussteller vertraut oder festlegen, dass PHP die Zertifikate gar nicht erst prüft.</p>
+<h2 id="verifizierung-des-ssl-hosts-unterdrücken">Verifizierung des SSL Hosts unterdrücken</h2>
+<p>Das ist die quick&rsquo;n&rsquo;dirty Lösung. Zumindest <em>file_get_contents()</em>; kann mit Parametern gefüttert werden, die die Verifizierung der Ressource unterdrücken:</p>
+<p>$stream = stream_context_create(array(    
+$stream = stream_context_create(array(
+&ldquo;ssl&rdquo;=&gt;array(     
+&ldquo;verify_peer&rdquo;=&gt; false,    
+&ldquo;verify_peer_name&rdquo;=&gt; false, ),
+&lsquo;http&rsquo; =&gt; array(    
+&rsquo;timeout&rsquo; =&gt; 30     ) )     );</p>
+<p>$result = file_get_contents($url, 0, $stream);</p>
+<p>Wer auf eine eigene Ressource zurückgreift, z.B. im lokalen Netz oder zu Testzwecken, kann damit leben. Aus Sicherheitsgründen ist die Lösung allerdings nicht zu empfehlen. Außerdem erlaubt nicht jede Funktion die Angabe eines Stream-Contextes, wie z.B. <em>imagecreatefromjpeg();</em></p>
+<h2 id="die-zertifikatskette-manuell-einrichten">Die Zertifikatskette manuell einrichten</h2>
+<p>Man kommt also nicht darum, die saubere Lösung zu nutzen. Dazu muss man wissen, dass es in den allermeisten Fällen nicht nur um das eine Zertifikat geht, sondern um die gesamte Zertifikatskette. Diese beinhaltet auch die Zertifikate der Stellen, die dem infragekommenden Server, also <a href="https://www.nickyreinert.de">https://www.nickyreinert.de</a>, das Zertifikat ausgestellt haben. Wenn PHP diese Stellen nicht kennt, geht es auch davon aus, dass die von dort ausgestellten Zertifikate nicht gültig sind.</p>
+<p><a href="https://www.nickyreinert.de/files/1561/ssl-zertifikats-kette.png"><img src="/en/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/images/ssl-zertifikats-kette-300x219.png" alt=" SSL Zertifikats-Kette mit den Intermediate Zertifikaten"></a></p>
+<p>SSL Zertifikats-Kette mit den Intermediate Zertifikaten</p>
+<p>Um die Zertifikatskette zu erhalten, kannst du einen Service wie <a href="https://whatsmychaincert.com/">https://whatsmychaincert.com/</a> nutzen. Dieser liefert dir eine Datei mit der  kompletten Zertifikatskette. Oder du machst dich selber auf die Suche. Jedes Zertfikat enthält den Namen des Ausstellers bzw. den Typ des Zertifikats. Damit lassen sich die notwendigen Zwischenzertifkate auch manuell zusammenstellen.</p>
+<h2 id="php-die-zertifikatskette-mitteilen">PHP die Zertifikatskette mitteilen</h2>
+<p>Die Datei mit der Zertifikatskette gehört nun, oh Wunder, an einen Ort, den PHP erreichen kann. Dann musst du PHP noch mitteilen, dass es auch diese Zertifikatskette berücksichtigen soll. Auch das passiert über den Stream-Context, den ich oben schon angesprochen habe. Doch diesmal erlauben wir PHP, den SSL-Host zu verfizieren und verweisen auf die Zertifikatskette, die wir oben erstellt haben:</p>
+<p>$stream = stream_context_create(array(
+&ldquo;ssl&rdquo;=&gt;array(    
+&ldquo;cafile&rdquo; =&gt; &ldquo;<a href="https://www.nickyreinert.de.pem">www.nickyreinert.de.pem</a>&rdquo;,    
+&ldquo;verify_peer&rdquo;=&gt; true,    
+&ldquo;verify_peer_name&rdquo;=&gt; true, ),&lsquo;http&rsquo; =&gt; array(    
+&rsquo;timeout&rsquo; =&gt; $this-&gt;configUrlTimeOut     ) )
+;
+$config = file_get_contents($url, 0, $stream);</p>
+<p>Geschafft. PHP sollte nun, zur Laufzeit, den SSL-Host überprüfen und dabei auf die Zertifikate zurückgreifen, die die Authentizität einwandfrei bestätigen.</p>
+<p>Man kann den Verweis auch an anderer Stelle global definieren. Die PHP-Funktion openssl_get_cert_locations(); teilt uns direkt mit, wo PHP nach gültigen Zertifikaten sucht:</p>
+<p>Array
+(
+[default_cert_file] =&gt; /Applications/XAMPP/xamppfiles/share/openssl/cert.pem
+[default_cert_file_env] =&gt; SSL_CERT_FILE
+[default_cert_dir] =&gt; /Applications/XAMPP/xamppfiles/share/openssl/certs
+[default_cert_dir_env] =&gt; SSL_CERT_DIR
+[default_private_dir] =&gt; /Applications/XAMPP/xamppfiles/share/openssl/private
+[default_default_cert_area] =&gt; /Applications/XAMPP/xamppfiles/share/openssl
+[ini_cafile] =&gt; /Applications/XAMPP/xamppfiles/share/curl/curl-ca-bundle.crt
+[ini_capath] =&gt;
+)</p>
+<p>Der entscheidende Parameter lautet <strong>ini_cafile</strong>. Diese wird in der php.ini mit dem Parameter</p>
+<p>openssl.cafile=/Applications/XAMPP/xamppfiles/share/curl/curl-ca-bundle.crt</p>
+<p>gesetzt. Die gleiche Info erhältst du auch über die bekannte Funktion phpinfo(), dort lautet der Parameter <strong>openssl.cafile</strong>.</p>
+<p>In der entsprechenden Datei liegen eine Menge von Root-Zertifikaten, bzw. Certificate-Authorities. Sprich die Aussteller, denen PHP grundsätzlich vertraut. Mitunter macht es mehr Sinn, diese Einstellung in der php.ini zu nutzen, damit auch curl() darauf zurückgreifen kann.</p>
+<p>Wenn du PHP-FPM benutzt, musst du den Parameter übrigens folgendermaßen ansprechen:</p>
+<pre tabindex="0"><code>php_admin_value[openssl.cafile] = /Applications/XAMPP/xamppfiles/share/curl/curl-ca-bundle.crt
+</code></pre><h2 id="zusammenfassung">Zusammenfassung</h2>
+<p>Die SSL-Fehlermeldung hat ihren Sinn. PHP ist nicht in der Lage, die Authentizität des Servers zu überprüfen. Der korrekte Weg das Problem zu beheben, ist das Zertifikat der entsprechenden Seite herunterzuladen, die Intermediate-Zertifikate und das Root-Zertifikat zu besorgen und alle Zertifikate im PEM-Format in eine Text-Datei zu packen.<br>
+Danach kannst du entweder auf die URL zugreifen und über den Stream-Kontext auf diese Datei mit der Zertifikats-Kette verweisen, oder du legst in den globalen PHP-Einstellungen fest, dass PHP diese Datei beim nächsten Mal berücksichtigen soll.</p>
+
+  </article>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>
