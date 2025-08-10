@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="Die korrekten Dateirechte sollten eine wichtige Rolle spielen, wenn du an einem Sicherheitskonzept für deine Webseite bzw. Wordpress arbeitest. Leider wird das Thema Dateirechte oft stiefmütterlich behandelt, nicht zuletzt weil es fälschlicherweise als zu kompliziert angesehen wird. Dabei muss es das gar nicht sein: Das Grundprinzip ist einfach: Du willst nicht, dass jedermann Dateien ändern, ausführen oder lesen kann. Sicherlich gibt es feine Abstufungen. und genau die möchte ich hier erklären.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/">
+
+  
+  
+  <meta name="keywords" content="">
+  
+
+  
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/2020/2020-11-05-wie-funktionieren-dateirechte/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Wie funktionieren Dateirechte?">
+  <meta property="og:description" content="Die korrekten Dateirechte sollten eine wichtige Rolle spielen, wenn du an einem Sicherheitskonzept für deine Webseite bzw. Wordpress arbeitest. Leider wird das Thema Dateirechte oft stiefmütterlich behandelt, nicht zuletzt weil es fälschlicherweise als zu kompliziert angesehen wird. Dabei muss es das gar nicht sein: Das Grundprinzip ist einfach: Du willst nicht, dass jedermann Dateien ändern, ausführen oder lesen kann. Sicherlich gibt es feine Abstufungen. und genau die möchte ich hier erklären.">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2020">
+    <meta property="article:published_time" content="2020-11-05T00:00:00+00:00">
+    <meta property="article:modified_time" content="2020-11-05T00:00:00+00:00">
+    <meta property="article:tag" content="Chmod">
+    <meta property="article:tag" content="Dateirechte">
+    <meta property="article:tag" content="Sysop">
+    <meta property="article:tag" content="Wordpress">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/2020/2020-11-05-wie-funktionieren-dateirechte/">
+
+  
+  
+  
+  <meta itemprop="name" content="Wie funktionieren Dateirechte?">
+  <meta itemprop="description" content="Die korrekten Dateirechte sollten eine wichtige Rolle spielen, wenn du an einem Sicherheitskonzept für deine Webseite bzw. Wordpress arbeitest. Leider wird das Thema Dateirechte oft stiefmütterlich behandelt, nicht zuletzt weil es fälschlicherweise als zu kompliziert angesehen wird. Dabei muss es das gar nicht sein: Das Grundprinzip ist einfach: Du willst nicht, dass jedermann Dateien ändern, ausführen oder lesen kann. Sicherlich gibt es feine Abstufungen. und genau die möchte ich hier erklären.">
+  <meta itemprop="datePublished" content="2020-11-05T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2020-11-05T00:00:00+00:00">
+  <meta itemprop="wordCount" content="2585">
+  <meta itemprop="keywords" content="Chmod,Dateirechte,Sysop,Wordpress">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>Wie funktionieren Dateirechte? - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Wie funktionieren Dateirechte?">
+  <meta name="twitter:description" content="Die korrekten Dateirechte sollten eine wichtige Rolle spielen, wenn du an einem Sicherheitskonzept für deine Webseite bzw. Wordpress arbeitest. Leider wird das Thema Dateirechte oft stiefmütterlich behandelt, nicht zuletzt weil es fälschlicherweise als zu kompliziert angesehen wird. Dabei muss es das gar nicht sein: Das Grundprinzip ist einfach: Du willst nicht, dass jedermann Dateien ändern, ausführen oder lesen kann. Sicherlich gibt es feine Abstufungen. und genau die möchte ich hier erklären.">
+
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institut für digitale Herausforderungen</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+    
+<main id="main" class="post">
+  
+  <div class="post-header">
+  <div class="navigation">
+
+    
+    <a class="link prev" href="/2020/2020-10-24-marketing-killed-the-internet-star/">&lt;&lt;&lt;</a>
+    
+    
+    <h1 style="flex-grow: 1; text-align: center;">Wie funktionieren Dateirechte?</h1>
+    
+    
+    <a class="link next" href="/2020/2020-12-09-einfuehrung-in-stemming-und-lemmatisierung-deutscher-texte-mit-python/">>>></a>
+    
+
+  </div>
+  </div>
+  <div class="post-date">November 5, 2020</div>
+
+  
+  <article class="content">
+    <p>Die korrekten <strong>Dateirechte</strong> sollten eine wichtige Rolle spielen, wenn du an einem Sicherheitskonzept für deine Webseite bzw. Wordpress arbeitest. Leider wird das Thema Dateirechte oft stiefmütterlich behandelt, nicht zuletzt weil es fälschlicherweise als zu kompliziert angesehen wird. Dabei muss es das gar nicht sein: Das Grundprinzip ist einfach: Du willst nicht, dass jedermann Dateien <strong>ändern</strong>, <strong>ausführen</strong> oder <strong>lesen</strong> kann. Sicherlich gibt es feine Abstufungen. und genau die möchte ich hier erklären.</p>
+<p>Achtung: Das Ziel dieses Beitrags ist nicht, dir eine fertige Lösung für deine WordPress-Installation bzw. dein Projekt zu geben. Das ist nicht möglich. Warum? Es gibt zig unterschiedliche Konfigurationen. Es mag allgemeingültige Lösungen geben, diese sind aber bei weitem nicht sicher. Stichwort: chmod 777 * -R</p>
+<p>Du solltest nach der Lektüre aber das Konzept verstehen und vielleicht sogar in der Lage sein, die Dateirechte selbstständig zu setzen.</p>
+<h2 id="die-grundlagen-wie-verarbeitet-ein-web-server-anfragen">Die Grundlagen: Wie verarbeitet ein Web-Server Anfragen?</h2>
+<p>Jetzt fragst du dich sicherlich, was das mit Dateirechten zu tun hat? Was passiert, wenn du auf einer Webseite surfst? Folgende Vereinfachung dürfte das konzept hilfreich beschreibe: Der Web-Server schickt eine Datei an deinen Browser. Und du kannst Dateien an den Web-Server schicken, sprich hochladen. Wer also verstehen will, wie Dateirechte gesetzt werden müssen, sollte das Grundkonzept eines Servers verstehen.</p>
+<p>Wie sieht diese Kommunikation mit dem Server also im Detail aus? Du schickst über deinen Browser eine Anfrage (<a href="https://nickyreinert.de/index.html">http://nickyreinert.de/index.html</a>) an den Server (was auch nur irgendein anderer Computer auf der Welt ist, egal ob in der Cloud oder in einem Keller). Auf dem Server laufen verschiedene Dienste - die verwirrenderweise auch als Server bezeichnet werden.</p>
+<p><img src="https://pbs.twimg.com/media/D864DxrWsAAmvXi?format=png&amp;name=small" alt="Bild"></p>
+<p>Die Cloud ist auch nur der Computer von jemand anders</p>
+<p>Einer dieser Dienste ist der <strong><a href="https://de.wikipedia.org/wiki/Internetdienst#Die_Internetdienste_im_Einzelnen">HTTP-Dienst</a></strong>. Sehr verbreitet sind <strong>Apache2</strong> und <strong>nginx</strong>. Das Konzept ist bei beiden gleich: Sie empfangen deine Anfrage und schicken dir eine Antwort. Bei dieser Antwort unterscheidet man grob zwischen <strong>statische Inhalten</strong> (HTML-Datei, Texte, Bilder, &hellip;), die der <strong>HTTP-Dienst</strong> direkt zurückschickt und <strong>dynamischen Inhalten</strong>. Dynamische Inhalte müssen auf dem Server erst verarbeitet werden, wie z.B. Datenbankabfragen oder ganz simpel die Darstellung der aktuellen Uhrzeit: <a href="https://nickyreinert.de/dynamisch.php">https://nickyreinert.de/dynamisch.php</a>. Das ermöglicht ein <strong>PHP-Dienst</strong> bzw. <strong>PHP-Interpreter</strong>.</p>
+<p>Im Kontext der Dateirechte muss man hier eine wichtige Unterscheidung treffen: Der PHP-Interpreter ist entweder Teil des HTTP-Dienstes (<strong>PHP-Modul</strong>). Damit ist z.B. <strong>Apache2</strong> in der Lage, die PHP-Datei quasi selber zu interpretieren, und den dynamischen Inhalt für die Antwort zu erzeugen. Oder der PHP-Dienst ist ein getrennt laufender Dienst bzw. Prozess, der über eine Schnittstelle (CGI) vom HTTP-Dienst angesprochen wird (<a href="http://www.php-faq.de/q/q-php-cgi-vs-modul.html">mehr dazu hier</a>).</p>
+<p>Um Informationen auf dem Server zu speichern, gibt es zwei Möglichkeiten: Zum einen wäre da die Datenbank, wie z.B. <strong>MySQL</strong> oder <strong>MariaDB</strong>. Der PHP-Dienst nutzt die Datenbank, um Informationen abzulegen, die in der Regel volatil sind. Wie z.B. Kommentare oder Texte für deinen Blog. Und es gibt das <strong>Dateisystem</strong>. Ganz banal ausgedrückt ist das die Festplatte des Servers. Und genau dort brauchst du Dateirechte. Die folgende Abbildung zeigt die beiden oben erwähnten Konfigurationen: In der ersten Konfiguration sind HTTP- und PHP-Dienst getrennte Dienste, in der zweiten Konfiguration nutzt der HTTP-Dienst PHP als integriertes Modul.</p>
+<p>Die Abbildung zeigt außerdem ein beispielhaftes Dateisystem mit einigen ausgewählten Dateien und Ordnern, die dir von WordPress bekannt vorkommen dürften.</p>
+<ul>
+<li>
+<p><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/Folie1.png"><img src="/2020/2020-11-05-wie-funktionieren-dateirechte/images/Folie1-700x394.png" alt=""></a></p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/Folie2.png"><img src="/2020/2020-11-05-wie-funktionieren-dateirechte/images/Folie2-700x394.png" alt=""></a></p>
+</li>
+</ul>
+<p>Der vierte Dienst im Bunde ist übrigens der <strong>FTP-Dienst</strong>. Dieser ermöglicht es (in der Regel dem Web-Entwickler) sich per <strong>FTP</strong> auf den Server zu verbinden und Dateien über einen FTP-Client hochzuladen, zu bearbeiten oder zu löschen.</p>
+<h2 id="lesen-schreiben-ausführen---was-bedeutet-das-eigentlich">Lesen, Schreiben, Ausführen - Was bedeutet das eigentlich?</h2>
+<p>Wenn es um die Fähigkeit &ldquo;Ausführen&rdquo; geht, muss man streng zwischen Ordnern und Dateien unterscheiden. Das <strong>Ausführen</strong> von Dateien, egal welche Endung sie haben, ist in <strong>keiner Konfiguration notwendig</strong>! Das Ausführen von Ordern hingegen ermöglicht den Zugriff auf den Ordner. Jeder Ordner deiner WordPress-Installation darf also ausführbar sein.</p>
+<p>Das <strong>Lesen</strong> eines Ordners ermöglicht einem Dienst, die Ordner-Inhalte aufzulisten. Das Lesen einer Datei ermöglicht einem Dienst den Inhalt einer Datei darzustellen. Und das ist bereits ein sicherheitskritisches Merkmal: Nicht jeder Dienst muss bzw. darf jede Datei lesen. Der HTTP-Dienst benötigt z.B. keinen lesenden Zugriff auf PHP-Dateien. Und erst Recht nicht auf z.B. die wp-config.php - in der sich ja das Passwort für die Datenbank befindet. Der HTTP-Dienst reicht die Anfrage für die dynamische PHP-Datei in der Regel an den PHP-Dienst weiter. Gleichwohl muss der HTTP-Dienst statische Inhalte lesen können. Vor allem bei den Leserechten gibt es also sehr viele Feinheiten zu beachten.</p>
+<p>Wer <strong>Schreibrechte</strong> für einen Ordner hat, kann darin Dateien anlegen bzw. den Ordner löschen oder umbenennen. Das Schreibrecht für eine Datei ermöglicht das Löschen der Datei und das Ändern der Inhalte. Grundsätzlich sollte kein Dienst Schreibrechte im Dateisystem besitzen. So vermeidet man z.B., dass jemand Schadcode in eine PHP-Datei einfügt. Der PHP-Dienst kann Informationen in der Datenbank ablegen und für den HTTP-Dienst gibt es erstmal keinen Grund, überhaupt Dateien ändern oder anlegen zu müssen.</p>
+<p>Natürlich gibt es Ausnahmen. Z.B. benötigt der PHP-Dienst Schreibrechte, wenn Dateien von WordPress oder der Plugins aktualisiert werden müssen. Oder ein Nutzer Dateien hochladen möchte (Hier kommt übrigens eine andere wichtige Sicherheitseinstellung zum Tragen: Man kann unterbinden, dass der PHP-Dienst Dateien aus dem Upload-Ordner als PHP-Dateien verarbeitet.)</p>
+<p>Wie wir diese Dateirechte setzen, dazu gleich mehr.</p>
+<h2 id="besitzrechte-einer-datei">Besitzrechte einer Datei</h2>
+<p>Vorher schauen wir uns noch die Besitzverhältnisse von Dateien und Ordnern an. Diese lassen sich einem <strong>Besitzer</strong> und einer <strong>Gruppe</strong> zuordnen. Jeder der oben genannten Dienste kann, ganz abstrakt betracht, als <strong><em>Nutzer</em></strong> verstanden werden. Und damit entweder <strong>direkt Besitzer</strong> einer Datei oder eines Ordners sein. Oder <strong>indirekt</strong>, über die <strong>Gruppenzugehörigkeit</strong>.</p>
+<p>Eine Datei gehört also zu einem Besitzer und zu einer Gruppe von Besitzern. Der Besitzer muss nicht zwingend Teil der Gruppe sein. Der <strong>Besitzer</strong> kann bestimmte Rechte für diese Datei besitzen, wie z.B. <strong>Lesen</strong> und <strong>Schreiben</strong>. Einer <strong>Gruppe</strong> von Besitzern werden auch individuelle Rechte zugesprochen, wie z.B. nur das <strong>Lesen</strong>. Und dann gibt es noch &ldquo;<strong>alle anderen</strong>&rdquo;, die vielleicht gar <strong>keine Zugriffsrechte</strong> auf eine Datei haben. Am Beispiel von <strong>index.html</strong> sieht das folgendermaßen aus:</p>
+<p><em>index.html:</em></p>
+<ul>
+<li><strong>Besitzer</strong>: FTP-Dienst, darf lesen und schreiben,</li>
+<li><strong>Gruppe</strong>: WWW-Data, darf lesen,</li>
+<li><strong>alle andern</strong>: keine Rechte</li>
+</ul>
+<p>Und das enstpricht auch schon der klassischen Rechtevergabe von Dateien. Schreibrechte werden nur dem Besitzer eingeräumt. Die Gruppe darf bestenfalls lesen. Natürlich gibt es Sonderfälle, wie das Aktualisieren von WordPress oder von Plugins, dazu später mehr.</p>
+<h2 id="wie-funktionieren-chown-und-chmod">Wie funktionieren chown und chmod?</h2>
+<p>Du wirst es sicher schon mal gehört haben: Dateirechte werden mit <strong>chown</strong> und <strong>chmod</strong> konfiguriert. chown steht für &ldquo;change owner&rdquo; - also &ldquo;ändere den Besitzer&rdquo; und chmod für &ldquo;change mode&rdquo;, &ldquo;ändere den Modus&rdquo;.</p>
+<p>Zu Demonstrationszwecken gehen wir von der folgenden Konfiguration aus, die zwar bei weitem nicht die sicherste, dafür aber weit verbreitet ist:</p>
+<p>Die <em>Nutzer</em> für den PHP- und HTTP-Dienst sind in der Gruppe <strong>www-data</strong> zusammengefasst. Daneben gibt es den FTP-Dienst (<strong>ftp-user</strong>).</p>
+<p><strong>Ftp-user</strong> bekommt alle Rechte: Lesen, Schreiben, usw. Die Nutzer der Gruppe <strong>www-data</strong> bekommen nur lesenden Zugriff - vorerst!</p>
+<p>Jede Datei und jeder Ordner sollen dem <strong>ftp-user</strong> gehören, gleichzeitig aber auch zur Gruppe <strong>www-data</strong>. Das lässt sich mit <strong>chown</strong> folgendermaßen bewerkstelligen:</p>
+<pre tabindex="0"><code>chown ftp-user:www-data /var/nginx/www/* --recursive
+</code></pre><p>Der erste Parameter definiert den Besitzer (ftp-user) und die Gruppenzugehörigkeit (www-data), immer getrent mit einem Doppelpunkt. Danach folgt der betroffene Ordner bzw. die Datei. Mit <strong>--recursive</strong> (oder kürzer <strong>-R</strong>) werden auch alle Unterordner und darin befindlichen Dateien angesprochen.</p>
+<p>Bei den Dateirechten wird es etwas aufwendiger, zunächst der Aufruf:</p>
+<pre tabindex="0"><code>chmod 640 /var/nginx/www/* -R
+</code></pre><p>Hier nutzen wir die Kurzschreibweise -R um alle Dateien und Ordner rekursiv zu ändern. Wichtig ist für uns die Ziffer hinter chmod: 640. Genau genommen handelt es sich um drei (oktale) Ziffern, nämlich 6, 4 und 0. Entsprechend der Position regeln sie die Zugriffsrechte für den</p>
+<ul>
+<li><strong>Besitzer</strong> (ftp-user, die 6 an erster Stelle),</li>
+<li>die <strong>Gruppe</strong> (www-data) samt ihrer Mitglieder (HTTP-Dienst, die 4 an zweiter Stelle)</li>
+<li>und an letzter Stelle alle anderen (<strong>others</strong> - die 0).</li>
+</ul>
+<p>Und wie entstehen die Ziffern 6, 4 und 0? Wir erinnern uns an die drei Zugriffsrechte:</p>
+<ul>
+<li>lesen,</li>
+<li>schreiben sowie</li>
+<li>ausführen.</li>
+</ul>
+<p>Jedes Recht besitzt einen Wert:</p>
+<ul>
+<li>Lesen (bzw. r für read) = 4</li>
+<li>Schreiben (bzw. w für write) = 2</li>
+<li>Ausführen (bzw. x für eXecute) = 1</li>
+<li>Kein Recht = 0</li>
+</ul>
+<p><a href="https://www.nickyreinert.de/files/2227/berechnung-der-Dateirechte-fu%CC%88r-chmod.png"><img src="images/berechnung-der-Dateirechte-fu%CC%88r-chmod-300x167.png" alt="Die Berechnung der Dateirechte für chmod"></a></p>
+<p>Die Berechnung der Dateirechte für chmod</p>
+<p>Um Rechte zu kombinieren, bildet man deren Summe. Will man also alle Rechte vergeben, erechnet sich das folgendermaßen:</p>
+<ul>
+<li>Lesen + Schreiben + Ausführen = 4 + 2+ 1 = 7</li>
+</ul>
+<p>Nur Lese- und Schreibzugriff errechnet sich demnach so:</p>
+<ul>
+<li>Lesen + Schreiben = 6</li>
+</ul>
+<p>Die obene genannte chmod-Anweisung setzt also die folgenden Rechte um:</p>
+<ul>
+<li>Besitzer (ftp-user): 6 (Lesen, Schreiben)</li>
+<li>Gruppe (www-data): 4 (Lesen)</li>
+<li>Alle anderen (others): 0 (keine Rechte)</li>
+</ul>
+<p>Was heißt das? Der FTP-Nutzer darf als Besitzer alles: Dateien hochladen, löschen, bearbeiten usw. Jedes Mitglied der Gruppe www-data darf Dateien nur lesen. Jeder andere Nutzer (bzw. Dienst) darf gar nicht auf die Dateien in deinem WordPress-Projekt zugreifen. Das klingt sehr sicher, führt allerdings zu einem Problem: Dein Server dürfte so nicht funktionieren. Nimm als Beispiel diesen Aufruf: <a href="https://nickyreinert.de/ordner/">https://nickyreinert.de/ordner/</a></p>
+<p>Die HTTP-Fehlermeldung <strong>403 Forbidden</strong> erscheint. Das sind die Zugriffsrechte für den Ordner, so wie wir sie eben gesetzt haben:</p>
+<pre tabindex="0"><code>drw-r----- 2 ftp-user www-data   4096 Okt 14 11:48 ordner/
+</code></pre><p>In der zweiten Spalte sehen wir: Der Ordner gehört <strong>ftp-user</strong> und der Gruppe <strong>www-data</strong>.</p>
+<p>Das <strong>d</strong> ganz am Anfang steht für <strong>directory</strong>, lies Ordner. Dann folgen die Dateirechte, die wir eben schon festgelegt haben: Zunächst drei Zeichen, die die Zugriffsrechte für den Besitzer (<strong>ftp-user</strong>) beschreiben: <strong>rw-</strong></p>
+<p>Also Lesen (<strong>read)</strong> und Schreiben (<strong>write</strong>) (würde anstelle des <strong>-</strong> ein <strong>x</strong> stehen (<strong>eXecute)</strong>, stünde das für <strong>Ausführen</strong>). Die Gruppe <strong>www-data</strong> und alle ihre Mitglieder dürfen nur Lesen (r&ndash;). Alle anderen dürfen gar nichts (&mdash;).</p>
+<p>Nun handelt es sich aber um einen Ordner. Ein Ordner kann aber nur &ldquo;betreten&rdquo; werden, wenn man die Genehmigung zum <strong>Ausführen</strong> hat. Weder der Besitzer noch die Gruppe hat diese Genehmigung. Unsere obere Anweisung reicht also nicht aus! Tatsächlich sollte man also <strong>Zugriffsrechte für Dateien und Ordner immer getrennt</strong> festlegen!</p>
+<p>Berechtigung für alle Dateien:</p>
+<pre tabindex="0"><code>chmod 640 /var/nginx/www/* -R
+</code></pre><p>Berechtigung für alle Ordner:</p>
+<pre tabindex="0"><code>chmod 750 /var/nginx/www/* -R
+</code></pre><p>Du siehst, dass das Ermöglichen des Ausführens einfach durch das Addieren von 1 für die beiden ersten Positionen ermöglicht wird.</p>
+<p>Tatsächlich findest du diese beiden Befehle auch in vielen Anleitungen zu Dateirechten und damit endet die Anleitung oft auch schon. Doch damit hast du ein Problem. Denn die zweite Anweisung überschreibt das Ergebnis der ersten Anweisung. Aber wir wollen doch Dateien und Ordner individuell einrichten! Abhilfe schafft der Befehl <strong>find</strong>, um Dateien und Ordner getrennt anzusprechen:</p>
+<pre tabindex="0"><code>find /var/nginx/htdocs/. -type f -exec chmod 640 -- {} +
+find /var/nginx/htdocs/. -type d -exec chmod 750 -- {} +
+</code></pre><p>Der Parameter <strong>-type f</strong> liefert alle Dateien im angegeben Ordner zurück (f wie file, Datei). Der Punkt hinter htdocs in der ersten Zeile sorgt dafür, dass auch versteckte Dateien, wie z.B. die .htaccess-Datei, gefunden werden. Mit <strong>exec</strong> übergebe ich das Resultat von find, eine Liste die alle gefundenen Dateien enthält, an einen anderen Befehl. In dem Fall also <strong>chmod</strong>.</p>
+<p>Vice versa für alle Ordner, die mit <strong>-type d</strong> gefunden werden. Hier wird mit chmod auch das Recht zum Ausführen vergeben.</p>
+<h2 id="dateirechte-in-der-realität">Dateirechte in der Realität</h2>
+<p>Das klingt erstmal recht einfach, hat aber drei Haken:</p>
+<ol>
+<li>Es gibt Dateien, die nur für den PHP-Dienst relevant sind, andere wiederum nur für den HTTP-Dienst. Man muss die Besitzrechte also etwas granularer vergeben.</li>
+<li>Bei einem Update der Plugins oder WordPress müssen Dateien für die Gruppe www-data wenigstens temporär schreibbar sein.</li>
+<li>Wenn man den Upload von Dateien zulassen möchte, muss der Ordner /wp-content/uploads dauerhaft beschreibbar sein.</li>
+</ol>
+<p>Es gibt also verschiedene <strong>Ordner- und Datei-Kategorien</strong>, die verschiedene Rechte erfordern. Die folgende Matrix zeigt, am Beispiel von WordPress, eine <strong>ideale</strong> Konfiguration:</p>
+<p><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/grafik-4.png"><img src="/2020/2020-11-05-wie-funktionieren-dateirechte/images/grafik-4-700x315.png" alt=""></a></p>
+<p>Die **.htaccess-**Datei muss für den PHP-Dienst gar nicht sichtbar, geschweige denn beschreibbar sein. Die Datei <strong>wp-config.php</strong> wiederum sollte für den HTTP-Dienst unsichtbar sein. Generell müssen PHP-Dateien, also dynamische Ressourcen, für den HTTP-Dienst gar nicht sichtbar sein. Der Upload-Ordner ist hier beschreibbar, um das Hochladen von Datein zu ermöglichen. Wird ein Cache verwendet, muss natürlich auch dieser Ordner beschreibbar sein.</p>
+<p>Solltest du, z.B. auf deinem eigenen Webspace, die Möglichkeit haben, Besitzrechte derart granular zu konfigurieren, kann dir die Matrix vielleicht als Inspiration dienen. In der Realität hilft das aber nicht weiter, da der PHP-Dienst als Modul entweder innerhalb des HTTP-Dienstes läuft oder beide Dienste unter einer Gruppe (www-data) laufen (<a href="https://binary-butterfly.de/artikel/dateirechte-wie-stelle-ich-das-bei-meinem-hoster-ein/">hier wird das Problem noch etwas genauer beleuchtet</a>). Die Konfiguration sieht dann in etwa so aus:</p>
+<p><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/grafik-5.png"><img src="/2020/2020-11-05-wie-funktionieren-dateirechte/images/grafik-5-700x288.png" alt=""></a></p>
+<p>Nun stellst du dir sicher die Frage, wie du ein derartiges Setup möglichst unkompliziert einrichten kannst. Eins Vorweg: Ohne Zugriff auf die Shell wird das ziemlich aufwendig. Mit Zugriff auf die Kommandozeile kannst du die Dateirechte z.B. folgendermaßen setzen:</p>
+<pre tabindex="0"><code>find /var/nginx/htdocs/. -type f -exec chmod 640 -- {} +
+find /var/nginx/htdocs/. -type d -exec chmod 750 -- {} +
+find /var/nginx/htdocs/wp-content/uploads/. -type f -exec chmod 660 -- {} +
+find /var/nginx/htdocs/wp-content/uploads/. -type d -exec chmod 770 -- {} +
+find /var/nginx/htdocs/wp-content/cache/. -type f -exec chmod 660 -- {} +
+find /var/nginx/htdocs/wp-content/cache/. -type d -exec chmod 770 -- {} +
+</code></pre><p>Wenn du Themes oder Plugins aktualisieren willst, musst du die Rechte folgendermaßen anpassen und somit Datein und Ordner schreibbar machen:</p>
+<pre tabindex="0"><code>find /var/nginx/htdocs/wp-content/themes/. -type f -exec chmod 660 -- {} +
+find /var/nginx/htdocs/wp-content/themes/. -type d -exec chmod 770 -- {} +
+find /var/nginx/htdocs/wp-content/plugins/. -type f -exec chmod 660 -- {} +
+find /var/nginx/htdocs/wp-content/plugins/. -type d -exec chmod 770 -- {} +
+</code></pre><p>Beim Update von WordPress trifft das natürlich auf die ganze Installation zu:</p>
+<pre tabindex="0"><code>find /var/nginx/htdocs/. -type f -exec chmod 660 -- {} +
+find /var/nginx/htdocs/. -type d -exec chmod 770 -- {} +
+</code></pre><p>Wenn du keinen Zugriff auf die Kommandozeile hast, kannst du auch PHP nutzen, insofern du die Rechte dazu hast. Die Funktion lautet <a href="https://www.php.net/manual/de/function.chmod.php">chmod()</a>.</p>
+<h2 id="ausführen-von-php-code-in-bestimmten-ordnern-unterbinden">Ausführen von PHP-Code in bestimmten Ordnern unterbinden</h2>
+<p>Oben hatte ich das Problem mit dem Upload-Ordner angesprochen. Wenn Nutzer in der Lage sind, dort Dateien zu modifizieren oder abzulegen, ist das ein Sicherheitsrisiko. Du kannst das Risiko aber eindämmen, indem du dafür sorgst, dass Dateien in diesem Ordner schlicht nicht von PHP interpretiert, sprich ausgeführt, werden können.</p>
+<p>So kann der Ordner beschreibbar bleiben, das Sicherheitsrisiko wird aber trotzdem reduziert. Dazu erstellst du eine .htaccess-Datei im uploads-Ordner mit diesem Inhalt:</p>
+<p>SetHandler !
+RemoveHandler .php .phtml .php3
+RemoveType .php .phtml .php3
+php_admin_value engine Off
+php_flag engine off</p>
+<p>Die beiden letzten Zeile sind redundant zu den vorherigen. Sie soll sicherstellen, dass PHP hier wirklich nicht funktioniert. Ein Angreifer ist somit vielleicht in der Lage, PHP-Code in diesem Ordner abzulegen aber nicht mehr, diesen auch auszuführen.</p>
+<p>Bei nginx kannst du den Upload-Ordner einfach implizit von PHP abnabeln:</p>
+<pre tabindex="0"><code>if ($uri !~ &#34;^/uploads/&#34;) {
+
+   fastcgi_pass unix:/run/php/php-fpm-$server.sock;
+
+}
+</code></pre><h2 id="fs_method">FS_METHOD</h2>
+<p>Wenn du meinst, die Dateirechte korrekt vergeben zu haben und trotzdem fordert dich Wordpress beim Updaten auf, die FTP-Zugangsdaten einzugeben, setze diesen Parameter in der Datei wp-config.php:</p>
+<p>define(&lsquo;FS_METHOD&rsquo;, &lsquo;direct&rsquo;);</p>
+<p>WordPress weiß nun, dass es Dateien direkt anfassen darf, ohne den Umweg über den FTP-Nutzer zu gehen.</p>
+<p>Dieser Parameter kann recht nützlich sein, wenn du die Dateirechte noch restriktiver vergeben willst, sprich: PHP gar keine Schreibrechte einräumst. Du musst dann einen FTP-Nutzer anlegen, über den WordPress sozusagen indirekt auf das Dateisystem zugreifen kann.</p>
+<h2 id="wenig-aufwand-viel-nutzen">Wenig Aufwand, viel Nutzen</h2>
+<p>Die Einarbeitung in die Benutzerrechte mit <strong>chmod</strong> mag anfangs vielleicht ungewohnt sein, mit etwa Übung hat man den Dreh aber recht schnell raus. Der Nutzen ist immens, denn die falsche Rechte-Vergabe ist ein häufiger Grund, warum bösartige Software sich überhaupt auf einem Server verbreiten kann. Es gibt noch eine Handvoll andere Maßnahmen, die relativ simpel und effektiv sind, denen ich mich in einem anderen Beitrag widmen möchte.</p>
+<p>Zuguter Letzt: Willst du wissen, ob die Dateirechte in deiner Installation korrekt gesetzt wurden, kannst du auf dieses Script zurückgreifen. Ich habe dazu das Script von <a href="https://binary-butterfly.de/artikel/dateirechte-warum-eigentlich/">Ernesto Ruge</a> etwas überarbeitet, in der Funktionalität aber unverändert gelassen:</p>
+<p><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/grafik-7.png"><img src="/2020/2020-11-05-wie-funktionieren-dateirechte/images/grafik-7-700x366.png" alt=""></a></p>
+<p>Die korrekten Datei und Ordner-Rechte für WordPress prüfen</p>
+<p><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/testFileFolderPermissions.php_-1.zip">testFileFolderPermissions.php_-1</a><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/testFileFolderPermissions.php_-1.zip">Herunterladen</a></p>
+
+  </article>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>

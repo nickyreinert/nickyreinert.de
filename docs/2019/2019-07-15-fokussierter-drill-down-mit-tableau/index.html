@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="In Tableau gibt es die eigentlich sehr nützliche Möglichkeit, Dimensionen beliebig zu kombinieren und in einer Hierarchie zusammenzufassen. Diese Funktion ist sehr intuitiv hat aber einen Haken: Wenn man bei großen Datenmengen und Dimensionen mit hoher Kardinalität einen Drill Down macht, werden die Abfragen nicht nur irrsinnig langsam, je tiefer man kommt. Die Übersicht geht auch komplett verloren.
+Um das zu demonstrieren habe ich eine Datenquelle mit 1 Mio. Zeilen und 10 Dimensionen erzeugt. Der Drill-Down auf Ebene 8 dauert hier auf normaler Hardware über 20 Sekunden und das Ergebnis ist&hellip; nun ja: Für eine schnellen Überblick kaum zu gebrauchen:">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/">
+
+  
+  
+  <meta name="keywords" content="">
+  
+
+  
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/2019/2019-07-15-fokussierter-drill-down-mit-tableau/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Fokussierter Drill-Down mit Tableau">
+  <meta property="og:description" content="In Tableau gibt es die eigentlich sehr nützliche Möglichkeit, Dimensionen beliebig zu kombinieren und in einer Hierarchie zusammenzufassen. Diese Funktion ist sehr intuitiv hat aber einen Haken: Wenn man bei großen Datenmengen und Dimensionen mit hoher Kardinalität einen Drill Down macht, werden die Abfragen nicht nur irrsinnig langsam, je tiefer man kommt. Die Übersicht geht auch komplett verloren.
+Um das zu demonstrieren habe ich eine Datenquelle mit 1 Mio. Zeilen und 10 Dimensionen erzeugt. Der Drill-Down auf Ebene 8 dauert hier auf normaler Hardware über 20 Sekunden und das Ergebnis ist… nun ja: Für eine schnellen Überblick kaum zu gebrauchen:">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2019">
+    <meta property="article:published_time" content="2019-07-15T00:00:00+00:00">
+    <meta property="article:modified_time" content="2019-07-15T00:00:00+00:00">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/2019/2019-07-15-fokussierter-drill-down-mit-tableau/">
+
+  
+  
+  
+  <meta itemprop="name" content="Fokussierter Drill-Down mit Tableau">
+  <meta itemprop="description" content="In Tableau gibt es die eigentlich sehr nützliche Möglichkeit, Dimensionen beliebig zu kombinieren und in einer Hierarchie zusammenzufassen. Diese Funktion ist sehr intuitiv hat aber einen Haken: Wenn man bei großen Datenmengen und Dimensionen mit hoher Kardinalität einen Drill Down macht, werden die Abfragen nicht nur irrsinnig langsam, je tiefer man kommt. Die Übersicht geht auch komplett verloren.
+Um das zu demonstrieren habe ich eine Datenquelle mit 1 Mio. Zeilen und 10 Dimensionen erzeugt. Der Drill-Down auf Ebene 8 dauert hier auf normaler Hardware über 20 Sekunden und das Ergebnis ist… nun ja: Für eine schnellen Überblick kaum zu gebrauchen:">
+  <meta itemprop="datePublished" content="2019-07-15T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2019-07-15T00:00:00+00:00">
+  <meta itemprop="wordCount" content="2260">
+  <meta itemprop="keywords" content="Anleitungen,Development">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>Fokussierter Drill-Down mit Tableau - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Fokussierter Drill-Down mit Tableau">
+  <meta name="twitter:description" content="In Tableau gibt es die eigentlich sehr nützliche Möglichkeit, Dimensionen beliebig zu kombinieren und in einer Hierarchie zusammenzufassen. Diese Funktion ist sehr intuitiv hat aber einen Haken: Wenn man bei großen Datenmengen und Dimensionen mit hoher Kardinalität einen Drill Down macht, werden die Abfragen nicht nur irrsinnig langsam, je tiefer man kommt. Die Übersicht geht auch komplett verloren.
+Um das zu demonstrieren habe ich eine Datenquelle mit 1 Mio. Zeilen und 10 Dimensionen erzeugt. Der Drill-Down auf Ebene 8 dauert hier auf normaler Hardware über 20 Sekunden und das Ergebnis ist… nun ja: Für eine schnellen Überblick kaum zu gebrauchen:">
+
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institut für digitale Herausforderungen</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+    
+<main id="main" class="post">
+  
+  <div class="post-header">
+  <div class="navigation">
+
+    
+    <a class="link prev" href="/2019/2019-07-13-wie-kannst-du-ssh-sicherer-machen-security-through-obscurity/">&lt;&lt;&lt;</a>
+    
+    
+    <h1 style="flex-grow: 1; text-align: center;">Fokussierter Drill-Down mit Tableau</h1>
+    
+    
+    <a class="link next" href="/2019/2019-08-02-warum-es-tage-dauern-kann-wenn-du-dich-von-einer-e-mail-verteilerliste-entfernen-laesst/">>>></a>
+    
+
+  </div>
+  </div>
+  <div class="post-date">July 15, 2019</div>
+
+  
+  <article class="content">
+    <p>In Tableau gibt es die eigentlich sehr nützliche Möglichkeit, Dimensionen beliebig zu kombinieren und in einer Hierarchie zusammenzufassen. Diese Funktion ist sehr intuitiv hat aber einen Haken: Wenn man bei großen Datenmengen und Dimensionen mit hoher Kardinalität einen Drill Down macht, werden die Abfragen nicht nur irrsinnig langsam, je tiefer man kommt. Die Übersicht geht auch komplett verloren.</p>
+<p>Um das zu demonstrieren habe ich eine Datenquelle mit 1 Mio. Zeilen und 10 Dimensionen erzeugt. Der Drill-Down auf Ebene 8 dauert hier auf normaler Hardware über 20 Sekunden und das Ergebnis ist&hellip; nun ja: Für eine schnellen Überblick kaum zu gebrauchen:</p>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-700x380.png" alt=" Drill-Down auf die 8. Ebene einer Hierarchie mit hoher Kardinalität: Übersicht ade "></a></p>
+<p>Drill-Down auf die 8. Ebene einer Hierarchie mit hoher Kardinalität: Übersicht ade</p>
+<p>Im Folgenden beschreibe ich einen Weg, wie man einen fokussierten Drill-Down ermöglicht, der weitaus performanter und vor allem übersichtlicher ist. Man könnte zwar die eingebaute Quick-Filter-Funktion nutzen, das ist dann aber relativ umständlich, da man je Ebene mindestens zwei Klicks benötigt und vor allem immer noch nicht übersichtlich:</p>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-2.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-2.png" alt="Die Quick-Filter-Funktion bei mehreren Dimensionen in einer Hierarchie"></a></p>
+<p>Drill-Down bei mehreren Dimensionen einer Hierarchie unter Verwendung des Quick-Filters: Unpraktisch</p>
+<p>Bevor ich die Schritte im einzelnen erkläre, möchte ich zeigen, was das Ziel der ganzen Übung sein soll:</p>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-1.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-1-700x526.png" alt="Schematische Darstellung der Logik"></a></p>
+<p>Schematische Darstellung der Logik</p>
+<p>Die Namen der einzelnen Dimensonen werden für jedes Level zusammengefasst. Jede Dimension in der Hierarchie wird außerdem durch einen <strong>Index</strong> repräsentiert, der die Tiefe wiederspiegelt. Dadurch entsteht ein Pfad nach dem Schema <strong>nameA.nameB.NameC.nameD.nameX</strong> usw. Diese Pfad soll als Filter dienen. So kann ich mit einem einzigen Filter mehrere Dimensionen abdecken.</p>
+<p>Ein Klick auf eine Zeile im Arbeitsblatt &ldquo;<strong>main</strong>&rdquo; soll dafür sorgen, dass der Index für die aktuelle Ebene um 1 hochgezählt wird - man also tiefer in den Baum hineingeht. Außerdem wird der Pfad für die entsprechende Ebene als Filter genutzt. Dadurch erhalte ich eine Ansicht, die einem kombinierten Filter gleicht, immer nur die Zeilen anzeigt, die ich beim Drill-Down ausgewählt habe. Klicke ich auf das zweite Arbeitsblatt, wird der Index heruntergezählt, also immer die nächsthöhere Ebene angezeigt. Außerdem wird bei dem zusammengesetzten Pfad das letzte Element entfernt, wodurch sich gleichzeitig die Filterbedingung ändert.<br>
+Um diese Mechanik umzusetzen, benötigen wir also zwei Felder, eines enthält immer den aktuellen <strong>Index + 1</strong> für die nächste Ebene und <strong>Index - 1</strong> für die nächst höhere Ebene. Außerdem gibt es ein Feld, dass den aktuellen Pfad enthält, also z.B. <strong>nameA.nameB.nameC</strong>. Ein weiteres Feld enthält den nächsten Pfad, je nachdem wo der Nutzer klickt, also z.B. <strong>nameA.nameB.nameC.nameD</strong> und ein Feld enthält den Pfad für die zuvor ausgewählte Ebene, also z.B. <strong>nameA.nameB</strong>. Das ganze wird mit ein paar Aktionen und Filtern so miteinander kombiniert, dass der Benutzer interaktiv durch die Hierarchie reisen kann.<br>
+Klar soweit? Los geht&rsquo;s:</p>
+<p>Du benötigst zwei Arbeitsblätter und ein Dashboard, das die beiden Arbeitsbelätter beherbergt. Als Namen wähle ich &ldquo;<strong>main</strong>&rdquo; für die eigentliche Darstellung der KPIs und &ldquo;<strong>go back</strong>&rdquo; für die Navigation. Wir beginnen mit der Erstellung der beiden Parameter.<br>
+Der Parameter &ldquo;<strong>current level index</strong>&rdquo; enthält, entsprechend der Anzahl der Dimensionen, die Ziffern 1 bis 10. Der Parameter &ldquo;<strong>level name concatenated</strong>&rdquo; dient später als Filter-Element und enthält den oben erwähnten Pfad:</p>
+<ul>
+<li>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-breadcrumb-navigation-in-tableau/parameter_level_name_concatenated.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/parameter_level_name_concatenated.png" alt="Parameter level name concatenated"></a></p>
+<p>Parameter level name concatenated</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-breadcrumb-navigation-in-tableau/parameter_current_level_index.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/parameter_current_level_index.png" alt="Parameter current level index"></a></p>
+<p>Parameter current level index</p>
+</li>
+</ul>
+<p>Nun erstellst du einen Filter, der sich auf den Parameter &ldquo;<strong>level name concatenated</strong>&rdquo; bezieht. Das vereinfacht den weiteren Prozess ungemein, da du kein Filter-Aktion anlegen musst, sondern Tableau den Filter immer dynamisch anpasst. Dazu legst du einen Filter für das Arbeitsblatt &ldquo;<strong>main</strong>&rdquo; an und wählst im Reiter &ldquo;Bedingung&rdquo; die Option &ldquo;nach Formel&rdquo; aus. Als Formel verwendest du diese:</p>
+<pre tabindex="0"><code>[level name concatenated] = [current level filter]
+</code></pre><p>So sollte der Filter dann in Tableau aussehen:</p>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-4.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-4.png" alt="Filter mit einer Formel als Bedingung"></a></p>
+<p>Filter mit einer Formel als Bedingung</p>
+<p>Weiter geht es mit ein paar berechneten Feldern:</p>
+<p>Das erste Feld nennt sich &ldquo;<strong>current level</strong>&rdquo;, dass den Parameter &ldquo;<strong>current level index</strong>&rdquo; nutzt um die entsprechende Dimension darzustellen. Die Formel dazu ist simpel:</p>
+<pre tabindex="0"><code>IF     [current level index] = 1 THEN [Dimension1] 
+ELSEIF [current level index] = 2 THEN [Dimension2]
+ELSEIF [current level index] = 3 THEN [Dimension3]
+ELSEIF [current level index] = 4 THEN [Dimension4] 
+ELSEIF [current level index] = 5 THEN [Dimension5] 
+ELSEIF [current level index] = 6 THEN [Dimension6] 
+ELSEIF [current level index] = 7 THEN [Dimension7] 
+ELSEIF [current level index] = 8 THEN [Dimension8] 
+ELSEIF [current level index] = 9 THEN [Dimension9] 
+ELSEIF [current level index] = 10 THEN [Dimension10] 
+END
+</code></pre><p>Als nächstes gibt es zwei Felder, die auch mit einer einfachen Formel auskommen: &ldquo;<strong>previous level index</strong>&rdquo; und &ldquo;<strong>next level index</strong>&rdquo;. Previous level index dient dazu, den Index herunter zu zählen. Hier könnte man sicherlich eine eleganter Lösung nutzen, um das Prinzip zu verdeutlichen, habe ich das mit einer einfachen Wenn-Dann-Bedingung realisiert:</p>
+<pre tabindex="0"><code>IF [current level index] = 1 then 1
+ELSEIF [current level index] = 2 then 1
+ELSEIF [current level index] = 3 then 2
+ELSEIF [current level index] = 4 then 3
+ELSEIF [current level index] = 5 then 4
+ELSEIF [current level index] = 6 then 5
+ELSEIF [current level index] = 7 then 6
+ELSEIF [current level index] = 8 then 7
+ELSEIF [current level index] = 9 then 8
+ELSEIF [current level index] = 10 then 9
+END
+</code></pre><p>Bei &ldquo;<strong>next level index</strong>&ldquo;läuft es genau anders rum:</p>
+<pre tabindex="0"><code>IF     [current level index] = 1 THEN 2
+ELSEIF [current level index] = 2 THEN 3
+ELSEIF [current level index] = 3 THEN 4
+ELSEIF [current level index] = 4 THEN 5
+ELSEIF [current level index] = 5 THEN 6
+ELSEIF [current level index] = 6 THEN 7
+ELSEIF [current level index] = 7 THEN 8
+ELSEIF [current level index] = 8 THEN 9
+ELSEIF [current level index] = 9 THEN 10
+END
+</code></pre><p>Weiter geht es mit den Pfaden, die wir für den Filter benötigen. Jetzt wird es etwas komplizierter: Das Feld &ldquo;<strong>current level concat</strong>&rdquo; fasst zunächst, entsprechen der aktuell ausgewählten Ebene, die Namen der vorherigen Ebenen zusammen. So entsteht der Pfad:</p>
+<pre tabindex="0"><code>IF     [current level index] = 1  THEN [Dimension1] 
+ELSEIF [current level index] = 2  THEN [Dimension1] + &#34;.&#34; + [Dimension2]
+ELSEIF [current level index] = 3  THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3]
+ELSEIF [current level index] = 4  THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4]
+ELSEIF [current level index] = 5  THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5]
+ELSEIF [current level index] = 6  THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5] + &#34;.&#34; + [Dimension6]
+ELSEIF [current level index] = 7  THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5] + &#34;.&#34; + [Dimension6] + &#34;.&#34; + [Dimension7]
+ELSEIF [current level index] = 8  THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5] + &#34;.&#34; + [Dimension6] + &#34;.&#34; + [Dimension7] + &#34;.&#34; + [Dimension8]
+ELSEIF [current level index] = 9  THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5] + &#34;.&#34; + [Dimension6] + &#34;.&#34; + [Dimension7] + &#34;.&#34; + [Dimension8] + &#34;.&#34; + [Dimension9]
+ELSEIF [current level index] = 10 THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5] + &#34;.&#34; + [Dimension6] + &#34;.&#34; + [Dimension7] + &#34;.&#34; + [Dimension8] + &#34;.&#34; + [Dimension9] + &#34;.&#34; + [Dimension10]
+END
+</code></pre><p>Das Feld &ldquo;<strong>current level filter</strong>&rdquo; ist ähnlich aufgebaut. Da der Filter sich aber strenggenommen auf die vorherige Eben bezieht, sieht der Pfad etwas anders aus:</p>
+<pre tabindex="0"><code>IF     [current level index] = 1 THEN &#34;.&#34; 
+ELSEIF [current level index] = 2 THEN [Dimension1] 
+ELSEIF [current level index] = 3 THEN [Dimension1] + &#34;.&#34; + [Dimension2]
+ELSEIF [current level index] = 4 THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3]
+ELSEIF [current level index] = 5 THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4]
+ELSEIF [current level index] = 6 THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5]
+ELSEIF [current level index] = 7 THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5] + &#34;.&#34; + [Dimension6]
+ELSEIF [current level index] = 8 THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5] + &#34;.&#34; + [Dimension6] + &#34;.&#34; + [Dimension7]
+ELSEIF [current level index] = 9 THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5] + &#34;.&#34; + [Dimension6] + &#34;.&#34; + [Dimension7] + &#34;.&#34; + [Dimension8]
+ELSEIF [current level index] = 10 THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5] + &#34;.&#34; + [Dimension6] + &#34;.&#34; + [Dimension7] + &#34;.&#34; + [Dimension8] + &#34;.&#34; + [Dimension9]
+END
+</code></pre><p>Beim Feld &ldquo;<strong>previous level concat</strong>&rdquo; wird es schon etwas schwieriger, da ich hier immer das letzte Element des Pfades entfernen muss. Das erinnert ein wenig an eine aus dem Ruder gelaufene Excel-Funktion, ist leider aber - nach meinem aktuellen Kenntnisstand - nicht einfacher zu realisieren, da die Behandlung von Strings in Tableau eben eingeschränkt sit. Sachdienliche Hinweise werden dankbar entgegen genommen.</p>
+<pre tabindex="0"><code>IF [current level index] = 1 THEN 
+    &#34;.&#34;
+ELSEIF [current level index] = 2 THEN
+    &#34;.&#34;
+ELSEIF [current level index] = 3 THEN
+    LEFT([level name concatenated], FIND([level name concatenated], &#39;.&#39;, 1) - 1)
+ELSEIF [current level index] = 4 THEN
+    LEFT([level name concatenated], FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, 1) + 1) - 1)
+ELSEIF [current level index] = 5 THEN
+    LEFT([level name concatenated], FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, 1) + 1) + 1) - 1)
+ELSEIF [current level index] = 6 THEN
+    LEFT([level name concatenated], FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, 1) + 1)) + 1) + 1) - 1)
+ELSEIF [current level index] = 7 THEN
+    LEFT([level name concatenated], FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, 1) + 1) + 1)) + 1) + 1) - 1)
+ELSEIF [current level index] = 8 THEN
+    LEFT([level name concatenated], FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, 1) + 1) + 1) + 1)) + 1) + 1) - 1)
+ELSEIF [current level index] = 9 THEN
+    LEFT([level name concatenated], FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, 1) + 1) + 1) + 1) + 1)) + 1) + 1) - 1)
+ELSEIF [current level index] = 10 THEN
+    LEFT([level name concatenated], FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, 1) + 1) + 1) + 1) + 1) + 1)) + 1) + 1) - 1)
+END
+</code></pre><p>Das gröbste ist somit erledigt, du solltest nun die folgenden Felder und Parameter haben. Achte darauf, dass du die Felder als Dimension nutzt:</p>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-3.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-3.png" alt="Alle berechneten Felder und Parameter auf einen Blick"></a></p>
+<p>Alle berechneten Felder und Parameter auf einen Blick</p>
+<p>Nun ziehst du die Felder &ldquo;<strong>next level index</strong>&rdquo;, &ldquo;<strong>current level</strong>&rdquo; und &ldquo;<strong>current level concat</strong>&rdquo; auf das Arbeitsblatt &ldquo;<strong>main</strong>&rdquo;, die Felder &ldquo;<strong>previous level index</strong>&rdquo; und &ldquo;<strong>previous level concat</strong>&rdquo; gehören auf das Arbeitsblatt &ldquo;<strong>go back</strong>&rdquo;.</p>
+<ul>
+<li>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-5-700x172.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-5-700x172.png" alt="Arbeitsblatt main mit allen nötigen Feldern"></a></p>
+<p>Arbeitsblatt main mit allen nötigen Feldern</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-6.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-6.png" alt="Arbeitsblatt “go back” mit allen nötigen Feldern"></a></p>
+<p>Arbeitsblatt &ldquo;go back&rdquo; mit allen nötigen Feldern</p>
+</li>
+</ul>
+<h3 id="das-dashboard-mit-leben-füllen">Das Dashboard mit Leben füllen</h3>
+<p>Abschließend geht es an die Aktionen um das Dashboard mit Leben zu füllen. Insgesamt benötigen wir vier Aktionen zur Änderung eines Parameters. Die ersten beiden Aktionen sorgen dafür, dass der aktuelle Index entsprechen hoch- und runtergezählt wird. Die Aktion &ldquo;<strong>increase level index</strong>&rdquo; nutzt als Quellblatt &ldquo;<strong>main</strong>&rdquo; sowie das Feld &ldquo;<strong>next level index</strong>&rdquo; und verweist auf den Parameter &ldquo;<strong>current level index</strong>&rdquo;. Und vice versa die Aktion &ldquo;<strong>decrease level index</strong>&rdquo; mit dem Quellblatt &ldquo;<strong>go back</strong>&rdquo;, dem Feld &ldquo;<strong>previous level index&rdquo;</strong> und ebenfalls dem Ziel-Parameter &ldquo;<strong>current level index</strong>&rdquo;:</p>
+<ul>
+<li>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-7.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-7.png" alt="Aktion zur Parameter-Steuerng: Den Level-Index um 1 erhöhen…"></a></p>
+<p>Aktion zur Parameter-Steuerng: Den Level-Index um 1 erhöhen&hellip;</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-8.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-8.png" alt="…und um eins verringern"></a></p>
+<p>&hellip;und um eins verringern</p>
+</li>
+</ul>
+<p>Danach benötigen wir eine Aktion, um den Filter-Parameter &ldquo;<strong>level name concatenated</strong>&rdquo; zu setzen: Dieser erhält den Wert aus dem berechneten Feld &ldquo;<strong>current level concat</strong>&rdquo;, wenn man auf das Arbeitsblatt &ldquo;<strong>main</strong>&rdquo; klickt. Und beim Arbeitsblatt &ldquo;<strong>go back</strong>&rdquo; ist es wieder genau andersrum: Hier kommt der Wert aus dem Feld &ldquo;<strong>previous level concat</strong>&rdquo;:</p>
+<ul>
+<li>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-9.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-9.png" alt="Die Aktion um den Filter für die nächsttiefere Eben zu setzen.."></a></p>
+<p>Die Aktion um den Filter für die nächsttiefere Eben zu setzen..</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-10.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-10.png" alt="… und für die darüberliegende Ebene"></a></p>
+<p>&hellip; und für die darüberliegende Ebene</p>
+</li>
+</ul>
+<h3 id="et-voila">Et voila</h3>
+<p>Das war es. Du kannst nun das Dashboard nutzen, um beliebig durch deine Dimensionen zu klicken. Hier und da lässt sich das ganze sicherlich noch etwas optimieren. Zuerst kannst du z.B. die &ldquo;Steuerfelder&rdquo; ausblenden, um nur die relevanten Informationen zu präsentieren (in der Regel über rechte Maustaste &ldquo;<strong>Kopfzeile ausblenden</strong>&rdquo;). Außerdem kann man die Formeln optimieren und z.B. verhindern, dass der Nutzer tiefer klickt, als die verwendete Anzahl von Dimensionen. Das sind aber nur kleinere Baustellen. Das wichtigste Ziel sollte erreicht sein: Die Darstellung ist weitaus übersichtlicher und vor allem kann man nun in Sekundenbruchteilen bis zur letzten Eben navigieren.<br>
+Natürlich kann man das ganze auch mit einem Chart kombinieren, was der Sache noch etwas mehr Glanz verleiht. Auf Tableau Public habe ich eine Dashboard veröffentlicht, dass das ganze in Aktion zeigt. Aus Gründen ist die Datenquelle dort allerdings nur 100.000 Zeilen groß:</p>
+<p><a href="https://public.tableau.com/profile/nr1871#!/vizhome/focussedDrillDown/dashboard">https://public.tableau.com/profile/nr1871#!/vizhome/focussedDrillDown/dashboard</a></p>
+
+  </article>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>

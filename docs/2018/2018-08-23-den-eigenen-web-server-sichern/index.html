@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="Die Datensicherung des eigenen, öffentlichen Webservers ist nicht nur wichtig, sie kann auch auf vielen Wegen geschehen und wirft vermutlich gerade deshalb sehr viele Fragen auf. Soll ich ein Image des ganzen Servers anlegen oder nur einzelne Ordner sichern? Wie oft muss ich ein Backup machen und wie gelange ich im Notfall an die Daten? Reicht es aus, z.B. als Wordpress-Nutzer, ein Plugin zu verwenden oder ist es sinnvoller externe Software zu nutzen?">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/">
+
+  
+  
+  <meta name="keywords" content="">
+  
+
+  
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/2018/2018-08-23-den-eigenen-web-server-sichern/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Den eigenen Web-Server sichern">
+  <meta property="og:description" content="Die Datensicherung des eigenen, öffentlichen Webservers ist nicht nur wichtig, sie kann auch auf vielen Wegen geschehen und wirft vermutlich gerade deshalb sehr viele Fragen auf. Soll ich ein Image des ganzen Servers anlegen oder nur einzelne Ordner sichern? Wie oft muss ich ein Backup machen und wie gelange ich im Notfall an die Daten? Reicht es aus, z.B. als Wordpress-Nutzer, ein Plugin zu verwenden oder ist es sinnvoller externe Software zu nutzen?">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2018">
+    <meta property="article:published_time" content="2018-08-23T00:00:00+00:00">
+    <meta property="article:modified_time" content="2018-08-23T00:00:00+00:00">
+    <meta property="article:tag" content="Backup">
+    <meta property="article:tag" content="Bash">
+    <meta property="article:tag" content="Hosting">
+    <meta property="article:tag" content="Shell">
+    <meta property="article:tag" content="Web-Server">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/2018/2018-08-23-den-eigenen-web-server-sichern/">
+
+  
+  
+  
+  <meta itemprop="name" content="Den eigenen Web-Server sichern">
+  <meta itemprop="description" content="Die Datensicherung des eigenen, öffentlichen Webservers ist nicht nur wichtig, sie kann auch auf vielen Wegen geschehen und wirft vermutlich gerade deshalb sehr viele Fragen auf. Soll ich ein Image des ganzen Servers anlegen oder nur einzelne Ordner sichern? Wie oft muss ich ein Backup machen und wie gelange ich im Notfall an die Daten? Reicht es aus, z.B. als Wordpress-Nutzer, ein Plugin zu verwenden oder ist es sinnvoller externe Software zu nutzen?">
+  <meta itemprop="datePublished" content="2018-08-23T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2018-08-23T00:00:00+00:00">
+  <meta itemprop="wordCount" content="2533">
+  <meta itemprop="keywords" content="Backup,Bash,Hosting,Shell,Web-Server">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>Den eigenen Web-Server sichern - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Den eigenen Web-Server sichern">
+  <meta name="twitter:description" content="Die Datensicherung des eigenen, öffentlichen Webservers ist nicht nur wichtig, sie kann auch auf vielen Wegen geschehen und wirft vermutlich gerade deshalb sehr viele Fragen auf. Soll ich ein Image des ganzen Servers anlegen oder nur einzelne Ordner sichern? Wie oft muss ich ein Backup machen und wie gelange ich im Notfall an die Daten? Reicht es aus, z.B. als Wordpress-Nutzer, ein Plugin zu verwenden oder ist es sinnvoller externe Software zu nutzen?">
+
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institut für digitale Herausforderungen</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+    
+<main id="main" class="post">
+  
+  <div class="post-header">
+  <div class="navigation">
+
+    
+    <a class="link prev" href="/2018/2018-08-12-wordpress-page-builder-pro-und-contra/">&lt;&lt;&lt;</a>
+    
+    
+    <h1 style="flex-grow: 1; text-align: center;">Den eigenen Web-Server sichern</h1>
+    
+    
+    <a class="link next" href="/2018/2018-08-24-die-os-x-bash/">>>></a>
+    
+
+  </div>
+  </div>
+  <div class="post-date">August 23, 2018</div>
+
+  
+  <article class="content">
+    <p>Die <strong>Datensicherung</strong> des eigenen, öffentlichen Webservers ist nicht nur wichtig, sie kann auch auf vielen Wegen geschehen und wirft vermutlich gerade deshalb sehr viele Fragen auf. Soll ich ein Image des ganzen Servers anlegen oder nur einzelne Ordner sichern? <strong>Wie oft</strong> muss ich ein Backup machen und wie gelange ich im Notfall an die Daten? Reicht es aus, z.B. als Wordpress-Nutzer, ein Plugin zu verwenden oder ist es sinnvoller externe Software zu nutzen?</p>
+<p>Ich habe versucht ein paar solcher Fragen, auch für mich selber, zu beantworten und als Konsequenz daraus ein <strong>Backup-Strategie</strong> zu entwickeln und dann auch umzusetzen. Das Ziel ist ein gesunder <strong>Mittelweg zwischen Sicherheit und Bedienbarkeit</strong>. Da ich selber sehr oft mit Wordpress arbeite, soll dieser Beitrag vornehmlich die Wordpress-Nutzer ansprechen. Wenn du Wordpress allerdings nur als Service nutzt (z.B. auf wordpress.org), wird dir dieser Beitrag wenig weiterhelfen. Außerdem ist es sehr hilfreich, wenn du per <strong>SSH Zugriff</strong> auf deinen Server hast. Sicherlich gibt es auch Möglichkeiten, den hier aufgezeigten Weg ohne SSH zu beschreiten - wie das funktioniert, muss man aber im Einzelnen sehen.</p>
+<h2 id="die-backup-strategie">Die Backup-Strategie</h2>
+<h3 id="wo-soll-das-backup-gespeichert-werden">Wo soll das Backup gespeichert werden?</h3>
+<p>Die erste Frage die ich mir gestellt habe war: <strong>Wo soll das Backup landen</strong>? Direkt auf dem Web-Server? Dann sind die Daten verloren, sobald der ganze Server weg ist. Auf einem Cloud-Speicher? Das ist bequem, birgt allerdings auch Probleme mit den <strong>Datenschutzgesetzen</strong>. Oder auf einem privaten NAS? Das ist aus Datenschutzsicht zwar in Ordnung, aber dann muss das NAS über das Internet erreichbar sein. Das wollte ich vermeiden.</p>
+<p>Ich habe mich deshalb für einen Zwischenweg entschieden: Für den schnellen Zugriff lege ich das Backup <strong>auf dem Server</strong> ab. Gleichzeitig nutze ich das kostenlose Angebot von <a href="https://www.blaucloud.de/"><strong>blaucloud.de</strong></a>. Das ist ein Cloud-Speicher, dessen Server in Deutschland stehen. Außerdem unterstützt blaucloud, das auf nextcloud basiert, das WebDav-Protokoll. Zusätzlich, aber das ist nur ein Bonus. Außerdem habe ich auf meinem NAS eine Synchronisierung mit der blaucloud eingerichtet. Dadurch bleibt das NAS im Internet verborgen und ich habe trotzdem eine <strong>3. Kopie des Backups</strong> in meinen eigenen, sicheren vier Wänden.</p>
+<h3 id="welche-software-soll-ich-nutzen">Welche Software soll ich nutzen?</h3>
+<p>Die Auswahl von Plugins für automatische Backups mit Wordpress ist sehr umfangreich, einige davon sind kostenlos und die große Mehrheit ist sehr bequem zu bedienen. Die Backups laufen automatisch und auch die Wiederherstellung ist nur einen Mausklick entfernt. Das klingt paradiesisch, aber der Schein trügt. Zunächst halte ich es für absurd, ein System aus sich selber heraus zu sichern. Das ist wie ein <strong>Feuerlöscher</strong>, der bei <strong>Waldbrandgefahr</strong> zwischen den trockenen Bäumen steht.</p>
+<p>Sicher kann ich mit den zahlreichen Wordpress-Plugins die Datenbank und das Dateisystem sichern. Aber der Prozess wird eben innerhalb eines System ausgeführt, das auch von außen erreichbar ist. Wenn nur ein anderes Plugin kompromittiert wird, gefährdet das die ganze Backup-Strategie. Außerdem muss ich, bei der Verwendung mehrerer Wordpress-Instanzen jedes Backup-Plugin einzeln pflegen.</p>
+<p>Auch die regelmäßige Datensicherung, die viele Hoster von sich aus anbieten, reicht mir nicht aus, da diese nur minimal gesteuert werden kann und dort immer das ganze System gesichert wird, man also bei der Wiederherstellung nicht selektieren kann, welche Backup, welcher Ordner oder welche Datenbank zurück gespielt werden soll. Ich habe mich also für <strong>duplicity</strong> entschieden. <a href="http://duplicity.nongnu.org/"><strong>Duplicity</strong></a> wird über die Kommandozeile bedient (deshalb der notwendige SSH-Zugang), unterstützt viele Protokolle (FTP, <strong>WebDav</strong>, Amazon S3, rsync, &hellip;) und es gibt sogar eine grafische Benutzeroberfläche - wenn man doch nicht ohne kann. Außerdem bietet duplicity die Verschlüsselung mit <strong>GnuPG</strong> an und ist damit auch bestens geeignet, um die Datensicherung in der Cloud abzulegen.</p>
+<h3 id="wie-oft-soll-ich-ein-backup-anlegen">Wie oft soll ich ein Backup anlegen?</h3>
+<p>Die Frage sollte mich nicht länger beschäftigen, vor allem weil ich dazu <a href="https://blog.yadutaf.fr/2012/09/08/lazy-man-backup-strategy-with-duplicity-part-1/">einen sehr schönen Blog-Eintrag gefunden</a> habe. Dazu muss erklärt werden, dass <strong>duplicity</strong> mit <strong>inkrementellen Backups</strong> arbeitet. Dabei wird initial ein komplettes Backup angelegt. Danach werden nur noch die Änderungen an den zu sichernden Dateien erfasst. Für die Wiederherstellung muss also erst das letzte volle Backup zurückgespielt werden, um darauf dann die inkrementellen Backups &ldquo;anzuwenden. Der Backup-Plan lautet also wie folgt:</p>
+<ul>
+<li>es erfolgt initial eine volle Datensicherung</li>
+<li>danach gibt es jeden Tag eine inkrementelle Datensicherung</li>
+<li>jeden Monat erfolgt eine volle Datensicherung</li>
+<li>inkrementelle, tägliche Backups, die älter sind als ein Monat, werden gelöscht</li>
+<li>volle Backups, die älter als 12 Monate sind, werden gelöscht</li>
+</ul>
+<p>Im Notfall muss also zuerst das letzte volle Backup eingespielt werden, das nicht älter als ein Monat ist. Muss man Daten wiederherstellen, die älter sind als ein Monat, stehen diese immer nur für die monatlichen vollen Backups zur Verfügung. Für die Zeit vor 12 Monaten gibt es keine Datensicherung.</p>
+<h3 id="welche-daten-sollen-gesichert-werden">Welche Daten sollen gesichert werden?</h3>
+<p>Wie bereits erwähnt, stört mich bei den meisten Hostern, dass immer ein Backup des ganzen Servers angelegt wird. Da auf einem Server gerne aber mehr als eine Domain untergebracht ist, möchte ich die Datensicherung gerne je Domain und Datenbank durchführen. Mein Ziel ist es also, jeden Ordner im Dateisystem der einer (Sub-)Domain zugeordnet ist sowie jede Datenbank getrennt zu sichern. So kann ich eine Wiederherstellung auch punktuell anstoßen.</p>
+<h2 id="vorbereitung">Vorbereitung</h2>
+<p><em>Bevor es jetzt ans Eingemachte geht, der übliche Hinweis zur gebotenen <strong>Vorsicht</strong>: Wenn du nicht weißt, was hier passiert, lass dich von jemanden unterstützen, der weiß, was hier passiert. Wer auf der Konsole arbeitet, kann sehr schnell sehr viel falsch machen.</em></p>
+<h3 id="duplicity-und-verschlüsselung-einrichten">Duplicity und Verschlüsselung einrichten</h3>
+<p>Die erste Hürde, die du nehmen musst, ist die Installation von <strong>duplicity</strong>. Entweder du bekommst das über die Konsole selber hin - oder du fragst bei deinem Hoster nach. In vielen Fällen kann auch ein Shared Hostern das für dich installieren:</p>
+<pre tabindex="0"><code>sudo apt-get install duplicity
+</code></pre><p>Als nächstes benötigst du <a href="https://www.gnupg.org/">GnuPG</a>. Das ist bei den meisten Hostern vorinstalliert. Sollte dem nicht so sein, fragst du entweder den Support oder erledigst das mit folgendem Befehl selber:</p>
+<pre tabindex="0"><code>sudo apt-get install gnupg2
+</code></pre><p><a href="https://wiki.ubuntuusers.de/GnuPG/">GnuPG</a> ist ein Software zur <strong>Verschlüsselung</strong> von Informationen bzw. Dateien, das z.B. auch bei der Verschlüsselung von E-Mails zum Einsatz kommt. Für diesen Prozess werden zwei sogenannte <strong>Schlüssel</strong> benötigt - der private und der öffentliche Schlüssel. Der öffentliche Schlüssel dient dazu, die Daten zu verschlüsseln, mit dem privaten Schlüssel kannst du den Prozess &ldquo;umkehren&rdquo; - die Daten also entschlüsseln. Diese beiden Schlüssel müssen zunächst einmal erzeugt werden:</p>
+<pre tabindex="0"><code>gpg --gen-key
+</code></pre><p>Du musst dazu ein paar Fragen beantworten. Die Frage nach der Schlüssel-Art beantwortest du mit 1, bzw. <em>RSA and RSA</em>. Als Schlüssellänge (<em>keysize</em>) empfiehlt sich 2.048 bits. Die Gültigkeitsdauer beträgt &ldquo;unendlich&rdquo;. Danach kannst, musst aber nicht, du deinen Namen und Kontaktdaten angeben. Abschließend wirst du nach einem Passwort für den privaten Schlüssel gefragt und aufgefordert durch ein paar zufällige Tasteneingaben eine Entropie zu erzeugen. Danach befindet sich im Ordner <strong><em>~/.gnupg</em></strong> dein Schlüsselpaar.</p>
+<p><img src="/2018/2018-08-23-den-eigenen-web-server-sichern/images/gnupg.png" alt="Ein GnuPG Schlüsselpaar erzeugen"></p>
+<p>Außerdem quittiert dir <strong>gnupg</strong> die Erstellung des Schlüsselpaars mit einer Statistik, aus der du dir die <strong>Id für den öffentlichen Schlüssel</strong> merken musst:</p>
+<p><img src="/2018/2018-08-23-den-eigenen-web-server-sichern/images/gnupg-ausgabe.png" alt=""></p>
+<h3 id="cloud-speicher-einrichten">Cloud-Speicher einrichten</h3>
+<p>Der kostenlose <a href="https://www.blaucloud.de/">blaucloud</a>-Account für 5 GByte-Speicher ist ziemlich schnell eingerichtet. Dazu benötigst du nur einen beliebigen Benutzernamen, eine E-Mail-Adresse und ein Passwort. Über den Benutzerbnamen wird später auch deine Cloud erreichbar sein. Ich habe eine zufällige Zeichenkette verwendet, damit die Verbindung zur Funktion als Backup-Speicher nicht auf den ersten Blick ersichtlich ist (z.B. <em>qwertz123.blaucloud.de</em>). Danach musst du nur noch deine E-Mail-Adresse bestätigen und schon ist der Cloud-Speicher über folgende URL verfügbar:</p>
+<pre tabindex="0"><code>webdav://benutzername:passwor@benutzername.blaucloud.de/remote.php/webdav/
+</code></pre><h3 id="mysql-benutzer-einrichten">MySQL-Benutzer einrichten</h3>
+<p>Natürlich kannst du für das Backup einfach den Benutzer nutzen, den du auch für administrative Zwecke nutzt. Ich verrate dir aber kein Geheimnis wenn ich dir sage, dass es sehr sinnvoll ist, dafür einen eigenen Benutzer anzulegen, insofern deine Hosting-Umgebung das zulässt. Dazu führst du auf einer beliebigen Oberfläche (phpMyAdmin, MySQL Workbench oder direkt über das MySQL-CLI) folgende Query aus. Hier setzt du nur einen Benutzernamen und ein Passwort ein.</p>
+<pre tabindex="0"><code>GRANT LOCK TABLES, SELECT ON *.* TO &#39;USERNAME&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;PASSWORD&#39;;
+GRANT SHOW VIEW ON *.* TO &#39;USERNAME&#39;@&#39;localhost&#39;
+</code></pre><p>Das ging schnell und hat auch gar nicht weh getan. ;)</p>
+<h2 id="die-backup-strategie-umsetzen">Die Backup-Strategie umsetzen</h2>
+<h3 id="die-zugangsdaten-ablegen">Die Zugangsdaten ablegen</h3>
+<p>Die Informationen, die wir oben gesammelt haben, werden erstmal in der Datei <strong>backup.conf</strong> abgelegt. Bitte beachte, dass die Id für den öffentlichen Schlüssel nur ein Verweis ist. Die tatsächlichen Schlüssel liegen im Benutzerordner unter <em>~/.gnugpg/</em>.</p>
+<pre tabindex="0"><code># mit diesem Wert steuerst du die Ausgabe von duplicity
+# je höher, desto mehr Debug-Nachrichten werden ausgegeben
+# das hilft bei der Fehlersuche
+export DUPLICITY_VERBOSITY=2
+
+# die Passphrase ist das Passwort für den privaten Schlüssel
+# die Id für den öffentlichen Schlüssel wird utner GPG_PUP_KEY abgelegt
+export PASSPHRASE=secret_gpgp_key_password
+export GPG_PUB_KEY=public_gpgp_key_id
+
+# dieser Ordner wird für die lokalen Backups verwendet
+export BASE_PATH_BACKUP=/private-backup/
+# dieser Ordner enthält die temporären MySQL-Dumps sowie den Cache von duplicity
+export BASE_PATH_TEMP=/private-backup/temp/
+export LOG_FILE=backup.log
+
+# das sind die Zugangsdaten zu deinem WebDav-Anbieter
+export WEBDAV_USER=webdav_user
+export WEBDAV_PASSWORD=webdav_password
+export WEBDAV_URL=somewhere.server.de/webdav.php/folder/backup
+
+# schließlich hinterlegst du noch eine E-Mail-Adresse 
+# an die Fehlernachrichten geschickt werden 
+export SUPERVISOR_EMAIL=error_messages@foobar.com
+# und die E-Mail-Adresse des Absenders
+export LOCAL_EMAIL=sender@foobar.com
+</code></pre><p>Die Zugangsdaten für den MySQL-Server gehören in eine andere Datei, nämlich <strong>database.conf</strong>:</p>
+<p>[client]
+user=mysql_user
+password=mysql_password
+host=localhost</p>
+<h3 id="die-ordner-der-virtuellen-hosts-sichern">Die Ordner der virtuellen Hosts sichern</h3>
+<p>Im Folgenden werde ich die Shell-Scripte und den Prozess ganz kurz erklären.</p>
+<p>Zunächst will ich zwei Server-System unterstützen: nginx und apache2. Dazu frage ich den ersten Parameter ab:</p>
+<p>if [[ $1 == &lsquo;apache&rsquo;  ]]
+then</p>
+<pre><code>    SERVER\_SOFTWARE='apache'
+</code></pre>
+<p>elif [[ $1 == &rsquo;nginx&rsquo;  ]]
+then
+SERVER_SOFTWARE=&lsquo;nginx&rsquo;</p>
+<p>else</p>
+<pre><code>    echo 'Keine Server-Architektur angegeben, probiere mal nginx oder apache'
+</code></pre>
+<p>fi</p>
+<p>Wie oben schon angedeutet, will ich nicht einmal das ganze Dateisystem sichern, sondern nur <strong>relevante Ordner</strong>. Dazu muss ich erwähnen, dass ich für jede Domain eine Konfigurations-Datei angelegt habe - so ist es im übrigen auch üblich (siehe z.B. <em>/etc/apache2/sites-enabled/</em>). Jede dieser Dateien enthält den Verweis auf den Ordner der jeweiligen Domain (oft z.B. <em>/var/www/&hellip;</em>) Diese Informationen gilt es nun automatisch herauszufinden. Ich nutze dafür zunächst den folgenden Aufruf, der mir erstmal eine <strong>ungefilterte  Liste der gesamten Webserver-Konfiguration</strong> ausgibt:</p>
+<pre tabindex="0"><code>/usr/sbin/apache2ctl -S
+</code></pre><p><img src="/2018/2018-08-23-den-eigenen-web-server-sichern/images/apachectl-ausgabe.png" alt=""></p>
+<p>Die Ausgabe ist stark gekürzt und enthält natürlich mehr als nur eine Domain und diese auch immer doppelt - einmal für https und einmal für http. Ich benötige aus dieser Liste nun einmal den Pfad zur Konfigurations-Datei jeder Domain. Dazu reduziere ich die Ausgabe also auf die gewünschten Zeilen und extrahiere dann mit <em>awk</em> und <em>sed</em> den Verweis zu der jeweiligen Konfigurations-Datei. Das ist der komplette Aufruf:</p>
+<pre tabindex="0"><code>/usr/sbin/apache2ctl -S | grep &#34;port 80 namevhost&#34; | awk -F &#39; &#39; &#39;{ print $5 }&#39; | sed -E &#39;s/[:()]//g&#39; | sed -E &#39;s/[ 0-9]$//g&#39;
+</code></pre><p>Das Ergebnis ist eine Liste von Konfigurationsdateien, die ich mit <em>grep</em> nach der Angabe des Ordners durchsuchen kann:</p>
+<pre tabindex="0"><code>grep -oE &#39;DocumentRoot \&#34;(.*)\&#34;&#39; $configFile | awk -F &#39; &#39; &#39;{ print $2 }&#39; | sed -E &#39;s/[&#34;]//g&#39;
+</code></pre><p>Diesen Ordner kann ich dann an das Backup-Script übergeben, auf das ich später zurück kommen werden. Das ganze Script ist auf github verfügbar.</p>
+<p>Ich muss hier allerdings erwähnen, dass das ganze eine <strong>kleinen Nachteil</strong> hat: Es werden nur aktivierte virtuelle Hosts erkannt. Wer zusätzliche andere Ordner sichern will, die z.B. nicht über die virtual host-Konfiguration genutzt werden, muss dies per Hand tun - doch dazu später mehr.</p>
+<p>Für nginx nutze ich eine etwas einfachere Variante: Ich nehme einfach alle Dateien mit der Endung conf aus dem Konfigurations-Ordner von nginx. Das funktioniert eben nur, solange du die Konfiguration zentral an einem Ort verwaltest. Der ganze Abschnitt sieht dann so aus:</p>
+<p>if [[ $SERVER_SOFTWARE == &lsquo;apache&rsquo; ]]
+then
+configFilesString=$(/usr/sbin/apache2ctl -S | grep &ldquo;port 80 namevhost&rdquo; | awk -F &rsquo; &rsquo; &lsquo;{ print $5 }&rsquo; | sed -E &rsquo;s/[:()]//g&rsquo; | sed -E &rsquo;s/[ 0-9]$//g&rsquo;)
+configFiles=($(echo &ldquo;$configFilesString&rdquo; | tr &lsquo;,&rsquo; &rsquo; &lsquo;))</p>
+<p>elif [[ $SERVER_SOFTWARE == &rsquo;nginx&rsquo; ]]
+then</p>
+<pre><code>    configFiles=(/etc/nginx/conf.d/\*.conf)
+</code></pre>
+<p>fi</p>
+<p> </p>
+<p><strong>Update November 2018:</strong></p>
+<p><em>Da ich mittlerweile auf nginx und php-fpm umgestiegen bin, habe ich auch das Script entsprechend angepasst. Es kann nun für beide Server-Typen angewendet werden.</em></p>
+<p>Nun kann ich jede Config-Datei einmal einlesen um herauszubekommen, an welcher Stelle im Dateisystem sich der Ordner mit dem Document Root befindet - den wollen wir ja schließlich sichern:</p>
+<p>if [[ $SERVER_SOFTWARE == &lsquo;apache&rsquo; ]]
+then</p>
+<pre><code>srcFolder=$(grep -oE 'DocumentRoot \\&quot;(.\*)\\&quot;' $configFile | awk -F ' ' '{ print $2 }' | sed -E 's/\[&quot;\]//g')
+dstFolder=$(basename $srcFolder)
+</code></pre>
+<p>elif [[ $SERVER_SOFTWARE == &rsquo;nginx&rsquo; ]]
+then</p>
+<pre><code>srcFolder=$(grep -oE 'root (.\*);' $configFile | awk -F ' ' '{ print $2 }' | sed -E 's/\[;\]//g')
+dstFolder=$(basename ${srcFolder%htdocs})
+</code></pre>
+<p>fi</p>
+<p> </p>
+<h3 id="die-datenbanken-des-mysql-servers-sichern">Die Datenbanken des MySQL-Servers sichern</h3>
+<p>Nun geht es an die Datenbanken. Dazu nutze ich den CLI-MySQL-Client und frage erstmal einfach alle Datenbanken ab:</p>
+<pre tabindex="0"><code>mysql --defaults-extra-file=database.conf -Bse &#39;show databases&#39;
+</code></pre><p>Die Zugangsdaten zum Server übergebe ich in der Datei <strong>database.conf</strong>. Ich könnte das auch über die Kommandozeile tun, würde dann aber eine Warnung von MySQL erhalten, dass das nicht sicher sei:</p>
+<blockquote>
+<p><em>Warning: Using a password on the command line interface can be insecure.</em></p></blockquote>
+<p>Da die Ausgabe von mysql nur einen String zurückgibt, muss ich den erst in ein Array umwandeln, dass ich dann durch-loopen kann. Dazu gibt es zwei Wege - den unteren finde ich etwas eleganter. Entscheide dich einfach für einen:</p>
+<p>databasesArray=($(echo &ldquo;$databasesString&rdquo; | tr &lsquo;,&rsquo; &rsquo; &lsquo;))
+IFS=&rsquo;_&rsquo; read -r -a databasesArray&laquo;&lt; &ldquo;$databasesString&rdquo;</p>
+<p>Nun hast du also ein Array, dass deine Datenbanken enthält. Als nächstes brauchst du eine Schleife um für jede Datenbank ein Dump anzulegen:</p>
+<p>ignoreDatabases=[&lsquo;information_schema,sys,performance_schema&rsquo;]
+for database in &ldquo;${databasesArray[@]}&rdquo;
+do</p>
+<pre><code>    if \[\[ ! &quot; ${ignoreDatabases\[\*\]} &quot; == \*&quot;${database}&quot;\* \]\]
+    then
+        ...
+    fi
+</code></pre>
+<p>done</p>
+<p>Wie du siehst, habe ich noch eine Abfrage eingebaut, damit nicht benötigte System-Datenbanken ausgelassen werden. Jetzt kümmern wir uns um den eigentlichen Dump. Die folgenden Zeilen kommen an die Stelle mit den drei Punkten&hellip;</p>
+<p>Jetzt werden die Daten aus der jeweiligen Datenbank gezogen. Wenn <strong>mysqldump</strong> einen Fehler zurück gibt, schicke ich mir diesen per E-Mail. Danach wird das Script aufgerufen, dass den Dump mit duplicity an einen &ldquo;sicheren&rdquo; Ort kopiert. Zum Abschluss wird der Dump wieder entfernt.</p>
+<p>result=&quot;$( ( mysqldump &ndash;defaults-extra-file=database.conf ${database} &gt; ${BASE_PATH_TEMP}${database}.sql ) 2&gt;&amp;1 )&rdquo;</p>
+<p>len=${#result}</p>
+<p>if [ &ldquo;$len&rdquo; -gt &ldquo;0&rdquo; ]
+then
+echo $result | mail -s &ldquo;Error when dumping mysql database ${database}&rdquo; $SUPERVISOR_EMAIL -r $LOCAL_EMAIL</p>
+<p>fi</p>
+<p>./backupFilesystem.sh -f ${BASE_PATH_TEMP}${database}.sql -d &ldquo;${BASE_PATH_BACKUP}databases/${database}&rdquo;</p>
+<p>rm ${BASE_PATH_TEMP}${database}.sql</p>
+<p> </p>
+<p>Eine Sache gibt es zu beachten, die ich hier nicht weiter beschreiben: Ich nutze &ldquo;<strong>mail</strong>&rdquo; um die Fehlernachrichten zu versenden. Ihr könnte hier einen eigenen E-Mail-Client oder eine andere Variante der Fehlerbenachrichtigung nutzen, das bleibt euch überlassen.</p>
+<h3 id="die-daten-mit-duplicity-verschlüsselt-sichern">Die Daten mit duplicity verschlüsselt sichern</h3>
+<p>Nun geht es ans Eingemachte bzw. die tatsächliche Datensicherung. Das Script <strong>backupFilesystem.sh</strong> erwartet zwei Parameter: Die Dateien bzw. der Ordner, der gesichert werden soll und der Name des Zielordners.</p>
+<p>Danach wird duplicity mehr als ein mal aufgerufen. Zunächst wird, wenn das letzte Vollbackup älter ist als 1 Monat, ein komplettes Backup angelegt. Danach wird duplicity angewiesen, Backups, die älter sind als 12 Monate, zu entfernen. Dann werden außerdem die inkrementellen Backups entfernt, die älter sind als 1 Monat. Das ganze wird einmal aufgerufen um die Backups lokal abzulegen und dann ein 2. Mal für den WebDav-Speicher.</p>
+<p>Wer Ordner und Dateien <strong>manuell sichern</strong> will, kann also dieses Script mit den entsprechenden Parametern aufrufen.</p>
+<h3 id="automatisieren-mit-cron">Automatisieren mit cron</h3>
+<p>Jetzt muss der ganze Spaß natürlich noch automatisch laufen. Dazu werden die folgende Zeilen in die Datei <em>/etc/cron.d/dailyBackup</em> gepackt:</p>
+<pre tabindex="0"><code># m h dom mon dow user  command
+0 1 * * * root /bin/bash /backup/backupVirtualhosts.sh
+0 2 * * * root /bin/bash /backup/backupDatabase.sh
+</code></pre><p>Willst du zusätzliche Ordner sichern, kannst du das über das Script <em>backupFilesystem.sh</em> tun, z.B:</p>
+<pre tabindex="0"><code>0 1 * * * root /bin/bash /backup/backupFilesystem.sh -f /home/ -d /private-backup/home/
+</code></pre><h3 id="github">Github</h3>
+<p>Die gesammelten Scripte und Vorlagen für die Konfigurationsdateien findest du auf <a href="https://github.com/nickyreinert/completeWebServerBackup">github.com</a>. Du kopierst einfach den Inhalt des Ordners <em>scripts</em> an einen Ort auf deinen Server, wie z.B. <em>/backup.</em></p>
+
+  </article>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>

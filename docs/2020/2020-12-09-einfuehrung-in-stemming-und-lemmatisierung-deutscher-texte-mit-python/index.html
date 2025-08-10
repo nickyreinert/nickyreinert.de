@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="Um beim Text Mining zusammengehörende Wörter zu gruppieren, bedient man sich im Natural Language Processing (NLP) zweier Methoden: Lemmatisierung (lemmatising) und Stemming. Das ist notwendig, um z.B. einen Text besser kategorisieren bzw. mit Stichworten versehen zu können. Eines der wichtigsten Anwendungsgebiete ist sicherlich die Indexierung von Dokumenten durch eine Suchmaschine. Ein ganz einfaches Beispiel: Enthält ein Dokument sehr oft das Wort Häuser und der Nutzer sucht nach dem Begriff Haus, wird das relevante Dokument wohl nicht in den Suchergebnissen auftauchen.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/">
+
+  
+  
+  <meta name="keywords" content="">
+  
+
+  
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/2020/2020-12-09-einfuehrung-in-stemming-und-lemmatisierung-deutscher-texte-mit-python/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Einführung in Stemming und Lemmatisierung deutscher Texte mit Python">
+  <meta property="og:description" content="Um beim Text Mining zusammengehörende Wörter zu gruppieren, bedient man sich im Natural Language Processing (NLP) zweier Methoden: Lemmatisierung (lemmatising) und Stemming. Das ist notwendig, um z.B. einen Text besser kategorisieren bzw. mit Stichworten versehen zu können. Eines der wichtigsten Anwendungsgebiete ist sicherlich die Indexierung von Dokumenten durch eine Suchmaschine. Ein ganz einfaches Beispiel: Enthält ein Dokument sehr oft das Wort Häuser und der Nutzer sucht nach dem Begriff Haus, wird das relevante Dokument wohl nicht in den Suchergebnissen auftauchen.">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2020">
+    <meta property="article:published_time" content="2020-12-09T00:00:00+00:00">
+    <meta property="article:modified_time" content="2020-12-09T00:00:00+00:00">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/2020/2020-12-09-einfuehrung-in-stemming-und-lemmatisierung-deutscher-texte-mit-python/">
+
+  
+  
+  
+  <meta itemprop="name" content="Einführung in Stemming und Lemmatisierung deutscher Texte mit Python">
+  <meta itemprop="description" content="Um beim Text Mining zusammengehörende Wörter zu gruppieren, bedient man sich im Natural Language Processing (NLP) zweier Methoden: Lemmatisierung (lemmatising) und Stemming. Das ist notwendig, um z.B. einen Text besser kategorisieren bzw. mit Stichworten versehen zu können. Eines der wichtigsten Anwendungsgebiete ist sicherlich die Indexierung von Dokumenten durch eine Suchmaschine. Ein ganz einfaches Beispiel: Enthält ein Dokument sehr oft das Wort Häuser und der Nutzer sucht nach dem Begriff Haus, wird das relevante Dokument wohl nicht in den Suchergebnissen auftauchen.">
+  <meta itemprop="datePublished" content="2020-12-09T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2020-12-09T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1521">
+  <meta itemprop="keywords" content="Blog">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>Einführung in Stemming und Lemmatisierung deutscher Texte mit Python - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Einführung in Stemming und Lemmatisierung deutscher Texte mit Python">
+  <meta name="twitter:description" content="Um beim Text Mining zusammengehörende Wörter zu gruppieren, bedient man sich im Natural Language Processing (NLP) zweier Methoden: Lemmatisierung (lemmatising) und Stemming. Das ist notwendig, um z.B. einen Text besser kategorisieren bzw. mit Stichworten versehen zu können. Eines der wichtigsten Anwendungsgebiete ist sicherlich die Indexierung von Dokumenten durch eine Suchmaschine. Ein ganz einfaches Beispiel: Enthält ein Dokument sehr oft das Wort Häuser und der Nutzer sucht nach dem Begriff Haus, wird das relevante Dokument wohl nicht in den Suchergebnissen auftauchen.">
+
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institut für digitale Herausforderungen</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+    
+<main id="main" class="post">
+  
+  <div class="post-header">
+  <div class="navigation">
+
+    
+    <a class="link prev" href="/2020/2020-11-05-wie-funktionieren-dateirechte/">&lt;&lt;&lt;</a>
+    
+    
+    <h1 style="flex-grow: 1; text-align: center;">Einführung in Stemming und Lemmatisierung deutscher Texte mit Python</h1>
+    
+    
+    <a class="link next" href="/2021/2021-01-21-augenblicke-eine-statistische-analyse-des-flirt-portals-der-bvg/">>>></a>
+    
+
+  </div>
+  </div>
+  <div class="post-date">December 9, 2020</div>
+
+  
+  <article class="content">
+    <p>Um beim <strong>Text Mining</strong> zusammengehörende Wörter zu gruppieren, bedient man sich im <strong>Natural Language Processing</strong> (<strong>NLP</strong>) zweier Methoden: <strong>Lemmatisierung</strong> (lemmatising) und <strong>Stemming</strong>. Das ist notwendig, um z.B. einen Text besser kategorisieren bzw. mit Stichworten versehen zu können. Eines der wichtigsten Anwendungsgebiete ist sicherlich die Indexierung von Dokumenten durch eine Suchmaschine. Ein ganz einfaches Beispiel: Enthält ein Dokument sehr oft das Wort <em>Häuser</em> und der Nutzer sucht nach dem Begriff <em>Haus</em>, wird das relevante Dokument wohl nicht in den Suchergebnissen auftauchen.</p>
+<p>Um das zu umgehen, müssen flektierte und abgeleitete Wörter zu Ihrer Grundform zurückgeführt werden. Beim <strong>Stemming</strong> werden dazu einfache heuritische Methoden angewendet, bei dem das Suffix der Wörter entfernt wird. Aus dem Wort <em>Katzen</em> wird so dessen Grundform <em>Katze</em>. Bei der Plural-Form <em>Häuser</em> ist das etwas schwieriger. Mit dem Abschneiden des Suffixes kommt man hier nicht weit, weshalb man sich bei der <strong>Lemmatisierung</strong> an Listen bzw. Datenbanken orientiert, die die reflektierte Formen enthalten und so eine sichere Verknüpfung von <em>Häuser</em> zur Singular-Form <em>Haus</em> erlauben.</p>
+<p>Soviel zur Theorie. In der Praxis gibt es <strong>Python</strong> und eine Vielzahl von Modulen, die einem eine Menge Arbeit abnehmen. Im Folgenden vergleiche ich ein halbes Dutzend Module, die die <strong>Lemmatisierung</strong> und das <strong>Stemming</strong> beherrschen und auch für <strong>Deutsche Texte</strong> anwendbar sind.</p>
+<p><em>Hinweis: Zur Vorbereitung beim Text Mining gehören natürlich auch das Säubern des Textes, Entfernen von Stop-Wörtern und das <strong>Tokenizing</strong>, also Aufbrechen eines Satzes in seine einzelnen Bestandteile. Diesen Schritt überspringe ich hier.</em></p>
+<h2 id="stemming-mit-porter-lancaster-und-snowball">Stemming mit Porter, Lancaster und Snowball</h2>
+<p>Für das Stemming habe ich mir drei Module angeschaut:</p>
+<ul>
+<li>Porter Stemmer</li>
+<li>Lancaster Stemmer</li>
+<li>Snowball Stemmer</li>
+</ul>
+<p>Der <strong>Porter Stemmer</strong> wurde bereits 1979 von <strong>Martin F. Porter</strong> entwickelt und <a href="https://nlp.stanford.edu/IR-book/html/htmledition/stemming-and-lemmatization-1.html">gilt zumindest in der englischen Sprache als sehr effektiv</a>. Der <strong>Lancaster Stammer</strong> geht auf den Ende der 1980er Jahre an der Lancaster University von <strong>Chris Paice</strong> und <strong>Gareth Husk</strong> entwickelten Paice-Husk Stemming Algorithmus zurück. Im Gegensatz zum festen Regelsatz von Porter wird <a href="https://www.scientificpsychic.com/paice/paice.html">beim Lancaster mit externen Regeln gearbeitet</a>, womit der Algorithmus flexibler ist.</p>
+<p>Der Snowball Stemmer ist eigentlich kein eigener Algorithmus, <a href="https://www.datacamp.com/community/tutorials/stemming-lemmatization-python">sondern eine Sprache</a>, um einen eigenen Stemmer zu schreiben.</p>
+<h3 id="installation-und-anwendung">Installation und Anwendung</h3>
+<p>Alle drei Module sind Bestandteil des <a href="https://www.nltk.org/">Natural Language Toolkit</a> und können dementsprechend sehr unkompliziert mit <strong>pip install nltk</strong> installiert werden. Danach sieht ein Anwendungsbeispiel folgendermaßen aus:</p>
+<pre tabindex="0"><code> from nltk.stem import PorterStemmer
+ from nltk.stem import LancasterStemmer
+ from nltk.stem.snowball import SnowballStemmer
+ 
+ porter = PorterStemmer()
+ lancaster = LancasterStemmer()
+ snowball = SnowballStemmer(&#34;german&#34;)
+ 
+ word = &#39;Katzen&#39;
+ 
+ print (&#39;Porter: &#39; + porter.stem(word))
+ print (&#39;Lancaster: &#39; + lancaster.stem(word))
+ print (&#39;Snowball: &#39; + snowball.stem(word))
+</code></pre><p>Da Snowball mehrere Sprachen unterstützt, muss hier vorher festgelegt werden, mit welcher Sprache wir arbeiten. Der Rest ist eigentlich ziemlich straight forward. Das Ergebnis zeigt aber die Schwächen des Stemmings:</p>
+<pre tabindex="0"><code>Porter: katzen 
+Lancaster: katz 
+Snowball: katz 
+</code></pre><p>Keiner der Stemmer kommt auf <em>Katze</em>. Klar: Hier werden einfach nur ein paar Buchstaben abgeschnitten. Da Porter nicht für die deutsche Sprache ausgelegt ist, wird hier sogar die reflektierte Form zurückgegeben. Das Stemming kann also dabei helfen, reflektierte Wörter auf einen gemeinsamen Stamm zu reduzieren. Die Bedeutung geht dabei aber oft verloren.</p>
+<p>Genau deshalb gibt es die <strong>Lemmatisierung</strong>&hellip;</p>
+<h2 id="lemmatisieren-mit-hannovertagger-wordnet-spacy-und-iwnlp">Lemmatisieren mit HannoverTagger, WordNet, Spacy und IWNLP</h2>
+<p>Für die Lemmatisierung habe ich vier Module herausgesucht. Vor allem <a href="https://www.machinelearningplus.com/nlp/lemmatization-examples-python/">für die englische Sprache ist die Auswahl aber weitaus größer</a>, für deutsche Texte ist es hingegen schwierig, aktuelle und gepflegte Module zu finden.</p>
+<ul>
+<li>WordNet</li>
+<li>SpaCy</li>
+<li>HannoverTagger</li>
+<li>IWNLP</li>
+</ul>
+<p>Das <strong>WordNet</strong> Modul gehört ebenfalls zum NLTK und ist einer der am weitesten verbreiteten Lemmatiser. Das Modul wurde 2001 entwickelt; <strong>WordNet</strong> selber ist eine riesige lexikalische Datenbank, die seit 1985 an der <strong>Princeton University</strong> entwickelt wird und mittlerweile über 200 Sprachen unterstützt.</p>
+<p><strong>SpaCy</strong> ist vergleichsweise jung (2015) aber mittlerweile auch sehr weit verbreitet. Im Gegensatz zum NLTK, dass eine Vielzahl von Lösungen und Algorithmen mitbringt, konzentriert sich SpaCy auf genau einen Algorithmus, um ein Problem zu lösen und ist damit ein wenig fokussierter als das NLTK. Während das NLTK eher im Forschungsbereich anzutreffen ist, wird SpaCy vornehmlich im produktiven Bereich verwendet.</p>
+<p>Der <strong>HannoverTagger</strong>, kurz <strong>HanTa</strong> - <a href="https://www.rki.de/DE/Content/Infekt/EpidBull/Merkblaetter/Ratgeber_Hantaviren.html">nicht zu verwechseln mit dem gleichnamigen Virus</a>, wurde 2019 <a href="https://textmining.wp.hs-hannover.de/Preprocessing.html">an der Hochschule Hannover</a> entwickelt. HanTa wurde mit dem Ziel entwickelt, auch für deutsche Texte eine vernünftige Lemmatisierungs-Lösung zu besitzen.</p>
+<p>Daneben gibt es noch <a href="https://github.com/Liebeck/spacy-iwnlp">IWNLP</a> von <strong>Matthias Liebeck</strong>. IWNLP ist der Name der entsprechenden SpaCy-Erweiterung für <a href="https://github.com/Liebeck/iwnlp-py">IWNLP-py</a>, was wiederum die Python-Implementierung von IWNLP ist: <strong>Inverse Wiktionary for Natural Language Processing</strong>. IWNLP nutzt zur Lemmatisierung einfach den Deutschen Bereich des Wiktionaries.</p>
+<h3 id="was-ist-mit-germalemma-und-german-lemmatizer">Was ist mit GermaLemma und German Lemmatizer?</h3>
+<p><strong><a href="https://github.com/WZBSocialScienceCenter/germalemma">GermaLemma</a></strong> ist ein weiteres, recht junges Modul von <strong>Markus Konrad</strong>, das aber leider die <strong>POS</strong> der Wörter erfordert. POS steht für <strong>Part-Of-Speech</strong>, also die Wortart, wie z.B. Substantiv, Verb, Adjektiv und so weiter. Da alle anderen Lemmatizer ohne die POS arbeiten und ich die einfachste Lösung gesucht habe, bleibt dieses Modul außen vor.</p>
+<p>Eine weitere Lösung wäre <a href="https://pypi.org/project/german-lemmatizer/">Docker-Image</a> mit dem Namen <strong>German Lemmatizer</strong> gewesen, dass die Funktionen von <strong>INWLP</strong> und <strong>GermaLemma</strong> kombiniert. Das ganze lässt sich aber leider nur mit etwas Mehraufwand auch außerhalb von Docker nutzen, weshalb ich auch den <strong>German Lemmatizer</strong> hier nicht berücksichtigt habe.</p>
+<p><strong>WordNet</strong> kann Wörter übrigens ohne POS lemmatisieren, die Ergebnisse sind mit POS aber weitaus genauer. Die Klassifizierung des POS ist freilich keine Raketenwissenschaft und <a href="https://www.machinelearningplus.com/nlp/lemmatization-examples-python/">z.B. hier recht gut beschrieben</a>.</p>
+<h3 id="installation-und-anwendung-1">Installation und Anwendung</h3>
+<p>Da wir oben schon das NLTK installiert haben, können wir direkt auf WordNet zugreifen. SpaCy installieren wir mit <strong>pip install spacy</strong>, dort wird dann auch gleich IWNLP mitgeliefert. Der HanTa lässt sich ebenfalls unkompliziert installieren: <strong>pip install HanTa</strong>.</p>
+<p>Um IWNLP zum Laufen zu bringen, benötigen wir noch <a href="http://lager.cs.uni-duesseldorf.de/NLP/IWNLP/">den letzten Dump von hier</a> (letzter Stand 2018/10/01). Das Archiv enthälte eine JSON-Datei - das Lexikon mit etwa drölfizigtausend Lemmas. Um SpaCy für die deutsche Sprache anwendbar zumachen, <a href="https://spacy.io/models/de/">müssen wir hier ein komplettes Modell herunterladen</a>. Das übernimmt SpaCy für uns mit folgendem Befehl:</p>
+<pre tabindex="0"><code>python -m spacy download de_core_news_md
+</code></pre><p><em>(Es gibt drei verschieden große Modelle, ich habe mich für die goldene Mitte entschieden).</em></p>
+<p>Die Implementierung ist dann etwas aufwendiger, da bei der Lemmatisierung Trainingsmodelle eingesetzt werden, und nicht nur &ldquo;einfache&rdquo; Algorithmen:</p>
+<pre tabindex="0"><code> from HanTa import HanoverTagger as ht
+ from nltk.stem import WordNetLemmatizer
+ from spacy_iwnlp import spaCyIWNLP
+ import spacy
+ 
+ hannover = ht.HanoverTagger(&#39;morphmodel_ger.pgz&#39;)
+ wordnet = WordNetLemmatizer()
+ 
+ spc =  spacy.load(r&#39;/usr/local/lib/python3.9/site-packages/de_core_news_md/de_core_news_md-2.3.0&#39;, disable=[&#39;parser&#39;, &#39;ner&#39;])
+ 
+ iwnlp = spc
+ iwnlp_pipe = spaCyIWNLP(lemmatizer_path=&#39;/Users/user1/Downloads/IWNLP.Lemmatizer_20181001.json&#39;)
+ iwnlp.add_pipe(iwnlp_pipe)
+ 
+ print (&#39;HanTa:&#39; + str(hannover.analyze(word)[0]))
+ print (&#39;Wordnet:&#39; + wordnet.lemmatize(word, &#39;NN&#39;))
+ print (&#39;SpaCy:&#39; + str([token.lemma_ for token in spc(word)][0]))
+ print (&#39;IWNLP:&#39; + str([token.lemma_ for token in iwnlp(word)][0]))
+</code></pre><p>Dem HannoverTagger wird bei der Initialisierung das entsprechende Modell mitgegeben. WordNet benötigt keine weiteren Parameter. Der <strong>SpaCy-Lemmatiser</strong> (hier spc) wird mit dem deutschen News Paket über <em>spacy.load()</em> initialisiert. Alternativ funktioniert die Initialisierung auch über den Shortcut <em>de</em>:</p>
+<pre tabindex="0"><code> spc = spacy.load(&#39;de&#39;, disable=[&#39;parser&#39;, &#39;ner&#39;])
+</code></pre><p>Um den Vorgang etwas zu beschleunigen, deaktivieren wir die Funktionen <em>parser</em> und <em>ner</em>. Der Parser macht bei der Verarbeitung von Sätzen Sinn, <em>ner</em> steht für <strong>Name Entity Recognition</strong>, sprich die Erkennung von Eigennamen. Das ist bei der Lemmatisierung durchaus wichtig, möchte ich hier aber erstmal nicht berücksichtigen.</p>
+<p>Da <strong>IWNLP</strong> ebenfalls über SpaCy aktiviert wird, klonen wir das Objekt einfach und fügen dann unsere eigene Pipeline hinzu <em>add_pipe()</em>. Diese muss auf das Lexikon als JSON-Datei verweisen, den wir vorher heruntergeladen haben. Das wars auch schon, danach sehen wir, wie sich die Module untereinander und im Vergleich zum Stemming schlagen:</p>
+<pre tabindex="0"><code>HanTa:Katze 
+Wordnet:Katzen
+SpaCy:Katze
+IWNLP:Katze 
+</code></pre><p>Das Ergebnis überrascht nur ein kleines bisschen: Obwohl die eigentliche WordNet-Datenbank 200 Sprachen unterstützt, schafft es das Modul nicht, das richtige Lemma zuzuordnen. Ich finde leider auch keine Informationen dazu, wie WordNet auf Deutsch getrimmt werden kann. Die Ergebnisse von HanTa, SpaCy und IWNLP passen allerdings. IWNLP (und demnach auch SpaCy) liefern bei Bedarf übrigens mehr als nur ein Lemma zurück:</p>
+<pre tabindex="0"><code> print (str([token._.iwnlp_lemmas for token in iwnlp(word)][0]))
+ print (str([token.pos_ for token in iwnlp(word)][0]))
+</code></pre><p>Mit <strong>pos_</strong> und <strong>_.iwnlp_lemmas</strong> bekommt man einerseits den Part-Of-Speech und in IWNLP sogar eine Liste aller denkbaren Lemmas - sofern zutreffend.</p>
+<p>Wer den Vergleich etwas hübscher aufbereitet für mehrer Wörter nutzen will, <a href="https://gist.github.com/nickyreinert/72548ce88d812f9203687ece93c608d8">kann dazu folgendes Jupyter-Notebook nutzen</a>. Ich hab das ganze mal <a href="https://www.spiegel.de/wissenschaft/mensch/uno-bericht-ueber-klimaziele-auf-dem-weg-zu-drei-grad-erderwaermung-a-05ecdcdb-2f84-4aa0-84b6-a7a2d8c71c80">für eine beliebige Schlagzeile von Spiegel Online</a> durchgespielt und folgendes Ergebnis erhalten. Der Original-Satz lautet:</p>
+<blockquote>
+<p>Der weltweite CO₂-Ausstoß steigt weiter – trotz Corona-Knick, heißt es im neuen Bericht des Uno-Umweltprogramms. Ohne grüne Konjunkturpakete sei das Pariser Zwei-Grad-Limit nicht mehr zu retten.</p></blockquote>
+<p>Und das ist das Ergebnis nach dem <strong>Steming</strong> und <strong>Lemmatisieren</strong>:</p>
+<p><a href="https://www.nickyreinert.de/files/eine-kleine-einfuhrung-in-das-stemming-lemmatisieren-deutscher-texte/grafik.png"><img src="/2020/2020-12-09-einfuehrung-in-stemming-und-lemmatisierung-deutscher-texte-mit-python/images/grafik-700x249.png" alt=""></a></p>
+<p>7 Methoden zum Stemming und Lemmatisieren im Vergleich</p>
+<p>Das Stemming liefert, naturgemäß, ein relativ grobes Ergebnis ab. Um die Wörter in einem Text schnell zu kategorisieren reicht das sicherlich aus. Bei der Lemmatisierung fällt auf, das SpaCy trotz deutscher Sprachpakete nicht ganz zufriedenstellend arbeitet. So wird aus &ldquo;das&rdquo; z.B. &ldquo;der&rdquo;. Dafür wird &ldquo;trotz&rdquo; korrekt &ldquo;trotzen&rdquo; zugeordenet - was dem HanTa nicht gelingt. HanTa wiederum kennt als einziger den Singular von Konjunkturpakete.</p>
+<h2 id="fazit">Fazit</h2>
+<p>Die Verarbeitung englischer Texte ist, aufgrund der großen Verbreitung der Sprache, gar kein Problem. Bei deutschen Texten wird es schon etwas schwieriger, allerdings liefern <strong>HanTa</strong>, <strong>IWNLP</strong> und auch <strong>SpaCy</strong> recht gute Ergebnisse ab. Mein subjektiver Favorit ist <strong>HanTa</strong>. Aber die Stichprobe ist viel zu gering, um hier einen klaren Favoriten identifizieren zu können.</p>
+<p>Der Vergleich dient eher nicht als repräsentivate Untersuchung aller denkbaren Varianten, soll aber einen kleinen Einblick in <strong>NLP</strong> und die automatisierte Text-Verarbeitung im <strong>Text-Mining</strong> geben und ein paar Code-Beispiele liefern, um den Einsteig in Python zu erleichtern. Ich hoffe das ist gelungen!</p>
+
+  </article>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>
