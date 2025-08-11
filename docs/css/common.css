@@ -240,7 +240,45 @@ h1 {
     text-align: right;
     flex: 1;
 }
+
+.post-date-left {
+    width: 150px;
+    display: inline-block;
+}
+
+.post-title-right {
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 0; max-width: calc(100% - 150px);
+
+}
+
 @media (max-width: 600px) {
+
+.post-title-right:before {
+    content: '- ';
+}    
+.post-title-right {
+    white-space: normal;
+    max-width: 100%;
+}
+.post-title-right {
+    max-width: 100%;
+    white-space: normal;
+    
+}
+
+#wrapper  {
+    padding: 0.5rem;
+}
+
+main.index, main.archive { 
+    width: 100% !important;
+}
+
+.post-date-left,
+    .post time  {
+        display: none !important;
+    }
+
     .header-content {
         flex-direction: column;
         align-items: center;
