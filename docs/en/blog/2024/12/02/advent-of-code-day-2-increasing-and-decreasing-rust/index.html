@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="(task | solution)
+This task is about testing if integers in a list are increasing or decreasing. I&rsquo;ll try Rust, and I assume I need nerves of steel for this exercise.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/">
+
+  
+  
+  <meta name="keywords" content="">
+  
+
+  
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/en/blog/2024/12/02/advent-of-code-day-2-increasing-and-decreasing-rust/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Advent of Code - Day 2 - Increasing and decreasing (Rust)">
+  <meta property="og:description" content="(task | solution)
+This task is about testing if integers in a list are increasing or decreasing. I’ll try Rust, and I assume I need nerves of steel for this exercise.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2024-12-02T12:34:56+02:00">
+    <meta property="article:modified_time" content="2024-12-02T12:34:56+02:00">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/en/blog/2024/12/02/advent-of-code-day-2-increasing-and-decreasing-rust/">
+
+  
+  
+  
+  <meta itemprop="name" content="Advent of Code - Day 2 - Increasing and decreasing (Rust)">
+  <meta itemprop="description" content="(task | solution)
+This task is about testing if integers in a list are increasing or decreasing. I’ll try Rust, and I assume I need nerves of steel for this exercise.">
+  <meta itemprop="datePublished" content="2024-12-02T12:34:56+02:00">
+  <meta itemprop="dateModified" content="2024-12-02T12:34:56+02:00">
+  <meta itemprop="wordCount" content="347">
+  <meta itemprop="keywords" content="Development,Aoc2024">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>Advent of Code - Day 2 - Increasing and decreasing (Rust) - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Advent of Code - Day 2 - Increasing and decreasing (Rust)">
+  <meta name="twitter:description" content="(task | solution)
+This task is about testing if integers in a list are increasing or decreasing. I’ll try Rust, and I assume I need nerves of steel for this exercise.">
+
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institute for Digital Challenges</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+    
+<main id="main" class="post">
+  
+  <div class="post-header">
+  <div class="navigation">
+
+    
+    <a class="link prev" href="/en/blog/2024/12/01/advent-of-code-day-1-differences-and-products-f/">&lt;&lt;&lt;</a>
+    
+    
+    <h1 style="flex-grow: 1; text-align: center;">Advent of Code - Day 2 - Increasing and decreasing (Rust)</h1>
+    
+    
+    <a class="link next" href="/en/blog/2024/12/03/advent-of-code-day-3-multiplications-python/">>>></a>
+    
+
+  </div>
+  </div>
+  <div class="post-date">December 2, 2024</div>
+
+  
+  
+  
+  
+  <article class="content">
+    
+    <p>(<a href="https://adventofcode.com/2024/day/2/">task</a> | <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day2%20-%20rust">solution</a>)</p>
+<p><a href="https://adventofcode.com/2024/day/2">This task</a> is about testing if integers in a list are increasing or decreasing. I&rsquo;ll try <code>Rust</code>, and I assume I need nerves of steel for this exercise.</p>
+<h2 id="setting-up-the-development-environment">Setting Up the Development Environment</h2>
+<p>Rust comes in a container, too. Here&rsquo;s the Dockerfile:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#75715e"># Dockerfile</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> rust:latest</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Install additional tools you might need</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> apt-get update <span style="color:#f92672">&amp;&amp;</span> apt-get install -y <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    git <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    curl <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    wget <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    build-essential<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Set the working directory</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /workspace</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Copy project files (if any)</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> . .<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Default command</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;bash&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>And here&rsquo;s the <code>devcontainer.json</code> to develop inside that container made of steel:</p>
+<pre tabindex="0"><code>{
+    &#34;name&#34;: &#34;Rust Development Container&#34;,
+    &#34;build&#34;: {
+        &#34;dockerfile&#34;: &#34;../Dockerfile&#34;
+    },
+    &#34;customizations&#34;: {
+        &#34;vscode&#34;: {
+            &#34;extensions&#34;: [
+                &#34;rust-lang.rust-analyzer&#34;,
+                &#34;serayuzgur.crates&#34;,
+                &#34;tamasfe.even-better-toml&#34;
+            ]
+        }
+    },
+    &#34;remoteUser&#34;: &#34;root&#34;,
+    &#34;features&#34;: {
+        &#34;ghcr.io/devcontainers/features/rust:1&#34;: {}
+    }
+}
+</code></pre><p>Rust also requires a <code>Cargo.toml</code> file that defines your project and dependencies:</p>
+<pre tabindex="0"><code># Cargo.toml
+[package]
+name = &#34;rust-docker-project&#34;
+version = &#34;0.1.0&#34;
+edition = &#34;2024&#34;
+
+[dependencies]
+# none, ehehe
+</code></pre><p>That&rsquo;s all we need. Build it with <code>docker build</code> and connect VS Code. The source file is located inside the <code>src</code> folder. You can run your code like this</p>
+<pre tabindex="0"><code>cargo build
+cargo run
+</code></pre><p>The algorithm itself isn&rsquo;t that tricky. <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day2%20-%20rust/src">You&rsquo;ll find everything on Github</a>.</p>
+<h2 id="whats-up-rust">Whats up, Rust?</h2>
+<p><strong>Rating: 4/12 – Wouldn&rsquo;t use it freely</strong></p>
+<p>Don&rsquo;t get me started. I didn&rsquo;t know that Rust has so many strange rules. There’s this interesting concept of <strong>ownership</strong>: values belong to a variable as long as you don&rsquo;t assign that variable to another variable. If you pass a value from one vector to another, you can&rsquo;t access it in the original vector anymore.</p>
+<p>And then there are many important operators scattered across the code, like:</p>
+<ul>
+<li><code>&amp;</code> for <strong>borrowing</strong> (referencing a value without taking ownership)</li>
+<li><code>*</code> for <strong>de-referencing</strong> (accessing the value a reference points to)</li>
+</ul>
+<p>What I <em>do</em> like, though, is the error handling. Rust uses <code>Ok</code> and <code>Err</code> to make handling errors much cleaner and explicit:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>Err(<span style="color:#e6db74">&#34;Value not valid&#34;</span>)
+</span></span><span style="display:flex;"><span>Ok(())
+</span></span></code></pre></div><p>This approach forces you to handle potential issues early on, which is great for reliability.</p>
+<p>See you next day&hellip;</p>
+    
+  </article>
+  <div class="paginator">
+
+    
+    <a class="link" href="https://nickyreinert.de/en/blog/2024/12/01/advent-of-code-day-1-differences-and-products-f/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/en/blog/2024/12/03/advent-of-code-day-3-multiplications-python/">next →</a>
+    
+  </div>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>

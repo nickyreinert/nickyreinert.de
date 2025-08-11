@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="I&rsquo;ve worked with Adobe Tracking Suite (which is Adobe Launch and all it&rsquo;s sibblings) for quite a while and I saw many, some quite chaotic, tracking implementations and tag managers. At some point I felt the need to write down some basic rules to navigate those messy libraries. Hope that helps you, too.
+naming convention
+Global
+Use a category and naming convention that allows you to track variables, metrics and dimension from the website over the tag manger to the backend of your analytics solution and the dashboard. Every category is also assigned a particular numeric range. This will improve your debugging and troubleshooting process.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/">
+
+  
+  
+  <meta name="keywords" content="">
+  
+
+  
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/en/blog/2025/04/01/adobe-launch-dtm-naming-conventions/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Adobe Launch DTM Naming Conventions">
+  <meta property="og:description" content="I’ve worked with Adobe Tracking Suite (which is Adobe Launch and all it’s sibblings) for quite a while and I saw many, some quite chaotic, tracking implementations and tag managers. At some point I felt the need to write down some basic rules to navigate those messy libraries. Hope that helps you, too.
+naming convention Global Use a category and naming convention that allows you to track variables, metrics and dimension from the website over the tag manger to the backend of your analytics solution and the dashboard. Every category is also assigned a particular numeric range. This will improve your debugging and troubleshooting process.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2025-04-01T12:34:56+02:00">
+    <meta property="article:modified_time" content="2025-04-01T12:34:56+02:00">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/en/blog/2025/04/01/adobe-launch-dtm-naming-conventions/">
+
+  
+  
+  
+  <meta itemprop="name" content="Adobe Launch DTM Naming Conventions">
+  <meta itemprop="description" content="I’ve worked with Adobe Tracking Suite (which is Adobe Launch and all it’s sibblings) for quite a while and I saw many, some quite chaotic, tracking implementations and tag managers. At some point I felt the need to write down some basic rules to navigate those messy libraries. Hope that helps you, too.
+naming convention Global Use a category and naming convention that allows you to track variables, metrics and dimension from the website over the tag manger to the backend of your analytics solution and the dashboard. Every category is also assigned a particular numeric range. This will improve your debugging and troubleshooting process.">
+  <meta itemprop="datePublished" content="2025-04-01T12:34:56+02:00">
+  <meta itemprop="dateModified" content="2025-04-01T12:34:56+02:00">
+  <meta itemprop="wordCount" content="1103">
+  <meta itemprop="keywords" content="Blog">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>Adobe Launch DTM Naming Conventions - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Adobe Launch DTM Naming Conventions">
+  <meta name="twitter:description" content="I’ve worked with Adobe Tracking Suite (which is Adobe Launch and all it’s sibblings) for quite a while and I saw many, some quite chaotic, tracking implementations and tag managers. At some point I felt the need to write down some basic rules to navigate those messy libraries. Hope that helps you, too.
+naming convention Global Use a category and naming convention that allows you to track variables, metrics and dimension from the website over the tag manger to the backend of your analytics solution and the dashboard. Every category is also assigned a particular numeric range. This will improve your debugging and troubleshooting process.">
+
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institute for Digital Challenges</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+    
+<main id="main" class="post">
+  
+  <div class="post-header">
+  <div class="navigation">
+
+    
+    <a class="link prev" href="/en/blog/2025/03/19/how-to-develop-in-2025-improve-your-workflow-with-vs-code-github-copilot/">&lt;&lt;&lt;</a>
+    
+    
+    <h1 style="flex-grow: 1; text-align: center;">Adobe Launch DTM Naming Conventions</h1>
+    
+    
+    <a class="link next" href="/en/blog/2025/07/01/2025-08-01-monitor-ssl-traffic-on-android/">>>></a>
+    
+
+  </div>
+  </div>
+  <div class="post-date">April 1, 2025</div>
+
+  
+  
+  
+  
+  <article class="content">
+    
+    <p>I&rsquo;ve worked with Adobe Tracking Suite (which is Adobe Launch and all it&rsquo;s sibblings) for quite a while and I saw many, some quite chaotic, tracking implementations and tag managers. At some point I felt the need to write down some basic rules to navigate those messy libraries. Hope that helps you, too.</p>
+<h1 id="naming-convention">naming convention</h1>
+<h2 id="global">Global</h2>
+<p>Use a category and naming convention that allows you to track <strong>variables</strong>, <strong>metrics</strong> and <strong>dimension</strong> from the website over the tag manger to the backend of your analytics solution and the dashboard. Every category is also assigned a particular numeric range. This will improve your debugging and troubleshooting process.</p>
+<p>The following basic categories should represent your default setup.</p>
+<ul>
+<li>Page related information (for a single page view, from 1 to 19)</li>
+<li>Site related information (for the whole website, from 020 to 39)</li>
+<li>User related information (describing the visitor, from 40 to 59)</li>
+<li>Misc information (meta information that usually is not part of an analysis or cannot be assigned to the other categories, from 59 to</li>
+</ul>
+<h2 id="data-layer">Data Layer</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>	<span style="color:#a6e22e">datalayer</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">page</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">category</span><span style="color:#f92672">:</span> 
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> 
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">id</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">date</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">language</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>		},
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">site</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">provider</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">project</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">domain</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>		},
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">user</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">status</span><span style="color:#f92672">:</span> [<span style="color:#a6e22e">anonmyous</span>, <span style="color:#a6e22e">logged</span><span style="color:#f92672">-</span><span style="color:#66d9ef">in</span>],
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">behavior</span><span style="color:#f92672">:</span> [<span style="color:#a6e22e">returned</span>, <span style="color:#66d9ef">new</span>],
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">language</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>		},
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">misc</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">timestamp</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">debug</span><span style="color:#f92672">:</span> 
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">utm</span><span style="color:#f92672">:</span> 
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">interaction_details</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span></code></pre></div><blockquote>
+<p>&ldquo;I&rsquo;ve implemented a page.category attribute, which I find invaluable. I&rsquo;m surprised so many implementations omit it. It allows for quicker traffic analysis at a higher level than individual pages. Categories help maintain order as pages inevitably become disorganized over time.&rdquo;</p></blockquote>
+<h2 id="data-elements">Data Elements</h2>
+<p>Your Data Element name should consist the numeric ID referring to the ID of your (Adobe) Analytics-implementation followed by a separator (like the pipe symbol |) and the address within the Data Layer object. Left pad the ID to a length of three to not mix up the &ldquo;order by name&rdquo; feature. The second part is the exact address of the element within the data layer. If this element does not correspond to the Data Layer, use a short description.</p>
+<ul>
+<li><code>000 | datalayer.page.name</code></li>
+<li><code>010 | datalayer.misc.utm</code></li>
+</ul>
+<h2 id="dimensions">Dimensions</h2>
+<p><strong>eVars</strong>, <strong>props</strong> and <strong>events</strong> are identified by a short description build from the category and the name of the information, followed by the name and the kind of variable (<strong>t</strong> for <strong>traffic variables</strong> aka <strong>props</strong>, <strong>c</strong> vor <strong>conversion variables</strong> aka <strong>eVars</strong> and <strong>e</strong> for <strong>event</strong>):</p>
+<ul>
+<li><code>Page Name (t010)</code></li>
+<li><code>User Status (c020)</code></li>
+</ul>
+<h2 id="events">Events</h2>
+<h3 id="naming-rules">Naming Rules</h3>
+<p>You wil need three categories of rules, based on the action the perform</p>
+<ul>
+<li>Page View rule (mostly just one, will trigger a page view)</li>
+<li>Click rules (will trigger click events)</li>
+<li>Misc rule (will not trigger any call, but prepare tracking or add event listeners)</li>
+</ul>
+<p>Besides that, you will have three main attributes for page view and click rules that should be available in the component name itself:</p>
+<ul>
+<li>the according event id (custom success event, even page views can have an event ID)</li>
+<li>a brief description</li>
+<li>how a rule will be triggered (Page Top, Document Ready, Click, Direct Call, &hellip;)</li>
+</ul>
+<p>Name your rules using those three information (I prefer the pipe symbol as a separator)</p>
+<p><code>[TYPE]|[TRIGGER]|[EVENT ID]|[BRIEF DESCRIPTION]</code></p>
+<p>If your rule covers more than one event, post them all as a comma separated list (50,51,52). If there are too many rules, you may overthink your strategy.</p>
+<p><strong>For example:</strong></p>
+<ul>
+<li><code>PV | DocReady | 10 | All Pages</code></li>
+<li><code>PV | DocReady | 20 | Search Pages</code></li>
+<li><code>CL | Trigger | 50,51,52 | Click</code></li>
+<li><code>CL | Click | 60 | Bookmark Page</code></li>
+<li><code>MISC | Helper Functions</code></li>
+</ul>
+<h4 id="reason">Reason</h4>
+<p>In the rules overview this helps you to get a good first impression of all existing rules and it allows you to quickly filter the list for wanted rule types. Also, if you lookup a particular event, you quickly see the particular component that somehow works for this event.</p>
+<h3 id="naming-components">Naming Components</h3>
+<p>A component can be a trigger/event, condition or action. When you create a component, Adobe suggests a default name. Never use this name. The name should start with the exact sequence you defined for the rule name.</p>
+<p><strong>For example:</strong></p>
+<p>You have a rule to trigger page views:</p>
+<p><code>PV | DocReady | 10 | All Pages</code></p>
+<p>This is how you name the components of the rule</p>
+<ul>
+<li>trigger/event: <code>PV | DocReady | 10 | All Pages |  page top</code></li>
+<li>condition: <code>PV | DocReady | 10 | All Pages |  user is logged in</code></li>
+<li>action: <code>PV | DocReady | 10 | All Pages |  set variables</code></li>
+<li>action: <code>PV | DocReady | 10 | All Pages |  send beacon</code></li>
+<li>action: <code>PV | DocReady | 10 | All Pages |  clear variables</code></li>
+</ul>
+<h4 id="reason-1">Reason</h4>
+<p>If you look up a particular event ID, you quickly see all according components. If you look up particular variables that belong to different events, you know quickly identify, where this variable is being used, without clicking into the component itself.</p>
+<h3 id="error-handling">Error Handling</h3>
+<p>If you have custom code, you should always implement try/catch error handling that also refers to the parent rule:</p>
+<pre tabindex="0"><code>let rule_name = &#39;`PV | DocReady | 10 | All Pages&#39;;
+try {
+
+
+} catch (e) {
+
+	_satellite.logger.error(rule_name + &#39; | &#39; + e);
+
+}
+</code></pre><p>If your code grows and get more complex, you should and can, add multiple try/catch lines into your code. In this case you should add a brief description of the current area to the error message:</p>
+<pre tabindex="0"><code>let rule_name = &#39;`PV | DocReady | 10 | All Pages&#39;;
+try {
+
+
+
+} catch (e) {
+
+	_satellite.logger.error(rule_name + &#39; | init something | &#39; + e);
+
+}
+
+try {
+
+
+} catch (e) {
+
+	_satellite.logger.error(rule_name + &#39; | calculate another metric | &#39; + e);
+
+}
+</code></pre><h4 id="reason-2">Reason</h4>
+<p>Now, if you face errors in the debug console, it&rsquo;s easier to find the source, even if you handle long code blocks. You don&rsquo;t need to click through the stack trace.</p>
+<h3 id="logging-and-documentation">Logging and Documentation</h3>
+<p>The same goes for logging. Always logg what you are doing. I don&rsquo;t need to mention, how important inline documentation is. ;)
+Logging works the same as error handling:</p>
+<pre tabindex="0"><code>_satellite.logger.info(rule_name + &#39; | calculate another metric&#39;);
+</code></pre><h4 id="reason-3">Reason</h4>
+<p>Now, if you filter the browser console, it&rsquo;s easier to get rid of the noise and debug a problem.</p>
+<h3 id="inactive-rules-or-data-elements">Inactive Rules or Data Elements</h3>
+<p>You will and cannot avoid to have inactive/disabled rules. You should keep that amount low, because they pollute your library. If you have inactive rules, add a prefix &ldquo;INACTIVE&rdquo; to the rules name and, preferably also to it&rsquo;s components.</p>
+<h4 id="reason-4">Reason</h4>
+<p>If you look up code parts, data elements or anything, the search will return you rule and component names. From those component names you will not see, if a result belongs to an inactive rule. The prefix INACTIVE will help you to quickly identify those results.</p>
+
+    
+  </article>
+  <div class="paginator">
+
+    
+    <a class="link" href="https://nickyreinert.de/en/blog/2025/03/19/how-to-develop-in-2025-improve-your-workflow-with-vs-code-github-copilot/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/en/blog/2025/07/01/2025-08-01-monitor-ssl-traffic-on-android/">next →</a>
+    
+  </div>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>
