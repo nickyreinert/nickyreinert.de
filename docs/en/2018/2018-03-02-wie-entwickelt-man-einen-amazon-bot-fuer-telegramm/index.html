@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="Was ist ein Telegramm-Bot?
+Schon mal was von Telegramm gehört oder gar einem Telegramm-Bot gehört? Nein? Macht nichts. Telegramm ist ein Messenger, wie Whatsapp oder Threema. Der große Vorteil von Telegramm gegenüber Whatsapp ist die Plattforum-Unabhängigkeit. Es gibt nicht nur Apps für Android und iOs, auch unter OS X (Mac) und Windows lässt sich Telegramm unkompliziert nutzen. Bei Whatsapp war das bisher nur über den Browser möglich, Threema bietet diese Möglichkeit gar nicht an.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/">
+
+  
+  
+  <meta name="keywords" content="">
+  
+
+  
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/en/2018/2018-03-02-wie-entwickelt-man-einen-amazon-bot-fuer-telegramm/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Wie entwickelt man einen Amazon-Bot für Telegramm?">
+  <meta property="og:description" content="Was ist ein Telegramm-Bot? Schon mal was von Telegramm gehört oder gar einem Telegramm-Bot gehört? Nein? Macht nichts. Telegramm ist ein Messenger, wie Whatsapp oder Threema. Der große Vorteil von Telegramm gegenüber Whatsapp ist die Plattforum-Unabhängigkeit. Es gibt nicht nur Apps für Android und iOs, auch unter OS X (Mac) und Windows lässt sich Telegramm unkompliziert nutzen. Bei Whatsapp war das bisher nur über den Browser möglich, Threema bietet diese Möglichkeit gar nicht an.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2018">
+    <meta property="article:published_time" content="2018-03-02T00:00:00+00:00">
+    <meta property="article:modified_time" content="2018-03-02T00:00:00+00:00">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/en/2018/2018-03-02-wie-entwickelt-man-einen-amazon-bot-fuer-telegramm/">
+
+  
+  
+  
+  <meta itemprop="name" content="Wie entwickelt man einen Amazon-Bot für Telegramm?">
+  <meta itemprop="description" content="Was ist ein Telegramm-Bot? Schon mal was von Telegramm gehört oder gar einem Telegramm-Bot gehört? Nein? Macht nichts. Telegramm ist ein Messenger, wie Whatsapp oder Threema. Der große Vorteil von Telegramm gegenüber Whatsapp ist die Plattforum-Unabhängigkeit. Es gibt nicht nur Apps für Android und iOs, auch unter OS X (Mac) und Windows lässt sich Telegramm unkompliziert nutzen. Bei Whatsapp war das bisher nur über den Browser möglich, Threema bietet diese Möglichkeit gar nicht an.">
+  <meta itemprop="datePublished" content="2018-03-02T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2018-03-02T00:00:00+00:00">
+  <meta itemprop="wordCount" content="2131">
+  <meta itemprop="keywords" content="Development,Anleitungen">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>Wie entwickelt man einen Amazon-Bot für Telegramm? - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Wie entwickelt man einen Amazon-Bot für Telegramm?">
+  <meta name="twitter:description" content="Was ist ein Telegramm-Bot? Schon mal was von Telegramm gehört oder gar einem Telegramm-Bot gehört? Nein? Macht nichts. Telegramm ist ein Messenger, wie Whatsapp oder Threema. Der große Vorteil von Telegramm gegenüber Whatsapp ist die Plattforum-Unabhängigkeit. Es gibt nicht nur Apps für Android und iOs, auch unter OS X (Mac) und Windows lässt sich Telegramm unkompliziert nutzen. Bei Whatsapp war das bisher nur über den Browser möglich, Threema bietet diese Möglichkeit gar nicht an.">
+
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institute for Digital Challenges</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+    
+<main id="main" class="post">
+  
+  <div class="post-header">
+  <div class="navigation">
+
+    
+    <a class="link prev" href="/en/2017/2017-11-16-download-geschwindigkeit-messen-und-in-googledata-studio-darstellen/">&lt;&lt;&lt;</a>
+    
+    
+    <h1 style="flex-grow: 1; text-align: center;">Wie entwickelt man einen Amazon-Bot für Telegramm?</h1>
+    
+    
+    <a class="link next" href="/en/2018/2018-03-03-coii/">>>></a>
+    
+
+  </div>
+  </div>
+  <div class="post-date">March 2, 2018</div>
+
+  
+  <article class="content">
+    <h2 id="was-ist-ein-telegramm-bot">Was ist ein Telegramm-Bot?</h2>
+<p>Schon mal was von Telegramm gehört oder gar einem Telegramm-Bot gehört? Nein? Macht nichts. Telegramm ist ein Messenger, wie Whatsapp oder Threema. Der große Vorteil von Telegramm gegenüber Whatsapp ist die Plattforum-Unabhängigkeit. Es gibt nicht nur Apps für Android und iOs, auch unter OS X (Mac) und Windows lässt sich Telegramm unkompliziert nutzen. Bei Whatsapp war das bisher nur über den Browser möglich, Threema bietet diese Möglichkeit gar nicht an.</p>
+<p>Außerdem bietet Telegramm ein sehr umfangreiche API an, die noch dazu sehr gut dokumentiert ist. Damit lassen sich sogenannte Telegramm-Bots entwickeln. Diese Bots können dann von den Nutzern mit @einBot angesprochen werden, um alle Möglichen Aufgaben auszuführen. Einer der bekanntesten ist vermutlich der @gif-Bot, der die Plattform giphy.com durchsuchen kann und die Ergebnisse in den Chat-Verlauf schicken kann. Und diese Art von Bots lassen sich auch selber entwickeln und anbieten. Unter anderem auch mit PHP.</p>
+<p>Wer die Kommunikation mit Telegramm nicht komplett von vorne aufbauen will, kann auf eine Bibliothek <a href="https://github.com/php-telegram-bot/core">von Longman auf github.com</a> zugreifen. Für meinen Geschmack ist diese leider etwas zu schlecht dokumentiert und mitunter etwas durcheinander organisiert. Noch dazu wird sie offenbar nur sporadisch betreut. Dennoch gibt es ein relativ großes Repository mit Beispielen, was definitiv sehr hilfreich  ist. Etwas verwirrend sind die beiden Repositories, die da <em>Core</em> und <em>Manager</em> heißen. Der <em>Manager</em> ist nur eine Art Wrapper für das Core-Repository. Dessen Nutzung erleichtert die Einrichtung und Entwicklung des Bots um ein vielfaches und bietet z.B. eine zentrale Datei (manager.php) an, um alle Funktionen zu steuern. Beim Core werden die jeweiligen Bot-Funktionen über verschiedene Dateien gesteuert.</p>
+<h3 id="was-ist-das-ziel">Was ist das Ziel?</h3>
+<p>Was ist also der Plan? Wir bauen uns einen Telegramm-Bot, mit dem sich Amazon nach Produkten durchsuchen lässt. Das Ergebnis wird in einem Grid dargestellt. Wählt man ein Element aus, erscheint es mit Link zum Produkt im Chat-Verlauf. Und mit einer Analytics-Plattform soll das ganze</p>
+<p>Um deinen eigenen Bot betreiben zu können brauchst du natürlich erstmal Telegramm und außerdem einen Web-Server und eine Domain für die du ein SSL-Zertifikat einrichten musst. Außerdem solltest du <a href="https://getcomposer.org/download/">composer</a> installiert haben und so ungefähr wissen, wie man damit umgeht.</p>
+<h2 id="anmelden-eines-bots">Anmelden eines Bots</h2>
+<p>Zunächst musst du deinen neuen Telegramm-Bot anmelden. Dazu nutzt du den BotFather (<a href="https://telegram.me/botfather">BotFather)</a>. dem du mit dem Befehl /<em>newbot</em> dazu bringen kannst, einen neuen Bot zu registrieren. Zuerst wird ein Name für den Bot verlangt - das ist allerdings noch <em>nicht</em> der Name, mit dem der Bot später auch angesprochen wird. Das ist erst der sogenannte <em>username</em>, der im 2. Schritt verlangt wird. Ich nenne meinen Bot <em>@buecherBot</em>.</p>
+<p>Leider gibt es hier eine Restriktion: Der Name muss mit <em>bot</em> enden. Wer einen kurzen Namen wie @gif oder @youtube nutzen möchte, muss dazu vermutlich etwas mehr Aufwand betreiben. Als nächstes rufst du die Einstellungen des Bots auf, indem du das Inline-Menü mit /mybots öffnest.</p>
+<p>Für unseren Bot solltest du zunächst den Inline-Mode aktivieren. Damit kannst du den Bot im Textfeld direkt ansprechen. Das gehst du über den Punkt Bot-Settings zum Inline-Mode und aktivierst diesen.</p>
+<p>[caption id=&ldquo;attachment_1655&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/wie-entwickelt-man-einen-bot-fuer-telegramm/telegramm-bot-father.png"><img src="/en/2018/2018-03-02-wie-entwickelt-man-einen-amazon-bot-fuer-telegramm/images/telegramm-bot-father-300x200.png" alt="Inline-Mode für den Telegramm-Bot aktivieren"></a> Inline-Mode für den Telegramm-Bot aktivieren[/caption]</p>
+<p> </p>
+<p>Schließlich kannst du <em>Allow Groups</em> auf Nein setzen und die <em>Group Privacy</em> aktivieren. Da der Bot noch nicht in Gruppen aktiv sein soll, muss er weder Mitglied von Gruppen sein noch deren Nachrichten mitlesen.</p>
+<p>Als nächstes lässt du dir den API-Schlüssel anzeigen, damit du auch von außen mit dem Bot kommunizieren kannst. Der API-Schlüssel befindet sich im obersten Menü und ist folgendermaßen aufgebaut:</p>
+<p>123123123:128390123jKF19082_1293123123</p>
+<p>Das war es, was die Vorbereitung angeht. Weiter geht es mit PHP und einer kleinen Bot-Logik.</p>
+<h2 id="dem-bot-mit-php-leben-einhauchen">Dem Bot mit PHP Leben einhauchen</h2>
+<p>Als Library bzw. Framework nutzen wir das <a href="https://github.com/php-telegram-bot/core">Telegram-Bot-Repository</a> von Longman bzw. den dazugehörigen <a href="https://github.com/php-telegram-bot/telegram-bot-manager">Manager</a>, eine Art Wrapper, der die Steuerung etwas erleichtert.Damit du für den ersten Start bereits eine gute Grundlage hast, solltest du dir <a href="https://github.com/php-telegram-bot/example-bot">die Beispiel-Dateien von github</a> herunterladen. Auf der github-Seite wird zwar die Einstellung für die composer.json vorgegeben, allerdings hat der checkout damit bei mir nicht funktioniert. Mit folgenden Parametern klappte es dann:</p>
+<p>{
+&ldquo;require&rdquo;: {
+&ldquo;php-telegram-bot/telegram-bot-manager&rdquo;: &ldquo;^1.2&rdquo;,
+&ldquo;longman/telegram-bot&rdquo;: &ldquo;0.52 as 0.48&rdquo;
+}
+}</p>
+<p>Nachdem composer alle Abhängigkeiten heruntergeladen hat (<em>composer install</em>), muss man sich in der manager.php an die Grundeinstellungen machen. (Es kann passieren, dass du auf deinem System einige PHP-Module installieren musst. Composer wird dir die Namen der Module allerdings nennen. Du kannst sie dann relativ unkompliziert mit z.B. apt-get install php7.0-b_cmath php7.0-curl herunterladen und aktivieren.) Außerdem werde ich ein paar Änderungen an der Datei InlinequeryCommand.php_ aus dem Ordner Commands aus dem Beispiel-Repository vornehmen.</p>
+<p>Aber zuerst zur manager.php. Hier solltest du die folgenden Einstellungen vornehmen:</p>
+<ul>
+<li>
+<p><strong>bot_username</strong> - der Benutzername deines Bots, ohne das führende @</p>
+</li>
+<li>
+<p><strong>api_key</strong> - der API-Schlüssel, den dir der Bot-Father gegeben hat</p>
+</li>
+<li>
+<p><strong>secret</strong> - ein selbst erzeugtes Passwort um die Datei vor Zugriffen von außen zu schützen - die PHP-Datei liegt ja auf deinem öffentlichen Server und kann theoretisch von überall aufgerufen werden.</p>
+</li>
+<li>
+<p><strong>webhook-&gt;url</strong> - hier trägst du die URL zur manager.php-Datei ein, also <a href="https://telegramm.example.com/manager.php">https://telegramm.example.com/manager.php</a></p>
+</li>
+<li>
+<p><strong>commands-&gt;paths</strong> - diese Zeile muss auskommentiert sein und zu einem Pfad verweisen, der deine Bot-Commandos enthält. Wenn du dich an dem Bot-Example orientierst, sieht diese Einstellung so aus:</p>
+<pre><code>      'commands' =&gt; \[
+         // Define all paths for your custom commands
+         'paths'   =&gt; \[
+             \_\_DIR\_\_ . '/Commands'
+         \]
+</code></pre>
+</li>
+</ul>
+<p>Als nächstes kannst du noch ein paar zusätzliche Änderungen vornehmen, die aber für die Funktion des Bots nicht wichtig sind:</p>
+<ul>
+<li><strong>max_connections</strong> - offensichtlich die Anzahl der maximal zulässigen Verbindungen</li>
+<li><strong>logging</strong> - diese Zeilen kannst du aus-kommentieren, um das Logging zu aktivieren, gerade in der Anfangsphase ist das ganz nützlich</li>
+<li><strong>limiter</strong> - die Telegram-API lässt natürlich nur eine begrenzte Anzahl von Anfragen zu, um das eigene System zu schützen, offenbar bringt das Framework eine Funktion mit, um das Erreichen des Limits bestmöglich zu vermeiden - wie das funktioniert, kann ich nicht sagen, da dazu auch nicht mehr in der Doku steht, ich hab es erstmal aktiviert</li>
+</ul>
+<p>Grundsätzlich war es das erstmal, was die Voreinstellungen betrifft. Jetzt kannst du den sog. webhook aktivieren. Dazu rufst du die manager.php im Browser auf, wie z.B.</p>
+<p><a href="https://telegramm.example.com/manager.php">https://telegramm.example.com/manager.php</a></p>
+<h3 id="den-zugriff-von-außen-beschränken">Den Zugriff von außen beschränken</h3>
+<p>Wenn du alles richtig gemacht hast, erscheint jetzt erstmal ein Fehler. Und das ist auch gut so - denn schließlich soll der Zugriff von außen ja nicht jedem gewährt werden.</p>
+<p>Fatal error: Uncaught TelegramBot\TelegramBotManager\Exception\InvalidAccessException:
+Invalid access in &hellip;</p>
+<p>Also packst du noch das secret-Token an die URL, dass du weiter oben in der manager.php angegeben hast (nicht den API-Schlüssel von Telegramm!). Und damit du auch eine Aktion auslöst, setzt du erstmal den webhook mit dem Parameter a=set:</p>
+<p><a href="https://telegramm.example.com/manager.php?s=123123123&amp;a=set">https://telegramm.example.com/manager.php?s=123123123&a=set</a></p>
+<p>Dein Webhook für den Bot ist nun aktiv. Da du in der <em>manager.php</em> außerdem schon den Ordner commands freigegeben hast, kann der Bot nun schon auf Inline-Anfragen antworten. Im Telegramm-Client kannst du nun deinen Privat-Chat öffnen (&ldquo;Gespeichertes&rdquo;) und den Telegramm-Bot mit @buecherBot ansprechen. Der Bot sollte nun, wenn alles korrekt eingerichtet, so antworten, wie es in der Datei <em>InlinequeryCommand.php</em> vorgegeben ist. Nämlich mit einer sehr einfache 3-zeiligen Liste.</p>
+<p>Um nun ein Ergebnis von der Amazon API als Bilder-Liste darzustellen, habe ich <em>InlinequeryCommand.php</em> ein wenig angepasst. Zuerst benötigen wir die entsprechende Klasse, um nicht nur mit Text sondern auch mit Bildern zu antworten:</p>
+<p>use Longman\TelegramBot\Entities\InlineQuery\InlineQueryResultPhoto;</p>
+<p>Außerdem habe ich den Aufbau des Antwort-Objektes etwas vereinfacht (ich werde hier nicht weiter ins Detail gehen, auf $this-&gt;apiResult gehe ich später ein).</p>
+<p>foreach ($this-&gt;apiResult-&gt;items as $item) {</p>
+<p>$this-&gt;inlineQueryResult[] = new InlineQueryResultPhoto(array(
+&lsquo;id&rsquo;                    =&gt;  sizeof($this-&gt;inlineQueryResult),
+&rsquo;title&rsquo;          	=&gt; &lsquo;Search: &rsquo; . $query,
+&lsquo;description&rsquo;           =&gt; &lsquo;Info: &rsquo; . $information,
+&rsquo;thumb_url&rsquo;             =&gt; $thumbUrl,
+&lsquo;photo_url&rsquo;             =&gt; $imageUrl,
+&lsquo;caption&rsquo;             	=&gt; $linkUrl
+)
+);</p>
+<p>}</p>
+<p>$data[&lsquo;results&rsquo;] = &lsquo;[&rsquo; . implode(&rsquo;,&rsquo;, $this-&gt;inlineQueryResult) . &lsquo;]&rsquo;;</p>
+<p>return Request::answerInlineQuery($data);</p>
+<p>Grundsätzlich war es das schon. Du kannst nun noch alle möglichen anderen Funktionen des Bots nutzen. Schau dir dazu einfach den Commands-Ordner des Example-Repository an. Die Auswahl ist sehr groß, für meine Zwecke soll es aber erstmal bei der Inline-Query bleiben.</p>
+<h2 id="eine-suchanfrage-zu-amazon-schicken">Eine Suchanfrage zu Amazon schicken</h2>
+<p>Natürlich soll derTelegramm-Bot nun auch in der Lage sein, Anfragen der Benutzer zu Amazon zu schicken und mit einem vernünftigen Suchergebnis zu antworten. Zunächst benötigt man dafür einen Partner-Account bei <a href="https://partnernet.amazon.de">Amazon</a>. <a href="https://partnernet.amazon.de/assoc_credentials/home">In den Einstellungen</a> kann man sich dann ein Schlüsselpaar erstellen um die Suchanfragen zu authentifizieren. Und auch für die Suchanfrage selber gibt es eine PHP-API, nämlich <a href="https://github.com/Exeu/apai-io/">apai-io von exeu</a>. Die Einrichtung und der Aufbau sind relativ einfach. Nachdem composer die notwendigen Dateien heruntergeladen hat, packt man - wie üblich - ein paar Zeilen in eine PHP-Datei und hat die erste Anfrage an die Amazon-API fertig:</p>
+<pre><code>&lt;?php ini\_set('display\_errors', 1);
+
+require\_once \_\_DIR\_\_ . '/vendor/autoload.php';
+
+define('AWS\_API\_KEY', 'AKAKAKAKAKAKAKA');
+define('AWS\_API\_SECRET\_KEY', 'KALSKDLASKDLASDKLASDKLASKLDKASLDASDL
+define('AWS\_ASSOCIATE\_TAG', 't0000-21');
+
+use ApaiIO\\Configuration\\GenericConfiguration;
+use ApaiIO\\Operations\\Search;
+use ApaiIO\\ApaiIO;
+
+$conf = new GenericConfiguration();
+$client = new \\GuzzleHttp\\Client();
+$request = new \\ApaiIO\\Request\\GuzzleRequest($client);
+
+$conf
+	-&gt;setCountry('de')
+	-&gt;setAccessKey(AWS\_API\_KEY)
+	-&gt;setSecretKey(AWS\_API\_SECRET\_KEY)
+	-&gt;setAssociateTag(AWS\_ASSOCIATE\_TAG)
+	-&gt;setRequest($request);
+	
+$apaiIO = new ApaiIO($conf);
+
+$search = new Search();
+$search-&gt;setCategory('DVD');
+$search-&gt;setActor('Bruce Willis');
+$search-&gt;setKeywords('Stirb Langsam');
+
+$response = $apaiIO-&gt;runOperation($search);
+
+$results = simplexml\_load\_string( $response ); 
+</code></pre>
+<p>Leider gestalten sich die ersten Versuche mit der API etwas schwieriger. Nutzt man den Beispiel-Code, liefert das ganze Script nur einen sehr langen String zurück. In der weiterführenden <a href="http://apai-io.readthedocs.io/en/latest/chapters/responsetransformer.html">Dokumentation</a> wird zwar ein <em>setResponseTransformer</em> beschrieben (siehe auskommentierte Zeile oben). Doch auch dann ist die Antwort nicht nutzbar. Das Suchergebnis bleibt weiterhin ein langer String. Erst <a href="https://github.com/Exeu/apai-io/issues/48">Issue 48</a> gibt einen Hinweis auf die Lösung: <em>new SimpleXMLElement</em>.  Jetzt erhalte ich ein XML-Object, in dem ich mich mit einer Schleife durch das Ergebnis arbeiten kann. Oder man greift auf <a href="https://gist.github.com/ottanxyz/4a44a5094bf27606c12803590a92d131">die hier verwendete Funktion</a>  <em>simplexml_load_string</em> zurück - mein Favorit.</p>
+<p>Nun geht es darum, die Antwort in eine Schleife zu packen, um die notwendigen Informationen zu extrahieren. Das Suchergebnis muss also vorbereitet und zurück an denTelegramm-Bot geschickt werden.</p>
+<h2 id="die-hochzeit---amazons-antwort-an-dentelegramm-bot-weiterleiten">Die Hochzeit - Amazons-Antwort an denTelegramm-Bot weiterleiten</h2>
+<p>Bisher war die Amazon-Funktionalität in eine andere Datei ausgelagert. Also müssen erstmal Zugangsdaten und die Abhängigkeiten in die InlineQueryCommand.php übernommen werden. Ich mach mir das Leben nicht unnötig schwer, und packe das alles in die InlinequeryCommand.php. Sauberer wäre es vielleicht, die initiale bot-Klasse etwas zu erweitern. Außerdem  muss die Anfrage an den Bot an die Amazon-API durchgeschliffen werden. Wenn der Benutzer nur einen Suchbegriff angibt (Bruce Willis), wird danach in allen Kategorien gesucht. Wer die Suche einschränken möchte, muss dem Suchbegriff die entsprechende Kategorie voranstellen. Also z.B.: Books:Bibel Das ganze sieht dann in etwa so aus:</p>
+<p>$request = explode(&rsquo;:&rsquo;, trim($requestString));</p>
+<p>if (sizeof($request) == 1) {</p>
+<pre><code>$category = 'All';
+$keywords = trim($request\[0\]);
+</code></pre>
+<p>} else {</p>
+<pre><code>$category = trim($request\[0\]);
+$keywords = trim($request\[1\]);
+</code></pre>
+<p>}</p>
+<p>Kategorie und Keyword werden nun schlicht an die Amazon-API übergeben. Damit ich auch Vorschaubilder erhalte, muss ich das in der Suche explizit angeben. Die Anfrage an die API sieht nun also so aus:</p>
+<p>$search = new Search();
+$search-&gt;setCategory($category);
+$search-&gt;setKeywords($keywords);
+$search-&gt;setResponseGroup( array( &lsquo;Images&rsquo;, &lsquo;ItemAttributes&rsquo; ) );	
+$search-&gt;setPage(1);</p>
+<p>Das ganze wird nun in ein Objekt gepackt und in einer Schleife durchlaufen um die Antwort für den Bot zu erzeugen. Das hat sich bei den ersten Versuchen als schwierig erwiesen. Es hat eine Weile gedauert, bis ich herausgefunden habe, dass ich die Eigenschaften des Antwort-Objekts als String casten muss: (string)!</p>
+<p>foreach ($this-&gt;apiResult-&gt;Items-&gt;Item as $item) {</p>
+<p>$title  = (string) $item-&gt;ItemAttributes-&gt;Title;
+$url  = (string) $item-&gt;DetailPageURL;
+$thumbFileUrl  = (string) $item-&gt;LargeImage-&gt;URL;
+$thumbFileName = basename($thumbFileUrl);
+$thumbFileType = pathinfo($thumbFileName, PATHINFO_EXTENSION);</p>
+<p>if ($thumbFileType == &lsquo;jpg&rsquo; || $thumbFileType == &lsquo;jepg&rsquo;) {</p>
+<pre><code>$this-&gt;inlineQueryResult\[\] = new InlineQueryResultPhoto(
+array(
+		'id'                    =&gt; sizeof($this-&gt;inlineQueryResult),
+		'title'                 =&gt; $title,
+		'description'           =&gt; $title,
+		'caption'          		=&gt; $title@,
+		'thumb\_url'             =&gt; $thumbFileUrl,
+		'photo\_url'             =&gt; $thumbFileUrl,
+		'input\_message\_content' =&gt; new InputTextMessageContent(\[
+			'parse\_mode' =&gt; 'HTML',
+			'message\_text' =&gt; ' ' . 'Shop it @ &lt;a href=&quot;'.$url.'&quot;&gt;Amazon&lt;/a&gt;!'\])
+	)
+);
+</code></pre>
+<p>}</p>
+<p>if (sizeof($this-&gt;inlineQueryResult) &gt;= $this-&gt;limitResult) {</p>
+<pre><code>break;
+</code></pre>
+<p>}</p>
+<p>}</p>
+<p>Grundsätzlich war es das. Das ganze Script gibt es zum Nachlesen wie gesagt auf github.</p>
+<h2 id="zugriffsstatistiken-mit-botan-aufzeichnen-und-darstellen">Zugriffsstatistiken mit Botan aufzeichnen und darstellen</h2>
+<p>Um Botan nutzen zu können, brauchst du einen Account bei <a href="https://appmetrica.yandex.com/">AppMetrica</a> von Yandex. Dort kannst du direkt nach der Registrierung einen API-Schlüssel für deinen Bot anlegen:</p>
+<p>[caption id=&ldquo;attachment_1649&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/wie-entwickelt-man-einen-bot-fuer-telegramm/appmetrics-yandex-bot-api-key-anlegen.png"><img src="/en/2018/2018-03-02-wie-entwickelt-man-einen-amazon-bot-fuer-telegramm/images/appmetrics-yandex-bot-api-key-anlegen-300x130.png" alt="AppMetrics API Key für Bot anlegen"></a> AppMetrics API Key für Bot anlegen[/caption]</p>
+<p>Wenn das erledigt ist, gelangst du zu der Übersichtsseite deines Bots und siehst dort den API-Key, den du als token in der <em>manager.php</em> einträgst. Die entsprechenden Zeilen müssen natürlich auch auskommentiert werden:</p>
+<pre><code>    // Botan.io integration
+    'botan' =&gt; \[
+       'token' =&gt; '123123123-123123123-123123',
+    \],
+</code></pre>
+<p>Das ist es schon fast gewesen. Wenn da nicht der Datenschutz wäre. Wenn du Telegramm-Bot im Chat nun &ldquo;anrufst&rdquo;, erscheint der Aufruf einige Augenblicke später auch im Interface von AppMetrics. Allerdings sind dann auch eine UserId und der Vorname im Klartext enthalten. Um das zu vermeiden, musst du Methode <em>track</em> in der Botan-Klasse (Botan.php in vendor\longman\telegram-bot\src\) anpassen:</p>
+<p>Direkt an den Anfang der Methode habe ich die folgende Anonymisierung eingefügt:</p>
+<p>// ANONYMIZING STATS
+if (isset($update-&gt;inline_query)) {</p>
+<pre><code>if (isset($update-&gt;inline\_query\['from'\])) {
+
+	if (isset($update-&gt;inline\_query\['from'\]\['id'\])) {
+	
+		$update-&gt;inline\_query\['from'\]\['id'\] = '0';
+		$update-&gt;inline\_query\['from'\]\['first\_name'\] = 'anon';
+		$update-&gt;raw\_data\['inline\_query'\]\['from'\]\['id'\] = '0';
+		$update-&gt;raw\_data\['inline\_query'\]\['from'\]\['first\_name'\] = 'anon';
+			
+	}
+}
+</code></pre>
+<p>}</p>
+<p>Weiter unten wird eine UserId ($uid) ermittelt. Auch hier habe ich anonymisiert:</p>
+<p>// In case there is no from field assign id = 0
+// $uid = isset($data[&lsquo;from&rsquo;][&lsquo;id&rsquo;]) ? $data[&lsquo;from&rsquo;][&lsquo;id&rsquo;] : 0;
+// ANONYMIZING STATS
+$uid = 0;</p>
+<p>Jetzt dürften keine Klarnamen mehr übermittelt werden und der Bot ist startklar.</p>
+<p> </p>
+<p>Viel Spass mit deinem Telegramm-Bot.</p>
+
+  </article>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>

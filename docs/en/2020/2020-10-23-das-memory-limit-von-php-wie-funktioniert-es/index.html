@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. Viele Anleitungen sind oft unvollständig, und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:
+
+super-global in der php.ini
+global in der pool.conf, bei Verwendung von PHP-FPM
+oder global in der httpd.conf (Apache) oder server.conf (nginx)
+auf Ordner-Ebene in der user.ini
+auf Ordner-Ebene in der .htaccess-Datei
+auf Applikations-Ebene über die WordPress-Konstanten WP_MEMORY_LIMIT und WP_MAX_MEMORY_LIMIT
+oder auf Datei-Ebene im Script mit ini_set();
+
+">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/">
+
+  
+  
+  <meta name="keywords" content="">
+  
+
+  
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/en/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Das Memory Limit von PHP und WordPress erhöhen - die vollständige Anleitung">
+  <meta property="og:description" content="Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. Viele Anleitungen sind oft unvollständig, und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:
+super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM oder global in der httpd.conf (Apache) oder server.conf (nginx) auf Ordner-Ebene in der user.ini auf Ordner-Ebene in der .htaccess-Datei auf Applikations-Ebene über die WordPress-Konstanten WP_MEMORY_LIMIT und WP_MAX_MEMORY_LIMIT oder auf Datei-Ebene im Script mit ini_set();">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2020">
+    <meta property="article:published_time" content="2020-10-23T00:00:00+00:00">
+    <meta property="article:modified_time" content="2020-10-23T00:00:00+00:00">
+    <meta property="article:tag" content="Apache">
+    <meta property="article:tag" content="Apache2">
+    <meta property="article:tag" content="Memory-Limit">
+    <meta property="article:tag" content="Nginx">
+    <meta property="article:tag" content="Php">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/en/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/">
+
+  
+  
+  
+  <meta itemprop="name" content="Das Memory Limit von PHP und WordPress erhöhen - die vollständige Anleitung">
+  <meta itemprop="description" content="Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. Viele Anleitungen sind oft unvollständig, und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:
+super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM oder global in der httpd.conf (Apache) oder server.conf (nginx) auf Ordner-Ebene in der user.ini auf Ordner-Ebene in der .htaccess-Datei auf Applikations-Ebene über die WordPress-Konstanten WP_MEMORY_LIMIT und WP_MAX_MEMORY_LIMIT oder auf Datei-Ebene im Script mit ini_set();">
+  <meta itemprop="datePublished" content="2020-10-23T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2020-10-23T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1639">
+  <meta itemprop="keywords" content="Apache,Apache2,Memory-Limit,Nginx,Php">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>Das Memory Limit von PHP und WordPress erhöhen - die vollständige Anleitung - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Das Memory Limit von PHP und WordPress erhöhen - die vollständige Anleitung">
+  <meta name="twitter:description" content="Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. Viele Anleitungen sind oft unvollständig, und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:
+super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM oder global in der httpd.conf (Apache) oder server.conf (nginx) auf Ordner-Ebene in der user.ini auf Ordner-Ebene in der .htaccess-Datei auf Applikations-Ebene über die WordPress-Konstanten WP_MEMORY_LIMIT und WP_MAX_MEMORY_LIMIT oder auf Datei-Ebene im Script mit ini_set();">
+
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institute for Digital Challenges</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+    
+<main id="main" class="post">
+  
+  <div class="post-header">
+  <div class="navigation">
+
+    
+    <a class="link prev" href="/en/2020/2020-10-08-automatisierte-wordpress-installation/">&lt;&lt;&lt;</a>
+    
+    
+    <h1 style="flex-grow: 1; text-align: center;">Das Memory Limit von PHP und WordPress erhöhen - die vollständige Anleitung</h1>
+    
+    
+    <a class="link next" href="/en/2020/2020-10-24-marketing-killed-the-internet-star/">>>></a>
+    
+
+  </div>
+  </div>
+  <div class="post-date">October 23, 2020</div>
+
+  
+  <article class="content">
+    <p>Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. <a href="https://wp-ninjas.de/wordpress-php-memory-limit">Viele</a> <a href="https://www.hosttest.de/artikel/was-ist-das-php-memory-limit-1411.html">Anleitungen</a> <a href="https://socialmediadozent.com/php-memory-limit-erhoehen/#Drei_Loesungen_um_das_PHP_Memory_Limit_zu_erhoehen">sind</a> <a href="https://www.how-to-wordpress.de/php-memory-limit/">oft</a> <a href="http://juliusbeckmann.de/blog/php-memory-limit-erhohen.html">unvollständig</a>, und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:</p>
+<ul>
+<li>super-global in der php.ini</li>
+<li>global in der pool.conf, bei Verwendung von PHP-FPM</li>
+<li>oder global in der httpd.conf (Apache) oder server.conf (nginx)</li>
+<li>auf Ordner-Ebene in der user.ini</li>
+<li>auf Ordner-Ebene in der .htaccess-Datei</li>
+<li>auf Applikations-Ebene über die WordPress-Konstanten WP_MEMORY_LIMIT und WP_MAX_MEMORY_LIMIT</li>
+<li>oder auf Datei-Ebene im Script mit ini_set();</li>
+</ul>
+<p><a href="https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-7.png"><img src="/en/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/images/grafik-7-700x246.png" alt=""></a></p>
+<p>Unterschiedliche Orte, um das PHP Memory Limit (und andere Parameter) zu setzen</p>
+<p>Die Reihenfolge entspricht übrigens der Hierarchie. Wird das Limit also im PHP-Script mit ini_set() gesetzt, überschreibt das die Einstellung in der <strong>httpd.conf</strong> oder <strong>server.conf</strong>. Wie sich das vermeiden lässt, dazu unten mehr. Das trifft natürlich nicht nur auf das Memory Limit, sondern so ziemlich jede PHP-Einstellung zu.</p>
+<p>Außerdem hängen die Möglichkeiten stark davon ab, wie du PHP nutzt, also ob als Modul oder über CGI. Um das Vorgehen besser zu verdeutlichen, gehe ich im Folgenden von zwei WordPress-Setups aus. Einmal wird nginx als HTTP-Server genutzt und dort PHP-FPM über CGI angesprochen. Das zweite Setup nutzt Apache2 als HTTP-Server und dort PHP als Modul (php-mod).</p>
+<h2 id="was-bedeutet-das-memory-limit-von-php">Was bedeutet das Memory Limit von PHP?</h2>
+<p>Jeder Dienst benötigt für seine Ausführung Platz im Arbeitsspeicher. So auch PHP. Und mit jedem Aufruf eines PHP-Scripts wird PHP aktiviert und fordert somit Platz im Arbeitsspeicher ein. Und genau dort spielt die Speichergrenze eine Rolle: Um zu vermeiden, dass bei der Verarbeitung <strong>eines PHP-Scripts</strong> zu viel Speicher verbraucht und damit der ganze Server in Mitleidenschaft gezogen wird, legt man eine Obergrenze fest, das <strong>memory_limit</strong>.</p>
+<p>Diese Grenze gilt <strong>für jeden einzelnen Script-Aufruf</strong>. Ein Beispiel: Dein Server hat 8 GByte (<strong>8.192 MByte</strong>) Arbeitsspeicher. Der Aufruf der Datei index.php, die eine sehr aufwendige Datenbankabfrage durchführt und damit viele Daten verarbeitet, erfordert 10 MByte Arbeitsspeicher (das ist übrigens relativ viel und <a href="https://www.deimeke.net/dirk/blog/index.php?/archives/304-Bytes-auf-Papier-....html">entspricht etwa 5.000 bedruckten A4 Seiten</a>). Das Memory-Limit ist auf <strong>32 MByte</strong> eingestellt. Das physikalische Limit beträgt allerdings <strong>8.192 MByte</strong>. Die index.php kann also <strong>819 mal</strong> gleichzeitig (!) aufgerufen werden; erst dann ist der Arbeitsspeicher voll. Das Memory-Limit hat hier also keine Auswirkungen.</p>
+<p>Gehen wir nun davon aus, dass bei einem der <strong>819</strong> Aufrufe bestimmte Parameter gesetzt werden, die eine weitaus größere Datenmenge in der Datenbank abfragen. Die Datenmenge erhöht sich auf <strong>40 MByte</strong>. An dieser Stelle wird das memory_limit aktiv. Der Aufruf dieses Scripts wird abgebrochen mit der Fehlermeldung, dass die erlaubte Speichergrenze überschritten wurde. PHP wird in diesem Fall eine Fehlermeldung wie diese anzeigen:</p>
+<pre tabindex="0"><code>Fatal error: Allowed memory size of 33554432 bytes exhausted…” followed by something like “(tried to allocate 8388608 bytes) in /home/www/index.php on line 42.”
+</code></pre><p>Das Gute daran: Der Aufruf der anderen Scripte wird davon nicht in Mitleidenschaft gezogen.</p>
+<p>Es gibt sehr viele Wege, das Speicherlimit zu setzen. Das hat Vorteile aber auch Nachteile: So wird die Suche nach den gesetzen Einstellungen oft zur Suche nach der berühmten Nadel im Heuhaufen. Der Vorteil: Du kannst das Speicherlimit sehr granular an die Anforderungen deiner verschiedenen Anwendungen anpassen. Bereit? Los gehts&hellip;</p>
+<h2 id="grundsätzliches">Grundsätzliches</h2>
+<p>Der Wert, den du für das Memory Limit übermittelst, kann als einfache Ziffer übergeben werden und legt die Speichergrenze somit in <strong>Byte</strong> fest. PHP unterstützt darüber hinaus einige <strong><a href="https://www.php.net/manual/de/faq.using.php#faq.using.shorthandbytes">Kurzschreibweisen</a></strong>, also z.B. K für Kilobyte (32K), M für Megabyte (256M) und G für Gigabye (2G).</p>
+<p>Willst du verhindern möchtest, dass die Speichergrenze später an anderer Stelle überschrieben wird, definierst du sie mithilfe von <strong>php_admin_value</strong> anstatt nur <strong>php_value</strong>. Also z.B.:</p>
+<pre tabindex="0"><code>php_admin_value[memory_limit] = 256M
+# oder
+fastcgi_param PHP_ADMIN_VALUE &#34;memory_limit = 256M&#34;;
+# oder
+php_admin_value memory_limit = 256M
+</code></pre><p>Willst du das Memory LImit komplett deaktivieren, dann setzt du es auf -1:</p>
+<pre tabindex="0"><code>memory_limit = -1
+</code></pre><p>Aber Achtung: Zu Testzwecken mag das sinnvoll sein, in einer Live-Umgebung solltest du immer mit einer Obergrenze arbeiten.</p>
+<p>Und abschließend noch der Verweis auf zwei nützliche Funktionen, die eigentlich bekannt sein sollten:</p>
+<pre tabindex="0"><code>echo ini_get(&#39;memory_limit&#39;); // zeigt das aktuell gesetzte Memory Limit
+phpinfo(); // zeigt alle relevanten Parameter, u.a. Memory Limit und verwendete .ini-Dateien
+</code></pre><p><a href="https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-1.png"><img src="/en/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/images/grafik-1-700x25.png" alt=""></a></p>
+<p><strong>Wichtig</strong>: Derartige Funktionen dienen der Fehlersuche und sollten im Live-System nicht unbedingt öffentlich abrufbar sein!</p>
+<h2 id="das-memory-limit-in-php-einstellen">Das Memory Limit in PHP einstellen</h2>
+<h3 id="super-global-in-der-phpini">Super global in der php.ini</h3>
+<p>Die erste &ldquo;Konfigurations-Stufe&rdquo; befindet sich natürlich direkt innerhalb von PHP. Wenn du wissen willst, wo sich die Einstellungen für PHP befinden, nutze ganz einfach phpinfo(); Die entsprechende Datei heißt <strong>php.ini</strong> und befindet sich in der Regel in /etc/php/7.0/apache2/php.ini (für PHP als Modul, z.B. in <strong>Apache2</strong>) oder /etc/php/7.4/fpm/php.ini (für PHP als Dienst, z.B. in <strong>nginx</strong>). Der Parameter ist in beiden Fällen gleich:</p>
+<pre tabindex="0"><code>memory_limit = 256M
+</code></pre><p>Wenn du PHP als Modul unter Apache nutzt, musst du Apache2 neustarten, bzw. die Konfiguration neu einlesen lassen:</p>
+<pre tabindex="0"><code>service apache2 restart 
+service apache2 reload
+</code></pre><p>Analog, bei PHP als Dienst, wie z.B. in nginx, erfolgt das Neustarten folgendermaßen (In der Regel reicht es aus, mit reload nur die Konfiguration neu zu laden. Sollte es zu Komplikationen kommen, hilft ein kompletter Neustart des Dienstes eventuell weiter).</p>
+<pre tabindex="0"><code>service php7.0-fpm restart
+service php7.0-fpm reload
+</code></pre><h3 id="für-jeden-php-fpm-pool-in-der-poolconf">Für jeden PHP-FPM Pool in der pool.conf</h3>
+<p>Nutzt du PHP-FPM über CGI (also mein erstes Setup mit nginx), gibt es für jeden Server (bzw. virtuellen Host) einen eigenen <strong>Pool</strong>, lies eine Art eigene getrennte PHP-Umgebung für jeden einzelnen virtuellen Host. Die Einstellungen dazu befinden sich z.B. unter <strong>/etc/php/7.4/fpm/pool/my_host.conf</strong>. Hier wird der entsprechende Parameter folgendermaßen gesetzt:</p>
+<pre tabindex="0"><code>[my_host_de]
+...
+php_value[memory_limit] = 1024M
+...
+</code></pre><p>Die Einstellung an dieser Stelle überschreibt den Wert in der <strong>php.ini</strong>. Nach der Änderung muss der PHP-Dienst natürlich neu gestartet werden.</p>
+<h2 id="das-memory-limit-in-apache2-und-nginx-setzen">Das Memory-Limit in Apache2 und nginx setzen</h2>
+<h3 id="super-global-in-der-nginxconf--httpdconf">Super global in der nginx.conf / httpd.conf</h3>
+<p>Für die beiden HTTP-Server nginx und Apache2 gibt es die beiden globalen Einstellungsdateien <strong>/etc/nginx/nginx.conf</strong> bzw. <strong>/etc/apache2/httpd.conf</strong>. In nginx kann das PHP-Limit im sogenannten <strong>http-Kontext</strong> gesetzt werden und gilt damit für die komplette Nginx-Instanz. Ich gehe hier und im Folgenden übrigens davon aus, dass nginx den PHP-Interpreter über FastCGI anspricht und PHP eigenständig als FPM läuft.</p>
+<pre tabindex="0"><code>http {
+
+  fastcgi_param PHP_VALUE &#34;memory_limit = 256M&#34;;
+
+}
+</code></pre><p>Im Falle von Apache2 gehe ich davon aus, dass PHP als Modul konfiguriert ist. Hier wird das PHP Limit in der <strong>httpd.conf</strong> folgendermaßen gesetzt:</p>
+<pre tabindex="0"><code>php_value memory_limit = 256M
+</code></pre><h3 id="global-für-jeden-virtuellen-host">Global für jeden virtuellen Host</h3>
+<p>In nginx lässt sich die entsprechende Einstellung auch innerhalb des Server-Blocks setzen und gilt somit für einen ganzen virtuelle Host. Üblicherweise findest du diese Einstellung in <strong>/etc/nginx/conf.d/my_host.conf:</strong></p>
+<pre tabindex="0"><code>server {
+
+  fastcgi_param PHP_VALUE &#34;memory_limit = 256M&#34;;
+
+}
+</code></pre><p>Nutzt du Apache2, findest du die entsprechende Einstellungs-Datei in der Regel unter <strong>/etc/apache2/sites-enabled/my_host.conf</strong>:</p>
+<pre tabindex="0"><code>&lt;VirtualHost&gt;
+
+php_value memory_limit 256M
+
+&lt;/VirtualHost&gt;
+</code></pre><h3 id="global-für-jeden-ordner">Global für jeden Ordner</h3>
+<p>Weiter geht es mit dem Ordner-Spezifische Memory-Limit in nginx im location-Kontext (die Datei dürfte in der Regel unverändert sein).</p>
+<p>Achtung: <a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html">In nginx kann die Direktive fastcgi_param</a> auch im übergeordneten http-Kontext oder auf Ordner-Ebene innerhalb des location-Blocks gesetzt werden:</p>
+<pre tabindex="0"><code>location ~ .(php|php.*)$ {
+
+  fastcgi_param PHP_VALUE &#34;memory_limit = 256M&#34;;
+
+}
+</code></pre><p>Analog dazu kannst du in Apache2 das Limit global in apache2.conf oder auf Ordner-Ebene in der my_host.conf:</p>
+<pre tabindex="0"><code>&lt;Directory&#34;/var/www/example_de/htdocs/&#34;&gt;
+php_value memory_limit 256M
+&lt;/Directory&gt;
+</code></pre><h2 id="das-memory-limit-auf-ordner-ebene-setzen">Das Memory-Limit auf Ordner-Ebene setzen</h2>
+<h3 id="für-jeden-ordner-mit-der-userini">Für jeden Ordner mit der .user.ini</h3>
+<p>Mit der Datei <strong>.super.ini</strong> kannst du PHP-Einstellungen für beliebige Ordner individuell konfigurieren. Dieser Weg steht dir allerdings nur offen, <a href="https://www.php.net/manual/en/configuration.file.per-user.php">wenn du PHP nicht als Modul nutzt, sondern über CGI/FastCGI</a>. In meinem Beispiel-Setup mit Apache2 und php-mod fällt diese Option also weg.</p>
+<p>Du kannst die Datei in jedem Ordner anlegen und dort Parameter so einstellen, wie du es von der php.ini gewohnt bist. Dieser Weg muss allerdings vorher &ldquo;freigeschaltet&rdquo; werden, indem in der php.ini (bzw. den anderen o.g. Orten), der folgende Parameter gesetzt ist:</p>
+<pre tabindex="0"><code>user_ini.filename = .user.ini
+</code></pre><p>Ob das der Fall ist, erfährst du, wie immer, mithilfe von phpinfo();. Dort siehst du unter &ldquo;Additional .ini files parsed&rdquo; auch, ob sich im aktuellen Ordner eine .user.ini befindet und diese gelesen wurde:</p>
+<p><a href="https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-4.png"><img src="/en/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/images/grafik-4-700x164.png" alt=""></a></p>
+<p>Überprüfen, welche .ini-Dateien PHP gelesen hat</p>
+<p>Wenn das alles passt, verwendest du die .user.ini wie die php.ini und setzt das Speicherlimit demnach folgenermaßen:</p>
+<pre tabindex="0"><code>memory_limit=256M
+</code></pre><h3 id="für-jeden-ordner-mit-der-htaccess">Für jeden Ordner mit der .htaccess</h3>
+<p>Diese Option wiederum steht dir nur mit Apache2 zur Verfügung, da nginx keine .htaccess-Dateien unterstützt. Du setzt das Limit in der .htaccess-Datei folgendermaßen:</p>
+<pre tabindex="0"><code>php_value memory_limit = 256M
+</code></pre><h2 id="das-memory-limit-auf-applikations-ebene-setzen">Das Memory-Limit auf Applikations-Ebene setzen</h2>
+<p>WordPress verwendet standardmäßig eine Memory Limit von <strong>40</strong> <strong>MByte</strong> im Frontend (bzw. 64 MByte bei einem Multi-Site-Setup) sowie (mindestens) <strong>256 MByte</strong> für das Backend. Wenn du diese Werte ändern möchtest, kannst du dafür die beiden folgenden Konstanten in der <strong>wp-config.php</strong> setzen - achte darauf, diese Konstanten vor der Einbindung von <strong>wp-settings.php</strong> zu definieren:</p>
+<pre tabindex="0"><code>define(&#39;WP_MEMORY_LIMIT&#39;, &#39;256M&#39;);
+define(&#39;WP_MAX_MEMORY_LIMIT&#39;, &#39;256M&#39;);
+[...]
+require_once(ABSPATH . &#39;wp-settings.php&#39;);
+</code></pre><p>WordPress nutzt intern allerdings auch nur die PHP-Funktion ini_set um das Memory Limit festzulegen:</p>
+<pre tabindex="0"><code>ini_set( &#39;memory_limit&#39;, WP_MEMORY_LIMIT );
+</code></pre><h2 id="das-memory-limit-auf-datei-ebene-setzen">Das Memory-Limit auf Datei-Ebene setzen</h2>
+<p>Zum Abschluss gibt es auch die Möglichkeiten das Memory Limit in jedem Script individuell zu setzen. Diese Möglichkeit steht an letzter Stelle und überschreibt damit alle vorhergehenden Einstellungen:</p>
+<pre tabindex="0"><code>ini_set(&#39;memory_limit&#39;,&#39;256M&#39;);
+</code></pre><p>Durch die Verwendung von <strong>include()</strong>, <strong>require_once()</strong> oder <strong>require()</strong> lassen sich andere PHP-Dateien innnerhalb eines Scripts einzubinden. Grundsätzlich wird das Memory Limit dann zwar vererbt. Was nicht heißt, dass es durch später eingebundene Scripte überschrieben werden kann. Das macht sich z.B. auch bei WordPress bemerkbar: Du kannst das Memory Limit zwar mit WP_MEMORY_LIMIT für WordPress definieren, ein Plugin oder Theme kann das Limit aber trotzdem später überschreiben.</p>
+<p>Ein Beispiel: So sieht die Datei <strong>index.php</strong> aus:</p>
+<pre tabindex="0"><code>&lt;?php  ini_set(&#39;memory_limit&#39;,&#39;256M&#39;);  (...aufwendige Operation...);  include(&#39;file.php&#39;); 
+</code></pre><p>Die Datei <strong>file.php</strong> sieht folgendermaßen aus:</p>
+<pre tabindex="0"><code> &lt;?php
+ echo ini_get(&#39;memory_limit&#39;);
+ (…aufwendige Operation…)
+ ini_set(&#39;memory_limit&#39;,&#39;32M&#39;);
+ (…aufwendige Operation…);
+</code></pre><p>Die zweite Zeile in der file.php gibt als Rückgabe <strong>256M</strong> aus. Das Memory-Limit wird vererbt. Die vierte Zeile setzt das Limit allerdings auf 32 MByte und überschreibt damit den Wert von 256 MByte. Belegt die &ldquo;aufwendige Operation&rdquo; in index.php nur <strong>12 MByte</strong>, in der file.php nur jeweils <strong>5 MByte</strong>, funktioniert das gesamte Script einwandfrei. Wenn die &ldquo;aufwendige Operation&rdquo; in der Datei index.php z.B. mehr als <strong>22 MByte</strong> beansprucht, bricht PHP die Verarbeitung des Scripts ab. Warum? Weil das Limit nachträglich nach unten korrigiert wurde.</p>
+
+  </article>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>

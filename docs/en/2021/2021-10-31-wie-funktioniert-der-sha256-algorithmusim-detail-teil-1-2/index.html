@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. SHA-256 ist Teil einer ganzen Gruppe von Algorithmen, mit dem gleichen Ziel: Die Erzeugung eines Hashes, der resistent gegen Kollisionen ist, dessen Berechnung nur in eine Richtung funktioniert und eine feste Länge hat. Im folgenden Artikel beschreibe ich die einzelnen Schritte die der Algorithmus vornimmt, um einen Hash zu erzeugen.
+Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es an den eigentlichen Algorithmus. Der Sourcecode liegt auf Github.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/">
+
+  
+  
+  <meta name="keywords" content="">
+  
+
+  
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/en/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&nbsp;1/2)">
+  <meta property="og:description" content="SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. SHA-256 ist Teil einer ganzen Gruppe von Algorithmen, mit dem gleichen Ziel: Die Erzeugung eines Hashes, der resistent gegen Kollisionen ist, dessen Berechnung nur in eine Richtung funktioniert und eine feste Länge hat. Im folgenden Artikel beschreibe ich die einzelnen Schritte die der Algorithmus vornimmt, um einen Hash zu erzeugen.
+Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es an den eigentlichen Algorithmus. Der Sourcecode liegt auf Github.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2021">
+    <meta property="article:published_time" content="2021-10-31T00:00:00+00:00">
+    <meta property="article:modified_time" content="2021-10-31T00:00:00+00:00">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/en/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/">
+
+  
+  
+  
+  <meta itemprop="name" content="Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&nbsp;1/2)">
+  <meta itemprop="description" content="SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. SHA-256 ist Teil einer ganzen Gruppe von Algorithmen, mit dem gleichen Ziel: Die Erzeugung eines Hashes, der resistent gegen Kollisionen ist, dessen Berechnung nur in eine Richtung funktioniert und eine feste Länge hat. Im folgenden Artikel beschreibe ich die einzelnen Schritte die der Algorithmus vornimmt, um einen Hash zu erzeugen.
+Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es an den eigentlichen Algorithmus. Der Sourcecode liegt auf Github.">
+  <meta itemprop="datePublished" content="2021-10-31T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2021-10-31T00:00:00+00:00">
+  <meta itemprop="wordCount" content="2204">
+  <meta itemprop="keywords" content="Anleitungen,Blog">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&amp;nbsp;1/2) - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&nbsp;1/2)">
+  <meta name="twitter:description" content="SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. SHA-256 ist Teil einer ganzen Gruppe von Algorithmen, mit dem gleichen Ziel: Die Erzeugung eines Hashes, der resistent gegen Kollisionen ist, dessen Berechnung nur in eine Richtung funktioniert und eine feste Länge hat. Im folgenden Artikel beschreibe ich die einzelnen Schritte die der Algorithmus vornimmt, um einen Hash zu erzeugen.
+Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es an den eigentlichen Algorithmus. Der Sourcecode liegt auf Github.">
+
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institute for Digital Challenges</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+    
+<main id="main" class="post">
+  
+  <div class="post-header">
+  <div class="navigation">
+
+    
+    <a class="link prev" href="/en/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/">&lt;&lt;&lt;</a>
+    
+    
+    <h1 style="flex-grow: 1; text-align: center;">Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&amp;nbsp;1/2)</h1>
+    
+    
+    <a class="link next" href="/en/2022/2022-10-21/random-knowledge/">>>></a>
+    
+
+  </div>
+  </div>
+  <div class="post-date">October 31, 2021</div>
+
+  
+  <article class="content">
+    <p>SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. <a href="https://de.wikipedia.org/wiki/SHA-2">SHA-256 ist Teil einer ganzen Gruppe von Algorithmen</a>, mit dem gleichen Ziel: Die Erzeugung eines Hashes, der resistent gegen Kollisionen ist, dessen Berechnung nur in eine Richtung funktioniert und eine feste Länge hat. Im folgenden Artikel beschreibe ich die einzelnen Schritte die der Algorithmus vornimmt, um einen Hash zu erzeugen.</p>
+<p><em>Im ersten Teil kümmern wir uns um die Vorbereitungen, im <a href="https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/">zweiten Teil</a> geht es an den eigentlichen Algorithmus. Der Sourcecode</em> <a href="https://gist.github.com/nickyreinert/00d631fe9a90108924b1df6e911c8cd5"><em>liegt auf Github</em></a><em>.</em></p>
+<h3 id="was-wirst-dulernen">Was wirst du lernen?</h3>
+<p>Neben dem Erzeugen eines SHA-256 wirst du hier vor allem den Umgang mit binären Zahlen und binäre Rechenoperationen wie <strong>XOR</strong>, <strong>AND</strong> usw kennenleren. Ich gehe allerdings davon aus, dass ein Grundverständnis für binäre Zahlen vorhanden ist, der Fokus liegt auf dem Algorithmus. <strong>10</strong> sollte in deinem Kopf also entweder für die <strong>zehn</strong> oder eine <strong>zwei</strong> stehen. (Oder auch <strong>zwölf</strong>, wenn du das <strong>Duodezimalsystem</strong> magst.)</p>
+<h3 id="vorwort">Vorwort</h3>
+<p>Bricht man das auf eine maximal laienhafte Beschreibung herunter, passiert bei einer krytpologischen Hash-Funktion das folgende: Ein Ausgangs-Text <strong>beliebiger</strong> Länge wird so verarbeitet, dass daraus einen Ergebnis-Text (<em>der</em> <em>Hash</em>) mit der <strong>immer gleichen</strong> Länge entsteht. Es ist nahezu unmöglich, aus dem Hash den Ausgangs-Text zu berechnen. Außerdem kann man fast sicher davon ausgehen, dass jeder Ausgangs-Text <strong>einen anderen Hash</strong> erzeugt. Ändere ich nur ein Zeichen, wirkt sich das drastisch auf den Ausgangs-Text aus. Ein derartiger Algorithmus ist daher zB prädestiniert, Texte, sprich Nachrichten, zu verfizieren. Man spricht deswegen auch von einer Prüfsumme.</p>
+<p>Und das ist die Grundlage einer Technologie, die in jüngster Vergangenheit immer mehr von sich Reden macht: Die <strong>Blockchain</strong>, Basis für Kryptowährungen wie zB den <strong>Bitcoin</strong>. Bei der Blockchain sind, und auch das nur laienhaft heruntergebrochen, die Einträge des “Kassenbuches” sicher vor Manipulation, weil eben die Änderung eines historischen Wertes (zB Buchungsvorganges) unweigerlich eine drastische Änderung der daraus erzeugten Prüfsummen nach sich ziehen würde. Um den Blockchain-Apologeten gleich den Wind aus den Segeln zu nehmen zitiere ich mal Fefe, sinngemäß: <a href="https://ptrace.fefe.de/Blockchain/#46">Es geht auch einfacher</a>. Ich gebrauche Bitcoin hier auch nur als Buzzword, aus Marketing-Gründen. :]</p>
+<p>Um dich nun aber auch zum Weiterlesen zu motivieren, ein wichtiger Hinweis:</p>
+<p>Der Algorithmus wird dazu verwendet, die nächsten Einträge der Blockchain zu berechnen. Genau genommen wird hier ein bestimmter Hash vorgegeben, der errechnet werden soll (das berüchtigte <em>Mining</em>). Die Belohnung für die korrekte Berechnung sind Bitcoins. Das Problem: Diese Berechnung ist <strong>sehr,</strong> <strong>sehr aufwendig</strong>, denn wie schon oben geschrieben: Sie funktioniert nur in eine Richtung. Die <em>Miner</em> müssen also unsagbar viele Berechnungen durchführen, um einen Ziel-Wert zu errechnen. Und der Miner, der die Berechnung am schnellsten ausführt, wird dafür auch belohnt. Gelingt es dir also, wider erwarten, den Algorithmus zu optimieren, kannst du im Mining-Business ganz groß rauskommen. Das klingt doch nach einer Herausforderung, oder? ;)</p>
+<p><img src="/en/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/images/image2.png" alt=""></p>
+<p>Quelle: <a href="https://peakd.com/deutsch/@marcus0alameda/dagobert-gold-bitcoin-perfektion">https://peakd.com/deutsch/@marcus0alameda/dagobert-gold-bitcoin-perfektion</a></p>
+<blockquote>
+<p>Disclaimer: Ich habe den ganzen Algorithmus in Python nachgebaut. Python ist aus Performance-Sicht sicher nicht die beste Option, um SHA-256 zu berechnen und der Umgang mit binären oder hexadezimalen Werten ist etwas unbequem. Python eignet sich dank Jupyter aber am ehesten dazu, einen komplexen Algorithmus Schritt-für-Schritt zu beschreiben.</p></blockquote>
+<h3 id="einführung">Einführung</h3>
+<p>Bevor wir uns an die Schleifen machen, müssen wir uns um ein paar Funktionen kümmern, die wir später dazu nutzen, um <strong>binäre Zahlen</strong> ein wenig durchzumischen.</p>
+<blockquote>
+<p>Hinweis 1: Ich verzichte im folgenden auf die Präfixe der Zahlensystem, wie zB 0b für binär, um den Text übersichtlich zu halten. Ich gehe davon aus, dass folgendes bekannt ist: 0 =&gt; Falsch und 1 =&gt; Wahr</p></blockquote>
+<blockquote>
+<p>Hinweis 2: Im Kontext von SHA-256 entspricht ein Wort (bzw word) genau 32 Bit. In der Regel entspricht 1 Word = 2 Byte = 16 Bit.</p></blockquote>
+<h4 id="das-explizite-oderxor">Das explizite Oder (XOR)</h4>
+<p>Das explizite Oder (<strong>Entweder-Oder</strong>) ist ein elementarer logischer, bitweise Operator. Der Ausgang der Operation ist nur dann wahr, wenn exakt ein Zustand wahr ist (im Vergleich dazu ist das Ergebnis bei dem “einfachen“ <strong>OR</strong> übrigens dann wahr, wenn mindestens ein Operand wahr ist oder beide).</p>
+<p>Es werden also zwei Werte folgendermaßen verarbeitet:</p>
+<p><img src="images/image.png" alt=""></p>
+<p>XOR: nur wenn genau ein Wert wahr (1) ist, ist die entsprechende Stelle im Ergebnis wahr (1)</p>
+<p>Die Implementierung in Python erfolgt mit dem <strong>Zirkumflex</strong>:</p>
+<p># 110 ^ 100<br>
+# 010</p>
+<h4 id="das-logische-undand"><strong>Das logische Und (AND)</strong></h4>
+<p>Der AND-Operator ist ebenfalls recht geläufig und vergleichsweise simpel. Analog zu XOR ist das Ergebnis wahr, wenn exakt beide (bzw. alle) Operanden wahr sind.</p>
+<p><img src="/en/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/images/image-4.png" alt=""></p>
+<p>AND: Nur wenn beide Werte einer Stelle wahr sind, ist die Stelle im Ergebnis wahr</p>
+<p>Die Implementierung in Python erfolgt mit dem <strong>kaufmännischen Und</strong>:</p>
+<p># 110 &amp; 100<br>
+# 100</p>
+<h4 id="die-negierung-nope">Die Negierung (Nope?)</h4>
+<p>Jetzt wirds seltsam: Auch dafür gibt es einen Operator: Der bitweise Operator <strong>Negierung</strong> dreht Werte um. Aus 0 wird 1, aus 1 wird 0.</p>
+<p><img src="images/image-3.png" alt=""></p>
+<p>Die Negierung kehrt Werte bitweise um. Nicht mehr aber auch nich weniger.</p>
+<p>Die Implementierung in Python erfolgt mit der <strong>Tilde —</strong> meinem Lieblingszeichen!</p>
+<p># ~110<br>
+# 001</p>
+<h4 id="die-shift-operation"><strong>Die Shift-Operation</strong></h4>
+<p>Die Shift-Funktion ist eine elementare binäre Rechenoperation, bei der die einzelnen Stellen eines binären Werts <strong>nach links oder rechts geschoben</strong> werden. Die freien Stellen auf der jeweils anderen Seite werden mit 0 aufgefüllt.</p>
+<p><img src="/en/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/images/image-6.png" alt=""></p>
+<p>Shift nach links um eine Stelle, aus 6 wird 12</p>
+<p>Und jetzt gibt es hoffentlich einen positiven Knick in der Lernkurve: Wenn du genau hinschaust, fällt dir etwas auf und lass mich dir versichern, es handelt sich nicht um einen Zufall: 12 ist das Produkt aus 6 und 2. Das deutet auf ein interessanten Nebeneffekt: Ein Shift kommt einer Multiplikation bzw. Division mit 2 gleich. Ein Shift um mehrere Stellen entspricht demnach einer Multiplikation mit einer Potenz zur Basis 2 besteht. Klingt kompliziert, deswegen ein Beispiel:</p>
+<p>Anstatt 139 * 2 ^17 kannst du die binäre Darstellung von 139, also 10001011, um 17 Stellen nach links shiften. Das Ergebnis: 1000101100000000000000000. Zähl gerne nach, rechts der 1 eins gibt es jetzt 17 Nullen.</p>
+<p>In Python ist der binäre Shift mit dem <strong>Doppelpfeil</strong> implementiert:</p>
+<p># 110 &raquo; 1<br>
+# 011</p>
+<p># 110 &laquo; 2<br>
+# 000</p>
+<h4 id="die-rotate-funktion">Die Rotate-Funktion</h4>
+<p><strong>Rotate</strong> bedeutet, dass ein die Werte einer (binären) Zahl in eine Richtung verschoben werden. Und das erklärt man am besten an einem Beispiel. Die folgende Zahlenreihe soll um einen Zähler nach links rotiert werden. Die Zahl auf der linken Seite fällt also heraus und wir rechts wieder angehangen. Die anderen Zahlen rücken eine Position nach links.</p>
+<p><img src="/en/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/images/image-5.png" alt=""></p>
+<p>Rotate eines binären Wertes um eine Stelle nach links, aus 6wird 5</p>
+<p>Das funktioniert in beide Richtungen und mit beliebig vielen Stellen. Die entsprechende Funktion (<a href="https://stackoverflow.com/a/59005609/2360229">Kudos an so</a>) sieht so aus:</p>
+<p>def rotate(value, rotations, width = 32):<br>
+if int(rotations) != abs(int(rotations)):<br>
+rotations = width + int(rotations)<br>
+return (int(value) &laquo; (width - (rotations%width)) | (int(value) &raquo; (rotations % width))) &amp; ((1 &laquo; width) - 1)</p>
+<h4 id="die-sigma-funktionen">Die Sigma-Funktionen</h4>
+<p>Insgesamt werden vier sogenannte <strong>Sigma-Funktionen</strong> verwendet. <strong>σ0</strong> und <strong>σ1</strong> (das kleine Sigma) bzw. <strong>Σ0</strong> und <strong>Σ1</strong> (das große Sigma, vielen bekannt als das Summen-Zeichen). Alle funktionen werden mit einem binären Wert aufgerufen und geben diesen binären Wert in veränderter Form zurück.</p>
+<p>σ0 (<strong>sigma0</strong>) läuft folgendermaßen ab:</p>
+<ul>
+<li>der Ausgangs-Wert wird um 7 <strong>Stellen</strong> nach <strong>rechts rotiert</strong></li>
+<li>der Ausgangs-Wert wird um <strong>18 Stellen</strong> nach <strong>rechts rotiert</strong></li>
+<li>der Ausgangs-Wert wird um <strong>3 Stellen</strong> nach <strong>rechts geshifted</strong></li>
+</ul>
+<p>Daraus entstehen drei unterschiedliche Werte, die miteinander <strong>XOR-Verknüpft</strong> werden. Die Funktion dazu in Python:</p>
+<p>def sigma0(word):<br>
+part1 = bin(rotate(int(word, 2), 7, 32))<br>
+part2 = bin(rotate(int(word, 2), 18, 32))<br>
+part3 = bin(int(word, 2) &raquo; 3)<br>
+return bin(int(part1, 2) ^ int(part2, 2) ^ int(part3, 2))[2:].zfill(32)</p>
+<blockquote>
+<p><strong>Wichtiger Hinweis</strong>: Ich arbeite mit bin() und in(s, 2), um die Ausgaben und Eingaben leserlich und vor allem nachvollziehbar zu machen. Außerdem sorge ich mit [2:] dafür, dass die binäre Darstellung ohne <strong>0b</strong> auskommt. Das kommt dem Lernzweck zugute, da die binären Operationen an dezimalen Werten schwerer nachvollziehbar sind. Mit zfill(32) (<strong>zero fill</strong>) wird der binäre Wert nach links um so viele Nullen erweitert, um immer <strong>32 Stellen</strong> zu umfassen. Teilweise erleichtert das die Übersicht, andererseits erfüllt das später auch eine Längen-Vorgabe. Die obere Funktion kann also auch folgendermaßen vereinfacht werden:</p></blockquote>
+<p>def sigma0(word):<br>
+part1 = rotate(word, 7, 32)<br>
+part2 = rotate(word, 18, 32)<br>
+part3 = word &raquo; 3<br>
+return part1 ^ part2  ^ part3</p>
+<p>Bei σ1 (<strong>sigma1</strong>) sieht es ganz ähnlich aus:</p>
+<ul>
+<li>der Ausgangs-Wert wird um <strong>17 Stellen</strong> nach <strong>rechts rotiert</strong></li>
+<li>der Ausgangs-Wert wird um <strong>19 Stellen</strong> nach <strong>rechts rotiert</strong></li>
+<li>der Ausgangs-Wert wird um <strong>10</strong> <strong>Stellen</strong> nach <strong>rechts geshifted</strong></li>
+</ul>
+<p>Daraus entstehen drei unterschiedliche Werte, die miteinander <strong>XOR-Verknüpft</strong> werden. Die Funktion dazu in Python:</p>
+<p>def sigma0(word):<br>
+part1 = bin(rotate(int(word, 2), 7, 32))<br>
+part2 = bin(rotate(int(word, 2), 18, 32))<br>
+part3 = bin(int(word, 2) &raquo; 3)<br>
+return bin(int(part1, 2) ^ int(part2, 2) ^ int(part3, 2))[2:].zfill(32)</p>
+<p>Nun zu Σ0 (<strong>Sigma0</strong>). Auch hier keine großen Überaschungen, hier nun ohne <strong>Shift:</strong></p>
+<ul>
+<li>der Ausgangs-Wert wird um <strong>2 Stellen</strong> nach <strong>rechts rotiert</strong></li>
+<li>der Ausgangs-Wert wird um <strong>13 Stellen</strong> nach <strong>rechts rotiert</strong></li>
+<li>der Ausgangs-Wert wird um <strong>22</strong> <strong>Stellen</strong> nach <strong>rechts rotiert</strong></li>
+</ul>
+<p>Auch hier werden die jeweiligen Ergebnisse final <strong>XOR-Verknüpftg</strong>. In Python also:</p>
+<p>def upper_sigma0(word):<br>
+part1 = bin(rotate(int(word, 2), 2, 32))<br>
+part2 = bin(rotate(int(word, 2), 13, 32))<br>
+part3 = bin(rotate(int(word, 2), 22, 32))<br>
+return bin(int(part1, 2) ^ int(part2, 2) ^ int(part3, 2))[2:].zfill(32)</p>
+<p>Kommen wir zum letzten Teilnehmer unserer illustren griechischen Runde: Σ1 (<strong>Sigma1</strong>):</p>
+<ul>
+<li>der Ausgangs-Wert wird um <strong>6</strong> <strong>Stellen</strong> nach <strong>rechts rotiert</strong></li>
+<li>der Ausgangs-Wert wird um <strong>11Stellen</strong> nach <strong>rechts rotiert</strong></li>
+<li>der Ausgangs-Wert wird um <strong>25</strong> <strong>Stellen</strong> nach <strong>rechts rotiert</strong></li>
+</ul>
+<p>Und am Ende wieder die XOR-Verknüpfung. Python:</p>
+<p>def upper_sigma1(word):<br>
+part1 = bin(rotate(int(word, 2), 6, 32))<br>
+part2 = bin(rotate(int(word, 2), 11, 32))<br>
+part3 = bin(rotate(int(word, 2), 25, 32))<br>
+return bin(int(part1, 2) ^ int(part2, 2) ^ int(part3, 2))[2:].zfill(32)</p>
+<h4 id="wahl-undmehrheit">Wahl und <strong>Mehrheit</strong></h4>
+<p>Bleiben wir noch etwas bei den Griechen und wechseln in die Politik: Die Wahl und die Mehrheit, englisch: <strong>choose</strong> und <strong>majority</strong>.</p>
+<p>Choose ist eine etwas komplexere Funktion, die drei binäre Werte verarbeitet und zwar wieder bitweise. Die Funktion geht durch die jeweiligen Stellen (x) des ersten Eingangswerts und prüft:</p>
+<ul>
+<li>Wenn <strong>x = 1</strong> dann nimm <strong>y</strong></li>
+<li>Wenn <strong>x = 0</strong> dann nimm <strong>z</strong></li>
+</ul>
+<p>Y und z stehen für die jeweiligen Stellen des zweiten und dritten Eingangswertes. Wie kann man das programmatisch lösen? So:</p>
+<p>def choose(word1, word2, word3):<br>
+bin_word1 = (int(word1, 2))<br>
+bin_word2 = (int(word2, 2))<br>
+bin_word3 = (int(word3, 2))<br>
+return bin((bin_word1 &amp; bin_word2) ^ (~bin_word1 &amp; bin_word3))[2:].zfill(32)</p>
+<p>Zunächst werden also Wert 1 und Wert 2 logisch UND-verknüpft. Dann wird die Negierung von Wert 1 mit Wert 3 UND-verknüpft. Die beiden Zwischensummen werden abschließend durch XOR gejagt.</p>
+<p>Majority prüft ganz einfach für jede Stelle der drei Eingangs-Werte, welcher Wert, 1 oder 0, häufiger vorkommt. Das sieht in Python so aus — hier erklär ich die logischen Operationen jetzt nicht noch mal, es werden einfach XOR und AND verknüpft:</p>
+<p>def majority(word1, word2, word3):<br>
+bin_word1 = (int(word1, 2))<br>
+bin_word2 = (int(word2, 2))<br>
+bin_word3 = (int(word3, 2))<br>
+return bin((bin_word1 &amp; bin_word2) ^ (bin_word1 &amp; bin_word3) ^ (bin_word2 &amp; bin_word3))[2:].zfill(32)</p>
+<p><strong>Primzahlen?</strong></p>
+<p>Um noch ein anderes beliebtes Feld der Arithmetik abzudecken, lasst uns noch kurz über Primzahlen reden. Primzahlen sind mystisch. Und damit genau richtig für unser irdisches Vorhaben, das Mining zu optimieren.</p>
+<p>SHA-256 nutzt Primzahlen als Grundlage für den Algorithmus. Was nicht bedeutet, dass das Ergebnis durchschaubar wäre.</p>
+<p>Wir fangen mal mit den ersten 64 Primzahlen an und bauen daraus einen Satz Konstanten. Selbstverständlich in Bitform.</p>
+<p>first_64_prime_numbers = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311]</p>
+<p>Diese werden nun aber auch noch ordentlich durch die Mangel genommen. Warum das erforderlich ist, kann ich nicht nachvollziehen. Aus meiner Sicht ist es ziemlich egal, welche Konstanten man verwendet werden, da sie immer gleich sind (deswegen ja <strong>konstant</strong>, diesmal übrigens aus dem lateinischen). Dahinter steckt also kein großes Geheimins.</p>
+<p>Aus den 64 Primzahlen wird zuerst jeweils die dritte Wurzel gezogen. Dann wird der natürliche Teil entfernt (sprich alles vor dem Komma) und das Ergebnis mit 2³² (aka 4.294.967.296, was übrigens auch der Anzahl verfügbarer IPv4-Adressen entspricht — der 2. positive Knick in der heutigen Lernkurve?) multipliziert. Wie du oben ja gelernt und hoffentlich noch nicht vergessen hast, ist die Mulitplikation mit 2^32 ja eigentlich gar nicht so aufwendig im Bituniversum.</p>
+<p>Das Ergebnis wird jedenfalls auf eine natürlich Zahl abgerundet — sprich alle Nachkommastellen entfernt. Wiederholt man das für die restlichen 63 Primzahlen, erhält man eine wohlgeformte Liste mit 64 Einträgen, die in etwa so aussehen, am Beispiel der notorischen Primzahl 2:</p>
+<p>01000010100010100010111110011000</p>
+<p>Oder als Hex-Wert:</p>
+<p>0x428a2f98</p>
+<p>Und im Dezimal-Zahlensystem:</p>
+<p>1.116.352.408</p>
+<p>Die Funktion dafür sieht folgendermaßen aus:</p>
+<p>result_constants = []<br>
+for prime_number in first_64_prime_numbers:<br>
+cube_root = prime_number ** (1./3.)<br>
+frac_part = cube_root - floor(cube_root)<br>
+product = frac_part * (2**32)<br>
+floored_product = floor(product)<br>
+result_constants.append(bin(floored_product)[2:].zfill(32))</p>
+<p>Das ganze nennen wir <strong>Ergebnis-Konstante</strong>, denn diese Liste ist der Anfang unsere finalen Ausgabe. Diese Liste heben wir gut auf und weil die Arbeit mit Primzahlen so befreiend ist, veranstalten wir für die ersten 8 Primzahlen einen ähnlichen Zirkus. Mit einem Unterschied: Als Grundlage dient diesmal die Quadrat-Wurzel:</p>
+<p>compression_constants = []<br>
+for prime_number in first_8_prime_numbers:<br>
+square_root = prime_number ** (1./2.)<br>
+frac_part = square_root - floor(square_root)<br>
+product = frac_part * (2**32)<br>
+floored_product = floor(product)<br>
+compression_constants.append(bin(floored_product)[2:].zfill(32))</p>
+<p>Die Namen haben übrigens eine Bedeutung, auf die ich später noch eingehe.</p>
+<h3 id="epilog">Epilog</h3>
+<p>Die Vorbereitungen sind damit abgeschlossen und wir können uns <a href="https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/">im zweiten Teil</a> dem eigentlichen Algorithmus widmen.</p>
+
+  </article>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>

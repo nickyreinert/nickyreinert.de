@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="Da ich mit meinem Mac sehr oft auf der Kommandozeile unterwegs bin (dazu empfehle ich übrigens iTerm2 - ein Terminal-Ersatz der alle anderen Anwendungen dieser Art auch auf Linux und Windows aussticht) habe ich mir dafür ein paar kleine Einstellungen zusammengesammelt, die das Leben und Arbeiten auf der Kommandozeile etwas erleichtern.
+Was ist Bash?
+Bash steht für &ldquo;Bourn again shell&rdquo; und ist eine Erweiterung der älteren Bourne-Shell, eine Shell die auf Unix-(ähnlichen) Systemen als Benutzerschnittstelle dient. Und diese ist vor allem daran erkennbar, dass die Steuerung des Systems nur über die Tastatur, ohne Maus und Fenster funktioniert.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/">
+
+  
+  
+  <meta name="keywords" content="">
+  
+
+  
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/en/2018/2018-08-24-die-os-x-bash/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Die OS X - Bash">
+  <meta property="og:description" content="Da ich mit meinem Mac sehr oft auf der Kommandozeile unterwegs bin (dazu empfehle ich übrigens iTerm2 - ein Terminal-Ersatz der alle anderen Anwendungen dieser Art auch auf Linux und Windows aussticht) habe ich mir dafür ein paar kleine Einstellungen zusammengesammelt, die das Leben und Arbeiten auf der Kommandozeile etwas erleichtern.
+Was ist Bash? Bash steht für “Bourn again shell” und ist eine Erweiterung der älteren Bourne-Shell, eine Shell die auf Unix-(ähnlichen) Systemen als Benutzerschnittstelle dient. Und diese ist vor allem daran erkennbar, dass die Steuerung des Systems nur über die Tastatur, ohne Maus und Fenster funktioniert.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2018">
+    <meta property="article:published_time" content="2018-08-24T00:00:00+00:00">
+    <meta property="article:modified_time" content="2018-08-24T00:00:00+00:00">
+    <meta property="article:tag" content="Profile">
+    <meta property="article:tag" content="Alias">
+    <meta property="article:tag" content="Bash">
+    <meta property="article:tag" content="Mac">
+    <meta property="article:tag" content="Os-X">
+    <meta property="article:tag" content="Shell">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/en/2018/2018-08-24-die-os-x-bash/">
+
+  
+  
+  
+  <meta itemprop="name" content="Die OS X - Bash">
+  <meta itemprop="description" content="Da ich mit meinem Mac sehr oft auf der Kommandozeile unterwegs bin (dazu empfehle ich übrigens iTerm2 - ein Terminal-Ersatz der alle anderen Anwendungen dieser Art auch auf Linux und Windows aussticht) habe ich mir dafür ein paar kleine Einstellungen zusammengesammelt, die das Leben und Arbeiten auf der Kommandozeile etwas erleichtern.
+Was ist Bash? Bash steht für “Bourn again shell” und ist eine Erweiterung der älteren Bourne-Shell, eine Shell die auf Unix-(ähnlichen) Systemen als Benutzerschnittstelle dient. Und diese ist vor allem daran erkennbar, dass die Steuerung des Systems nur über die Tastatur, ohne Maus und Fenster funktioniert.">
+  <meta itemprop="datePublished" content="2018-08-24T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2018-08-24T00:00:00+00:00">
+  <meta itemprop="wordCount" content="902">
+  <meta itemprop="keywords" content="Profile,Alias,Bash,Mac,Os-X,Shell">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>Die OS X - Bash - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Die OS X - Bash">
+  <meta name="twitter:description" content="Da ich mit meinem Mac sehr oft auf der Kommandozeile unterwegs bin (dazu empfehle ich übrigens iTerm2 - ein Terminal-Ersatz der alle anderen Anwendungen dieser Art auch auf Linux und Windows aussticht) habe ich mir dafür ein paar kleine Einstellungen zusammengesammelt, die das Leben und Arbeiten auf der Kommandozeile etwas erleichtern.
+Was ist Bash? Bash steht für “Bourn again shell” und ist eine Erweiterung der älteren Bourne-Shell, eine Shell die auf Unix-(ähnlichen) Systemen als Benutzerschnittstelle dient. Und diese ist vor allem daran erkennbar, dass die Steuerung des Systems nur über die Tastatur, ohne Maus und Fenster funktioniert.">
+
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institute for Digital Challenges</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+    
+<main id="main" class="post">
+  
+  <div class="post-header">
+  <div class="navigation">
+
+    
+    <a class="link prev" href="/en/2018/2018-08-23-den-eigenen-web-server-sichern/">&lt;&lt;&lt;</a>
+    
+    
+    <h1 style="flex-grow: 1; text-align: center;">Die OS X - Bash</h1>
+    
+    
+    <a class="link next" href="/en/2018/2018-08-25-checkliste-wordpress-umzug/">>>></a>
+    
+
+  </div>
+  </div>
+  <div class="post-date">August 24, 2018</div>
+
+  
+  <article class="content">
+    <p>Da ich mit meinem Mac sehr oft auf der Kommandozeile unterwegs bin (dazu empfehle ich übrigens <a href="https://www.iterm2.com/">iTerm2</a> - ein Terminal-Ersatz der alle anderen Anwendungen dieser Art auch auf Linux und Windows aussticht) habe ich mir dafür ein paar kleine Einstellungen zusammengesammelt, die das Leben und Arbeiten auf der Kommandozeile etwas erleichtern.</p>
+<h2 id="was-ist-bash">Was ist Bash?</h2>
+<p>Bash steht für &ldquo;Bourn again shell&rdquo; und ist eine Erweiterung der älteren Bourne-Shell, eine Shell die auf Unix-(ähnlichen) Systemen als Benutzerschnittstelle dient. Und diese ist vor allem daran erkennbar, dass die Steuerung des Systems nur über die Tastatur, ohne Maus und Fenster funktioniert.</p>
+<p>Seit der Version 10.3 ist Bash auch Bestandteil von Mac OS X und bringt damit eine Menge Vorteile für die Arbeit auf der Kommandozeile mit sich.</p>
+<h2 id="die-bash-konfigurationsdateien">Die Bash Konfigurationsdateien</h2>
+<p>Die globalen Einstellungen für die Bash befinden sich in der Datei <strong>/etc/bashrc</strong> und der <strong>/etc/profile</strong>. Wer Einstellungen auf bestimmte Benutzer beschränken will, kann im Benutzerverzeichnis (du gelangst mit <em>cd ~</em> dorthin) eine Datei mit dem Name <strong>.profile</strong>, <strong>.bash_login</strong> oder <strong>.bash_profile</strong> anlegen. Beachte, dass <strong>.profile</strong> nur geladen wird, wenn <strong>.bash_login</strong> nicht existiert, welche wiederum durch <strong>.bash_profile</strong> überschrieben wird. Das gilt allerdings nicht, wenn du dich als <strong>root-Benutzer</strong> anmeldest - dann wird nur die Datei <strong>.profile</strong> gelesen. Der Grund ist, dass der Root-Benutzer nicht <strong>bash</strong> sondern <strong>sh</strong> ausführt, wodurch nur die <strong>~/.profile</strong>-Datei berücksichtigt wird.</p>
+<p><img src="/en/2018/2018-08-24-die-os-x-bash/images/image-8.png" alt=""></p>
+<p>Hierarchie der Bash-Konfigurations-Dateien</p>
+<p>Daneben gibt es theoretisch auch die Möglichkeit, im Benutzerverzeichnis eine Datei mit dem Namen <strong>.bashrc</strong> anzulegen. Diese wird jedoch nur dann geladen, wenn Bash ausgeführt wird, ohne dass sich ein Benutzer dazu anmeldet (die sogenannte <em>non-login-shell</em>). Im OS X-Umfeld wird das aber nicht benötigt. Du kannst das erzwingen, indem du auf der Kommandozeile <strong>/bin/bash</strong> ausführst - wir wollen die jetzt schon komplizierte Geschichte aber nicht unnötigen verkomplizieren. ;)</p>
+<h2 id="die-bash-aufhübschen">Die Bash aufhübschen</h2>
+<p>Nach der langweiligen aber notwendige Theorie, gibts jetzt ein paar Zeilen Code, mit denen die Kommandozeile gleich viel besser aussieht. Ich hab aus oben genannten Gründen das Ganze in die Datei <strong>~/.profile</strong> gepackt. Zunächst einmal ein paar Aliase um die Verzeichnislisten etwas übersichtlicher zu gestalten oder auch das oft benutzte <strong>cd</strong> (<em>change dir</em>) zu vereinfachen.</p>
+<pre tabindex="0"><code>alias l=&#39;ls -alCFGA&#39;
+alias ll=&#34;ls -CFGla&#34;
+alias h=&#34;history&#34;
+alias .=&#34;cd ~&#34;
+alias ..=&#34;cd ..&#34;
+alias ...=&#34;cd ../..&#34;
+# -p: erzeuge Unterverzeichnis, falls sie nicht existieren
+# -v: gebe erzeugtes Verzeichnis zurück
+alias mkdir=&#34;mkdir -pv&#34;
+# grep Ausgabe farbig gestalten
+alias grep=&#39;grep --color=auto&#39;
+alias fgrep=&#39;fgrep --color=auto&#39;
+alias egrep=&#39;egrep --color=auto&#39;
+# das aktuelle Verzeichnis im Finder öffnen
+alias f=&#39;open -a Finder ./&#39;
+</code></pre><p>Die folgende Zeile ist kein Alias sondern eine Funktion. Damit wird ein Verzeichnis (mit allen benötigten Unterverzeichnissen erstellt) und dann mit cd direkt in das Verzeichnis gewechselt:</p>
+<pre tabindex="0"><code>mcd () { mkdir -p &#34;$1&#34; &amp;&amp; cd &#34;$1&#34;; }
+</code></pre><p>Als nächstes will ich die Darstellung der zuletzt benutzten Befehle (<strong>history</strong> bzw. jetzt <strong>h</strong>) etwas anpassen:</p>
+<pre tabindex="0"><code># Duplikate ignorieren
+HISTCONTROL=ignoreboth
+# Befehle anhängen und die Historie nicht jedes mal neu überschreiben
+shopt -s histappend
+# die maximale Größe bzw. Länge der Historie erhöhen
+HISTSIZE=1000
+HISTFILESIZE=2000
+</code></pre><p>Der folgende Befehl sorgt dafür, dass sich die Anzahl der dargestellten <strong>Spalten und Zeilen</strong> an die Fenstergröße anpasst. Die Funktion sollte per default aktiviert sein, zur Sicherheit legen wir das hier trotzdem fest! Mit dem Parameter -u kann die Option übrigens wieder deaktiviert werden.</p>
+<pre tabindex="0"><code>shopt -s checkwinsize
+</code></pre><p>Hiermit wird das Aussehen und die Farbe der Kommandozeile geändert. Ich hab mich für eine relativ bunte Variante entschieden. Die Einstellung für den sog. Prompt wird in der globalen Variable <strong>PS1</strong> (<em>prompt statement 1</em>) gespeichert. Die folgenden Parameter sind hier geläufig:</p>
+<ul>
+<li>\u - Benutzername</li>
+<li>\h - Name des Hosts / Computers</li>
+<li>\w - der komplette aktuelle Pfad</li>
+<li>\n  - Ein Zeilenumbruch</li>
+</ul>
+<p>Mit <strong>PS2</strong>, <strong>PS3</strong>, <strong>PS4</strong> lassen sich noch andere Prompts konfigurieren, wie z.B. der für interaktive Eingaben in Bash-Scripten. Die Variable <strong>PROMPT_COMMAND</strong> wird sogar noch vor <strong>PS1</strong> dargestellt. Wer mehr dazu erfahren möchte, <a href="https://wiki.ubuntuusers.de/Bash/Prompt/#source-2">schaut einfach mal dort vorbei</a>.</p>
+<pre tabindex="0"><code>export PS1=&#34;$(date +%k:%m:%S) \[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ &#34;
+
+# Diese Konstanten steuern die Farben für die Ausgabe von cd.
+export CLICOLOR=1
+export LSCOLORS=ExFxBxDxCxegedabagacad
+</code></pre><p>Das ganze sieht dann so aus:</p>
+<p><img src="/en/2018/2018-08-24-die-os-x-bash/images/image-9.png" alt=""></p>
+<p>Eine bunte aber informative Kommandozeile</p>
+<p>Diese Funktion zeigt alle Prozesse, die unter dem aktuellen Benutzer aktiv sind:</p>
+<pre tabindex="0"><code>me() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }
+</code></pre><p>Als nächstes ein paar Aliase um das Netzwerk ein bisschen einfacher im Griff zu behalten:</p>
+<pre tabindex="0"><code># alle Verbindungen, die gerade &#34;Lauschen&#34;
+alias cons=&#39;sudo lsof -i | grep LISTEN&#39;
+# alle offenen Sockets
+alias socks=&#39;sudo /usr/sbin/lsof -i -P&#39;
+# alle offenen TCP/IP-Sockets
+alias tsocks=&#39;lsof -i&#39;
+# alle offenen UDP-Sockets
+alias usocks=&#39;sudo /usr/sbin/lsof -nP | grep UDP&#39;
+# alle offenen TCP-Sockets
+alias lsocks=&#39;sudo /usr/sbin/lsof -nP | grep TCP&#39; 
+# grundlegende Netzwerkeinstellungen
+alias net=&#39;ipconfig getpacket en0&#39;
+
+# den DNS-Cache leeren
+alias cleardns=&#39;dscacheutil -flushcache&#39;
+</code></pre><p>Die ganzen Inhalte gibt es hier noch einmal in kompakter Version:</p>
+<pre tabindex="0"><code>case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+alias l=&#39;ls -alCFGA&#39;
+alias ll=&#34;ls -CFGla&#34;
+alias h=&#34;history&#34;
+alias .=&#34;cd ~&#34;
+alias ..=&#34;cd ..; pwd&#34;
+alias ...=&#34;cd ../..; pwd&#34;
+alias mkdir=&#34;mkdir -pv&#34;
+alias grep=&#39;grep --color=auto&#39;
+alias fgrep=&#39;fgrep --color=auto&#39;
+alias egrep=&#39;egrep --color=auto&#39;
+alias f=&#39;open -a Finder ./&#39;
+
+HISTCONTROL=ignoreboth
+shopt -s histappend
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+shopt -s checkwinsize
+
+case &#34;$TERM&#34; in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+export PS1=&#34;$(date +%k:%m:%S) \[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ &#34;
+export CLICOLOR=1
+export LSCOLORS=ExFxBxDxCxegedabagacad
+
+mcd () { mkdir -p &#34;$1&#34; &amp;&amp; cd &#34;$1&#34;; }
+me() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }
+
+alias cons=&#39;sudo lsof -i | grep LISTEN&#39;
+alias socks=&#39;sudo /usr/sbin/lsof -i -P&#39;
+alias tsocks=&#39;lsof -i&#39;
+alias usocks=&#39;sudo /usr/sbin/lsof -nP | grep UDP&#39;
+alias lsocks=&#39;sudo /usr/sbin/lsof -nP | grep TCP&#39;
+alias net=&#39;ipconfig getpacket en0&#39;
+alias cleardns=&#39;dscacheutil -flushcache&#39;
+</code></pre>
+  </article>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>
