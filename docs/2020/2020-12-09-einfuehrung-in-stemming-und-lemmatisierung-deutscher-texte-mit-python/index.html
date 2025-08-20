@@ -273,93 +273,26 @@
 </header>
 
     
-<article itemscope itemtype="http://schema.org/BlogPosting" class="post">
+<main id="main" class="post">
   
   
-  <header class="post-header">
-    <h1 itemprop="headline">Einführung in Stemming und Lemmatisierung deutscher Texte mit Python</h1>
-    
-    
-    <div class="post-meta" itemscope itemtype="http://schema.org/Person">
-      <time itemprop="datePublished" datetime="2020-12-09T00:00:00Z">
-        9. December 2020
-      </time>
+  <div class="post-header">
+    <div class="navigation">
       
-      <time itemprop="dateModified" datetime="2025-08-20T09:03:20&#43;02:00">
-        (Aktualisiert: 20. August 2025)
-      </time>
+      <a class="link prev" href="/2020/2020-11-05-wie-funktionieren-dateirechte/">&lt;&lt;&lt;</a>
       
-      <span>von <span itemprop="author"></span></span>
       
-      <span>• 5 Min. Lesezeit</span>
+      <h1 style="flex-grow: 1; text-align: center;" itemprop="headline">Einführung in Stemming und Lemmatisierung deutscher Texte mit Python</h1>
+      
       
     </div>
-    
-    
-    
-  </header>
-  
-  
-  
-  <div class="ai-summary" itemscope itemtype="http://schema.org/Review">
-    <h2>Zusammenfassung</h2>
-    <p itemprop="description">Dieser Artikel behandelt Einführung in Stemming und Lemmatisierung deutscher Texte mit Python und bietet praktische Einblicke in das Thema.</p>
-    
-    
-    <div class="topics">
-      <strong>Hauptthemen:</strong>
-      
-      <span class="topic">Web</span>, 
-      
-      <span class="topic">IT</span>, 
-      
-      <span class="topic">Tools</span>
-      
-    </div>
-    
-    
-    
-    <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-    
-    
-    
-    <div class="prerequisites">
-      <strong>Voraussetzungen:</strong>
-      <ul>
-        
-        <li>Grundlegende IT-Kenntnisse</li>
-        
-      </ul>
-    </div>
-    
   </div>
   
   
+  <div class="post-date">December 9, 2020</div>
+
   
-  
-  <div class="table-of-contents">
-    <h2>Inhaltsverzeichnis</h2>
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#stemming-mit-porter-lancaster-und-snowball">Stemming mit Porter, Lancaster und Snowball</a>
-      <ul>
-        <li><a href="#installation-und-anwendung">Installation und Anwendung</a></li>
-      </ul>
-    </li>
-    <li><a href="#lemmatisieren-mit-hannovertagger-wordnet-spacy-und-iwnlp">Lemmatisieren mit HannoverTagger, WordNet, Spacy und IWNLP</a>
-      <ul>
-        <li><a href="#was-ist-mit-germalemma-und-german-lemmatizer">Was ist mit GermaLemma und German Lemmatizer?</a></li>
-        <li><a href="#installation-und-anwendung-1">Installation und Anwendung</a></li>
-      </ul>
-    </li>
-    <li><a href="#fazit">Fazit</a></li>
-  </ul>
-</nav>
-  </div>
-  
-  
-  
-  <div class="post-content" itemprop="articleBody">
+  <article class="content">
     <p>Um beim <strong>Text Mining</strong> zusammengehörende Wörter zu gruppieren, bedient man sich im <strong>Natural Language Processing</strong> (<strong>NLP</strong>) zweier Methoden: <strong>Lemmatisierung</strong> (lemmatising) und <strong>Stemming</strong>. Das ist notwendig, um z.B. einen Text besser kategorisieren bzw. mit Stichworten versehen zu können. Eines der wichtigsten Anwendungsgebiete ist sicherlich die Indexierung von Dokumenten durch eine Suchmaschine. Ein ganz einfaches Beispiel: Enthält ein Dokument sehr oft das Wort <em>Häuser</em> und der Nutzer sucht nach dem Begriff <em>Haus</em>, wird das relevante Dokument wohl nicht in den Suchergebnissen auftauchen.</p>
 <p>Um das zu umgehen, müssen flektierte und abgeleitete Wörter zu Ihrer Grundform zurückgeführt werden. Beim <strong>Stemming</strong> werden dazu einfache heuritische Methoden angewendet, bei dem das Suffix der Wörter entfernt wird. Aus dem Wort <em>Katzen</em> wird so dessen Grundform <em>Katze</em>. Bei der Plural-Form <em>Häuser</em> ist das etwas schwieriger. Mit dem Abschneiden des Suffixes kommt man hier nicht weit, weshalb man sich bei der <strong>Lemmatisierung</strong> an Listen bzw. Datenbanken orientiert, die die reflektierte Formen enthalten und so eine sichere Verknüpfung von <em>Häuser</em> zur Singular-Form <em>Haus</em> erlauben.</p>
 <p>Soviel zur Theorie. In der Praxis gibt es <strong>Python</strong> und eine Vielzahl von Modulen, die einem eine Menge Arbeit abnehmen. Im Folgenden vergleiche ich ein halbes Dutzend Module, die die <strong>Lemmatisierung</strong> und das <strong>Stemming</strong> beherrschen und auch für <strong>Deutsche Texte</strong> anwendbar sind.</p>
@@ -457,45 +390,10 @@
 <p>Die Verarbeitung englischer Texte ist, aufgrund der großen Verbreitung der Sprache, gar kein Problem. Bei deutschen Texten wird es schon etwas schwieriger, allerdings liefern <strong>HanTa</strong>, <strong>IWNLP</strong> und auch <strong>SpaCy</strong> recht gute Ergebnisse ab. Mein subjektiver Favorit ist <strong>HanTa</strong>. Aber die Stichprobe ist viel zu gering, um hier einen klaren Favoriten identifizieren zu können.</p>
 <p>Der Vergleich dient eher nicht als repräsentivate Untersuchung aller denkbaren Varianten, soll aber einen kleinen Einblick in <strong>NLP</strong> und die automatisierte Text-Verarbeitung im <strong>Text-Mining</strong> geben und ein paar Code-Beispiele liefern, um den Einsteig in Python zu erleichtern. Ich hoffe das ist gelungen!</p>
 
-  </div>
+  </article>
   
-  
-  <footer class="post-footer">
-    
-    
-    
-    
-    
-    <div class="post-taxonomy">
-      
-      <div class="categories">
-        <strong>Kategorien:</strong>
-        
-        <a href="/categories/blog/" rel="category">blog</a>
-        
-      </div>
-      
-      
-      
-    </div>
-    
-    
-    <nav class="post-navigation" aria-label="Artikelnavigation">
-      
-      <div class="nav-previous">
-        <a href="https://nickyreinert.de/2020/2020-11-05-wie-funktionieren-dateirechte/" rel="prev">
-          <span>← Vorheriger Artikel</span>
-          <strong>Wie funktionieren Dateirechte?</strong>
-        </a>
-      </div>
-      
-      
-      
-    </nav>
-    
-  </footer>
-  
-</article>
+
+</main>
 
     <footer id="footer">
   <div>

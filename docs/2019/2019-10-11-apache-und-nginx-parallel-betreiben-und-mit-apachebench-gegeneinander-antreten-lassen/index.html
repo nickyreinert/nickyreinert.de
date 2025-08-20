@@ -273,86 +273,28 @@
 </header>
 
     
-<article itemscope itemtype="http://schema.org/BlogPosting" class="post">
+<main id="main" class="post">
   
   
-  <header class="post-header">
-    <h1 itemprop="headline">Apache und nginx parallel betreiben und mit ApacheBench gegeneinander antreten lassen</h1>
-    
-    
-    <div class="post-meta" itemscope itemtype="http://schema.org/Person">
-      <time itemprop="datePublished" datetime="2019-10-11T00:00:00Z">
-        11. October 2019
-      </time>
+  <div class="post-header">
+    <div class="navigation">
       
-      <time itemprop="dateModified" datetime="2025-08-20T09:03:20&#43;02:00">
-        (Aktualisiert: 20. August 2025)
-      </time>
+      <a class="link prev" href="/2019/2019-10-02-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fuer-wordpress-teil-3-3/">&lt;&lt;&lt;</a>
       
-      <span>von <span itemprop="author"></span></span>
       
-      <span>• 5 Min. Lesezeit</span>
+      <h1 style="flex-grow: 1; text-align: center;" itemprop="headline">Apache und nginx parallel betreiben und mit ApacheBench gegeneinander antreten lassen</h1>
+      
+      
+      <a class="link next" href="/2019/2019-10-15-pictero-generator-fuer-poesie-album-sprueche/">>>></a>
       
     </div>
-    
-    
-    
-  </header>
-  
-  
-  
-  <div class="ai-summary" itemscope itemtype="http://schema.org/Review">
-    <h2>Zusammenfassung</h2>
-    <p itemprop="description">Dieser Artikel behandelt Apache und nginx parallel betreiben und mit ApacheBench gegeneinander antreten lassen und bietet praktische Einblicke in das Thema.</p>
-    
-    
-    <div class="topics">
-      <strong>Hauptthemen:</strong>
-      
-      <span class="topic">Web</span>, 
-      
-      <span class="topic">IT</span>, 
-      
-      <span class="topic">Tools</span>
-      
-    </div>
-    
-    
-    
-    <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-    
-    
-    
-    <div class="prerequisites">
-      <strong>Voraussetzungen:</strong>
-      <ul>
-        
-        <li>Grundlegende IT-Kenntnisse</li>
-        
-      </ul>
-    </div>
-    
   </div>
   
   
+  <div class="post-date">October 11, 2019</div>
+
   
-  
-  <div class="table-of-contents">
-    <h2>Inhaltsverzeichnis</h2>
-    <nav id="TableOfContents">
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#auswertung-der-ergebnisse">Auswertung der Ergebnisse</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-  </div>
-  
-  
-  
-  <div class="post-content" itemprop="articleBody">
+  <article class="content">
     <p>Mein Ziel ist es, <strong>nginx</strong> und <strong>Apache</strong> als Webserver auf einem System laufen zu lassen. Alle HTTP/HTTPS-Anfragen werden von nginx beantwortet. Anfragen an den Port 8080 (für HTTP) oder 4443 (HTTPS) werden von Apache beantwortet. So kann ich nginx und Apache in einem <strong>Benchmark</strong> vergleichen, indem ich einfach nur die Ports ändere. Das Setup ist aber auch für andere Zwecke sinnvoll, wenn du z.B. die Burst-Einstellungen von nginx in Aktion sehen oder bestimmte Web-Dienste strikt mit Apache bedienen willst. Los gehts&hellip;</p>
 <p>Ich gehe mal davon aus, dass du nginx und Apache fertig eingerichtet hast. Nginx läuft idealerweise schon (<a href="https://www.nickyreinert.de/mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-1-3/">siehe meine 3-Teilige Anleitung</a>) Dann musst du zunächst mal dafür sorgen, dass die Firewall (z.B. iptables) die alternativen Ports 8080 und 4443 auch durchlässt. Das funktioniert folgendermaßen:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">sudo iptables -A INPUT -p tcp -m multiport --dports 8080,4443 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
@@ -429,52 +371,10 @@ Die folgenden Diagramme zeigen noch mal die Zusammensetzung der Anfrage:</p>
 <p>Abbildung 3: Messergebnisse für die Anfragen an nginx</p>
 <p>Die reine Verbindungszeit ist bei beiden Servern relativ niedrig, dieser Wert gibt aber auch eher Rückschlüsse auf die Qualität des Netzwerks. Die TTFB ist bei Apache relativ hoch., es dauert also eine ganze Weile, bis Apache die Anfrage verarbeitet und entsprechend die ersten Daten sendet. Das wird mit ziemlicher Sicherheit am grundsätzlich nicht sehr performanten php-mod liegen. Insgesamt ist das Ergebnis natürlich wenig überraschend. Mein Ziel war ja, mit nginx und php-fpm ein schnelles Setup zu schaffen. Was hiermit wohl gelungen sein dürfte (Anmerkungen zur Repräsentativität werden gerne entgegengenommen). Fairerweise sei aber noch angemerkt, dass ich Apache in der Standard-Einstellung verwende und wirklich keine Maßnahmen unternommen habe, um die Geschwindigkeit zu optimieren.</p>
 
-  </div>
+  </article>
   
-  
-  <footer class="post-footer">
-    
-    
-    
-    
-    
-    <div class="post-taxonomy">
-      
-      <div class="categories">
-        <strong>Kategorien:</strong>
-        
-        <a href="/categories/hosting/" rel="category">hosting</a>
-        
-      </div>
-      
-      
-      
-    </div>
-    
-    
-    <nav class="post-navigation" aria-label="Artikelnavigation">
-      
-      <div class="nav-previous">
-        <a href="https://nickyreinert.de/2019/2019-10-02-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fuer-wordpress-teil-3-3/" rel="prev">
-          <span>← Vorheriger Artikel</span>
-          <strong>Mehrere virtuelle Server mit nginx und PHP-FPM für Wordpress (Teil 3 / 3)</strong>
-        </a>
-      </div>
-      
-      
-      
-      <div class="nav-next">
-        <a href="https://nickyreinert.de/2019/2019-10-15-pictero-generator-fuer-poesie-album-sprueche/" rel="next">
-          <span>Nächster Artikel →</span>
-          <strong>Pictero - Generator für Poesie-Album-Sprüche</strong>
-        </a>
-      </div>
-      
-    </nav>
-    
-  </footer>
-  
-</article>
+
+</main>
 
     <footer id="footer">
   <div>

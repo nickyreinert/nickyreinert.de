@@ -97,7 +97,7 @@
     
     "image": {
       "@type": "ImageObject",
-      "url": "https:\/\/nickyreinert.de\/images\/posts\/placeholder.jpg",
+      "url": "https:\/\/nickyreinert.de\/required_computation_steps.png",
       "width": 1200,
       "height": 630
     },
@@ -273,73 +273,41 @@
 </header>
 
     
-<article itemscope itemtype="http://schema.org/BlogPosting" class="post">
+<main id="main" class="post">
   
   
-  <header class="post-header">
-    <h1 itemprop="headline">The Bitcoin Puzzle</h1>
-    
-    
-    <div class="post-meta" itemscope itemtype="http://schema.org/Person">
-      <time itemprop="datePublished" datetime="2024-10-01T12:34:56&#43;01:00">
-        1. October 2024
-      </time>
+  <div class="post-header">
+    <div class="navigation">
       
-      <time itemprop="dateModified" datetime="2025-08-20T09:03:20&#43;02:00">
-        (Aktualisiert: 20. August 2025)
-      </time>
       
-      <span>von <span itemprop="author"></span></span>
+      <h1 style="flex-grow: 1; text-align: center;" itemprop="headline">The Bitcoin Puzzle</h1>
       
-      <span>• 5 Min. Lesezeit</span>
+      
+      <a class="link next" href="/en/blog/2024/10/17/sudoku/">>>></a>
       
     </div>
-    
-    
-    
-  </header>
-  
-  
-  
-  <div class="ai-summary" itemscope itemtype="http://schema.org/Review">
-    <h2>Zusammenfassung</h2>
-    <p itemprop="description">Dieser Artikel behandelt The Bitcoin Puzzle und bietet praktische Einblicke in das Thema.</p>
-    
-    
-    <div class="topics">
-      <strong>Hauptthemen:</strong>
-      
-      <span class="topic">Web</span>, 
-      
-      <span class="topic">IT</span>, 
-      
-      <span class="topic">Tools</span>
-      
-    </div>
-    
-    
-    
-    <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-    
-    
-    
-    <div class="prerequisites">
-      <strong>Voraussetzungen:</strong>
-      <ul>
-        
-        <li>Grundlegende IT-Kenntnisse</li>
-        
-      </ul>
-    </div>
-    
   </div>
   
   
+  <div class="post-date">October 1, 2024</div>
+
   
   
-  <div class="table-of-contents">
-    <h2>Inhaltsverzeichnis</h2>
-    <nav id="TableOfContents">
+  
+  
+  
+  
+  
+
+  
+  
+  
+  
+  <details style="margin-top: 2rem; margin-bottom: 2rem;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc"><nav id="TableOfContents">
   <ul>
     <li><a href="#the-puzzle">The Puzzle</a></li>
     <li><a href="#trivia">Trivia</a></li>
@@ -353,12 +321,14 @@
     <li><a href="#what-about-pytorch">What about Pytorch?</a></li>
     <li><a href="#metal">Metal!</a></li>
   </ul>
-</nav>
-  </div>
+</nav></div>
+  </details>
   
   
   
-  <div class="post-content" itemprop="articleBody">
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
     <p>In this post, I’ll explain how I fell into a deep rabbit hole. I’ll cover how the puzzle works and how the algorithm can be optimized in Python using techniques like parallelization and pre-compiling with Cython. Finally, I’ll reveal how you can increase computation speed by nearly 100x by implementing Metal to fully harness the power of your Apple Silicon. Let’s go!</p>
 <h2 id="the-puzzle">The Puzzle</h2>
 <p>It all started with 256 transactions of roughly <a href="https://www.blockchain.com/de/explorer/transactions/btc/08389f34c98c606322740c0be6a7125d9860bb8d5cb182c02f98461e5fa6cd15.">33 BTC in January 2015</a>. The first transaction to wallet #1 contained 0.001 BTC, wallet #2 received 0.002 BTC, then 0.003 BTC to wallet #3 and so on — the final wallet #256 received an amount of 0.256 BTC. Back in those days, the 33 BTC were worth about $5,000.</p>
@@ -770,45 +740,52 @@ python computationGPU.py
 <p>Congratulations! You’ve just learned how to harness the full power of your GPU. Welcome to the bottom of my rabbit hole. Next stop: implement SECP256k1 and take part in the Bitcoin Puzzle Rally!</p>
 <p>~</p>
 <p>(Final Note: You can also use PyOpenCL to initialize the device and command queue from within Python, which may simplify and enhance the process. I preferred the Swift wrapper because it is easier to debug.)</p>
+    
+  </article>
+  
+  
+  
+  <div style="margin-top: 5rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Summary</h2>
+    <div style="font-size: 1rem;">
+
+      <p>Dieser Artikel behandelt The Bitcoin Puzzle und bietet praktische Einblicke in das Thema.</p>
+      <br />
+      
+      <p><strong>Main Topics:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Web</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">IT</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Tools</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Difficulty:</strong> intermediate</p>
+      
+      
+      
+      <p><strong>Reading Time:</strong> approx. 5 minutes</p>
+      
+    </div>
   </div>
   
   
-  <footer class="post-footer">
-    
-    
-    
-    
-    
-    <div class="post-taxonomy">
-      
-      <div class="categories">
-        <strong>Kategorien:</strong>
-        
-        <a href="/categories/projekte/" rel="category">projekte</a>
-        
-      </div>
-      
-      
-      
-    </div>
-    
-    
-    <nav class="post-navigation" aria-label="Artikelnavigation">
-      
-      
-      
-      <div class="nav-next">
-        <a href="https://nickyreinert.de/en/blog/2024/10/17/sudoku/" rel="next">
-          <span>Nächster Artikel →</span>
-          <strong>sudoku</strong>
-        </a>
-      </div>
-      
-    </nav>
-    
-  </footer>
   
-</article>
+  <div class="paginator">
+    
+    <a></a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/en/blog/2024/10/17/sudoku/">next →</a>
+    
+  </div>
+  
+
+</main>
 
     <footer id="footer">
   <div>

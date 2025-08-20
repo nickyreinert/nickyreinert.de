@@ -273,85 +273,28 @@
 </header>
 
     
-<article itemscope itemtype="http://schema.org/BlogPosting" class="post">
+<main id="main" class="post">
   
   
-  <header class="post-header">
-    <h1 itemprop="headline">Welche Arten von SSL-Zertifikaten gibt es?</h1>
-    
-    
-    <div class="post-meta" itemscope itemtype="http://schema.org/Person">
-      <time itemprop="datePublished" datetime="2017-09-30T00:00:00Z">
-        30. September 2017
-      </time>
+  <div class="post-header">
+    <div class="navigation">
       
-      <time itemprop="dateModified" datetime="2025-08-20T09:03:20&#43;02:00">
-        (Aktualisiert: 20. August 2025)
-      </time>
+      <a class="link prev" href="/2017/2017-09-29-total-commander-als-sftp-client-einrichten/">&lt;&lt;&lt;</a>
       
-      <span>von <span itemprop="author"></span></span>
       
-      <span>• 5 Min. Lesezeit</span>
+      <h1 style="flex-grow: 1; text-align: center;" itemprop="headline">Welche Arten von SSL-Zertifikaten gibt es?</h1>
+      
+      
+      <a class="link next" href="/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/">>>></a>
       
     </div>
-    
-    
-    
-  </header>
-  
-  
-  
-  <div class="ai-summary" itemscope itemtype="http://schema.org/Review">
-    <h2>Zusammenfassung</h2>
-    <p itemprop="description">Dieser Artikel behandelt Welche Arten von SSL-Zertifikaten gibt es? und bietet praktische Einblicke in das Thema.</p>
-    
-    
-    <div class="topics">
-      <strong>Hauptthemen:</strong>
-      
-      <span class="topic">Security</span>, 
-      
-      <span class="topic">Web</span>, 
-      
-      <span class="topic">SSL</span>
-      
-    </div>
-    
-    
-    
-    <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-    
-    
-    
-    <div class="prerequisites">
-      <strong>Voraussetzungen:</strong>
-      <ul>
-        
-        <li>Grundlegende IT-Kenntnisse</li>
-        
-      </ul>
-    </div>
-    
   </div>
   
   
+  <div class="post-date">September 30, 2017</div>
+
   
-  
-  <div class="table-of-contents">
-    <h2>Inhaltsverzeichnis</h2>
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#wie-funktioniert-die-ssl-zertifizierung">Wie funktioniert die SSL Zertifizierung?</a></li>
-    <li><a href="#unterscheidung-nach-der-art-der-validierung">Unterscheidung nach der Art der Validierung</a></li>
-    <li><a href="#unterscheidung-nach-umfang-des-zertifikats">Unterscheidung nach Umfang des Zertifikats</a></li>
-    <li><a href="#was-ist-eine-zertifikats-kette">Was ist eine Zertifikats-Kette?</a></li>
-  </ul>
-</nav>
-  </div>
-  
-  
-  
-  <div class="post-content" itemprop="articleBody">
+  <article class="content">
     <p>SSL-Zertifikate spielen seit einiger Zeit eine sehr wichtige Rolle. Zwar gibt es die verschlüsselte Datenübertragung von Websiten über https schon  länger (bereits 1994 wurde die erste Version offiziell vorgestellt) aber erst in 2014 nahm die Bedeutung für SEO zu. <a href="https://webmasters.googleblog.com/2014/08/https-as-ranking-signal.html">Im August 2014</a> hat Google bekannt gegeben, dass SSL nun zu den Ranking-Faktoren zählt.  Fast zeitgleich (Anfang 2017) haben die beiden bekanntesten Browser Chrome und Firefox eine neue Version vorgestellt. Von nun an werden Webseiten, die SSL nicht nutzen explizit als unsicher ausgezeichnet. Langfristig wird also kein Weg an einem SSL-Zertifikat vorbeiführen.</p>
 <p>Es gibt sehr viele Anbieter, bei denen man SSL-Zertifikate bestellen kann und die Preise sind sehr unterschiedlich. So bietet Lets Encrypt kostenlose Zertifikate an und andere Anbieter verlangen dafür mehrere hundert Euro im Jahr. Der Grund dafür ist, dass es natürlich verschiedene Unterscheidungen bei den Zertifikaten gibt. Die eine betrifft die Art, wie das Zertifikat überprüft wird und die andere beschreibt den Gültigkeitsbereich eines Zertifikats.</p>
 <h2 id="wie-funktioniert-die-ssl-zertifizierung">Wie funktioniert die SSL Zertifizierung?</h2>
@@ -374,54 +317,10 @@
 <p>Nun ist es so, dass der Browser nicht nur blind irgendwelchen Zertifikaten vertraut. Die könnte man sich ja auch selber ausstellen. Aus diesem Grund gibt es so genannte Wurzel-Zertifikate bzw. Zertifikate von Root CAs. Es gibt also Organisationen, denen der Browser vertraut. Deren Zertifikate sind oft im lokalen Speicher installiert und der Browser kann prüfen, ob das  Zertifikat für <a href="https://www.example.com">www.example.com</a> von einer vertrauenswürdigen Organisation ausgestellt wurde. Denn das Zertifikat erhält ja auch den Verweis auf die Stelle, von der das Zertifikat einmal ausgestellt wurde. Oft ist es allerdings so, dass man Zertifikate nicht nur bei den Root CAs bestellt, sondern auch bei deren &ldquo;Delegierten&rdquo; - den Intermediate CAs. Um dem Browser nun klar zu machen, dass er auch der Intermediate CA vertrauen kann, muss eben diese Zertifikats-Kette übermittelt werden. Das ist im Grunde nichts weiter als ein Liste von Zertifikaten, mit denen die Vertrauenswürdigkeit der beteiligten Zertifikats-Stellen bescheinigt wird.</p>
 <p>Der Server hinter <a href="https://www.example.com">www.example.com</a> liefert also nicht nur das Zertifikat für die Seite selber aus, sondern auch alle Zwischenzertifikate - in der sogenannten Zertifikatskette.</p>
 
-  </div>
+  </article>
   
-  
-  <footer class="post-footer">
-    
-    
-    
-    
-    
-    <div class="post-taxonomy">
-      
-      <div class="categories">
-        <strong>Kategorien:</strong>
-        
-        <a href="/categories/hosting/" rel="category">hosting</a>
-        
-        <a href="/categories/anleitungen/" rel="category">anleitungen</a>
-        
-      </div>
-      
-      
-      
-    </div>
-    
-    
-    <nav class="post-navigation" aria-label="Artikelnavigation">
-      
-      <div class="nav-previous">
-        <a href="https://nickyreinert.de/2017/2017-09-29-total-commander-als-sftp-client-einrichten/" rel="prev">
-          <span>← Vorheriger Artikel</span>
-          <strong>Total Commander als SFTP-Client einrichten</strong>
-        </a>
-      </div>
-      
-      
-      
-      <div class="nav-next">
-        <a href="https://nickyreinert.de/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/" rel="next">
-          <span>Nächster Artikel →</span>
-          <strong>SSL-Verifizierung mit PHP schlägt fehlt (Fehler 14090086)</strong>
-        </a>
-      </div>
-      
-    </nav>
-    
-  </footer>
-  
-</article>
+
+</main>
 
     <footer id="footer">
   <div>

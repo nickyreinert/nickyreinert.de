@@ -278,98 +278,28 @@ Server oder virtual hosts? Im Gegensatz zu den “virtual hosts” von Apache sp
 </header>
 
     
-<article itemscope itemtype="http://schema.org/BlogPosting" class="post">
+<main id="main" class="post">
   
   
-  <header class="post-header">
-    <h1 itemprop="headline">Mehrere virtuelle Server mit nginx und PHP-FPM für Wordpress (Teil 2 / 3)</h1>
-    
-    
-    <div class="post-meta" itemscope itemtype="http://schema.org/Person">
-      <time itemprop="datePublished" datetime="2019-10-01T00:00:00Z">
-        1. October 2019
-      </time>
+  <div class="post-header">
+    <div class="navigation">
       
-      <time itemprop="dateModified" datetime="2025-08-20T09:03:20&#43;02:00">
-        (Aktualisiert: 20. August 2025)
-      </time>
+      <a class="link prev" href="/2019/2019-08-02-warum-es-tage-dauern-kann-wenn-du-dich-von-einer-e-mail-verteilerliste-entfernen-laesst/">&lt;&lt;&lt;</a>
       
-      <span>von <span itemprop="author"></span></span>
       
-      <span>• 5 Min. Lesezeit</span>
+      <h1 style="flex-grow: 1; text-align: center;" itemprop="headline">Mehrere virtuelle Server mit nginx und PHP-FPM für Wordpress (Teil 2 / 3)</h1>
+      
+      
+      <a class="link next" href="/2019/2019-10-02-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fuer-wordpress-teil-3-3/">>>></a>
       
     </div>
-    
-    
-    
-  </header>
-  
-  
-  
-  <div class="ai-summary" itemscope itemtype="http://schema.org/Review">
-    <h2>Zusammenfassung</h2>
-    <p itemprop="description">Dieser Artikel behandelt Mehrere virtuelle Server mit nginx und PHP-FPM für Wordpress (Teil 2 / 3) und bietet praktische Einblicke in das Thema.</p>
-    
-    
-    <div class="topics">
-      <strong>Hauptthemen:</strong>
-      
-      <span class="topic">Web</span>, 
-      
-      <span class="topic">WordPress</span>, 
-      
-      <span class="topic">Development</span>
-      
-    </div>
-    
-    
-    
-    <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-    
-    
-    
-    <div class="prerequisites">
-      <strong>Voraussetzungen:</strong>
-      <ul>
-        
-        <li>Grundlegende IT-Kenntnisse</li>
-        
-      </ul>
-    </div>
-    
   </div>
   
   
+  <div class="post-date">October 1, 2019</div>
+
   
-  
-  <div class="table-of-contents">
-    <h2>Inhaltsverzeichnis</h2>
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#server-oder-virtual-hosts">Server oder virtual hosts?</a>
-      <ul>
-        <li><a href="#der-cache">Der Cache</a></li>
-        <li><a href="#was-soll-gecached-werden">Was soll gecached werden?</a></li>
-        <li><a href="#wie-soll-gecached-werden">Wie soll gecached werden?</a></li>
-      </ul>
-    </li>
-    <li><a href="#die-php-einstellungen">Die PHP-Einstellungen</a></li>
-    <li><a href="#die-https-einstellungen">Die HTTPS-Einstellungen</a>
-      <ul>
-        <li><a href="#die-gzip-einstellungen">Die GZIP-Einstellungen</a></li>
-        <li><a href="#die-wordpress-einstellungen">Die Wordpress-Einstellungen</a></li>
-        <li><a href="#die-logging-einstellungen">Die Logging-Einstellungen</a></li>
-      </ul>
-    </li>
-    <li><a href="#eine-sitemap-korrekt-einbinden">Eine Sitemap korrekt einbinden</a></li>
-    <li><a href="#sicherheits-features">Sicherheits-Features</a></li>
-  </ul>
-</nav>
-  </div>
-  
-  
-  
-  <div class="post-content" itemprop="articleBody">
+  <article class="content">
     <p>Im zweiten Teil geht es um die individuelle Einrichtung der virtuellen Server für nginx.</p>
 <h2 id="server-oder-virtual-hosts">Server oder virtual hosts?</h2>
 <p>Im Gegensatz zu den &ldquo;<strong>virtual hosts</strong>&rdquo; von Apache spricht man bei nginx von &ldquo;<strong>servern</strong>&rdquo;. Ich möchte das Aufgreifen und nutze im Folgenden einfach nur von &ldquo;<strong>Server</strong>&rdquo; wenn ich von einem individuellen Host oder virtuellem Server spreche. Wie bei Apache werden diese idealerweise in eigenständigen Konfig-Dateien definiert. Hier gibt es verschiedene Vorlieben, ob die Konfig-Dateien unter <strong>/etc/nginx/sites-available</strong> oder <strong>/etc/nginx/conf.d</strong> abgelegt werden.</p>
@@ -615,54 +545,10 @@ Server oder virtual hosts? Im Gegensatz zu den “virtual hosts” von Apache sp
 </span></span></code></pre></div><p>Natürlich wollen wir nicht nur den Zugriff auf kritische Ressourcen verhindern, sondern ggf. auch andere Angriffsvektoren erschweren, wie z.B. BruteForce-Attacken. In einer Wordpress-Installation ist ein beliebter Angriffspunkt z.B. die Datei <strong>wp-login.php</strong>. Weiter oben haben wir schon mal festgelegt, wie oft eine Ressouce abgefragt werden kann. Für <strong>wp-login.php</strong> wollen wir diese Grenze noch etwa enger ziehen. Unser Setup erlaubt 5 Anfragen / Sekunde. Mit Burst verkürze ich zuerst die Warteschlange auf 1. Mit <strong>nodelay</strong> sorge ich nun dafür, dass Anfragen sofort beantwortet werden, aber der Slot in de Warteschlange nicht gleich wieder frei wird. Ergo werden direkt darauf folgende Zugriffe im erlaubten Zeitfenster mit dem <strong>HTTP-Fehler 503</strong> (Service temporarly not available) abgelehnt.</p>
 <p>Weiter gehts abschließend mit der Einrichtung von <a href="https://www.nickyreinert.de/mehrere-virtuelle-server-mit-nginx-und-php-fpm-fuer-wordpress-teil-3-3/">PHP in Teil 3.</a></p>
 
-  </div>
+  </article>
   
-  
-  <footer class="post-footer">
-    
-    
-    
-    
-    
-    <div class="post-taxonomy">
-      
-      <div class="categories">
-        <strong>Kategorien:</strong>
-        
-        <a href="/categories/hosting/" rel="category">hosting</a>
-        
-        <a href="/categories/wordpress/" rel="category">wordpress</a>
-        
-      </div>
-      
-      
-      
-    </div>
-    
-    
-    <nav class="post-navigation" aria-label="Artikelnavigation">
-      
-      <div class="nav-previous">
-        <a href="https://nickyreinert.de/2019/2019-08-02-warum-es-tage-dauern-kann-wenn-du-dich-von-einer-e-mail-verteilerliste-entfernen-laesst/" rel="prev">
-          <span>← Vorheriger Artikel</span>
-          <strong>Warum es Tage dauern kann, wenn du dich von einer E-Mail-Verteilerliste entfernen lässt</strong>
-        </a>
-      </div>
-      
-      
-      
-      <div class="nav-next">
-        <a href="https://nickyreinert.de/2019/2019-10-02-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fuer-wordpress-teil-3-3/" rel="next">
-          <span>Nächster Artikel →</span>
-          <strong>Mehrere virtuelle Server mit nginx und PHP-FPM für Wordpress (Teil 3 / 3)</strong>
-        </a>
-      </div>
-      
-    </nav>
-    
-  </footer>
-  
-</article>
+
+</main>
 
     <footer id="footer">
   <div>

@@ -283,101 +283,28 @@ Vorbemerkung Bevor es los geht möchte ich noch einmal die Zusammenhänge verdeu
 </header>
 
     
-<article itemscope itemtype="http://schema.org/BlogPosting" class="post">
+<main id="main" class="post">
   
   
-  <header class="post-header">
-    <h1 itemprop="headline">Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&amp;nbsp;2/2)</h1>
-    
-    
-    <div class="post-meta" itemscope itemtype="http://schema.org/Person">
-      <time itemprop="datePublished" datetime="2021-10-31T00:00:00Z">
-        31. October 2021
-      </time>
+  <div class="post-header">
+    <div class="navigation">
       
-      <time itemprop="dateModified" datetime="2025-08-20T09:03:20&#43;02:00">
-        (Aktualisiert: 20. August 2025)
-      </time>
+      <a class="link prev" href="/2021/2021-04-21-maze-game/">&lt;&lt;&lt;</a>
       
-      <span>von <span itemprop="author"></span></span>
       
-      <span>• 5 Min. Lesezeit</span>
+      <h1 style="flex-grow: 1; text-align: center;" itemprop="headline">Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&amp;nbsp;2/2)</h1>
+      
+      
+      <a class="link next" href="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/">>>></a>
       
     </div>
-    
-    
-    
-    <div class="post-tags" itemprop="keywords">
-      
-      <span class="tag">#bitcoin</span>
-      
-      <span class="tag">#mining</span>
-      
-      <span class="tag">#sha</span>
-      
-    </div>
-    
-  </header>
-  
-  
-  
-  <div class="ai-summary" itemscope itemtype="http://schema.org/Review">
-    <h2>Zusammenfassung</h2>
-    <p itemprop="description">Dieser Artikel behandelt Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&amp;nbsp;2/2) und bietet praktische Einblicke in das Thema.</p>
-    
-    
-    <div class="topics">
-      <strong>Hauptthemen:</strong>
-      
-      <span class="topic">Web</span>, 
-      
-      <span class="topic">IT</span>, 
-      
-      <span class="topic">Tools</span>
-      
-    </div>
-    
-    
-    
-    <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-    
-    
-    
-    <div class="prerequisites">
-      <strong>Voraussetzungen:</strong>
-      <ul>
-        
-        <li>Grundlegende IT-Kenntnisse</li>
-        
-      </ul>
-    </div>
-    
   </div>
   
   
+  <div class="post-date">October 31, 2021</div>
+
   
-  
-  <div class="table-of-contents">
-    <h2>Inhaltsverzeichnis</h2>
-    <nav id="TableOfContents">
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#vorbemerkung">Vorbemerkung</a></li>
-        <li><a href="#dekompressions">Dekompressions</a></li>
-        <li><a href="#die-schleife">Die Schleife!</a></li>
-        <li><a href="#die-kompression">Die Kompression</a></li>
-        <li><a href="#haschee-gesundheit-was">Haschee. Gesundheit. Was?</a></li>
-        <li><a href="#epilog">Epilog</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-  </div>
-  
-  
-  
-  <div class="post-content" itemprop="articleBody">
+  <article class="content">
     <p>Wenn du <a href="https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/">den ersten Teil</a> erfolgreich verarbeitet hast, bist du bestens gewappnet, um in diesem Teil zu erfahren, wie die einzelnen Komponenten bzw. Funktionen nun zusammenspielen.</p>
 <h3 id="vorbemerkung">Vorbemerkung</h3>
 <p>Bevor es los geht möchte ich noch einmal die Zusammenhänge verdeutlichen: Wir werden gleich eine Nachricht (<strong>Message</strong>) erzeugen, deren Länge einem Vielfachen von <strong>512 Bit</strong> entspricht; im Beispiel genau <strong>512 Bit</strong>. Die Nachricht wird in <strong>Message-Blocks</strong> zerlegt, die exakt <strong>512 Bit</strong> lang sind. Jeder Message-Block wird wiederum zu einer <strong>Message-Schedule</strong> zerlegt, mit <strong>16 Wörtern</strong> (Words) zu je <strong>32 Bit</strong> Länge. Die Länge der Wörter muss und wird immer <strong>32 Bit</strong> sein! Der Message-Schedule wird dann aber erweitert, um <strong>64 Wörter zu</strong> enthalten. Seine Länge dann: <strong>2.048 Bit</strong>. Und grafisch:</p>
@@ -520,65 +447,10 @@ new\_compression\_constants\[4\] = bin(
 <p>Willst du den Prozess noch etwas interaktiver nachvollziehen, möchte ich dir <a href="https://www.youtube.com/watch?v=f9EbD6iY9zI">dieses Video</a> empfehlen. Dort wird der Algorithmus in Ruby nachgebaut und die einzelnen Rechenschritte auch etwas genauer erklärt.</p>
 <p>Und warum ist SHA-256 für das Mining von Kryptowährungen jetzt so wichtig? Kurz: Der Hash validiert die Gültigkeit des <em>Kassenbuches</em>. Beim Mining geht es darum, aus einer gegebenen Nachricht und einem frei wählbaren Zusatz exakt einen gegebenen Ziel-Hash zu berechnen. Der Algorithmus muss also wahnsinng oft durchlaufen werden. Da das sehr aufwendig ist, kostet das Zeit und wird entsprechend belohnt.</p>
 
-  </div>
+  </article>
   
-  
-  <footer class="post-footer">
-    
-    
-    
-    
-    
-    <div class="post-taxonomy">
-      
-      <div class="categories">
-        <strong>Kategorien:</strong>
-        
-        <a href="/categories/anleitungen/" rel="category">anleitungen</a>
-        
-        <a href="/categories/blog/" rel="category">blog</a>
-        
-      </div>
-      
-      
-      
-      <div class="all-tags">
-        <strong>Alle Tags:</strong>
-        
-        <a href="/tags/bitcoin/" rel="tag">bitcoin</a>
-        
-        <a href="/tags/mining/" rel="tag">mining</a>
-        
-        <a href="/tags/sha/" rel="tag">sha</a>
-        
-      </div>
-      
-    </div>
-    
-    
-    <nav class="post-navigation" aria-label="Artikelnavigation">
-      
-      <div class="nav-previous">
-        <a href="https://nickyreinert.de/2021/2021-04-21-maze-game/" rel="prev">
-          <span>← Vorheriger Artikel</span>
-          <strong>Maze!</strong>
-        </a>
-      </div>
-      
-      
-      
-      <div class="nav-next">
-        <a href="https://nickyreinert.de/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/" rel="next">
-          <span>Nächster Artikel →</span>
-          <strong>Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&amp;nbsp;1/2)</strong>
-        </a>
-      </div>
-      
-    </nav>
-    
-  </footer>
-  
-</article>
+
+</main>
 
     <footer id="footer">
   <div>

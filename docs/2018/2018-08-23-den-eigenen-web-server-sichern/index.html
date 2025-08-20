@@ -280,120 +280,28 @@
 </header>
 
     
-<article itemscope itemtype="http://schema.org/BlogPosting" class="post">
+<main id="main" class="post">
   
   
-  <header class="post-header">
-    <h1 itemprop="headline">Den eigenen Web-Server sichern</h1>
-    
-    
-    <div class="post-meta" itemscope itemtype="http://schema.org/Person">
-      <time itemprop="datePublished" datetime="2018-08-23T00:00:00Z">
-        23. August 2018
-      </time>
+  <div class="post-header">
+    <div class="navigation">
       
-      <time itemprop="dateModified" datetime="2025-08-20T09:03:20&#43;02:00">
-        (Aktualisiert: 20. August 2025)
-      </time>
+      <a class="link prev" href="/2018/2018-08-12-wordpress-page-builder-pro-und-contra/">&lt;&lt;&lt;</a>
       
-      <span>von <span itemprop="author"></span></span>
       
-      <span>• 5 Min. Lesezeit</span>
+      <h1 style="flex-grow: 1; text-align: center;" itemprop="headline">Den eigenen Web-Server sichern</h1>
+      
+      
+      <a class="link next" href="/2018/2018-08-24-die-os-x-bash/">>>></a>
       
     </div>
-    
-    
-    
-    <div class="post-tags" itemprop="keywords">
-      
-      <span class="tag">#backup</span>
-      
-      <span class="tag">#bash</span>
-      
-      <span class="tag">#hosting</span>
-      
-      <span class="tag">#shell</span>
-      
-      <span class="tag">#web-server</span>
-      
-    </div>
-    
-  </header>
-  
-  
-  
-  <div class="ai-summary" itemscope itemtype="http://schema.org/Review">
-    <h2>Zusammenfassung</h2>
-    <p itemprop="description">Dieser Artikel behandelt Den eigenen Web-Server sichern und bietet praktische Einblicke in das Thema.</p>
-    
-    
-    <div class="topics">
-      <strong>Hauptthemen:</strong>
-      
-      <span class="topic">Web</span>, 
-      
-      <span class="topic">IT</span>, 
-      
-      <span class="topic">Tools</span>
-      
-    </div>
-    
-    
-    
-    <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-    
-    
-    
-    <div class="prerequisites">
-      <strong>Voraussetzungen:</strong>
-      <ul>
-        
-        <li>Grundlegende IT-Kenntnisse</li>
-        
-      </ul>
-    </div>
-    
   </div>
   
   
+  <div class="post-date">August 23, 2018</div>
+
   
-  
-  <div class="table-of-contents">
-    <h2>Inhaltsverzeichnis</h2>
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#die-backup-strategie">Die Backup-Strategie</a>
-      <ul>
-        <li><a href="#wo-soll-das-backup-gespeichert-werden">Wo soll das Backup gespeichert werden?</a></li>
-        <li><a href="#welche-software-soll-ich-nutzen">Welche Software soll ich nutzen?</a></li>
-        <li><a href="#wie-oft-soll-ich-ein-backup-anlegen">Wie oft soll ich ein Backup anlegen?</a></li>
-        <li><a href="#welche-daten-sollen-gesichert-werden">Welche Daten sollen gesichert werden?</a></li>
-      </ul>
-    </li>
-    <li><a href="#vorbereitung">Vorbereitung</a>
-      <ul>
-        <li><a href="#duplicity-und-verschlüsselung-einrichten">Duplicity und Verschlüsselung einrichten</a></li>
-        <li><a href="#cloud-speicher-einrichten">Cloud-Speicher einrichten</a></li>
-        <li><a href="#mysql-benutzer-einrichten">MySQL-Benutzer einrichten</a></li>
-      </ul>
-    </li>
-    <li><a href="#die-backup-strategie-umsetzen">Die Backup-Strategie umsetzen</a>
-      <ul>
-        <li><a href="#die-zugangsdaten-ablegen">Die Zugangsdaten ablegen</a></li>
-        <li><a href="#die-ordner-der-virtuellen-hosts-sichern">Die Ordner der virtuellen Hosts sichern</a></li>
-        <li><a href="#die-datenbanken-des-mysql-servers-sichern">Die Datenbanken des MySQL-Servers sichern</a></li>
-        <li><a href="#die-daten-mit-duplicity-verschlüsselt-sichern">Die Daten mit duplicity verschlüsselt sichern</a></li>
-        <li><a href="#automatisieren-mit-cron">Automatisieren mit cron</a></li>
-        <li><a href="#github">Github</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-  </div>
-  
-  
-  
-  <div class="post-content" itemprop="articleBody">
+  <article class="content">
     <p>Die <strong>Datensicherung</strong> des eigenen, öffentlichen Webservers ist nicht nur wichtig, sie kann auch auf vielen Wegen geschehen und wirft vermutlich gerade deshalb sehr viele Fragen auf. Soll ich ein Image des ganzen Servers anlegen oder nur einzelne Ordner sichern? <strong>Wie oft</strong> muss ich ein Backup machen und wie gelange ich im Notfall an die Daten? Reicht es aus, z.B. als Wordpress-Nutzer, ein Plugin zu verwenden oder ist es sinnvoller externe Software zu nutzen?</p>
 <p>Ich habe versucht ein paar solcher Fragen, auch für mich selber, zu beantworten und als Konsequenz daraus ein <strong>Backup-Strategie</strong> zu entwickeln und dann auch umzusetzen. Das Ziel ist ein gesunder <strong>Mittelweg zwischen Sicherheit und Bedienbarkeit</strong>. Da ich selber sehr oft mit Wordpress arbeite, soll dieser Beitrag vornehmlich die Wordpress-Nutzer ansprechen. Wenn du Wordpress allerdings nur als Service nutzt (z.B. auf wordpress.org), wird dir dieser Beitrag wenig weiterhelfen. Außerdem ist es sehr hilfreich, wenn du per <strong>SSH Zugriff</strong> auf deinen Server hast. Sicherlich gibt es auch Möglichkeiten, den hier aufgezeigten Weg ohne SSH zu beschreiten - wie das funktioniert, muss man aber im Einzelnen sehen.</p>
 <h2 id="die-backup-strategie">Die Backup-Strategie</h2>
@@ -570,67 +478,10 @@ do</p>
 </span></span></code></pre></div><h3 id="github">Github</h3>
 <p>Die gesammelten Scripte und Vorlagen für die Konfigurationsdateien findest du auf <a href="https://github.com/nickyreinert/completeWebServerBackup">github.com</a>. Du kopierst einfach den Inhalt des Ordners <em>scripts</em> an einen Ort auf deinen Server, wie z.B. <em>/backup.</em></p>
 
-  </div>
+  </article>
   
-  
-  <footer class="post-footer">
-    
-    
-    
-    
-    
-    <div class="post-taxonomy">
-      
-      <div class="categories">
-        <strong>Kategorien:</strong>
-        
-        <a href="/categories/hosting/" rel="category">hosting</a>
-        
-      </div>
-      
-      
-      
-      <div class="all-tags">
-        <strong>Alle Tags:</strong>
-        
-        <a href="/tags/backup/" rel="tag">backup</a>
-        
-        <a href="/tags/bash/" rel="tag">bash</a>
-        
-        <a href="/tags/hosting/" rel="tag">hosting</a>
-        
-        <a href="/tags/shell/" rel="tag">shell</a>
-        
-        <a href="/tags/web-server/" rel="tag">web-server</a>
-        
-      </div>
-      
-    </div>
-    
-    
-    <nav class="post-navigation" aria-label="Artikelnavigation">
-      
-      <div class="nav-previous">
-        <a href="https://nickyreinert.de/2018/2018-08-12-wordpress-page-builder-pro-und-contra/" rel="prev">
-          <span>← Vorheriger Artikel</span>
-          <strong>Wordpress Page Builder - Pro und Contra</strong>
-        </a>
-      </div>
-      
-      
-      
-      <div class="nav-next">
-        <a href="https://nickyreinert.de/2018/2018-08-24-die-os-x-bash/" rel="next">
-          <span>Nächster Artikel →</span>
-          <strong>Die OS X - Bash</strong>
-        </a>
-      </div>
-      
-    </nav>
-    
-  </footer>
-  
-</article>
+
+</main>
 
     <footer id="footer">
   <div>
