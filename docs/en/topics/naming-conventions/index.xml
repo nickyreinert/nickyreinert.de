@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Naming Conventions auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/en/topics/naming-conventions/</link>
+    <description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>en</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Tue, 01 Apr 2025 12:34:56 +0200</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/naming-conventions/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Adobe Launch DTM Naming Conventions</title>
+      <link>https://nickyreinert.de/en/blog/2025/04/01/adobe-launch-dtm-naming-conventions/</link>
+      <pubDate>Tue, 01 Apr 2025 12:34:56 +0200</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/en/blog/2025/04/01/adobe-launch-dtm-naming-conventions/</guid>
+      <description>I&rsquo;ve worked with Adobe Tracking Suite (which is Adobe Launch and all it&rsquo;s sibblings) for quite a while and I saw many, some quite chaotic, tracking …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>A practical guide outlining best practices and naming conventions for implementing tracking solutions with Adobe Launch (DTM). The article proposes structured naming for data layers, data elements, dimensions, and rules, and emphasizes the importance of robust error handling, logging, and documentation within the tag manager for improved maintainability and debugging.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Adobe Launch, Tag Management, Web Analytics, Data Layer, Naming Conventions, Digital Marketing, Debugging</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>I&rsquo;ve worked with Adobe Tracking Suite (which is Adobe Launch and all it&rsquo;s sibblings) for quite a while and I saw many, some quite chaotic, tracking implementations and tag managers. At some point I felt the need to write down some basic rules to navigate those messy libraries. Hope that helps you, too.</p>
+<h1 id="naming-convention">naming convention</h1>
+<h2 id="global">Global</h2>
+<p>Use a category and naming convention that allows you to track <strong>variables</strong>, <strong>metrics</strong> and <strong>dimension</strong> from the website over the tag manger to the backend of your analytics solution and the dashboard. Every category is also assigned a particular numeric range. This will improve your debugging and troubleshooting process.</p>
+<p>The following basic categories should represent your default setup.</p>
+<ul>
+<li>Page related information (for a single page view, from 1 to 19)</li>
+<li>Site related information (for the whole website, from 020 to 39)</li>
+<li>User related information (describing the visitor, from 40 to 59)</li>
+<li>Misc information (meta information that usually is not part of an analysis or cannot be assigned to the other categories, from 59 to</li>
+</ul>
+<h2 id="data-layer">Data Layer</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln"> 1</span><span class="cl">	<span class="nx">datalayer</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">		<span class="nx">page</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">			<span class="nx">category</span><span class="o">:</span> 
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">			<span class="nx">name</span><span class="o">:</span> 
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">			<span class="nx">id</span><span class="o">:</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">			<span class="nx">date</span><span class="o">:</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">			<span class="nx">language</span><span class="o">:</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">		<span class="p">},</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">		<span class="nx">site</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">			<span class="nx">provider</span><span class="o">:</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">			<span class="nx">project</span><span class="o">:</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">			<span class="nx">domain</span><span class="o">:</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">		<span class="p">},</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">		<span class="nx">user</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">			<span class="nx">status</span><span class="o">:</span> <span class="p">[</span><span class="nx">anonmyous</span><span class="p">,</span> <span class="nx">logged</span><span class="o">-</span><span class="k">in</span><span class="p">],</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">			<span class="nx">behavior</span><span class="o">:</span> <span class="p">[</span><span class="nx">returned</span><span class="p">,</span> <span class="k">new</span><span class="p">],</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">			<span class="nx">language</span><span class="o">:</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">		<span class="p">},</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">		<span class="nx">misc</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">			<span class="nx">timestamp</span><span class="o">:</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">			<span class="nx">debug</span><span class="o">:</span> 
+</span></span><span class="line"><span class="ln">22</span><span class="cl">			<span class="nx">utm</span><span class="o">:</span> 
+</span></span><span class="line"><span class="ln">23</span><span class="cl">			<span class="nx">interaction_details</span><span class="o">:</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">	<span class="p">}</span>
+</span></span></code></pre></div><blockquote>
+<p>&ldquo;I&rsquo;ve implemented a page.category attribute, which I find invaluable. I&rsquo;m surprised so many implementations omit it. It allows for quicker traffic analysis at a higher level than individual pages. Categories help maintain order as pages inevitably become disorganized over time.&rdquo;</p></blockquote>
+<h2 id="data-elements">Data Elements</h2>
+<p>Your Data Element name should consist the numeric ID referring to the ID of your (Adobe) Analytics-implementation followed by a separator (like the pipe symbol |) and the address within the Data Layer object. Left pad the ID to a length of three to not mix up the &ldquo;order by name&rdquo; feature. The second part is the exact address of the element within the data layer. If this element does not correspond to the Data Layer, use a short description.</p>
+<ul>
+<li><code>000 | datalayer.page.name</code></li>
+<li><code>010 | datalayer.misc.utm</code></li>
+</ul>
+<h2 id="dimensions">Dimensions</h2>
+<p><strong>eVars</strong>, <strong>props</strong> and <strong>events</strong> are identified by a short description build from the category and the name of the information, followed by the name and the kind of variable (<strong>t</strong> for <strong>traffic variables</strong> aka <strong>props</strong>, <strong>c</strong> vor <strong>conversion variables</strong> aka <strong>eVars</strong> and <strong>e</strong> for <strong>event</strong>):</p>
+<ul>
+<li><code>Page Name (t010)</code></li>
+<li><code>User Status (c020)</code></li>
+</ul>
+<h2 id="events">Events</h2>
+<h3 id="naming-rules">Naming Rules</h3>
+<p>You wil need three categories of rules, based on the action the perform</p>
+<ul>
+<li>Page View rule (mostly just one, will trigger a page view)</li>
+<li>Click rules (will trigger click events)</li>
+<li>Misc rule (will not trigger any call, but prepare tracking or add event listeners)</li>
+</ul>
+<p>Besides that, you will have three main attributes for page view and click rules that should be available in the component name itself:</p>
+<ul>
+<li>the according event id (custom success event, even page views can have an event ID)</li>
+<li>a brief description</li>
+<li>how a rule will be triggered (Page Top, Document Ready, Click, Direct Call, &hellip;)</li>
+</ul>
+<p>Name your rules using those three information (I prefer the pipe symbol as a separator)</p>
+<p><code>[TYPE]|[TRIGGER]|[EVENT ID]|[BRIEF DESCRIPTION]</code></p>
+<p>If your rule covers more than one event, post them all as a comma separated list (50,51,52). If there are too many rules, you may overthink your strategy.</p>
+<p><strong>For example:</strong></p>
+<ul>
+<li><code>PV | DocReady | 10 | All Pages</code></li>
+<li><code>PV | DocReady | 20 | Search Pages</code></li>
+<li><code>CL | Trigger | 50,51,52 | Click</code></li>
+<li><code>CL | Click | 60 | Bookmark Page</code></li>
+<li><code>MISC | Helper Functions</code></li>
+</ul>
+<h4 id="reason">Reason</h4>
+<p>In the rules overview this helps you to get a good first impression of all existing rules and it allows you to quickly filter the list for wanted rule types. Also, if you lookup a particular event, you quickly see the particular component that somehow works for this event.</p>
+<h3 id="naming-components">Naming Components</h3>
+<p>A component can be a trigger/event, condition or action. When you create a component, Adobe suggests a default name. Never use this name. The name should start with the exact sequence you defined for the rule name.</p>
+<p><strong>For example:</strong></p>
+<p>You have a rule to trigger page views:</p>
+<p><code>PV | DocReady | 10 | All Pages</code></p>
+<p>This is how you name the components of the rule</p>
+<ul>
+<li>trigger/event: <code>PV | DocReady | 10 | All Pages |  page top</code></li>
+<li>condition: <code>PV | DocReady | 10 | All Pages |  user is logged in</code></li>
+<li>action: <code>PV | DocReady | 10 | All Pages |  set variables</code></li>
+<li>action: <code>PV | DocReady | 10 | All Pages |  send beacon</code></li>
+<li>action: <code>PV | DocReady | 10 | All Pages |  clear variables</code></li>
+</ul>
+<h4 id="reason-1">Reason</h4>
+<p>If you look up a particular event ID, you quickly see all according components. If you look up particular variables that belong to different events, you know quickly identify, where this variable is being used, without clicking into the component itself.</p>
+<h3 id="error-handling">Error Handling</h3>
+<p>If you have custom code, you should always implement try/catch error handling that also refers to the parent rule:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">let rule_name = &#39;`PV | DocReady | 10 | All Pages&#39;;
+</span></span><span class="line"><span class="ln">2</span><span class="cl">try {
+</span></span><span class="line"><span class="ln">3</span><span class="cl">
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl">} catch (e) {
+</span></span><span class="line"><span class="ln">6</span><span class="cl">
+</span></span><span class="line"><span class="ln">7</span><span class="cl">	_satellite.logger.error(rule_name + &#39; | &#39; + e);
+</span></span><span class="line"><span class="ln">8</span><span class="cl">
+</span></span><span class="line"><span class="ln">9</span><span class="cl">}
+</span></span></code></pre></div><p>If your code grows and get more complex, you should and can, add multiple try/catch lines into your code. In this case you should add a brief description of the current area to the error message:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">let rule_name = &#39;`PV | DocReady | 10 | All Pages&#39;;
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">try {
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">} catch (e) {
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">	_satellite.logger.error(rule_name + &#39; | init something | &#39; + e);
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
+</span></span><span class="line"><span class="ln">10</span><span class="cl">}
+</span></span><span class="line"><span class="ln">11</span><span class="cl">
+</span></span><span class="line"><span class="ln">12</span><span class="cl">try {
+</span></span><span class="line"><span class="ln">13</span><span class="cl">
+</span></span><span class="line"><span class="ln">14</span><span class="cl">
+</span></span><span class="line"><span class="ln">15</span><span class="cl">} catch (e) {
+</span></span><span class="line"><span class="ln">16</span><span class="cl">
+</span></span><span class="line"><span class="ln">17</span><span class="cl">	_satellite.logger.error(rule_name + &#39; | calculate another metric | &#39; + e);
+</span></span><span class="line"><span class="ln">18</span><span class="cl">
+</span></span><span class="line"><span class="ln">19</span><span class="cl">}
+</span></span></code></pre></div><h4 id="reason-2">Reason</h4>
+<p>Now, if you face errors in the debug console, it&rsquo;s easier to find the source, even if you handle long code blocks. You don&rsquo;t need to click through the stack trace.</p>
+<h3 id="logging-and-documentation">Logging and Documentation</h3>
+<p>The same goes for logging. Always logg what you are doing. I don&rsquo;t need to mention, how important inline documentation is. ;)
+Logging works the same as error handling:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">_satellite.logger.info(rule_name + &#39; | calculate another metric&#39;);
+</span></span></code></pre></div><h4 id="reason-3">Reason</h4>
+<p>Now, if you filter the browser console, it&rsquo;s easier to get rid of the noise and debug a problem.</p>
+<h3 id="inactive-rules-or-data-elements">Inactive Rules or Data Elements</h3>
+<p>You will and cannot avoid to have inactive/disabled rules. You should keep that amount low, because they pollute your library. If you have inactive rules, add a prefix &ldquo;INACTIVE&rdquo; to the rules name and, preferably also to it&rsquo;s components.</p>
+<h4 id="reason-4">Reason</h4>
+<p>If you look up code parts, data elements or anything, the search will return you rule and component names. From those component names you will not see, if a result belongs to an inactive rule. The prefix INACTIVE will help you to quickly identify those results.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Adobe Launch, Tag Management, Web Analytics, Best Practices</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>blog</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/image.png" type="image/jpeg">
+        <media:title>Adobe Launch DTM Naming Conventions - Title Image</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

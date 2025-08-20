@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Lemmatisierung auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/topics/lemmatisierung/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Wed, 09 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/lemmatisierung/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Einführung in Stemming und Lemmatisierung deutscher Texte mit Python</title>
+      <link>https://nickyreinert.de/2020/2020-12-09-einfuehrung-in-stemming-und-lemmatisierung-deutscher-texte-mit-python/</link>
+      <pubDate>Wed, 09 Dec 2020 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2020/2020-12-09-einfuehrung-in-stemming-und-lemmatisierung-deutscher-texte-mit-python/</guid>
+      <description>Um beim Text Mining zusammengehörende Wörter zu gruppieren, bedient man sich im Natural Language Processing (NLP) zweier Methoden: Lemmatisierung (lemmatising) …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine technische Einführung und ein Vergleich verschiedener Python-Bibliotheken für das Stemming und die Lemmatisierung deutscher Texte. Der Artikel erklärt die Konzepte, stellt Bibliotheken wie NLTK, SpaCy, HannoverTagger und IWNLP vor, zeigt deren Installation und Anwendung anhand von Code-Beispielen und vergleicht ihre Ergebnisse bei der Normalisierung deutscher Wörter.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Python, Natural Language Processing, NLP, Text Mining, Stemming, Lemmatisierung, Data Science</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Um beim <strong>Text Mining</strong> zusammengehörende Wörter zu gruppieren, bedient man sich im <strong>Natural Language Processing</strong> (<strong>NLP</strong>) zweier Methoden: <strong>Lemmatisierung</strong> (lemmatising) und <strong>Stemming</strong>. Das ist notwendig, um z.B. einen Text besser kategorisieren bzw. mit Stichworten versehen zu können. Eines der wichtigsten Anwendungsgebiete ist sicherlich die Indexierung von Dokumenten durch eine Suchmaschine. Ein ganz einfaches Beispiel: Enthält ein Dokument sehr oft das Wort <em>Häuser</em> und der Nutzer sucht nach dem Begriff <em>Haus</em>, wird das relevante Dokument wohl nicht in den Suchergebnissen auftauchen.</p>
+<p>Um das zu umgehen, müssen flektierte und abgeleitete Wörter zu Ihrer Grundform zurückgeführt werden. Beim <strong>Stemming</strong> werden dazu einfache heuritische Methoden angewendet, bei dem das Suffix der Wörter entfernt wird. Aus dem Wort <em>Katzen</em> wird so dessen Grundform <em>Katze</em>. Bei der Plural-Form <em>Häuser</em> ist das etwas schwieriger. Mit dem Abschneiden des Suffixes kommt man hier nicht weit, weshalb man sich bei der <strong>Lemmatisierung</strong> an Listen bzw. Datenbanken orientiert, die die reflektierte Formen enthalten und so eine sichere Verknüpfung von <em>Häuser</em> zur Singular-Form <em>Haus</em> erlauben.</p>
+<p>Soviel zur Theorie. In der Praxis gibt es <strong>Python</strong> und eine Vielzahl von Modulen, die einem eine Menge Arbeit abnehmen. Im Folgenden vergleiche ich ein halbes Dutzend Module, die die <strong>Lemmatisierung</strong> und das <strong>Stemming</strong> beherrschen und auch für <strong>Deutsche Texte</strong> anwendbar sind.</p>
+<p><em>Hinweis: Zur Vorbereitung beim Text Mining gehören natürlich auch das Säubern des Textes, Entfernen von Stop-Wörtern und das <strong>Tokenizing</strong>, also Aufbrechen eines Satzes in seine einzelnen Bestandteile. Diesen Schritt überspringe ich hier.</em></p>
+<h2 id="stemming-mit-porter-lancaster-und-snowball">Stemming mit Porter, Lancaster und Snowball</h2>
+<p>Für das Stemming habe ich mir drei Module angeschaut:</p>
+<ul>
+<li>Porter Stemmer</li>
+<li>Lancaster Stemmer</li>
+<li>Snowball Stemmer</li>
+</ul>
+<p>Der <strong>Porter Stemmer</strong> wurde bereits 1979 von <strong>Martin F. Porter</strong> entwickelt und <a href="https://nlp.stanford.edu/IR-book/html/htmledition/stemming-and-lemmatization-1.html">gilt zumindest in der englischen Sprache als sehr effektiv</a>. Der <strong>Lancaster Stammer</strong> geht auf den Ende der 1980er Jahre an der Lancaster University von <strong>Chris Paice</strong> und <strong>Gareth Husk</strong> entwickelten Paice-Husk Stemming Algorithmus zurück. Im Gegensatz zum festen Regelsatz von Porter wird <a href="https://www.scientificpsychic.com/paice/paice.html">beim Lancaster mit externen Regeln gearbeitet</a>, womit der Algorithmus flexibler ist.</p>
+<p>Der Snowball Stemmer ist eigentlich kein eigener Algorithmus, <a href="https://www.datacamp.com/community/tutorials/stemming-lemmatization-python">sondern eine Sprache</a>, um einen eigenen Stemmer zu schreiben.</p>
+<h3 id="installation-und-anwendung">Installation und Anwendung</h3>
+<p>Alle drei Module sind Bestandteil des <a href="https://www.nltk.org/">Natural Language Toolkit</a> und können dementsprechend sehr unkompliziert mit <strong>pip install nltk</strong> installiert werden. Danach sieht ein Anwendungsbeispiel folgendermaßen aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl"> from nltk.stem import PorterStemmer
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"> from nltk.stem import LancasterStemmer
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"> from nltk.stem.snowball import SnowballStemmer
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"> 
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"> porter = PorterStemmer()
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"> lancaster = LancasterStemmer()
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"> snowball = SnowballStemmer(&#34;german&#34;)
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"> 
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"> word = &#39;Katzen&#39;
+</span></span><span class="line"><span class="ln">10</span><span class="cl"> 
+</span></span><span class="line"><span class="ln">11</span><span class="cl"> print (&#39;Porter: &#39; + porter.stem(word))
+</span></span><span class="line"><span class="ln">12</span><span class="cl"> print (&#39;Lancaster: &#39; + lancaster.stem(word))
+</span></span><span class="line"><span class="ln">13</span><span class="cl"> print (&#39;Snowball: &#39; + snowball.stem(word))
+</span></span></code></pre></div><p>Da Snowball mehrere Sprachen unterstützt, muss hier vorher festgelegt werden, mit welcher Sprache wir arbeiten. Der Rest ist eigentlich ziemlich straight forward. Das Ergebnis zeigt aber die Schwächen des Stemmings:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Porter: katzen 
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Lancaster: katz 
+</span></span><span class="line"><span class="ln">3</span><span class="cl">Snowball: katz 
+</span></span></code></pre></div><p>Keiner der Stemmer kommt auf <em>Katze</em>. Klar: Hier werden einfach nur ein paar Buchstaben abgeschnitten. Da Porter nicht für die deutsche Sprache ausgelegt ist, wird hier sogar die reflektierte Form zurückgegeben. Das Stemming kann also dabei helfen, reflektierte Wörter auf einen gemeinsamen Stamm zu reduzieren. Die Bedeutung geht dabei aber oft verloren.</p>
+<p>Genau deshalb gibt es die <strong>Lemmatisierung</strong>&hellip;</p>
+<h2 id="lemmatisieren-mit-hannovertagger-wordnet-spacy-und-iwnlp">Lemmatisieren mit HannoverTagger, WordNet, Spacy und IWNLP</h2>
+<p>Für die Lemmatisierung habe ich vier Module herausgesucht. Vor allem <a href="https://www.machinelearningplus.com/nlp/lemmatization-examples-python/">für die englische Sprache ist die Auswahl aber weitaus größer</a>, für deutsche Texte ist es hingegen schwierig, aktuelle und gepflegte Module zu finden.</p>
+<ul>
+<li>WordNet</li>
+<li>SpaCy</li>
+<li>HannoverTagger</li>
+<li>IWNLP</li>
+</ul>
+<p>Das <strong>WordNet</strong> Modul gehört ebenfalls zum NLTK und ist einer der am weitesten verbreiteten Lemmatiser. Das Modul wurde 2001 entwickelt; <strong>WordNet</strong> selber ist eine riesige lexikalische Datenbank, die seit 1985 an der <strong>Princeton University</strong> entwickelt wird und mittlerweile über 200 Sprachen unterstützt.</p>
+<p><strong>SpaCy</strong> ist vergleichsweise jung (2015) aber mittlerweile auch sehr weit verbreitet. Im Gegensatz zum NLTK, dass eine Vielzahl von Lösungen und Algorithmen mitbringt, konzentriert sich SpaCy auf genau einen Algorithmus, um ein Problem zu lösen und ist damit ein wenig fokussierter als das NLTK. Während das NLTK eher im Forschungsbereich anzutreffen ist, wird SpaCy vornehmlich im produktiven Bereich verwendet.</p>
+<p>Der <strong>HannoverTagger</strong>, kurz <strong>HanTa</strong> - <a href="https://www.rki.de/DE/Content/Infekt/EpidBull/Merkblaetter/Ratgeber_Hantaviren.html">nicht zu verwechseln mit dem gleichnamigen Virus</a>, wurde 2019 <a href="https://textmining.wp.hs-hannover.de/Preprocessing.html">an der Hochschule Hannover</a> entwickelt. HanTa wurde mit dem Ziel entwickelt, auch für deutsche Texte eine vernünftige Lemmatisierungs-Lösung zu besitzen.</p>
+<p>Daneben gibt es noch <a href="https://github.com/Liebeck/spacy-iwnlp">IWNLP</a> von <strong>Matthias Liebeck</strong>. IWNLP ist der Name der entsprechenden SpaCy-Erweiterung für <a href="https://github.com/Liebeck/iwnlp-py">IWNLP-py</a>, was wiederum die Python-Implementierung von IWNLP ist: <strong>Inverse Wiktionary for Natural Language Processing</strong>. IWNLP nutzt zur Lemmatisierung einfach den Deutschen Bereich des Wiktionaries.</p>
+<h3 id="was-ist-mit-germalemma-und-german-lemmatizer">Was ist mit GermaLemma und German Lemmatizer?</h3>
+<p><strong><a href="https://github.com/WZBSocialScienceCenter/germalemma">GermaLemma</a></strong> ist ein weiteres, recht junges Modul von <strong>Markus Konrad</strong>, das aber leider die <strong>POS</strong> der Wörter erfordert. POS steht für <strong>Part-Of-Speech</strong>, also die Wortart, wie z.B. Substantiv, Verb, Adjektiv und so weiter. Da alle anderen Lemmatizer ohne die POS arbeiten und ich die einfachste Lösung gesucht habe, bleibt dieses Modul außen vor.</p>
+<p>Eine weitere Lösung wäre <a href="https://pypi.org/project/german-lemmatizer/">Docker-Image</a> mit dem Namen <strong>German Lemmatizer</strong> gewesen, dass die Funktionen von <strong>INWLP</strong> und <strong>GermaLemma</strong> kombiniert. Das ganze lässt sich aber leider nur mit etwas Mehraufwand auch außerhalb von Docker nutzen, weshalb ich auch den <strong>German Lemmatizer</strong> hier nicht berücksichtigt habe.</p>
+<p><strong>WordNet</strong> kann Wörter übrigens ohne POS lemmatisieren, die Ergebnisse sind mit POS aber weitaus genauer. Die Klassifizierung des POS ist freilich keine Raketenwissenschaft und <a href="https://www.machinelearningplus.com/nlp/lemmatization-examples-python/">z.B. hier recht gut beschrieben</a>.</p>
+<h3 id="installation-und-anwendung-1">Installation und Anwendung</h3>
+<p>Da wir oben schon das NLTK installiert haben, können wir direkt auf WordNet zugreifen. SpaCy installieren wir mit <strong>pip install spacy</strong>, dort wird dann auch gleich IWNLP mitgeliefert. Der HanTa lässt sich ebenfalls unkompliziert installieren: <strong>pip install HanTa</strong>.</p>
+<p>Um IWNLP zum Laufen zu bringen, benötigen wir noch <a href="http://lager.cs.uni-duesseldorf.de/NLP/IWNLP/">den letzten Dump von hier</a> (letzter Stand 2018/10/01). Das Archiv enthälte eine JSON-Datei - das Lexikon mit etwa drölfizigtausend Lemmas. Um SpaCy für die deutsche Sprache anwendbar zumachen, <a href="https://spacy.io/models/de/">müssen wir hier ein komplettes Modell herunterladen</a>. Das übernimmt SpaCy für uns mit folgendem Befehl:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">spacy</span> <span class="n">download</span> <span class="n">de_core_news_md</span>
+</span></span></code></pre></div><p><em>(Es gibt drei verschieden große Modelle, ich habe mich für die goldene Mitte entschieden).</em></p>
+<p>Die Implementierung ist dann etwas aufwendiger, da bei der Lemmatisierung Trainingsmodelle eingesetzt werden, und nicht nur &ldquo;einfache&rdquo; Algorithmen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"> <span class="n">from</span> <span class="n">HanTa</span> <span class="n">import</span> <span class="n">HanoverTagger</span> <span class="n">as</span> <span class="n">ht</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"> <span class="n">from</span> <span class="n">nltk</span><span class="o">.</span><span class="n">stem</span> <span class="n">import</span> <span class="n">WordNetLemmatizer</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"> <span class="n">from</span> <span class="n">spacy_iwnlp</span> <span class="n">import</span> <span class="n">spaCyIWNLP</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"> <span class="n">import</span> <span class="n">spacy</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"> 
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"> <span class="n">hannover</span> <span class="o">=</span> <span class="n">ht</span><span class="o">.</span><span class="n">HanoverTagger</span><span class="p">(</span><span class="s1">&#39;morphmodel_ger.pgz&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"> <span class="n">wordnet</span> <span class="o">=</span> <span class="n">WordNetLemmatizer</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"> 
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"> <span class="n">spc</span> <span class="o">=</span>  <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/usr/local/lib/python3.9/site-packages/de_core_news_md/de_core_news_md-2.3.0&#39;</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;parser&#39;</span><span class="p">,</span> <span class="s1">&#39;ner&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl"> 
+</span></span><span class="line"><span class="ln">11</span><span class="cl"> <span class="n">iwnlp</span> <span class="o">=</span> <span class="n">spc</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl"> <span class="n">iwnlp_pipe</span> <span class="o">=</span> <span class="n">spaCyIWNLP</span><span class="p">(</span><span class="n">lemmatizer_path</span><span class="o">=</span><span class="s1">&#39;/Users/user1/Downloads/IWNLP.Lemmatizer_20181001.json&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl"> <span class="n">iwnlp</span><span class="o">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="n">iwnlp_pipe</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl"> 
+</span></span><span class="line"><span class="ln">15</span><span class="cl"> <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;HanTa:&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">hannover</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">word</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl"> <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;Wordnet:&#39;</span> <span class="o">+</span> <span class="n">wordnet</span><span class="o">.</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="s1">&#39;NN&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl"> <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;SpaCy:&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">([</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">spc</span><span class="p">(</span><span class="n">word</span><span class="p">)][</span><span class="mi">0</span><span class="p">]))</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl"> <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;IWNLP:&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">([</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">iwnlp</span><span class="p">(</span><span class="n">word</span><span class="p">)][</span><span class="mi">0</span><span class="p">]))</span>
+</span></span></code></pre></div><p>Dem HannoverTagger wird bei der Initialisierung das entsprechende Modell mitgegeben. WordNet benötigt keine weiteren Parameter. Der <strong>SpaCy-Lemmatiser</strong> (hier spc) wird mit dem deutschen News Paket über <em>spacy.load()</em> initialisiert. Alternativ funktioniert die Initialisierung auch über den Shortcut <em>de</em>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"> <span class="n">spc</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;parser&#39;</span><span class="p">,</span> <span class="s1">&#39;ner&#39;</span><span class="p">])</span>
+</span></span></code></pre></div><p>Um den Vorgang etwas zu beschleunigen, deaktivieren wir die Funktionen <em>parser</em> und <em>ner</em>. Der Parser macht bei der Verarbeitung von Sätzen Sinn, <em>ner</em> steht für <strong>Name Entity Recognition</strong>, sprich die Erkennung von Eigennamen. Das ist bei der Lemmatisierung durchaus wichtig, möchte ich hier aber erstmal nicht berücksichtigen.</p>
+<p>Da <strong>IWNLP</strong> ebenfalls über SpaCy aktiviert wird, klonen wir das Objekt einfach und fügen dann unsere eigene Pipeline hinzu <em>add_pipe()</em>. Diese muss auf das Lexikon als JSON-Datei verweisen, den wir vorher heruntergeladen haben. Das wars auch schon, danach sehen wir, wie sich die Module untereinander und im Vergleich zum Stemming schlagen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">HanTa:Katze 
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Wordnet:Katzen
+</span></span><span class="line"><span class="ln">3</span><span class="cl">SpaCy:Katze
+</span></span><span class="line"><span class="ln">4</span><span class="cl">IWNLP:Katze 
+</span></span></code></pre></div><p>Das Ergebnis überrascht nur ein kleines bisschen: Obwohl die eigentliche WordNet-Datenbank 200 Sprachen unterstützt, schafft es das Modul nicht, das richtige Lemma zuzuordnen. Ich finde leider auch keine Informationen dazu, wie WordNet auf Deutsch getrimmt werden kann. Die Ergebnisse von HanTa, SpaCy und IWNLP passen allerdings. IWNLP (und demnach auch SpaCy) liefern bei Bedarf übrigens mehr als nur ein Lemma zurück:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"> print (str([token._.iwnlp_lemmas for token in iwnlp(word)][0]))
+</span></span><span class="line"><span class="ln">2</span><span class="cl"> print (str([token.pos_ for token in iwnlp(word)][0]))
+</span></span></code></pre></div><p>Mit <strong>pos_</strong> und <strong>_.iwnlp_lemmas</strong> bekommt man einerseits den Part-Of-Speech und in IWNLP sogar eine Liste aller denkbaren Lemmas - sofern zutreffend.</p>
+<p>Wer den Vergleich etwas hübscher aufbereitet für mehrer Wörter nutzen will, <a href="https://gist.github.com/nickyreinert/72548ce88d812f9203687ece93c608d8">kann dazu folgendes Jupyter-Notebook nutzen</a>. Ich hab das ganze mal <a href="https://www.spiegel.de/wissenschaft/mensch/uno-bericht-ueber-klimaziele-auf-dem-weg-zu-drei-grad-erderwaermung-a-05ecdcdb-2f84-4aa0-84b6-a7a2d8c71c80">für eine beliebige Schlagzeile von Spiegel Online</a> durchgespielt und folgendes Ergebnis erhalten. Der Original-Satz lautet:</p>
+<blockquote>
+<p>Der weltweite CO₂-Ausstoß steigt weiter – trotz Corona-Knick, heißt es im neuen Bericht des Uno-Umweltprogramms. Ohne grüne Konjunkturpakete sei das Pariser Zwei-Grad-Limit nicht mehr zu retten.</p></blockquote>
+<p>Und das ist das Ergebnis nach dem <strong>Steming</strong> und <strong>Lemmatisieren</strong>:</p>
+<p><a href="https://www.nickyreinert.de/files/eine-kleine-einfuhrung-in-das-stemming-lemmatisieren-deutscher-texte/grafik.png"><img src="/2020/2020-12-09-einfuehrung-in-stemming-und-lemmatisierung-deutscher-texte-mit-python/images/grafik-700x249.png" alt=""></a></p>
+<p>7 Methoden zum Stemming und Lemmatisieren im Vergleich</p>
+<p>Das Stemming liefert, naturgemäß, ein relativ grobes Ergebnis ab. Um die Wörter in einem Text schnell zu kategorisieren reicht das sicherlich aus. Bei der Lemmatisierung fällt auf, das SpaCy trotz deutscher Sprachpakete nicht ganz zufriedenstellend arbeitet. So wird aus &ldquo;das&rdquo; z.B. &ldquo;der&rdquo;. Dafür wird &ldquo;trotz&rdquo; korrekt &ldquo;trotzen&rdquo; zugeordenet - was dem HanTa nicht gelingt. HanTa wiederum kennt als einziger den Singular von Konjunkturpakete.</p>
+<h2 id="fazit">Fazit</h2>
+<p>Die Verarbeitung englischer Texte ist, aufgrund der großen Verbreitung der Sprache, gar kein Problem. Bei deutschen Texten wird es schon etwas schwieriger, allerdings liefern <strong>HanTa</strong>, <strong>IWNLP</strong> und auch <strong>SpaCy</strong> recht gute Ergebnisse ab. Mein subjektiver Favorit ist <strong>HanTa</strong>. Aber die Stichprobe ist viel zu gering, um hier einen klaren Favoriten identifizieren zu können.</p>
+<p>Der Vergleich dient eher nicht als repräsentivate Untersuchung aller denkbaren Varianten, soll aber einen kleinen Einblick in <strong>NLP</strong> und die automatisierte Text-Verarbeitung im <strong>Text-Mining</strong> geben und ein paar Code-Beispiele liefern, um den Einsteig in Python zu erleichtern. Ich hoffe das ist gelungen!</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Python, NLP, Tutorial, Data-Science, Text-Mining</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>blog</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Einführung in Stemming und Lemmatisierung deutscher Texte mit Python - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>technical_comparison</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

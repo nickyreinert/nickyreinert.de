@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>HTTP auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/topics/http/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Thu, 04 Jun 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/http/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>CSS über den HTTP-Header ausspielen</title>
+      <link>https://nickyreinert.de/2020/2020-06-04-css-ueber-den-http-header-ausspielen/</link>
+      <pubDate>Thu, 04 Jun 2020 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2020/2020-06-04-css-ueber-den-http-header-ausspielen/</guid>
+      <description>Jeder kennt das Problem: Man hat stundenlang an einem Stylesheet auf dem Staging-Server rumgebastelt, will es nun auf den Live-Server kopieren und die Änderung …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Ein kurzer technischer Tipp für Web-Entwickler, der zeigt, wie man eine CSS-Datei über den HTTP `Link`-Header lädt. Diese Methode kann genutzt werden, um eine Staging-Umgebung visuell von einer Live-Umgebung zu unterscheiden und so Verwechslungen zu vermeiden. Der Artikel enthält Konfigurationsbeispiele für Nginx und Apache.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> CSS, HTTP, Web-Development, Server-Konfiguration, Nginx, Apache</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Jeder kennt das Problem: Man hat stundenlang an einem Stylesheet auf dem Staging-Server rumgebastelt, will es nun auf den Live-Server kopieren und die Änderung ist nicht sichtbar. Die Fehlersuche beginnt. Man prüft den Cache. Vom Browser. Vom Server. Ist man überhaupt auf dem richtigen Server? Hat der Upload geklappt? Und so weiter. Eric Meyer hat das ganze Dilemma 2009 treffend beschrieben und auch eine Lösung mitgeliefert, von der ich noch nicht gehört habe:</p>
+<p>Nutze doch einfach die HTTP-Header um deine Staging- und Live-Umgebung eindeutig voneinander zu unterscheiden. Der Link-Parameter im HTTP-Header nämlich auch die Angabe von Style-Sheet-Dateien. Und das sieht dann so aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Header add Link &#34;&lt;/staging.css&gt;;rel=stylesheet;type=text/css;media=all&#34;
+</span></span></code></pre></div><p>In nginx kann man das folgendermaßen im Server-Block implementieren:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">add_header Link &#34;&lt;/wp-content/themes/nickyreinert/style.header.css&gt;;rel=stylesheet;type=text/css;media=all&#34;;
+</span></span></code></pre></div><p>Wer Apache nutzt, setzt den &ldquo;CSS-Header&rdquo; folgendermaßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Header add Link &#34;&lt;/wp-content/themes/nickyreinert/style.header.css&gt;;rel=stylesheet;type=text/css;media=all&#34;
+</span></span></code></pre></div><p>Natürlich habe ich die Spielerei gleich bei mir eingebaut:</p>
+<p><img src="/2020/2020-06-04-css-ueber-den-http-header-ausspielen/images/grafik-700x382.png" alt=""></p>
+<p>CSS-Datei im HTTP-Header ausgeliefert</p>
+<p>Damit lässt sich grundsätzlich auch das Stylesheet deines Wordpress-Themes ausliefern: Da WordPress aber die style.css nutzt, um Theme-Informationen zu verarbeiten, musst du auf dieses kleine Feature dann verzichten. Außerdem wird CSS im Link-Header nicht von jedem Browser unterstützt.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> css, http</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>blog</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>CSS über den HTTP-Header ausspielen - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>technical_tip</dc:type>
+      
+      
+    </item><item>
+      <title>Zugriff nicht loggen, wenn ein bestimmter HTTP-Request-Header gesetzt ist</title>
+      <link>https://nickyreinert.de/2018/2018-11-28-zugriff-nicht-loggen-wenn-ein-bestimmter-http-request-header-gesetzt-ist/</link>
+      <pubDate>Wed, 28 Nov 2018 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2018/2018-11-28-zugriff-nicht-loggen-wenn-ein-bestimmter-http-request-header-gesetzt-ist/</guid>
+      <description>OK, ich tu mich etwas schwer, das folgende in einen Titel zu gießen, der nicht länger ist, als die eigentlich Anleitung. Wenn du an deiner Webseite arbeitest, …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieses Tutorial beschreibt eine Methode, um eigene Zugriffe bei der Web-Entwicklung aus den Nginx-Logdateien auszuschließen. Die Lösung kombiniert ein Browser-Plugin zur Modifikation von HTTP-Headern mit einer serverseitigen Nginx-Konfiguration, die das Logging auf Basis eines benutzerdefinierten Headers bedingt deaktiviert.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Nginx, Webserver-Konfiguration, Logging, Web-Development, HTTP</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>OK, ich tu mich etwas schwer, das folgende in einen Titel zu gießen, der nicht länger ist, als die eigentlich Anleitung. Wenn du an deiner Webseite arbeitest, möchtest du vielleicht vermeiden, dass deine Aufrufe mit deinem Browser im Log-File von <strong>nginx</strong> landen. Dafür gibt es eine Menge Möglichkeiten, ich mag die folgende aber besonders.</p>
+<p>Zuerst benötigst du dafür ein Plugin, um den <strong>HTTP-Request-Header</strong> zu modifizieren. Ich nutze dafür <a href="https://addons.mozilla.org/en-US/firefox/addon/modheader-firefox/">ModHeader für Firefox,</a> für Chrome gibt es ähnliche Plugins. Dort legst du einen benutzerdefinierten Header an, dem du z.B. &ldquo;true&rdquo; als Wert zuweist. Bei diesem Plugin kannst du außerdem festlegen, dass der Header nur auf einer bestimmten Seite hinzugefügt wird.</p>
+<p>[caption id=&ldquo;attachment_2395&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/zugriff-nicht-loggen-wenn-ein-bestimmter-request-header-gesetzt-ist/modHeader.png"><img src="/2018/2018-11-28-zugriff-nicht-loggen-wenn-ein-bestimmter-http-request-header-gesetzt-ist/images/modHeader-300x163.png" alt="ModHeader Firefox Plugin"></a> ModHeader Firefox Plugin[/caption]</p>
+<p>Als nächstes definierst du in deiner nginx-Config eine Regel, die diesen Header ausliest:</p>
+<p>map $http_ignoreMe $log_this {</p>
+<pre><code>~true 0;
+
+default 1;
+</code></pre>
+<p>}</p>
+<p>Mit $http_ignoreMe sprichst du den zuvor angelegten Header an, $log_this erzeugt eine Variable, auf die du später zugreifen kannst. Enthält der Header &ldquo;true&rdquo; (~true), wird die Variable $log_this auf 0 gesetzt, ansonsten bleibt sie 1. Als nächstes öffnest du den Server-Bereich deiner Webseite und suchst nach deiner Logging-Einstellung (alternativ kannst du natürlich auch die globale Logging-Einstellung anpassen:</p>
+<pre><code>access\_log /var/logs/access.log main if=$log\_this;
+</code></pre>
+<p>Der zweite Parameter ist das Log-File - natürlich. Der dritte Parameter verweist auf mein benutzerdefiniertes Log-Format, das muss hier nicht unbedingt stehen. Und am Ende schließlich kommt die Bedingung, dass nämlich nur geloggt wird, wenn $log_this wahr bzw. 1 ist. Jetzt startest du nginx neu&hellip; et voilá - Anfragen an deine Seite von deinem Browser aus werden ignoriert.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Nginx, Logging, Tutorial, Web-Dev</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Zugriff nicht loggen, wenn ein bestimmter HTTP-Request-Header gesetzt ist - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>tutorial</dc:type>
+      
+      
+    </item><item>
+      <title>Was ist HTTP/3 bzw. HTTP over QUIC oder kurz QUIC?</title>
+      <link>https://nickyreinert.de/2018/2018-11-13-was-ist-http-3-bzw-http-over-quic-oder-kurz-quic/</link>
+      <pubDate>Tue, 13 Nov 2018 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2018/2018-11-13-was-ist-http-3-bzw-http-over-quic-oder-kurz-quic/</guid>
+      <description>UPDATE: Eine ausführliche Version dieses Artikels erschien im August 2019 im Entwickler-Magazin.
+Die meisten wissen noch nicht einmal, was HTTP/2 eigentlich …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine Einführung in das Internetprotokoll HTTP/3 und die zugrundeliegende QUIC-Technologie. Der Artikel erklärt die Entstehungsgeschichte von QUIC bei Google, ordnet es mithilfe des OSI-Schichtenmodells als Transportprotokoll ein und beschreibt, wie es als Basis für den nächsten HTTP-Standard dient, um schnellere und sicherere Web-Verbindungen zu ermöglichen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Internet-Protokolle, HTTP/3, QUIC, Netzwerktechnik, Web-Performance</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p><strong>UPDATE</strong>: Eine ausführliche Version dieses Artikels erschien im August 2019 <a href="https://entwickler.de/online/web/http3-quic-einfuehrung-579902482.html">im Entwickler-Magazin</a>.</p>
+<p>Die meisten wissen noch nicht einmal, was <strong>HTTP/2</strong> eigentlich ist, geschweige denn, dass es überall eingesetzt wird, da bahnt sich schon der Nachfolger an, genannt <strong>HTTP/3</strong>. Vor ein paar Jahren hat Google sich mit der Optimierung der Kommunikation im Internet beschäftigen. Früher ging daraus <strong>SPDY</strong> hervor, <a href="https://en.wikipedia.org/wiki/HTTP/2">aus dem schließlich HTTP/2 hervorging.</a> Das nächste Entwicklungs-Projekt aus dem Google-Labor hört nun auf den Namen <a href="https://www.golem.de/news/internet-protokoll-quic-soll-der-neue-kick-fuer-sicheres-surfen-werden-1611-123738.html">QUIC</a> - was ausgesprochen für <a href="https://de.wikipedia.org/wiki/Quick_UDP_Internet_Connections">Quick UDP Internet Connections</a> steht.</p>
+<h2 id="das-schichten-modell">Das Schichten-Modell</h2>
+<p>Bevor man das ganze verstehen kann, möchte ich ganz grob noch mal auf eine wichtige Grundlage eingehen, dem <a href="https://de.wikipedia.org/wiki/OSI-Modell">OSI-Schichten-Modell</a>. Das klingt kompliziert, ist es auch. Es reicht allerdings völlig aus, wenn man das Prinzip dahinter versteht: Die Webseite, die dir dein Browser hier anzeigt, kommt aus dem Netzwerk-Kabel in deinem Laptop (oder über dein WLAN&hellip;). Das sind allerdings nur ein paar elektronische Signale, die dein Browser so sicher nicht verstehen kann. Dieses ziemlich einfache elektronische Signal muss deshalb erst auf verschiedenen Stufen bzw. Schichten verarbeitet werden, bis daraus das berühmte HTML extrahiert wird, mit dem auch dein Browser arbeiten kann.</p>
+<p>Das OSI-Schichten-Modell besteht aus 7 dieser Schichten. Die ersten 6 Schichten dürften dich nicht weiter interessieren, die ursprünglich elektronischen Daten werden hier nach immer weiter &ldquo;ausgepackt&rdquo;. Dabei werden immer mehr Informationen und Daten extrahiert und an die darüber liegende Schicht weitergegeben. Jede Schicht erfüllt so eine spezielle Aufgabe, angefangen bei der eigentlichen physikalischen Übertragung, über die Qualitätssicherung bis hin zur Darstellung in einer Anwendung, wie dem Browser.</p>
+<p>Genau das passiert in der 7. Schicht, über die der HTML-Code für deinen Browser zur Verfügung gestellt wird. Eine dieser Schichten nun, nämlich die 4., ist für den Transport zuständig. Dort wird u.a. das schon ziemlich in die Jahre gekommene TCP - Transmission Control Protokoll - eingesetzt. Eine Alternative dazu ist UDP, das etwas schneller aber auch ungesichert funktioniert. Soviel zu den langweiligen und verzwickten technischen Einzelheiten.</p>
+<h2 id="quic">QUIC</h2>
+<p>Google hat nun auf Basis von UDP ein eigenes Protokoll für diese Schicht entwickelt: QUIC. QUIC kombiniert, ganz stark reduziert, die Vorteile von TLS, HTTP/2, TCP und UDP und bietet so z.B. schnelle, verschlüsselte Verbindungen an. Google nutzt QUIC bereits <a href="https://www.golem.de/news/google-auf-spdy-folgt-quic-1306-100077.html">seit 2013</a> auf den eigenen Servern, <a href="https://www.heise.de/newsticker/meldung/Google-will-neues-Netzwerk-Protokoll-fuers-Web-2614437.html">seit Version 29</a> versteht auch der hauseigene Browser Chrome QUIC. Sogar Opera soll QUIC seit Version 16 unterstützen. Die Entwicklung steckt also lange nicht mehr in den Kinderschuhen.</p>
+<h2 id="http-over-quic">HTTP over QUIC</h2>
+<p>Mit HTTP hat das ganze freilich noch nicht viel zu tun, denn das liegt ja eine Schicht weiter oben. Die <strong>Internet Engineering Task Force</strong> hat sich aus diesem Grund in zwei Arbeitsgruppen mit QUIC beschäftigt. Daraus entstand einerseits eine standardisierte Fassung von QUIC, die inoffiziell den namen <strong>iQUIC</strong> trägt, als Abgrenzung zur inoffiziellen Bezeichnung <strong>gQUIC</strong> für Googles Original-Protokoll.</p>
+<p>Und außerdem arbeitet man am neuesten HTTP-Standard, HTTP over QUIC, bzw. HTTP/QUIC oder ganz offiziell: HTTP/3. Diese Entkopplung ermöglicht jetzt, dass neben HTTP auch andere Protokolle der oberen Anwendungsschicht, wie z.B. E-Mail, QUIC nutzen können.</p>
+<p><a href="https://blog.cloudflare.com/the-road-to-quic/">Laut Cloudfare</a> soll noch dieses Jahr ein finaler offzieller Standard zu QUIC verabschiedet werden. Da aber wie gesagt HTTP/2 eher noch ein Exot zu sein scheint, wird es vermutlich noch eine Weile dauern, bis HTTP/3 entsprechend weit verbreitet ist.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> HTTP3, QUIC, Netzwerk, Protokoll</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>blog</category>
+      
+      <category>projekte</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Was ist HTTP/3 bzw. HTTP over QUIC oder kurz QUIC? - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>technical_explainer</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

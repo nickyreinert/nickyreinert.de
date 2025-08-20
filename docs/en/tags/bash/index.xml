@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Bash auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/en/tags/bash/</link>
+    <description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>en</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Thu, 05 Dec 2024 12:34:56 +0200</lastBuildDate><atom:link href="https://nickyreinert.de/en/tags/bash/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Advent of Code - Day 5 - Printer Updates (Bash)</title>
+      <link>https://nickyreinert.de/en/blog/2024/12/05/advent-of-code-day-5-printer-updates-bash/</link>
+      <pubDate>Thu, 05 Dec 2024 12:34:56 +0200</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/en/blog/2024/12/05/advent-of-code-day-5-printer-updates-bash/</guid>
+      <description>(task | solution)
+It&rsquo;s the fifth day of our outrageous adventure, and we are dealing with printer updates. To solve this riddle, we are getting back to …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>A brief write-up of the author&#39;s attempt to solve Day 5 of the Advent of Code 2024 challenge using Bash. The article outlines the approach for Part 1, which involves using regular expressions to validate printer updates, and admits to not completing Part 2 due to a missing detail in the logic.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Advent of Code, Bash, Problem-Solving, Scripting, Regular Expressions</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>(<a href="https://adventofcode.com/2024/day/5/">task</a> | <a href="https://github.com/nickyreinert/aoc2024/blob/main/solutions/day5%20-%20bash/solve.sh">solution</a>)</p>
+<p>It&rsquo;s the fifth day of our outrageous adventure, and we are dealing with printer updates. To solve this riddle, we are getting back to the roots and our good ol&rsquo; friend <code>Bash</code>!</p>
+<p>The good news here is that I don&rsquo;t need to set up any particular environment because, thankfully, <code>Bash</code> is available on most systems out of the box.</p>
+<h3 id="solution-to-the-first-part">Solution to the First Part</h3>
+<p>The solution is quite straightforward: We need to read the rules and the updates into an array, loop through all updates, and check if they somehow break the rules. That&rsquo;s nothing too complicated. The only thing that I am probably doing <em>unconventionally</em> is how I check.</p>
+<p>I am using a regular expression that is the opposite of the rule. If it matches, I know the update is invalid:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="mf">61.</span><span class="o">*</span><span class="err">?</span><span class="p">(,</span><span class="mi">29</span><span class="p">)(,</span><span class="o">|</span><span class="err">$</span><span class="p">)</span>
+</span></span></code></pre></div><p>In this example, <code>29</code> is the actual rule name, and <code>61</code> should come after <code>29</code>. With <code>.*?</code>, I am <em>ungreedy</em> checking for any characters in between, and the closing group just makes sure that after <code>29</code>, there&rsquo;s either another number or the end of the update.</p>
+<p>Simple thing.</p>
+<h3 id="solution-to-the-second-part">Solution to the Second Part</h3>
+<p>The second part looks way easier. They just want us to switch the position of the pages that we identified as erroneous.</p>
+<p>Basically, it&rsquo;s just something like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">updates<span class="o">[</span>page_index<span class="o">]=</span><span class="nv">$subsequent_page</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">updates<span class="o">[</span>subsequent_page_index<span class="o">]=</span><span class="nv">$page</span>
+</span></span></code></pre></div><p>But&hellip; yeah, that&rsquo;s the first bump in my journey. My code isn&rsquo;t resulting in the correct answer, and it seems like I am missing a detail. To avoid wasting any more time, I&rsquo;ll proceed to the next day&hellip; sorry folks :(</p>
+<h2 id="whats-up-bash">Whats up, Bash?</h2>
+<p><strong>Rating: 8/12 – weird operators and syntax</strong></p>
+<p>The boss of all scripting languages: <code>Bash</code>. I still don&rsquo;t understand most of the syntax rules, but thanks to AI, it&rsquo;s not too hard to get things done in <code>Bash</code>. When working as a sysadmin, I loved automating processes and even building small user interfaces to make life on the command line easier. However, I guess there are better ways for that.</p>
+<p>See you next day!</p>
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Advent of Code, Bash, Solution, Scripting</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>development</category>
+      
+      <category>aoc2024</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Advent of Code - Day 5 - Printer Updates (Bash)</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>solution_writeup</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

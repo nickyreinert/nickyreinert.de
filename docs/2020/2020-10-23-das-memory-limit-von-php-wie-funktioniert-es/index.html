@@ -29,7 +29,7 @@ oder auf Datei-Ebene im Script mit ini_set();
 
   
   
-  <meta name="keywords" content=" Webentwicklung  Software Development  Programmierung  SEO  Analytics  Hosting  DevOps  WordPress  Hugo  Tools  Projekte  Anleitungen  Datenschutz  Digitale Kultur  Künstliche Intelligenz  KI  Autismus ">
+  <meta name="keywords" content=" PHP  memory_limit  php.ini  wp-config.php  .htaccess  Nginx  Apache  PHP-FPM  Server-Konfiguration  WordPress  Troubleshooting  Allowed memory size exhausted ">
   
 
   
@@ -45,7 +45,7 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
   <meta property="og:type" content="article">
     <meta property="article:section" content="2020">
     <meta property="article:published_time" content="2020-10-23T00:00:00+00:00">
-    <meta property="article:modified_time" content="2025-08-20T09:03:20+02:00">
+    <meta property="article:modified_time" content="2025-08-20T12:38:10+02:00">
     <meta property="article:tag" content="Apache">
     <meta property="article:tag" content="Apache2">
     <meta property="article:tag" content="Memory-Limit">
@@ -63,9 +63,9 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
   <meta itemprop="description" content="Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. Viele Anleitungen sind oft unvollständig, und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:
 super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM oder global in der httpd.conf (Apache) oder server.conf (nginx) auf Ordner-Ebene in der user.ini auf Ordner-Ebene in der .htaccess-Datei auf Applikations-Ebene über die WordPress-Konstanten WP_MEMORY_LIMIT und WP_MAX_MEMORY_LIMIT oder auf Datei-Ebene im Script mit ini_set();">
   <meta itemprop="datePublished" content="2020-10-23T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2025-08-20T09:03:20+02:00">
+  <meta itemprop="dateModified" content="2025-08-20T12:38:10+02:00">
   <meta itemprop="wordCount" content="1655">
-  <meta itemprop="keywords" content="Apache,Apache2,Memory-Limit,Nginx,Php">
+  <meta itemprop="keywords" content="PHP,memory_limit,php.ini,wp-config.php,.htaccess,Nginx,Apache,PHP-FPM,Server-Konfiguration,WordPress,Troubleshooting,Allowed memory size exhausted">
 
   
   <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
@@ -93,7 +93,7 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
     "headline": "Das Memory Limit von PHP und WordPress erhöhen - die vollständige Anleitung",
     "description": "Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die …",
     "datePublished": "2020-10-23T00:00:00Z",
-    "dateModified": "2025-08-20T09:03:20\u002b02:00",
+    "dateModified": "2025-08-20T12:38:10\u002b02:00",
     "author": {
       "@type": "Person",
       "name": "",
@@ -132,13 +132,13 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
     "articleSection": ["anleitungen", "blog", "hosting"],
     
     
-    "abstract": "Dieser Artikel behandelt Das Memory Limit von PHP und WordPress erhöhen - die vollständige Anleitung und bietet praktische Einblicke in das Thema.",
+    "abstract": "Eine vollständige und detaillierte Anleitung zum PHP \u0060memory_limit\u0060. Der Artikel erklärt die Funktionsweise der Speichergrenze und beschreibt die komplexe Hierarchie der verschiedenen Konfigurationsorte – von der globalen \u0060php.ini\u0060 über Webserver-Einstellungen in Apache und Nginx (\u0060.htaccess\u0060, \u0060httpd.conf\u0060) bis hin zu anwendungsspezifischen Definitionen in WordPress (\u0060wp-config.php\u0060) und auf Skriptebene (\u0060ini_set\u0060).",
     
     
-    "genre": "guide",
+    "genre": "comprehensive_guide",
     
     
-    "educationalLevel": "intermediate",
+    "educationalLevel": "advanced",
     
     "inLanguage": "de"
   },
@@ -149,10 +149,10 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
     "headline": "Das Memory Limit von PHP und WordPress erhöhen - die vollständige Anleitung",
     "description": "Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die …",
     
-    "proficiencyLevel": "intermediate",
+    "proficiencyLevel": "advanced",
     
     
-    "dependencies": ["Grundlegende IT-Kenntnisse"],
+    "dependencies": ["Erfahrung in der Server-Administration (Linux, Apache\/Nginx)", "Gute Kenntnisse in der PHP-Konfiguration", "Erfahrung mit WordPress-Hosting"],
     
     
     "about": [
@@ -160,7 +160,13 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
       
       {
         "@type": "Thing",
-        "name": "Web"
+        "name": "PHP"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Server-Administration"
       }
       
       , 
@@ -172,13 +178,31 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
       , 
       {
         "@type": "Thing",
-        "name": "Development"
+        "name": "Nginx"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Apache"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Performance-Tuning"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Troubleshooting"
       }
       
     ],
     
     "datePublished": "2020-10-23T00:00:00Z",
-    "dateModified": "2025-08-20T09:03:20\u002b02:00",
+    "dateModified": "2025-08-20T12:38:10\u002b02:00",
     "author": {
       "@type": "Person",
       "name": ""

@@ -13,7 +13,83 @@
     <managingEditor></managingEditor>
     <webMaster></webMaster>
     <copyright></copyright>
-    <lastBuildDate>Tue, 26 Sep 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/excel/index.xml" rel="self" type="application/rss+xml" /><item>
+    <lastBuildDate>Fri, 23 Nov 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/excel/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Ein Blasendiagramm / Bubble Chart mit Nominal-Skala in Excel</title>
+      <link>https://nickyreinert.de/2018/2018-11-23-ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/</link>
+      <pubDate>Fri, 23 Nov 2018 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2018/2018-11-23-ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/</guid>
+      <description>OK. Erstmal zu den Grundlagen, damit du überhaupt weißt, warum du hier bist: Eine Blasendiagramm oder Bubble Chart erlaubt dir, Informationen mit drei …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine Schritt-für-Schritt-Anleitung, die einen Workaround aufzeigt, um in Microsoft Excel ein Blasendiagramm (Bubble Chart) mit einer nominalen Skala (z.B. Städtenamen) auf einer Achse zu erstellen. Das Tutorial erklärt, wie man durch das Hinzufügen von Index- und Dummy-Spalten sowie die geschickte Formatierung von Datenbeschriftungen die Einschränkungen von Excel umgeht.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Microsoft Excel, Datenvisualisierung, Diagramme, Office-Tipps, Statistik</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>OK. Erstmal zu den Grundlagen, damit du überhaupt weißt, warum du hier bist: Eine <strong>Blasendiagramm</strong> oder <strong>Bubble Chart</strong> erlaubt dir, Informationen mit drei Dimensionen in einem Diagramm darzustellen. Zwei Dimensionen bestimmen die Position im Diagramm anhand der X- und Y-Achse, die dritte Dimension legt fest, wie groß die Blase - neudeutsch Bubble - ist.</p>
+<p>[caption id=&ldquo;attachment_2370&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/excel-blasendiagramm-bubble-chart.png"><img src="/2018/2018-11-23-ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/images/excel-blasendiagramm-bubble-chart-300x179.png" alt="Blasendiagramm bzw. Bubble Chart in Excel"></a> Blasendiagramm bzw. Bubble Chart in Excel[/caption]</p>
+<p>Das Problem ist aber, dass dieses Blasendiagramm metrische oder mindestens ordinale Daten erfordert. Also Daten, die in eine natürliche Reihenfolge gebracht werden können. Was aber, wenn du Eigenschaften nominaler Daten visualisieren willst. Also z.B. die Einwohnerzahl und Fläche von Städten?</p>
+<p>Der Stadtname soll dabei an der Y-Achse stehen, die Einwohnerzahl die Größe der Blasen definieren und die Position an der X-Achse über Fläche festgelegt werden. Die letzten beiden Dimensionen sind dabei <a href="https://wissenschafts-thurm.de/grundlagen-der-statistik-wie-unterscheidet-man-zwischen-nominal-ordinal-und-kardinalskala/">metrisch</a> - sie haben eine natürliche Reihenfolge und skalierbare Abstände. Aber die erste Dimension, die Städte-Namen, sind nominal. Du kannst sie nicht sortieren (die alphabetische Sortierung mal außen vor) und es gibt keine skalierbaren Abstände. Excel kann daraus also kein Bubble-Chart wie z.B: dieses machen:</p>
+<p>[caption id=&ldquo;attachment_2371&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/Excel-Blasendiagramm-Bubble-Chart-mit-nominaler-Skala.png"><img src="/2018/2018-11-23-ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/images/Excel-Blasendiagramm-Bubble-Chart-mit-nominaler-Skala-300x163.png" alt="Excel Blasendiagramm - Bubble Chart mit nominaler Skala"></a> Excel Blasendiagramm - Bubble Chart mit nominaler Skala[/caption]</p>
+<p> </p>
+<p>Du ahnst es bereits: Das Diagramm stammt natürlich von Excel. Es ist nämlich, über ein paar Umwege, auch in Excel möglich, diese schönen Blasendiagramme zu erzeugen. Und wie, dass zeige ich dir jetzt.</p>
+<h2 id="schritt-1-die-nominalen-daten-mit-einem-index-versehen">Schritt 1: Die nominalen Daten mit einem Index versehen</h2>
+<p>Zunächst einmal zu den Rohdaten: Vor dir liegt eine Tabelle mit den Werten für die X- und Y-Achse sowie die Größe der Blasen. Wenn du daraus ein Blasendiagramm erzeugst, ignoriert Excel deine Städtenamen erst einmal ganz. Änderst du nun die Datenquelle der Y-Achse, kann Excel damit nichts anfange und du erhälst dieses nichtssagende Diagramm:</p>
+<p>[gallery columns=&ldquo;2&rdquo; link=&ldquo;file&rdquo; ids=&ldquo;2376,2375&rdquo;]</p>
+<p>Der erste Schritt ist ziemlich naheliegend: Du verpasst du den nominalen Daten einen Index, damit sind sie nämlich metrisch und können im Bubble Chart verwendet werden. Jede Stadt wird also einer Position auf der Y-Achse zugeordnet. Danach musst du die Datenreihe natürlich bearbeiten und die &ldquo;Werte der Reihe Y&rdquo; der neuen Spalte zuordnen. Für die folgenden Schritte musst du nur darauf achten, dass die Spalte der Y-Achse einmal alle Inde</p>
+<p>[gallery columns=&ldquo;2&rdquo; link=&ldquo;file&rdquo; ids=&ldquo;2373,2374&rdquo;]</p>
+<h2 id="dummy-spalten-einfügen">Dummy-Spalten einfügen</h2>
+<p>Das Ergebnis kann sich schon fast sehen lassen. Fast. Denn die Herausforderung ist nun, die Städtenamen an die Y-Achse zu bekomen. Bisher (Excel 16) gibt es dafür keine Möglichkeit. Das umgehst du mit zwei Dummy-Spalten. Die erste Dummy-Spalte sorgt dafür, dass die Städtenamen ihrer Position auf der Y-Achse finden, die zweite Dummy-Spalte gibt den Blasen eine Größe. Du fügst nun eine neue Datenreihe hinzu die auf diese Werte verweist. Das Ergebnis sind ein paar neue Bubbles auf deiner Y-Achse:</p>
+<p>[gallery columns=&ldquo;2&rdquo; link=&ldquo;file&rdquo; ids=&ldquo;2378,2377&rdquo;]</p>
+<h2 id="y-achse-mit-städtenamen-schmücken">Y-Achse mit Städtenamen schmücken</h2>
+<p>Du hast es fast geschaft. Als nächstes blenden wir die Dummy-Blasen aus und sorgen dafür, dass an deren Stelle Städte-Namen stehen. Zuerst fügst du die Datenbschriftung hinzu: Rechter Mausklick auf eine der Dummy-Blasen und dann den Punkt &ldquo;<strong>Datenbschriftungen hinzufügen</strong>&rdquo; anklicken. Nun formatierst du die Datenbeschriftungen. Also wieder mit der rechten Maustaste auf eine Dummy-Blase klicken und den Punkt &ldquo;<strong>Datenbeschriftung formatieren</strong>&rdquo; auswählen. Daraufhin geht ein Fenster auf, in dem du unter &ldquo;<strong>Beschriftungs-Optionen</strong>&rdquo; die erste Checkbox aktivierst: &ldquo;<strong>Wert aus Zahlen</strong>&rdquo;. Daraufhin öffnet sich eine kleine Dialog-Box. Du wählst nun einmal alle Städtenamen aus. Der Auswahlbereich darf aber nur so groß sein, dass jede Stadt genau einmal erfasst wird. Danach deaktivierst du die anderen Checkboxen darunter. Du bist auf der Ziellinie, mach das Fenster mit den Datenbeschriftungen aber noch nicht zu, das brauchen wir noch!</p>
+<p>[caption id=&ldquo;attachment_2379&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/Dummy-Bubbles-mit-Datenbschriftung-versehen.png"><img src="/2018/2018-11-23-ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/images/Dummy-Bubbles-mit-Datenbschriftung-versehen-300x196.png" alt="Dummy-Bubbles mit Datenbschriftung versehen"></a> Dummy-Bubbles mit Datenbschriftung versehen[/caption]</p>
+<h2 id="das-diagramm-fertigstellen">Das Diagramm fertigstellen</h2>
+<p>Abschließend musst du nur noch ein wenig an der Formatierung schrauben: Dazu solltest du erstmal die Beschriftungsposition auf &ldquo;<strong>Links</strong>&rdquo; ändern. Dann wählst du die Dummy-Blasen aus und änderst Füllfarbe und Kontur auf &ldquo;nix&rdquo;. Jetzt kannst du noch die Y-Achse entfernen (anklicken und &ldquo;ENTF&rdquo; drücken) oder, wenn du die vertikale Linie behalten möchtest, die Schriftfarbe auf weiß setzen. Zack-Fertig: Blasendiagramm mit nominaler Skala:</p>
+<p>[caption id=&ldquo;attachment_2380&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/Blasendiagramm-Bubble-Chart-mit-nominaler-Skala.png"><img src="/2018/2018-11-23-ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/images/Blasendiagramm-Bubble-Chart-mit-nominaler-Skala-300x202.png" alt="Blasendiagramm - Bubble Chart mit nominaler Skala"></a> Blasendiagramm - Bubble Chart mit nominaler Skala[/caption]</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Excel, Tutorial, Datenvisualisierung, Diagramm</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>office</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Ein Blasendiagramm / Bubble Chart mit Nominal-Skala in Excel - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>tutorial</dc:type>
+      
+      
+    </item><item>
       <title>Excel-Vorlage für ISO-Toleranzen</title>
       <link>https://nickyreinert.de/2017/2017-09-26-excel-vorlage-fuer-iso-toleranzen/</link>
       <pubDate>Tue, 26 Sep 2017 00:00:00 +0000</pubDate>
@@ -163,6 +239,166 @@
       
       
       <dc:type>guide</dc:type>
+      
+      
+    </item><item>
+      <title>Tutorial: Web-Scraping mit VBA - Teil 1</title>
+      <link>https://nickyreinert.de/2010/2010-09-16-tutorial-web-scraping-mit-vba-teil-1/</link>
+      <pubDate>Thu, 16 Sep 2010 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2010/2010-09-16-tutorial-web-scraping-mit-vba-teil-1/</guid>
+      <description>In dieser kleinen Tutorial-Serie will ich anhand einer Online-Handy-Datenbank zeigen, wie man mit VBA Seiten aus dem Internet abruft und nach Informationen …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dies ist der erste Teil einer Tutorial-Reihe, die zeigt, wie man mit VBA in Excel Web-Scraping betreibt. Der Artikel erklärt die Grundlagen des Abrufens von Webseiten-Inhalten mittels `WinHttpRequest` und des Parsens von HTML, um eine Liste von Hersteller-Links von einer Handy-Datenbank-Website zu extrahieren.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> VBA, Web-Scraping, Excel, HTML-Parsing, Automatisierung</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>In dieser kleinen Tutorial-Serie will ich anhand einer Online-Handy-Datenbank zeigen, wie man mit VBA Seiten aus dem Internet abruft und nach Informationen sucht, die sich dann in einer Tabelle abspeichern lassen. Warum VBA? Es gibt vermutlich elegantere Lösungen, doch Excel ist eine Software, die die meisten zuhause nutzen. Man benötigt also keine zusätzliche Entwicklungsumgebung. Außerdem hat diese Methode den  Vorteil, dass die Daten sofort zur weiteren Verarbeitung verfügbar sind. VBA ist vielleicht nicht die performanteste Programmiersprache, dafür aber relativ leicht zu beherrschen.</p>
+<p><a href="http://www.rechtzweinull.de/archives/100-screen-scraping-wann-ist-das-auslesen-und-die-veroeffentlichung-fremder-daten-zulaessig.html">(FYI: Rechtliches zum Thema Web- oder Screen-Scraping)</a></p>
+<p> 
+Diese Artikelserie richtet sich an den fortgeschrittenen Nutzer. Für den Einsteiger gehe ich nicht auf grundlegendes Programmierwissen ein (was sind Klassen, welche Variablen-Typen bietet Excel, etc.pp.) und für den professionellen Softwareentwickler sind meine Codebeispiele vermutlich zu infantil. Ich habe aber die Erfahrung gemacht, dass VBA und Excel für kurzfristige und kleine Projekte dieser Art recht nützliche Hilfsmittel sind. Außerdem bin ich kein &ldquo;ausgebildeter Softwareentwickler&rdquo;, weshalb ich an der Stelle auch gleich darauf Hinweise, dass Verbesserungsvorschläge sehr gerne gesehen sind!</p>
+<p>Welches wissen solltest du also mitbringen?  Da es um das Parsen von HTML-Code geht, solltest du zumindest Bescheid wissen, wenn ich von div- und a-Elementen und css-Klassen rede. Du solltest auch wissen, wie man in VBA Variablen deklariert oder was eine if-Abfrage ist.</p>
+<p>Das Endergebnis ist eine Tabelle mit technischen Spezifikationen zu den Mobiltelefonen, die inside-handy.de listet. Insgesamt werden drei Routinen genutzt, die - in umgekehrter Reihenfolge des Vorgehens - folgende Aufgabe haben:</p>
+<p>Die letzte Routine greift auf eine Liste von URL zu, die auf die Datenblätter der Geräte verweisen. Von dort wird der HTML-Quellcode nach den  technischen Informationen durchsucht.</p>
+<p>Auf inside-handy.de sind die Geräte nach Herstellern sortiert. Jede Herstellerseite verweist auf die entsprechenden Geräte. Wir werden also jede Herstellerseite (bzw. den entsprechenden HTML-Code) zunächst nach den URL zu den Geräten durchsuchen. Diese Aufgabe übernimmt die zweite Routine bzw. Prozedur.</p>
+<p>Die erste Routine schließlich liefert die Liste aller URL zu den Herstellern, die wir uns aus dem HTML-Code der Herstellerübersicht auf inside-handy.de laden. Und damit geht es nun los:</p>
+<p>1. Die URL zu den Hersteller-Unterseiten auslesen - sub getManufacturer</p>
+<p>1.1 Datei per HTTP von einem Server laden</p>
+<p>Im ersten Schritt laden wir die komplette HTML-Datei in den Zwischenspeicher. Dazu gibt es mindesten zwei Methoden, die gängigste ist vermutlich die über <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa384106%28v=vs.85%29.aspx">WinHttpRequest</a>. Bevor du das nutzen kannst, musst du bei VBA unter Extras - Verweise jedoch erst die Microsoft HTML Object Library einbinden.</p>
+<p>&lsquo;&lsquo;&lsquo;vba
+Dim url As String
+Dim result As String
+Dim winHttpReq As Object
+url = &ldquo;<a href="http://www.inside-handy.de/hersteller/handys%22">http://www.inside-handy.de/hersteller/handys"</a></p>
+<p>Set winHttpReq = CreateObject(&ldquo;WinHttp.WinHttpRequest.5.1&rdquo;)
+winHttpReq.Open &ldquo;GET&rdquo;, url, False
+winHttpReq.send
+result = winHttpReq.responseText
+&rsquo;&rsquo;&rsquo;</p>
+<p>Die Deklaration der Variablen erklärt sich von selbst. Nachdem ich eine Instanz vom WinHTTP-Objekt erzeugt habe, kann ich die Parameter übergeben. Dazu gehört neben der URL auch die Bestimmung des HTTP-Requests - nämlich GET. Der letzte, booleansche, Paramter gibt an, ob die Verbindung im asynchronen Modus geöffnet werden soll. Mit .send wird der Request tatsächlich ausgelöst und das Ergebni dann an die String-Variable result zurückgegeben. Dort befindet sich nun unser HTML-Code</p>
+<p>Wir können unseren Request natürlich auch per POST absetzen und noch andere Header-Informationen anhängen:</p>
+<p>&lsquo;&lsquo;&lsquo;vba
+Set winHttpReq = CreateObject(&ldquo;WinHttp.WinHttpRequest.5.1&rdquo;)</p>
+<p>winHttpReq.Open = &ldquo;Post&rdquo;, url, False
+winHttpReq.setRequestHeader &ldquo;User-Agent&rdquo;, &ldquo;Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)&rdquo;
+winHttpReq.setRequestHeader &ldquo;Content-type&rdquo;, &ldquo;application/x-www-form-urlencoded&rdquo;
+winHttpReq.send (URLEncode(&ldquo;username=user1&amp;password=secret&rdquo;) )</p>
+<p>result = winHttpReq.responseText
+&rsquo;&rsquo;&rsquo;</p>
+<p>So ist es z.B. möglich, Formulardaten zu übermitteln, um an eine passwortgeschützte Seite oder die Ergebnisseite einer Suche zu gelangen. Dabei werden die POST-Daten als weiterer Parameter beim Senden mitgegeben. Eine weitere Möglichkeit ist die Durchführung einer HTTP-Authentifizierung:</p>
+<p>&lsquo;&lsquo;&lsquo;vba
+Dim HTTPREQUEST_SETCREDENTIALS_FOR_SERVER As Boolean</p>
+<p>winHttpReq.Open &ldquo;GET&rdquo;, url, False
+winHttpReq.SetCredentials &ldquo;user&rdquo;, &ldquo;password&rdquo;, HTTPREQUEST_SETCREDENTIALS_FOR_SERVER
+winHttpReq.send
+&rsquo;&rsquo;&rsquo;</p>
+<p>Neben dem winHttpRequest-Objekt gibt es noch eine weniger elegante Methoden, in dem direkt eine Instanz des Internet Explorers erzeugt wird:</p>
+<p>&lsquo;&lsquo;&lsquo;vba
+Dim sPostData As String
+Dim bPostData() As Byte
+Dim WebBrowser: Set WebBrowser = CreateObject(&ldquo;InternetExplorer.Application&rdquo;)</p>
+<p>WebBrowser.Visible = True</p>
+<p>sPostData = URLEncode(&ldquo;username=user1&amp;password=secret&rdquo;)
+ReDim bPostData(Len(sPostData) - 1)
+bPostData = StrConv(sPostDataData, vbFromUnicode)</p>
+<p>WebBrowser.navigate url, 2 + 4 + 8, , bPostData, &ldquo;Content-type: application/x-www-form-urlencoded&rdquo;
+Do While WebBrowser.Busy
+DoEvents
+Loop
+result = WebBrowser.document.body.innerHTML
+WebBrowser.Quit
+&rsquo;&rsquo;&rsquo;</p>
+<p>Da diese Methode - wie gesagt - nicht sonderlich elegant ist, werde ich aber nicht weiter darauf eingehen.</p>
+<p>Nun zurück zu unserem Skript. Den HTML-Code der Seite haben wir nun erstmal in einen String gelegt. Damit wir das HTML-Dokument bequem lesen können, erzeugen wir ein HTML-Document, an das wir den HTML-Code übergeben:</p>
+<p>&lsquo;&lsquo;&lsquo;vba
+Set HTMLDoc = New HTMLDocument
+Set HTMLDoc = CreateObject(&ldquo;htmlfile&rdquo;)
+HTMLDoc.Open
+HTMLDoc.write (CStr(result))
+HTMLDoc.Close
+&rsquo;&rsquo;&rsquo;</p>
+<p>Auch hier erklärt sich der Code fast von selber: Eine Instanz des Objektes erzeugen, diese Instanz zum &ldquo;Befüllen&rdquo; vorbereiten, den String übergebne und die Instanz wieder &ldquo;schließen&rdquo;. Soweit, so unkompliziert. Im nächsten Schritt geht es nun direkt an das Parsen des Quellcodes um die Links zu den Herstellerseiten zu erhalten. Die Schleife dazu ist nicht sehr aufwendig:</p>
+<p>&lsquo;&lsquo;&lsquo;vba
+Dim oneElement1, allElements1 As IHTMLElementCollection
+Dim oneElement2, allElements2 As IHTMLElementCollection
+Dim oneElement3, allElements3 As IHTMLElementCollection</p>
+<pre><code>Worksheets(&quot;srcURL&quot;).Range(&quot;a2&quot;).Select
+i = 0
+Set allElements1 = HTMLDoc.getElementsByTagName(&quot;a&quot;)
+      
+i = 0
+For Each oneElement1 In allElements1
+    If oneElement1.parentElement.className = &quot;h\_img&quot; Then
+        If oneElement1.parentElement.parentElement.ID = &quot;h\_alle&quot; Then
+            If InStr(1, oneElement1.getAttribute(&quot;href&quot;), &quot;/tablets&quot;) &lt;= 0 Then
+                Selection.Offset(i, 0).Value = Replace(oneElement1.getAttribute(&quot;href&quot;), &quot;about:&quot;, &quot;http://www.inside-handy.de&quot;)
+                i = i + 1
+            End If
+        End If
+        
+    End If    
+Next oneElement1
+</code></pre>
+<p>End Sub
+&rsquo;&rsquo;&rsquo;</p>
+<p>Wie bin ich vorgegangen? Ich habe mir zunächst den Quellcode der Seite angeschaut. Die Liste der Hersteller ist dort eine Tabelle mit den Logos der Unternehmen. Die gewünschte Information befindet sich in a-Elementen, die wiederum innerhalb eines div-Elements liegen. Das gemeinsame &ldquo;Oberelement&rdquo; ist ein div-Container mit der CSS-Klasse &ldquo;h_img&rdquo; bzw. einem weiterne div-Container (&ldquo;h_alle&rdquo;). Außerdem gibt es einen ausgeblendeten div-Container mit einer Liste von Tablet-Herstellern, diese haben den Begriff &ldquo;/tablet&rdquo; in der href-Angabe und müssen ignoriert werden.</p>
+<p>&lsquo;&lsquo;&lsquo;html</p>
+<div id="h\_alle">
+	<div class="h\_img">
+		<a href="/hersteller/xyz" title="Handys Hersteller: XYZ">
+			<img />
+		</a>
+	</div>
+</div>
+'''
+<p>Mit &ldquo;Set allElements1 = HTMLDoc.getElementsByTagName(&ldquo;a&rdquo;)&rdquo; lasse ich mir also erst alle a-Elemente aus dem Quellcode in meinen &ldquo;Container&rdquo; legen.</p>
+<p>Mit der ersten for-each-Schleife durchlaufe ich nun diesen Container und prüfe mit den ersten zwei if-Abfragen, ob sich das a-Element unterhalb der erwähnten div-Container befindet. Da auf der Seite noch ein weitere identische div-Container mit diesen css-Klassen für die Liste der Tablet-Hersteller existiert, muss ich mit einer dritten if-Abfrage die URL des a-Elements überprüfen. Erst dann kann ich das Attribut des a-Elements auslesen und in mein Excel-Worksheet schreiben.</p>
+<p>Fertig ist der erste Schritt - eine Liste der URL zu den jeweiligen Herstellern. Im nächsten Teil werde ich diese Liste durchgehen und von den jeweiligen Seiten die URL zu den Geräten auslesen.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> VBA, Excel, Web-Scraping, Tutorial</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>development</category>
+      
+      <category>office</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Tutorial: Web-Scraping mit VBA - Teil 1 - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>tutorial</dc:type>
       
       
     </item>

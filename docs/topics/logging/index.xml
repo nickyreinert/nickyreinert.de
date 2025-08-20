@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Logging auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/topics/logging/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Wed, 28 Nov 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/logging/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Zugriff nicht loggen, wenn ein bestimmter HTTP-Request-Header gesetzt ist</title>
+      <link>https://nickyreinert.de/2018/2018-11-28-zugriff-nicht-loggen-wenn-ein-bestimmter-http-request-header-gesetzt-ist/</link>
+      <pubDate>Wed, 28 Nov 2018 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2018/2018-11-28-zugriff-nicht-loggen-wenn-ein-bestimmter-http-request-header-gesetzt-ist/</guid>
+      <description>OK, ich tu mich etwas schwer, das folgende in einen Titel zu gießen, der nicht länger ist, als die eigentlich Anleitung. Wenn du an deiner Webseite arbeitest, …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieses Tutorial beschreibt eine Methode, um eigene Zugriffe bei der Web-Entwicklung aus den Nginx-Logdateien auszuschließen. Die Lösung kombiniert ein Browser-Plugin zur Modifikation von HTTP-Headern mit einer serverseitigen Nginx-Konfiguration, die das Logging auf Basis eines benutzerdefinierten Headers bedingt deaktiviert.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Nginx, Webserver-Konfiguration, Logging, Web-Development, HTTP</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>OK, ich tu mich etwas schwer, das folgende in einen Titel zu gießen, der nicht länger ist, als die eigentlich Anleitung. Wenn du an deiner Webseite arbeitest, möchtest du vielleicht vermeiden, dass deine Aufrufe mit deinem Browser im Log-File von <strong>nginx</strong> landen. Dafür gibt es eine Menge Möglichkeiten, ich mag die folgende aber besonders.</p>
+<p>Zuerst benötigst du dafür ein Plugin, um den <strong>HTTP-Request-Header</strong> zu modifizieren. Ich nutze dafür <a href="https://addons.mozilla.org/en-US/firefox/addon/modheader-firefox/">ModHeader für Firefox,</a> für Chrome gibt es ähnliche Plugins. Dort legst du einen benutzerdefinierten Header an, dem du z.B. &ldquo;true&rdquo; als Wert zuweist. Bei diesem Plugin kannst du außerdem festlegen, dass der Header nur auf einer bestimmten Seite hinzugefügt wird.</p>
+<p>[caption id=&ldquo;attachment_2395&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/zugriff-nicht-loggen-wenn-ein-bestimmter-request-header-gesetzt-ist/modHeader.png"><img src="/2018/2018-11-28-zugriff-nicht-loggen-wenn-ein-bestimmter-http-request-header-gesetzt-ist/images/modHeader-300x163.png" alt="ModHeader Firefox Plugin"></a> ModHeader Firefox Plugin[/caption]</p>
+<p>Als nächstes definierst du in deiner nginx-Config eine Regel, die diesen Header ausliest:</p>
+<p>map $http_ignoreMe $log_this {</p>
+<pre><code>~true 0;
+
+default 1;
+</code></pre>
+<p>}</p>
+<p>Mit $http_ignoreMe sprichst du den zuvor angelegten Header an, $log_this erzeugt eine Variable, auf die du später zugreifen kannst. Enthält der Header &ldquo;true&rdquo; (~true), wird die Variable $log_this auf 0 gesetzt, ansonsten bleibt sie 1. Als nächstes öffnest du den Server-Bereich deiner Webseite und suchst nach deiner Logging-Einstellung (alternativ kannst du natürlich auch die globale Logging-Einstellung anpassen:</p>
+<pre><code>access\_log /var/logs/access.log main if=$log\_this;
+</code></pre>
+<p>Der zweite Parameter ist das Log-File - natürlich. Der dritte Parameter verweist auf mein benutzerdefiniertes Log-Format, das muss hier nicht unbedingt stehen. Und am Ende schließlich kommt die Bedingung, dass nämlich nur geloggt wird, wenn $log_this wahr bzw. 1 ist. Jetzt startest du nginx neu&hellip; et voilá - Anfragen an deine Seite von deinem Browser aus werden ignoriert.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Nginx, Logging, Tutorial, Web-Dev</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Zugriff nicht loggen, wenn ein bestimmter HTTP-Request-Header gesetzt ist - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>tutorial</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

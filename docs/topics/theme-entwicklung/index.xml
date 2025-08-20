@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Theme-Entwicklung auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/topics/theme-entwicklung/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Thu, 24 Nov 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/theme-entwicklung/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Wordpress: Slideshow im Header abhängig vom Inhalt</title>
+      <link>https://nickyreinert.de/2016/2016-11-24-wordpress-slideshow-im-header-abhaengig-vom-inhalt/</link>
+      <pubDate>Thu, 24 Nov 2016 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2016/2016-11-24-wordpress-slideshow-im-header-abhaengig-vom-inhalt/</guid>
+      <description>Heute bastelen wir uns in Wordpress einen Header, der eine Slideshow mit Bildern anzeigt, abhängig von der Seite die gerade angezeigt wird. Die Slideshow soll …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieses Tutorial erklärt, wie man in WordPress eine dynamische Bilder-Slideshow im Header erstellt, deren Inhalt sich je nach aufgerufener Seite ändert. Die Lösung nutzt die Plugins `NextGen Gallery` und `Smooth Gallery` in Kombination mit benutzerdefinierten Feldern, um seitenabhängige Galerien anzuzeigen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> WordPress, PHP, Theme-Entwicklung, Plugins, Web-Design</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Heute bastelen wir uns in Wordpress einen Header, der eine Slideshow mit Bildern anzeigt, abhängig von der Seite die gerade angezeigt wird. Die Slideshow soll sich die Bilder aus Gallerien holen, die der einzelnen Seite zugeordnet ist. Dazu greifen wir auf die &ldquo;<a href="http://codex.wordpress.org/Custom_Fields">Benutzerdefinierten Felder</a>&rdquo; in Wordpress sowie die beiden großartigen Wordpress-Plugins &ldquo;<a href="http://alexrabe.de/wordpress-plugins/nextgen-gallery/">NextGen Gallery</a>&rdquo; von Alex Raabe und &ldquo;<a href="http://uninuni.com/wordpress-plugin-nextgen-smooth-gallery/">Smooth Gallery</a>&rdquo; von uniuni zurück. Wichtig ist, dass man diese &ldquo;dynamischen Header&rdquo; ohne großen Aufwand auf jeder beliebigen Seite nutzen kann, damit der Gelegenheitsautor mit möglichst wenig technischen Kenntnissen damit umgehen kann.</p>
+<ol>
+<li>Wir benötigen mehrere Gallerien - voll mit Bildern.  Wie das funktioniert möchte ich hier nicht erklären, da das auf der Seite von Alex Raabe sehr gut getan wird. Jede Gallerie ist über eine ID eindeutig identifizierbar; ich merke mir erstmal die ID meiner ersten Gallery, die 1.</li>
+<li>Wir benötigen bei allen unseren Seiten ein benutzerdefiniertes Feld, ich nenne es &ldquo;gallery-id&rdquo; und fülle das Feld mit der ID meiner ersten Gallery: 1.</li>
+<li>Wir benötigen in der header.php folgenden Code dort, wo wir ihn benötigen ;) (macht z.B. im Header-Container Sinn)</li>
+</ol>
+<?php echo apply\_filters( "the\_content", '\[smooth=id:1;\]' ); ?>
+<p>Nun würden wir aber immer die Gallery mit der ID 1 anzeigen, wir wollen aber die Gallery sehen, deren ID auf der Seite  im benutzerdefinierten Feld genannt wurde. Diesen Wert liest man folgendermaßen aus:</p>
+<p>get_post_meta($post-&gt;ID, &lsquo;gallery-id&rsquo;, true);</p>
+<p>$post-&gt;ID gibt die ID der aktuellen Seite zurück (nicht zu verwechseln mit der Gallery-ID!)</p>
+<p>&lsquo;gallery-id&rsquo; ist der Name unseres benutzerdefinierten Felds</p>
+<p>true gibt  an, dass ein <em>String</em> und kein <em>Array</em> zurück gegeben wird - wichtig!</p>
+<p>Und wenn diese Zeile nun mit der ersten Code-Zeile kombiniert wird, sieht es folgendermaßen aus:</p>
+<p>echo apply_filters( &ldquo;the_content&rdquo;, &lsquo;[smooth=id:&rsquo;. get_post_meta($post-&gt;ID, &lsquo;gallery-id&rsquo;, true) .&rsquo;;]&rsquo; );</p>
+<p> </p>
+<p>Fertig. Nun muss der Autor der Seiten nur noch daran denken, das benutzerdefinierte Feld der jeweiligen Seite mit der gewünschten Gallery-ID zu füllen.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> WordPress, Tutorial, PHP, Theme</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>wordpress</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Wordpress: Slideshow im Header abhängig vom Inhalt - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>tutorial</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

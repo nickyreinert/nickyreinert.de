@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>C&#43;&#43; auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/en/tags/c&#43;&#43;/</link>
+    <description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>en</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Sat, 07 Dec 2024 12:34:56 +0200</lastBuildDate><atom:link href="https://nickyreinert.de/en/tags/c++/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Advent of Code - Day 7 - Missing Operators (C&#43;&#43;)</title>
+      <link>https://nickyreinert.de/en/blog/2024/12/07/advent-of-code-day-7-missing-operators-c-/</link>
+      <pubDate>Sat, 07 Dec 2024 12:34:56 +0200</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/en/blog/2024/12/07/advent-of-code-day-7-missing-operators-c-/</guid>
+      <description>(task | solution)
+This is the kind of task I really enjoy: finding algorithms for simple mathematical challenges! Let&rsquo;s go—this time in&hellip; C++! …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>A write-up of the author&#39;s solution to Day 7 of the Advent of Code 2024 challenge, implemented in C&#43;&#43;. The article details the approach to finding operator combinations for mathematical challenges, highlights the need for 64-bit unsigned integers and the debugging of a subtle duplicate entry. It also briefly touches on the solution for the concatenation operator in Part 2.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Advent of Code, C&#43;&#43;, Problem-Solving, Algorithmen, Programming Challenges</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>(<a href="https://adventofcode.com/2024/day/7/">task</a> | <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day7%20-%20c%2B%2B">solution</a>)</p>
+<p>This is the kind of task I really enjoy: finding algorithms for simple mathematical challenges! Let&rsquo;s go—this time in&hellip; C++! (Phew!)</p>
+<p>You&rsquo;ll find my <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day7%20-%20c%2B%2B/.devcontainer">.devcontainer and Dockerfile</a> on GitHub. Once again, I don&rsquo;t want to <em>bloat</em> my system with additional compiler setups. It turns out, this is working like a charm.</p>
+<h3 id="solution-to-the-first-part">Solution to the First Part</h3>
+<p>Well, the idea is quite easy: We got a list of <code>operands</code> and need to find the correct combination of <code>+</code> and <code>*</code> to get a target result. What we basically need to do is: Loop through all given equations, get all possible permutations of <code>+</code> and <code>*</code> for <code>n</code> given operands, and then do the math.</p>
+<p>The first tricky thing here is: They are providing a lot of huge numbers. So using 32-bit integers isn&rsquo;t sufficient. You not only need 64-bit integers, but also <strong>unsigned</strong> to work with numbers like <code>175.033.602.122.656</code>.</p>
+<p>But they also hid a little pitfall in the list of possible equations: There is <strong>one</strong> (exactly <strong>one</strong>!) duplicate entry. Which makes it hard to find. Would it be ten, 42, or 100 duplicate entries, you would somehow stumble over it. But now it took me a while, and I was close to throwing this task away. I started debugging and I wondered why I am only processing 849 equations instead of 850. At first glance, it looks like one of those classic &ldquo;indexing starts at zero&rdquo; bugs. But then I did, what you usually do when filling dictionaries: You check if the entry you want to add already exists. And it does.</p>
+<p>And while this wouldn&rsquo;t lead to a valid equation&hellip;</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">1095: 8 5 9 3 231
+</span></span></code></pre></div><p>This line certainly does</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">1095: 8 1 2 7 95 8 2 7 2 2 99
+</span></span></code></pre></div><p>And so I found the missing value for the final result&hellip;</p>
+<h3 id="solution-to-the-second-part">Solution to the Second Part</h3>
+<p>Well, the second part took me a while because I was somehow trying to build this concatenation part into the current algorithm. We now have three operators, <code>*</code>, <code>+</code>, and <code>||</code> — but the last one should connect two integers.</p>
+<p>Eventually, I had my <em>heureka</em> moment: Concatenation could be implemented as a mathematical operation, too.</p>
+<p>If the left number is <code>123</code> followed by <code>45</code>, we need to multiply <code>123</code> with <code>10^2</code> and then just add <code>45</code>. Easy math.</p>
+<p><strong>Side note</strong>: I was cheating a little. I now know that <code>1095</code> is a duplicated entry, and I know it would lead to a valid result, so I am adding it hard-coded to get the final result.</p>
+<h2 id="whats-up-c">Whats up, C++?</h2>
+<p><strong>Rating: 6/12 – painful</strong></p>
+<p>Well, <code>C++</code> is undoubtedly a powerful language, but for a reason it&rsquo;s not beating all those scripting languages out there. Simple things are complicated because you have to implement them on your own. 5 out of 12 seems to be unfair for such a grown-up programming language, but this is simply my point of view. For me, right now, there&rsquo;s no reason to use C++. Which absolutely does not mean that this language is not important! Nevertheless, using it felt like an adult pro developer. ;)</p>
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Advent of Code, C&#43;&#43;, Solution, Tutorial</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>development</category>
+      
+      <category>aoc2024</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Advent of Code - Day 7 - Missing Operators (C&#43;&#43;)</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>solution_writeup</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

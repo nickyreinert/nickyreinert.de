@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Diagramm auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/tags/diagramm/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Fri, 23 Nov 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/diagramm/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Ein Blasendiagramm / Bubble Chart mit Nominal-Skala in Excel</title>
+      <link>https://nickyreinert.de/2018/2018-11-23-ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/</link>
+      <pubDate>Fri, 23 Nov 2018 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2018/2018-11-23-ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/</guid>
+      <description>OK. Erstmal zu den Grundlagen, damit du überhaupt weißt, warum du hier bist: Eine Blasendiagramm oder Bubble Chart erlaubt dir, Informationen mit drei …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine Schritt-für-Schritt-Anleitung, die einen Workaround aufzeigt, um in Microsoft Excel ein Blasendiagramm (Bubble Chart) mit einer nominalen Skala (z.B. Städtenamen) auf einer Achse zu erstellen. Das Tutorial erklärt, wie man durch das Hinzufügen von Index- und Dummy-Spalten sowie die geschickte Formatierung von Datenbeschriftungen die Einschränkungen von Excel umgeht.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Microsoft Excel, Datenvisualisierung, Diagramme, Office-Tipps, Statistik</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>OK. Erstmal zu den Grundlagen, damit du überhaupt weißt, warum du hier bist: Eine <strong>Blasendiagramm</strong> oder <strong>Bubble Chart</strong> erlaubt dir, Informationen mit drei Dimensionen in einem Diagramm darzustellen. Zwei Dimensionen bestimmen die Position im Diagramm anhand der X- und Y-Achse, die dritte Dimension legt fest, wie groß die Blase - neudeutsch Bubble - ist.</p>
+<p>[caption id=&ldquo;attachment_2370&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/excel-blasendiagramm-bubble-chart.png"><img src="/2018/2018-11-23-ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/images/excel-blasendiagramm-bubble-chart-300x179.png" alt="Blasendiagramm bzw. Bubble Chart in Excel"></a> Blasendiagramm bzw. Bubble Chart in Excel[/caption]</p>
+<p>Das Problem ist aber, dass dieses Blasendiagramm metrische oder mindestens ordinale Daten erfordert. Also Daten, die in eine natürliche Reihenfolge gebracht werden können. Was aber, wenn du Eigenschaften nominaler Daten visualisieren willst. Also z.B. die Einwohnerzahl und Fläche von Städten?</p>
+<p>Der Stadtname soll dabei an der Y-Achse stehen, die Einwohnerzahl die Größe der Blasen definieren und die Position an der X-Achse über Fläche festgelegt werden. Die letzten beiden Dimensionen sind dabei <a href="https://wissenschafts-thurm.de/grundlagen-der-statistik-wie-unterscheidet-man-zwischen-nominal-ordinal-und-kardinalskala/">metrisch</a> - sie haben eine natürliche Reihenfolge und skalierbare Abstände. Aber die erste Dimension, die Städte-Namen, sind nominal. Du kannst sie nicht sortieren (die alphabetische Sortierung mal außen vor) und es gibt keine skalierbaren Abstände. Excel kann daraus also kein Bubble-Chart wie z.B: dieses machen:</p>
+<p>[caption id=&ldquo;attachment_2371&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/Excel-Blasendiagramm-Bubble-Chart-mit-nominaler-Skala.png"><img src="/2018/2018-11-23-ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/images/Excel-Blasendiagramm-Bubble-Chart-mit-nominaler-Skala-300x163.png" alt="Excel Blasendiagramm - Bubble Chart mit nominaler Skala"></a> Excel Blasendiagramm - Bubble Chart mit nominaler Skala[/caption]</p>
+<p> </p>
+<p>Du ahnst es bereits: Das Diagramm stammt natürlich von Excel. Es ist nämlich, über ein paar Umwege, auch in Excel möglich, diese schönen Blasendiagramme zu erzeugen. Und wie, dass zeige ich dir jetzt.</p>
+<h2 id="schritt-1-die-nominalen-daten-mit-einem-index-versehen">Schritt 1: Die nominalen Daten mit einem Index versehen</h2>
+<p>Zunächst einmal zu den Rohdaten: Vor dir liegt eine Tabelle mit den Werten für die X- und Y-Achse sowie die Größe der Blasen. Wenn du daraus ein Blasendiagramm erzeugst, ignoriert Excel deine Städtenamen erst einmal ganz. Änderst du nun die Datenquelle der Y-Achse, kann Excel damit nichts anfange und du erhälst dieses nichtssagende Diagramm:</p>
+<p>[gallery columns=&ldquo;2&rdquo; link=&ldquo;file&rdquo; ids=&ldquo;2376,2375&rdquo;]</p>
+<p>Der erste Schritt ist ziemlich naheliegend: Du verpasst du den nominalen Daten einen Index, damit sind sie nämlich metrisch und können im Bubble Chart verwendet werden. Jede Stadt wird also einer Position auf der Y-Achse zugeordnet. Danach musst du die Datenreihe natürlich bearbeiten und die &ldquo;Werte der Reihe Y&rdquo; der neuen Spalte zuordnen. Für die folgenden Schritte musst du nur darauf achten, dass die Spalte der Y-Achse einmal alle Inde</p>
+<p>[gallery columns=&ldquo;2&rdquo; link=&ldquo;file&rdquo; ids=&ldquo;2373,2374&rdquo;]</p>
+<h2 id="dummy-spalten-einfügen">Dummy-Spalten einfügen</h2>
+<p>Das Ergebnis kann sich schon fast sehen lassen. Fast. Denn die Herausforderung ist nun, die Städtenamen an die Y-Achse zu bekomen. Bisher (Excel 16) gibt es dafür keine Möglichkeit. Das umgehst du mit zwei Dummy-Spalten. Die erste Dummy-Spalte sorgt dafür, dass die Städtenamen ihrer Position auf der Y-Achse finden, die zweite Dummy-Spalte gibt den Blasen eine Größe. Du fügst nun eine neue Datenreihe hinzu die auf diese Werte verweist. Das Ergebnis sind ein paar neue Bubbles auf deiner Y-Achse:</p>
+<p>[gallery columns=&ldquo;2&rdquo; link=&ldquo;file&rdquo; ids=&ldquo;2378,2377&rdquo;]</p>
+<h2 id="y-achse-mit-städtenamen-schmücken">Y-Achse mit Städtenamen schmücken</h2>
+<p>Du hast es fast geschaft. Als nächstes blenden wir die Dummy-Blasen aus und sorgen dafür, dass an deren Stelle Städte-Namen stehen. Zuerst fügst du die Datenbschriftung hinzu: Rechter Mausklick auf eine der Dummy-Blasen und dann den Punkt &ldquo;<strong>Datenbschriftungen hinzufügen</strong>&rdquo; anklicken. Nun formatierst du die Datenbeschriftungen. Also wieder mit der rechten Maustaste auf eine Dummy-Blase klicken und den Punkt &ldquo;<strong>Datenbeschriftung formatieren</strong>&rdquo; auswählen. Daraufhin geht ein Fenster auf, in dem du unter &ldquo;<strong>Beschriftungs-Optionen</strong>&rdquo; die erste Checkbox aktivierst: &ldquo;<strong>Wert aus Zahlen</strong>&rdquo;. Daraufhin öffnet sich eine kleine Dialog-Box. Du wählst nun einmal alle Städtenamen aus. Der Auswahlbereich darf aber nur so groß sein, dass jede Stadt genau einmal erfasst wird. Danach deaktivierst du die anderen Checkboxen darunter. Du bist auf der Ziellinie, mach das Fenster mit den Datenbeschriftungen aber noch nicht zu, das brauchen wir noch!</p>
+<p>[caption id=&ldquo;attachment_2379&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/Dummy-Bubbles-mit-Datenbschriftung-versehen.png"><img src="/2018/2018-11-23-ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/images/Dummy-Bubbles-mit-Datenbschriftung-versehen-300x196.png" alt="Dummy-Bubbles mit Datenbschriftung versehen"></a> Dummy-Bubbles mit Datenbschriftung versehen[/caption]</p>
+<h2 id="das-diagramm-fertigstellen">Das Diagramm fertigstellen</h2>
+<p>Abschließend musst du nur noch ein wenig an der Formatierung schrauben: Dazu solltest du erstmal die Beschriftungsposition auf &ldquo;<strong>Links</strong>&rdquo; ändern. Dann wählst du die Dummy-Blasen aus und änderst Füllfarbe und Kontur auf &ldquo;nix&rdquo;. Jetzt kannst du noch die Y-Achse entfernen (anklicken und &ldquo;ENTF&rdquo; drücken) oder, wenn du die vertikale Linie behalten möchtest, die Schriftfarbe auf weiß setzen. Zack-Fertig: Blasendiagramm mit nominaler Skala:</p>
+<p>[caption id=&ldquo;attachment_2380&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/Blasendiagramm-Bubble-Chart-mit-nominaler-Skala.png"><img src="/2018/2018-11-23-ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/images/Blasendiagramm-Bubble-Chart-mit-nominaler-Skala-300x202.png" alt="Blasendiagramm - Bubble Chart mit nominaler Skala"></a> Blasendiagramm - Bubble Chart mit nominaler Skala[/caption]</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Excel, Tutorial, Datenvisualisierung, Diagramm</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>office</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Ein Blasendiagramm / Bubble Chart mit Nominal-Skala in Excel - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>tutorial</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

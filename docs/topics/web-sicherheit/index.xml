@@ -1,0 +1,963 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Web-Sicherheit auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/topics/web-sicherheit/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Thu, 05 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/web-sicherheit/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Wie funktionieren Dateirechte?</title>
+      <link>https://nickyreinert.de/2020/2020-11-05-wie-funktionieren-dateirechte/</link>
+      <pubDate>Thu, 05 Nov 2020 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2020/2020-11-05-wie-funktionieren-dateirechte/</guid>
+      <description>Die korrekten Dateirechte sollten eine wichtige Rolle spielen, wenn du an einem Sicherheitskonzept für deine Webseite bzw. Wordpress arbeitest. Leider wird das …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine detaillierte Anleitung zum Verständnis und zur korrekten Konfiguration von Dateirechten auf einem Linux-Webserver, speziell für WordPress. Der Artikel erklärt die Grundlagen von Benutzern, Gruppen und den Rechten (Lesen, Schreiben, Ausführen) und demonstriert die Anwendung von `chmod` und `chown`. Es werden sichere, praxisnahe Konfigurationen und Skripte zur Härtung einer WordPress-Installation vorgestellt.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Linux, Server-Administration, Web-Sicherheit, WordPress, Dateirechte, SysAdmin</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Die korrekten <strong>Dateirechte</strong> sollten eine wichtige Rolle spielen, wenn du an einem Sicherheitskonzept für deine Webseite bzw. Wordpress arbeitest. Leider wird das Thema Dateirechte oft stiefmütterlich behandelt, nicht zuletzt weil es fälschlicherweise als zu kompliziert angesehen wird. Dabei muss es das gar nicht sein: Das Grundprinzip ist einfach: Du willst nicht, dass jedermann Dateien <strong>ändern</strong>, <strong>ausführen</strong> oder <strong>lesen</strong> kann. Sicherlich gibt es feine Abstufungen. und genau die möchte ich hier erklären.</p>
+<p>Achtung: Das Ziel dieses Beitrags ist nicht, dir eine fertige Lösung für deine WordPress-Installation bzw. dein Projekt zu geben. Das ist nicht möglich. Warum? Es gibt zig unterschiedliche Konfigurationen. Es mag allgemeingültige Lösungen geben, diese sind aber bei weitem nicht sicher. Stichwort: chmod 777 * -R</p>
+<p>Du solltest nach der Lektüre aber das Konzept verstehen und vielleicht sogar in der Lage sein, die Dateirechte selbstständig zu setzen.</p>
+<h2 id="die-grundlagen-wie-verarbeitet-ein-web-server-anfragen">Die Grundlagen: Wie verarbeitet ein Web-Server Anfragen?</h2>
+<p>Jetzt fragst du dich sicherlich, was das mit Dateirechten zu tun hat? Was passiert, wenn du auf einer Webseite surfst? Folgende Vereinfachung dürfte das konzept hilfreich beschreibe: Der Web-Server schickt eine Datei an deinen Browser. Und du kannst Dateien an den Web-Server schicken, sprich hochladen. Wer also verstehen will, wie Dateirechte gesetzt werden müssen, sollte das Grundkonzept eines Servers verstehen.</p>
+<p>Wie sieht diese Kommunikation mit dem Server also im Detail aus? Du schickst über deinen Browser eine Anfrage (<a href="https://nickyreinert.de/index.html">http://nickyreinert.de/index.html</a>) an den Server (was auch nur irgendein anderer Computer auf der Welt ist, egal ob in der Cloud oder in einem Keller). Auf dem Server laufen verschiedene Dienste - die verwirrenderweise auch als Server bezeichnet werden.</p>
+<p><img src="https://pbs.twimg.com/media/D864DxrWsAAmvXi?format=png&amp;name=small" alt="Bild"></p>
+<p>Die Cloud ist auch nur der Computer von jemand anders</p>
+<p>Einer dieser Dienste ist der <strong><a href="https://de.wikipedia.org/wiki/Internetdienst#Die_Internetdienste_im_Einzelnen">HTTP-Dienst</a></strong>. Sehr verbreitet sind <strong>Apache2</strong> und <strong>nginx</strong>. Das Konzept ist bei beiden gleich: Sie empfangen deine Anfrage und schicken dir eine Antwort. Bei dieser Antwort unterscheidet man grob zwischen <strong>statische Inhalten</strong> (HTML-Datei, Texte, Bilder, &hellip;), die der <strong>HTTP-Dienst</strong> direkt zurückschickt und <strong>dynamischen Inhalten</strong>. Dynamische Inhalte müssen auf dem Server erst verarbeitet werden, wie z.B. Datenbankabfragen oder ganz simpel die Darstellung der aktuellen Uhrzeit: <a href="https://nickyreinert.de/dynamisch.php">https://nickyreinert.de/dynamisch.php</a>. Das ermöglicht ein <strong>PHP-Dienst</strong> bzw. <strong>PHP-Interpreter</strong>.</p>
+<p>Im Kontext der Dateirechte muss man hier eine wichtige Unterscheidung treffen: Der PHP-Interpreter ist entweder Teil des HTTP-Dienstes (<strong>PHP-Modul</strong>). Damit ist z.B. <strong>Apache2</strong> in der Lage, die PHP-Datei quasi selber zu interpretieren, und den dynamischen Inhalt für die Antwort zu erzeugen. Oder der PHP-Dienst ist ein getrennt laufender Dienst bzw. Prozess, der über eine Schnittstelle (CGI) vom HTTP-Dienst angesprochen wird (<a href="http://www.php-faq.de/q/q-php-cgi-vs-modul.html">mehr dazu hier</a>).</p>
+<p>Um Informationen auf dem Server zu speichern, gibt es zwei Möglichkeiten: Zum einen wäre da die Datenbank, wie z.B. <strong>MySQL</strong> oder <strong>MariaDB</strong>. Der PHP-Dienst nutzt die Datenbank, um Informationen abzulegen, die in der Regel volatil sind. Wie z.B. Kommentare oder Texte für deinen Blog. Und es gibt das <strong>Dateisystem</strong>. Ganz banal ausgedrückt ist das die Festplatte des Servers. Und genau dort brauchst du Dateirechte. Die folgende Abbildung zeigt die beiden oben erwähnten Konfigurationen: In der ersten Konfiguration sind HTTP- und PHP-Dienst getrennte Dienste, in der zweiten Konfiguration nutzt der HTTP-Dienst PHP als integriertes Modul.</p>
+<p>Die Abbildung zeigt außerdem ein beispielhaftes Dateisystem mit einigen ausgewählten Dateien und Ordnern, die dir von WordPress bekannt vorkommen dürften.</p>
+<ul>
+<li>
+<p><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/Folie1.png"><img src="/2020/2020-11-05-wie-funktionieren-dateirechte/images/Folie1-700x394.png" alt=""></a></p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/Folie2.png"><img src="/2020/2020-11-05-wie-funktionieren-dateirechte/images/Folie2-700x394.png" alt=""></a></p>
+</li>
+</ul>
+<p>Der vierte Dienst im Bunde ist übrigens der <strong>FTP-Dienst</strong>. Dieser ermöglicht es (in der Regel dem Web-Entwickler) sich per <strong>FTP</strong> auf den Server zu verbinden und Dateien über einen FTP-Client hochzuladen, zu bearbeiten oder zu löschen.</p>
+<h2 id="lesen-schreiben-ausführen---was-bedeutet-das-eigentlich">Lesen, Schreiben, Ausführen - Was bedeutet das eigentlich?</h2>
+<p>Wenn es um die Fähigkeit &ldquo;Ausführen&rdquo; geht, muss man streng zwischen Ordnern und Dateien unterscheiden. Das <strong>Ausführen</strong> von Dateien, egal welche Endung sie haben, ist in <strong>keiner Konfiguration notwendig</strong>! Das Ausführen von Ordern hingegen ermöglicht den Zugriff auf den Ordner. Jeder Ordner deiner WordPress-Installation darf also ausführbar sein.</p>
+<p>Das <strong>Lesen</strong> eines Ordners ermöglicht einem Dienst, die Ordner-Inhalte aufzulisten. Das Lesen einer Datei ermöglicht einem Dienst den Inhalt einer Datei darzustellen. Und das ist bereits ein sicherheitskritisches Merkmal: Nicht jeder Dienst muss bzw. darf jede Datei lesen. Der HTTP-Dienst benötigt z.B. keinen lesenden Zugriff auf PHP-Dateien. Und erst Recht nicht auf z.B. die wp-config.php - in der sich ja das Passwort für die Datenbank befindet. Der HTTP-Dienst reicht die Anfrage für die dynamische PHP-Datei in der Regel an den PHP-Dienst weiter. Gleichwohl muss der HTTP-Dienst statische Inhalte lesen können. Vor allem bei den Leserechten gibt es also sehr viele Feinheiten zu beachten.</p>
+<p>Wer <strong>Schreibrechte</strong> für einen Ordner hat, kann darin Dateien anlegen bzw. den Ordner löschen oder umbenennen. Das Schreibrecht für eine Datei ermöglicht das Löschen der Datei und das Ändern der Inhalte. Grundsätzlich sollte kein Dienst Schreibrechte im Dateisystem besitzen. So vermeidet man z.B., dass jemand Schadcode in eine PHP-Datei einfügt. Der PHP-Dienst kann Informationen in der Datenbank ablegen und für den HTTP-Dienst gibt es erstmal keinen Grund, überhaupt Dateien ändern oder anlegen zu müssen.</p>
+<p>Natürlich gibt es Ausnahmen. Z.B. benötigt der PHP-Dienst Schreibrechte, wenn Dateien von WordPress oder der Plugins aktualisiert werden müssen. Oder ein Nutzer Dateien hochladen möchte (Hier kommt übrigens eine andere wichtige Sicherheitseinstellung zum Tragen: Man kann unterbinden, dass der PHP-Dienst Dateien aus dem Upload-Ordner als PHP-Dateien verarbeitet.)</p>
+<p>Wie wir diese Dateirechte setzen, dazu gleich mehr.</p>
+<h2 id="besitzrechte-einer-datei">Besitzrechte einer Datei</h2>
+<p>Vorher schauen wir uns noch die Besitzverhältnisse von Dateien und Ordnern an. Diese lassen sich einem <strong>Besitzer</strong> und einer <strong>Gruppe</strong> zuordnen. Jeder der oben genannten Dienste kann, ganz abstrakt betracht, als <strong><em>Nutzer</em></strong> verstanden werden. Und damit entweder <strong>direkt Besitzer</strong> einer Datei oder eines Ordners sein. Oder <strong>indirekt</strong>, über die <strong>Gruppenzugehörigkeit</strong>.</p>
+<p>Eine Datei gehört also zu einem Besitzer und zu einer Gruppe von Besitzern. Der Besitzer muss nicht zwingend Teil der Gruppe sein. Der <strong>Besitzer</strong> kann bestimmte Rechte für diese Datei besitzen, wie z.B. <strong>Lesen</strong> und <strong>Schreiben</strong>. Einer <strong>Gruppe</strong> von Besitzern werden auch individuelle Rechte zugesprochen, wie z.B. nur das <strong>Lesen</strong>. Und dann gibt es noch &ldquo;<strong>alle anderen</strong>&rdquo;, die vielleicht gar <strong>keine Zugriffsrechte</strong> auf eine Datei haben. Am Beispiel von <strong>index.html</strong> sieht das folgendermaßen aus:</p>
+<p><em>index.html:</em></p>
+<ul>
+<li><strong>Besitzer</strong>: FTP-Dienst, darf lesen und schreiben,</li>
+<li><strong>Gruppe</strong>: WWW-Data, darf lesen,</li>
+<li><strong>alle andern</strong>: keine Rechte</li>
+</ul>
+<p>Und das enstpricht auch schon der klassischen Rechtevergabe von Dateien. Schreibrechte werden nur dem Besitzer eingeräumt. Die Gruppe darf bestenfalls lesen. Natürlich gibt es Sonderfälle, wie das Aktualisieren von WordPress oder von Plugins, dazu später mehr.</p>
+<h2 id="wie-funktionieren-chown-und-chmod">Wie funktionieren chown und chmod?</h2>
+<p>Du wirst es sicher schon mal gehört haben: Dateirechte werden mit <strong>chown</strong> und <strong>chmod</strong> konfiguriert. chown steht für &ldquo;change owner&rdquo; - also &ldquo;ändere den Besitzer&rdquo; und chmod für &ldquo;change mode&rdquo;, &ldquo;ändere den Modus&rdquo;.</p>
+<p>Zu Demonstrationszwecken gehen wir von der folgenden Konfiguration aus, die zwar bei weitem nicht die sicherste, dafür aber weit verbreitet ist:</p>
+<p>Die <em>Nutzer</em> für den PHP- und HTTP-Dienst sind in der Gruppe <strong>www-data</strong> zusammengefasst. Daneben gibt es den FTP-Dienst (<strong>ftp-user</strong>).</p>
+<p><strong>Ftp-user</strong> bekommt alle Rechte: Lesen, Schreiben, usw. Die Nutzer der Gruppe <strong>www-data</strong> bekommen nur lesenden Zugriff - vorerst!</p>
+<p>Jede Datei und jeder Ordner sollen dem <strong>ftp-user</strong> gehören, gleichzeitig aber auch zur Gruppe <strong>www-data</strong>. Das lässt sich mit <strong>chown</strong> folgendermaßen bewerkstelligen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">chown</span> <span class="n">ftp</span><span class="o">-</span><span class="n">user</span><span class="p">:</span><span class="n">www</span><span class="o">-</span><span class="n">data</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">www</span><span class="o">/*</span> <span class="o">--</span><span class="n">recursive</span>
+</span></span></code></pre></div><p>Der erste Parameter definiert den Besitzer (ftp-user) und die Gruppenzugehörigkeit (www-data), immer getrent mit einem Doppelpunkt. Danach folgt der betroffene Ordner bzw. die Datei. Mit <strong>--recursive</strong> (oder kürzer <strong>-R</strong>) werden auch alle Unterordner und darin befindlichen Dateien angesprochen.</p>
+<p>Bei den Dateirechten wird es etwas aufwendiger, zunächst der Aufruf:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">chmod</span> <span class="mi">640</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">www</span><span class="o">/*</span> <span class="o">-</span><span class="n">R</span>
+</span></span></code></pre></div><p>Hier nutzen wir die Kurzschreibweise -R um alle Dateien und Ordner rekursiv zu ändern. Wichtig ist für uns die Ziffer hinter chmod: 640. Genau genommen handelt es sich um drei (oktale) Ziffern, nämlich 6, 4 und 0. Entsprechend der Position regeln sie die Zugriffsrechte für den</p>
+<ul>
+<li><strong>Besitzer</strong> (ftp-user, die 6 an erster Stelle),</li>
+<li>die <strong>Gruppe</strong> (www-data) samt ihrer Mitglieder (HTTP-Dienst, die 4 an zweiter Stelle)</li>
+<li>und an letzter Stelle alle anderen (<strong>others</strong> - die 0).</li>
+</ul>
+<p>Und wie entstehen die Ziffern 6, 4 und 0? Wir erinnern uns an die drei Zugriffsrechte:</p>
+<ul>
+<li>lesen,</li>
+<li>schreiben sowie</li>
+<li>ausführen.</li>
+</ul>
+<p>Jedes Recht besitzt einen Wert:</p>
+<ul>
+<li>Lesen (bzw. r für read) = 4</li>
+<li>Schreiben (bzw. w für write) = 2</li>
+<li>Ausführen (bzw. x für eXecute) = 1</li>
+<li>Kein Recht = 0</li>
+</ul>
+<p><a href="https://www.nickyreinert.de/files/2227/berechnung-der-Dateirechte-fu%CC%88r-chmod.png"><img src="images/berechnung-der-Dateirechte-fu%CC%88r-chmod-300x167.png" alt="Die Berechnung der Dateirechte für chmod"></a></p>
+<p>Die Berechnung der Dateirechte für chmod</p>
+<p>Um Rechte zu kombinieren, bildet man deren Summe. Will man also alle Rechte vergeben, erechnet sich das folgendermaßen:</p>
+<ul>
+<li>Lesen + Schreiben + Ausführen = 4 + 2+ 1 = 7</li>
+</ul>
+<p>Nur Lese- und Schreibzugriff errechnet sich demnach so:</p>
+<ul>
+<li>Lesen + Schreiben = 6</li>
+</ul>
+<p>Die obene genannte chmod-Anweisung setzt also die folgenden Rechte um:</p>
+<ul>
+<li>Besitzer (ftp-user): 6 (Lesen, Schreiben)</li>
+<li>Gruppe (www-data): 4 (Lesen)</li>
+<li>Alle anderen (others): 0 (keine Rechte)</li>
+</ul>
+<p>Was heißt das? Der FTP-Nutzer darf als Besitzer alles: Dateien hochladen, löschen, bearbeiten usw. Jedes Mitglied der Gruppe www-data darf Dateien nur lesen. Jeder andere Nutzer (bzw. Dienst) darf gar nicht auf die Dateien in deinem WordPress-Projekt zugreifen. Das klingt sehr sicher, führt allerdings zu einem Problem: Dein Server dürfte so nicht funktionieren. Nimm als Beispiel diesen Aufruf: <a href="https://nickyreinert.de/ordner/">https://nickyreinert.de/ordner/</a></p>
+<p>Die HTTP-Fehlermeldung <strong>403 Forbidden</strong> erscheint. Das sind die Zugriffsrechte für den Ordner, so wie wir sie eben gesetzt haben:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">drw-r----- 2 ftp-user www-data   4096 Okt 14 11:48 ordner/
+</span></span></code></pre></div><p>In der zweiten Spalte sehen wir: Der Ordner gehört <strong>ftp-user</strong> und der Gruppe <strong>www-data</strong>.</p>
+<p>Das <strong>d</strong> ganz am Anfang steht für <strong>directory</strong>, lies Ordner. Dann folgen die Dateirechte, die wir eben schon festgelegt haben: Zunächst drei Zeichen, die die Zugriffsrechte für den Besitzer (<strong>ftp-user</strong>) beschreiben: <strong>rw-</strong></p>
+<p>Also Lesen (<strong>read)</strong> und Schreiben (<strong>write</strong>) (würde anstelle des <strong>-</strong> ein <strong>x</strong> stehen (<strong>eXecute)</strong>, stünde das für <strong>Ausführen</strong>). Die Gruppe <strong>www-data</strong> und alle ihre Mitglieder dürfen nur Lesen (r&ndash;). Alle anderen dürfen gar nichts (&mdash;).</p>
+<p>Nun handelt es sich aber um einen Ordner. Ein Ordner kann aber nur &ldquo;betreten&rdquo; werden, wenn man die Genehmigung zum <strong>Ausführen</strong> hat. Weder der Besitzer noch die Gruppe hat diese Genehmigung. Unsere obere Anweisung reicht also nicht aus! Tatsächlich sollte man also <strong>Zugriffsrechte für Dateien und Ordner immer getrennt</strong> festlegen!</p>
+<p>Berechtigung für alle Dateien:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">chmod</span> <span class="mi">640</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">www</span><span class="o">/*</span> <span class="o">-</span><span class="n">R</span>
+</span></span></code></pre></div><p>Berechtigung für alle Ordner:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">chmod</span> <span class="mi">750</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">www</span><span class="o">/*</span> <span class="o">-</span><span class="n">R</span>
+</span></span></code></pre></div><p>Du siehst, dass das Ermöglichen des Ausführens einfach durch das Addieren von 1 für die beiden ersten Positionen ermöglicht wird.</p>
+<p>Tatsächlich findest du diese beiden Befehle auch in vielen Anleitungen zu Dateirechten und damit endet die Anleitung oft auch schon. Doch damit hast du ein Problem. Denn die zweite Anweisung überschreibt das Ergebnis der ersten Anweisung. Aber wir wollen doch Dateien und Ordner individuell einrichten! Abhilfe schafft der Befehl <strong>find</strong>, um Dateien und Ordner getrennt anzusprechen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">find</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">htdocs</span><span class="o">/.</span> <span class="o">-</span><span class="n">type</span> <span class="n">f</span> <span class="o">-</span><span class="n">exec</span> <span class="n">chmod</span> <span class="mi">640</span> <span class="o">--</span> <span class="p">{}</span> <span class="o">+</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">find</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">htdocs</span><span class="o">/.</span> <span class="o">-</span><span class="n">type</span> <span class="n">d</span> <span class="o">-</span><span class="n">exec</span> <span class="n">chmod</span> <span class="mi">750</span> <span class="o">--</span> <span class="p">{}</span> <span class="o">+</span>
+</span></span></code></pre></div><p>Der Parameter <strong>-type f</strong> liefert alle Dateien im angegeben Ordner zurück (f wie file, Datei). Der Punkt hinter htdocs in der ersten Zeile sorgt dafür, dass auch versteckte Dateien, wie z.B. die .htaccess-Datei, gefunden werden. Mit <strong>exec</strong> übergebe ich das Resultat von find, eine Liste die alle gefundenen Dateien enthält, an einen anderen Befehl. In dem Fall also <strong>chmod</strong>.</p>
+<p>Vice versa für alle Ordner, die mit <strong>-type d</strong> gefunden werden. Hier wird mit chmod auch das Recht zum Ausführen vergeben.</p>
+<h2 id="dateirechte-in-der-realität">Dateirechte in der Realität</h2>
+<p>Das klingt erstmal recht einfach, hat aber drei Haken:</p>
+<ol>
+<li>Es gibt Dateien, die nur für den PHP-Dienst relevant sind, andere wiederum nur für den HTTP-Dienst. Man muss die Besitzrechte also etwas granularer vergeben.</li>
+<li>Bei einem Update der Plugins oder WordPress müssen Dateien für die Gruppe www-data wenigstens temporär schreibbar sein.</li>
+<li>Wenn man den Upload von Dateien zulassen möchte, muss der Ordner /wp-content/uploads dauerhaft beschreibbar sein.</li>
+</ol>
+<p>Es gibt also verschiedene <strong>Ordner- und Datei-Kategorien</strong>, die verschiedene Rechte erfordern. Die folgende Matrix zeigt, am Beispiel von WordPress, eine <strong>ideale</strong> Konfiguration:</p>
+<p><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/grafik-4.png"><img src="/2020/2020-11-05-wie-funktionieren-dateirechte/images/grafik-4-700x315.png" alt=""></a></p>
+<p>Die **.htaccess-**Datei muss für den PHP-Dienst gar nicht sichtbar, geschweige denn beschreibbar sein. Die Datei <strong>wp-config.php</strong> wiederum sollte für den HTTP-Dienst unsichtbar sein. Generell müssen PHP-Dateien, also dynamische Ressourcen, für den HTTP-Dienst gar nicht sichtbar sein. Der Upload-Ordner ist hier beschreibbar, um das Hochladen von Datein zu ermöglichen. Wird ein Cache verwendet, muss natürlich auch dieser Ordner beschreibbar sein.</p>
+<p>Solltest du, z.B. auf deinem eigenen Webspace, die Möglichkeit haben, Besitzrechte derart granular zu konfigurieren, kann dir die Matrix vielleicht als Inspiration dienen. In der Realität hilft das aber nicht weiter, da der PHP-Dienst als Modul entweder innerhalb des HTTP-Dienstes läuft oder beide Dienste unter einer Gruppe (www-data) laufen (<a href="https://binary-butterfly.de/artikel/dateirechte-wie-stelle-ich-das-bei-meinem-hoster-ein/">hier wird das Problem noch etwas genauer beleuchtet</a>). Die Konfiguration sieht dann in etwa so aus:</p>
+<p><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/grafik-5.png"><img src="/2020/2020-11-05-wie-funktionieren-dateirechte/images/grafik-5-700x288.png" alt=""></a></p>
+<p>Nun stellst du dir sicher die Frage, wie du ein derartiges Setup möglichst unkompliziert einrichten kannst. Eins Vorweg: Ohne Zugriff auf die Shell wird das ziemlich aufwendig. Mit Zugriff auf die Kommandozeile kannst du die Dateirechte z.B. folgendermaßen setzen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">find</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">htdocs</span><span class="o">/.</span> <span class="o">-</span><span class="n">type</span> <span class="n">f</span> <span class="o">-</span><span class="n">exec</span> <span class="n">chmod</span> <span class="mi">640</span> <span class="o">--</span> <span class="p">{}</span> <span class="o">+</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">find</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">htdocs</span><span class="o">/.</span> <span class="o">-</span><span class="n">type</span> <span class="n">d</span> <span class="o">-</span><span class="n">exec</span> <span class="n">chmod</span> <span class="mi">750</span> <span class="o">--</span> <span class="p">{}</span> <span class="o">+</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="n">find</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">htdocs</span><span class="o">/</span><span class="n">wp</span><span class="o">-</span><span class="n">content</span><span class="o">/</span><span class="n">uploads</span><span class="o">/.</span> <span class="o">-</span><span class="n">type</span> <span class="n">f</span> <span class="o">-</span><span class="n">exec</span> <span class="n">chmod</span> <span class="mi">660</span> <span class="o">--</span> <span class="p">{}</span> <span class="o">+</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="n">find</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">htdocs</span><span class="o">/</span><span class="n">wp</span><span class="o">-</span><span class="n">content</span><span class="o">/</span><span class="n">uploads</span><span class="o">/.</span> <span class="o">-</span><span class="n">type</span> <span class="n">d</span> <span class="o">-</span><span class="n">exec</span> <span class="n">chmod</span> <span class="mi">770</span> <span class="o">--</span> <span class="p">{}</span> <span class="o">+</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="n">find</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">htdocs</span><span class="o">/</span><span class="n">wp</span><span class="o">-</span><span class="n">content</span><span class="o">/</span><span class="n">cache</span><span class="o">/.</span> <span class="o">-</span><span class="n">type</span> <span class="n">f</span> <span class="o">-</span><span class="n">exec</span> <span class="n">chmod</span> <span class="mi">660</span> <span class="o">--</span> <span class="p">{}</span> <span class="o">+</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="n">find</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">htdocs</span><span class="o">/</span><span class="n">wp</span><span class="o">-</span><span class="n">content</span><span class="o">/</span><span class="n">cache</span><span class="o">/.</span> <span class="o">-</span><span class="n">type</span> <span class="n">d</span> <span class="o">-</span><span class="n">exec</span> <span class="n">chmod</span> <span class="mi">770</span> <span class="o">--</span> <span class="p">{}</span> <span class="o">+</span>
+</span></span></code></pre></div><p>Wenn du Themes oder Plugins aktualisieren willst, musst du die Rechte folgendermaßen anpassen und somit Datein und Ordner schreibbar machen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">find</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">htdocs</span><span class="o">/</span><span class="n">wp</span><span class="o">-</span><span class="n">content</span><span class="o">/</span><span class="n">themes</span><span class="o">/.</span> <span class="o">-</span><span class="n">type</span> <span class="n">f</span> <span class="o">-</span><span class="n">exec</span> <span class="n">chmod</span> <span class="mi">660</span> <span class="o">--</span> <span class="p">{}</span> <span class="o">+</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">find</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">htdocs</span><span class="o">/</span><span class="n">wp</span><span class="o">-</span><span class="n">content</span><span class="o">/</span><span class="n">themes</span><span class="o">/.</span> <span class="o">-</span><span class="n">type</span> <span class="n">d</span> <span class="o">-</span><span class="n">exec</span> <span class="n">chmod</span> <span class="mi">770</span> <span class="o">--</span> <span class="p">{}</span> <span class="o">+</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="n">find</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">htdocs</span><span class="o">/</span><span class="n">wp</span><span class="o">-</span><span class="n">content</span><span class="o">/</span><span class="n">plugins</span><span class="o">/.</span> <span class="o">-</span><span class="n">type</span> <span class="n">f</span> <span class="o">-</span><span class="n">exec</span> <span class="n">chmod</span> <span class="mi">660</span> <span class="o">--</span> <span class="p">{}</span> <span class="o">+</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="n">find</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">htdocs</span><span class="o">/</span><span class="n">wp</span><span class="o">-</span><span class="n">content</span><span class="o">/</span><span class="n">plugins</span><span class="o">/.</span> <span class="o">-</span><span class="n">type</span> <span class="n">d</span> <span class="o">-</span><span class="n">exec</span> <span class="n">chmod</span> <span class="mi">770</span> <span class="o">--</span> <span class="p">{}</span> <span class="o">+</span>
+</span></span></code></pre></div><p>Beim Update von WordPress trifft das natürlich auf die ganze Installation zu:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">find</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">htdocs</span><span class="o">/.</span> <span class="o">-</span><span class="n">type</span> <span class="n">f</span> <span class="o">-</span><span class="n">exec</span> <span class="n">chmod</span> <span class="mi">660</span> <span class="o">--</span> <span class="p">{}</span> <span class="o">+</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">find</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">htdocs</span><span class="o">/.</span> <span class="o">-</span><span class="n">type</span> <span class="n">d</span> <span class="o">-</span><span class="n">exec</span> <span class="n">chmod</span> <span class="mi">770</span> <span class="o">--</span> <span class="p">{}</span> <span class="o">+</span>
+</span></span></code></pre></div><p>Wenn du keinen Zugriff auf die Kommandozeile hast, kannst du auch PHP nutzen, insofern du die Rechte dazu hast. Die Funktion lautet <a href="https://www.php.net/manual/de/function.chmod.php">chmod()</a>.</p>
+<h2 id="ausführen-von-php-code-in-bestimmten-ordnern-unterbinden">Ausführen von PHP-Code in bestimmten Ordnern unterbinden</h2>
+<p>Oben hatte ich das Problem mit dem Upload-Ordner angesprochen. Wenn Nutzer in der Lage sind, dort Dateien zu modifizieren oder abzulegen, ist das ein Sicherheitsrisiko. Du kannst das Risiko aber eindämmen, indem du dafür sorgst, dass Dateien in diesem Ordner schlicht nicht von PHP interpretiert, sprich ausgeführt, werden können.</p>
+<p>So kann der Ordner beschreibbar bleiben, das Sicherheitsrisiko wird aber trotzdem reduziert. Dazu erstellst du eine .htaccess-Datei im uploads-Ordner mit diesem Inhalt:</p>
+<p>SetHandler !
+RemoveHandler .php .phtml .php3
+RemoveType .php .phtml .php3
+php_admin_value engine Off
+php_flag engine off</p>
+<p>Die beiden letzten Zeile sind redundant zu den vorherigen. Sie soll sicherstellen, dass PHP hier wirklich nicht funktioniert. Ein Angreifer ist somit vielleicht in der Lage, PHP-Code in diesem Ordner abzulegen aber nicht mehr, diesen auch auszuführen.</p>
+<p>Bei nginx kannst du den Upload-Ordner einfach implizit von PHP abnabeln:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="o">$</span><span class="n">uri</span> <span class="o">!~</span> <span class="s2">&#34;^/uploads/&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">   <span class="n">fastcgi_pass</span> <span class="n">unix</span><span class="p">:</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">php</span><span class="o">/</span><span class="n">php</span><span class="o">-</span><span class="n">fpm</span><span class="o">-$</span><span class="n">server</span><span class="o">.</span><span class="n">sock</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="fs_method">FS_METHOD</h2>
+<p>Wenn du meinst, die Dateirechte korrekt vergeben zu haben und trotzdem fordert dich Wordpress beim Updaten auf, die FTP-Zugangsdaten einzugeben, setze diesen Parameter in der Datei wp-config.php:</p>
+<p>define(&lsquo;FS_METHOD&rsquo;, &lsquo;direct&rsquo;);</p>
+<p>WordPress weiß nun, dass es Dateien direkt anfassen darf, ohne den Umweg über den FTP-Nutzer zu gehen.</p>
+<p>Dieser Parameter kann recht nützlich sein, wenn du die Dateirechte noch restriktiver vergeben willst, sprich: PHP gar keine Schreibrechte einräumst. Du musst dann einen FTP-Nutzer anlegen, über den WordPress sozusagen indirekt auf das Dateisystem zugreifen kann.</p>
+<h2 id="wenig-aufwand-viel-nutzen">Wenig Aufwand, viel Nutzen</h2>
+<p>Die Einarbeitung in die Benutzerrechte mit <strong>chmod</strong> mag anfangs vielleicht ungewohnt sein, mit etwa Übung hat man den Dreh aber recht schnell raus. Der Nutzen ist immens, denn die falsche Rechte-Vergabe ist ein häufiger Grund, warum bösartige Software sich überhaupt auf einem Server verbreiten kann. Es gibt noch eine Handvoll andere Maßnahmen, die relativ simpel und effektiv sind, denen ich mich in einem anderen Beitrag widmen möchte.</p>
+<p>Zuguter Letzt: Willst du wissen, ob die Dateirechte in deiner Installation korrekt gesetzt wurden, kannst du auf dieses Script zurückgreifen. Ich habe dazu das Script von <a href="https://binary-butterfly.de/artikel/dateirechte-warum-eigentlich/">Ernesto Ruge</a> etwas überarbeitet, in der Funktionalität aber unverändert gelassen:</p>
+<p><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/grafik-7.png"><img src="/2020/2020-11-05-wie-funktionieren-dateirechte/images/grafik-7-700x366.png" alt=""></a></p>
+<p>Die korrekten Datei und Ordner-Rechte für WordPress prüfen</p>
+<p><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/testFileFolderPermissions.php_-1.zip">testFileFolderPermissions.php_-1</a><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/testFileFolderPermissions.php_-1.zip">Herunterladen</a></p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> chmod, dateirechte, sysop, wordpress</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>anleitungen</category>
+      
+      <category>hosting</category>
+      
+      <category>wordpress</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Wie funktionieren Dateirechte? - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>comprehensive_guide</dc:type>
+      
+      
+    </item><item>
+      <title>Leitfaden für ein sicheres und schnelles WordPress-Setup</title>
+      <link>https://nickyreinert.de/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/</link>
+      <pubDate>Wed, 01 Jul 2020 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/</guid>
+      <description>Das Thema Geschwindigkeit liegt bei uns allen ganz weit oben auf der Agenda. Oft allerdings nur passiv, wenn man ungeduldig auf der Tastatur trommelt und auf …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Ein umfassender Leitfaden mit zahlreichen Code-Snippets zur Optimierung einer WordPress-Installation in Bezug auf Geschwindigkeit und Sicherheit. Der Artikel behandelt Themen wie das Deaktivieren von Emojis und Gravatar, serverseitige Komprimierung, das Verschieben von Skripten, das Absichern der XML-RPC- und REST-APIs sowie das Aufräumen des HTML-Headers durch Änderungen in `functions.php`, `.htaccess` und `wp-config.php`.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> WordPress, Performance-Optimierung, Web-Sicherheit, PHP, Server-Konfiguration, Frontend-Optimierung</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Das Thema Geschwindigkeit liegt bei uns allen ganz weit oben auf der Agenda. Oft allerdings nur passiv, wenn man ungeduldig auf der Tastatur trommelt und auf das Laden einer Internetseite wartet. Aktiv fehlt oft der richtige Impuls. Was kann man noch tun, außer die Bilder kleinzuhalten, um WordPress zu beschleunigen?</p>
+<p>Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit deiner WordPress-Seite zu optimieren. Und da neben der Geschwindigkeit die Sicherheit ein weiteres beliebtes Thema ist, werde ich auch dazu ein paar kleine Kniffe mit großer Wirkung zeigen. Doch zunächst ein paar&hellip;</p>
+<h2 id="grundsätze">Grundsätze</h2>
+<p>Es gibt ein paar Prämissen, die du beim Thema <strong>Geschwindigkeit und Sicherheit</strong> berücksichtigen solltest:</p>
+<ul>
+<li><strong>Backups</strong> - Nuff said. Du wirst dein System niemals 100% absichern können. Umso wichtiger sind Backup.</li>
+<li><strong>Plugin-Sparksamkeit</strong> - jedes zusätzliche Plugin ist nicht nur ein potentielles Sicherheitsrisiko, sondern lässt deine Seite auch unnötig anwachsen. Versuche so viele Funktionen wie möglich selber umzusetzen. Ein Child-Theme erlaubt dir in der <strong>functions.php</strong> nicht nur Anpassungen des Layouts sondern auch des Funktionsumfanges vorzunehmen.</li>
+<li><strong>Updates</strong> - Halte WordPress, Plugins und Themes immer auf dem neuesten Stand. Verzichte möglichst auf Plugins und Themes, die lange nicht aktualisiert wurden.</li>
+<li><strong>Page Builder</strong> - <a href="https://www.nickyreinert.de/wordpress-page-builder-pro-und-contra/">ich bin wahrlich kein Fan von Page-Buildern</a>, auch wenn es da draußen relativ performante Vertreter dieser Art gibt. Allerdings wohnt jedem Page-Builder in der Regel ein Problem inne: Sie kommen mit einer Menge von Funktionen, die du oft nicht benötigst, die aber trotzdem Ressourcen verbrauchen.</li>
+</ul>
+<p>Nun, da das geklärt ist und ich meinen Unmut über Page-Builder mal wieder unterbringen konnte: Was kannst du aktiv tun, um die <strong>Geschwindigkeit und Sicherheit</strong> zu optimieren? Im Folgenden werden wir Änderungen an drei Dateien vornehmen:</p>
+<ul>
+<li>functions.php (deines Child-Themes)</li>
+<li>.htaccess-Datei</li>
+<li>wp-config.php</li>
+</ul>
+<p>Du findest alle drei Dateien auf <a href="https://github.com/nickyreinert/wordPressSettings/tree/master">github.com</a>.</p>
+<h2 id="warnung">Warnung</h2>
+<p>Da es sich mitunter um sehr tiefe Eingriffe in die WordPress-Mechanik handelt, folgender wichtiger Hinweis:</p>
+<p>Nehme die hier beschriebenen Änderungen niemals an einer Live-Installation vor; teste sie in einer geschützten Umgebung und übertrage sie dann sorgfältig und ggf. nacheinander in das Live-System!</p>
+<p>Lege außerdem immer ein <strong>Backup</strong> von den Dateien an, die du im Laufe dieses Artikels ändern wirst.</p>
+<p>Diese Anleitung ist ein <strong>Leitfaden</strong>, den du nicht ungelesen übernehmen solltest. Passe die Änderungen an die Anforderungen deines Projektes an. Klar soweit? Dann los:</p>
+<h2 id="nutze-keine-standard-einstellungen">Nutze keine Standard-Einstellungen</h2>
+<p>Eigentlich gehört diese Weisheit zu den Prämissen, ich will sie hier trotzem etwas ausführlicher erklären. Dieser Punkt gehört für mich zum Konzept &ldquo;<strong>Secruity through obscurity</strong>&rdquo;. Viele vermeintliche Angriffe auf deine Seite sind nur das Grundrauschen: Automatisierte Scripte, die zahlreiche Webseiten nach bekannten Sicherheitslücken abklopfen. Lass uns das &ldquo;<strong>passive Angriffe</strong>&rdquo; nennen. Du kannst das geduldig über dich ergehen lassen oder schon jetzt dafür sorgen, dass deine Seite gar nicht erst im Rampenlicht steht. Wenn bei den passiven Angriffen keine Lücken erkannt werden, zieht der Bot weiter und widmet sich <strong>schwächeren Seiten</strong>. Das Credo lautet &ldquo;Kosten-Nutzen-Analyse&rdquo;. Warum mit einem unbekannten Ziel beschäftigen, wenn da draußen genug unsichere WordPress-Installationen darauf warten, <em>gehackt</em> zu werden? Also:</p>
+<ul>
+<li>Nutze als <strong>Benutzername</strong> für den Administrator-Account nicht den Standardwert &ldquo;admin&rdquo;. Erzeuge einen neuen Admin-Nutzer (z.B. MyLittlePony) mit allen Admin-Rechten und entferne den originalen Admin-Nutzer</li>
+<li>Nutze ein &ldquo;kryptisches&rdquo; <strong>Tabellen-Prefix</strong> (z.B. x02349d_), um das Auffinden der WordPress-Tabellen in der Datenbank zu erschweren. Bei Angriffen über <strong>SQL-Injection</strong> wird oft vom Standard-Prefix (wp_) ausgegangen.</li>
+<li>Ach ja, und nein: Verschiebe nicht die <strong>wp-admin</strong>-URL - das erzeugt mehr Unruhe im System, als dass es nutzt. Hier reicht der zusätzliche Schutz mit <strong>HTTP Basic Auth</strong>.</li>
+<li>Setze korrekte Dateirechte ein, um zu vermeiden, dass jemand deine PHP-Dateien ändern und Schadcode einfügen kann (das ist ein etwas größeres Thema auf Serverseite, <a href="https://binary-butterfly.de/artikel/dateirechte-wie-stelle-ich-das-bei-meinem-hoster-ein/">was hier ganz gut beschrieben ist</a>).</li>
+<li>Kein Standard-Passwort. Ok. Muss ich das wirklich erwähnen? ;)</li>
+</ul>
+<h2 id="emoticons-und-emojis">Emoticons und Emojis</h2>
+<p>Emojis sind zwar unstrittig ein fester Bestandteil der modernen Kommunikation, was nicht heißt, dass man sie überall nutzen muss. In WordPress gehören sie leider zum Standard, was die Ladezeit verringert. Um sich der kleinen Kecker zu entledigen, ist eine ganze Menge PHP-Code (<a href="https://kinsta.com/de/wissensdatenbank/deaktivierst-emojis-wordpress/">lose basierend auf diesem Beitrag</a>):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">function disable_emojis() {
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    remove_action( &#39;wp_head&#39;, &#39;print_emoji_detection_script&#39;, 7 );
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    remove_action( &#39;admin_print_scripts&#39;, &#39;print_emoji_detection_script&#39; );
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    remove_action( &#39;wp_print_styles&#39;, &#39;print_emoji_styles&#39; );
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    remove_action( &#39;admin_print_styles&#39;, &#39;print_emoji_styles&#39; );
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    remove_filter( &#39;the_content_feed&#39;, &#39;wp_staticize_emoji&#39; );
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    remove_filter( &#39;comment_text_rss&#39;, &#39;wp_staticize_emoji&#39; );
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    remove_filter( &#39;wp_mail&#39;, &#39;wp_staticize_emoji_for_email&#39; );
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    add_filter( &#39;tiny_mce_plugins&#39;, &#39;disable_emojis_tinymce&#39; );
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    add_filter( &#39;wp_resource_hints&#39;, &#39;disable_emojis_remove_dns_prefetch&#39;, 10, 2 );
+</span></span><span class="line"><span class="ln">11</span><span class="cl">}
+</span></span><span class="line"><span class="ln">12</span><span class="cl">
+</span></span><span class="line"><span class="ln">13</span><span class="cl">function disable_emojis_tinymce( $plugins ) {
+</span></span><span class="line"><span class="ln">14</span><span class="cl">
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    if ( is_array( $plugins ) ) {
+</span></span><span class="line"><span class="ln">16</span><span class="cl">        
+</span></span><span class="line"><span class="ln">17</span><span class="cl">        return array_diff( $plugins, array( &#39;wpemoji&#39; ) );
+</span></span><span class="line"><span class="ln">18</span><span class="cl">
+</span></span><span class="line"><span class="ln">19</span><span class="cl">    } else {
+</span></span><span class="line"><span class="ln">20</span><span class="cl">        
+</span></span><span class="line"><span class="ln">21</span><span class="cl">        return array();
+</span></span><span class="line"><span class="ln">22</span><span class="cl">
+</span></span><span class="line"><span class="ln">23</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">24</span><span class="cl">}
+</span></span><span class="line"><span class="ln">25</span><span class="cl"> 
+</span></span><span class="line"><span class="ln">26</span><span class="cl">function disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
+</span></span><span class="line"><span class="ln">27</span><span class="cl">    if ( &#39;dns-prefetch&#39; == $relation_type ) {
+</span></span><span class="line"><span class="ln">28</span><span class="cl">    
+</span></span><span class="line"><span class="ln">29</span><span class="cl">        /** This filter is documented in wp-includes/formatting.php */
+</span></span><span class="line"><span class="ln">30</span><span class="cl">        $emoji_svg_url = apply_filters( &#39;emoji_svg_url&#39;, &#39;https://s.w.org/images/core/emoji/2/svg/&#39; );
+</span></span><span class="line"><span class="ln">31</span><span class="cl">
+</span></span><span class="line"><span class="ln">32</span><span class="cl">        $urls = array_diff( $urls, array( $emoji_svg_url ) );
+</span></span><span class="line"><span class="ln">33</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">34</span><span class="cl">
+</span></span><span class="line"><span class="ln">35</span><span class="cl">    return $urls;
+</span></span><span class="line"><span class="ln">36</span><span class="cl">}    
+</span></span><span class="line"><span class="ln">37</span><span class="cl">
+</span></span><span class="line"><span class="ln">38</span><span class="cl">function disable_emojicons_tinymce( $plugins ) {
+</span></span><span class="line"><span class="ln">39</span><span class="cl">
+</span></span><span class="line"><span class="ln">40</span><span class="cl">    if ( is_array( $plugins ) ) {
+</span></span><span class="line"><span class="ln">41</span><span class="cl">    
+</span></span><span class="line"><span class="ln">42</span><span class="cl">        return array_diff( $plugins, array( &#39;wpemoji&#39; ) );
+</span></span><span class="line"><span class="ln">43</span><span class="cl">
+</span></span><span class="line"><span class="ln">44</span><span class="cl">    } else {
+</span></span><span class="line"><span class="ln">45</span><span class="cl">
+</span></span><span class="line"><span class="ln">46</span><span class="cl">      return array();
+</span></span><span class="line"><span class="ln">47</span><span class="cl">
+</span></span><span class="line"><span class="ln">48</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">49</span><span class="cl">}
+</span></span><span class="line"><span class="ln">50</span><span class="cl">
+</span></span><span class="line"><span class="ln">51</span><span class="cl">function disable_wp_emojicons() {
+</span></span><span class="line"><span class="ln">52</span><span class="cl">
+</span></span><span class="line"><span class="ln">53</span><span class="cl">    remove_action( &#39;admin_print_styles&#39;, &#39;print_emoji_styles&#39; );
+</span></span><span class="line"><span class="ln">54</span><span class="cl">    remove_action( &#39;wp_head&#39;, &#39;print_emoji_detection_script&#39;, 7 );
+</span></span><span class="line"><span class="ln">55</span><span class="cl">    remove_action( &#39;admin_print_scripts&#39;, &#39;print_emoji_detection_script&#39; );
+</span></span><span class="line"><span class="ln">56</span><span class="cl">    remove_action( &#39;wp_print_styles&#39;, &#39;print_emoji_styles&#39; );
+</span></span><span class="line"><span class="ln">57</span><span class="cl">    remove_filter( &#39;wp_mail&#39;, &#39;wp_staticize_emoji_for_email&#39; );
+</span></span><span class="line"><span class="ln">58</span><span class="cl">    remove_filter( &#39;the_content_feed&#39;, &#39;wp_staticize_emoji&#39; );
+</span></span><span class="line"><span class="ln">59</span><span class="cl">    remove_filter( &#39;comment_text_rss&#39;, &#39;wp_staticize_emoji&#39; );
+</span></span></code></pre></div><p>Hier passiert eine ganze Menge, weil die Emojis relativ breit implementiert wurden. Die einfachste Erklärung ist: Wir entfernen alle möglichen Verweise auf Emojis. Du musst die Trigger allerdings noch aktivieren indem du sie folgendermaßen aufrufst:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">add_filter( &#39;tiny_mce_plugins&#39;, &#39;disable_emojicons_tinymce&#39;);}
+</span></span><span class="line"><span class="ln">2</span><span class="cl">add_action( &#39;init&#39;, &#39;disable_emojis&#39; );
+</span></span><span class="line"><span class="ln">3</span><span class="cl">add_filter( &#39;emoji_svg_url&#39;, &#39;__return_false&#39; );
+</span></span><span class="line"><span class="ln">4</span><span class="cl">add_action( &#39;init&#39;, &#39;disable_wp_emojicons&#39; );
+</span></span></code></pre></div><h2 id="gravatar-deaktivieren">Gravatar deaktivieren</h2>
+<p>Du kannnst die Nutzung der Gravatare auch in den Einstellungen deaktivieren. Ich bevorzuge aber die Variante in der functions.php, da man sich so ein kleines Boilerplate erstellen kann. So deaktivierst du die Gravatar-Funktion:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">add_filter( &#39;option_show_avatars&#39;, &#39;__return_false&#39; );
+</span></span></code></pre></div><p>Wie du siehst, spart uns das mindestens zwei Anfragen und ein paar Millisekunden ein:</p>
+<p><img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-700x57.png" alt=""></p>
+<h2 id="gzip-und-deflate">GZIP und Deflate</h2>
+<p>Sehr naheliegend ist natürlich die Komprimierung von Dateien. Du nimmst diese Änderung in der .htaccess-Datei vor:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">&lt;IfModule mod_deflate.c&gt;
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    &lt;FilesMatch &#34;.*\.(html|php|css|js|xml)$&#34;&gt;
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        SetOutputFilter DEFLATE
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    &lt;/FilesMatch&gt;
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    AddOutputFilterByType DEFLATE application/rss+xml
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    AddOutputFilterByType DEFLATE application/xml application/xhtml+xml
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+</span></span><span class="line"><span class="ln">8</span><span class="cl">&lt;/IfModule&gt;
+</span></span></code></pre></div><p>Achtung: Du solltest deine Seite genau beobachten. Die Aktivierung von GZIP führt bei sehr kleinen Dateien nicht zu einem Größenvorteil, kann sich aber negativ auf die Antwortzeit des Servers auswirken, da die kleinen Dateien ja trotzdem einmal &ldquo;angefasst&rdquo; werden.</p>
+<h2 id="cron-job-deaktivieren">Cron-Job deaktivieren</h2>
+<p>Bei jedem Aufruf der Seite wird ein internes Cron-Job-Script ausgeführt. Das ist vor allem für das Suchen nach Updates wichtig. Wenn dein Hoster Cron-Jobs anbietet, ist das natürlich unnötig und verlangsamt jeden Aufruf deiner Seite. Du kannst die Cron-Job-Aufrufe in der wp-config.php folgendermaßen deaktivieren:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">define(&#39;DISABLE_WP_CRON&#39;, true);
+</span></span></code></pre></div><p>Danach musst diese Anfrage aber trotzdem irgendwie ausführen. Das machst du im Backend deines Hosters, bei <strong>all-inkl z</strong>.B. im KAS unter Tools:</p>
+<p><img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-700x125.png" alt=""></p>
+<p>Als Intervall genügt hier eigentlich stündlich.</p>
+<h2 id="scripte-im-footer-laden">Scripte im Footer laden</h2>
+<p>In der Regel müssen JavaScript-Dateien nicht sofort zur Verfügung stehen, da sie z.B: Benutzerinteraktion ermöglichen bzw. darauf reagieren. Trotzdem können Sie den Aufbau der Seite verzögern, wenn sie ganz am Anfang oder in der Mitte eingebunden werden.</p>
+<p>Aus dem Grund sollte man die Scripte ganz am Ende einer Seite auflisten, die nicht für den Seitenaufbau direkt benötigt werden. Die grobe Methode funktioniert folgendermaßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">add_action(&#39;after_setup_theme&#39;, &#39;footer_enqueue_scripts&#39;);
+</span></span><span class="line"><span class="ln">2</span><span class="cl">function footer_enqueue_scripts() {
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    remove_action(&#39;wp_head&#39;, &#39;wp_print_scripts&#39;);
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    remove_action(&#39;wp_head&#39;, &#39;wp_print_head_scripts&#39;, 9);
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    remove_action(&#39;wp_head&#39;, &#39;wp_enqueue_scripts&#39;, 1);
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    add_action(&#39;wp_footer&#39;, &#39;wp_print_scripts&#39;, 5);
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    add_action(&#39;wp_footer&#39;, &#39;wp_print_head_scripts&#39;, 5);
+</span></span><span class="line"><span class="ln">8</span><span class="cl">    add_action(&#39;wp_footer&#39;, &#39;wp_enqueue_scripts&#39;, 5);
+</span></span><span class="line"><span class="ln">9</span><span class="cl">}
+</span></span></code></pre></div><p>Nachdem du diese Zeilen übernommen hast, solltest du deine Seite einmal z.B. im Inkognito-Modus, ohne Cache, neu laden. Flackert die Seite in der ersten Millisekunden auffällig, also wird für einen kurzen Augenblick der fast roh anmutende Inhalt der Seite und dann das Layout angezeigt, kommentiere in der Callback-Funktion die beiden Zeilen aus, die <strong>wp_enqueue_scripts</strong> in den Footer verlagern.</p>
+<h2 id="javascript-ausführung-verzögern">JavaScript Ausführung verzögern</h2>
+<p>Die etwas elegantere Methoden nennen sich &ldquo;<strong>defer</strong>&rdquo; und &ldquo;<strong>async</strong>&rdquo;. Mit defer teilst du dem Browser mit, dass die JavaScript-Datien im Hintergrund geladen und erst ausgeführt werden, wenn die eigentlichen Inhalte fertig sind.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="n">add_filter</span><span class="p">(</span> <span class="s1">&#39;script_loader_tag&#39;</span><span class="p">,</span> <span class="s1">&#39;defer_parsing_of_js&#39;</span><span class="p">,</span> <span class="mi">10</span> <span class="p">);</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="n">function</span> <span class="n">defer_parsing_of_js</span><span class="p">(</span> <span class="o">$</span><span class="n">url</span> <span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="n">is_user_logged_in</span><span class="p">()</span> <span class="p">)</span> <span class="k">return</span> <span class="o">$</span><span class="n">url</span><span class="p">;</span> <span class="o">//</span><span class="n">don</span><span class="s1">&#39;t break WP Admin</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="n">strpos</span><span class="p">(</span> <span class="o">$</span><span class="n">url</span><span class="p">,</span> <span class="s1">&#39;.js&#39;</span> <span class="p">)</span> <span class="o">===</span> <span class="n">FALSE</span><span class="p">)</span> <span class="k">return</span> <span class="o">$</span><span class="n">url</span><span class="p">;</span> <span class="o">//</span> <span class="n">only</span> <span class="n">process</span> <span class="n">JavaScript</span> <span class="n">files</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="n">strpos</span><span class="p">(</span> <span class="o">$</span><span class="n">url</span><span class="p">,</span> <span class="s1">&#39;jquery.js&#39;</span> <span class="p">)</span> <span class="p">)</span> <span class="k">return</span> <span class="o">$</span><span class="n">url</span><span class="p">;</span>  <span class="o">//</span> <span class="n">skip</span> <span class="n">JQuery</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="k">return</span> <span class="n">str_replace</span><span class="p">(</span> <span class="s1">&#39; src&#39;</span><span class="p">,</span> <span class="s1">&#39; defer src&#39;</span><span class="p">,</span> <span class="o">$</span><span class="n">url</span> <span class="p">);</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">
+</span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Der defer-Flag macht nur bei Scripten Sinn, die mit <strong>src</strong> eingebunden werden. Inline-Scripte werden immer sofort gelesen und geparsed. Daneben gibt es noch async. Mit async wird die Datei ebenfalls parallel geladen und sofort ausgeführt, wenn die Datei vollständig ist. Das macht vor allem bei Tracking-Scripten Sinn, die keinen Bezug zum inhaltlichen Aufbau haben.</p>
+<h2 id="versionsinfos-entfernen">Versionsinfos entfernen</h2>
+<p>Style- und Script-Dateien werden oft mit einem Anhang übermittelt, z.B. <strong>style.css?ver=123</strong>. Das macht Sinn um Änderungen nachzuverfolgen, hat aber auch einen entscheidenen Nachteil: Damit werden Cache-Mechanismen umgangen, weil der Cache denkt, es handelt sich um eine dynamische Ressource. Aus dem Grund solltest du die Versions-Infos komplett deaktivieren. Achte beim Arbeiten an der Webseite einfach daran, sämtliche Caches zu deaktivieren.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="n">add_filter</span><span class="p">(</span> <span class="s1">&#39;script_loader_src&#39;</span><span class="p">,</span> <span class="s1">&#39;remove_version_parameter&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1</span> <span class="p">);</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="n">add_filter</span><span class="p">(</span> <span class="s1">&#39;style_loader_src&#39;</span><span class="p">,</span> <span class="s1">&#39;remove_version_parameter&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1</span> <span class="p">);</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="n">function</span> <span class="n">remove_version_parameter</span><span class="p">(</span><span class="o">$</span><span class="n">src</span><span class="p">){</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="o">//</span> <span class="n">Check</span> <span class="k">if</span> <span class="n">version</span> <span class="n">parameter</span> <span class="n">exist</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="o">$</span><span class="n">parts</span> <span class="o">=</span> <span class="n">explode</span><span class="p">(</span> <span class="s1">&#39;?ver&#39;</span><span class="p">,</span> <span class="o">$</span><span class="n">src</span> <span class="p">);</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="o">//</span> <span class="k">return</span> <span class="n">without</span> <span class="n">version</span> <span class="n">parameter</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="k">return</span> <span class="o">$</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="google-fonts-deaktivieren">Google Fonts deaktivieren</h2>
+<p>Die Einbindung der Fonts über Google ist bequem, birgt neben dem Performance-Nachteil aber unter Umständen auch ein Datenschutz problem. (Grundsätzlich solltest du versuchen, alle Ressourcen von deinem Server zu laden und auch auf CDN zu verzichten - <a href="https://binary-butterfly.de/artikel/warum-dir-ein-cdn-vermutlich-keinen-geschwindigkeitsvorteil-bringen-wird/">das bringt selten einen Vorteil</a>.)</p>
+<p>Leider ist das Entfernen nicht ohne weiteres möglich. Du musst erst herausfinden, unter welchem Handler das Theme die Google Fonts einbindet (Eine Liste bekannter Themes und der verwendeten Font-Handler findest du hier.) Dazu durchsuchst du die functions.php nach z.B. Google. Für das Theme Rowling sieht das dann folgendermaßen aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">wp_register_style( &#39;rowling_google_fonts&#39;, &#39;//fonts.googleapis.com/css?family=Lato:400,700,900,400italic,700italic|Merriweather:700,900,400italic&#39; );
+</span></span></code></pre></div><p>Der Handler lautet also &ldquo;<strong>rowling_google_fonts</strong>&rdquo;. Auf gehts:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">add_action( &#39;wp_print_styles&#39;, &#39;dequeue_google_fonts_style&#39; );
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">function dequeue_google_fonts_style() {
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl">      wp_dequeue_style( &#39;rowling_style&#39; );
+</span></span><span class="line"><span class="ln">6</span><span class="cl">
+</span></span><span class="line"><span class="ln">7</span><span class="cl">}
+</span></span></code></pre></div><p>Achte darauf, dass jetzt natürlich die Fallback-Schriftart aus dem CSS verwendet wird.</p>
+<h2 id="die-beitrags-historie-verschlanken">Die Beitrags-Historie verschlanken</h2>
+<p>Seit einiger Zeit gibt es in WordPress das ansich ganz nützliche Feature der Revisionen: Bei jeder Änderung und jeder Speicherung legt WordPress in der Datenbank eine Kopie der vorherigen Version des Beitrages an. Das ist praktisch. Aber auch grenzenlos.<br>
+Zunächst solltest du die Anzahl der Revisionen pro Beitrag eingrenzen. Dazu setzt du in der wp-config.php folgenden Parameter:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">define(&#39;WP_POST_REVISIONS&#39;, 5);
+</span></span></code></pre></div><p>Die Fünf beschreibt die Anzahl der erlaubten Revisionen. Du kannst die Zahl natürlich beliebig anpassen. Damit ist es aber noch nicht getan, du solltest die alten Revisionen natürlich noch aufräumen. Dazu kannst du dir das Plugin <a href="https://de.wordpress.org/plugins/wp-sweep/">WP Sweep installieren</a>. Du kannst nun ganz bequem alle Revisionen löschen:</p>
+<p><img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-2-700x102.png" alt=""></p>
+<p>Alle Revisionen mit WP Sweep löschen</p>
+<h2 id="oembeds-deaktivieren">oEmbeds deaktivieren</h2>
+<p>Hierbei handelt es sich um ein Feature, das WordPress seit Version 4.4 mitbringt, die sogenannten Embeds. Dir ist es vielleicht schon mal aufgefallen: Beim Einfügen von URL in den Beitrag, wird nicht die URL angezeigt, sondern eine Art Snippet mit zusätzlichne Informationen und sogar einer Vorschau. Das sieht schick aus, braucht aber vielleicht nicht jeder. Wenn du Embed also nicht benötigst, erspart dir das wieder ein paar Zeilen im HTML-Header und sogar eine zusätzliche JavaScript-Bibliothek:</p>
+<p><img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-4-700x52.png" alt=""></p>
+<p>Die Embed-Bibliothek von WordPress</p>
+<p>Füge dazu folgendes in die <strong>functions.php</strong> ein (<a href="https://kinsta.com/de/wissensdatenbank/deaktivierst-embeds-wordpress/#disable-embeds-code">Quelle</a>):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">add_action( &#39;init&#39;, &#39;disable_embeds_code_init&#39;, 9999 );
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">function disable_embeds_code_init() {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    remove_action( &#39;rest_api_init&#39;, &#39;wp_oembed_register_route&#39; );
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    add_filter( &#39;embed_oembed_discover&#39;, &#39;__return_false&#39; );
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    remove_filter( &#39;oembed_dataparse&#39;, &#39;wp_filter_oembed_result&#39;, 10 );
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    remove_action( &#39;wp_head&#39;, &#39;wp_oembed_add_discovery_links&#39; );
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    remove_action( &#39;wp_head&#39;, &#39;wp_oembed_add_host_js&#39; );
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    add_filter( &#39;tiny_mce_plugins&#39;, &#39;disable_embeds_tiny_mce_plugin&#39; );
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    add_filter( &#39;rewrite_rules_array&#39;, &#39;disable_embeds_rewrites&#39; );
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    remove_filter( &#39;pre_oembed_result&#39;, &#39;wp_filter_pre_oembed_result&#39;, 10 );
+</span></span><span class="line"><span class="ln">12</span><span class="cl">}
+</span></span><span class="line"><span class="ln">13</span><span class="cl">
+</span></span><span class="line"><span class="ln">14</span><span class="cl">function disable_embeds_tiny_mce_plugin($plugins) {
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    return array_diff($plugins, array(&#39;wpembed&#39;));
+</span></span><span class="line"><span class="ln">16</span><span class="cl">}
+</span></span><span class="line"><span class="ln">17</span><span class="cl">
+</span></span><span class="line"><span class="ln">18</span><span class="cl">function disable_embeds_rewrites($rules) {
+</span></span><span class="line"><span class="ln">19</span><span class="cl">    foreach($rules as $rule =&gt; $rewrite) {
+</span></span><span class="line"><span class="ln">20</span><span class="cl">        if(false !== strpos($rewrite, &#39;embed=true&#39;)) {
+</span></span><span class="line"><span class="ln">21</span><span class="cl">            unset($rules[$rule]);
+</span></span><span class="line"><span class="ln">22</span><span class="cl">        }
+</span></span><span class="line"><span class="ln">23</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">24</span><span class="cl">    return $rules;
+</span></span><span class="line"><span class="ln">25</span><span class="cl">}
+</span></span></code></pre></div><h2 id="den-header-aufräumen">Den Header aufräumen</h2>
+<p>Kommen wir zu ein paar Maßnahmen, die das HTML ein wenig verschlanken, aber aus Performance-Sicht nur Peanuts sind: Wir räumen den Header-Bereich auf. Diese Maßnahmen sind nicht wirklich notwendig, außer du willst es wirklich auf die Spitze treiben.</p>
+<p>Los geht es mit dem Manifest für den <strong>Windows Live Writer</strong>, einer App um Blog-Beiträge zu schreiben (was mit deaktivierter XML-RPC, siehe unten, sowieso nicht mehr möglich ist):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">&lt;link rel=&#34;wlwmanifest&#34; type=&#34;application/wlwmanifest+xml&#34; href=&#34;https://example.com/wp-includes/wlwmanifest.xml&#34;&gt;
+</span></span></code></pre></div><p>Und so deaktivierst du den Spaß:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">remove_action( &#39;wp_head&#39;, &#39;wlwmanifest_link&#39;);
+</span></span></code></pre></div><p>Weiter geht es mit dem Verweis zum <strong>Shortlink</strong> des jeweiligen Beitrages. Shortlinks sind praktisch, um mit kurzem URL auf Inhalte deiner Webseite zu verweisen. Anstatt dem langen Permalink <a href="https://www.example.com/das-ist-mein-allererster-beitrag-hier-und-ich-liebe-es">www.example.com/das-ist-mein-allererster-beitrag-hier-und-ich-liebe-es</a> nutzt du z.B. einfach <strong><a href="https://www.example.com/?p=1">www.example.com/?p=1</a></strong>. Wenn du das nicht brauchst, entferne den Shortlink-Verweis aus dem HTML-Header und dem HTTP-Antwort-Header:</p>
+<p><img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-3-700x336.png" alt=""></p>
+<p>Der Shortlink-Verweis im HTTP-Header</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">remove_action( &#39;wp_head&#39;, &#39;wp_shortlink_wp_head&#39;);
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">add_filter(&#39;after_setup_theme&#39;, &#39;remove_shortlink_from_http_header&#39;);
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl">function remove_shortlink_from_http_header() {
+</span></span><span class="line"><span class="ln">6</span><span class="cl">
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    remove_action( &#39;template_redirect&#39;, &#39;wp_shortlink_header&#39;, 11);
+</span></span><span class="line"><span class="ln">8</span><span class="cl">
+</span></span><span class="line"><span class="ln">9</span><span class="cl">}
+</span></span></code></pre></div><p>Im Header findest Verweise auf den vorherigen, den nächsten Beitrag oder die Startseite. Diese Funktionalität sollte theoretisch durch dein Template abgedeckt sein. Diese Verweise entfernst du folgendermaßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">remove_action(&#39;wp_head&#39;, &#39;start_post_rel_link&#39;);
+</span></span><span class="line"><span class="ln">2</span><span class="cl">remove_action(&#39;wp_head&#39;, &#39;index_rel_link&#39;);
+</span></span><span class="line"><span class="ln">3</span><span class="cl">remove_action(&#39;wp_head&#39;, &#39;adjacent_posts_rel_link&#39;);
+</span></span></code></pre></div><p>Zu guter Letzt die Versions-Information. Das Verbergen der WordPress-Version kann auch als Sicherheitsfeature verstanden werden (<strong>Security through obscurity</strong>, Sicherheit durch Unklarheit, siehe oben). Wenn der potentielle Angreifer nicht weiß, welche Version du verwendest, erschwerst du ihm zumindest das Identifizieren potentieller Sicherheitslücken. In der Realtität wird das nur die Bots aufhalten, die dein System automatisiert scannen. Bei einem aktiven Angriff ist das ziemlich sicher nutzlos. Nutze dazu folgende Zeile in der functions.php:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">remove_action(&#39;wp_head&#39;, &#39;wp_generator&#39;);
+</span></span></code></pre></div><h2 id="cache-plugin">Cache-Plugin</h2>
+<p>Wenn du immer noch nicht zufrieden bist, kannst du auch auf ein Cache-Plugin zurück greifen. Das sorgt dafür, dass die Seiten nicht bei jedem Aufruf komplett neu über PHP erstellt, sondern statische Inhalte ausgeliefert werden. Das bringt noch mal einen enormen Geschwindigkeitsgewinn.</p>
+<h2 id="die-xml-rpc-schnittstelle-deaktivieren">Die XML-RPC-Schnittstelle deaktivieren</h2>
+<p>XML-RPC steht für Extensible Markup Language Remote Procedure Call. Klingt kompliziert, ist es auch. Dabei handelt es sich um eine Schnittstelle. mit der du, ganz einfach gesagt, WordPress steuern kannst, ohne auf das Backend zuzugreifen (<a href="https://www.kuketz-blog.de/wordpress-angriffe-auf-die-xmlrpc-schnittstelle-xmlrpc-php-unterbinden/">mehr Hintergründe dazu hier</a>). Wenn du diese Schnittstelle deaktivierst, verlierst du also Funktionalität, wie z.B. <strong>Pingbacks</strong> oder das <strong>Verwalten von WordPress mit einer externen App</strong>. Auch Jetpack greift auf die XML-RPC zu! Du gewinnst aber auch etwas an Sicherheit dazu. Entscheide selber.</p>
+<p>In den aktuellen Apache-Versionen (ab 2.4) sperrst du den Zugriff auf xmlrpc.php in der .htaccess-Datei folgendermaßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">&lt;FilesMatch &#34;(^\.|wp-config\.php|xmlrpc\.php|(?&lt;!robots)\.txt|(liesmich|readme)\.*)&#34;&gt;
+</span></span><span class="line"><span class="ln">2</span><span class="cl">   Require all denied
+</span></span><span class="line"><span class="ln">3</span><span class="cl">&lt;/FilesMatch&gt;
+</span></span></code></pre></div><p>Eigentlich sollte das schon genügen. Willst du auf Nummer sicher gehen, kannst du durchaus mehrt tun. Der weniger disruptive Weg wäre, <a href="https://developer.wordpress.org/reference/hooks/xmlrpc_enabled/">alle</a> <a href="https://developer.wordpress.org/reference/hooks/xmlrpc_enabled/"></a><a href="https://developer.wordpress.org/reference/hooks/xmlrpc_enabled/">Methoden zu deaktivieren, die eine Authentifizierung erfordern</a>. Das funktioniert folgendermaßen (in der functions.php deines Child-Themes):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"># XML RPC deaktivieren
+</span></span><span class="line"><span class="ln">2</span><span class="cl">add_filter( &#39;xmlrpc_enabled&#39;, &#39;__return_false&#39; );
+</span></span><span class="line"><span class="ln">3</span><span class="cl"># XML RPC Verweis aus Header entfernen
+</span></span><span class="line"><span class="ln">4</span><span class="cl">remove_action(&#39;wp_head&#39;, &#39;rsd_link&#39;);
+</span></span></code></pre></div><p>Allerdings ist das ganze Sub-System weiterhin aktiv. <a href="https://www.scottbrownconsulting.com/2020/03/two-ways-to-fully-disable-wordpress-xml-rpc/">Willst du das also komplett deaktivieren</a>, füge der functions.php folgendes hinzu:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">// disable xmlrpc
+</span></span><span class="line"><span class="ln">2</span><span class="cl">function remove_xmlrpc_methods( $methods ) {
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  return array();
+</span></span><span class="line"><span class="ln">4</span><span class="cl">}
+</span></span><span class="line"><span class="ln">5</span><span class="cl">add_filter( &#39;xmlrpc_methods&#39;, &#39;remove_xmlrpc_methods&#39; );
+</span></span></code></pre></div><p>Aber wie gesagt, das sind zusätzliche Maßnahmen. In der Regel kannst du vielleicht schon gut schlafen, wenn der Webserver den Zugriff auf xmlrpc.php einfach nicht zulässt.</p>
+<h2 id="die-rest-api-verweise-entfernen">Die REST-API-Verweise entfernen</h2>
+<p>Seit Version 4.4 hat WordPress eine REST-API an Bord, die wie XML-RPC eine Schnittstelle bietete, um bestimmte Informationen über deine Seite automatisiert auszulesen. Obgleich das Sicherheitsrisiko der REST-API ungleich niedriger ist als bei XML-RPC, kannst du auch hier ein wenig aufräumen, indem du den Verweis auf die REST-API folgendermaßen aus den HTML- sowie HTTP-Header entfernst:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">remove_action(&#39;wp_head&#39;, &#39;rest_output_link_wp_head&#39;, 10);
+</span></span><span class="line"><span class="ln">2</span><span class="cl">remove_action(&#39;template_redirect&#39;, &#39;rest_output_link_header&#39;, 11, 0);
+</span></span></code></pre></div><p>Ganz deaktivieren solltest du die API allerdings nicht, da sie vor allem auch für die reibungslose Backend-Funktionalität wichtig ist. Was du aber machen kannst, ist die REST-API <a href="https://developer.wordpress.org/rest-api/frequently-asked-questions/">nur nach Anmeldung zulassen:</a></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">add_filter(&#39;rest_authentication_errors&#39;, &#39;rest_api_auth&#39;);
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">function rest_api_auth($result) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    // bereits erfolgreich authentifiziert?
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    if ( true === $result || is_wp_error( $result ) ) {
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        return $result;
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"> 
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    // noch nicht authentifiziert?
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    if ( ! is_user_logged_in() ) {
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        return new WP_Error(
+</span></span><span class="line"><span class="ln">12</span><span class="cl">            &#39;rest_not_logged_in&#39;,
+</span></span><span class="line"><span class="ln">13</span><span class="cl">            __( &#39;You are not currently logged in.&#39; ),
+</span></span><span class="line"><span class="ln">14</span><span class="cl">            array( &#39;status&#39; =&gt; 401 )
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        );
+</span></span><span class="line"><span class="ln">16</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">17</span><span class="cl"> 
+</span></span><span class="line"><span class="ln">18</span><span class="cl">    // sonst zurück
+</span></span><span class="line"><span class="ln">19</span><span class="cl">    return $result;
+</span></span><span class="line"><span class="ln">20</span><span class="cl">}
+</span></span></code></pre></div><h2 id="fazit">Fazit</h2>
+<p>Das war es erstmal. Wenn du jetzt noch das Gefühl hast, dass dein WordPress zu langsam ist, wirf mal einen Blick in die Entwickler-Konsole und schau nach, welche Ressourcen lange dauern oder ob du Anfragen doppelt absetzt. Es gibt vor allem auf Server-Seite, also unterhalb von WordPress, noch eine Menge Möglichkeiten. Einige davon habe ich in der <a href="https://www.nickyreinert.de/mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-1-3/">Artikel-Serie zum perfekten Web-Server-Setup aufgeführt</a>. Außerdem gibt es hier eine wirklich brilliante Artikel-Serie zum Thema Sicherheit, die du dir unbedingt lesen solltest. Hier werden unzählige wichtige Hinweise gegeben,</p>
+<p>Zum Abschluss noch mal der Hinweis: Es handelt sich hierbei um mitunter tiefe Eingriffe in die <strong>WordPress-Mechanik</strong>. Solltest du in der Zukunft Probleme mit deiner Seite haben, nimm diese Änderungen Schritt für Schritt zurück. Arbeite mit einem Staging-System und nutze Backups. Bei Probleme und Inkompatiblitäten freue ich mich über sachdienliche Hinweise, die ich in den Artikel einbauen kann!</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> einstellungen, setup, wordpress</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>blog</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Leitfaden für ein sicheres und schnelles WordPress-Setup - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>optimization_guide</dc:type>
+      
+      
+    </item><item>
+      <title>Den eigenen Web-Server sichern</title>
+      <link>https://nickyreinert.de/2018/2018-08-23-den-eigenen-web-server-sichern/</link>
+      <pubDate>Thu, 23 Aug 2018 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2018/2018-08-23-den-eigenen-web-server-sichern/</guid>
+      <description>Die Datensicherung des eigenen, öffentlichen Webservers ist nicht nur wichtig, sie kann auch auf vielen Wegen geschehen und wirft vermutlich gerade deshalb sehr …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine umfassende Anleitung zur Erstellung einer automatisierten und sicheren Backup-Strategie für einen Webserver. Das Tutorial beschreibt den Einsatz von `duplicity` und GnuPG für verschlüsselte, inkrementelle Backups von Webseiten-Dateien und MySQL-Datenbanken. Es werden komplette Bash-Skripte zur Verfügung gestellt, die virtuelle Hosts automatisch erkennen und die Backups via WebDAV in der Cloud speichern.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Server-Administration, Backup, DevOps, Bash-Scripting, Web-Sicherheit, Linux</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Die <strong>Datensicherung</strong> des eigenen, öffentlichen Webservers ist nicht nur wichtig, sie kann auch auf vielen Wegen geschehen und wirft vermutlich gerade deshalb sehr viele Fragen auf. Soll ich ein Image des ganzen Servers anlegen oder nur einzelne Ordner sichern? <strong>Wie oft</strong> muss ich ein Backup machen und wie gelange ich im Notfall an die Daten? Reicht es aus, z.B. als Wordpress-Nutzer, ein Plugin zu verwenden oder ist es sinnvoller externe Software zu nutzen?</p>
+<p>Ich habe versucht ein paar solcher Fragen, auch für mich selber, zu beantworten und als Konsequenz daraus ein <strong>Backup-Strategie</strong> zu entwickeln und dann auch umzusetzen. Das Ziel ist ein gesunder <strong>Mittelweg zwischen Sicherheit und Bedienbarkeit</strong>. Da ich selber sehr oft mit Wordpress arbeite, soll dieser Beitrag vornehmlich die Wordpress-Nutzer ansprechen. Wenn du Wordpress allerdings nur als Service nutzt (z.B. auf wordpress.org), wird dir dieser Beitrag wenig weiterhelfen. Außerdem ist es sehr hilfreich, wenn du per <strong>SSH Zugriff</strong> auf deinen Server hast. Sicherlich gibt es auch Möglichkeiten, den hier aufgezeigten Weg ohne SSH zu beschreiten - wie das funktioniert, muss man aber im Einzelnen sehen.</p>
+<h2 id="die-backup-strategie">Die Backup-Strategie</h2>
+<h3 id="wo-soll-das-backup-gespeichert-werden">Wo soll das Backup gespeichert werden?</h3>
+<p>Die erste Frage die ich mir gestellt habe war: <strong>Wo soll das Backup landen</strong>? Direkt auf dem Web-Server? Dann sind die Daten verloren, sobald der ganze Server weg ist. Auf einem Cloud-Speicher? Das ist bequem, birgt allerdings auch Probleme mit den <strong>Datenschutzgesetzen</strong>. Oder auf einem privaten NAS? Das ist aus Datenschutzsicht zwar in Ordnung, aber dann muss das NAS über das Internet erreichbar sein. Das wollte ich vermeiden.</p>
+<p>Ich habe mich deshalb für einen Zwischenweg entschieden: Für den schnellen Zugriff lege ich das Backup <strong>auf dem Server</strong> ab. Gleichzeitig nutze ich das kostenlose Angebot von <a href="https://www.blaucloud.de/"><strong>blaucloud.de</strong></a>. Das ist ein Cloud-Speicher, dessen Server in Deutschland stehen. Außerdem unterstützt blaucloud, das auf nextcloud basiert, das WebDav-Protokoll. Zusätzlich, aber das ist nur ein Bonus. Außerdem habe ich auf meinem NAS eine Synchronisierung mit der blaucloud eingerichtet. Dadurch bleibt das NAS im Internet verborgen und ich habe trotzdem eine <strong>3. Kopie des Backups</strong> in meinen eigenen, sicheren vier Wänden.</p>
+<h3 id="welche-software-soll-ich-nutzen">Welche Software soll ich nutzen?</h3>
+<p>Die Auswahl von Plugins für automatische Backups mit Wordpress ist sehr umfangreich, einige davon sind kostenlos und die große Mehrheit ist sehr bequem zu bedienen. Die Backups laufen automatisch und auch die Wiederherstellung ist nur einen Mausklick entfernt. Das klingt paradiesisch, aber der Schein trügt. Zunächst halte ich es für absurd, ein System aus sich selber heraus zu sichern. Das ist wie ein <strong>Feuerlöscher</strong>, der bei <strong>Waldbrandgefahr</strong> zwischen den trockenen Bäumen steht.</p>
+<p>Sicher kann ich mit den zahlreichen Wordpress-Plugins die Datenbank und das Dateisystem sichern. Aber der Prozess wird eben innerhalb eines System ausgeführt, das auch von außen erreichbar ist. Wenn nur ein anderes Plugin kompromittiert wird, gefährdet das die ganze Backup-Strategie. Außerdem muss ich, bei der Verwendung mehrerer Wordpress-Instanzen jedes Backup-Plugin einzeln pflegen.</p>
+<p>Auch die regelmäßige Datensicherung, die viele Hoster von sich aus anbieten, reicht mir nicht aus, da diese nur minimal gesteuert werden kann und dort immer das ganze System gesichert wird, man also bei der Wiederherstellung nicht selektieren kann, welche Backup, welcher Ordner oder welche Datenbank zurück gespielt werden soll. Ich habe mich also für <strong>duplicity</strong> entschieden. <a href="http://duplicity.nongnu.org/"><strong>Duplicity</strong></a> wird über die Kommandozeile bedient (deshalb der notwendige SSH-Zugang), unterstützt viele Protokolle (FTP, <strong>WebDav</strong>, Amazon S3, rsync, &hellip;) und es gibt sogar eine grafische Benutzeroberfläche - wenn man doch nicht ohne kann. Außerdem bietet duplicity die Verschlüsselung mit <strong>GnuPG</strong> an und ist damit auch bestens geeignet, um die Datensicherung in der Cloud abzulegen.</p>
+<h3 id="wie-oft-soll-ich-ein-backup-anlegen">Wie oft soll ich ein Backup anlegen?</h3>
+<p>Die Frage sollte mich nicht länger beschäftigen, vor allem weil ich dazu <a href="https://blog.yadutaf.fr/2012/09/08/lazy-man-backup-strategy-with-duplicity-part-1/">einen sehr schönen Blog-Eintrag gefunden</a> habe. Dazu muss erklärt werden, dass <strong>duplicity</strong> mit <strong>inkrementellen Backups</strong> arbeitet. Dabei wird initial ein komplettes Backup angelegt. Danach werden nur noch die Änderungen an den zu sichernden Dateien erfasst. Für die Wiederherstellung muss also erst das letzte volle Backup zurückgespielt werden, um darauf dann die inkrementellen Backups &ldquo;anzuwenden. Der Backup-Plan lautet also wie folgt:</p>
+<ul>
+<li>es erfolgt initial eine volle Datensicherung</li>
+<li>danach gibt es jeden Tag eine inkrementelle Datensicherung</li>
+<li>jeden Monat erfolgt eine volle Datensicherung</li>
+<li>inkrementelle, tägliche Backups, die älter sind als ein Monat, werden gelöscht</li>
+<li>volle Backups, die älter als 12 Monate sind, werden gelöscht</li>
+</ul>
+<p>Im Notfall muss also zuerst das letzte volle Backup eingespielt werden, das nicht älter als ein Monat ist. Muss man Daten wiederherstellen, die älter sind als ein Monat, stehen diese immer nur für die monatlichen vollen Backups zur Verfügung. Für die Zeit vor 12 Monaten gibt es keine Datensicherung.</p>
+<h3 id="welche-daten-sollen-gesichert-werden">Welche Daten sollen gesichert werden?</h3>
+<p>Wie bereits erwähnt, stört mich bei den meisten Hostern, dass immer ein Backup des ganzen Servers angelegt wird. Da auf einem Server gerne aber mehr als eine Domain untergebracht ist, möchte ich die Datensicherung gerne je Domain und Datenbank durchführen. Mein Ziel ist es also, jeden Ordner im Dateisystem der einer (Sub-)Domain zugeordnet ist sowie jede Datenbank getrennt zu sichern. So kann ich eine Wiederherstellung auch punktuell anstoßen.</p>
+<h2 id="vorbereitung">Vorbereitung</h2>
+<p><em>Bevor es jetzt ans Eingemachte geht, der übliche Hinweis zur gebotenen <strong>Vorsicht</strong>: Wenn du nicht weißt, was hier passiert, lass dich von jemanden unterstützen, der weiß, was hier passiert. Wer auf der Konsole arbeitet, kann sehr schnell sehr viel falsch machen.</em></p>
+<h3 id="duplicity-und-verschlüsselung-einrichten">Duplicity und Verschlüsselung einrichten</h3>
+<p>Die erste Hürde, die du nehmen musst, ist die Installation von <strong>duplicity</strong>. Entweder du bekommst das über die Konsole selber hin - oder du fragst bei deinem Hoster nach. In vielen Fällen kann auch ein Shared Hostern das für dich installieren:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">sudo apt-get install duplicity
+</span></span></code></pre></div><p>Als nächstes benötigst du <a href="https://www.gnupg.org/">GnuPG</a>. Das ist bei den meisten Hostern vorinstalliert. Sollte dem nicht so sein, fragst du entweder den Support oder erledigst das mit folgendem Befehl selber:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">sudo apt-get install gnupg2
+</span></span></code></pre></div><p><a href="https://wiki.ubuntuusers.de/GnuPG/">GnuPG</a> ist ein Software zur <strong>Verschlüsselung</strong> von Informationen bzw. Dateien, das z.B. auch bei der Verschlüsselung von E-Mails zum Einsatz kommt. Für diesen Prozess werden zwei sogenannte <strong>Schlüssel</strong> benötigt - der private und der öffentliche Schlüssel. Der öffentliche Schlüssel dient dazu, die Daten zu verschlüsseln, mit dem privaten Schlüssel kannst du den Prozess &ldquo;umkehren&rdquo; - die Daten also entschlüsseln. Diese beiden Schlüssel müssen zunächst einmal erzeugt werden:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">gpg --gen-key
+</span></span></code></pre></div><p>Du musst dazu ein paar Fragen beantworten. Die Frage nach der Schlüssel-Art beantwortest du mit 1, bzw. <em>RSA and RSA</em>. Als Schlüssellänge (<em>keysize</em>) empfiehlt sich 2.048 bits. Die Gültigkeitsdauer beträgt &ldquo;unendlich&rdquo;. Danach kannst, musst aber nicht, du deinen Namen und Kontaktdaten angeben. Abschließend wirst du nach einem Passwort für den privaten Schlüssel gefragt und aufgefordert durch ein paar zufällige Tasteneingaben eine Entropie zu erzeugen. Danach befindet sich im Ordner <strong><em>~/.gnupg</em></strong> dein Schlüsselpaar.</p>
+<p><img src="/2018/2018-08-23-den-eigenen-web-server-sichern/images/gnupg.png" alt="Ein GnuPG Schlüsselpaar erzeugen"></p>
+<p>Außerdem quittiert dir <strong>gnupg</strong> die Erstellung des Schlüsselpaars mit einer Statistik, aus der du dir die <strong>Id für den öffentlichen Schlüssel</strong> merken musst:</p>
+<p><img src="/2018/2018-08-23-den-eigenen-web-server-sichern/images/gnupg-ausgabe.png" alt=""></p>
+<h3 id="cloud-speicher-einrichten">Cloud-Speicher einrichten</h3>
+<p>Der kostenlose <a href="https://www.blaucloud.de/">blaucloud</a>-Account für 5 GByte-Speicher ist ziemlich schnell eingerichtet. Dazu benötigst du nur einen beliebigen Benutzernamen, eine E-Mail-Adresse und ein Passwort. Über den Benutzerbnamen wird später auch deine Cloud erreichbar sein. Ich habe eine zufällige Zeichenkette verwendet, damit die Verbindung zur Funktion als Backup-Speicher nicht auf den ersten Blick ersichtlich ist (z.B. <em>qwertz123.blaucloud.de</em>). Danach musst du nur noch deine E-Mail-Adresse bestätigen und schon ist der Cloud-Speicher über folgende URL verfügbar:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">webdav://benutzername:passwor@benutzername.blaucloud.de/remote.php/webdav/
+</span></span></code></pre></div><h3 id="mysql-benutzer-einrichten">MySQL-Benutzer einrichten</h3>
+<p>Natürlich kannst du für das Backup einfach den Benutzer nutzen, den du auch für administrative Zwecke nutzt. Ich verrate dir aber kein Geheimnis wenn ich dir sage, dass es sehr sinnvoll ist, dafür einen eigenen Benutzer anzulegen, insofern deine Hosting-Umgebung das zulässt. Dazu führst du auf einer beliebigen Oberfläche (phpMyAdmin, MySQL Workbench oder direkt über das MySQL-CLI) folgende Query aus. Hier setzt du nur einen Benutzernamen und ein Passwort ein.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">GRANT LOCK TABLES, SELECT ON *.* TO &#39;USERNAME&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;PASSWORD&#39;;
+</span></span><span class="line"><span class="ln">2</span><span class="cl">GRANT SHOW VIEW ON *.* TO &#39;USERNAME&#39;@&#39;localhost&#39;
+</span></span></code></pre></div><p>Das ging schnell und hat auch gar nicht weh getan. ;)</p>
+<h2 id="die-backup-strategie-umsetzen">Die Backup-Strategie umsetzen</h2>
+<h3 id="die-zugangsdaten-ablegen">Die Zugangsdaten ablegen</h3>
+<p>Die Informationen, die wir oben gesammelt haben, werden erstmal in der Datei <strong>backup.conf</strong> abgelegt. Bitte beachte, dass die Id für den öffentlichen Schlüssel nur ein Verweis ist. Die tatsächlichen Schlüssel liegen im Benutzerordner unter <em>~/.gnugpg/</em>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1"># mit diesem Wert steuerst du die Ausgabe von duplicity</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c1"># je höher, desto mehr Debug-Nachrichten werden ausgegeben</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="c1"># das hilft bei der Fehlersuche</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="k">export</span> <span class="n">DUPLICITY_VERBOSITY</span><span class="o">=</span><span class="mi">2</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="c1"># die Passphrase ist das Passwort für den privaten Schlüssel</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="c1"># die Id für den öffentlichen Schlüssel wird utner GPG_PUP_KEY abgelegt</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="k">export</span> <span class="n">PASSPHRASE</span><span class="o">=</span><span class="n">secret_gpgp_key_password</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="k">export</span> <span class="n">GPG_PUB_KEY</span><span class="o">=</span><span class="n">public_gpgp_key_id</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="c1"># dieser Ordner wird für die lokalen Backups verwendet</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="k">export</span> <span class="n">BASE_PATH_BACKUP</span><span class="o">=/</span><span class="n">private</span><span class="o">-</span><span class="n">backup</span><span class="o">/</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="c1"># dieser Ordner enthält die temporären MySQL-Dumps sowie den Cache von duplicity</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="k">export</span> <span class="n">BASE_PATH_TEMP</span><span class="o">=/</span><span class="n">private</span><span class="o">-</span><span class="n">backup</span><span class="o">/</span><span class="n">temp</span><span class="o">/</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="k">export</span> <span class="n">LOG_FILE</span><span class="o">=</span><span class="n">backup</span><span class="o">.</span><span class="n">log</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">
+</span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="c1"># das sind die Zugangsdaten zu deinem WebDav-Anbieter</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="k">export</span> <span class="n">WEBDAV_USER</span><span class="o">=</span><span class="n">webdav_user</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="k">export</span> <span class="n">WEBDAV_PASSWORD</span><span class="o">=</span><span class="n">webdav_password</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="k">export</span> <span class="n">WEBDAV_URL</span><span class="o">=</span><span class="n">somewhere</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">de</span><span class="o">/</span><span class="n">webdav</span><span class="o">.</span><span class="n">php</span><span class="o">/</span><span class="n">folder</span><span class="o">/</span><span class="n">backup</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">
+</span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="c1"># schließlich hinterlegst du noch eine E-Mail-Adresse </span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="c1"># an die Fehlernachrichten geschickt werden </span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="k">export</span> <span class="n">SUPERVISOR_EMAIL</span><span class="o">=</span><span class="n">error_messages</span><span class="err">@</span><span class="n">foobar</span><span class="o">.</span><span class="n">com</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="c1"># und die E-Mail-Adresse des Absenders</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="k">export</span> <span class="n">LOCAL_EMAIL</span><span class="o">=</span><span class="n">sender</span><span class="err">@</span><span class="n">foobar</span><span class="o">.</span><span class="n">com</span>
+</span></span></code></pre></div><p>Die Zugangsdaten für den MySQL-Server gehören in eine andere Datei, nämlich <strong>database.conf</strong>:</p>
+<p>[client]
+user=mysql_user
+password=mysql_password
+host=localhost</p>
+<h3 id="die-ordner-der-virtuellen-hosts-sichern">Die Ordner der virtuellen Hosts sichern</h3>
+<p>Im Folgenden werde ich die Shell-Scripte und den Prozess ganz kurz erklären.</p>
+<p>Zunächst will ich zwei Server-System unterstützen: nginx und apache2. Dazu frage ich den ersten Parameter ab:</p>
+<p>if [[ $1 == &lsquo;apache&rsquo;  ]]
+then</p>
+<pre><code>    SERVER\_SOFTWARE='apache'
+</code></pre>
+<p>elif [[ $1 == &rsquo;nginx&rsquo;  ]]
+then
+SERVER_SOFTWARE=&lsquo;nginx&rsquo;</p>
+<p>else</p>
+<pre><code>    echo 'Keine Server-Architektur angegeben, probiere mal nginx oder apache'
+</code></pre>
+<p>fi</p>
+<p>Wie oben schon angedeutet, will ich nicht einmal das ganze Dateisystem sichern, sondern nur <strong>relevante Ordner</strong>. Dazu muss ich erwähnen, dass ich für jede Domain eine Konfigurations-Datei angelegt habe - so ist es im übrigen auch üblich (siehe z.B. <em>/etc/apache2/sites-enabled/</em>). Jede dieser Dateien enthält den Verweis auf den Ordner der jeweiligen Domain (oft z.B. <em>/var/www/&hellip;</em>) Diese Informationen gilt es nun automatisch herauszufinden. Ich nutze dafür zunächst den folgenden Aufruf, der mir erstmal eine <strong>ungefilterte  Liste der gesamten Webserver-Konfiguration</strong> ausgibt:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">/usr/sbin/apache2ctl -S
+</span></span></code></pre></div><p><img src="/2018/2018-08-23-den-eigenen-web-server-sichern/images/apachectl-ausgabe.png" alt=""></p>
+<p>Die Ausgabe ist stark gekürzt und enthält natürlich mehr als nur eine Domain und diese auch immer doppelt - einmal für https und einmal für http. Ich benötige aus dieser Liste nun einmal den Pfad zur Konfigurations-Datei jeder Domain. Dazu reduziere ich die Ausgabe also auf die gewünschten Zeilen und extrahiere dann mit <em>awk</em> und <em>sed</em> den Verweis zu der jeweiligen Konfigurations-Datei. Das ist der komplette Aufruf:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">/usr/sbin/apache2ctl -S | grep &#34;port 80 namevhost&#34; | awk -F &#39; &#39; &#39;{ print $5 }&#39; | sed -E &#39;s/[:()]//g&#39; | sed -E &#39;s/[ 0-9]$//g&#39;
+</span></span></code></pre></div><p>Das Ergebnis ist eine Liste von Konfigurationsdateien, die ich mit <em>grep</em> nach der Angabe des Ordners durchsuchen kann:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">grep -oE &#39;DocumentRoot \&#34;(.*)\&#34;&#39; $configFile | awk -F &#39; &#39; &#39;{ print $2 }&#39; | sed -E &#39;s/[&#34;]//g&#39;
+</span></span></code></pre></div><p>Diesen Ordner kann ich dann an das Backup-Script übergeben, auf das ich später zurück kommen werden. Das ganze Script ist auf github verfügbar.</p>
+<p>Ich muss hier allerdings erwähnen, dass das ganze eine <strong>kleinen Nachteil</strong> hat: Es werden nur aktivierte virtuelle Hosts erkannt. Wer zusätzliche andere Ordner sichern will, die z.B. nicht über die virtual host-Konfiguration genutzt werden, muss dies per Hand tun - doch dazu später mehr.</p>
+<p>Für nginx nutze ich eine etwas einfachere Variante: Ich nehme einfach alle Dateien mit der Endung conf aus dem Konfigurations-Ordner von nginx. Das funktioniert eben nur, solange du die Konfiguration zentral an einem Ort verwaltest. Der ganze Abschnitt sieht dann so aus:</p>
+<p>if [[ $SERVER_SOFTWARE == &lsquo;apache&rsquo; ]]
+then
+configFilesString=$(/usr/sbin/apache2ctl -S | grep &ldquo;port 80 namevhost&rdquo; | awk -F &rsquo; &rsquo; &lsquo;{ print $5 }&rsquo; | sed -E &rsquo;s/[:()]//g&rsquo; | sed -E &rsquo;s/[ 0-9]$//g&rsquo;)
+configFiles=($(echo &ldquo;$configFilesString&rdquo; | tr &lsquo;,&rsquo; &rsquo; &lsquo;))</p>
+<p>elif [[ $SERVER_SOFTWARE == &rsquo;nginx&rsquo; ]]
+then</p>
+<pre><code>    configFiles=(/etc/nginx/conf.d/\*.conf)
+</code></pre>
+<p>fi</p>
+<p> </p>
+<p><strong>Update November 2018:</strong></p>
+<p><em>Da ich mittlerweile auf nginx und php-fpm umgestiegen bin, habe ich auch das Script entsprechend angepasst. Es kann nun für beide Server-Typen angewendet werden.</em></p>
+<p>Nun kann ich jede Config-Datei einmal einlesen um herauszubekommen, an welcher Stelle im Dateisystem sich der Ordner mit dem Document Root befindet - den wollen wir ja schließlich sichern:</p>
+<p>if [[ $SERVER_SOFTWARE == &lsquo;apache&rsquo; ]]
+then</p>
+<pre><code>srcFolder=$(grep -oE 'DocumentRoot \\&quot;(.\*)\\&quot;' $configFile | awk -F ' ' '{ print $2 }' | sed -E 's/\[&quot;\]//g')
+dstFolder=$(basename $srcFolder)
+</code></pre>
+<p>elif [[ $SERVER_SOFTWARE == &rsquo;nginx&rsquo; ]]
+then</p>
+<pre><code>srcFolder=$(grep -oE 'root (.\*);' $configFile | awk -F ' ' '{ print $2 }' | sed -E 's/\[;\]//g')
+dstFolder=$(basename ${srcFolder%htdocs})
+</code></pre>
+<p>fi</p>
+<p> </p>
+<h3 id="die-datenbanken-des-mysql-servers-sichern">Die Datenbanken des MySQL-Servers sichern</h3>
+<p>Nun geht es an die Datenbanken. Dazu nutze ich den CLI-MySQL-Client und frage erstmal einfach alle Datenbanken ab:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">mysql --defaults-extra-file=database.conf -Bse &#39;show databases&#39;
+</span></span></code></pre></div><p>Die Zugangsdaten zum Server übergebe ich in der Datei <strong>database.conf</strong>. Ich könnte das auch über die Kommandozeile tun, würde dann aber eine Warnung von MySQL erhalten, dass das nicht sicher sei:</p>
+<blockquote>
+<p><em>Warning: Using a password on the command line interface can be insecure.</em></p></blockquote>
+<p>Da die Ausgabe von mysql nur einen String zurückgibt, muss ich den erst in ein Array umwandeln, dass ich dann durch-loopen kann. Dazu gibt es zwei Wege - den unteren finde ich etwas eleganter. Entscheide dich einfach für einen:</p>
+<p>databasesArray=($(echo &ldquo;$databasesString&rdquo; | tr &lsquo;,&rsquo; &rsquo; &lsquo;))
+IFS=&rsquo;_&rsquo; read -r -a databasesArray&laquo;&lt; &ldquo;$databasesString&rdquo;</p>
+<p>Nun hast du also ein Array, dass deine Datenbanken enthält. Als nächstes brauchst du eine Schleife um für jede Datenbank ein Dump anzulegen:</p>
+<p>ignoreDatabases=[&lsquo;information_schema,sys,performance_schema&rsquo;]
+for database in &ldquo;${databasesArray[@]}&rdquo;
+do</p>
+<pre><code>    if \[\[ ! &quot; ${ignoreDatabases\[\*\]} &quot; == \*&quot;${database}&quot;\* \]\]
+    then
+        ...
+    fi
+</code></pre>
+<p>done</p>
+<p>Wie du siehst, habe ich noch eine Abfrage eingebaut, damit nicht benötigte System-Datenbanken ausgelassen werden. Jetzt kümmern wir uns um den eigentlichen Dump. Die folgenden Zeilen kommen an die Stelle mit den drei Punkten&hellip;</p>
+<p>Jetzt werden die Daten aus der jeweiligen Datenbank gezogen. Wenn <strong>mysqldump</strong> einen Fehler zurück gibt, schicke ich mir diesen per E-Mail. Danach wird das Script aufgerufen, dass den Dump mit duplicity an einen &ldquo;sicheren&rdquo; Ort kopiert. Zum Abschluss wird der Dump wieder entfernt.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">result=&#34;$( ( mysqldump --defaults-extra-file=database.conf ${database} &gt; ${BASE\_PATH\_TEMP}${database}.sql ) 2&gt;&amp;1 )&#34;
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">len=${#result}
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">if \[ &#34;$len&#34; -gt &#34;0&#34; \]
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">then
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	echo $result | mail -s &#34;Error when dumping mysql database ${database}&#34; $SUPERVISOR\_EMAIL -r $LOCAL\_EMAIL
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">fi
+</span></span><span class="line"><span class="ln">10</span><span class="cl">
+</span></span><span class="line"><span class="ln">11</span><span class="cl">./backupFilesystem.sh -f ${BASE\_PATH\_TEMP}${database}.sql -d &#34;${BASE\_PATH\_BACKUP}databases/${database}&#34;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">
+</span></span><span class="line"><span class="ln">13</span><span class="cl">rm ${BASE\_PATH\_TEMP}${database}.sql
+</span></span></code></pre></div><p> </p>
+<p>Eine Sache gibt es zu beachten, die ich hier nicht weiter beschreiben: Ich nutze &ldquo;<strong>mail</strong>&rdquo; um die Fehlernachrichten zu versenden. Ihr könnte hier einen eigenen E-Mail-Client oder eine andere Variante der Fehlerbenachrichtigung nutzen, das bleibt euch überlassen.</p>
+<h3 id="die-daten-mit-duplicity-verschlüsselt-sichern">Die Daten mit duplicity verschlüsselt sichern</h3>
+<p>Nun geht es ans Eingemachte bzw. die tatsächliche Datensicherung. Das Script <strong>backupFilesystem.sh</strong> erwartet zwei Parameter: Die Dateien bzw. der Ordner, der gesichert werden soll und der Name des Zielordners.</p>
+<p>Danach wird duplicity mehr als ein mal aufgerufen. Zunächst wird, wenn das letzte Vollbackup älter ist als 1 Monat, ein komplettes Backup angelegt. Danach wird duplicity angewiesen, Backups, die älter sind als 12 Monate, zu entfernen. Dann werden außerdem die inkrementellen Backups entfernt, die älter sind als 1 Monat. Das ganze wird einmal aufgerufen um die Backups lokal abzulegen und dann ein 2. Mal für den WebDav-Speicher.</p>
+<p>Wer Ordner und Dateien <strong>manuell sichern</strong> will, kann also dieses Script mit den entsprechenden Parametern aufrufen.</p>
+<h3 id="automatisieren-mit-cron">Automatisieren mit cron</h3>
+<p>Jetzt muss der ganze Spaß natürlich noch automatisch laufen. Dazu werden die folgende Zeilen in die Datei <em>/etc/cron.d/dailyBackup</em> gepackt:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"># m h dom mon dow user  command
+</span></span><span class="line"><span class="ln">2</span><span class="cl">0 1 * * * root /bin/bash /backup/backupVirtualhosts.sh
+</span></span><span class="line"><span class="ln">3</span><span class="cl">0 2 * * * root /bin/bash /backup/backupDatabase.sh
+</span></span></code></pre></div><p>Willst du zusätzliche Ordner sichern, kannst du das über das Script <em>backupFilesystem.sh</em> tun, z.B:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">0 1 * * * root /bin/bash /backup/backupFilesystem.sh -f /home/ -d /private-backup/home/
+</span></span></code></pre></div><h3 id="github">Github</h3>
+<p>Die gesammelten Scripte und Vorlagen für die Konfigurationsdateien findest du auf <a href="https://github.com/nickyreinert/completeWebServerBackup">github.com</a>. Du kopierst einfach den Inhalt des Ordners <em>scripts</em> an einen Ort auf deinen Server, wie z.B. <em>/backup.</em></p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> backup, bash, hosting, shell, web-server</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Den eigenen Web-Server sichern - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>tutorial</dc:type>
+      
+      
+    </item><item>
+      <title>Wordpress-Security Checkliste</title>
+      <link>https://nickyreinert.de/2000/2000-01-01-wordpress-security-checkliste/</link>
+      <pubDate>Sat, 01 Jan 2000 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2000/2000-01-01-wordpress-security-checkliste/</guid>
+      <description>Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine detaillierte Checkliste zur Absicherung von WordPress-Installationen, gegliedert nach dem Grad des Nutzerzugriffs (WordPress.com, Shared Hosting, eigener Server). Der Artikel behandelt essenzielle Sicherheitspraktiken wie Updates, Backups, Staging-Systeme sowie technische Maßnahmen wie `.htaccess`-Schutz, korrekte Dateirechte und die Konfiguration von PHP.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> WordPress, Web-Sicherheit, Systemadministration, PHP, Server-Konfiguration</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch kriminelle Geister an und so schwirren immer wieder Nachrichten über Sicherheitslücken und gehackte WP-Seiten durch die einschlägigen Medien. Aus diesem Grund will ich mal meine Erfahrungen in Bezug auf Wordpress-Sicherheit an dieser Stelle zusammenfassen und zwar so kompakt wie möglich, damit diese Information als Checkliste genutzt werden kann.</p>
+<p>Wenn du Betreiber einer Wordpress-Seite bist, gibt es dafür drei Wege und unterschiedliche Freiheiten, sich selber um die Sicherheit der WP-Installation zu nutzen - im folgenden die &ldquo;Freiheitsgrade&rdquo; genannt: Bei &ldquo;wordpress as a service&rdquo; greifst du auf einen Angebot zurück, das bekannteste ist wordpress.com, bei dem du nur Zugriff auf das Backend hast und dementsprechend wenig Konfigurationsmöglichkeiten. Als Nutzer eines Shared Hosting hast du zusätzlich die Möglichkeit, per FTP oder SSH auf den Webspace zu gelangen und dort Einstellungen vorzunehmen. Und schließlich gibt es noch die Möglichkeit, einen eigenen Server zu nutzen, bei dem du dich auch um die Konfiguration auf Systemebene, also des Webserver kümmern musst. In dieser Reihenfolge möchte ich nun im folgenden Zusammenfassen, welche Möglichkeiten du hast, deine WP-Installation etwas sicherer zu gestalten.</p>
+<h2 id="aktuelle-updates">Aktuelle Updates</h2>
+<p>Zunächst zum Offensichtlichen: Sicherheitsupdates. Die automatischen Updates des WP-Cores (also dem, was WP ausmacht) sind mit jedem Freiheitsgrad konfigurierbar, bergen aber auch Risikos. So hatte z.B. das Update auf Version 4.9.3 Anfang 2018 den Auto-Update-Mechanismus deaktiviert. Spätere Sicherheitsupdates würden also ignoriert werden. Grundsätzlich ist das Auto-Update nur für sog. Minor-Versionen zu empfehlen, wodurch Sicherheitlücken und Bugs behoben werden. Wer diese Funktion auf einem Test-System auch für Major-Versionen aktivieren möchte, muss in der wp-config.php folgenden Parameter setzen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">define</span><span class="p">(</span> <span class="s1">&#39;WP_AUTO_UPDATE_CORE&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span> <span class="p">);</span>
+</span></span></code></pre></div><p>(der Parameter ist per default auf <em>minor</em> gesetzt.) Grundsätzlich ist das aber nicht zu empfehlen: Denn: Bevor ein großes Update eingespielt wird, sollte das auf Herz &amp; Nieren und natürlich Kompatibilität mit den vorhandenen Themes und Plugins getestet werden. Dazu sollte man ein Staging-System einrichten, worauf ich im nächsten Absatz eingehe.</p>
+<h2 id="ein-staging-system-nutzen">Ein Staging-System nutzen</h2>
+<p>Die Sicherheit der WP-Installation kann nicht nur durch Malware oder Angriffe von außen versehrt werden, sondern auch durch Bedienfehler. Ein wichtiger Baustein ist also ein Staging-System. Das ist im weitesten Sinne eine exakte Kopie der aktuelle WP-Installation. Das Staging-System erfüllt eine Reihe von Funktionen:</p>
+<ul>
+<li>Testen von Plugins &amp; Updates auf Kompatibilität</li>
+<li>Referenz-System zum Erkennen von verdächtigen Änderungen</li>
+<li>Testen von Änderungen am Theme</li>
+</ul>
+<p>Wie ein Staging-System eingerichtet wird, habe ich hier genauer erklärt. Was es mit dem 2. Punkt auf sich hat, erkläre ich weiter unten.</p>
+<h2 id="regelmäßige-backups">Regelmäßige Backups</h2>
+<p>Auch Backups sind ein wichtiger Teil eines Sicherheitskonzeptes. Hier gibt es je nach Freiheitsgrad verschiedene Möglichkeiten. Als Plugin empfehle ich zunächst das sehr weit verbreitete Updraft. Das Backup sollte unbedingt auf einen anderen Ort kopiert werden. Updraft unterstützt in der kostenlosen Version z.B. FTP. Wer kein Problem mit Dropbox oder Google Drive hat, kann natürlich auch die Cloud nutzen. Updraft unterstützt die Verschlüsselung der Datenbank-Sicherung nur in der bezahlten Version. Wer mit personenbezogenen Daten hantiert, sollte sich diese Funktion unbedingt zulegen!</p>
+<p>Eine bessere Alternative, die aber nur ab dem 2. Freiheitsgrad möglich ist, ist das Backup über die Kommandozeile. Das ist vor allem dann unumgänglich, wenn die WP-Installation sehr groß ist und nicht mehr mit den gängigen Plugins durchführbar ist. Außerdem funktioniert das unabhängig von Wordpress und kann demnach auch nicht durch andere Plugins beeinträchtigt werden. Wie genau man das einrichtet und vor allem auch die Wiederherstellung habe ich in diesem Beitrag genauer beschrieben.</p>
+<h2 id="plugin-sparsamkeit">Plugin-Sparsamkeit</h2>
+<p>Hierunter ist eher ein Konzept als eine konkrete Handlungsempfehlung zu verstehen. Vor allem technisch unbedarfte Nutzer tendieren dazu, sofort ein Plugin zu installieren, wenn eine bestimmte Funktion benötigt wird. Doch gerade unsaubere, nicht gepflegte Plugins bieten eine Angriffsfläche und noch dazu wirkt sich ein zunehmendes Plugin-Portfolio negativ auf die Performance aus. Wer ein Plugin installieren möchte, sollte dazu nur auf vertrauenswürdige und bekannte Quellen zurückgreifen. Im Klartext: <a href="https://de.wordpress.org/plugins/">https://de.wordpress.org/plugins/</a></p>
+<h2 id="die-offensichtlichen">Die offensichtlichen</h2>
+<ol start="2">
+<li>Admin-Benutzer umbenennen</li>
+</ol>
+<h2 id="die-technischen">Die technischen</h2>
+<ol>
+<li>Admin-Bereich mit .htaccess schützen</li>
+<li>Dateirechte korrekt setzen</li>
+<li>PHP-Ausführung in bestimmten Unterordner deaktivieren</li>
+</ol>
+<h2 id="plugins-und-themes">Plugins und Themes</h2>
+<p>Ein zentrales Element und der größte Vorteil von Wordpress ist seine fast unerreichbar funktionale Erweiterbarkeit und sehr große Community. Das zieht allerdings auch schwarze Schafe an.</p>
+<ol>
+<li>Installiere nicht wahllos Plugins, weil du eine bestimmte Funktion benötigst</li>
+<li>Installiere Plugins nur von vertrauenswürdigen Quellen</li>
+<li>Räume deinen Plugin-Ordner regelmäßig auf</li>
+</ol>
+<h2 id="die-mutigen">Die mutigen</h2>
+<h3 id="php-ini-parameter">PHP ini-Parameter</h3>
+<p>Es dürfte kein Geheimnis sein, dass PHP über die php.ini gesteuert wird. Es gibt allerdings einige sicherheitsrelevante Parameter, um die man sich allerdings selber kümmern muss. Die wichtigsten möchte ich hier vorstellen.</p>
+<p>Um die Übersicht über manuelle Änderungen nicht zu verlieren, solltest du die Einstellungen in einer separaten Datei (z.B. <em>security.ini</em>) speichern. Auf der Kommandozeile zeigt dir der folgende Befehl, aus welchem zusätzlichen Ordner PHP zusätzliche ini-Dateien liest:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">php --ini
+</span></span></code></pre></div><p>In den meisten Fällen dürfte das /etc/php/7.1/apache2/conf.d/ sein.</p>
+<p>Eine einfache aber sehr wirksame Maßnahme ist das deaktivieren potentiell gefährlicher PHP-Funktionen. Wie z.B. <a href="http://php.net/manual/en/function.shell-exec.php">shell_exec()</a> - im Wordpress-Umfeld gibt es kaum ein Szenario, in dem diese Funktion nützlich sein könnte. Um PHP-Funktionen zu deaktivieren, kannst du den ini-Parameter <a href="http://php.net/manual/de/ini.core.php#ini.disable-functions">disable_functions</a> nutzen.</p>
+<p>Dort legst du die <em>security.ini</em> ab und füllst sie entsprechend:</p>
+<p><a href="https://www.damianschwyrz.de/php-backdoors-und-shells-finden-eine-kurze-anleitung">https://www.damianschwyrz.de/php-backdoors-und-shells-finden-eine-kurze-anleitung</a></p>
+<p>siehe auch</p>
+<p><a href="https://binary-butterfly.de/artikel/wordpress-login-security-eine-stahltuer-in-der-wellblechhuette/">https://binary-butterfly.de/artikel/wordpress-login-security-eine-stahltuer-in-der-wellblechhuette/</a></p>
+<p>IP-Filter</p>
+<h3 id="den-admin-bereich-verstecken">Den Admin-Bereich verstecken</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-apache" data-lang="apache"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">&lt;IfModule</span> <span class="s">mod_rewrite.c</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="nb">RewriteEngine</span> <span class="k">on</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="nb">RewriteBase</span> /
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="c"># Move Wordpress login to /cms.</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="nb">RewriteRule</span> ^cms wp-login.php?cms=unlocked [L]
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^cms=unlocked
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^action=logout
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^loggedout=true
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_METHOD} !POST
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*)$ - [R=403,L]
+</span></span><span class="line"><span class="ln">12</span><span class="cl">
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
+</span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} ^loggedout=true
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*) ./cms? [R=302,NC,L]
+</span></span><span class="line"><span class="ln">16</span><span class="cl">
+</span></span><span class="line"><span class="ln">17</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
+</span></span><span class="line"><span class="ln">18</span><span class="cl">    <span class="nb">RewriteCond</span> %{HTTP_REFERER} !cms$
+</span></span><span class="line"><span class="ln">19</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_METHOD} POST
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*)$ - [R=403,L]
+</span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="nt">&lt;/IfModule&gt;</span>
+</span></span></code></pre></div><!-- https://wordpress.stackexchange.com/a/292691/132138
+
+## Die unnötigen
+
+### Sicherheits-Plugins
+
+siehe auch
+
+https://www.kuketz-blog.de/basisschutz-wordpress-absichern-teil1
+
+https://fastwp.de/487
+
+```bash
+chown user:user -R *
+find . -type d -exec chmod 755 {} \;
+find . -type f -exec chmod 644 {} \;
+
+chown www-data:www-data wp-content
+
+## Disable Editing in Dashboard
+define('DISALLOW_FILE_EDIT', true);
+
+<Directory /var/www/nickyreinert.de/www>
+# prevent   var_dump(scandir('/etc'));
+# see http://php.net/manual/de/ini.core.php#ini.open-basedir
+# alternativ: php für jeden virtuellen host mit separatem user ausführen und die dateirechte anpassen
+php_admin_value open_basedir "/var/www/nickyreinert.de/www"
+
+</Directory>
+```
+
+```ini
+# disable_functions in php.ini
+# list of function to disable globally #
+disable_functions =exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source
+```
+
+## PHP-FPM?
+
+Normalerweise ruft der Apache-Webserver den PHP-Interpreter jedes mal erneut auf. Der Nachteil: Viel Speicherverbrauch, lange Ladezeiten und ein globaler Benutzer. Etwas schneller ist FastCGI. Dabei läuft der Interpreter permanent im Hintergrund. FPM startet nicht nur einen sondern mehrere PHP-Prozesse im Hintergrund. -->
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> WordPress, Sicherheit, Anleitung, Checkliste</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>wordpress</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/image.png" type="image/jpeg">
+        <media:title>Wordpress-Security Checkliste - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>checklist</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

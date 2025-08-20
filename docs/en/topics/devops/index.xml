@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>DevOps auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/en/topics/devops/</link>
+    <description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>en</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Wed, 19 Mar 2025 12:34:56 +0200</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/devops/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>How to develop in 2025: Improve your Workflow with VS Code, GitHub &amp; Copilot </title>
+      <link>https://nickyreinert.de/en/blog/2025/03/19/how-to-develop-in-2025-improve-your-workflow-with-vs-code-github-copilot/</link>
+      <pubDate>Wed, 19 Mar 2025 12:34:56 +0200</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/en/blog/2025/03/19/how-to-develop-in-2025-improve-your-workflow-with-vs-code-github-copilot/</guid>
+      <description>VS Code Workspace Settings Shortcuts First of all, I strongly suggest adding some custom shortcuts because the default ones are a bit unintuitive. For example, …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Ein umfassender Leitfaden zur Optimierung des Entwickler-Workflows im Jahr 2025. Der Artikel behandelt die effektive Nutzung von VS Code (benutzerdefinierte Shortcuts, Dev-Container), Git (Branching-Strategien) und KI-Assistenten wie GitHub Copilot. Es wird eine strukturierte Herangehensweise an die Nutzung von Large Language Models (LLMs) für die Softwareentwicklung vorgestellt.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Softwareentwicklung, VS Code, Git, GitHub, KI-Assistenz, DevOps, Workflow-Optimierung, Large Language Models</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <h2 id="vs-code-workspace-settings">VS Code Workspace Settings</h2>
+<h3 id="shortcuts">Shortcuts</h3>
+<p>First of all, I strongly suggest adding some custom shortcuts because the default ones are a bit unintuitive. For example, <code>CTRL + SHIFT + '</code> gets you to the terminal, while <code> SHIFT + FN + F6</code> brings you back to the editor, and<code>SHIFT + B</code> opens the sidebar. What a mess! A more consistent setup can definitely improve your workflow.</p>
+<p>To customize your shortcuts, press <code>CMD + K</code> followed by <code>CMD + S</code> or look up &ldquo;Keybindings&rdquo; in the command palette (<code>SHIFT + CMD + P</code>). There&rsquo;s a small icon on the right to open the actual JSON file, which makes configuration much easier. What about  jumpin between the sidebar, editor, and terminal using the arrow keys while holding <code>CTRL + SHIFT</code>?</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="p">[</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">        <span class="nt">&#34;key&#34;</span><span class="p">:</span> <span class="s2">&#34;ctrl+shift+down&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        <span class="nt">&#34;command&#34;</span><span class="p">:</span> <span class="s2">&#34;workbench.action.terminal.focus&#34;</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        <span class="nt">&#34;key&#34;</span><span class="p">:</span> <span class="s2">&#34;ctrl+shift+up&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        <span class="nt">&#34;command&#34;</span><span class="p">:</span> <span class="s2">&#34;workbench.action.focusActiveEditorGroup&#34;</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        <span class="nt">&#34;key&#34;</span><span class="p">:</span> <span class="s2">&#34;ctrl+shift+left&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        <span class="nt">&#34;command&#34;</span><span class="p">:</span> <span class="s2">&#34;workbench.action.focusActivityBar&#34;</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="p">]</span>
+</span></span></code></pre></div><p>Add more shortcuts to make your mouse-less life easier. But thats not all, I also suggest to use a tool like <a href="https://espanso.org/">Espanso</a>! It&rsquo;s a very powerfull <em>text expander</em> with two main interesting features:</p>
+<ul>
+<li>if you start typing certin chars, it will automaticall expand them to something you configured</li>
+<li>it also provides a quick search feature that you can trigger with <code>OPTION + SPACE</code></li>
+</ul>
+<p>So here&rsquo;s my strategy, let&rsquo;s take some Python commands for example. I am not using unique trigger keywords, but the same one to define particular categories (<a href="https://gist.github.com/nickyreinert/91e67a7d054878338d1f1dc9fc592ae5">see a full example at this Gist</a>)</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln">1</span><span class="cl"><span class="nt">matches</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="w">  </span>- <span class="nt">trigger</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;#p1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="w">    </span><span class="nt">replace</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;source .venv/bin/activate&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="w">  </span>- <span class="nt">trigger</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;#p&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="w">    </span><span class="nt">replace</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;python3 -m venv ./.venv&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="w">  </span>- <span class="nt">trigger</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;#p&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="w">    </span><span class="nt">replace</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;pip3 install -r requirements.txt&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="w">  </span>- <span class="nt">trigger</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;#p&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">9</span><span class="cl"><span class="w">    </span><span class="nt">replace</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;pip3 freeze &gt; requirements.tx&#34;</span><span class="w">
+</span></span></span></code></pre></div><p>When I open the quick search bar, I type <code>#p</code> to get all Python commands. Ofcourse you could also add unique trigger keywords, I prefer it like that because I don&rsquo;t remember all those keywords anywawys. Now I can just show quickly browse through commands for a given category, like JavaScript, Python, C# - you name it!</p>
+<h3 id="containers">Containers</h3>
+<blockquote>
+<p>Warning: Requires Docker!</p></blockquote>
+<p>Next, let&rsquo;s talk about containers! I strongly recommend using containers for your projects. Not all of them, of course, sometimes a virtual environment is totally sufficient. But containers! Oh boy! They are quick, easy, and help keep your system clean. VS Code allows you to set up dev containers—a closed ecosystem where you can configure your development environment. This is especially useful when switching between different languages, frameworks, or systems.</p>
+<p>For example, if you want to test Ruby without installing all the dependencies on your system, create a <code>.devcontainer</code> folder within your workspace and place two files in it: <code>devcontainer.json</code> and <code>Dockerfile</code>.</p>
+<h4 id="example-setup-for-ruby">Example Setup for Ruby:</h4>
+<h5 id="dockerfile"><code>Dockerfile</code></h5>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Dockerfile" data-lang="Dockerfile"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="k">FROM</span><span class="s"> ruby:3.2</span><span class="err">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="err"></span><span class="k">ENV</span> <span class="nv">LANG</span><span class="o">=</span>C.UTF-8<span class="err">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="err"></span><span class="k">ENV</span> <span class="nv">DEBIAN_FRONTEND</span><span class="o">=</span>noninteractive
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="k">RUN</span> apt-get update <span class="o">&amp;&amp;</span> apt-get install -y build-essential git curl zlib1g-dev <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="se"></span>    libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 nodejs <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="se"></span>    rm -rf /var/lib/apt/lists/*<span class="err">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="err"></span><span class="k">ARG</span> <span class="nv">USERNAME</span><span class="o">=</span>vscode
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="k">ARG</span> <span class="nv">USER_UID</span><span class="o">=</span><span class="m">1000</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="k">ARG</span> <span class="nv">USER_GID</span><span class="o">=</span><span class="nv">$USER_UID</span><span class="err">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="err"></span><span class="k">RUN</span> groupadd --gid <span class="nv">$USER_GID</span> <span class="nv">$USERNAME</span><span class="err">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="err"></span><span class="k">RUN</span> useradd --uid <span class="nv">$USER_UID</span> --gid <span class="nv">$USER_GID</span> -m <span class="nv">$USERNAME</span><span class="err">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="err"></span><span class="k">USER</span><span class="s"> $USERNAME</span><span class="err">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /workspace</span><span class="err">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="err"></span><span class="k">RUN</span> gem install bundler<span class="err">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="err"></span><span class="k">EXPOSE</span><span class="s"> 3000</span><span class="err">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;irb&#34;</span><span class="p">]</span><span class="err">
+</span></span></span></code></pre></div><h5 id="devcontainerjson"><code>devcontainer.json</code></h5>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Ruby Development&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="nt">&#34;build&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        <span class="nt">&#34;dockerfile&#34;</span><span class="p">:</span> <span class="s2">&#34;Dockerfile&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        <span class="nt">&#34;args&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">            <span class="nt">&#34;USER_GID&#34;</span><span class="p">:</span> <span class="s2">&#34;1000&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">            <span class="nt">&#34;USER_UID&#34;</span><span class="p">:</span> <span class="s2">&#34;1000&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">            <span class="nt">&#34;USERNAME&#34;</span><span class="p">:</span> <span class="s2">&#34;vscode&#34;</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="nt">&#34;settings&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        <span class="nt">&#34;terminal.integrated.defaultProfile.linux&#34;</span><span class="p">:</span> <span class="s2">&#34;bash&#34;</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="nt">&#34;extensions&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        <span class="s2">&#34;rebornix.ruby&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">        <span class="s2">&#34;castwide.solargraph&#34;</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">    <span class="p">],</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">    <span class="nt">&#34;postCreateCommand&#34;</span><span class="p">:</span> <span class="s2">&#34;bundle install&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">    <span class="nt">&#34;remoteUser&#34;</span><span class="p">:</span> <span class="s2">&#34;vscode&#34;</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Save everything, and VS Code will prompt you to create and open the dev container—no need to manage Docker manually! If you don&rsquo;t see the message, open the &ldquo;Remote&rdquo; container manually by clicking the blue icon in the bottom left corner or using the shortcut <code>OPT + COMMAND + O</code>.</p>
+<hr>
+<h3 id="git">Git</h3>
+<p>You don&rsquo;t necessarily need a GitHub account to store repositories remotely, but I encourage initializing a repository locally. This helps you track changes and maintain your work efficiently.</p>
+<h4 id="configuring-multiple-github-accounts">Configuring Multiple GitHub Accounts</h4>
+<p>If you use different GitHub accounts (e.g., for personal and professional projects), modify your Git config file:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">[user]</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="na">name</span> <span class="o">=</span> <span class="s">John Doe
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="s">    email = john.doe@example.com</span>
+</span></span></code></pre></div><h4 id="branching-strategy">Branching Strategy</h4>
+<p>If you don&rsquo;t use Git daily, consider a simple branch strategy:</p>
+<ol>
+<li>Use the <code>main</code> branch for stable code.</li>
+<li>Use a <code>debug</code> branch for hotfixes or minor fixes.</li>
+<li>Use a <code>dev</code> branch for new features.</li>
+</ol>
+<h5 id="example-workflow">Example Workflow:</h5>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">git checkout dev
+</span></span><span class="line"><span class="ln">2</span><span class="cl">git pull origin main
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"># Make changes</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">git commit -m <span class="s2">&#34;Your commit message&#34;</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">git push origin dev
+</span></span></code></pre></div><p>Once you&rsquo;re ready to merge changes:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">git checkout main
+</span></span><span class="line"><span class="ln">2</span><span class="cl">git merge dev
+</span></span><span class="line"><span class="ln">3</span><span class="cl">git push origin main
+</span></span></code></pre></div><p>This keeps your codebase organized and reduces conflicts. If needed, Copilot can assist with Git commands!</p>
+<hr>
+<h3 id="copilot">Copilot</h3>
+<p>Copilot enhances your workflow with:</p>
+<ul>
+<li>Inline code completion</li>
+<li>Inline chat (<code>CMD + I</code>)</li>
+<li>An editor that handles multiple files (<code>CMD + SHIFT + I</code>)</li>
+<li>General assistance via chat</li>
+<li>Commit message suggestions</li>
+</ul>
+<h4 id="improving-copilots-effectiveness">Improving Copilot&rsquo;s Effectiveness</h4>
+<p>To help Copilot assist you better:</p>
+<ul>
+<li>Use meaningful function names.</li>
+<li>Add inline comments.</li>
+<li>Write clean, structured code.</li>
+</ul>
+<h4 id="customizing-copilot">Customizing Copilot</h4>
+<p>You can fine-tune Copilot&rsquo;s behavior by modifying your workspace settings. Create a <code>settings.json</code> file inside the <code>.vscode</code> folder and add custom configurations.</p>
+<h5 id="example-settings">Example Settings:</h5>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="ln">1</span><span class="cl"><span class="s2">&#34;github.copilot.chat.localeOverride&#34;</span><span class="err">:</span> <span class="s2">&#34;fr&#34;</span><span class="err">,</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="s2">&#34;github.copilot.chat.commitMessageGeneration.instructions&#34;</span><span class="err">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="p">{</span><span class="nt">&#34;instruction&#34;</span><span class="p">:</span> <span class="s2">&#34;Start every commit message with FOOBAR&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="p">]</span><span class="err">,</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="s2">&#34;github.copilot.chat.codeGeneration.useInstructionFiles&#34;</span><span class="err">:</span> <span class="kc">true</span>
+</span></span></code></pre></div><p>Now, create a <code>./.github/copilot-instructions.md</code> file with your custom instructions. Example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-md" data-lang="md"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">-</span> My project goal is a simple and performant API interface.
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="k">-</span> Code must follow modern coding standards.
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="k">-</span> Functions should have a maximum of 20 lines.
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="k">-</span> No redundant functions.
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="k">-</span> Each function must have a corresponding test function.
+</span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="k">-</span> Include example data for testing.
+</span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="k">-</span> Use multiple files, grouping functions logically.
+</span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="k">-</span> Prefer class-based structures over standalone functions.
+</span></span></code></pre></div><h4 id="finding-more-rule-sets">Finding More Rule Sets</h4>
+<p>For additional guidance, check these resources:</p>
+<ul>
+<li><a href="https://github.com/PatrickJS/awesome-cursorrules/tree/main/rules">Awesome Cursor Rules</a></li>
+<li><a href="https://github.com/Mawla/cursor_rules">Mawla Cursor Rules</a></li>
+<li><a href="https://github.com/instructa/ai-prompts">Instructa AI Prompts</a></li>
+</ul>
+<hr>
+<h3 id="claude-chatgpt-gemini-and-probably-even-v0">Claude, ChatGPT, Gemini, and Probably Even v0!</h3>
+<p>It doesn’t end with <strong>Copilot</strong>. And again: <strong>You can achieve a lot with free plans!</strong> But if you really want to improve your process and build big things, consider using LLMs.</p>
+<p>Before diving in, heads up: <strong>Don’t make the same mistake</strong> <a href="https://x.com/leojr94_/status/1901560276488511759">as this poor guy</a>:</p>
+<blockquote>
+<p><em>Guys, I&rsquo;m under attack ever since I started sharing how I built my SaaS using Cursor. Random things are happening—maxed-out usage on API keys, people bypassing the subscription, creating random stuff in the database.</em></p></blockquote>
+<p>Don’t expect an LLM to generate a perfect app if you just throw some poorly written sentences at it. <strong>Garbage in, garbage out.</strong>  So, what should you do instead? <strong>Chain it!</strong>, baby.</p>
+<ul>
+<li><strong>Start simple.</strong></li>
+<li><strong>Iterate.</strong></li>
+<li><strong>Split your project into independent parts.</strong></li>
+</ul>
+<p>Think about developing an Android App for example. How would a human developer approach the task, what information would be required?</p>
+<ol>
+<li>The overall concept: What is the app about? What language is it written in?  Let&rsquo;s call it the &ldquo;soul&rdquo;</li>
+<li>The UI/UX concept: How should it look and feel?  The &ldquo;body&rdquo;!</li>
+<li>And, to stick to the image: The &ldquo;viscera&rdquo;:  The architecture, functions, features and internal structure.</li>
+</ol>
+<p>Now, ask ChatGPT to consider this <strong>&ldquo;trinity&rdquo;</strong> and generate <strong>three structured pre-prompt instructions</strong> for you.</p>
+<ol>
+<li>In <strong>Copilot</strong>, use the <strong>soul</strong> prompt in your pre-prompt instructions, as mentioned above.</li>
+<li>Then, feed the <strong>body</strong> and <strong>viscera</strong> prompts into Copilot, Claude, or v0 to refine the results further.</li>
+</ol>
+<p>Of course, this isn’t a cut into stone,but it should give you a <strong>structured approach</strong> to leveraging AI effectively.</p>
+<p>But do not forget this: AI Is a Tool, Not a Magic Wand. Don’t take AI-generated results for granted. The golden rule from the early internet days still applies:</p>
+<blockquote>
+<p><strong>&ldquo;A computer is only as smart as the person using it.&rdquo;</strong></p></blockquote>
+<p>Always <strong>question and understand</strong> the output.  Don’t expect AI to <strong>perfectly execute any task instantly and without errors</strong>.  Because: The developer is still you.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> VSCode, Git, Copilot, Workflow, DevOps, KI</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>blog</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/image.png" type="image/jpeg">
+        <media:title>How to develop in 2025: Improve your Workflow with VS Code, GitHub &amp; Copilot - Title Image</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Berlin auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/topics/berlin/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Mon, 12 Nov 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/berlin/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Termine buchen im BA Friedrichshain/Kreuzberg</title>
+      <link>https://nickyreinert.de/2018/2018-11-12-termine-buchen-im-ba-friedrichshain-kreuzberg/</link>
+      <pubDate>Mon, 12 Nov 2018 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2018/2018-11-12-termine-buchen-im-ba-friedrichshain-kreuzberg/</guid>
+      <description>Frei nach dem Motto: Auch die kleinen Dinge sind wichtig, hab ich mal alle meine L33T-Haxx0r-Skillz herausgeholt und 13 Minuten in einen kleinen Bug auf den …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Ein kurzer Blogbeitrag, der einen defekten Link auf der Webseite des Bezirksamts Friedrichshain-Kreuzberg zur Online-Terminbuchung analysiert. Der Autor debuggt das Problem, indem er die fehlerhafte URL mit einer funktionierenden vergleicht, die korrekte URL-Struktur herleitet und den funktionierenden Link für andere zur Verfügung stellt.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Berlin, Bürgerservice, Web-Development, Debugging, URL-Analyse</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Frei nach dem Motto: Auch die kleinen Dinge sind wichtig, hab ich mal alle meine L33T-Haxx0r-Skillz herausgeholt und 13 Minuten in einen kleinen Bug auf den behördlichen Seiten der Berliner Bezirksämter investiert.</p>
+<p>Willst du einen <strong>Termin</strong> beim <strong>Bezirksamt</strong> Friedrichshain/Kreuzberg von Berlin <strong>buchen</strong>, weil das telefonisch nicht möglich ist? Dann stehst du vor einer kleinen Herausforderung: Das funktioniert nämlich ausgerechnet bei diesem Bezirksamt nicht. Die <a href="https://service.berlin.de/dienstleistung/318991/">Übersichtsseite für die Terminbuchung</a> führt beim Klick auf &ldquo;<a href="https://www.berlin.de/terminvereinbarung/termin/tag.php?id=383&amp;anliegen=318991&amp;dienstleister=0&amp;termin=1&amp;herkunft=1">Termin buchen</a>&rdquo; nur zu einer lapidaren Fehlermeldung, während alle anderen Links zu funktionieren scheinen:</p>
+<p>[caption id=&ldquo;attachment_2319&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/termine-buchen-im-ba-friedrichshain-kreuzberg/fehlermeldung_ba_xberg-fhain.png"><img src="/2018/2018-11-12-termine-buchen-im-ba-friedrichshain-kreuzberg/images/fehlermeldung_ba_xberg-fhain-300x81.png" alt="Fehlermeldung Terminbuchung Bezirksamt Friedrichshain/Kreuzberg"></a> Fehlermeldung Terminbuchung Bezirksamt Friedrichshain/Kreuzberg[/caption]</p>
+<p>Das Problem ist, dass es erstens keinen anderen Weg gibt, um an die Terminplanung zu kommen - oder diese sehr gut versteckt ist. Du kannst jetzt also die Id für die Logdatei am Telefon den vermutlich irritierten BA-Mitarbeiter/innen mitteilen oder das Problem selber fixen. Das ist nämlich gar nicht so schwierig. Außerdem gibt es auch gar keine E-Mail-Adresse, an die man sich wenden kann. Also schauen wir mal, was da falsch läuft.</p>
+<p>Das ist die URL, die sich hinter dem defekten Link versteckt:</p>
+<p><a href="https://www.berlin.de/terminvereinbarung/termin/tag.php?id=383&amp;anliegen=318991&amp;dienstleister=0&amp;termin=1&amp;herkunft=1">https://www.berlin.de/terminvereinbarung/termin/tag.php?id=383&anliegen=318991&dienstleister=0&termin=1&herkunft=1</a></p>
+<p>Und so sieht die URL aus, die hinter einem funktionierenden Link zur Terminbuchung steckt:</p>
+<p><a href="https://service.berlin.de/terminvereinbarung/termin/tag.php?termin=1&amp;dienstleister=122900&amp;anliegen">https://service.berlin.de/terminvereinbarung/termin/tag.php?termin=1&dienstleister=122900&anliegen</a>[]=318991&amp;herkunft=1</p>
+<p>Offenbar hat sich also etwas an der internen Struktur geändert und man vergessen, die Verknüpfung für das Bezirksamt Fhain/Xberg anzupassen. Was hat sich geändert? Zunächst einmal lautet die Domain offenbar <strong>service.berlin.de,</strong> nicht mehr <strong><a href="https://www.berlin.de">www.berlin.de</a>.</strong> Das ist aber nicht der fehlerhafte Teil, beide Domains funktionieren.</p>
+<p>Außerdem wird der GET-Parameter <em><strong>anliegen</strong></em> wohl als Array erwartet: <strong><em>anliegen[]</em></strong>. Außerdem ist der Parameter <em><strong>dienstleister</strong></em> nicht gesetzt, der wohl die Id für die entsprechende Abteilung erwartet. Die Id für das Standesamt im BA Fhain/Xberg findet man in der URL zur Übersichtsseite dieser Behörde:</p>
+<p><a href="https://service.berlin.de/dienstleistung/318991/standort/122898/">https://service.berlin.de/dienstleistung/318991/standort/122898/</a></p>
+<p>Die Id 318991 steht für das Bezirksamt selber, die Id für das Standesamt ist <strong>122898</strong>, das Jugendamt versteckt sich hinter der Id <strong>123593</strong>. Das die Terminverbeinbarung nur für das Standesamt funktioniert, packen wir dessen Id also in eine funktionierende URL:</p>
+<p><a href="https://service.berlin.de/terminvereinbarung/termin/tag.php?termin=1&amp;dienstleister=122898&amp;anliegen">https://service.berlin.de/terminvereinbarung/termin/tag.php?termin=1&dienstleister=122898&anliegen</a>[]=318991&amp;herkunft=1</p>
+<p>Wenn du also einen Termin beim Standesamt vom Bezirksamt Friedrichshain/Kreuzberg buchen möchtest, nutze doch gerne diesen Link:</p>
+<p><a href="https://service.berlin.de/terminvereinbarung/termin/tag.php?anliegen[]=318991&amp;dienstleister=122898&amp;termin=1&amp;herkunft=1">Termin buchen</a></p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Berlin, Bug, Web-Dev, Lifehack</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>blog</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Termine buchen im BA Friedrichshain/Kreuzberg - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>technical_tip</dc:type>
+      
+      
+    </item><item>
+      <title>Willkommen in Berlin</title>
+      <link>https://nickyreinert.de/2018/2018-09-16-willkommen-in-berlin/</link>
+      <pubDate>Sun, 16 Sep 2018 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2018/2018-09-16-willkommen-in-berlin/</guid>
+      <description>[caption id=&ldquo;attachment_2143&rdquo; align=&ldquo;alignright&rdquo; width=&ldquo;150&rdquo;] Willkommen in Berlin[/caption]
+Willkommen in Berlin ist ein …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine kurze Vorstellung und Promotion für das Buch &#34;Willkommen in Berlin&#34; des Autors. Der Artikel beschreibt das Buch als unterhaltsamen Wegweiser für Berlin-Besucher und -Bewohner und enthält Leserzitate, Links zu Interviews und einen Kauflink.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Bücher, Berlin, Reiseführer, Satire, Kultur</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>[caption id=&ldquo;attachment_2143&rdquo; align=&ldquo;alignright&rdquo; width=&ldquo;150&rdquo;]<a href="https://www.nickyreinert.de/files/willkommen-in-berlin/Willkommen-in-Berlin-Cover.jpg"><img src="/2018/2018-09-16-willkommen-in-berlin/images/Willkommen-in-Berlin-Cover-150x150.jpg" alt="Willkommen in Berlin Cover"></a> Willkommen in Berlin[/caption]</p>
+<p>Willkommen in Berlin ist ein Buch. Mein Buch. Ein unterhaltsamer Wegweiser, nicht nur für Berliner. Ein Wegweiser, der auch irritierte Fremde an die Hand nimmt. Das Werk, teils Erlebnisbericht, teils Ratgeber, ist eine Hommage an Berlin, seine Touristen, Geschäftsreisende, Tagesbesucher, Zugezogene und Pendler. Willkommen in Berlin ist die perfekte Lektüre für zwischendurch. Willkommen in Berlin wird dir ein Lächeln auf dein Gesicht zaubern, du wirst in der S-Bahn sitzen, dich umschauen und zustimmend nicken.</p>
+<p>Glückliche Leser meinen:</p>
+<p><em>&ldquo;Sehr gut beobachtete Alltagssituationen [&hellip;] mit gesundem Humor&rdquo;</em></p>
+<p><em>&quot;[&hellip;] perfekt für zwischendurch [&hellip;]&quot;</em></p>
+<p><em>&quot;[&hellip;] eine abenteuerliche Reise durch den Alltag Berlins [&hellip;]&quot;</em></p>
+<p><em>&ldquo;Alle Kapitel lesen sich mit angenehmer Leichtigkeit.&rdquo;</em></p>
+<p>Auf <a href="https://www.velominate.de/neuigkeiten/buchvorstellung-willkommen-in-berlin/">velominate.de</a> habe ich ein etwas ernsteres Interview zum Thema Verkehr gegeben. Und das Online-Magazin <em>Mit Vergnügen Berlin</em> <a href="https://mitvergnuegen.com/2018/survival-of-the-fittest-dieses-buch-lehrt-dich-in-berlin-zu-ueberleben">hat das Buch im November gefeatured</a>. Also, sei kein Frosch. Kauf das Buch:</p>
+<p><a href="https://amzn.to/2W28Gtq">Amazon (Werbe-Link)</a></p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Buch, Berlin, Projekt, Humor</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>blog</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Willkommen in Berlin - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>book_announcement</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

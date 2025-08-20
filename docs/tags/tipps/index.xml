@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Tipps auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/tags/tipps/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Sat, 16 Apr 2005 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/tipps/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>FAQ</title>
+      <link>https://nickyreinert.de/2005/2005-04-16-faq/</link>
+      <pubDate>Sat, 16 Apr 2005 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2005/2005-04-16-faq/</guid>
+      <description>Häufig gestellte Fragen rund um Windows und Windows-Programme.Häufig gestellte Fragen rund um Windows und Windows-Programme.
+Skype &amp; HTTP-Server ? Mein …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine Sammlung häufig gestellter Fragen (FAQ) und deren Lösungen für verschiedene Windows-Programme und Systemprobleme aus dem Jahr 2005. Behandelt werden Themen wie Port-Konflikte mit Skype, Reparatur von Word, ActiveSync-Verbindungsprobleme, `hal.dll`-Fehler und viele weitere Tipps und Tricks für Windows-Nutzer.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Windows, Troubleshooting, Systemadministration, Software-Tipps, Legacy-IT</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Häufig gestellte Fragen rund um Windows und Windows-Programme.Häufig gestellte Fragen rund um Windows und Windows-Programme.</p>
+<h3 id="skype--http-server">Skype &amp; HTTP-Server</h3>
+<p>? Mein Webserver (z.B. Apache) läuft nicht, wenn Skype gestartet ist. ! Skype benutzt zum Kommunizieren den HTTP-Port 80, der auch vom Apache-Webserver benötigt wird. Entweder man ändert den Port des Apache Servers <a href="http://faq.kwm-web.info/doku.php?id=apache#listen_port_aendern" title="http://faq.kwm-web.info/doku.php?id=apache#listen_port_aendern">[1]</a> oder du änderst den Port in Skype <a href="http://www.skype-forum.com/about84.html" title="http://www.skype-forum.com/about84.html">[2]</a></p>
+<h3 id="desktop-link-in-quicklaunch">Desktop Link in Quicklaunch</h3>
+<p>? Aus meiner Schnellstartleiste ist das Symbol zum Anzeigen des Desktops verschwunden ! Unter %username%\Anwendungsdaten\Microsoft\Internet Explorer\Quick Launch eine Datei mit dem Namen &ldquo;Desktop anzeigen.scf&rdquo; mit folgendem Inhalt ablegen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[Shell]
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Command=2IconFile=explorer.exe,3
+</span></span><span class="line"><span class="ln">3</span><span class="cl">[Taskbar]
+</span></span><span class="line"><span class="ln">4</span><span class="cl">Command=ToggleDesktop
+</span></span></code></pre></div><h3 id="skype-vom-usb-stick-starten">Skype vom USB Stick starten</h3>
+<p>? Wie starte ich Skype vom USB Stick, ohne dafür externe Anwendungen zu nutzen</p>
+<ol>
+<li>Die Skype-Programm-Dateien in einen Unterordner auf den USB Stick kopieren, z.B: X:\Skype</li>
+<li>In diesem Ordner ein Unterverzeichnis erstellen: X:\Skype\userfiles</li>
+<li>den Inhalt von Dokumente und Einstellungen\%username%\Anwendungsdaten\Skype nach X:\Skype\userfiles kopieren</li>
+<li>eine Batchdatei erstellen: skype.cmd mit dem Inhalt</li>
+</ol>
+<p>@start skype.exe \removable \datapath:&quot;\userfiles\&quot; .@ - unterdrückt die Anzeige des Befehls im Dosfensterstart - sorgt dafür, dass das Dosfenster wieder geschlossen wird, nach dem Skypestart</p>
+<h3 id="word-stürzt-beim-start-ab">Word stürzt beim Start ab</h3>
+<p>? Im Laufe der Zeit kommt es immer wieder zu Abstürzen von Word. Weder eine Neu-Installation noch andere Reparaturmaßnahmen helfen.</p>
+<ol>
+<li>Schuld ist die Vorlagendatei &ldquo;normal.dot&rdquo;, die im Laufe der Zeit bestimmte Vorlagen und Einstellungen für Word beinhaltet</li>
+<li>Abhilfe schafft ein Umbenennen dieser Vorlagendatei</li>
+<li>findet Word keine normal.dot wird eine neue, frische angelegt</li>
+</ol>
+<p><a href="http://support.microsoft.com/kb/289506/DE/#Cause2" title="http://support.microsoft.com/kb/289506/DE/#Cause2">MS Knowledge Artikel</a></p>
+<h3 id="activesync-stellt-keine-verbindung-zum-pocketpc-her">ActiveSync stellt keine Verbindung zum PocketPC her</h3>
+<p>? Mein XDA / VPA / MDA / PocketPC / PDA kann sich nicht mit ActiveSync verbinden. ! Auch wenn die IP-Adresse auf dem Computer und dem mobilen Gerät per Hand vergeben wurde, kann ActiveSync ohne den Windows-Dienst &ldquo;DHCP-Client&rdquo; keine Verbindung herstellen. Wenn dieser Dienst in der Diensteverwaltung aktiviert wird, funktioniert auch die Verbindung über ActiveSync.</p>
+<h3 id="haldll">hal.dll</h3>
+<p>? hal.dll fehlt oder ist beschädigt, Windows bootet nicht, Systemwiederherstellung und der abgesicherte Modus funktionieren nicht? ! hal.dll wurde gelöscht, boot.ini ist leer oder fehlt ganz</p>
+<ol>
+<li>von Original Windows XP CD booten und &ldquo;Wiederherstellungskonsole&rdquo; starten</li>
+<li>hal.dll fehlt
+<ol>
+<li>per Kommandozeile die hal.dll direkt von der Windows-CD in den system32-Ordner kopieren</li>
+</ol>
+</li>
+<li>boot.ini fehlt
+<ol>
+<li>bootcfg /rebuild erstellt eine neue boot.ini</li>
+</ol>
+</li>
+<li>boot.ini ist leer
+<ol>
+<li>bootcfg /add das Betriebssystem wird wieder zur boot.ini hinzufgefügt</li>
+</ol>
+</li>
+</ol>
+<p><a href="http://support.microsoft.com/kb/291980/de" title="http://support.microsoft.com/kb/291980/de">kb291980</a></p>
+<h3 id="der-ordner-windowsinstaller">Der Ordner &ldquo;Windows\Installer\&rdquo;</h3>
+<p>? Der Ordner Windows\Installer ist sehr voll, kann ich die Dateien einfach löschen? ! Dieser Ordner enthält die Installationsroutinen der Programme, die mit dem Windows Installer installiert wurden, nicht jedoch die Programmdateien selber. Die Dateien werden benötigt, um die Programme wieder korrekt entfernen zu können. Microsoft bietet auf seiner Seite ein Tool an, das verspricht, diesen Ordner aufräumen zu können. <a href="http://support.microsoft.com/?kbid=290301" title="http://support.microsoft.com/?kbid=290301">Windows Install CleanUp</a></p>
+<h3 id="windows-installer-sucht-nach-installationspaketen-msi-beim-öffnen">Windows Installer sucht nach Installationspaketen (*.msi) beim Öffnen&hellip;</h3>
+<p>? &hellip; verschiedener Programme. Beim Öffnen von Word, den Druckeinstellungen oder anderen Programmen versucht der Windows Installer auf ein Installationspaket zuzugreifen, dass nicht mehr existiert. ! In diesem Fall gibt es einen Konflikt mit einem möglicherweise nicht mehr vorhandenem Programm auf dem Computer. Nennt der Windows Installer die Installations Routine des Programms, kann man direkt per Windows Install CleanUp das entsprechende Programm aus der Datenbank entfernen. <a href="http://support.microsoft.com/?kbid=290301" title="http://support.microsoft.com/?kbid=290301">Windows Install CleanUp</a></p>
+<h3 id="dialog-für-speichern-und-öffnen-anpassen">Dialog für Speichern und Öffnen anpassen</h3>
+<p>? Beim Herunterladen von Dateien mit dem Internetbrowser oder beim Öffnen und Speichern von Dateien mit verschiedenen Programmen erscheint ein Dialogfenster, in dem man den Speicherort und Dateiname angibt. Auf der linken Seite sind einige Speicherort des Computers vorgegebn. Kann man diese Liste ergänzen? ! Bei den Microsoft Office Produkten geschieht das ganz einfach über das Menü &ldquo;Extras&rdquo; im Dialogfenster selber und dort die Option &ldquo;zu Favoriten hinzufügen&rdquo;. Diese Einstellung gilt jedoch nicht systemweit. Um das zu erreichen erstellt man in der Registry unter <em>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies</em> einen Schlüssel mit dem Namen <em>comdlg32</em>. Unterhalb dieses Schlüssels erstellt man nun einen weiteren Schlüssel mit dem Namen <em>Placesbar</em>. Unter diesem Schlüssel kann man jetzt maximal 5 Einträge anlegen. Jeder Schlüssel muss hier den Namen <em>Place0</em> bis <em>Place4</em> tragen und es gibt zwei verschiedene Typen. Lautet der Typ <em>DWORD</em> erwartet der Schlüssel einen der folgenden Werte für die Standardsystemordner:</p>
+<p>0 - Desktop5 - Eigene Dateien6 - Favoriten8 - Zuletzt verwendete Dokumente11 - Arbeitsplatz12 - Netzwerkumgebung</p>
+<p>Eigene Orte und Verzeichnisse kann man direkt eingeben, wählt man als Typ <em>Zeichenfolge</em>. Das folgende Beispiel zeigt, dass weder die Gross-/Kleinschreibung noch der abschließende Backslash <em>\</em> beachtet werden müssen. Achtung, da es sich hierbei um einen exportierten Registryeintrag handelt, der in dieser Form wieder importiert werden kann, sind die Backslashes doppelt vorhanden. Bei der direkten Eingabe in den Registryeditor darf natürlich nur ein Backslash verwendet werden. Windows Registry Editor Version 5.00</p>
+<p>[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\comdlg32\Placesbar]&ldquo;Place0&rdquo;=dword:00000000&quot;Place1&quot;=&ldquo;j:\\dokumente\\studium\\&ldquo;&ldquo;Place2&rdquo;=&ldquo;c:\\teMP&quot;&ldquo;Place3&rdquo;=&ldquo;j:\\incomming&quot;&ldquo;Place4&rdquo;=dword:00000005</p>
+<p>Möchte man die Standardeinstellung wiederherstellen, löscht man den zuerst erstellten Schlüssel <em>comdlg32</em>.</p>
+<h3 id="dns-server-bei-einer-fritzbox-nachtragen">DNS Server bei einer Fritzbox nachtragen</h3>
+<p>? Es gibt bei meiner Fritzbox im Webinterface nicht die Möglichkeit, einen anderen DNS-Server einzutragen. ! Der umständliche Weg, der in vielen Foren empfohlen wird, lautet &ldquo;Telnet&rdquo;. Die einfachste Lösung ist jedoch, den bzw. die DNS Server mit dem FBEditor (Download von <a href="http://www.ip-phone-forum.de/showthread.php?t=79513" title="http://www.ip-phone-forum.de/showthread.php?t=79513">IP Phone Forum.de</a>) nachzutragen. Das Programm benötigt eine Java Runtime Enviroment (Download von <a href="http://www.java.com/de/download/manual.jsp" title="http://www.java.com/de/download/manual.jsp">java.com</a>).</p>
+<h3 id="automatisch-die-urlfilterini-von-opera-aktualisieren">Automatisch die urlfilter.ini von Opera aktualisieren</h3>
+<p>Opera bietet zwar eine eigene Filterliste die als AdBlock fungiert, jedoch wird diese nicht automatisch aktualisiert. Folgende Anleitung ermöglicht jedoch, die tägliche Aktualisierung dieser Liste. Benötigt wird:</p>
+<ol>
+<li>die Software WGet von <a href="http://gnuwin32.sourceforge.net/packages/wget.htm" title="http://gnuwin32.sourceforge.net/packages/wget.htm">gnuwin32.sourceforge.net</a></li>
+</ol>
+<p>von dort die Binaries im ZIP-Archiv</p>
+<p>sowie die Dependencies im ZIP-Archiv</p>
+<ol>
+<li>eine regelmäßig aktualisierte urlfilter.ini, wie z.B. von:</li>
+</ol>
+<p><a href="http://fanboy.co.nz/adblock/" title="http://fanboy.co.nz/adblock/">http://fanboy.co.nz/adblock/</a></p>
+<p><a href="http://pgl.yoyo.org/as/" title="http://pgl.yoyo.org/as/">http://pgl.yoyo.org/as/</a></p>
+<p><a href="http://www.urlfilter.de/tag/urlfilterini/" title="http://www.urlfilter.de/tag/urlfilterini/">http://www.urlfilter.de/tag/urlfilterini/</a></p>
+<p>Vorgehensweise:</p>
+<ol>
+<li>Erstelle eine Batchdatei (mit der Endung <em>.cmd</em>) mit folgendem Inhalt, die du mit den WGet-Dateien in ein Verzeichniss kopierst.</li>
+</ol>
+<p>@wget -b -q -N -o update.log -O%AppData%\Opera\Opera\urlfilter.ini <a href="http://fanboy.co.nz/adblock/opera/complete/urlfilter.ini" title="http://fanboy.co.nz/adblock/opera/complete/urlfilter.ini">http://fanboy.co.nz/adblock/opera/complete/urlfilter.ini</a>@                               ^Hinweis 1 beachten                 ^Hinweis 2 beachten@rem Optionen:@rem -b Im Hintergrund ausführen@rem -q &ldquo;Leise&rdquo; ausführen, keine Ausgaben@rem -N nur Dateien herunterladen, die aktueller sind</p>
+<ol>
+<li>
+<ol>
+<li>Hinweis 1: Die Urlfilter.ini befindet sich bei einer gewöhnlichen Installation im o.g. Verzeichnis. Wer sich über den Ort nicht sicher ist, findet den korrekten Speicherort über die Adresse opera:config (einfach in die Adresszeile eingeben) - dort im Suchfenster urlfilter eingeben und den korrekten Speicherort für die Batchdatei erhalten</li>
+<li>Hinweis 2: Ich verwende die filterini von fanboy.co.nz; die Größe der Datei kann sich natürlich negativ auf die Geschwindigkeit von Opera auswirken, wer will, kann hier auch den Pfad zu einer anderen urlfilter.ini hinterlegen</li>
+<li>Hinweis 3: Die Zeilen nach der 1. Zeile können natürlich weggelassen werden, sie dienen nur der Erklärung</li>
+</ol>
+</li>
+<li>Führe nun die erstellte Batchdatei aus. Nach kurzer Zeit wirst du feststellen, dass die urlfilter.ini aktualisiert wurde. Manchmal lohnt es sich einen Augenblick zu warten, da die Datei, solange sie von dem Skript noch in Bearbeitung ist, für einen kurzen Augenblick leer erscheint</li>
+<li>Wer möchte, kann nun über den Taskplaner von Windows eine Aufgabe erstellen, die diese Batchdatei bei Bedarf einmal täglich oder wöchentlich ausführt</li>
+</ol>
+<h3 id="fonts--schriftart-lässt-sich-nicht-installieren">Fonts / Schriftart lässt sich nicht installieren</h3>
+<p>? Bei der Installation von Schriftarten unter Windows kommt es öfter zu Fehlermeldungen, dass z.B. die Datei beschädigt sei. ! Wenn der Treiber der Grafikkarte mehr Speicher anfordert, als Windows es &ldquo;gewohnt&rdquo; ist, kann es zu dieser Fehlermeldung kommen. Um das zu beheben ist muss in der Registry unter</p>
+<p>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Contro l\SessionManager\MemoryManagement</p>
+<p>der Wert</p>
+<p>REG_DWORD</p>
+<p>mit einem Inhalt von mindestens</p>
+<p>20</p>
+<p>gesetzt werden. Nach einem Neustart sollte das Problem behoben sein.</p>
+<h3 id="nach-update-der-mediawiki-software-fehlen-thumbnails-der-bilder">Nach Update der Mediawiki-Software fehlen Thumbnails der Bilder</h3>
+<p>Wenn die Mediawikisoftware aktualisiert wurde, werden Thumbnails entweder garnicht oder nur schwarz angezeigt. Um das Problem zu beheben, einfach den Thumbnail-Ordner im Verzeichnis &ldquo;Images&rdquo; im Mediawiki-Verzeichnis loeschen oder umbenennen. Die Softwar erstellt dann neue Thumbnails.</p>
+<h3 id="externer-datenträger--festplatte-schreibgeschützt">Externer Datenträger / Festplatte schreibgeschützt</h3>
+<p>? Ich kann plötzlich keine Daten mehr auf meine Festplatte schreiben oder darauf löschen. ! Windows hat unbemerkt einen Fehler im Dateisystem festgestellt bzw. wurde die Platte einfach nur vom Computer getrennt, oder sie sauber bei Windows zu &ldquo;entmounten&rdquo;. Um das Problem zu genügen, reicht es, den Befehl</p>
+<p>chkdsk k: /x</p>
+<p>auszuführen. Entweder im Ausführen-Dialog (Windowstaste + R) oder direkt in der Konsole (cmd). <em>k:</em> entspricht dabei dem Laufwerks-Buchstaben des externen Datenträgers und /x ist die Option, die Windows nun dazu veranlasst, den Fehler zu beheben und den Schreibschutz wieder aufzuheben.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Windows, FAQ, Troubleshooting, Tipps</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>office</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>FAQ - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>faq</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

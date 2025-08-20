@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Apache auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/topics/apache/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Fri, 23 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/apache/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Das Memory Limit von PHP und WordPress erhöhen - die vollständige Anleitung</title>
+      <link>https://nickyreinert.de/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/</link>
+      <pubDate>Fri, 23 Oct 2020 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/</guid>
+      <description>Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine vollständige und detaillierte Anleitung zum PHP `memory_limit`. Der Artikel erklärt die Funktionsweise der Speichergrenze und beschreibt die komplexe Hierarchie der verschiedenen Konfigurationsorte – von der globalen `php.ini` über Webserver-Einstellungen in Apache und Nginx (`.htaccess`, `httpd.conf`) bis hin zu anwendungsspezifischen Definitionen in WordPress (`wp-config.php`) und auf Skriptebene (`ini_set`).</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> PHP, Server-Administration, WordPress, Nginx, Apache, Performance-Tuning, Troubleshooting</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. <a href="https://wp-ninjas.de/wordpress-php-memory-limit">Viele</a> <a href="https://www.hosttest.de/artikel/was-ist-das-php-memory-limit-1411.html">Anleitungen</a> <a href="https://socialmediadozent.com/php-memory-limit-erhoehen/#Drei_Loesungen_um_das_PHP_Memory_Limit_zu_erhoehen">sind</a> <a href="https://www.how-to-wordpress.de/php-memory-limit/">oft</a> <a href="http://juliusbeckmann.de/blog/php-memory-limit-erhohen.html">unvollständig</a>, und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:</p>
+<ul>
+<li>super-global in der php.ini</li>
+<li>global in der pool.conf, bei Verwendung von PHP-FPM</li>
+<li>oder global in der httpd.conf (Apache) oder server.conf (nginx)</li>
+<li>auf Ordner-Ebene in der user.ini</li>
+<li>auf Ordner-Ebene in der .htaccess-Datei</li>
+<li>auf Applikations-Ebene über die WordPress-Konstanten WP_MEMORY_LIMIT und WP_MAX_MEMORY_LIMIT</li>
+<li>oder auf Datei-Ebene im Script mit ini_set();</li>
+</ul>
+<p><a href="https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-7.png"><img src="/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/images/grafik-7-700x246.png" alt=""></a></p>
+<p>Unterschiedliche Orte, um das PHP Memory Limit (und andere Parameter) zu setzen</p>
+<p>Die Reihenfolge entspricht übrigens der Hierarchie. Wird das Limit also im PHP-Script mit ini_set() gesetzt, überschreibt das die Einstellung in der <strong>httpd.conf</strong> oder <strong>server.conf</strong>. Wie sich das vermeiden lässt, dazu unten mehr. Das trifft natürlich nicht nur auf das Memory Limit, sondern so ziemlich jede PHP-Einstellung zu.</p>
+<p>Außerdem hängen die Möglichkeiten stark davon ab, wie du PHP nutzt, also ob als Modul oder über CGI. Um das Vorgehen besser zu verdeutlichen, gehe ich im Folgenden von zwei WordPress-Setups aus. Einmal wird nginx als HTTP-Server genutzt und dort PHP-FPM über CGI angesprochen. Das zweite Setup nutzt Apache2 als HTTP-Server und dort PHP als Modul (php-mod).</p>
+<h2 id="was-bedeutet-das-memory-limit-von-php">Was bedeutet das Memory Limit von PHP?</h2>
+<p>Jeder Dienst benötigt für seine Ausführung Platz im Arbeitsspeicher. So auch PHP. Und mit jedem Aufruf eines PHP-Scripts wird PHP aktiviert und fordert somit Platz im Arbeitsspeicher ein. Und genau dort spielt die Speichergrenze eine Rolle: Um zu vermeiden, dass bei der Verarbeitung <strong>eines PHP-Scripts</strong> zu viel Speicher verbraucht und damit der ganze Server in Mitleidenschaft gezogen wird, legt man eine Obergrenze fest, das <strong>memory_limit</strong>.</p>
+<p>Diese Grenze gilt <strong>für jeden einzelnen Script-Aufruf</strong>. Ein Beispiel: Dein Server hat 8 GByte (<strong>8.192 MByte</strong>) Arbeitsspeicher. Der Aufruf der Datei index.php, die eine sehr aufwendige Datenbankabfrage durchführt und damit viele Daten verarbeitet, erfordert 10 MByte Arbeitsspeicher (das ist übrigens relativ viel und <a href="https://www.deimeke.net/dirk/blog/index.php?/archives/304-Bytes-auf-Papier-....html">entspricht etwa 5.000 bedruckten A4 Seiten</a>). Das Memory-Limit ist auf <strong>32 MByte</strong> eingestellt. Das physikalische Limit beträgt allerdings <strong>8.192 MByte</strong>. Die index.php kann also <strong>819 mal</strong> gleichzeitig (!) aufgerufen werden; erst dann ist der Arbeitsspeicher voll. Das Memory-Limit hat hier also keine Auswirkungen.</p>
+<p>Gehen wir nun davon aus, dass bei einem der <strong>819</strong> Aufrufe bestimmte Parameter gesetzt werden, die eine weitaus größere Datenmenge in der Datenbank abfragen. Die Datenmenge erhöht sich auf <strong>40 MByte</strong>. An dieser Stelle wird das memory_limit aktiv. Der Aufruf dieses Scripts wird abgebrochen mit der Fehlermeldung, dass die erlaubte Speichergrenze überschritten wurde. PHP wird in diesem Fall eine Fehlermeldung wie diese anzeigen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Fatal error: Allowed memory size of 33554432 bytes exhausted…” followed by something like “(tried to allocate 8388608 bytes) in /home/www/index.php on line 42.”
+</span></span></code></pre></div><p>Das Gute daran: Der Aufruf der anderen Scripte wird davon nicht in Mitleidenschaft gezogen.</p>
+<p>Es gibt sehr viele Wege, das Speicherlimit zu setzen. Das hat Vorteile aber auch Nachteile: So wird die Suche nach den gesetzen Einstellungen oft zur Suche nach der berühmten Nadel im Heuhaufen. Der Vorteil: Du kannst das Speicherlimit sehr granular an die Anforderungen deiner verschiedenen Anwendungen anpassen. Bereit? Los gehts&hellip;</p>
+<h2 id="grundsätzliches">Grundsätzliches</h2>
+<p>Der Wert, den du für das Memory Limit übermittelst, kann als einfache Ziffer übergeben werden und legt die Speichergrenze somit in <strong>Byte</strong> fest. PHP unterstützt darüber hinaus einige <strong><a href="https://www.php.net/manual/de/faq.using.php#faq.using.shorthandbytes">Kurzschreibweisen</a></strong>, also z.B. K für Kilobyte (32K), M für Megabyte (256M) und G für Gigabye (2G).</p>
+<p>Willst du verhindern möchtest, dass die Speichergrenze später an anderer Stelle überschrieben wird, definierst du sie mithilfe von <strong>php_admin_value</strong> anstatt nur <strong>php_value</strong>. Also z.B.:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">php_admin_value[memory_limit] = 256M
+</span></span><span class="line"><span class="ln">2</span><span class="cl"># oder
+</span></span><span class="line"><span class="ln">3</span><span class="cl">fastcgi_param PHP_ADMIN_VALUE &#34;memory_limit = 256M&#34;;
+</span></span><span class="line"><span class="ln">4</span><span class="cl"># oder
+</span></span><span class="line"><span class="ln">5</span><span class="cl">php_admin_value memory_limit = 256M
+</span></span></code></pre></div><p>Willst du das Memory LImit komplett deaktivieren, dann setzt du es auf -1:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">memory_limit = -1
+</span></span></code></pre></div><p>Aber Achtung: Zu Testzwecken mag das sinnvoll sein, in einer Live-Umgebung solltest du immer mit einer Obergrenze arbeiten.</p>
+<p>Und abschließend noch der Verweis auf zwei nützliche Funktionen, die eigentlich bekannt sein sollten:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">echo ini_get(&#39;memory_limit&#39;); // zeigt das aktuell gesetzte Memory Limit
+</span></span><span class="line"><span class="ln">2</span><span class="cl">phpinfo(); // zeigt alle relevanten Parameter, u.a. Memory Limit und verwendete .ini-Dateien
+</span></span></code></pre></div><p><a href="https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-1.png"><img src="/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/images/grafik-1-700x25.png" alt=""></a></p>
+<p><strong>Wichtig</strong>: Derartige Funktionen dienen der Fehlersuche und sollten im Live-System nicht unbedingt öffentlich abrufbar sein!</p>
+<h2 id="das-memory-limit-in-php-einstellen">Das Memory Limit in PHP einstellen</h2>
+<h3 id="super-global-in-der-phpini">Super global in der php.ini</h3>
+<p>Die erste &ldquo;Konfigurations-Stufe&rdquo; befindet sich natürlich direkt innerhalb von PHP. Wenn du wissen willst, wo sich die Einstellungen für PHP befinden, nutze ganz einfach phpinfo(); Die entsprechende Datei heißt <strong>php.ini</strong> und befindet sich in der Regel in /etc/php/7.0/apache2/php.ini (für PHP als Modul, z.B. in <strong>Apache2</strong>) oder /etc/php/7.4/fpm/php.ini (für PHP als Dienst, z.B. in <strong>nginx</strong>). Der Parameter ist in beiden Fällen gleich:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">memory_limit = 256M
+</span></span></code></pre></div><p>Wenn du PHP als Modul unter Apache nutzt, musst du Apache2 neustarten, bzw. die Konfiguration neu einlesen lassen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">service</span> <span class="n">apache2</span> <span class="n">restart</span> 
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">service</span> <span class="n">apache2</span> <span class="n">reload</span>
+</span></span></code></pre></div><p>Analog, bei PHP als Dienst, wie z.B. in nginx, erfolgt das Neustarten folgendermaßen (In der Regel reicht es aus, mit reload nur die Konfiguration neu zu laden. Sollte es zu Komplikationen kommen, hilft ein kompletter Neustart des Dienstes eventuell weiter).</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">service</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">fpm</span> <span class="n">restart</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">service</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">fpm</span> <span class="n">reload</span>
+</span></span></code></pre></div><h3 id="für-jeden-php-fpm-pool-in-der-poolconf">Für jeden PHP-FPM Pool in der pool.conf</h3>
+<p>Nutzt du PHP-FPM über CGI (also mein erstes Setup mit nginx), gibt es für jeden Server (bzw. virtuellen Host) einen eigenen <strong>Pool</strong>, lies eine Art eigene getrennte PHP-Umgebung für jeden einzelnen virtuellen Host. Die Einstellungen dazu befinden sich z.B. unter <strong>/etc/php/7.4/fpm/pool/my_host.conf</strong>. Hier wird der entsprechende Parameter folgendermaßen gesetzt:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[my_host_de]
+</span></span><span class="line"><span class="ln">2</span><span class="cl">...
+</span></span><span class="line"><span class="ln">3</span><span class="cl">php_value[memory_limit] = 1024M
+</span></span><span class="line"><span class="ln">4</span><span class="cl">...
+</span></span></code></pre></div><p>Die Einstellung an dieser Stelle überschreibt den Wert in der <strong>php.ini</strong>. Nach der Änderung muss der PHP-Dienst natürlich neu gestartet werden.</p>
+<h2 id="das-memory-limit-in-apache2-und-nginx-setzen">Das Memory-Limit in Apache2 und nginx setzen</h2>
+<h3 id="super-global-in-der-nginxconf--httpdconf">Super global in der nginx.conf / httpd.conf</h3>
+<p>Für die beiden HTTP-Server nginx und Apache2 gibt es die beiden globalen Einstellungsdateien <strong>/etc/nginx/nginx.conf</strong> bzw. <strong>/etc/apache2/httpd.conf</strong>. In nginx kann das PHP-Limit im sogenannten <strong>http-Kontext</strong> gesetzt werden und gilt damit für die komplette Nginx-Instanz. Ich gehe hier und im Folgenden übrigens davon aus, dass nginx den PHP-Interpreter über FastCGI anspricht und PHP eigenständig als FPM läuft.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">http {
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  fastcgi_param PHP_VALUE &#34;memory_limit = 256M&#34;;
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl">}
+</span></span></code></pre></div><p>Im Falle von Apache2 gehe ich davon aus, dass PHP als Modul konfiguriert ist. Hier wird das PHP Limit in der <strong>httpd.conf</strong> folgendermaßen gesetzt:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">php_value memory_limit = 256M
+</span></span></code></pre></div><h3 id="global-für-jeden-virtuellen-host">Global für jeden virtuellen Host</h3>
+<p>In nginx lässt sich die entsprechende Einstellung auch innerhalb des Server-Blocks setzen und gilt somit für einen ganzen virtuelle Host. Üblicherweise findest du diese Einstellung in <strong>/etc/nginx/conf.d/my_host.conf:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">server {
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  fastcgi_param PHP_VALUE &#34;memory_limit = 256M&#34;;
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl">}
+</span></span></code></pre></div><p>Nutzt du Apache2, findest du die entsprechende Einstellungs-Datei in der Regel unter <strong>/etc/apache2/sites-enabled/my_host.conf</strong>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">&lt;VirtualHost&gt;
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">php_value memory_limit 256M
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl">&lt;/VirtualHost&gt;
+</span></span></code></pre></div><h3 id="global-für-jeden-ordner">Global für jeden Ordner</h3>
+<p>Weiter geht es mit dem Ordner-Spezifische Memory-Limit in nginx im location-Kontext (die Datei dürfte in der Regel unverändert sein).</p>
+<p>Achtung: <a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html">In nginx kann die Direktive fastcgi_param</a> auch im übergeordneten http-Kontext oder auf Ordner-Ebene innerhalb des location-Blocks gesetzt werden:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">location ~ .(php|php.*)$ {
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  fastcgi_param PHP_VALUE &#34;memory_limit = 256M&#34;;
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl">}
+</span></span></code></pre></div><p>Analog dazu kannst du in Apache2 das Limit global in apache2.conf oder auf Ordner-Ebene in der my_host.conf:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="o">&lt;</span><span class="ne">Directory</span><span class="s2">&#34;/var/www/example_de/htdocs/&#34;</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">php_value</span> <span class="n">memory_limit</span> <span class="mi">256</span><span class="n">M</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="o">&lt;/</span><span class="ne">Directory</span><span class="o">&gt;</span>
+</span></span></code></pre></div><h2 id="das-memory-limit-auf-ordner-ebene-setzen">Das Memory-Limit auf Ordner-Ebene setzen</h2>
+<h3 id="für-jeden-ordner-mit-der-userini">Für jeden Ordner mit der .user.ini</h3>
+<p>Mit der Datei <strong>.super.ini</strong> kannst du PHP-Einstellungen für beliebige Ordner individuell konfigurieren. Dieser Weg steht dir allerdings nur offen, <a href="https://www.php.net/manual/en/configuration.file.per-user.php">wenn du PHP nicht als Modul nutzt, sondern über CGI/FastCGI</a>. In meinem Beispiel-Setup mit Apache2 und php-mod fällt diese Option also weg.</p>
+<p>Du kannst die Datei in jedem Ordner anlegen und dort Parameter so einstellen, wie du es von der php.ini gewohnt bist. Dieser Weg muss allerdings vorher &ldquo;freigeschaltet&rdquo; werden, indem in der php.ini (bzw. den anderen o.g. Orten), der folgende Parameter gesetzt ist:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">user_ini.filename = .user.ini
+</span></span></code></pre></div><p>Ob das der Fall ist, erfährst du, wie immer, mithilfe von phpinfo();. Dort siehst du unter &ldquo;Additional .ini files parsed&rdquo; auch, ob sich im aktuellen Ordner eine .user.ini befindet und diese gelesen wurde:</p>
+<p><a href="https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-4.png"><img src="/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/images/grafik-4-700x164.png" alt=""></a></p>
+<p>Überprüfen, welche .ini-Dateien PHP gelesen hat</p>
+<p>Wenn das alles passt, verwendest du die .user.ini wie die php.ini und setzt das Speicherlimit demnach folgenermaßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">memory_limit=256M
+</span></span></code></pre></div><h3 id="für-jeden-ordner-mit-der-htaccess">Für jeden Ordner mit der .htaccess</h3>
+<p>Diese Option wiederum steht dir nur mit Apache2 zur Verfügung, da nginx keine .htaccess-Dateien unterstützt. Du setzt das Limit in der .htaccess-Datei folgendermaßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">php_value memory_limit = 256M
+</span></span></code></pre></div><h2 id="das-memory-limit-auf-applikations-ebene-setzen">Das Memory-Limit auf Applikations-Ebene setzen</h2>
+<p>WordPress verwendet standardmäßig eine Memory Limit von <strong>40</strong> <strong>MByte</strong> im Frontend (bzw. 64 MByte bei einem Multi-Site-Setup) sowie (mindestens) <strong>256 MByte</strong> für das Backend. Wenn du diese Werte ändern möchtest, kannst du dafür die beiden folgenden Konstanten in der <strong>wp-config.php</strong> setzen - achte darauf, diese Konstanten vor der Einbindung von <strong>wp-settings.php</strong> zu definieren:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">define(&#39;WP_MEMORY_LIMIT&#39;, &#39;256M&#39;);
+</span></span><span class="line"><span class="ln">2</span><span class="cl">define(&#39;WP_MAX_MEMORY_LIMIT&#39;, &#39;256M&#39;);
+</span></span><span class="line"><span class="ln">3</span><span class="cl">[...]
+</span></span><span class="line"><span class="ln">4</span><span class="cl">require_once(ABSPATH . &#39;wp-settings.php&#39;);
+</span></span></code></pre></div><p>WordPress nutzt intern allerdings auch nur die PHP-Funktion ini_set um das Memory Limit festzulegen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">ini_set( &#39;memory_limit&#39;, WP_MEMORY_LIMIT );
+</span></span></code></pre></div><h2 id="das-memory-limit-auf-datei-ebene-setzen">Das Memory-Limit auf Datei-Ebene setzen</h2>
+<p>Zum Abschluss gibt es auch die Möglichkeiten das Memory Limit in jedem Script individuell zu setzen. Diese Möglichkeit steht an letzter Stelle und überschreibt damit alle vorhergehenden Einstellungen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">ini_set(&#39;memory_limit&#39;,&#39;256M&#39;);
+</span></span></code></pre></div><p>Durch die Verwendung von <strong>include()</strong>, <strong>require_once()</strong> oder <strong>require()</strong> lassen sich andere PHP-Dateien innnerhalb eines Scripts einzubinden. Grundsätzlich wird das Memory Limit dann zwar vererbt. Was nicht heißt, dass es durch später eingebundene Scripte überschrieben werden kann. Das macht sich z.B. auch bei WordPress bemerkbar: Du kannst das Memory Limit zwar mit WP_MEMORY_LIMIT für WordPress definieren, ein Plugin oder Theme kann das Limit aber trotzdem später überschreiben.</p>
+<p>Ein Beispiel: So sieht die Datei <strong>index.php</strong> aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">&lt;?php  ini_set(&#39;memory_limit&#39;,&#39;256M&#39;);  (...aufwendige Operation...);  include(&#39;file.php&#39;); 
+</span></span></code></pre></div><p>Die Datei <strong>file.php</strong> sieht folgendermaßen aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"> &lt;?php
+</span></span><span class="line"><span class="ln">2</span><span class="cl"> echo ini_get(&#39;memory_limit&#39;);
+</span></span><span class="line"><span class="ln">3</span><span class="cl"> (…aufwendige Operation…)
+</span></span><span class="line"><span class="ln">4</span><span class="cl"> ini_set(&#39;memory_limit&#39;,&#39;32M&#39;);
+</span></span><span class="line"><span class="ln">5</span><span class="cl"> (…aufwendige Operation…);
+</span></span></code></pre></div><p>Die zweite Zeile in der file.php gibt als Rückgabe <strong>256M</strong> aus. Das Memory-Limit wird vererbt. Die vierte Zeile setzt das Limit allerdings auf 32 MByte und überschreibt damit den Wert von 256 MByte. Belegt die &ldquo;aufwendige Operation&rdquo; in index.php nur <strong>12 MByte</strong>, in der file.php nur jeweils <strong>5 MByte</strong>, funktioniert das gesamte Script einwandfrei. Wenn die &ldquo;aufwendige Operation&rdquo; in der Datei index.php z.B. mehr als <strong>22 MByte</strong> beansprucht, bricht PHP die Verarbeitung des Scripts ab. Warum? Weil das Limit nachträglich nach unten korrigiert wurde.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> apache, apache2, memory-limit, nginx, php</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>anleitungen</category>
+      
+      <category>blog</category>
+      
+      <category>hosting</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Das Memory Limit von PHP und WordPress erhöhen - die vollständige Anleitung - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>comprehensive_guide</dc:type>
+      
+      
+    </item><item>
+      <title>CSS über den HTTP-Header ausspielen</title>
+      <link>https://nickyreinert.de/2020/2020-06-04-css-ueber-den-http-header-ausspielen/</link>
+      <pubDate>Thu, 04 Jun 2020 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2020/2020-06-04-css-ueber-den-http-header-ausspielen/</guid>
+      <description>Jeder kennt das Problem: Man hat stundenlang an einem Stylesheet auf dem Staging-Server rumgebastelt, will es nun auf den Live-Server kopieren und die Änderung …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Ein kurzer technischer Tipp für Web-Entwickler, der zeigt, wie man eine CSS-Datei über den HTTP `Link`-Header lädt. Diese Methode kann genutzt werden, um eine Staging-Umgebung visuell von einer Live-Umgebung zu unterscheiden und so Verwechslungen zu vermeiden. Der Artikel enthält Konfigurationsbeispiele für Nginx und Apache.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> CSS, HTTP, Web-Development, Server-Konfiguration, Nginx, Apache</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Jeder kennt das Problem: Man hat stundenlang an einem Stylesheet auf dem Staging-Server rumgebastelt, will es nun auf den Live-Server kopieren und die Änderung ist nicht sichtbar. Die Fehlersuche beginnt. Man prüft den Cache. Vom Browser. Vom Server. Ist man überhaupt auf dem richtigen Server? Hat der Upload geklappt? Und so weiter. Eric Meyer hat das ganze Dilemma 2009 treffend beschrieben und auch eine Lösung mitgeliefert, von der ich noch nicht gehört habe:</p>
+<p>Nutze doch einfach die HTTP-Header um deine Staging- und Live-Umgebung eindeutig voneinander zu unterscheiden. Der Link-Parameter im HTTP-Header nämlich auch die Angabe von Style-Sheet-Dateien. Und das sieht dann so aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Header add Link &#34;&lt;/staging.css&gt;;rel=stylesheet;type=text/css;media=all&#34;
+</span></span></code></pre></div><p>In nginx kann man das folgendermaßen im Server-Block implementieren:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">add_header Link &#34;&lt;/wp-content/themes/nickyreinert/style.header.css&gt;;rel=stylesheet;type=text/css;media=all&#34;;
+</span></span></code></pre></div><p>Wer Apache nutzt, setzt den &ldquo;CSS-Header&rdquo; folgendermaßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Header add Link &#34;&lt;/wp-content/themes/nickyreinert/style.header.css&gt;;rel=stylesheet;type=text/css;media=all&#34;
+</span></span></code></pre></div><p>Natürlich habe ich die Spielerei gleich bei mir eingebaut:</p>
+<p><img src="/2020/2020-06-04-css-ueber-den-http-header-ausspielen/images/grafik-700x382.png" alt=""></p>
+<p>CSS-Datei im HTTP-Header ausgeliefert</p>
+<p>Damit lässt sich grundsätzlich auch das Stylesheet deines Wordpress-Themes ausliefern: Da WordPress aber die style.css nutzt, um Theme-Informationen zu verarbeiten, musst du auf dieses kleine Feature dann verzichten. Außerdem wird CSS im Link-Header nicht von jedem Browser unterstützt.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> css, http</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>blog</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>CSS über den HTTP-Header ausspielen - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>technical_tip</dc:type>
+      
+      
+    </item><item>
+      <title>Welche Möglichkeiten habe ich um Weiterleitungen anzulegen?</title>
+      <link>https://nickyreinert.de/2016/2016-09-25-welche-moeglichkeiten-habe-ich-um-weiterleitungen-anzulegen/</link>
+      <pubDate>Sun, 25 Sep 2016 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2016/2016-09-25-welche-moeglichkeiten-habe-ich-um-weiterleitungen-anzulegen/</guid>
+      <description>Was sind Weiterleitungen? Du hast von einem alten Shop oder Content Management System auf ein neues System gewechselt, willst eine neue Permalink-Struktur …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Der Artikel erklärt die Notwendigkeit von 301-Weiterleitungen nach Website-Umzügen, um den SEO-Wert zu erhalten. Es werden zwei technische Methoden zur Implementierung vorgestellt: die manuelle Erstellung von Weiterleitungen mittels der PHP `header()`-Funktion und die dynamische Konfiguration über `.htaccess`-Regeln mit `mod_rewrite`.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> SEO, Webserver-Konfiguration, Apache, .htaccess, PHP, Website-Migration</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <h2 id="was-sind-weiterleitungen">Was sind Weiterleitungen?</h2>
+<p>Du hast von einem alten Shop oder Content Management System auf ein neues System gewechselt, willst eine neue Permalink-Struktur einführen oder hast einfach nur Inhalte verschoben? Das Problem in solchen Szenarien ist, dass die Verzeichnisstruktur nicht exakt übernommen werden kann. Doch keine Panik. Dass sich Inhalte und Verlinkungen im Internet ändern, gehört zum Konzept des WWW dazu. Wichtig ist, dass man diese Dynamik entsprechend berücksichtigt und dafür sorgt, dass eingehender Traffic auf die eigene Seite nicht auf die nicht-vorhandene Seiten stößt. Mit sogenannten Weiterleitungen.</p>
+<h2 id="suchmaschinen-index-und-backlinks">Suchmaschinen-Index und Backlinks</h2>
+<p>Zwei Arten von eingehenden Traffic kann man grundsätzlich unterscheiden: Erstens gibt es den Traffic der von einer Suchmaschine (<strong>organischer Traffic</strong>) kommt. Die Suchmaschine nutzt dafür einen Index, der sich aber nach bestimmten Regeln aktualisiert. Daneben gibt es Traffic über <strong>Backlinks</strong> von externen Seiten, die keine Suchmaschinen sind. Diese Backlinks sind natürlich auch veränderbar, aber, wenn man es so nennen will, redaktionell gepflegt. Streng genommen könnte man natürlich noch anderen Traffic unterscheiden, wie z.B. den aus der Suchmaschinen-Werbung (SEA). Doch da dieser Teil der eigenen Online-Marketing-Kampagne ist, versteht es sich von selber, dass die Links dort ordentlich gepflegt werden müssen.</p>
+<h2 id="wann-benötige-ich-eine-weiterleitung">Wann benötige ich eine Weiterleitung?</h2>
+<p>Die Suchmaschinen lassen sich eigentlich relativ unkompliziert mit einer aktuellen Sitemap befriedigen, die ja als aktuelles Verzeichnis der eigenen Seite. Google bietet in der Search Console sogar an, die Seite <a href="https://www.google.com/webmasters/tools/home?hl=de">neu zu indizieren</a>.</p>
+<p>Doch was ist mit den andern Suchmaschinen und vor allem all den wertvollen Backlinks, die nicht mehr gültig sind? Nicht jeder eingehend Link lässt sich so einfach aktualisieren und führt im ungünstigen Fall zum HTTP-Fehlercode 404 &ldquo;not found&rdquo;. Dieser sollte aus SEO-Sicht unbedingt vermieden werden. Mit eben jenen erwähnten Weiterleitungen.</p>
+<p>Um diese zu implementieren, gibt es freilich mehrere Möglichkeiten. Zunächst sollte man prüfen, welche Backlinks auf die eigene Seite überhaupt existieren. Je nachdem, wie viele Backlinks es gibt und wie die URL-Struktur der eigenen Seite beschaffen ist, bieten sich andere Möglichkeiten an. Man unterscheidet übrigens zwischen der temporären (HTTP-Statuscode 302) und der permanenten Weiterleitung(HTTP-Statuscode 302) . Die temporäre Weiterleitung kommt für unseren Fall nicht unbedingt infrage, da wir ja einen Umzug vor uns haben.</p>
+<h2 id="weiterleitung-per-header-in-einer-php-datei">Weiterleitung per header() in einer PHP-Datei</h2>
+<p>Eine ziemlich pragmatische und wenngleich effektive Methode ist es, die alte Ordner-Struktur per Hand nachzubilden und entsprechend PHP-Dateien anzulegen, die jeweils eine 301-Weiterleitung auf die neue URL enthalten (&quot;<a href="http://php.net/manual/de/function.header.php">header</a>&quot;). Das kann man machen, wird bei größeren System aber sehr schnell sehr aufwendig. Die PHP-Datei sollte unter dem Namen &ldquo;index.php&rdquo; in den jeweiligen Ordnern abgelegt werden und folgenden Code enthalten. Es folgt ein Beispiel für eine PHP-Datei befindet, die unter <em><a href="https://www.deine-seite.de/altes-ziel/index.php">https://www.deine-seite.de/altes-ziel/index.php</a></em> abgelegt ist. Diese enthält folgenden Code:</p>
+<?php
+   header("Location:https://www.deine-seite.de/neues-ziel/", true, 301); 
+   exit;
+
+Der erste Parameter verweist auf die neue Seite. Der zweite Parameter (_true_) legt lediglich fest, ob ein vorheriger Header ersetzt werden soll. Der letzte Parameter schließlich ist der HTTP-Statuscode, der übermittelt werden soll - also 301. Das exit am Schluss sorgt dafür, dass das PHP-Script am Ende auch wirklich abgeschlossen wird und dient hier nur als doppelter Boden. Ein schließendes ?> [wird nicht benötigt](https://developer.sugarcrm.com/2011/05/06/why-we-dont-using-closing-php-tags/).
+<p>Das ist nicht nur mühsam, sondern auch nicht dynamisch. Die nächste Variante nutzt eine Weiterleitung mit .htaccess.</p>
+<h2 id="weiterleitung-per-htaccess">Weiterleitung per .htaccess</h2>
+<p>In einer .htaccess-Datei gibt es erstmal zwei Möglichkeiten, eine Weiterleitung einzurichten. Nutzt man einen regulären Ausdruck, wird entsprechend jeder passende eingehende Traffic abgefangen und an die gewünschte Hauptseite weitergeleitet.</p>
+<p>Eine andere, etwas ausgefeiltere Möglichkeit ist es, die  alten Unterverzeichnisse bei Abfrage durch den Browser abzufangen und deren Namen als Suchparameter an das neue System weiterzuleiten.</p>
+<p>Hier zum Beispiel der Unterordner &ldquo;foobar&rdquo;, der als Suchparameter genutzt werden soll:</p>
+<p><a href="https://www.deine-seite.de/">www.deine-seite.de/</a><strong>foobar</strong></p>
+<p>Der Name soll nun als Suchparameter folgendermaßen genutzt werden:</p>
+<p><a href="https://www.deine-seite.de/index.php?search=">www.deine-seite.de/index.php?search=</a><strong>foobar</strong></p>
+<p>So sieht die dafür notwendige .htaccess-Datei aus:</p>
+<p>RewriteEngine On</p>
+<p>RewriteRule ^(/?)([a-zA-Z0-9]+)?([\.html]+)?/?$ /index.php?search=$2 [R=301,NC]</p>
+<p>RewriteRule ^(/?)([a-zA-Z0-9]+)?/([a-zA-Z0-9]+)?([\.html]+)?/?$ /index.php?search=$2\ $3 [L,R=301,NC]</p>
+<p>Die erste Regel fängt Aufrufe der ersten Pfad-Ebene ab. Die zweite Regel kann auch die Namen der darunter liegenden Pfade abgreifen und daraus einen kombinierten Suchbegriff erzeugen. Das ist z.B. hilfreich, wenn man die Pfade eines Shop-Systems nutzen will um daraus im neuen Shop die Suche zu erzeugen.</p>
+<p><a href="https://www.shop.de/foobar/hello">www.shop.de/foobar/hello</a>_world.html -&gt; <a href="https://www.shop.de/index.php?search=foobar%20hello">www.shop.de/index.php?search=foobar%20hello</a>_world</p>
+<p>Die .htaccess-Datei muss sich im Unterordner /foobar befinden, der auch physisch vorhanden sein muss. Man könnte die Weiterleitung auch im Root-Verzeichnis anlegen und bräuchte dann den Unterordner nicht. So vermeidet man aber unnötigen Overhead, da die Regel nicht bei den regulären Aufrufen aktiviert wird.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> htaccess, redir, weiterleitung</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Welche Möglichkeiten habe ich um Weiterleitungen anzulegen? - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

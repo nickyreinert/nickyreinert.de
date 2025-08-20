@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Ruby auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/en/topics/ruby/</link>
+    <description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>en</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Sun, 08 Dec 2024 12:34:56 +0200</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/ruby/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Advent of Code - Day 8 - Missing Operators (Ruby)</title>
+      <link>https://nickyreinert.de/en/blog/2024/12/08/advent-of-code-day-8-missing-operators-ruby/</link>
+      <pubDate>Sun, 08 Dec 2024 12:34:56 +0200</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/en/blog/2024/12/08/advent-of-code-day-8-missing-operators-ruby/</guid>
+      <description>(task | solution)
+The first time I read through the riddle, I was like: &ldquo;Phew, no way, I&rsquo;m going to skip this!&rdquo; I looked at the example and …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>A write-up of the author&#39;s solution to Day 8 of the Advent of Code 2024 challenge, implemented in Ruby. The article explains how visualization helps to understand the puzzle, which involves finding symmetrical points based on pairs of `siblings`` on a grid. A complete Ruby code snippet for the brute-force solution to Part 1 is provided.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Advent of Code, Ruby, Problem-Solving, Algorithmen, Computational Geometry</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>(<a href="https://adventofcode.com/2024/day/8/">task</a> | <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day8%20-%20ruby">solution</a>)</p>
+<p>The first time I read through the riddle, I was like: &ldquo;Phew, no way, I&rsquo;m going to skip this!&rdquo; I looked at the example and the description, and it didn’t make sense at all. But when I’m stuck like that at the very beginning, the best approach to get a grip is: Visualize! (A concept I didn&rsquo;t learn from <a href="https://www.learnhuggingface.com/">Daniel Bourke&rsquo;s course about machine learning</a>, but he perfected it!)</p>
+<p>However, I thought it might be a good idea to use Ruby this time — my first time with this language. I won’t bother you with the environment setup. Again, I’m just using a containerized environment, which makes things so much easier.</p>
+<h3 id="solution-to-the-first-part">Solution to the First Part</h3>
+<p>So, what is this about? It’s about finding siblings on a surface, connecting them with a straight line, and then extending this line to find two symmetric points. The total number of all those points forms the solution to this riddle. The green and red cells represent two categories of siblings on the map, and the blue cells represent the symmetric points (called <code>antinodes</code>) that we need to find. If you connect them (with red lines), you’ll see how all of them pass through two cells of the same color:</p>
+<p><img src="/en/blog/2024/12/08/advent-of-code-day-8-missing-operators-ruby/image-2.png" alt="alt text"></p>
+<p>Looks difficult, right? Don’t tell me, it took me a while to understand the &ldquo;gibberish&rdquo; of the riddle – no offense, riddle master.</p>
+<p>But wait until we add row and column numbers to the map and focus on just one group:</p>
+<p><img src="/en/blog/2024/12/08/advent-of-code-day-8-missing-operators-ruby/image-1.png" alt="alt text"></p>
+<p>Now it seems quite easy: We just need to somehow identify the row and column distance between two siblings and use that to place the corresponding <code>antinode</code>.</p>
+<p>Let me just throw my solution into the ring. It’s not the most elegant, but it gets the job done:</p>
+<ul>
+<li>First, I use two loops to find two siblings.</li>
+<li>Then, I calculate the row and column indexes for both siblings.</li>
+<li>From there, I can calculate the row and column indexes for both <code>antinodes</code>.</li>
+<li>Finally, I just check if they are within the boundaries before adding them to a dictionary.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ruby" data-lang="ruby"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="n">from_char_array</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">from_char</span><span class="p">,</span> <span class="n">from_index</span><span class="o">|</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="k">next</span> <span class="k">if</span> <span class="n">from_char</span> <span class="o">==</span> <span class="s2">&#34;.&#34;</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="n">from_char_array</span><span class="o">[</span><span class="p">(</span><span class="n">from_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">..-</span><span class="mi">1</span><span class="o">].</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">to_char</span><span class="p">,</span> <span class="n">to_index</span><span class="o">|</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        <span class="k">next</span> <span class="k">unless</span> <span class="n">from_char</span> <span class="o">==</span> <span class="n">to_char</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        <span class="n">from_row</span> <span class="o">=</span> <span class="p">(</span><span class="n">from_index</span> <span class="o">/</span> <span class="n">map_height</span><span class="p">)</span><span class="o">.</span><span class="n">floor</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        <span class="n">from_col</span> <span class="o">=</span> <span class="n">from_index</span> <span class="o">-</span> <span class="p">(</span><span class="n">from_row</span> <span class="o">*</span> <span class="n">map_width</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
+</span></span><span class="line"><span class="ln">10</span><span class="cl">        <span class="n">to_row</span> <span class="o">=</span> <span class="p">((</span><span class="n">from_index</span> <span class="o">+</span> <span class="n">to_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">map_height</span><span class="p">)</span><span class="o">.</span><span class="n">floor</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        <span class="n">to_col</span> <span class="o">=</span> <span class="p">(</span><span class="n">from_index</span> <span class="o">+</span> <span class="n">to_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">to_row</span> <span class="o">*</span> <span class="n">map_width</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">
+</span></span><span class="line"><span class="ln">13</span><span class="cl">        <span class="nb">puts</span> <span class="s2">&#34;Found couple of </span><span class="si">#{</span><span class="n">from_char</span><span class="si">}</span><span class="s2"> at </span><span class="si">#{</span><span class="n">from_row</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">from_col</span><span class="si">}</span><span class="s2"> and at </span><span class="si">#{</span><span class="n">to_row</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">to_col</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        <span class="n">first_antinode_row</span> <span class="o">=</span> <span class="n">from_row</span> <span class="o">-</span> <span class="p">(</span><span class="n">to_row</span> <span class="o">-</span> <span class="n">from_row</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">        <span class="n">second_antinode_row</span> <span class="o">=</span> <span class="n">to_row</span> <span class="o">+</span> <span class="p">(</span><span class="n">to_row</span> <span class="o">-</span> <span class="n">from_row</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">
+</span></span><span class="line"><span class="ln">18</span><span class="cl">        <span class="n">first_antinode_col</span> <span class="o">=</span> <span class="n">from_col</span> <span class="o">+</span> <span class="p">(</span><span class="n">from_col</span> <span class="o">-</span> <span class="n">to_col</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">        <span class="n">second_antinode_col</span> <span class="o">=</span> <span class="n">to_col</span> <span class="o">+</span> <span class="p">(</span><span class="n">to_col</span> <span class="o">-</span> <span class="n">from_col</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">
+</span></span><span class="line"><span class="ln">21</span><span class="cl">        <span class="k">if</span> <span class="n">first_antinode_row</span><span class="o">.</span><span class="n">between?</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">map_height</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">first_antinode_col</span><span class="o">.</span><span class="n">between?</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">map_width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">            <span class="n">antinodes</span><span class="o">[</span><span class="s2">&#34;</span><span class="si">#{</span><span class="n">first_antinode_row</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">first_antinode_col</span><span class="si">}</span><span class="s2">&#34;</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&#34;#&#34;</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">        <span class="k">end</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">        
+</span></span><span class="line"><span class="ln">25</span><span class="cl">        <span class="k">if</span> <span class="n">second_antinode_row</span><span class="o">.</span><span class="n">between?</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">map_height</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">second_antinode_col</span><span class="o">.</span><span class="n">between?</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">map_width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">            <span class="n">antinodes</span><span class="o">[</span><span class="s2">&#34;</span><span class="si">#{</span><span class="n">second_antinode_row</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">second_antinode_col</span><span class="si">}</span><span class="s2">&#34;</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&#34;#&#34;</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">        <span class="k">end</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">        
+</span></span><span class="line"><span class="ln">29</span><span class="cl">    <span class="k">end</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="k">end</span>
+</span></span></code></pre></div><p><em>If you&rsquo;re stuck on this one, no worries: I have to admit, although it&rsquo;s just roughly 20 lines of simple code, it took me a while to initially understand the task and then put everything together, because I was mixing up 0-based indexing, column calculation, and so on.</em></p>
+<p>And because I am already 4 days behind, I didn&rsquo;t even read the second part and continued to day 9&hellip;</p>
+<h2 id="whats-up-ruby">What&rsquo;s up, Ruby?</h2>
+<p><strong>Rating: 10/12 – underestimated diamond</strong></p>
+<p>I was honestly surprised at how easy it is to get something done in <code>Ruby</code>. It seems as simple and straightforward as <code>Python</code>, and if you&rsquo;re looking for a quick &rsquo;n&rsquo; dirty scripting language, I&rsquo;d say <code>Ruby</code> is definitely worth a try.</p>
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Advent of Code, Ruby, Solution, Tutorial</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>development</category>
+      
+      <category>aoc2024</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/image-2.png" type="image/jpeg">
+        <media:title>Advent of Code - Day 8 - Missing Operators (Ruby)</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>solution_writeup</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

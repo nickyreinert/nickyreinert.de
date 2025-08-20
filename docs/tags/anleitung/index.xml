@@ -13,7 +13,211 @@
     <managingEditor></managingEditor>
     <webMaster></webMaster>
     <copyright></copyright>
-    <lastBuildDate>Mon, 11 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/anleitung/index.xml" rel="self" type="application/rss+xml" /><item>
+    <lastBuildDate>Tue, 09 Jun 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/anleitung/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>WordPress Word Cloud 2.0</title>
+      <link>https://nickyreinert.de/2020/2020-06-09-wordpress-word-cloud-2-0/</link>
+      <pubDate>Tue, 09 Jun 2020 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2020/2020-06-09-wordpress-word-cloud-2-0/</guid>
+      <description>Mein Word Cloud Plugin für WordPress liegt in einer neuen Version vor! Die Word Cloud unterstützt nun OCR, Tags, interne und externe Quellen und vieles mehr. Da …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine umfassende Dokumentation für die Version 2.0 des Plugins &#34;WP Word Cloud&#34;. Der Artikel beschreibt die erweiterten Funktionen, darunter die Erstellung von Wortwolken aus diversen Quellen (URL, SQL, Post-ID), eine interaktive Frontend-Bearbeitung und eine clientseitige Texterkennung (OCR) für Bilder. Es wird eine detaillierte Anleitung zur Installation und zur Verwendung aller Shortcode-Parameter gegeben.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> WordPress, Plugins, Datenvisualisierung, JavaScript, OCR, Tesseract.js</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Mein Word Cloud Plugin für WordPress liegt in einer neuen Version vor! Die Word Cloud unterstützt nun <strong>OCR</strong>, <strong>Tags</strong>, <strong>interne</strong> und <strong>externe Quellen</strong> und vieles mehr. Da ich also sehr viele grundlegende Änderungen vorgenommen habe, gibt es an dieser Stelle eine komplett neue Dokumentation. Viel Spass.</p>
+<h2 id="was-ist-eine-word-cloud">Was ist eine Word Cloud?</h2>
+<p>Eine <strong>Word Cloud</strong>, auch <strong>Schlagwortwolke</strong>, <strong>Wortwolke</strong> usw., dient der besseren Visualisierung von Texten. Um eine Word Cloud zu erstellen, werden die Vorkommen von Wörtern eines Textes gezählt. Die Wörter mit der größten <strong>Häufigkeit</strong> werden groß dargestellt, Wörter mit geringerer Häufigkeit weniger groß. Und das ganze wird dann in einer <strong>Wolkenform</strong> dargestellt, mit den größten Wörtern in der Mitte.</p>
+<p>So ist es möglich auf einen Blick zu erkennen, welche Wörter in einem Text am häufigsten vorkommen. Das ist nicht nur bei der Analyse von Texten sondern auch von Webseiten nützlich. So kannst du z.B. bei WordPress eine Word Cloud aus Tags erstellen (<strong>Tag Cloud</strong>), anhand der man sehen kann, welche Tags auf einer Seite am meisten verwendet wurden.</p>
+<p>Die folgende Word Cloud zeigt auf einen Artikel, <a href="https://www.nickyreinert.de/wie-erstelle-ich-ein-labyrinth-mit-javascript/">in dem ich einen Algorithmus beschreibe, um in JavaScript ein Labyrinth zu erstellen</a>:</p>
+<p>[wp-word-cloud source-type=&ldquo;id&rdquo; id=&ldquo;demo1&rdquo; size-factor=50 min-alpha=0.5 count-words=1]3334[/wp-word-cloud]</p>
+<h2 id="was-kann-dieses-plugin">Was kann dieses Plugin?</h2>
+<p><strong>WP Word Cloud</strong> stellt einen Shortcode zur Verfügung, mit dem du beliebig viele <strong>Word Clouds</strong> auf deinen Seiten einfügen kannst. Du kannst verschiedene Quellen nutzen, um dort die Wörter zu zählen und in einer <strong>Word Cloud</strong> darstellen zu lassen.</p>
+<ul>
+<li>inline - du gibst den Text direkt im Shortcode im Beitrag an</li>
+<li>url - ein Verweis auf eine Internetadresse</li>
+<li>id - der Verweis auf eine Seite / einen Beitrag</li>
+<li>sql - eine SQL-Abfrage um Text aus der Datenbank zu lesen</li>
+<li>custom-field - Text aus einem custom field des Beitrages / der Seite</li>
+<li>Text, den der Besucher der Webseite selber eingeben kann</li>
+<li>Text von einem Bild, das der Besucher der Website hochlädt</li>
+</ul>
+<p>Das Plugin greift auf zwei sehr großartige Bibliotheken zurück: WodCloud2.js von TimDream (<a href="https://github.com/timdream/wordcloud2.js/">github.com</a>). Sowie die Offline-Implementierung von Tesseract in JavaScript (<strong><a href="https://github.com/jeromewu/tesseract.js-offline">github.com</a></strong>).</p>
+<h2 id="installation">Installation</h2>
+<h3 id="über-die-kommandozeile">Über die Kommandozeile</h3>
+<p>Wenn du Zugriff auf deinen Server über SSH hast, kannst du das Plugin folgendermaßen installieren:</p>
+<p>Wechsle in den Plugin-Ordner deiner WordPress-Installation und lege dort einen neuen Ordner an: WP-Word-Cloud, wechsle danach in diesen Ordner:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">mkdir /htdocs/wp-content/plugins/WP-Word-Cloud
+</span></span><span class="line"><span class="ln">2</span><span class="cl">cd /htdocs/wp-content/plugins/WP-Word-Cloud
+</span></span></code></pre></div><p>Danach kannst du das Plugin-Repository mit git klonen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">git clone https://github.com/nickyreinert/wordCloud-for-Wordpress.git .
+</span></span></code></pre></div><p>Wenn du git nicht benutzen möchtest oder kannst, kannst du das Plugin auch mit wget herunterladen und dann entpacken. Dann musst du den Plugin-Ordner allerdings nicht selber erstellen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">cd /htdocs/wp-content/plugins/
+</span></span><span class="line"><span class="ln">2</span><span class="cl">wget https://github.com/nickyreinert/wordCloud-for-Wordpress/archive/wordCloud-for-wordPress-2.zip --no-check-certificate
+</span></span><span class="line"><span class="ln">3</span><span class="cl">unzip wordCloud-for-wordPress-2.zip -d WP-Word-Cloud
+</span></span></code></pre></div><h3 id="mit-einem-ftp-programm">Mit einem FTP-Programm</h3>
+<p>Wenn du keinen Zugriff auf die Kommandozeile hast, kannst du das Plugin von dieser Adresse herunterladen:</p>
+<p><a href="https://github.com/nickyreinert/wordCloud-for-Wordpress/archive/wordCloud-for-wordPress-2.zip">https://github.com/nickyreinert/wordCloud-for-Wordpress/archive/wordCloud-for-wordPress-2.zip</a></p>
+<p>Danach entpackst du das Archiv und lädst den kompletten Ordner in das Plugin-Verzeichnis deiner WordPress-Installation. Du kannst den Ordner mit dem FTP-Programm dann umbenennen:</p>
+<p><img src="/2020/2020-06-09-wordpress-word-cloud-2-0/images/grafik.png" alt=""></p>
+<p>Der Order für das Word Cloud Plugin</p>
+<h2 id="abschluss-der-installation">Abschluss der Installation</h2>
+<p>Abschließend muss das Plugin noch im Backend von WordPress aktiviert werden. Dazu suchst du im Plugin-Bereich nach dem Eintrag &ldquo;WP Word Cloud&rdquo; und klickst auf &ldquo;aktivieren&rdquo;. Fertig.</p>
+<p><img src="/2020/2020-06-09-wordpress-word-cloud-2-0/images/grafik-1-700x70.png" alt=""></p>
+<p>Aktiviere das Plugin in der Plugin-Übersicht von WordPress</p>
+<h2 id="erste-verwendung">Erste Verwendung</h2>
+<p>Das Plugin aktiviert für deine WordPress-Installation einen neuen Shortcode: <strong>[ wp-word-cloud ]</strong>. Diesen kannst du nun auf jeder Seite und in jedem Beitrag beliebig oft einfügen. Wenndu den <strong>Gutenberg-Editor</strong> verwendest, benötigst du dafür den Block &ldquo;<strong>Shortcode</strong>&rdquo;. Im konventionellen Editor kannst du den Shortcode einfach in deinen Text einfügen.<br>
+Eine einfache Implementierung sieht z.B. so aus:</p>
+<p><code>[ wp-word-cloud source-type=&quot;url&quot; id=&quot;meine-word-cloud&quot; ]https://www.spiegel.de[ /wp-word-cloud ]</code></p>
+<p>Es gibt <strong>drei Parameter</strong>, die du <strong>immer</strong> angeben musst:</p>
+<ul>
+<li><strong>id</strong>, eine eindeutige Id, mit der die <strong>Word Cloud</strong> auf deiner Seite angesprochen wird, z.B. <strong>meine-word-cloud</strong> oder einfach nur <strong>test</strong></li>
+<li><strong>source-type</strong>, welcher Art die Quelle für die Word Cloud ist, also z.B. von einer <strong>url</strong> oder den <strong>tags</strong></li>
+<li>sowie Inline-Text, als Verweis auf die Quelle, von wo der Inhalt für die Word Cloud kommt, also z.B. die URL <strong><a href="https://www.spiegel.de">https://www.spiegel.de</a></strong> oder die Id eines Beitrages (123)</li>
+</ul>
+<h2 id="zusätzliche-einstellungen">Zusätzliche Einstellungen</h2>
+<p>Natürlich gibt es noch <strong>eine Menge weiterer Parameter</strong>, mit denen du das Erscheinungsbild der Word Cloud steuern kannst. Das Plugin setzt bei der ersten Installation für all diese Parameter <strong>Standard-Einstellungen</strong> fest. Diese sind grundsätzlich <strong>global gültig</strong> und können auf der Einstellungseite angepasst werden:</p>
+<p><img src="/2020/2020-06-09-wordpress-word-cloud-2-0/images/grafik-2.png" alt=""></p>
+<p>In den Einstellungen findest du eine eigene Seite für das WP Word Cloud Plugin - wunderbar!</p>
+<p>Jeden dieser globalen Parameter kannst du auch in deinem Shortcode verwenden. So wir die globale Einstellung überschrieben. So ist die <strong>Hintergrundfarbe</strong> z.B. standardmäßig <strong>transparent</strong> eingestellt. Möchtest du sie für die aktuelle Word Cloud auf <strong>grün und halbtransparent</strong> ändern, übergibst du einfach den Parameter <strong>background-color</strong> folgendermaßen:</p>
+<p><code>[ wp-word-cloud source-type=&quot;url&quot; id=&quot;meine-word-cloud&quot; background-color=&quot;rgba(0,255,255,0.5)&quot; ]https://www.spiegel.de[ /wp-word-cloud ]</code></p>
+<p>Eine genaue Beschreibung aller Parameter folgt jetzt:</p>
+<h2 id="parameter">Parameter</h2>
+<h3 id="id">id</h3>
+<p>Dieser Parameter ist für jeden Shortcode, den du einfügst, <strong>verpflichtend</strong>! Die Id adressiert jede Word Cloud auf einer Seite oder in einem Beitrag. Damit ist es möglich, mehrere Word Clouds gleichzeitig einzubinden. Mit der Id kannst du außerdem das Aussehen der Word Cloud mit CSS steuern. Beispiel:</p>
+<p><code>[ wp-word-cloud source-type=&quot;inline&quot; id=&quot;wordcloud1&quot; ]Lorem Ipsum[ /wp-word-cloud ]</code></p>
+<p><code>[ wp-word-cloud source-type=&quot;inline&quot; id=&quot;wordcloud2&quot; ]Lorem Ipsum[ /wp-word-cloud ]</code></p>
+<h3 id="source-type"><strong>source-type</strong></h3>
+<p>Damit legst du fest, um was für eine Quelle es sich handelt. Dieser Parameter ist <strong>verpflichtend</strong>. Die folgenden Quellen werden unterstützt:</p>
+<h4 id="source-typeinline">source-type=inline</h4>
+<p>Der Text wird innerhalb des Shortcodes übermittelt, z.B:</p>
+<p><code>[ wp-word-cloud source-type=inline id=&quot;demo&quot; ]Lorem Ipsum[ /wp-word-cloud ]</code></p>
+<h4 id="source-typeurl">source-type=<strong>url</strong></h4>
+<p>Im Shortcode wird eine URL angegeben, von der der Text abgerufen wird, z.B:</p>
+<p><code>[ wp-word-cloud source-type=url id=&quot;demo&quot; ]https://www.spiegel.de[ /wp-word-cloud ]</code></p>
+<h4 id="source-typeid">**source-type=**id</h4>
+<p>Im Shortcode wird eine Id übergeben, die auf eine Seite oder einen Beitrag deiner Webseite verweist, z.B:</p>
+<p><code>[ wp-word-cloud source-type=id id=&quot;demo&quot; ]123[ /wp-word-cloud ]</code></p>
+<h4 id="source-typesql">source-type=sql</h4>
+<p>Im Shortcode wird eine SQL-Abfrage übergeben, die eine bereits gezählte Wortliste zurück gibt, z.B:</p>
+<p><code>[ wp-word-cloud source-type=sql id=&quot;demo&quot;]SELECT word,count FROM table;[ /wp-word-cloud]</code></p>
+<h4 id="source-typetags">source-type=tags</h4>
+<p>Die Word Cloud zeigt alle Tags deiner Seite an, hier musst du im Shortcode nichts weiter übergeben:</p>
+<p><code>[ wp-word-cloud source-type=tags id=&quot;demo&quot;]SELECT word,count FROM table;[ /wp-word-cloud]</code></p>
+<h4 id="source-typecustom-field">source-type=custom-field</h4>
+<p>Im Shortcode wird auf ein custom field, also benutzerdefiniertes bzw. eigenes Feld verwiesen, z.B:</p>
+<p><code>[ wp-word-cloud source-type=custom-field id=&quot;demo&quot;]my-custom-field[ /wp-word-cloud]</code></p>
+<p>Die Darstellung der <strong>eigenen Felder</strong> musst du im Gutenberg-Edito ggf. erst aktivieren. Klicke dazu das Punkt-Menü und dann ganz unten auf &ldquo;Ansicht anpassen&rdquo;. Es öffnet sich nun eine Liste, in der du die &ldquo;eigenen Felder&rdquo; aktivieren kannst:</p>
+<ul>
+<li>
+<p><img src="/2020/2020-06-09-wordpress-word-cloud-2-0/images/grafik-10.png" alt=""></p>
+</li>
+<li>
+<p><img src="/2020/2020-06-09-wordpress-word-cloud-2-0/images/grafik-11-700x1059.png" alt=""></p>
+</li>
+</ul>
+<p>Anzeigen der benutzerdefinierten Felder im Gutenberg-Editor</p>
+<h3 id="count-words"><strong>count-words</strong></h3>
+<p>Wenn die im Shortcode angegebene Quelle einen kompletten Text enthält, müssen die Wörter darin erst gezählt werden. Dazu muss <strong>count-words</strong> auf <strong>1</strong> gesetzt werden. Ist <strong>count-words=0</strong> gesetzt, erwartet das Plugin eine List mit gezählten Wörtern.</p>
+<h3 id="enable-frontend-edit"><strong>enable-frontend-edit</strong></h3>
+<p>Ist dieser Parameter auf 1 gesetzt, wird auf der Seite ein Textfeld angezeigt. Das Textfeld enthält den Text, der mit dem Shortcode definiert wurde. Der Besucher kann den Text dann beliebig verändern oder eigenen Text hinzufügen, um so die <strong>Word Cloud</strong> selber zu steuern. Die Berechnung der <strong>Word Cloud</strong> findet im Browser statt. Im folgenden Beispiel kommt der Text von einem benutzerdefiniertem Feld im Backend. Er wird an das Frontend ausgeliefert und dort in der Word Cloud dargestellt. Gleichzeitig kann man den Text aber auch anpassen und die Wolke neu zeichnen lassen:</p>
+<p><code>[ wp-word-cloud source-type=&quot;custom-field&quot; enable-frontend-edit</code>=1 <code>id=&quot;demo&quot;]my-custom-field[ /wp-word-cloud]</code></p>
+<p><img src="/2020/2020-06-09-wordpress-word-cloud-2-0/images/grafik-8-700x755.png" alt=""></p>
+<p>Ein Textfeld für die Besucher deiner Webseite</p>
+<h3 id="ocr---texterkennung">OCR - Texterkennung</h3>
+<h4 id="enable-ocr"><strong>enable-ocr</strong></h4>
+<p>Ist dieser Parameter auf 1 gesetzt, kann der Benutzer auf der Webseite ein Bild hochladen oder mit der Kamera aufnehmen. Im Browser findet dann eine Text-Erkennung statt. Die Wörter werden dann gezählt und die Word Cloud darauf basierend gezeichnet. Wenn <strong>enable-frontend-edit</strong> nicht aktiv ist, hat dieser Parameter keine Wirkung.</p>
+<p><code>[ wp-word-cloud source-type=&quot;custom-field&quot; enable-frontend-edit=1 enable-ocr=1 id=&quot;demo&quot;]my-custom-field[ /wp-word-cloud]</code></p>
+<p>Für diese Funktionalität greift das Plugin auf die <a href="https://tesseract.projectnaptha.com/">Tesseract-Bibliothek</a> zurück. Diese ermöglicht die Texterkennung von abfotografierten Dokumenten in verschiedenen Sprachen. Die Texterkennung erfolgt komplett im Browser, also beim Besucher der Webseite. Das Bild wird <strong>nicht zum Server hochgeladen</strong>.</p>
+<h4 id="ocr-language">ocr-language</h4>
+<p>Mit diesem Parameter legst du fest, welche Sprache(n) das ORC-Modul unterstützen soll. Standardmäßig ist hier deu eingestellt. Du kannst mehre Sprachen angeben, wenn du sie mit einem + trennst, z.B. Deutsch + Englisch:</p>
+<p><code>`[ wp-word-cloud source-type=&quot;custom-field&quot; enable-frontend-edit=1 enable-ocr=1 ocr-language=&quot;deu+eng&quot; id=&quot;demo&quot;]my-custom-field[ /wp-word-cloud]`</code></p>
+<p>Eine Liste aller unterstützten Sprachpakete findest du hier:</p>
+<p><a href="https://tesseract-ocr.github.io/tessdoc/Data-Files#data-files-for-version-400-november-29-2016">https://tesseract-ocr.github.io/tessdoc/Data-Files#data-files-for-version-400-november-29-2016</a></p>
+<h4 id="ocr-local-libraries">ocr-local-libraries</h4>
+<p>Das OCR-Modul lädt einige, größere Dateien von einem anderen Server nach, unter anderem auch die Sprachpakete. Du kannst diese Dateien auch auf deinem Server anbieten. Dazu musst du die folgenden Dateien herunterladen und im Unterordner &ldquo;<strong>lib</strong>&rdquo; innerhalb des Plugin-Ordners ablegen:</p>
+<ul>
+<li>[https://unpkg.com/tesseract.js@v2.0.0/dist/worker.min.js](<a href="https://unpkg.com/tesseract.js@v2.0.0/dist/worker.min.js%27">https://unpkg.com/tesseract.js@v2.0.0/dist/worker.min.js'</a> defer=&lsquo;defer)</li>
+<li>[https://unpkg.com/tesseract.js-core@v2.0.0/tesseract-core.wasm.js](<a href="https://unpkg.com/tesseract.js-core@v2.0.0/tesseract-core.wasm.js%27">https://unpkg.com/tesseract.js-core@v2.0.0/tesseract-core.wasm.js'</a> defer=&lsquo;defer)</li>
+</ul>
+<p>Außerdem benötigst du die von dir konfigurierten Sprachpakete. Diese kannst <a href="https://tesseract-ocr.github.io/tessdoc/Data-Files#data-files-for-version-400-november-29-2016">du hier für die Version 4 herunterladen</a>. Die Sprachpakete gehören ebenfalls in den Unterordner &ldquo;lib&rdquo;. Außerdem <strong>musst du manuell</strong> die Dateiendung &ldquo;.gz&rdquo; anhängen.</p>
+<h3 id="eingrenzen-der-wortliste">Eingrenzen der Wortliste</h3>
+<h4 id="min-word-length">min-word-length</h4>
+<p>Hiermit legst du fest, wie lang ein Wort mindestens sein soll, um beim Zählen berücksichtigt zu werden. Diese Einstellung wird <strong>nicht</strong> berücksichtigt, wenn du eine fertige Wortliste als Quelle angibst. In diesem Beispiel wird das Wort Foo beim Zählen ignoriert.</p>
+<p><code>`[ wp-word-cloud source-type=&quot;inline&quot; count-words=1 min-word-lenght=4 id=&quot;demo&quot;]Lorem Ipsum Foo[ /wp-word-cloud]`</code></p>
+<h4 id="min-word-occurence">min-word-occurence</h4>
+<p>Mit diesem Parameter legst du fest, wie oft ein Wort mindestens vorkommen muss, um in der word cloud dargestellt zu werden. Diese Einstellung wird <strong>immer</strong> berücksichtigt, auch wenn du eine fertige Wortliste als Quelle angibst. Im Beispiel werden nur Wörter in der word cloud dargestellt, die mindestens 2 mal vorkommen:</p>
+<p><code>`[ wp-word-cloud source-type=&quot;inline&quot; count-words=1 min-word-occurence=2 id=&quot;demo&quot;]Lorem Ipsum Foo[ /wp-word-cloud]`</code></p>
+<h4 id="black-list-und-enable-black-list">black-list und enable-black-list</h4>
+<p>Die Blacklist enthält Wörter, die beim Zählen nicht berücksichtigt werden dürfen. Das können z.B. Funktionswörter oder Fremdwörter sein, die du nicht in der word cloud sehen möchtest. Die Wörter werden mit einem Leerzeichen getrennt angegeben. Wenn du den Parameter im Shortcode angibst, wird die globale Einstellung komplett ignoriert. Die Blacklist wird nur verwendet, wenn der Parameter enable-black-list auf 1 gesetzt ist. Im Beispiel wird das Wort &ldquo;Lorem&rdquo; beim Zählen ignoriert, das es sich auf der Blacklist befindet.</p>
+<p><code>`[ wp-word-cloud source-type=&quot;inline&quot; count-words=1 enable-black-list`</code>=1 <code>`black-list=&quot;Lorem&quot; id=&quot;demo&quot;]Lorem Ipsum Foo[ /wp-word-cloud]`</code></p>
+<h4 id="enable-custom-black-list">enable-custom-black-list</h4>
+<p>Ist dieser Parameter aktiviert, kann der Besucher deiner Webseite Wörter in der word cloud anklicken, um sie aus der word cloud zu entfernen. Die Wörter erscheinen dann unter der word cloud in einer &ldquo;benutzerdefinierten&rdquo; Blacklist. Wenn sie dort erneut angeklickt werden, erscheinen sie wieder in der word cloud.</p>
+<p><img src="/2020/2020-06-09-wordpress-word-cloud-2-0/images/grafik-9-700x569.png" alt=""></p>
+<p>Eine word cloud mit benutzerdefinierter Blacklist, so schön!</p>
+<h4 id="persistent-custom-black-list">persistent-custom-black-list</h4>
+<p>Hiermit kannst du festlegen, dass die Blacklist erhalten bleibt, wenn der Besucher einen neuen Text in das Eingabefeld eingibt. Ist der Parameter deaktiviert, wird die benutzerdefnierte Blacklist gelöscht, sobald der Besucher einen neuen Text eingibt. Dieser Parameter ist nur wirksam, wenn auch das Textfeld aktiviert ist.</p>
+<h4 id="ignore-chars">ignore-chars</h4>
+<p>Mit diesem Parameter legst du fest, welche Zeichen aus dem Text entfernt werden, bevor er gezählt wird. Hier wird ein regulärer Ausdruck dieser Form erwartet:</p>
+<p><code>ignore-chars=&quot;\(\)\[\]\,\.;&quot;</code></p>
+<p>Auf diese Art kannst du ungewollte Satzzeichen, Sonderzeichen oder Steuerzeichen entfernen.</p>
+<h3 id="erscheinungsbild-anpassen">Erscheinungsbild anpassen</h3>
+<h4 id="style">style</h4>
+<h4 id="text-transform">text-transform</h4>
+<p>Hiermit kannst du festlegen, dass der Text beim Darstellen in der word cloud groß oder kleingeschrieben werden soll. Dieser Parameter kann dementsprechend drei Werte annehmen:</p>
+<ul>
+<li>uppercas (alle Wörter groß schreiben)</li>
+<li>lowercase (alle Wörter klein schreiben)</li>
+<li>none (keine Änderung)</li>
+</ul>
+<p>Diese word cloud nutzt als Ressource die aktuellen Mitteilungen von <a href="http://blog.fefe.de">fefe</a>:</p>
+<p>[wp-word-cloud source-type=&ldquo;url&rdquo; id=&ldquo;demo2&rdquo; count-words=1 min-word-occurence=1 min-word-length=3 size-factor=100 min-alpha=0.5 count-words=1]https://blog.fefe.de[/wp-word-cloud]</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> WordPress, Plugin, Word-Cloud, Projekt, Anleitung</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>development</category>
+      
+      <category>projekte</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>WordPress Word Cloud 2.0 - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>project_documentation</dc:type>
+      
+      
+    </item><item>
       <title>How to create a maze algorithm with JavaScript</title>
       <link>https://nickyreinert.de/2020/2020-05-11-how-to-create-a-maze-algorithm-with-javascript/</link>
       <pubDate>Mon, 11 May 2020 00:00:00 +0000</pubDate>
@@ -26,14 +230,14 @@
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Dieser Artikel behandelt How to create a maze algorithm with JavaScript und bietet praktische Einblicke in das Thema.</p>
+          <p>Ein kurzer Verweis auf einen ausführlichen, englischsprachigen Artikel des Autors auf der Plattform Medium. Der verlinkte Artikel beschreibt, wie man einen Algorithmus zur Erstellung eines Labyrinths mit JavaScript entwickelt.</p>
           
           
-          <p><strong>Hauptthemen:</strong> Web, IT, Tools</p>
+          <p><strong>Hauptthemen:</strong> JavaScript, Algorithmen, Game-Development, Labyrinth</p>
           
           
           
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
           
         </div>
         
@@ -68,7 +272,7 @@
       
       
       
-      <dc:type>guide</dc:type>
+      <dc:type>link_post</dc:type>
       
       
     </item><item>
@@ -84,10 +288,10 @@
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Dieser Artikel behandelt Wie erstelle ich ein Labyrinth mit JavaScript? und bietet praktische Einblicke in das Thema.</p>
+          <p>Eine detaillierte Schritt-für-Schritt-Anleitung zur prozeduralen Erzeugung eines Labyrinths mit reinem JavaScript und HTML. Das Tutorial entwickelt iterativ einen Algorithmus, der von einem einfachen Pfad bis zu einer komplexen Lösung mit dem `Recursive Backtracker`-Ansatz führt, um ein lösbares Labyrinth mit Sackgassen zu generieren.</p>
           
           
-          <p><strong>Hauptthemen:</strong> Web, IT, Tools</p>
+          <p><strong>Hauptthemen:</strong> JavaScript, Algorithmen, Game-Development, Prozedurale Generierung, HTML DOM</p>
           
           
           
@@ -836,7 +1040,7 @@ Auch die Liste möglicher Ausgänge wird etwas anders organisiert:</p>
       
       
       
-      <dc:type>guide</dc:type>
+      <dc:type>tutorial</dc:type>
       
       
     </item><item>
@@ -941,6 +1145,468 @@ Auch die Liste möglicher Ausgänge wird etwas anders organisiert:</p>
       
       
       <dc:type>guide</dc:type>
+      
+      
+    </item><item>
+      <title>Wordpress Debugging und Wartung oder: Keine Panik vor dem White Screen of Death und HTTP 500</title>
+      <link>https://nickyreinert.de/2018/2018-11-18-wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death/</link>
+      <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2018/2018-11-18-wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death/</guid>
+      <description>Deine Wordpress-Seite besteht nur aus einem weißen Bildschirm, dem HTTP-Fehlercode 500 oder lädt irsinnig langsam? White Screen of Death (WSoD), die …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine umfassende Anleitung zur Fehlersuche und Wartung von WordPress. Der Artikel erklärt, wie man Probleme wie den &#34;White Screen of Death&#34; (WSoD) und HTTP-500-Fehler systematisch analysiert. Vorgestellt werden drei wesentliche Werkzeuge: die Entwicklerkonsole des Browsers, das Plugin &#34;Query Monitor&#34; zur Performance-Analyse und die korrekte Konfiguration des WordPress-Debug-Modus über `wp-config.php` und `.htaccess`.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> WordPress, Debugging, Troubleshooting, Performance, PHP, Web-Development</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Deine Wordpress-Seite besteht nur aus einem weißen Bildschirm, dem <strong>HTTP-Fehlercode 500</strong> oder lädt irsinnig langsam? <strong>White Screen of Death</strong> (WSoD), die berüchtigten <strong>500´er</strong> sowie lange <strong>Ladezeiten</strong> scheinen zu den größten Herausforderungen im Umgang mit WordPress zu gehören und sie hinterlassen regelmäßig lange Gesichter. Zwar gehören Ladezeit, PHP- und HTTP-Fehler nicht unbedingt zusammen, sie erfordern aber in der Regel das gleiche Vorgehen: Nämlich die <strong>Analyse</strong>, was da im <strong>Hintergrund</strong> so passiert.<br>
+Die Suche nach der Ursache ist oft relativ simpel. Es sagt einem oft nur niemand. Der beliebteste Tipp bei Wordpress lautet oft:</p>
+<blockquote>
+<p><em>&ldquo;Deaktiviere mal alle Plugins und aktiviere sie nacheinander wieder.&rdquo;</em></p>
+<p><em>Anonymer Ratgeber, Mai 2018</em></p></blockquote>
+<p>Das ist alles andere als effizient, ja nicht einmal effektiv: Du erfährst nach 27 Minuten und zwei Tassen Kaffe, dass das Plugin &ldquo;Foobar&rdquo; für den Fehler verantwortlich ist, weil das den <strong>WSoD</strong> auslöst. Aber dann weißt du immer noch nicht, was genau der Fehler ist. Danke für nichts?</p>
+<p>Tatsächlich gibt es nur <strong>drei Dinge</strong>, die dir helfen können, dir selber zu helfen, wenn WordPress dich mal wieder im Stich lässt. Und diese drei Werkzeuge zur <strong>Fehlersuche</strong> und <strong>Diagnose</strong> langsamer Wordpress-Installation stelle ich jetzt einmal vor:</p>
+<h2 id="1-die-entwickler-konsole-deines-browsers">1. Die Entwickler-Konsole deines Browsers</h2>
+<p>Dieses Werkzeug bringt mittlerweile jeder moderne Browser mit und das sollte auch die <strong>erste Anlaufstelle</strong> für dich sein. Welche Entwicklerkonsole du verwendest, ist deinem Geschmack überlassen, in der Funktionalität unterscheiden sie sich kaum. Du öffnest die Entwicklerkonsole auf vielfältige Weise über</p>
+<ul>
+<li>das Kontextmenü (Rechte Maustaste -&gt; Element untersuchen) oder</li>
+<li>über mit der Funktionstaste F12 oder</li>
+<li>mit dem Shortcut CTRL+SHIFT+I (Windows) / CMD+OPT+I (OS X)</li>
+</ul>
+<p>[gallery link=&ldquo;file&rdquo; columns=&ldquo;4&rdquo; ids=&ldquo;2356,2357,2358,2359&rdquo;]</p>
+<h2 id="2-der-query-monitor---warum-ist-dein-wordpress-so-langsam">2. Der Query Monitor - warum ist dein Wordpress so langsam?</h2>
+<p>Der <a href="https://de.wordpress.org/plugins/query-monitor/">Query Monitor</a> ist ein wirklich nützliches <strong>Plugin</strong> für Wordpress. Eines der wenigen. Du fragst dich, warum deine Seite so lange lädt und die Entwicklerkonsole gibt nicht vielmehr her als ein <strong>TTFB</strong> (Time To First Byte) von 60 Sekunden?</p>
+<p>Die Entwicklerkonsole sagt dir nur, wie lange der Browser auf den Inhalt wartet. Hier kann maximal identifiziert werden, dass die reine Wartezeit (<strong>TTFB</strong>) 60 Sekunden beträgt und der Inhalt in 10 Sekunden heruntergeladen wird (die ganzen anderen Nerd-Kennzahlen jetzt mal außen vor gelassen). Letzteres liegt ziemlich wahrscheinlich an der Internetleitung von dir oder dem Hoster. Aber TTFB? Das ist im Grunde die Zeit, die der Server benötigt um die Ausgabe einmal zusammenzuschustern und zu deinem Browser zu schicken. Also das ganze PHP-Gedöns einmal &ldquo;interpretieren&rdquo; und ein paar Datenbankabfragen durchführen. Je umfangreicher deine WordPress-Seite ist (sprich Plugin-Vielfalt), desto mehr gibt es hier zu tun. Und was da im Hintergrund genau passiert, sagt dir der <strong>Query Monitor</strong>.</p>
+<p>[gallery link=&ldquo;file&rdquo; columns=&ldquo;2&rdquo; ids=&ldquo;2354,2355&rdquo;]</p>
+<p>Nach der Installation siehst du in der Admin-Toolbar erstmal ein paar oberflächliche Zahlen: <strong>Ladezeit,</strong> <strong>Größe</strong> und <strong>Anzahl der Queries.</strong> Wirklich spannend wird es, wenn du mal auf diese Zahlen klickst. Dann öffnet sich eine &ldquo;<em>Entwickler-Konsole&rdquo;,</em> die deiner WordPress-Seite mal gehörig unter die Haube schaut. Du siehst <strong>Datenbankabfragen,</strong> <strong>Scripte,</strong> <strong>Funktionen</strong> und alle möglichen Diagnostiken - einfach alles. Du kannst nun relativ zügig erkennen, ob manche Abfragen einfach nur doppelte durchgeführt wurden oder die Datenbank grundsätzlich zu langsam ist.</p>
+<h2 id="3-der-debug-modus">3. Der Debug-Modus</h2>
+<p>DasBbeste zum Schluss - der Debug-Modus verrät dir wirklich alles und ist eigentlich der Premium-Weg der Problemlösung.</p>
+<p>Du wirst nur selten erleben, dass Wordpress bzw. dein Server dich wirklich gar nicht mit einer Fehlermeldung erhellen will. Der unliebsame <strong>White Screen of Death</strong> und der gefürchtete <strong>HTTP-Fehler 500</strong> sind im Grunde nur der Standardeinstellungen geschuldet. Du kannst dann entweder ein Ticket bei deinem Hoster öffnen und im nächsten Jahr mit einer Antwort rechnen oder versuchen, selber an die Fehlermeldung zu gelangen und das Problem eigenständig zu analysieren: <strong>Der geheime Trick</strong> lautet nämlich, einfach mal das Internet nach der Fehlermeldung zu durchsuchen. <strong>In 99,99% der Fälle</strong> bist du bei weitem nicht der erste mit diesem banalen Problem..</p>
+<p>Die wahre Herausforderung ist allerdings, dass die Ausgabe von Fehlermeldungen eben standardmäßig unterdrückt  wird. Aus Gründen der Sicherheit und Bedienbarkeit ist das grundsätzlich nicht verkehrt. Wenn du doch mal wissen willst, woher der <strong>White Screen of Death</strong> wirklich kommt, gehst du folgendermaßen vor:</p>
+<h3 id="a-du-aktivierst-die-fehlerausgabe-von-wordpress">A: Du aktivierst die Fehlerausgabe von Wordpress</h3>
+<p>Dazu öffnest du die Datei wp-config.php, nachdem du sie lokal gespeichert hast, und setzt folgenden Parameter direkt an den Anfang, aber hinter das <em>&lt;?php</em>:</p>
+<?php
+define( 'WP\_DEBUG', true );
+define( 'WP\_DEBUG\_LOG', true ); 
+define('WP\_DEBUG\_DISPLAY', false);
+
+Der 1. Parameter ist für das debuggen _essentiell:_ Damit aktivierst du die Ausgabe von Fehlermeldungen.
+
+Mit dem 2. Parameter gibst du die Anweisung, dass die Fehlermeldungen in einer Datei gespeichert werden. Das ist aus zwei Gründen nützlich: Du kannst es später einfacher Nachvollziehen und außerdem solltest du vermeiden, dass Fehlermeldungen, die vielleicht sensible Informationen enthalten, direkt im Frontend landen.
+
+Die besagte Datei befindet sich um Order /wp-content und heißt **debug.log**. etzt du **WP\_DEBUG\_LOG** auf true, wird Wordpress Fehlermeldungen in die Date _/wp-content/debug.log_ schreiben. Für die nachträgliche Analyse ist das sehr praktisch. Das funktioniert natürlich nur, wenn der Ordner beschreibbar ist. Andernfalls musst du diesen Parameter und den folgenden weglassen.
+
+Der letzte Parameter sorgt noch einmal explizit dafür, dass die Fehlermeldungen nicht im Frontend angezeigt werden.
+
+Neben diesen 3 Parameter gibt es noch **SCRIPT\_DEBUG**. Mit true aktiviert, sorgt dieser Schalter dafür, dass Wordpress die "echten" CSS- und JS-Dateien liest, anstatt der minifizierten. Das wird dich nur in Spezialfällen betreffen, solltest du aber kennen. Der nächste **Spezialparameter** in der Riege ist **SAVEQUERIES** - hiermit wird dir WordPress die Datenbank-Anfragen ausgeben. Auch das ist in der Regel nicht notwendig, aber gut zu wissen.
+
+Denke daran, dass die Parameter im weiteren Verlauf der Config-Datei nicht wieder vorkommen und deine Einstellung so aufheben und vor allen, dass du die Parameter in einem Live-System nach der Fehlersuche **wieder auf _false_ zurücksetzen** solltest.
+
+### B: Du aktivierst die Fehlerausgabe deines Servers
+
+Eigentlich sollte dir **Nummero A** bereits weiterhelfen, denn damit wird auch die Fehlerausgabe von PHP aktiviert. Sollte deine Seite trotzdem weiß bleiben und dich nicht mit zusätzlichen Fehlernachrichten beglücken, kannst du etwas tiefer in die Trickkiste greifen. Diese Parameter machen im Grunde nichts anderes, als oben schon beschreiben ist, sie greifen allerdings etwas "früher" ein.
+
+Ergänze, ebenfalls direkt hinter dem _<?php_ der Datei _wp-config.php_ die folgenden Zeilen:
+
+<?php
+error\_reporting(E\_ALL);
+ini\_set('display\_errors', 1);
+ini\_set('display\_startup\_errors', 1);
+// ini\_set("log\_errors", 1);
+// ini\_set("error\_log", "/pfad/zu/wordpress/temp/php-error.log");
+
+Die beiden letzten Zeilen aktivieren, ähnlich wie oben, dass PHP Fehlermeldungen in eine Datei schreibt. Da die Log-Datei bei der ad hoc Fehlersuche nicht zwingend hilfreich ist, sind diese beiden Zeilen auskommentiert.
+
+Wenn du den Pfad zu deiner Installation nicht kennst, bekommst du sie mit folgendem PHP-Befehl heraus. Wenn du diese Information nicht mehr benötigst, entferne sie aber sofort aus deinem Script. **Security through obscurity** - das _Document Root_ geht niemanden außer dich etwas an!
+
+var\_dump($\_SERVER\["DOCUMENT\_ROOT"\]);
+
+Achtung: Auf manchen Seiten wird dir empfohlen, den Zeilen ein @ vorzustellen. Das ist **ziemlich kontraproduktiv** - denn [das @ am Anfang der Zeile unterbindet Fehlermeldungen](http://php.net/manual/de/language.operators.errorcontrol.php) und weshalb bist du hier? Genau...
+
+Das ist aber noch nicht alles - die Trickkiste ist noch tiefer. Doch obacht! Das folgende ist **Premium-Klasse-Debuggung** und auf den meisten Shared-Hostern gar nicht möglich. Die essentiellen Parameter befinden sich in der ersten Zeile. Die noch tiefergreifenden und wirklich nur in absoluten Sonderfällen benötigten Einstellungen sind darunter aufgeführt.
+
+Öffne die Datei **.htaccess** und ergänze die folgenden Zeilen - auch hier gilt, achte darauf, dass die Parameter nicht an anderer Stelle ungewollt überschrieben werden:
+
+\# Easy-Peasy Lemon-Squeezy:
+php\_flag display\_startup\_errors on
+php\_flag display\_errors on
+php\_flag html\_errors on
+php\_flag log\_errors on
+
+# Fürs Protokoll: Wenn du das volle Entertainment brauchst
+# nimm auch das hier mit - für alle Copy&Paste-Cowbowys, die 
+# den Warnhinweis nicht lesen, habe ich die Zeilen auskommentiert
+# php\_flag ignore\_repeated\_errors off
+# php\_flag ignore\_repeated\_source off
+# php\_flag report\_memleaks on
+# php\_flag track\_errors on
+# php\_value docref\_root 0
+# php\_value docref\_ext 0
+# php\_value error\_log /pfad/zu/wordpress/temp/php-error.log
+# php\_value error\_reporting -1
+# php\_value log\_errors\_max\_len 0
+
+# <Files php\_errors.log>
+#      Order allow,deny
+#      Deny from all
+#      Satisfy All
+# </Files>
+
+Warum A und warum B? Es ist möglich, dass die Server-Konfiguration es aus Sicherheitsgründen nicht zulässt, dass diese sogenannten **PHP-Direktiven** (aka Parameter) an beliebigen Stellen (aka .htaccess, in der PHP-Datei, ...) konfiguriert wird. Deshalb.  
+Und was ist mit C - der **php.ini**\-Datei? Gute Frage, werter Leser, die bei dir ein gewisses Grundwissen erkennen lässt. Chapeau. In dem Fall gehe ich sehr stark davon aus, dass du Zugriff auf eben diese Datei hast. Und wer Zugriff auf diese Datei hat, mit diesem Vorwissen, ist ziemlich sicher und hoffentlich mit der notwendigen Erfahrung ausgestattet. Andernfalls: Ruf deinen SysOp an. ;) Fühle dich trotzdem herzlich dazu eingeladen, diesen Beitrag mit etwas zuästzlichem Fachwissen in den **Kommentaren** zu bereichern.
+
+### C: Den Debug-Modus bei deinem Hoster aktivieren
+
+Bei der Einstellung des Debug-Modus gibt es eine Hierarchie. Die Debug-Einstellung in der PHP-Datei (**wp-config.php**) ist hierbei die oberste Ebene, darunter folgt die Einstellung in der **.htaccess-Datei** und auf unterster Ebene lässt sich diese Funktion in der Einstellung des Servers bzw. PHP-Interpreters direkt einstellen (z.B. **php.ini**). Damit unbedarfte Laien wie wir an dieser Datei nicht wahllos rumfingern, ist bleibt uns diese Möglichkeit entweder komplett verwehrt oder ist nur über das Interface bei deinem Hoster einstellbar. Dort kann der Hoster auch festlegen, dass diese Einstellung (in Fachkreisen gerne auch **Direktive** genannt) in den Ebenen darüber gar nicht anpassen werden darf - **Schritt A und B bleiben also unwirksam.** Das ist der Zeitpunkt, wenn du in den Einstellungen bei deinem Hoster nach dieser Einstellung suchst - oder den Hoster darum bittest, den Debug-Modus für dich zu aktivieren.
+
+Bei HostEurope kannst du das z.B. sehr leicht selber tun:
+
+[![Host Europe Debug Modus aktivieren ](images/host_europe_debug_aktivieren-300x232.png)](https://www.nickyreinert.de/files/wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death/host_europe_debug_aktivieren.png)
+
+Host Europe Debug Modus aktivieren
+
+## Freibier - Nachwort - Lies  mich!
+
+Das ist jetzt wirklich wichtig: Wie immer, und oben bereits erwähnt, gilt auch hier: **Security through obscurity**.
+
+> Wenn du den Debug-Modus auf dem Live-System nicht mehr benötigst, deaktiviere ihn. Basta.
+
+Auf **Live-Systemen** hat der **Debug-Modus nur in Ausnahmefällen** etwas verloren. Und Fehler sollten zur Ausnahme zählen. Und auch, wenn du hier nur ein wenig an den PHP-Dateien rumschraubst, wobei eigentlich nicht viel kaputt gehen kann:
+
+> Denke an die obligatorische Sicherungskopie.
+
+Und jetzt viel Spass beim d_ebuggen_...
+
+Ach ja - wenn all das da oben nicht funktioniert, dann kannst du tatsächlich auch mal den Holzhammer rausholen: **Plugins aktivieren und deaktivieren**. In der Regel helfen dir die hier geschilderten Schritte aber, genau diesen mühsamen Schritt zu übergehen.
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> WordPress, Debugging, Anleitung, Fehlerbehebung, Performance</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>wordpress</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Wordpress Debugging und Wartung oder: Keine Panik vor dem White Screen of Death und HTTP 500 - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>troubleshooting_guide</dc:type>
+      
+      
+    </item><item>
+      <title>Drölf erstaunlich einfache Wege wirklich beeindruckende Screenshots zu erstellen</title>
+      <link>https://nickyreinert.de/2018/2018-10-26-droelf-erstaunlich-einfache-wege-wirklich-beeindruckende-screenshots-zu-erstellen/</link>
+      <pubDate>Fri, 26 Oct 2018 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2018/2018-10-26-droelf-erstaunlich-einfache-wege-wirklich-beeindruckende-screenshots-zu-erstellen/</guid>
+      <description>[caption id=&ldquo;attachment_2364&rdquo; align=&ldquo;alignright&rdquo; width=&ldquo;183&rdquo;] Screenshot mit dem Handy aufnehmen ist so 90er[/caption]
+Eine …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine umfassende und humorvolle Anleitung, die verschiedene einfache Methoden zur Erstellung hochwertiger Screenshots vorstellt. Der Artikel behandelt die integrierten Werkzeuge und Tastenkombinationen in macOS und Windows 10 sowie die Screenshot-Funktionen der Webbrowser Firefox, Chrome und Microsoft Edge.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Screenshots, Anleitungen, macOS, Windows 10, Browser-Tools, Produktivität</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>[caption id=&ldquo;attachment_2364&rdquo; align=&ldquo;alignright&rdquo; width=&ldquo;183&rdquo;]<a href="https://www.nickyreinert.de/files/droelf-erstaunlich-einfache-wege-wirklich-beeindruckende-screenshots-zu-erstellen/screenshot-mit-dem-handy.jpg"><img src="/2018/2018-10-26-droelf-erstaunlich-einfache-wege-wirklich-beeindruckende-screenshots-zu-erstellen/images/screenshot-mit-dem-handy-183x300.jpg" alt="Screenshot mit dem Handy aufnehmen ist so 90er"></a> Screenshot mit dem Handy aufnehmen ist so 90er[/caption]</p>
+<p>Eine Studie hat ergeben, dass 99 von 100 Bildschirmaufnahmen (neudeutsch <strong>Screenshots</strong>) mit dem Handy aufgenommen werden. Warum ist das falsch? Nun:</p>
+<ul>
+<li>Weil die Qualität der Aufnahmen mit dem Smartphone oft ziemlich schlecht ist,</li>
+<li>der staubige Bildschirm zusätzlich vom Wesentlichen ablenkt sowie</li>
+<li>Licht-Reflexionen oder Moiré-Effekte wichtige Inhalte verdecken.</li>
+<li>Außerdem muss man den Screenshot, wenn man ihn in einem Forum oder einer Social Media Gruppe präsentieren will, unter Umständen erst noch umständlich mit dem Smartphone speichern, ausschneiden, bearbeiten und irgendwo hochladen.</li>
+<li>Auf einem Smartphone-Foto ist nicht sofort ersichtlich, um welche Teile des Bildschirms es denn nun geht.</li>
+</ul>
+<p><strong>Konfuzius</strong>, ein berühmter buddhistischer Priester und begeisterter Internetnutzer, hat es mal so zusammengefasst:</p>
+<blockquote>
+<p>Wer Screenshots im 21. Jahrhundert mit dem Handy im Hochformat aufnimmt, hat die Kontrolle über sein Leben verloren.</p></blockquote>
+<p>Dabei sind die technischen Möglichkeiten zur Aufnahme von Screenshots mittlerweile so viel mehr bequemer als noch zu Zeiten von Netscape und Microsoft DOS. Hier stelle ich die besten und vor allem einfachsten vor!</p>
+<h2 id="screenshots-in-mac-os-x-aufnehmen">Screenshots in Mac OS X aufnehmen</h2>
+<p>Das Betriebssystem von Apple bietet schon eine ganze Weile eine Reihe von Shortcuts an, mit denen sich Bildschirminhalte als Bilddatei aufnehmen lassen:</p>
+<ol>
+<li>Will man den <strong>gesamten Bildschirm</strong> aufnehmen und direkt als Datei speichern, drückt man die folgenden Tasten gleichzeitig: <strong>Umschalttaste-Befehlstaste(⌘)-3</strong>.</li>
+<li>Soll nur ein <strong>bestimmter Bereich</strong> aufgenommen werden, lautet der Shortcut <strong>Umschalttaste-Befehlstaste(⌘)-4</strong> - der Mauscursor wird zu einem Fadenkreuz um damit den gewünschten Bereich zu markieren</li>
+<li>Zur <strong>Aufnahme eines Fensters</strong> drückt man ebenso <strong>Umschalttaste-Befehlstaste(⌘)-4 und danach die Leertaste</strong>. Nun lässt sich das Fenster per Mausklick auswählen.</li>
+<li>Möchte man die Aufnahme nicht als Datei speichern, sondern in direkt in die <strong>Zwischenablage</strong> kopieren, drückt man zu den oben genannten Tastenkombinationen <strong>zusätzlich die CTRL-Taste</strong></li>
+</ol>
+<p>Die komplette Dokumentation dazu befindet sich hier: <a href="https://support.apple.com/de-de/ht201361">https://support.apple.com/de-de/ht201361</a></p>
+<p>Mit der <a href="https://help.apple.com/macOS/mojave/whats-new/?lang=de">neuen Version MacOS</a> führt Apple ein verbessertes Tool für Screenshots ein (<strong>Umschalttaste-Befehlstaste(⌘)-4</strong>). Nun gibt es einen Timer (5 oder 10 Sekunden) und eine kleine Oberfläche um den Bildschirmaufnahme bequemer zu konfigurieren.</p>
+<h2 id="screenshots-in-windows-10-aufnehmen">Screenshots in Windows 10 aufnehmen</h2>
+<p>Windows von Hause aus eine noch größere Vielzahl von Möglichkeiten an, bequem Screenshots zu erstellen:</p>
+<ol>
+<li>
+<p>Das <strong>Snipping Tool</strong> zur Aufnahme und Bearbeitung von Screenshots ist schon seit Windows 7 Bestandteil des Betriebssystems. Es unterstützt die Aufnahme von beliebigen Bereich, dem ganzen Bildschirm oder sogar komplexer Formen. Außerdem lässt sich eine Verzögerung einstellen, um z.B. Hover-Effekte zu dokumentieren. Außerdem lassen sich bereich mit Farben einfach markieren. Wenn man das Snipping-Tool in der Taskleiste abgelegt hat, kann man über das Kontextmenü zu den Eigenschaften. Dort kann man eine Tastenkombination festlegen, um das Tool jederzeit schnell aufrufen zu können.</p>
+<p>[caption id=&ldquo;attachment_1790&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/12-erstaunliche-und-einfache-wege-beeindruckende-screenshots-zu-erstellen/snipping-tool.png"><img src="/2018/2018-10-26-droelf-erstaunlich-einfache-wege-wirklich-beeindruckende-screenshots-zu-erstellen/images/snipping-tool-300x206.png" alt="Eigenschaften für das Snipping-Tool öffnen"></a> Eigenschaften für das Snipping-Tool öffnen[/caption]</p>
+</li>
+<li>
+<p>Den <strong>gesamten Bildschirm</strong> kann man auf einer Windows-Tastatur mit der <strong>Druck- bzw. PrtScr-Taste</strong> direkt in die Zwischenablage kopieren. Drückt man die <strong>Druck-Taste und Windows-Taste gleichzeitig,</strong> wird der Screenshot im Ordner Bilder - Screenshot <strong>als Datei abgelegt</strong>.</p>
+</li>
+<li>
+<p>Nutzt man mehrere Monitore und will nur den gerade aktiven Bildschirm in die Zwischenablage packen, funktioniert das mit <strong>Alt+Druck-Taste</strong>.</p>
+</li>
+<li>
+<p>Seit Windows 10 gibt es außerdem das <strong>Ink-Tool</strong>, das sich mit <strong>Windows-Taste+W</strong> aufrufen lässt und eine ganze Palette von zusätzlichen Funktionen mitbringt.</p>
+<p>[caption id=&ldquo;attachment_1784&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;189&rdquo;]<a href="https://www.nickyreinert.de/files/12-erstaunliche-und-einfache-wege-beeindruckende-screenshots-zu-erstellen/windows-ink.png"><img src="/2018/2018-10-26-droelf-erstaunlich-einfache-wege-wirklich-beeindruckende-screenshots-zu-erstellen/images/windows-ink.png" alt="Screenshot in Windows mit Ink erstellen"></a> Screenshot in Windows mit Ink erstellen[/caption]</p>
+</li>
+<li>
+<p>Noch etwas komfortabler als das Snipping-Tool, aber kein Standard-Bestandteil von Windows, ist <a href="https://www.microsoft.com/en-us/garage/profiles/snip/">Snip</a>.</p>
+</li>
+</ol>
+<h2 id="screenshot-im-browser-direkt-aufnehmen">Screenshot im Browser direkt aufnehmen</h2>
+<p>Auch die Browser-Hersteller haben erkannt, dass Screenshots wohl ein essentieller Bestandteil des Internets sind. So bieten die gängigsten Browser mittlerweile Funktionen zur Aufnahme des Bildschirms an.</p>
+<ol>
+<li>
+<p>In <strong>Firefox</strong> befindet sich die Funktion direkt im Kontext-Menü jeder Website. Damit lassen sich bestimmte Elemente der Seite, freie Bereich oder die ganze Seite als Screenshot in die Zwischenablage kopieren, als Datei speichern oder sogar in einer Firefox-Cloud ablegen um sie online unter <a href="https://screenshots.firefox.com/shots">https://screenshots.firefox.com/shots</a> verfügbar zu machen!</p>
+<p>[caption id=&ldquo;attachment_1789&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/12-erstaunliche-und-einfache-wege-beeindruckende-screenshots-zu-erstellen/firefox.png"><img src="/2018/2018-10-26-droelf-erstaunlich-einfache-wege-wirklich-beeindruckende-screenshots-zu-erstellen/images/firefox-300x165.png" alt="Screenshot in Firefox anfertigen"></a> Screenshot in Firefox anfertigen[/caption]</p>
+</li>
+<li>
+<p>In <strong>Chrome</strong> ist die Screenshot-Funktion leider etwas versteckt und nicht sehr komfortabel. Am schnellsten erreicht man diese über die Kommandofunktion. Zunächst muss man die Entwicklerkonsole öffnen indem man z.B. die <strong>Taste F12</strong> oder <strong>Control+Shift+I</strong> drückt (Mac: <strong>Command+Option+I</strong>). Dann gelangt man mit Strg+Shift+P zur Auswahl der Chrome-Kommandos wo man nach der Screenshot-Funktion suchen kann. Der lange Weg führt übrigens über die Geräte-Toolbar, mit der Chrome verschiedene Geräteklassen simulieren kann (Ctrl+Shift+M). Dort muss erst oben die gewünschte Auflösung bzw. das Gerät auswählen. Über das kleine Menü in der rechten oberen Ecke gelangt man dann schließlich zur Screenshot-Funktion.[gallery ids=&ldquo;1788,1787,1786&rdquo;]</p>
+</li>
+<li>
+<p>Der neue Microsoft Browser <strong>Edge</strong> ist hier wieder etwas komfortabler. Die Funktion befindet sich hinter dem Button &ldquo;<strong>Notizen einfügen</strong>&rdquo; (Pen &amp; Stencil) rechts neben der Adressleiste. Das Tool bietet sehr viele Funktionen, um den Screenshot aufzunehmen und mit Notizen zu versehen.</p>
+<p>[caption id=&ldquo;attachment_1785&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;294&rdquo;]<a href="https://www.nickyreinert.de/files/12-erstaunliche-und-einfache-wege-beeindruckende-screenshots-zu-erstellen/edge-notizen.png"><img src="/2018/2018-10-26-droelf-erstaunlich-einfache-wege-wirklich-beeindruckende-screenshots-zu-erstellen/images/edge-notizen.png" alt="Screenshot anfertigen in Microsoft Edge"></a> Screenshot anfertigen in Microsoft Edge[/caption]</p>
+</li>
+</ol>
+<h2 id="screenshot-mit-dem-smartphone-aufnehmen">Screenshot mit dem Smartphone aufnehmen</h2>
+<p>Du kannst natürlich nicht immer einen ausgewachsenen Computer zur Hand haben und manchmal will man tatsächlich etwas dokumentieren, was einem auf dem kleinen Smartphone-Bildschirm widerfahren ist. Bevor du dir dazu ein weiteres Smartphone nimmst um ein Foto von deinem Smartphone-Display zu machen: Zumindest Android hat seit geraumer Zeit eine Screenshot-Funktion eingebaut: Wenn du den An-/Aus-Button etwas länger drückst, erscheint ein Menü, in dem du die Wahl zwischen Screenshot und sogar einer Bewegtbild-Aufnahme des Bildschirms hast.</p>
+<h2 id="zusammenfassung">Zusammenfassung</h2>
+<p>Mit den hier beschriebenen Methoden landet der hochwertige Screenshot mit geringem Aufwand direkt in der Zwischenablage des Computers (oder als Datei in einem Ordner). Die meisten modernen Plattformen wie Facebook oder Twitter erlauben außerdem mittlerweile das direkte Einfügen von Bildern - also auch Screenshots - aus der Zwischenablage in den Beitrag oder Tweet (z.B. unter Windows mit <strong>CTRL+V</strong>). Man kann also innerhalb weniger Sekunden und mit wenigen Handgriffen einen ansehnlichen Screenshot erstellen, gegebenenfalls fragliche Bereich farblich hervorheben und dann in einen Beitrag auf Facebook kopieren.</p>
+<p>Also, pack dein Smartphone weg oder nutze es für die wirklich wichtigen Dinge und überlasse die richtig guten Screenshots deinem Computer.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> screenshots, anleitung, macOS, Windows</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>office</category>
+      
+      <category>tools</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Drölf erstaunlich einfache Wege wirklich beeindruckende Screenshots zu erstellen - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
+      
+    </item><item>
+      <title>Wordpress-Security Checkliste</title>
+      <link>https://nickyreinert.de/2000/2000-01-01-wordpress-security-checkliste/</link>
+      <pubDate>Sat, 01 Jan 2000 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2000/2000-01-01-wordpress-security-checkliste/</guid>
+      <description>Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine detaillierte Checkliste zur Absicherung von WordPress-Installationen, gegliedert nach dem Grad des Nutzerzugriffs (WordPress.com, Shared Hosting, eigener Server). Der Artikel behandelt essenzielle Sicherheitspraktiken wie Updates, Backups, Staging-Systeme sowie technische Maßnahmen wie `.htaccess`-Schutz, korrekte Dateirechte und die Konfiguration von PHP.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> WordPress, Web-Sicherheit, Systemadministration, PHP, Server-Konfiguration</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch kriminelle Geister an und so schwirren immer wieder Nachrichten über Sicherheitslücken und gehackte WP-Seiten durch die einschlägigen Medien. Aus diesem Grund will ich mal meine Erfahrungen in Bezug auf Wordpress-Sicherheit an dieser Stelle zusammenfassen und zwar so kompakt wie möglich, damit diese Information als Checkliste genutzt werden kann.</p>
+<p>Wenn du Betreiber einer Wordpress-Seite bist, gibt es dafür drei Wege und unterschiedliche Freiheiten, sich selber um die Sicherheit der WP-Installation zu nutzen - im folgenden die &ldquo;Freiheitsgrade&rdquo; genannt: Bei &ldquo;wordpress as a service&rdquo; greifst du auf einen Angebot zurück, das bekannteste ist wordpress.com, bei dem du nur Zugriff auf das Backend hast und dementsprechend wenig Konfigurationsmöglichkeiten. Als Nutzer eines Shared Hosting hast du zusätzlich die Möglichkeit, per FTP oder SSH auf den Webspace zu gelangen und dort Einstellungen vorzunehmen. Und schließlich gibt es noch die Möglichkeit, einen eigenen Server zu nutzen, bei dem du dich auch um die Konfiguration auf Systemebene, also des Webserver kümmern musst. In dieser Reihenfolge möchte ich nun im folgenden Zusammenfassen, welche Möglichkeiten du hast, deine WP-Installation etwas sicherer zu gestalten.</p>
+<h2 id="aktuelle-updates">Aktuelle Updates</h2>
+<p>Zunächst zum Offensichtlichen: Sicherheitsupdates. Die automatischen Updates des WP-Cores (also dem, was WP ausmacht) sind mit jedem Freiheitsgrad konfigurierbar, bergen aber auch Risikos. So hatte z.B. das Update auf Version 4.9.3 Anfang 2018 den Auto-Update-Mechanismus deaktiviert. Spätere Sicherheitsupdates würden also ignoriert werden. Grundsätzlich ist das Auto-Update nur für sog. Minor-Versionen zu empfehlen, wodurch Sicherheitlücken und Bugs behoben werden. Wer diese Funktion auf einem Test-System auch für Major-Versionen aktivieren möchte, muss in der wp-config.php folgenden Parameter setzen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">define</span><span class="p">(</span> <span class="s1">&#39;WP_AUTO_UPDATE_CORE&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span> <span class="p">);</span>
+</span></span></code></pre></div><p>(der Parameter ist per default auf <em>minor</em> gesetzt.) Grundsätzlich ist das aber nicht zu empfehlen: Denn: Bevor ein großes Update eingespielt wird, sollte das auf Herz &amp; Nieren und natürlich Kompatibilität mit den vorhandenen Themes und Plugins getestet werden. Dazu sollte man ein Staging-System einrichten, worauf ich im nächsten Absatz eingehe.</p>
+<h2 id="ein-staging-system-nutzen">Ein Staging-System nutzen</h2>
+<p>Die Sicherheit der WP-Installation kann nicht nur durch Malware oder Angriffe von außen versehrt werden, sondern auch durch Bedienfehler. Ein wichtiger Baustein ist also ein Staging-System. Das ist im weitesten Sinne eine exakte Kopie der aktuelle WP-Installation. Das Staging-System erfüllt eine Reihe von Funktionen:</p>
+<ul>
+<li>Testen von Plugins &amp; Updates auf Kompatibilität</li>
+<li>Referenz-System zum Erkennen von verdächtigen Änderungen</li>
+<li>Testen von Änderungen am Theme</li>
+</ul>
+<p>Wie ein Staging-System eingerichtet wird, habe ich hier genauer erklärt. Was es mit dem 2. Punkt auf sich hat, erkläre ich weiter unten.</p>
+<h2 id="regelmäßige-backups">Regelmäßige Backups</h2>
+<p>Auch Backups sind ein wichtiger Teil eines Sicherheitskonzeptes. Hier gibt es je nach Freiheitsgrad verschiedene Möglichkeiten. Als Plugin empfehle ich zunächst das sehr weit verbreitete Updraft. Das Backup sollte unbedingt auf einen anderen Ort kopiert werden. Updraft unterstützt in der kostenlosen Version z.B. FTP. Wer kein Problem mit Dropbox oder Google Drive hat, kann natürlich auch die Cloud nutzen. Updraft unterstützt die Verschlüsselung der Datenbank-Sicherung nur in der bezahlten Version. Wer mit personenbezogenen Daten hantiert, sollte sich diese Funktion unbedingt zulegen!</p>
+<p>Eine bessere Alternative, die aber nur ab dem 2. Freiheitsgrad möglich ist, ist das Backup über die Kommandozeile. Das ist vor allem dann unumgänglich, wenn die WP-Installation sehr groß ist und nicht mehr mit den gängigen Plugins durchführbar ist. Außerdem funktioniert das unabhängig von Wordpress und kann demnach auch nicht durch andere Plugins beeinträchtigt werden. Wie genau man das einrichtet und vor allem auch die Wiederherstellung habe ich in diesem Beitrag genauer beschrieben.</p>
+<h2 id="plugin-sparsamkeit">Plugin-Sparsamkeit</h2>
+<p>Hierunter ist eher ein Konzept als eine konkrete Handlungsempfehlung zu verstehen. Vor allem technisch unbedarfte Nutzer tendieren dazu, sofort ein Plugin zu installieren, wenn eine bestimmte Funktion benötigt wird. Doch gerade unsaubere, nicht gepflegte Plugins bieten eine Angriffsfläche und noch dazu wirkt sich ein zunehmendes Plugin-Portfolio negativ auf die Performance aus. Wer ein Plugin installieren möchte, sollte dazu nur auf vertrauenswürdige und bekannte Quellen zurückgreifen. Im Klartext: <a href="https://de.wordpress.org/plugins/">https://de.wordpress.org/plugins/</a></p>
+<h2 id="die-offensichtlichen">Die offensichtlichen</h2>
+<ol start="2">
+<li>Admin-Benutzer umbenennen</li>
+</ol>
+<h2 id="die-technischen">Die technischen</h2>
+<ol>
+<li>Admin-Bereich mit .htaccess schützen</li>
+<li>Dateirechte korrekt setzen</li>
+<li>PHP-Ausführung in bestimmten Unterordner deaktivieren</li>
+</ol>
+<h2 id="plugins-und-themes">Plugins und Themes</h2>
+<p>Ein zentrales Element und der größte Vorteil von Wordpress ist seine fast unerreichbar funktionale Erweiterbarkeit und sehr große Community. Das zieht allerdings auch schwarze Schafe an.</p>
+<ol>
+<li>Installiere nicht wahllos Plugins, weil du eine bestimmte Funktion benötigst</li>
+<li>Installiere Plugins nur von vertrauenswürdigen Quellen</li>
+<li>Räume deinen Plugin-Ordner regelmäßig auf</li>
+</ol>
+<h2 id="die-mutigen">Die mutigen</h2>
+<h3 id="php-ini-parameter">PHP ini-Parameter</h3>
+<p>Es dürfte kein Geheimnis sein, dass PHP über die php.ini gesteuert wird. Es gibt allerdings einige sicherheitsrelevante Parameter, um die man sich allerdings selber kümmern muss. Die wichtigsten möchte ich hier vorstellen.</p>
+<p>Um die Übersicht über manuelle Änderungen nicht zu verlieren, solltest du die Einstellungen in einer separaten Datei (z.B. <em>security.ini</em>) speichern. Auf der Kommandozeile zeigt dir der folgende Befehl, aus welchem zusätzlichen Ordner PHP zusätzliche ini-Dateien liest:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">php --ini
+</span></span></code></pre></div><p>In den meisten Fällen dürfte das /etc/php/7.1/apache2/conf.d/ sein.</p>
+<p>Eine einfache aber sehr wirksame Maßnahme ist das deaktivieren potentiell gefährlicher PHP-Funktionen. Wie z.B. <a href="http://php.net/manual/en/function.shell-exec.php">shell_exec()</a> - im Wordpress-Umfeld gibt es kaum ein Szenario, in dem diese Funktion nützlich sein könnte. Um PHP-Funktionen zu deaktivieren, kannst du den ini-Parameter <a href="http://php.net/manual/de/ini.core.php#ini.disable-functions">disable_functions</a> nutzen.</p>
+<p>Dort legst du die <em>security.ini</em> ab und füllst sie entsprechend:</p>
+<p><a href="https://www.damianschwyrz.de/php-backdoors-und-shells-finden-eine-kurze-anleitung">https://www.damianschwyrz.de/php-backdoors-und-shells-finden-eine-kurze-anleitung</a></p>
+<p>siehe auch</p>
+<p><a href="https://binary-butterfly.de/artikel/wordpress-login-security-eine-stahltuer-in-der-wellblechhuette/">https://binary-butterfly.de/artikel/wordpress-login-security-eine-stahltuer-in-der-wellblechhuette/</a></p>
+<p>IP-Filter</p>
+<h3 id="den-admin-bereich-verstecken">Den Admin-Bereich verstecken</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-apache" data-lang="apache"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">&lt;IfModule</span> <span class="s">mod_rewrite.c</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="nb">RewriteEngine</span> <span class="k">on</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="nb">RewriteBase</span> /
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="c"># Move Wordpress login to /cms.</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="nb">RewriteRule</span> ^cms wp-login.php?cms=unlocked [L]
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^cms=unlocked
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^action=logout
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^loggedout=true
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_METHOD} !POST
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*)$ - [R=403,L]
+</span></span><span class="line"><span class="ln">12</span><span class="cl">
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
+</span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} ^loggedout=true
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*) ./cms? [R=302,NC,L]
+</span></span><span class="line"><span class="ln">16</span><span class="cl">
+</span></span><span class="line"><span class="ln">17</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
+</span></span><span class="line"><span class="ln">18</span><span class="cl">    <span class="nb">RewriteCond</span> %{HTTP_REFERER} !cms$
+</span></span><span class="line"><span class="ln">19</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_METHOD} POST
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*)$ - [R=403,L]
+</span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="nt">&lt;/IfModule&gt;</span>
+</span></span></code></pre></div><!-- https://wordpress.stackexchange.com/a/292691/132138
+
+## Die unnötigen
+
+### Sicherheits-Plugins
+
+siehe auch
+
+https://www.kuketz-blog.de/basisschutz-wordpress-absichern-teil1
+
+https://fastwp.de/487
+
+```bash
+chown user:user -R *
+find . -type d -exec chmod 755 {} \;
+find . -type f -exec chmod 644 {} \;
+
+chown www-data:www-data wp-content
+
+## Disable Editing in Dashboard
+define('DISALLOW_FILE_EDIT', true);
+
+<Directory /var/www/nickyreinert.de/www>
+# prevent   var_dump(scandir('/etc'));
+# see http://php.net/manual/de/ini.core.php#ini.open-basedir
+# alternativ: php für jeden virtuellen host mit separatem user ausführen und die dateirechte anpassen
+php_admin_value open_basedir "/var/www/nickyreinert.de/www"
+
+</Directory>
+```
+
+```ini
+# disable_functions in php.ini
+# list of function to disable globally #
+disable_functions =exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source
+```
+
+## PHP-FPM?
+
+Normalerweise ruft der Apache-Webserver den PHP-Interpreter jedes mal erneut auf. Der Nachteil: Viel Speicherverbrauch, lange Ladezeiten und ein globaler Benutzer. Etwas schneller ist FastCGI. Dabei läuft der Interpreter permanent im Hintergrund. FPM startet nicht nur einen sondern mehrere PHP-Prozesse im Hintergrund. -->
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> WordPress, Sicherheit, Anleitung, Checkliste</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>wordpress</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/image.png" type="image/jpeg">
+        <media:title>Wordpress-Security Checkliste - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>checklist</dc:type>
       
       
     </item>

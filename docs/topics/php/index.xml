@@ -1,0 +1,1387 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>PHP auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/topics/php/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Fri, 23 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/php/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Das Memory Limit von PHP und WordPress erhöhen - die vollständige Anleitung</title>
+      <link>https://nickyreinert.de/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/</link>
+      <pubDate>Fri, 23 Oct 2020 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/</guid>
+      <description>Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine vollständige und detaillierte Anleitung zum PHP `memory_limit`. Der Artikel erklärt die Funktionsweise der Speichergrenze und beschreibt die komplexe Hierarchie der verschiedenen Konfigurationsorte – von der globalen `php.ini` über Webserver-Einstellungen in Apache und Nginx (`.htaccess`, `httpd.conf`) bis hin zu anwendungsspezifischen Definitionen in WordPress (`wp-config.php`) und auf Skriptebene (`ini_set`).</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> PHP, Server-Administration, WordPress, Nginx, Apache, Performance-Tuning, Troubleshooting</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. <a href="https://wp-ninjas.de/wordpress-php-memory-limit">Viele</a> <a href="https://www.hosttest.de/artikel/was-ist-das-php-memory-limit-1411.html">Anleitungen</a> <a href="https://socialmediadozent.com/php-memory-limit-erhoehen/#Drei_Loesungen_um_das_PHP_Memory_Limit_zu_erhoehen">sind</a> <a href="https://www.how-to-wordpress.de/php-memory-limit/">oft</a> <a href="http://juliusbeckmann.de/blog/php-memory-limit-erhohen.html">unvollständig</a>, und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:</p>
+<ul>
+<li>super-global in der php.ini</li>
+<li>global in der pool.conf, bei Verwendung von PHP-FPM</li>
+<li>oder global in der httpd.conf (Apache) oder server.conf (nginx)</li>
+<li>auf Ordner-Ebene in der user.ini</li>
+<li>auf Ordner-Ebene in der .htaccess-Datei</li>
+<li>auf Applikations-Ebene über die WordPress-Konstanten WP_MEMORY_LIMIT und WP_MAX_MEMORY_LIMIT</li>
+<li>oder auf Datei-Ebene im Script mit ini_set();</li>
+</ul>
+<p><a href="https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-7.png"><img src="/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/images/grafik-7-700x246.png" alt=""></a></p>
+<p>Unterschiedliche Orte, um das PHP Memory Limit (und andere Parameter) zu setzen</p>
+<p>Die Reihenfolge entspricht übrigens der Hierarchie. Wird das Limit also im PHP-Script mit ini_set() gesetzt, überschreibt das die Einstellung in der <strong>httpd.conf</strong> oder <strong>server.conf</strong>. Wie sich das vermeiden lässt, dazu unten mehr. Das trifft natürlich nicht nur auf das Memory Limit, sondern so ziemlich jede PHP-Einstellung zu.</p>
+<p>Außerdem hängen die Möglichkeiten stark davon ab, wie du PHP nutzt, also ob als Modul oder über CGI. Um das Vorgehen besser zu verdeutlichen, gehe ich im Folgenden von zwei WordPress-Setups aus. Einmal wird nginx als HTTP-Server genutzt und dort PHP-FPM über CGI angesprochen. Das zweite Setup nutzt Apache2 als HTTP-Server und dort PHP als Modul (php-mod).</p>
+<h2 id="was-bedeutet-das-memory-limit-von-php">Was bedeutet das Memory Limit von PHP?</h2>
+<p>Jeder Dienst benötigt für seine Ausführung Platz im Arbeitsspeicher. So auch PHP. Und mit jedem Aufruf eines PHP-Scripts wird PHP aktiviert und fordert somit Platz im Arbeitsspeicher ein. Und genau dort spielt die Speichergrenze eine Rolle: Um zu vermeiden, dass bei der Verarbeitung <strong>eines PHP-Scripts</strong> zu viel Speicher verbraucht und damit der ganze Server in Mitleidenschaft gezogen wird, legt man eine Obergrenze fest, das <strong>memory_limit</strong>.</p>
+<p>Diese Grenze gilt <strong>für jeden einzelnen Script-Aufruf</strong>. Ein Beispiel: Dein Server hat 8 GByte (<strong>8.192 MByte</strong>) Arbeitsspeicher. Der Aufruf der Datei index.php, die eine sehr aufwendige Datenbankabfrage durchführt und damit viele Daten verarbeitet, erfordert 10 MByte Arbeitsspeicher (das ist übrigens relativ viel und <a href="https://www.deimeke.net/dirk/blog/index.php?/archives/304-Bytes-auf-Papier-....html">entspricht etwa 5.000 bedruckten A4 Seiten</a>). Das Memory-Limit ist auf <strong>32 MByte</strong> eingestellt. Das physikalische Limit beträgt allerdings <strong>8.192 MByte</strong>. Die index.php kann also <strong>819 mal</strong> gleichzeitig (!) aufgerufen werden; erst dann ist der Arbeitsspeicher voll. Das Memory-Limit hat hier also keine Auswirkungen.</p>
+<p>Gehen wir nun davon aus, dass bei einem der <strong>819</strong> Aufrufe bestimmte Parameter gesetzt werden, die eine weitaus größere Datenmenge in der Datenbank abfragen. Die Datenmenge erhöht sich auf <strong>40 MByte</strong>. An dieser Stelle wird das memory_limit aktiv. Der Aufruf dieses Scripts wird abgebrochen mit der Fehlermeldung, dass die erlaubte Speichergrenze überschritten wurde. PHP wird in diesem Fall eine Fehlermeldung wie diese anzeigen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Fatal error: Allowed memory size of 33554432 bytes exhausted…” followed by something like “(tried to allocate 8388608 bytes) in /home/www/index.php on line 42.”
+</span></span></code></pre></div><p>Das Gute daran: Der Aufruf der anderen Scripte wird davon nicht in Mitleidenschaft gezogen.</p>
+<p>Es gibt sehr viele Wege, das Speicherlimit zu setzen. Das hat Vorteile aber auch Nachteile: So wird die Suche nach den gesetzen Einstellungen oft zur Suche nach der berühmten Nadel im Heuhaufen. Der Vorteil: Du kannst das Speicherlimit sehr granular an die Anforderungen deiner verschiedenen Anwendungen anpassen. Bereit? Los gehts&hellip;</p>
+<h2 id="grundsätzliches">Grundsätzliches</h2>
+<p>Der Wert, den du für das Memory Limit übermittelst, kann als einfache Ziffer übergeben werden und legt die Speichergrenze somit in <strong>Byte</strong> fest. PHP unterstützt darüber hinaus einige <strong><a href="https://www.php.net/manual/de/faq.using.php#faq.using.shorthandbytes">Kurzschreibweisen</a></strong>, also z.B. K für Kilobyte (32K), M für Megabyte (256M) und G für Gigabye (2G).</p>
+<p>Willst du verhindern möchtest, dass die Speichergrenze später an anderer Stelle überschrieben wird, definierst du sie mithilfe von <strong>php_admin_value</strong> anstatt nur <strong>php_value</strong>. Also z.B.:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">php_admin_value[memory_limit] = 256M
+</span></span><span class="line"><span class="ln">2</span><span class="cl"># oder
+</span></span><span class="line"><span class="ln">3</span><span class="cl">fastcgi_param PHP_ADMIN_VALUE &#34;memory_limit = 256M&#34;;
+</span></span><span class="line"><span class="ln">4</span><span class="cl"># oder
+</span></span><span class="line"><span class="ln">5</span><span class="cl">php_admin_value memory_limit = 256M
+</span></span></code></pre></div><p>Willst du das Memory LImit komplett deaktivieren, dann setzt du es auf -1:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">memory_limit = -1
+</span></span></code></pre></div><p>Aber Achtung: Zu Testzwecken mag das sinnvoll sein, in einer Live-Umgebung solltest du immer mit einer Obergrenze arbeiten.</p>
+<p>Und abschließend noch der Verweis auf zwei nützliche Funktionen, die eigentlich bekannt sein sollten:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">echo ini_get(&#39;memory_limit&#39;); // zeigt das aktuell gesetzte Memory Limit
+</span></span><span class="line"><span class="ln">2</span><span class="cl">phpinfo(); // zeigt alle relevanten Parameter, u.a. Memory Limit und verwendete .ini-Dateien
+</span></span></code></pre></div><p><a href="https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-1.png"><img src="/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/images/grafik-1-700x25.png" alt=""></a></p>
+<p><strong>Wichtig</strong>: Derartige Funktionen dienen der Fehlersuche und sollten im Live-System nicht unbedingt öffentlich abrufbar sein!</p>
+<h2 id="das-memory-limit-in-php-einstellen">Das Memory Limit in PHP einstellen</h2>
+<h3 id="super-global-in-der-phpini">Super global in der php.ini</h3>
+<p>Die erste &ldquo;Konfigurations-Stufe&rdquo; befindet sich natürlich direkt innerhalb von PHP. Wenn du wissen willst, wo sich die Einstellungen für PHP befinden, nutze ganz einfach phpinfo(); Die entsprechende Datei heißt <strong>php.ini</strong> und befindet sich in der Regel in /etc/php/7.0/apache2/php.ini (für PHP als Modul, z.B. in <strong>Apache2</strong>) oder /etc/php/7.4/fpm/php.ini (für PHP als Dienst, z.B. in <strong>nginx</strong>). Der Parameter ist in beiden Fällen gleich:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">memory_limit = 256M
+</span></span></code></pre></div><p>Wenn du PHP als Modul unter Apache nutzt, musst du Apache2 neustarten, bzw. die Konfiguration neu einlesen lassen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">service</span> <span class="n">apache2</span> <span class="n">restart</span> 
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">service</span> <span class="n">apache2</span> <span class="n">reload</span>
+</span></span></code></pre></div><p>Analog, bei PHP als Dienst, wie z.B. in nginx, erfolgt das Neustarten folgendermaßen (In der Regel reicht es aus, mit reload nur die Konfiguration neu zu laden. Sollte es zu Komplikationen kommen, hilft ein kompletter Neustart des Dienstes eventuell weiter).</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">service</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">fpm</span> <span class="n">restart</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">service</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">fpm</span> <span class="n">reload</span>
+</span></span></code></pre></div><h3 id="für-jeden-php-fpm-pool-in-der-poolconf">Für jeden PHP-FPM Pool in der pool.conf</h3>
+<p>Nutzt du PHP-FPM über CGI (also mein erstes Setup mit nginx), gibt es für jeden Server (bzw. virtuellen Host) einen eigenen <strong>Pool</strong>, lies eine Art eigene getrennte PHP-Umgebung für jeden einzelnen virtuellen Host. Die Einstellungen dazu befinden sich z.B. unter <strong>/etc/php/7.4/fpm/pool/my_host.conf</strong>. Hier wird der entsprechende Parameter folgendermaßen gesetzt:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[my_host_de]
+</span></span><span class="line"><span class="ln">2</span><span class="cl">...
+</span></span><span class="line"><span class="ln">3</span><span class="cl">php_value[memory_limit] = 1024M
+</span></span><span class="line"><span class="ln">4</span><span class="cl">...
+</span></span></code></pre></div><p>Die Einstellung an dieser Stelle überschreibt den Wert in der <strong>php.ini</strong>. Nach der Änderung muss der PHP-Dienst natürlich neu gestartet werden.</p>
+<h2 id="das-memory-limit-in-apache2-und-nginx-setzen">Das Memory-Limit in Apache2 und nginx setzen</h2>
+<h3 id="super-global-in-der-nginxconf--httpdconf">Super global in der nginx.conf / httpd.conf</h3>
+<p>Für die beiden HTTP-Server nginx und Apache2 gibt es die beiden globalen Einstellungsdateien <strong>/etc/nginx/nginx.conf</strong> bzw. <strong>/etc/apache2/httpd.conf</strong>. In nginx kann das PHP-Limit im sogenannten <strong>http-Kontext</strong> gesetzt werden und gilt damit für die komplette Nginx-Instanz. Ich gehe hier und im Folgenden übrigens davon aus, dass nginx den PHP-Interpreter über FastCGI anspricht und PHP eigenständig als FPM läuft.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">http {
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  fastcgi_param PHP_VALUE &#34;memory_limit = 256M&#34;;
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl">}
+</span></span></code></pre></div><p>Im Falle von Apache2 gehe ich davon aus, dass PHP als Modul konfiguriert ist. Hier wird das PHP Limit in der <strong>httpd.conf</strong> folgendermaßen gesetzt:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">php_value memory_limit = 256M
+</span></span></code></pre></div><h3 id="global-für-jeden-virtuellen-host">Global für jeden virtuellen Host</h3>
+<p>In nginx lässt sich die entsprechende Einstellung auch innerhalb des Server-Blocks setzen und gilt somit für einen ganzen virtuelle Host. Üblicherweise findest du diese Einstellung in <strong>/etc/nginx/conf.d/my_host.conf:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">server {
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  fastcgi_param PHP_VALUE &#34;memory_limit = 256M&#34;;
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl">}
+</span></span></code></pre></div><p>Nutzt du Apache2, findest du die entsprechende Einstellungs-Datei in der Regel unter <strong>/etc/apache2/sites-enabled/my_host.conf</strong>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">&lt;VirtualHost&gt;
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">php_value memory_limit 256M
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl">&lt;/VirtualHost&gt;
+</span></span></code></pre></div><h3 id="global-für-jeden-ordner">Global für jeden Ordner</h3>
+<p>Weiter geht es mit dem Ordner-Spezifische Memory-Limit in nginx im location-Kontext (die Datei dürfte in der Regel unverändert sein).</p>
+<p>Achtung: <a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html">In nginx kann die Direktive fastcgi_param</a> auch im übergeordneten http-Kontext oder auf Ordner-Ebene innerhalb des location-Blocks gesetzt werden:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">location ~ .(php|php.*)$ {
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  fastcgi_param PHP_VALUE &#34;memory_limit = 256M&#34;;
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl">}
+</span></span></code></pre></div><p>Analog dazu kannst du in Apache2 das Limit global in apache2.conf oder auf Ordner-Ebene in der my_host.conf:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="o">&lt;</span><span class="ne">Directory</span><span class="s2">&#34;/var/www/example_de/htdocs/&#34;</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">php_value</span> <span class="n">memory_limit</span> <span class="mi">256</span><span class="n">M</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="o">&lt;/</span><span class="ne">Directory</span><span class="o">&gt;</span>
+</span></span></code></pre></div><h2 id="das-memory-limit-auf-ordner-ebene-setzen">Das Memory-Limit auf Ordner-Ebene setzen</h2>
+<h3 id="für-jeden-ordner-mit-der-userini">Für jeden Ordner mit der .user.ini</h3>
+<p>Mit der Datei <strong>.super.ini</strong> kannst du PHP-Einstellungen für beliebige Ordner individuell konfigurieren. Dieser Weg steht dir allerdings nur offen, <a href="https://www.php.net/manual/en/configuration.file.per-user.php">wenn du PHP nicht als Modul nutzt, sondern über CGI/FastCGI</a>. In meinem Beispiel-Setup mit Apache2 und php-mod fällt diese Option also weg.</p>
+<p>Du kannst die Datei in jedem Ordner anlegen und dort Parameter so einstellen, wie du es von der php.ini gewohnt bist. Dieser Weg muss allerdings vorher &ldquo;freigeschaltet&rdquo; werden, indem in der php.ini (bzw. den anderen o.g. Orten), der folgende Parameter gesetzt ist:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">user_ini.filename = .user.ini
+</span></span></code></pre></div><p>Ob das der Fall ist, erfährst du, wie immer, mithilfe von phpinfo();. Dort siehst du unter &ldquo;Additional .ini files parsed&rdquo; auch, ob sich im aktuellen Ordner eine .user.ini befindet und diese gelesen wurde:</p>
+<p><a href="https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-4.png"><img src="/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/images/grafik-4-700x164.png" alt=""></a></p>
+<p>Überprüfen, welche .ini-Dateien PHP gelesen hat</p>
+<p>Wenn das alles passt, verwendest du die .user.ini wie die php.ini und setzt das Speicherlimit demnach folgenermaßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">memory_limit=256M
+</span></span></code></pre></div><h3 id="für-jeden-ordner-mit-der-htaccess">Für jeden Ordner mit der .htaccess</h3>
+<p>Diese Option wiederum steht dir nur mit Apache2 zur Verfügung, da nginx keine .htaccess-Dateien unterstützt. Du setzt das Limit in der .htaccess-Datei folgendermaßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">php_value memory_limit = 256M
+</span></span></code></pre></div><h2 id="das-memory-limit-auf-applikations-ebene-setzen">Das Memory-Limit auf Applikations-Ebene setzen</h2>
+<p>WordPress verwendet standardmäßig eine Memory Limit von <strong>40</strong> <strong>MByte</strong> im Frontend (bzw. 64 MByte bei einem Multi-Site-Setup) sowie (mindestens) <strong>256 MByte</strong> für das Backend. Wenn du diese Werte ändern möchtest, kannst du dafür die beiden folgenden Konstanten in der <strong>wp-config.php</strong> setzen - achte darauf, diese Konstanten vor der Einbindung von <strong>wp-settings.php</strong> zu definieren:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">define(&#39;WP_MEMORY_LIMIT&#39;, &#39;256M&#39;);
+</span></span><span class="line"><span class="ln">2</span><span class="cl">define(&#39;WP_MAX_MEMORY_LIMIT&#39;, &#39;256M&#39;);
+</span></span><span class="line"><span class="ln">3</span><span class="cl">[...]
+</span></span><span class="line"><span class="ln">4</span><span class="cl">require_once(ABSPATH . &#39;wp-settings.php&#39;);
+</span></span></code></pre></div><p>WordPress nutzt intern allerdings auch nur die PHP-Funktion ini_set um das Memory Limit festzulegen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">ini_set( &#39;memory_limit&#39;, WP_MEMORY_LIMIT );
+</span></span></code></pre></div><h2 id="das-memory-limit-auf-datei-ebene-setzen">Das Memory-Limit auf Datei-Ebene setzen</h2>
+<p>Zum Abschluss gibt es auch die Möglichkeiten das Memory Limit in jedem Script individuell zu setzen. Diese Möglichkeit steht an letzter Stelle und überschreibt damit alle vorhergehenden Einstellungen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">ini_set(&#39;memory_limit&#39;,&#39;256M&#39;);
+</span></span></code></pre></div><p>Durch die Verwendung von <strong>include()</strong>, <strong>require_once()</strong> oder <strong>require()</strong> lassen sich andere PHP-Dateien innnerhalb eines Scripts einzubinden. Grundsätzlich wird das Memory Limit dann zwar vererbt. Was nicht heißt, dass es durch später eingebundene Scripte überschrieben werden kann. Das macht sich z.B. auch bei WordPress bemerkbar: Du kannst das Memory Limit zwar mit WP_MEMORY_LIMIT für WordPress definieren, ein Plugin oder Theme kann das Limit aber trotzdem später überschreiben.</p>
+<p>Ein Beispiel: So sieht die Datei <strong>index.php</strong> aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">&lt;?php  ini_set(&#39;memory_limit&#39;,&#39;256M&#39;);  (...aufwendige Operation...);  include(&#39;file.php&#39;); 
+</span></span></code></pre></div><p>Die Datei <strong>file.php</strong> sieht folgendermaßen aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"> &lt;?php
+</span></span><span class="line"><span class="ln">2</span><span class="cl"> echo ini_get(&#39;memory_limit&#39;);
+</span></span><span class="line"><span class="ln">3</span><span class="cl"> (…aufwendige Operation…)
+</span></span><span class="line"><span class="ln">4</span><span class="cl"> ini_set(&#39;memory_limit&#39;,&#39;32M&#39;);
+</span></span><span class="line"><span class="ln">5</span><span class="cl"> (…aufwendige Operation…);
+</span></span></code></pre></div><p>Die zweite Zeile in der file.php gibt als Rückgabe <strong>256M</strong> aus. Das Memory-Limit wird vererbt. Die vierte Zeile setzt das Limit allerdings auf 32 MByte und überschreibt damit den Wert von 256 MByte. Belegt die &ldquo;aufwendige Operation&rdquo; in index.php nur <strong>12 MByte</strong>, in der file.php nur jeweils <strong>5 MByte</strong>, funktioniert das gesamte Script einwandfrei. Wenn die &ldquo;aufwendige Operation&rdquo; in der Datei index.php z.B. mehr als <strong>22 MByte</strong> beansprucht, bricht PHP die Verarbeitung des Scripts ab. Warum? Weil das Limit nachträglich nach unten korrigiert wurde.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> apache, apache2, memory-limit, nginx, php</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>anleitungen</category>
+      
+      <category>blog</category>
+      
+      <category>hosting</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Das Memory Limit von PHP und WordPress erhöhen - die vollständige Anleitung - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>comprehensive_guide</dc:type>
+      
+      
+    </item><item>
+      <title>Leitfaden für ein sicheres und schnelles WordPress-Setup</title>
+      <link>https://nickyreinert.de/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/</link>
+      <pubDate>Wed, 01 Jul 2020 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/</guid>
+      <description>Das Thema Geschwindigkeit liegt bei uns allen ganz weit oben auf der Agenda. Oft allerdings nur passiv, wenn man ungeduldig auf der Tastatur trommelt und auf …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Ein umfassender Leitfaden mit zahlreichen Code-Snippets zur Optimierung einer WordPress-Installation in Bezug auf Geschwindigkeit und Sicherheit. Der Artikel behandelt Themen wie das Deaktivieren von Emojis und Gravatar, serverseitige Komprimierung, das Verschieben von Skripten, das Absichern der XML-RPC- und REST-APIs sowie das Aufräumen des HTML-Headers durch Änderungen in `functions.php`, `.htaccess` und `wp-config.php`.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> WordPress, Performance-Optimierung, Web-Sicherheit, PHP, Server-Konfiguration, Frontend-Optimierung</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Das Thema Geschwindigkeit liegt bei uns allen ganz weit oben auf der Agenda. Oft allerdings nur passiv, wenn man ungeduldig auf der Tastatur trommelt und auf das Laden einer Internetseite wartet. Aktiv fehlt oft der richtige Impuls. Was kann man noch tun, außer die Bilder kleinzuhalten, um WordPress zu beschleunigen?</p>
+<p>Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit deiner WordPress-Seite zu optimieren. Und da neben der Geschwindigkeit die Sicherheit ein weiteres beliebtes Thema ist, werde ich auch dazu ein paar kleine Kniffe mit großer Wirkung zeigen. Doch zunächst ein paar&hellip;</p>
+<h2 id="grundsätze">Grundsätze</h2>
+<p>Es gibt ein paar Prämissen, die du beim Thema <strong>Geschwindigkeit und Sicherheit</strong> berücksichtigen solltest:</p>
+<ul>
+<li><strong>Backups</strong> - Nuff said. Du wirst dein System niemals 100% absichern können. Umso wichtiger sind Backup.</li>
+<li><strong>Plugin-Sparksamkeit</strong> - jedes zusätzliche Plugin ist nicht nur ein potentielles Sicherheitsrisiko, sondern lässt deine Seite auch unnötig anwachsen. Versuche so viele Funktionen wie möglich selber umzusetzen. Ein Child-Theme erlaubt dir in der <strong>functions.php</strong> nicht nur Anpassungen des Layouts sondern auch des Funktionsumfanges vorzunehmen.</li>
+<li><strong>Updates</strong> - Halte WordPress, Plugins und Themes immer auf dem neuesten Stand. Verzichte möglichst auf Plugins und Themes, die lange nicht aktualisiert wurden.</li>
+<li><strong>Page Builder</strong> - <a href="https://www.nickyreinert.de/wordpress-page-builder-pro-und-contra/">ich bin wahrlich kein Fan von Page-Buildern</a>, auch wenn es da draußen relativ performante Vertreter dieser Art gibt. Allerdings wohnt jedem Page-Builder in der Regel ein Problem inne: Sie kommen mit einer Menge von Funktionen, die du oft nicht benötigst, die aber trotzdem Ressourcen verbrauchen.</li>
+</ul>
+<p>Nun, da das geklärt ist und ich meinen Unmut über Page-Builder mal wieder unterbringen konnte: Was kannst du aktiv tun, um die <strong>Geschwindigkeit und Sicherheit</strong> zu optimieren? Im Folgenden werden wir Änderungen an drei Dateien vornehmen:</p>
+<ul>
+<li>functions.php (deines Child-Themes)</li>
+<li>.htaccess-Datei</li>
+<li>wp-config.php</li>
+</ul>
+<p>Du findest alle drei Dateien auf <a href="https://github.com/nickyreinert/wordPressSettings/tree/master">github.com</a>.</p>
+<h2 id="warnung">Warnung</h2>
+<p>Da es sich mitunter um sehr tiefe Eingriffe in die WordPress-Mechanik handelt, folgender wichtiger Hinweis:</p>
+<p>Nehme die hier beschriebenen Änderungen niemals an einer Live-Installation vor; teste sie in einer geschützten Umgebung und übertrage sie dann sorgfältig und ggf. nacheinander in das Live-System!</p>
+<p>Lege außerdem immer ein <strong>Backup</strong> von den Dateien an, die du im Laufe dieses Artikels ändern wirst.</p>
+<p>Diese Anleitung ist ein <strong>Leitfaden</strong>, den du nicht ungelesen übernehmen solltest. Passe die Änderungen an die Anforderungen deines Projektes an. Klar soweit? Dann los:</p>
+<h2 id="nutze-keine-standard-einstellungen">Nutze keine Standard-Einstellungen</h2>
+<p>Eigentlich gehört diese Weisheit zu den Prämissen, ich will sie hier trotzem etwas ausführlicher erklären. Dieser Punkt gehört für mich zum Konzept &ldquo;<strong>Secruity through obscurity</strong>&rdquo;. Viele vermeintliche Angriffe auf deine Seite sind nur das Grundrauschen: Automatisierte Scripte, die zahlreiche Webseiten nach bekannten Sicherheitslücken abklopfen. Lass uns das &ldquo;<strong>passive Angriffe</strong>&rdquo; nennen. Du kannst das geduldig über dich ergehen lassen oder schon jetzt dafür sorgen, dass deine Seite gar nicht erst im Rampenlicht steht. Wenn bei den passiven Angriffen keine Lücken erkannt werden, zieht der Bot weiter und widmet sich <strong>schwächeren Seiten</strong>. Das Credo lautet &ldquo;Kosten-Nutzen-Analyse&rdquo;. Warum mit einem unbekannten Ziel beschäftigen, wenn da draußen genug unsichere WordPress-Installationen darauf warten, <em>gehackt</em> zu werden? Also:</p>
+<ul>
+<li>Nutze als <strong>Benutzername</strong> für den Administrator-Account nicht den Standardwert &ldquo;admin&rdquo;. Erzeuge einen neuen Admin-Nutzer (z.B. MyLittlePony) mit allen Admin-Rechten und entferne den originalen Admin-Nutzer</li>
+<li>Nutze ein &ldquo;kryptisches&rdquo; <strong>Tabellen-Prefix</strong> (z.B. x02349d_), um das Auffinden der WordPress-Tabellen in der Datenbank zu erschweren. Bei Angriffen über <strong>SQL-Injection</strong> wird oft vom Standard-Prefix (wp_) ausgegangen.</li>
+<li>Ach ja, und nein: Verschiebe nicht die <strong>wp-admin</strong>-URL - das erzeugt mehr Unruhe im System, als dass es nutzt. Hier reicht der zusätzliche Schutz mit <strong>HTTP Basic Auth</strong>.</li>
+<li>Setze korrekte Dateirechte ein, um zu vermeiden, dass jemand deine PHP-Dateien ändern und Schadcode einfügen kann (das ist ein etwas größeres Thema auf Serverseite, <a href="https://binary-butterfly.de/artikel/dateirechte-wie-stelle-ich-das-bei-meinem-hoster-ein/">was hier ganz gut beschrieben ist</a>).</li>
+<li>Kein Standard-Passwort. Ok. Muss ich das wirklich erwähnen? ;)</li>
+</ul>
+<h2 id="emoticons-und-emojis">Emoticons und Emojis</h2>
+<p>Emojis sind zwar unstrittig ein fester Bestandteil der modernen Kommunikation, was nicht heißt, dass man sie überall nutzen muss. In WordPress gehören sie leider zum Standard, was die Ladezeit verringert. Um sich der kleinen Kecker zu entledigen, ist eine ganze Menge PHP-Code (<a href="https://kinsta.com/de/wissensdatenbank/deaktivierst-emojis-wordpress/">lose basierend auf diesem Beitrag</a>):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">function disable_emojis() {
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    remove_action( &#39;wp_head&#39;, &#39;print_emoji_detection_script&#39;, 7 );
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    remove_action( &#39;admin_print_scripts&#39;, &#39;print_emoji_detection_script&#39; );
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    remove_action( &#39;wp_print_styles&#39;, &#39;print_emoji_styles&#39; );
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    remove_action( &#39;admin_print_styles&#39;, &#39;print_emoji_styles&#39; );
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    remove_filter( &#39;the_content_feed&#39;, &#39;wp_staticize_emoji&#39; );
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    remove_filter( &#39;comment_text_rss&#39;, &#39;wp_staticize_emoji&#39; );
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    remove_filter( &#39;wp_mail&#39;, &#39;wp_staticize_emoji_for_email&#39; );
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    add_filter( &#39;tiny_mce_plugins&#39;, &#39;disable_emojis_tinymce&#39; );
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    add_filter( &#39;wp_resource_hints&#39;, &#39;disable_emojis_remove_dns_prefetch&#39;, 10, 2 );
+</span></span><span class="line"><span class="ln">11</span><span class="cl">}
+</span></span><span class="line"><span class="ln">12</span><span class="cl">
+</span></span><span class="line"><span class="ln">13</span><span class="cl">function disable_emojis_tinymce( $plugins ) {
+</span></span><span class="line"><span class="ln">14</span><span class="cl">
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    if ( is_array( $plugins ) ) {
+</span></span><span class="line"><span class="ln">16</span><span class="cl">        
+</span></span><span class="line"><span class="ln">17</span><span class="cl">        return array_diff( $plugins, array( &#39;wpemoji&#39; ) );
+</span></span><span class="line"><span class="ln">18</span><span class="cl">
+</span></span><span class="line"><span class="ln">19</span><span class="cl">    } else {
+</span></span><span class="line"><span class="ln">20</span><span class="cl">        
+</span></span><span class="line"><span class="ln">21</span><span class="cl">        return array();
+</span></span><span class="line"><span class="ln">22</span><span class="cl">
+</span></span><span class="line"><span class="ln">23</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">24</span><span class="cl">}
+</span></span><span class="line"><span class="ln">25</span><span class="cl"> 
+</span></span><span class="line"><span class="ln">26</span><span class="cl">function disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
+</span></span><span class="line"><span class="ln">27</span><span class="cl">    if ( &#39;dns-prefetch&#39; == $relation_type ) {
+</span></span><span class="line"><span class="ln">28</span><span class="cl">    
+</span></span><span class="line"><span class="ln">29</span><span class="cl">        /** This filter is documented in wp-includes/formatting.php */
+</span></span><span class="line"><span class="ln">30</span><span class="cl">        $emoji_svg_url = apply_filters( &#39;emoji_svg_url&#39;, &#39;https://s.w.org/images/core/emoji/2/svg/&#39; );
+</span></span><span class="line"><span class="ln">31</span><span class="cl">
+</span></span><span class="line"><span class="ln">32</span><span class="cl">        $urls = array_diff( $urls, array( $emoji_svg_url ) );
+</span></span><span class="line"><span class="ln">33</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">34</span><span class="cl">
+</span></span><span class="line"><span class="ln">35</span><span class="cl">    return $urls;
+</span></span><span class="line"><span class="ln">36</span><span class="cl">}    
+</span></span><span class="line"><span class="ln">37</span><span class="cl">
+</span></span><span class="line"><span class="ln">38</span><span class="cl">function disable_emojicons_tinymce( $plugins ) {
+</span></span><span class="line"><span class="ln">39</span><span class="cl">
+</span></span><span class="line"><span class="ln">40</span><span class="cl">    if ( is_array( $plugins ) ) {
+</span></span><span class="line"><span class="ln">41</span><span class="cl">    
+</span></span><span class="line"><span class="ln">42</span><span class="cl">        return array_diff( $plugins, array( &#39;wpemoji&#39; ) );
+</span></span><span class="line"><span class="ln">43</span><span class="cl">
+</span></span><span class="line"><span class="ln">44</span><span class="cl">    } else {
+</span></span><span class="line"><span class="ln">45</span><span class="cl">
+</span></span><span class="line"><span class="ln">46</span><span class="cl">      return array();
+</span></span><span class="line"><span class="ln">47</span><span class="cl">
+</span></span><span class="line"><span class="ln">48</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">49</span><span class="cl">}
+</span></span><span class="line"><span class="ln">50</span><span class="cl">
+</span></span><span class="line"><span class="ln">51</span><span class="cl">function disable_wp_emojicons() {
+</span></span><span class="line"><span class="ln">52</span><span class="cl">
+</span></span><span class="line"><span class="ln">53</span><span class="cl">    remove_action( &#39;admin_print_styles&#39;, &#39;print_emoji_styles&#39; );
+</span></span><span class="line"><span class="ln">54</span><span class="cl">    remove_action( &#39;wp_head&#39;, &#39;print_emoji_detection_script&#39;, 7 );
+</span></span><span class="line"><span class="ln">55</span><span class="cl">    remove_action( &#39;admin_print_scripts&#39;, &#39;print_emoji_detection_script&#39; );
+</span></span><span class="line"><span class="ln">56</span><span class="cl">    remove_action( &#39;wp_print_styles&#39;, &#39;print_emoji_styles&#39; );
+</span></span><span class="line"><span class="ln">57</span><span class="cl">    remove_filter( &#39;wp_mail&#39;, &#39;wp_staticize_emoji_for_email&#39; );
+</span></span><span class="line"><span class="ln">58</span><span class="cl">    remove_filter( &#39;the_content_feed&#39;, &#39;wp_staticize_emoji&#39; );
+</span></span><span class="line"><span class="ln">59</span><span class="cl">    remove_filter( &#39;comment_text_rss&#39;, &#39;wp_staticize_emoji&#39; );
+</span></span></code></pre></div><p>Hier passiert eine ganze Menge, weil die Emojis relativ breit implementiert wurden. Die einfachste Erklärung ist: Wir entfernen alle möglichen Verweise auf Emojis. Du musst die Trigger allerdings noch aktivieren indem du sie folgendermaßen aufrufst:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">add_filter( &#39;tiny_mce_plugins&#39;, &#39;disable_emojicons_tinymce&#39;);}
+</span></span><span class="line"><span class="ln">2</span><span class="cl">add_action( &#39;init&#39;, &#39;disable_emojis&#39; );
+</span></span><span class="line"><span class="ln">3</span><span class="cl">add_filter( &#39;emoji_svg_url&#39;, &#39;__return_false&#39; );
+</span></span><span class="line"><span class="ln">4</span><span class="cl">add_action( &#39;init&#39;, &#39;disable_wp_emojicons&#39; );
+</span></span></code></pre></div><h2 id="gravatar-deaktivieren">Gravatar deaktivieren</h2>
+<p>Du kannnst die Nutzung der Gravatare auch in den Einstellungen deaktivieren. Ich bevorzuge aber die Variante in der functions.php, da man sich so ein kleines Boilerplate erstellen kann. So deaktivierst du die Gravatar-Funktion:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">add_filter( &#39;option_show_avatars&#39;, &#39;__return_false&#39; );
+</span></span></code></pre></div><p>Wie du siehst, spart uns das mindestens zwei Anfragen und ein paar Millisekunden ein:</p>
+<p><img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-700x57.png" alt=""></p>
+<h2 id="gzip-und-deflate">GZIP und Deflate</h2>
+<p>Sehr naheliegend ist natürlich die Komprimierung von Dateien. Du nimmst diese Änderung in der .htaccess-Datei vor:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">&lt;IfModule mod_deflate.c&gt;
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    &lt;FilesMatch &#34;.*\.(html|php|css|js|xml)$&#34;&gt;
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        SetOutputFilter DEFLATE
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    &lt;/FilesMatch&gt;
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    AddOutputFilterByType DEFLATE application/rss+xml
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    AddOutputFilterByType DEFLATE application/xml application/xhtml+xml
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+</span></span><span class="line"><span class="ln">8</span><span class="cl">&lt;/IfModule&gt;
+</span></span></code></pre></div><p>Achtung: Du solltest deine Seite genau beobachten. Die Aktivierung von GZIP führt bei sehr kleinen Dateien nicht zu einem Größenvorteil, kann sich aber negativ auf die Antwortzeit des Servers auswirken, da die kleinen Dateien ja trotzdem einmal &ldquo;angefasst&rdquo; werden.</p>
+<h2 id="cron-job-deaktivieren">Cron-Job deaktivieren</h2>
+<p>Bei jedem Aufruf der Seite wird ein internes Cron-Job-Script ausgeführt. Das ist vor allem für das Suchen nach Updates wichtig. Wenn dein Hoster Cron-Jobs anbietet, ist das natürlich unnötig und verlangsamt jeden Aufruf deiner Seite. Du kannst die Cron-Job-Aufrufe in der wp-config.php folgendermaßen deaktivieren:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">define(&#39;DISABLE_WP_CRON&#39;, true);
+</span></span></code></pre></div><p>Danach musst diese Anfrage aber trotzdem irgendwie ausführen. Das machst du im Backend deines Hosters, bei <strong>all-inkl z</strong>.B. im KAS unter Tools:</p>
+<p><img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-700x125.png" alt=""></p>
+<p>Als Intervall genügt hier eigentlich stündlich.</p>
+<h2 id="scripte-im-footer-laden">Scripte im Footer laden</h2>
+<p>In der Regel müssen JavaScript-Dateien nicht sofort zur Verfügung stehen, da sie z.B: Benutzerinteraktion ermöglichen bzw. darauf reagieren. Trotzdem können Sie den Aufbau der Seite verzögern, wenn sie ganz am Anfang oder in der Mitte eingebunden werden.</p>
+<p>Aus dem Grund sollte man die Scripte ganz am Ende einer Seite auflisten, die nicht für den Seitenaufbau direkt benötigt werden. Die grobe Methode funktioniert folgendermaßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">add_action(&#39;after_setup_theme&#39;, &#39;footer_enqueue_scripts&#39;);
+</span></span><span class="line"><span class="ln">2</span><span class="cl">function footer_enqueue_scripts() {
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    remove_action(&#39;wp_head&#39;, &#39;wp_print_scripts&#39;);
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    remove_action(&#39;wp_head&#39;, &#39;wp_print_head_scripts&#39;, 9);
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    remove_action(&#39;wp_head&#39;, &#39;wp_enqueue_scripts&#39;, 1);
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    add_action(&#39;wp_footer&#39;, &#39;wp_print_scripts&#39;, 5);
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    add_action(&#39;wp_footer&#39;, &#39;wp_print_head_scripts&#39;, 5);
+</span></span><span class="line"><span class="ln">8</span><span class="cl">    add_action(&#39;wp_footer&#39;, &#39;wp_enqueue_scripts&#39;, 5);
+</span></span><span class="line"><span class="ln">9</span><span class="cl">}
+</span></span></code></pre></div><p>Nachdem du diese Zeilen übernommen hast, solltest du deine Seite einmal z.B. im Inkognito-Modus, ohne Cache, neu laden. Flackert die Seite in der ersten Millisekunden auffällig, also wird für einen kurzen Augenblick der fast roh anmutende Inhalt der Seite und dann das Layout angezeigt, kommentiere in der Callback-Funktion die beiden Zeilen aus, die <strong>wp_enqueue_scripts</strong> in den Footer verlagern.</p>
+<h2 id="javascript-ausführung-verzögern">JavaScript Ausführung verzögern</h2>
+<p>Die etwas elegantere Methoden nennen sich &ldquo;<strong>defer</strong>&rdquo; und &ldquo;<strong>async</strong>&rdquo;. Mit defer teilst du dem Browser mit, dass die JavaScript-Datien im Hintergrund geladen und erst ausgeführt werden, wenn die eigentlichen Inhalte fertig sind.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="n">add_filter</span><span class="p">(</span> <span class="s1">&#39;script_loader_tag&#39;</span><span class="p">,</span> <span class="s1">&#39;defer_parsing_of_js&#39;</span><span class="p">,</span> <span class="mi">10</span> <span class="p">);</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="n">function</span> <span class="n">defer_parsing_of_js</span><span class="p">(</span> <span class="o">$</span><span class="n">url</span> <span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="n">is_user_logged_in</span><span class="p">()</span> <span class="p">)</span> <span class="k">return</span> <span class="o">$</span><span class="n">url</span><span class="p">;</span> <span class="o">//</span><span class="n">don</span><span class="s1">&#39;t break WP Admin</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="n">strpos</span><span class="p">(</span> <span class="o">$</span><span class="n">url</span><span class="p">,</span> <span class="s1">&#39;.js&#39;</span> <span class="p">)</span> <span class="o">===</span> <span class="n">FALSE</span><span class="p">)</span> <span class="k">return</span> <span class="o">$</span><span class="n">url</span><span class="p">;</span> <span class="o">//</span> <span class="n">only</span> <span class="n">process</span> <span class="n">JavaScript</span> <span class="n">files</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="n">strpos</span><span class="p">(</span> <span class="o">$</span><span class="n">url</span><span class="p">,</span> <span class="s1">&#39;jquery.js&#39;</span> <span class="p">)</span> <span class="p">)</span> <span class="k">return</span> <span class="o">$</span><span class="n">url</span><span class="p">;</span>  <span class="o">//</span> <span class="n">skip</span> <span class="n">JQuery</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="k">return</span> <span class="n">str_replace</span><span class="p">(</span> <span class="s1">&#39; src&#39;</span><span class="p">,</span> <span class="s1">&#39; defer src&#39;</span><span class="p">,</span> <span class="o">$</span><span class="n">url</span> <span class="p">);</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">
+</span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Der defer-Flag macht nur bei Scripten Sinn, die mit <strong>src</strong> eingebunden werden. Inline-Scripte werden immer sofort gelesen und geparsed. Daneben gibt es noch async. Mit async wird die Datei ebenfalls parallel geladen und sofort ausgeführt, wenn die Datei vollständig ist. Das macht vor allem bei Tracking-Scripten Sinn, die keinen Bezug zum inhaltlichen Aufbau haben.</p>
+<h2 id="versionsinfos-entfernen">Versionsinfos entfernen</h2>
+<p>Style- und Script-Dateien werden oft mit einem Anhang übermittelt, z.B. <strong>style.css?ver=123</strong>. Das macht Sinn um Änderungen nachzuverfolgen, hat aber auch einen entscheidenen Nachteil: Damit werden Cache-Mechanismen umgangen, weil der Cache denkt, es handelt sich um eine dynamische Ressource. Aus dem Grund solltest du die Versions-Infos komplett deaktivieren. Achte beim Arbeiten an der Webseite einfach daran, sämtliche Caches zu deaktivieren.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="n">add_filter</span><span class="p">(</span> <span class="s1">&#39;script_loader_src&#39;</span><span class="p">,</span> <span class="s1">&#39;remove_version_parameter&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1</span> <span class="p">);</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="n">add_filter</span><span class="p">(</span> <span class="s1">&#39;style_loader_src&#39;</span><span class="p">,</span> <span class="s1">&#39;remove_version_parameter&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1</span> <span class="p">);</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="n">function</span> <span class="n">remove_version_parameter</span><span class="p">(</span><span class="o">$</span><span class="n">src</span><span class="p">){</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="o">//</span> <span class="n">Check</span> <span class="k">if</span> <span class="n">version</span> <span class="n">parameter</span> <span class="n">exist</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="o">$</span><span class="n">parts</span> <span class="o">=</span> <span class="n">explode</span><span class="p">(</span> <span class="s1">&#39;?ver&#39;</span><span class="p">,</span> <span class="o">$</span><span class="n">src</span> <span class="p">);</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="o">//</span> <span class="k">return</span> <span class="n">without</span> <span class="n">version</span> <span class="n">parameter</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="k">return</span> <span class="o">$</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="google-fonts-deaktivieren">Google Fonts deaktivieren</h2>
+<p>Die Einbindung der Fonts über Google ist bequem, birgt neben dem Performance-Nachteil aber unter Umständen auch ein Datenschutz problem. (Grundsätzlich solltest du versuchen, alle Ressourcen von deinem Server zu laden und auch auf CDN zu verzichten - <a href="https://binary-butterfly.de/artikel/warum-dir-ein-cdn-vermutlich-keinen-geschwindigkeitsvorteil-bringen-wird/">das bringt selten einen Vorteil</a>.)</p>
+<p>Leider ist das Entfernen nicht ohne weiteres möglich. Du musst erst herausfinden, unter welchem Handler das Theme die Google Fonts einbindet (Eine Liste bekannter Themes und der verwendeten Font-Handler findest du hier.) Dazu durchsuchst du die functions.php nach z.B. Google. Für das Theme Rowling sieht das dann folgendermaßen aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">wp_register_style( &#39;rowling_google_fonts&#39;, &#39;//fonts.googleapis.com/css?family=Lato:400,700,900,400italic,700italic|Merriweather:700,900,400italic&#39; );
+</span></span></code></pre></div><p>Der Handler lautet also &ldquo;<strong>rowling_google_fonts</strong>&rdquo;. Auf gehts:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">add_action( &#39;wp_print_styles&#39;, &#39;dequeue_google_fonts_style&#39; );
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">function dequeue_google_fonts_style() {
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl">      wp_dequeue_style( &#39;rowling_style&#39; );
+</span></span><span class="line"><span class="ln">6</span><span class="cl">
+</span></span><span class="line"><span class="ln">7</span><span class="cl">}
+</span></span></code></pre></div><p>Achte darauf, dass jetzt natürlich die Fallback-Schriftart aus dem CSS verwendet wird.</p>
+<h2 id="die-beitrags-historie-verschlanken">Die Beitrags-Historie verschlanken</h2>
+<p>Seit einiger Zeit gibt es in WordPress das ansich ganz nützliche Feature der Revisionen: Bei jeder Änderung und jeder Speicherung legt WordPress in der Datenbank eine Kopie der vorherigen Version des Beitrages an. Das ist praktisch. Aber auch grenzenlos.<br>
+Zunächst solltest du die Anzahl der Revisionen pro Beitrag eingrenzen. Dazu setzt du in der wp-config.php folgenden Parameter:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">define(&#39;WP_POST_REVISIONS&#39;, 5);
+</span></span></code></pre></div><p>Die Fünf beschreibt die Anzahl der erlaubten Revisionen. Du kannst die Zahl natürlich beliebig anpassen. Damit ist es aber noch nicht getan, du solltest die alten Revisionen natürlich noch aufräumen. Dazu kannst du dir das Plugin <a href="https://de.wordpress.org/plugins/wp-sweep/">WP Sweep installieren</a>. Du kannst nun ganz bequem alle Revisionen löschen:</p>
+<p><img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-2-700x102.png" alt=""></p>
+<p>Alle Revisionen mit WP Sweep löschen</p>
+<h2 id="oembeds-deaktivieren">oEmbeds deaktivieren</h2>
+<p>Hierbei handelt es sich um ein Feature, das WordPress seit Version 4.4 mitbringt, die sogenannten Embeds. Dir ist es vielleicht schon mal aufgefallen: Beim Einfügen von URL in den Beitrag, wird nicht die URL angezeigt, sondern eine Art Snippet mit zusätzlichne Informationen und sogar einer Vorschau. Das sieht schick aus, braucht aber vielleicht nicht jeder. Wenn du Embed also nicht benötigst, erspart dir das wieder ein paar Zeilen im HTML-Header und sogar eine zusätzliche JavaScript-Bibliothek:</p>
+<p><img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-4-700x52.png" alt=""></p>
+<p>Die Embed-Bibliothek von WordPress</p>
+<p>Füge dazu folgendes in die <strong>functions.php</strong> ein (<a href="https://kinsta.com/de/wissensdatenbank/deaktivierst-embeds-wordpress/#disable-embeds-code">Quelle</a>):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">add_action( &#39;init&#39;, &#39;disable_embeds_code_init&#39;, 9999 );
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">function disable_embeds_code_init() {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    remove_action( &#39;rest_api_init&#39;, &#39;wp_oembed_register_route&#39; );
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    add_filter( &#39;embed_oembed_discover&#39;, &#39;__return_false&#39; );
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    remove_filter( &#39;oembed_dataparse&#39;, &#39;wp_filter_oembed_result&#39;, 10 );
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    remove_action( &#39;wp_head&#39;, &#39;wp_oembed_add_discovery_links&#39; );
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    remove_action( &#39;wp_head&#39;, &#39;wp_oembed_add_host_js&#39; );
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    add_filter( &#39;tiny_mce_plugins&#39;, &#39;disable_embeds_tiny_mce_plugin&#39; );
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    add_filter( &#39;rewrite_rules_array&#39;, &#39;disable_embeds_rewrites&#39; );
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    remove_filter( &#39;pre_oembed_result&#39;, &#39;wp_filter_pre_oembed_result&#39;, 10 );
+</span></span><span class="line"><span class="ln">12</span><span class="cl">}
+</span></span><span class="line"><span class="ln">13</span><span class="cl">
+</span></span><span class="line"><span class="ln">14</span><span class="cl">function disable_embeds_tiny_mce_plugin($plugins) {
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    return array_diff($plugins, array(&#39;wpembed&#39;));
+</span></span><span class="line"><span class="ln">16</span><span class="cl">}
+</span></span><span class="line"><span class="ln">17</span><span class="cl">
+</span></span><span class="line"><span class="ln">18</span><span class="cl">function disable_embeds_rewrites($rules) {
+</span></span><span class="line"><span class="ln">19</span><span class="cl">    foreach($rules as $rule =&gt; $rewrite) {
+</span></span><span class="line"><span class="ln">20</span><span class="cl">        if(false !== strpos($rewrite, &#39;embed=true&#39;)) {
+</span></span><span class="line"><span class="ln">21</span><span class="cl">            unset($rules[$rule]);
+</span></span><span class="line"><span class="ln">22</span><span class="cl">        }
+</span></span><span class="line"><span class="ln">23</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">24</span><span class="cl">    return $rules;
+</span></span><span class="line"><span class="ln">25</span><span class="cl">}
+</span></span></code></pre></div><h2 id="den-header-aufräumen">Den Header aufräumen</h2>
+<p>Kommen wir zu ein paar Maßnahmen, die das HTML ein wenig verschlanken, aber aus Performance-Sicht nur Peanuts sind: Wir räumen den Header-Bereich auf. Diese Maßnahmen sind nicht wirklich notwendig, außer du willst es wirklich auf die Spitze treiben.</p>
+<p>Los geht es mit dem Manifest für den <strong>Windows Live Writer</strong>, einer App um Blog-Beiträge zu schreiben (was mit deaktivierter XML-RPC, siehe unten, sowieso nicht mehr möglich ist):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">&lt;link rel=&#34;wlwmanifest&#34; type=&#34;application/wlwmanifest+xml&#34; href=&#34;https://example.com/wp-includes/wlwmanifest.xml&#34;&gt;
+</span></span></code></pre></div><p>Und so deaktivierst du den Spaß:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">remove_action( &#39;wp_head&#39;, &#39;wlwmanifest_link&#39;);
+</span></span></code></pre></div><p>Weiter geht es mit dem Verweis zum <strong>Shortlink</strong> des jeweiligen Beitrages. Shortlinks sind praktisch, um mit kurzem URL auf Inhalte deiner Webseite zu verweisen. Anstatt dem langen Permalink <a href="https://www.example.com/das-ist-mein-allererster-beitrag-hier-und-ich-liebe-es">www.example.com/das-ist-mein-allererster-beitrag-hier-und-ich-liebe-es</a> nutzt du z.B. einfach <strong><a href="https://www.example.com/?p=1">www.example.com/?p=1</a></strong>. Wenn du das nicht brauchst, entferne den Shortlink-Verweis aus dem HTML-Header und dem HTTP-Antwort-Header:</p>
+<p><img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-3-700x336.png" alt=""></p>
+<p>Der Shortlink-Verweis im HTTP-Header</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">remove_action( &#39;wp_head&#39;, &#39;wp_shortlink_wp_head&#39;);
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">add_filter(&#39;after_setup_theme&#39;, &#39;remove_shortlink_from_http_header&#39;);
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl">function remove_shortlink_from_http_header() {
+</span></span><span class="line"><span class="ln">6</span><span class="cl">
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    remove_action( &#39;template_redirect&#39;, &#39;wp_shortlink_header&#39;, 11);
+</span></span><span class="line"><span class="ln">8</span><span class="cl">
+</span></span><span class="line"><span class="ln">9</span><span class="cl">}
+</span></span></code></pre></div><p>Im Header findest Verweise auf den vorherigen, den nächsten Beitrag oder die Startseite. Diese Funktionalität sollte theoretisch durch dein Template abgedeckt sein. Diese Verweise entfernst du folgendermaßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">remove_action(&#39;wp_head&#39;, &#39;start_post_rel_link&#39;);
+</span></span><span class="line"><span class="ln">2</span><span class="cl">remove_action(&#39;wp_head&#39;, &#39;index_rel_link&#39;);
+</span></span><span class="line"><span class="ln">3</span><span class="cl">remove_action(&#39;wp_head&#39;, &#39;adjacent_posts_rel_link&#39;);
+</span></span></code></pre></div><p>Zu guter Letzt die Versions-Information. Das Verbergen der WordPress-Version kann auch als Sicherheitsfeature verstanden werden (<strong>Security through obscurity</strong>, Sicherheit durch Unklarheit, siehe oben). Wenn der potentielle Angreifer nicht weiß, welche Version du verwendest, erschwerst du ihm zumindest das Identifizieren potentieller Sicherheitslücken. In der Realtität wird das nur die Bots aufhalten, die dein System automatisiert scannen. Bei einem aktiven Angriff ist das ziemlich sicher nutzlos. Nutze dazu folgende Zeile in der functions.php:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">remove_action(&#39;wp_head&#39;, &#39;wp_generator&#39;);
+</span></span></code></pre></div><h2 id="cache-plugin">Cache-Plugin</h2>
+<p>Wenn du immer noch nicht zufrieden bist, kannst du auch auf ein Cache-Plugin zurück greifen. Das sorgt dafür, dass die Seiten nicht bei jedem Aufruf komplett neu über PHP erstellt, sondern statische Inhalte ausgeliefert werden. Das bringt noch mal einen enormen Geschwindigkeitsgewinn.</p>
+<h2 id="die-xml-rpc-schnittstelle-deaktivieren">Die XML-RPC-Schnittstelle deaktivieren</h2>
+<p>XML-RPC steht für Extensible Markup Language Remote Procedure Call. Klingt kompliziert, ist es auch. Dabei handelt es sich um eine Schnittstelle. mit der du, ganz einfach gesagt, WordPress steuern kannst, ohne auf das Backend zuzugreifen (<a href="https://www.kuketz-blog.de/wordpress-angriffe-auf-die-xmlrpc-schnittstelle-xmlrpc-php-unterbinden/">mehr Hintergründe dazu hier</a>). Wenn du diese Schnittstelle deaktivierst, verlierst du also Funktionalität, wie z.B. <strong>Pingbacks</strong> oder das <strong>Verwalten von WordPress mit einer externen App</strong>. Auch Jetpack greift auf die XML-RPC zu! Du gewinnst aber auch etwas an Sicherheit dazu. Entscheide selber.</p>
+<p>In den aktuellen Apache-Versionen (ab 2.4) sperrst du den Zugriff auf xmlrpc.php in der .htaccess-Datei folgendermaßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">&lt;FilesMatch &#34;(^\.|wp-config\.php|xmlrpc\.php|(?&lt;!robots)\.txt|(liesmich|readme)\.*)&#34;&gt;
+</span></span><span class="line"><span class="ln">2</span><span class="cl">   Require all denied
+</span></span><span class="line"><span class="ln">3</span><span class="cl">&lt;/FilesMatch&gt;
+</span></span></code></pre></div><p>Eigentlich sollte das schon genügen. Willst du auf Nummer sicher gehen, kannst du durchaus mehrt tun. Der weniger disruptive Weg wäre, <a href="https://developer.wordpress.org/reference/hooks/xmlrpc_enabled/">alle</a> <a href="https://developer.wordpress.org/reference/hooks/xmlrpc_enabled/"></a><a href="https://developer.wordpress.org/reference/hooks/xmlrpc_enabled/">Methoden zu deaktivieren, die eine Authentifizierung erfordern</a>. Das funktioniert folgendermaßen (in der functions.php deines Child-Themes):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"># XML RPC deaktivieren
+</span></span><span class="line"><span class="ln">2</span><span class="cl">add_filter( &#39;xmlrpc_enabled&#39;, &#39;__return_false&#39; );
+</span></span><span class="line"><span class="ln">3</span><span class="cl"># XML RPC Verweis aus Header entfernen
+</span></span><span class="line"><span class="ln">4</span><span class="cl">remove_action(&#39;wp_head&#39;, &#39;rsd_link&#39;);
+</span></span></code></pre></div><p>Allerdings ist das ganze Sub-System weiterhin aktiv. <a href="https://www.scottbrownconsulting.com/2020/03/two-ways-to-fully-disable-wordpress-xml-rpc/">Willst du das also komplett deaktivieren</a>, füge der functions.php folgendes hinzu:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">// disable xmlrpc
+</span></span><span class="line"><span class="ln">2</span><span class="cl">function remove_xmlrpc_methods( $methods ) {
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  return array();
+</span></span><span class="line"><span class="ln">4</span><span class="cl">}
+</span></span><span class="line"><span class="ln">5</span><span class="cl">add_filter( &#39;xmlrpc_methods&#39;, &#39;remove_xmlrpc_methods&#39; );
+</span></span></code></pre></div><p>Aber wie gesagt, das sind zusätzliche Maßnahmen. In der Regel kannst du vielleicht schon gut schlafen, wenn der Webserver den Zugriff auf xmlrpc.php einfach nicht zulässt.</p>
+<h2 id="die-rest-api-verweise-entfernen">Die REST-API-Verweise entfernen</h2>
+<p>Seit Version 4.4 hat WordPress eine REST-API an Bord, die wie XML-RPC eine Schnittstelle bietete, um bestimmte Informationen über deine Seite automatisiert auszulesen. Obgleich das Sicherheitsrisiko der REST-API ungleich niedriger ist als bei XML-RPC, kannst du auch hier ein wenig aufräumen, indem du den Verweis auf die REST-API folgendermaßen aus den HTML- sowie HTTP-Header entfernst:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">remove_action(&#39;wp_head&#39;, &#39;rest_output_link_wp_head&#39;, 10);
+</span></span><span class="line"><span class="ln">2</span><span class="cl">remove_action(&#39;template_redirect&#39;, &#39;rest_output_link_header&#39;, 11, 0);
+</span></span></code></pre></div><p>Ganz deaktivieren solltest du die API allerdings nicht, da sie vor allem auch für die reibungslose Backend-Funktionalität wichtig ist. Was du aber machen kannst, ist die REST-API <a href="https://developer.wordpress.org/rest-api/frequently-asked-questions/">nur nach Anmeldung zulassen:</a></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">add_filter(&#39;rest_authentication_errors&#39;, &#39;rest_api_auth&#39;);
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">function rest_api_auth($result) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    // bereits erfolgreich authentifiziert?
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    if ( true === $result || is_wp_error( $result ) ) {
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        return $result;
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"> 
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    // noch nicht authentifiziert?
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    if ( ! is_user_logged_in() ) {
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        return new WP_Error(
+</span></span><span class="line"><span class="ln">12</span><span class="cl">            &#39;rest_not_logged_in&#39;,
+</span></span><span class="line"><span class="ln">13</span><span class="cl">            __( &#39;You are not currently logged in.&#39; ),
+</span></span><span class="line"><span class="ln">14</span><span class="cl">            array( &#39;status&#39; =&gt; 401 )
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        );
+</span></span><span class="line"><span class="ln">16</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">17</span><span class="cl"> 
+</span></span><span class="line"><span class="ln">18</span><span class="cl">    // sonst zurück
+</span></span><span class="line"><span class="ln">19</span><span class="cl">    return $result;
+</span></span><span class="line"><span class="ln">20</span><span class="cl">}
+</span></span></code></pre></div><h2 id="fazit">Fazit</h2>
+<p>Das war es erstmal. Wenn du jetzt noch das Gefühl hast, dass dein WordPress zu langsam ist, wirf mal einen Blick in die Entwickler-Konsole und schau nach, welche Ressourcen lange dauern oder ob du Anfragen doppelt absetzt. Es gibt vor allem auf Server-Seite, also unterhalb von WordPress, noch eine Menge Möglichkeiten. Einige davon habe ich in der <a href="https://www.nickyreinert.de/mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-1-3/">Artikel-Serie zum perfekten Web-Server-Setup aufgeführt</a>. Außerdem gibt es hier eine wirklich brilliante Artikel-Serie zum Thema Sicherheit, die du dir unbedingt lesen solltest. Hier werden unzählige wichtige Hinweise gegeben,</p>
+<p>Zum Abschluss noch mal der Hinweis: Es handelt sich hierbei um mitunter tiefe Eingriffe in die <strong>WordPress-Mechanik</strong>. Solltest du in der Zukunft Probleme mit deiner Seite haben, nimm diese Änderungen Schritt für Schritt zurück. Arbeite mit einem Staging-System und nutze Backups. Bei Probleme und Inkompatiblitäten freue ich mich über sachdienliche Hinweise, die ich in den Artikel einbauen kann!</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> einstellungen, setup, wordpress</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>blog</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Leitfaden für ein sicheres und schnelles WordPress-Setup - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>optimization_guide</dc:type>
+      
+      
+    </item><item>
+      <title>Wordpress Debugging und Wartung oder: Keine Panik vor dem White Screen of Death und HTTP 500</title>
+      <link>https://nickyreinert.de/2018/2018-11-18-wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death/</link>
+      <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2018/2018-11-18-wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death/</guid>
+      <description>Deine Wordpress-Seite besteht nur aus einem weißen Bildschirm, dem HTTP-Fehlercode 500 oder lädt irsinnig langsam? White Screen of Death (WSoD), die …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine umfassende Anleitung zur Fehlersuche und Wartung von WordPress. Der Artikel erklärt, wie man Probleme wie den &#34;White Screen of Death&#34; (WSoD) und HTTP-500-Fehler systematisch analysiert. Vorgestellt werden drei wesentliche Werkzeuge: die Entwicklerkonsole des Browsers, das Plugin &#34;Query Monitor&#34; zur Performance-Analyse und die korrekte Konfiguration des WordPress-Debug-Modus über `wp-config.php` und `.htaccess`.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> WordPress, Debugging, Troubleshooting, Performance, PHP, Web-Development</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Deine Wordpress-Seite besteht nur aus einem weißen Bildschirm, dem <strong>HTTP-Fehlercode 500</strong> oder lädt irsinnig langsam? <strong>White Screen of Death</strong> (WSoD), die berüchtigten <strong>500´er</strong> sowie lange <strong>Ladezeiten</strong> scheinen zu den größten Herausforderungen im Umgang mit WordPress zu gehören und sie hinterlassen regelmäßig lange Gesichter. Zwar gehören Ladezeit, PHP- und HTTP-Fehler nicht unbedingt zusammen, sie erfordern aber in der Regel das gleiche Vorgehen: Nämlich die <strong>Analyse</strong>, was da im <strong>Hintergrund</strong> so passiert.<br>
+Die Suche nach der Ursache ist oft relativ simpel. Es sagt einem oft nur niemand. Der beliebteste Tipp bei Wordpress lautet oft:</p>
+<blockquote>
+<p><em>&ldquo;Deaktiviere mal alle Plugins und aktiviere sie nacheinander wieder.&rdquo;</em></p>
+<p><em>Anonymer Ratgeber, Mai 2018</em></p></blockquote>
+<p>Das ist alles andere als effizient, ja nicht einmal effektiv: Du erfährst nach 27 Minuten und zwei Tassen Kaffe, dass das Plugin &ldquo;Foobar&rdquo; für den Fehler verantwortlich ist, weil das den <strong>WSoD</strong> auslöst. Aber dann weißt du immer noch nicht, was genau der Fehler ist. Danke für nichts?</p>
+<p>Tatsächlich gibt es nur <strong>drei Dinge</strong>, die dir helfen können, dir selber zu helfen, wenn WordPress dich mal wieder im Stich lässt. Und diese drei Werkzeuge zur <strong>Fehlersuche</strong> und <strong>Diagnose</strong> langsamer Wordpress-Installation stelle ich jetzt einmal vor:</p>
+<h2 id="1-die-entwickler-konsole-deines-browsers">1. Die Entwickler-Konsole deines Browsers</h2>
+<p>Dieses Werkzeug bringt mittlerweile jeder moderne Browser mit und das sollte auch die <strong>erste Anlaufstelle</strong> für dich sein. Welche Entwicklerkonsole du verwendest, ist deinem Geschmack überlassen, in der Funktionalität unterscheiden sie sich kaum. Du öffnest die Entwicklerkonsole auf vielfältige Weise über</p>
+<ul>
+<li>das Kontextmenü (Rechte Maustaste -&gt; Element untersuchen) oder</li>
+<li>über mit der Funktionstaste F12 oder</li>
+<li>mit dem Shortcut CTRL+SHIFT+I (Windows) / CMD+OPT+I (OS X)</li>
+</ul>
+<p>[gallery link=&ldquo;file&rdquo; columns=&ldquo;4&rdquo; ids=&ldquo;2356,2357,2358,2359&rdquo;]</p>
+<h2 id="2-der-query-monitor---warum-ist-dein-wordpress-so-langsam">2. Der Query Monitor - warum ist dein Wordpress so langsam?</h2>
+<p>Der <a href="https://de.wordpress.org/plugins/query-monitor/">Query Monitor</a> ist ein wirklich nützliches <strong>Plugin</strong> für Wordpress. Eines der wenigen. Du fragst dich, warum deine Seite so lange lädt und die Entwicklerkonsole gibt nicht vielmehr her als ein <strong>TTFB</strong> (Time To First Byte) von 60 Sekunden?</p>
+<p>Die Entwicklerkonsole sagt dir nur, wie lange der Browser auf den Inhalt wartet. Hier kann maximal identifiziert werden, dass die reine Wartezeit (<strong>TTFB</strong>) 60 Sekunden beträgt und der Inhalt in 10 Sekunden heruntergeladen wird (die ganzen anderen Nerd-Kennzahlen jetzt mal außen vor gelassen). Letzteres liegt ziemlich wahrscheinlich an der Internetleitung von dir oder dem Hoster. Aber TTFB? Das ist im Grunde die Zeit, die der Server benötigt um die Ausgabe einmal zusammenzuschustern und zu deinem Browser zu schicken. Also das ganze PHP-Gedöns einmal &ldquo;interpretieren&rdquo; und ein paar Datenbankabfragen durchführen. Je umfangreicher deine WordPress-Seite ist (sprich Plugin-Vielfalt), desto mehr gibt es hier zu tun. Und was da im Hintergrund genau passiert, sagt dir der <strong>Query Monitor</strong>.</p>
+<p>[gallery link=&ldquo;file&rdquo; columns=&ldquo;2&rdquo; ids=&ldquo;2354,2355&rdquo;]</p>
+<p>Nach der Installation siehst du in der Admin-Toolbar erstmal ein paar oberflächliche Zahlen: <strong>Ladezeit,</strong> <strong>Größe</strong> und <strong>Anzahl der Queries.</strong> Wirklich spannend wird es, wenn du mal auf diese Zahlen klickst. Dann öffnet sich eine &ldquo;<em>Entwickler-Konsole&rdquo;,</em> die deiner WordPress-Seite mal gehörig unter die Haube schaut. Du siehst <strong>Datenbankabfragen,</strong> <strong>Scripte,</strong> <strong>Funktionen</strong> und alle möglichen Diagnostiken - einfach alles. Du kannst nun relativ zügig erkennen, ob manche Abfragen einfach nur doppelte durchgeführt wurden oder die Datenbank grundsätzlich zu langsam ist.</p>
+<h2 id="3-der-debug-modus">3. Der Debug-Modus</h2>
+<p>DasBbeste zum Schluss - der Debug-Modus verrät dir wirklich alles und ist eigentlich der Premium-Weg der Problemlösung.</p>
+<p>Du wirst nur selten erleben, dass Wordpress bzw. dein Server dich wirklich gar nicht mit einer Fehlermeldung erhellen will. Der unliebsame <strong>White Screen of Death</strong> und der gefürchtete <strong>HTTP-Fehler 500</strong> sind im Grunde nur der Standardeinstellungen geschuldet. Du kannst dann entweder ein Ticket bei deinem Hoster öffnen und im nächsten Jahr mit einer Antwort rechnen oder versuchen, selber an die Fehlermeldung zu gelangen und das Problem eigenständig zu analysieren: <strong>Der geheime Trick</strong> lautet nämlich, einfach mal das Internet nach der Fehlermeldung zu durchsuchen. <strong>In 99,99% der Fälle</strong> bist du bei weitem nicht der erste mit diesem banalen Problem..</p>
+<p>Die wahre Herausforderung ist allerdings, dass die Ausgabe von Fehlermeldungen eben standardmäßig unterdrückt  wird. Aus Gründen der Sicherheit und Bedienbarkeit ist das grundsätzlich nicht verkehrt. Wenn du doch mal wissen willst, woher der <strong>White Screen of Death</strong> wirklich kommt, gehst du folgendermaßen vor:</p>
+<h3 id="a-du-aktivierst-die-fehlerausgabe-von-wordpress">A: Du aktivierst die Fehlerausgabe von Wordpress</h3>
+<p>Dazu öffnest du die Datei wp-config.php, nachdem du sie lokal gespeichert hast, und setzt folgenden Parameter direkt an den Anfang, aber hinter das <em>&lt;?php</em>:</p>
+<?php
+define( 'WP\_DEBUG', true );
+define( 'WP\_DEBUG\_LOG', true ); 
+define('WP\_DEBUG\_DISPLAY', false);
+
+Der 1. Parameter ist für das debuggen _essentiell:_ Damit aktivierst du die Ausgabe von Fehlermeldungen.
+
+Mit dem 2. Parameter gibst du die Anweisung, dass die Fehlermeldungen in einer Datei gespeichert werden. Das ist aus zwei Gründen nützlich: Du kannst es später einfacher Nachvollziehen und außerdem solltest du vermeiden, dass Fehlermeldungen, die vielleicht sensible Informationen enthalten, direkt im Frontend landen.
+
+Die besagte Datei befindet sich um Order /wp-content und heißt **debug.log**. etzt du **WP\_DEBUG\_LOG** auf true, wird Wordpress Fehlermeldungen in die Date _/wp-content/debug.log_ schreiben. Für die nachträgliche Analyse ist das sehr praktisch. Das funktioniert natürlich nur, wenn der Ordner beschreibbar ist. Andernfalls musst du diesen Parameter und den folgenden weglassen.
+
+Der letzte Parameter sorgt noch einmal explizit dafür, dass die Fehlermeldungen nicht im Frontend angezeigt werden.
+
+Neben diesen 3 Parameter gibt es noch **SCRIPT\_DEBUG**. Mit true aktiviert, sorgt dieser Schalter dafür, dass Wordpress die "echten" CSS- und JS-Dateien liest, anstatt der minifizierten. Das wird dich nur in Spezialfällen betreffen, solltest du aber kennen. Der nächste **Spezialparameter** in der Riege ist **SAVEQUERIES** - hiermit wird dir WordPress die Datenbank-Anfragen ausgeben. Auch das ist in der Regel nicht notwendig, aber gut zu wissen.
+
+Denke daran, dass die Parameter im weiteren Verlauf der Config-Datei nicht wieder vorkommen und deine Einstellung so aufheben und vor allen, dass du die Parameter in einem Live-System nach der Fehlersuche **wieder auf _false_ zurücksetzen** solltest.
+
+### B: Du aktivierst die Fehlerausgabe deines Servers
+
+Eigentlich sollte dir **Nummero A** bereits weiterhelfen, denn damit wird auch die Fehlerausgabe von PHP aktiviert. Sollte deine Seite trotzdem weiß bleiben und dich nicht mit zusätzlichen Fehlernachrichten beglücken, kannst du etwas tiefer in die Trickkiste greifen. Diese Parameter machen im Grunde nichts anderes, als oben schon beschreiben ist, sie greifen allerdings etwas "früher" ein.
+
+Ergänze, ebenfalls direkt hinter dem _<?php_ der Datei _wp-config.php_ die folgenden Zeilen:
+
+<?php
+error\_reporting(E\_ALL);
+ini\_set('display\_errors', 1);
+ini\_set('display\_startup\_errors', 1);
+// ini\_set("log\_errors", 1);
+// ini\_set("error\_log", "/pfad/zu/wordpress/temp/php-error.log");
+
+Die beiden letzten Zeilen aktivieren, ähnlich wie oben, dass PHP Fehlermeldungen in eine Datei schreibt. Da die Log-Datei bei der ad hoc Fehlersuche nicht zwingend hilfreich ist, sind diese beiden Zeilen auskommentiert.
+
+Wenn du den Pfad zu deiner Installation nicht kennst, bekommst du sie mit folgendem PHP-Befehl heraus. Wenn du diese Information nicht mehr benötigst, entferne sie aber sofort aus deinem Script. **Security through obscurity** - das _Document Root_ geht niemanden außer dich etwas an!
+
+var\_dump($\_SERVER\["DOCUMENT\_ROOT"\]);
+
+Achtung: Auf manchen Seiten wird dir empfohlen, den Zeilen ein @ vorzustellen. Das ist **ziemlich kontraproduktiv** - denn [das @ am Anfang der Zeile unterbindet Fehlermeldungen](http://php.net/manual/de/language.operators.errorcontrol.php) und weshalb bist du hier? Genau...
+
+Das ist aber noch nicht alles - die Trickkiste ist noch tiefer. Doch obacht! Das folgende ist **Premium-Klasse-Debuggung** und auf den meisten Shared-Hostern gar nicht möglich. Die essentiellen Parameter befinden sich in der ersten Zeile. Die noch tiefergreifenden und wirklich nur in absoluten Sonderfällen benötigten Einstellungen sind darunter aufgeführt.
+
+Öffne die Datei **.htaccess** und ergänze die folgenden Zeilen - auch hier gilt, achte darauf, dass die Parameter nicht an anderer Stelle ungewollt überschrieben werden:
+
+\# Easy-Peasy Lemon-Squeezy:
+php\_flag display\_startup\_errors on
+php\_flag display\_errors on
+php\_flag html\_errors on
+php\_flag log\_errors on
+
+# Fürs Protokoll: Wenn du das volle Entertainment brauchst
+# nimm auch das hier mit - für alle Copy&Paste-Cowbowys, die 
+# den Warnhinweis nicht lesen, habe ich die Zeilen auskommentiert
+# php\_flag ignore\_repeated\_errors off
+# php\_flag ignore\_repeated\_source off
+# php\_flag report\_memleaks on
+# php\_flag track\_errors on
+# php\_value docref\_root 0
+# php\_value docref\_ext 0
+# php\_value error\_log /pfad/zu/wordpress/temp/php-error.log
+# php\_value error\_reporting -1
+# php\_value log\_errors\_max\_len 0
+
+# <Files php\_errors.log>
+#      Order allow,deny
+#      Deny from all
+#      Satisfy All
+# </Files>
+
+Warum A und warum B? Es ist möglich, dass die Server-Konfiguration es aus Sicherheitsgründen nicht zulässt, dass diese sogenannten **PHP-Direktiven** (aka Parameter) an beliebigen Stellen (aka .htaccess, in der PHP-Datei, ...) konfiguriert wird. Deshalb.  
+Und was ist mit C - der **php.ini**\-Datei? Gute Frage, werter Leser, die bei dir ein gewisses Grundwissen erkennen lässt. Chapeau. In dem Fall gehe ich sehr stark davon aus, dass du Zugriff auf eben diese Datei hast. Und wer Zugriff auf diese Datei hat, mit diesem Vorwissen, ist ziemlich sicher und hoffentlich mit der notwendigen Erfahrung ausgestattet. Andernfalls: Ruf deinen SysOp an. ;) Fühle dich trotzdem herzlich dazu eingeladen, diesen Beitrag mit etwas zuästzlichem Fachwissen in den **Kommentaren** zu bereichern.
+
+### C: Den Debug-Modus bei deinem Hoster aktivieren
+
+Bei der Einstellung des Debug-Modus gibt es eine Hierarchie. Die Debug-Einstellung in der PHP-Datei (**wp-config.php**) ist hierbei die oberste Ebene, darunter folgt die Einstellung in der **.htaccess-Datei** und auf unterster Ebene lässt sich diese Funktion in der Einstellung des Servers bzw. PHP-Interpreters direkt einstellen (z.B. **php.ini**). Damit unbedarfte Laien wie wir an dieser Datei nicht wahllos rumfingern, ist bleibt uns diese Möglichkeit entweder komplett verwehrt oder ist nur über das Interface bei deinem Hoster einstellbar. Dort kann der Hoster auch festlegen, dass diese Einstellung (in Fachkreisen gerne auch **Direktive** genannt) in den Ebenen darüber gar nicht anpassen werden darf - **Schritt A und B bleiben also unwirksam.** Das ist der Zeitpunkt, wenn du in den Einstellungen bei deinem Hoster nach dieser Einstellung suchst - oder den Hoster darum bittest, den Debug-Modus für dich zu aktivieren.
+
+Bei HostEurope kannst du das z.B. sehr leicht selber tun:
+
+[![Host Europe Debug Modus aktivieren ](images/host_europe_debug_aktivieren-300x232.png)](https://www.nickyreinert.de/files/wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death/host_europe_debug_aktivieren.png)
+
+Host Europe Debug Modus aktivieren
+
+## Freibier - Nachwort - Lies  mich!
+
+Das ist jetzt wirklich wichtig: Wie immer, und oben bereits erwähnt, gilt auch hier: **Security through obscurity**.
+
+> Wenn du den Debug-Modus auf dem Live-System nicht mehr benötigst, deaktiviere ihn. Basta.
+
+Auf **Live-Systemen** hat der **Debug-Modus nur in Ausnahmefällen** etwas verloren. Und Fehler sollten zur Ausnahme zählen. Und auch, wenn du hier nur ein wenig an den PHP-Dateien rumschraubst, wobei eigentlich nicht viel kaputt gehen kann:
+
+> Denke an die obligatorische Sicherungskopie.
+
+Und jetzt viel Spass beim d_ebuggen_...
+
+Ach ja - wenn all das da oben nicht funktioniert, dann kannst du tatsächlich auch mal den Holzhammer rausholen: **Plugins aktivieren und deaktivieren**. In der Regel helfen dir die hier geschilderten Schritte aber, genau diesen mühsamen Schritt zu übergehen.
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> WordPress, Debugging, Anleitung, Fehlerbehebung, Performance</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>wordpress</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Wordpress Debugging und Wartung oder: Keine Panik vor dem White Screen of Death und HTTP 500 - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>troubleshooting_guide</dc:type>
+      
+      
+    </item><item>
+      <title>Wordpress-Plugin um eine Word-Cloud mit beliebigen Wörtern darzustellen</title>
+      <link>https://nickyreinert.de/2018/2018-06-13-wordpress-plugin-um-eine-word-cloud-mit-beliebigen-woertern-darzustellen/</link>
+      <pubDate>Wed, 13 Jun 2018 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2018/2018-06-13-wordpress-plugin-um-eine-word-cloud-mit-beliebigen-woertern-darzustellen/</guid>
+      <description>Diese Version ist veraltet, bitte verwende absofort diese Version:
+https://www.nickyreinert.de/wordpress-word-cloud-2-0/
+Wer träumt nicht davon, eine Wolke aus …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Der Artikel stellt ein selbst entwickeltes WordPress-Plugin vor, das Word-Clouds aus beliebigen Wortlisten generiert. Es wird erklärt, wie das auf `wordCloud2.js` basierende Plugin installiert und mittels Shortcode konfiguriert wird, um Wortlisten aus Custom Fields oder SQL-Abfragen zu visualisieren. Ein Hinweis verweist auf eine neuere Version.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> WordPress, Plugins, JavaScript, Datenvisualisierung, PHP</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Diese Version ist veraltet, bitte verwende absofort diese Version:</p>
+<p><a href="https://www.nickyreinert.de/wordpress-word-cloud-2-0/">https://www.nickyreinert.de/wordpress-word-cloud-2-0/</a></p>
+<p>Wer träumt nicht davon, eine Wolke aus Wörtern in Wordpress darstellen zu können? Der Fachmann spricht hier von einer sogenannten Word-Cloud. Ich meine hier übrigens ausdrücklich nicht die bekannten TagClouds, bei denen schlicht die verwendeten Wordpress-Tags in einer Wolke anklickbar angezeigt werden. Hier geht es einfach um die Darstellung von Wörtern, die entsprechend der Vorkommen verschieden groß dargestellt werden. Leider gab es genau für diesen Zweck bisher kein Wordpress-Plugin. Dafür habe ich aber eine sehr leicht zu bedienende <a href="https://github.com/timdream/wordcloud2.js/blob/gh-pages/API.md">JavaScript-Bibliothek von Tim Dream: wordCloud2.js</a> gefunden, auf der ich das Plugin aufgebaut habe.</p>
+<h2 id="installation">Installation</h2>
+<p>Der ganze Spaß steht <a href="https://github.com/nickyreinert/wordCloud-for-Wordpress">auf GitHub zur Verfügung</a>. Du musst lediglich den Source-Code herunterladen und in einen Unterordner in wp-content/plugins entpacken. Wenn du das Plugin im Backend aktiviert hast, kannst du auf jeder Seite und jedem Beitrag den Shortcode [ word-cloud ] nutzen.</p>
+<p>Die folgenden Parameter kannst du im Shortcode übergeben. Der Parameter <strong>target-id</strong> ist dabei immer notwendig, alle anderen sind nicht verpflichtend.</p>
+<ul>
+<li><strong>target-id</strong> - damit wird jede Instanz von word-cloud adressiert. Du kannst je Seite mehrere Word-Clouds erstellen, die Target-Id wird auch als CSS-Id verwendet</li>
+<li><strong>source</strong> -wenn du eine eigene SQL-Abfrage verwenden möchtest, musst du diesen Parameter auf &ldquo;sql&rdquo; setzen, andernfalls wird versucht, ein Custom-Field auszulesen</li>
+<li><strong>source-id</strong> - wenn sich die Wortliste in einem Custom-Field befindet, musst du mit diesem Parameter den Namen des Felds angeben</li>
+<li><strong>query</strong> - wenn du eine SQL-Abfrage verwendest, nutzt du dafür diesen Parameter</li>
+<li><strong>backgroundColor</strong> - die Hintergrundfarbe der Cloud, z.B. #123123</li>
+<li><strong>gridSize</strong> - ein ganze Zahl, mit der die Lücke zwischen den Wörtern gesteuert werden kann</li>
+<li><strong>fontFamily</strong> - welcher Font soll verwendet werden</li>
+<li><strong>fontWeight</strong> - das Gewicht der Schriften, also z.B. bold oder normal</li>
+<li><strong>minRotation</strong> - eine ganze Zahl, die das Mindestmaß der Rotation bestimmt, ist der Wert 0, wird die Rotation deaktiviert</li>
+<li><strong>maxRotation</strong> - das gleiche, nur für die Obergrenze der Rotation</li>
+<li><strong>weightFactor</strong> - eine ganze Zahl, um die Gewichtung der Wörter zu beeinflussen, also ein Multiplikator für die Größe</li>
+<li><strong>shape</strong> - die Form der Wolke, hier kannst du folgende Formen verwenden: circle (Standard), cardioid (Apfel bzw. Herz), diamond, square, triangle-forward, triangle, pentagon und star</li>
+</ul>
+<h2 id="beispiel">Beispiel</h2>
+<h3 id="wörter-aus-einer-mysql-tabelle-nutzen">Wörter aus einer MySQL-Tabelle nutzen</h3>
+<p>Die folgende Word-Cloud verwendet eine Liste von 100 Wörtern aus einer Datenbank-Abfrage:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[ word-cloud target-id=&#34;myWordCloud1&#34; source=&#34;sql&#34; query=&#34;SELECT word, SUM(count) AS count FROM augenblicke.001_words GROUP BY word ORDER BY count DESC LIMIT 0,100&#34; ]
+</span></span></code></pre></div><p>Hier siehst du eine Word-Cloud, die auf eine kleinere Liste zurückgreift, die ich in einem Custom-Field übergebe:</p>
+<p>[word-cloud target-id=&ldquo;myWordCloud2&rdquo; source-id=&ldquo;word-cloud&rdquo;]</p>
+<h3 id="wörter-aus-einem-benutzerdefinierten-feld-nutzen">Wörter aus einem benutzerdefinierten Feld nutzen</h3>
+<p>Achtung: Dieser Weg funktioniert mit dem neuen Gutenberg-Editor (ab Wordpress 5) nicht, da dieser (Stand Januar 2019) keine benutzerdefinierten Felder anzeigt.</p>
+<p>Wenn du auf eine Liste mit Wörter aus einem benutzerdefinierten Feld zugreifen willst, übergibst du als source-id den Namen des benutzerdefinierten Feldes:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[word-cloud target-id=&#34;myWordCloud2&#34; source-id=&#34;word-cloud&#34;]
+</span></span></code></pre></div><p>Das benutzerdefinierte Feld legst du dann mit genau diesem Namen an und füllst es mit den Wörter und den Werten, die die Größe represäntieren sollen:</p>
+<p><a href="https://www.nickyreinert.de/files/grafik-13.png"><img src="/2018/2018-06-13-wordpress-plugin-um-eine-word-cloud-mit-beliebigen-woertern-darzustellen/images/grafik-13-700x74.png" alt=""></a></p>
+<p>Benutzerdefiniertes Feld mit eigener Wortliste im klassischen Editor</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> WordPress, Plugin, Projekt, Word-Cloud</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>projekte</category>
+      
+      <category>wordpress</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Wordpress-Plugin um eine Word-Cloud mit beliebigen Wörtern darzustellen - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>project_documentation</dc:type>
+      
+      
+    </item><item>
+      <title>Wie entwickelt man einen Amazon-Bot für Telegramm?</title>
+      <link>https://nickyreinert.de/2018/2018-03-02-wie-entwickelt-man-einen-amazon-bot-fuer-telegramm/</link>
+      <pubDate>Fri, 02 Mar 2018 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2018/2018-03-02-wie-entwickelt-man-einen-amazon-bot-fuer-telegramm/</guid>
+      <description>Was ist ein Telegramm-Bot? Schon mal was von Telegramm gehört oder gar einem Telegramm-Bot gehört? Nein? Macht nichts. Telegramm ist ein Messenger, wie Whatsapp …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine umfassende Schritt-für-Schritt-Anleitung zur Entwicklung eines Telegram-Bots mit PHP, der die Amazon-Produktsuche integriert. Das Tutorial deckt den gesamten Prozess ab: von der Registrierung des Bots bei Telegram über die Einrichtung des PHP-Bot-Frameworks, die Anbindung an die Amazon Product Advertising API bis hin zur Integration von Analytics mit Botan und der Anonymisierung von Nutzerdaten.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> PHP, Telegram-Bot, API-Integration, Amazon-API, Web-Development, Chatbots</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <h2 id="was-ist-ein-telegramm-bot">Was ist ein Telegramm-Bot?</h2>
+<p>Schon mal was von Telegramm gehört oder gar einem Telegramm-Bot gehört? Nein? Macht nichts. Telegramm ist ein Messenger, wie Whatsapp oder Threema. Der große Vorteil von Telegramm gegenüber Whatsapp ist die Plattforum-Unabhängigkeit. Es gibt nicht nur Apps für Android und iOs, auch unter OS X (Mac) und Windows lässt sich Telegramm unkompliziert nutzen. Bei Whatsapp war das bisher nur über den Browser möglich, Threema bietet diese Möglichkeit gar nicht an.</p>
+<p>Außerdem bietet Telegramm ein sehr umfangreiche API an, die noch dazu sehr gut dokumentiert ist. Damit lassen sich sogenannte Telegramm-Bots entwickeln. Diese Bots können dann von den Nutzern mit @einBot angesprochen werden, um alle Möglichen Aufgaben auszuführen. Einer der bekanntesten ist vermutlich der @gif-Bot, der die Plattform giphy.com durchsuchen kann und die Ergebnisse in den Chat-Verlauf schicken kann. Und diese Art von Bots lassen sich auch selber entwickeln und anbieten. Unter anderem auch mit PHP.</p>
+<p>Wer die Kommunikation mit Telegramm nicht komplett von vorne aufbauen will, kann auf eine Bibliothek <a href="https://github.com/php-telegram-bot/core">von Longman auf github.com</a> zugreifen. Für meinen Geschmack ist diese leider etwas zu schlecht dokumentiert und mitunter etwas durcheinander organisiert. Noch dazu wird sie offenbar nur sporadisch betreut. Dennoch gibt es ein relativ großes Repository mit Beispielen, was definitiv sehr hilfreich  ist. Etwas verwirrend sind die beiden Repositories, die da <em>Core</em> und <em>Manager</em> heißen. Der <em>Manager</em> ist nur eine Art Wrapper für das Core-Repository. Dessen Nutzung erleichtert die Einrichtung und Entwicklung des Bots um ein vielfaches und bietet z.B. eine zentrale Datei (manager.php) an, um alle Funktionen zu steuern. Beim Core werden die jeweiligen Bot-Funktionen über verschiedene Dateien gesteuert.</p>
+<h3 id="was-ist-das-ziel">Was ist das Ziel?</h3>
+<p>Was ist also der Plan? Wir bauen uns einen Telegramm-Bot, mit dem sich Amazon nach Produkten durchsuchen lässt. Das Ergebnis wird in einem Grid dargestellt. Wählt man ein Element aus, erscheint es mit Link zum Produkt im Chat-Verlauf. Und mit einer Analytics-Plattform soll das ganze</p>
+<p>Um deinen eigenen Bot betreiben zu können brauchst du natürlich erstmal Telegramm und außerdem einen Web-Server und eine Domain für die du ein SSL-Zertifikat einrichten musst. Außerdem solltest du <a href="https://getcomposer.org/download/">composer</a> installiert haben und so ungefähr wissen, wie man damit umgeht.</p>
+<h2 id="anmelden-eines-bots">Anmelden eines Bots</h2>
+<p>Zunächst musst du deinen neuen Telegramm-Bot anmelden. Dazu nutzt du den BotFather (<a href="https://telegram.me/botfather">BotFather)</a>. dem du mit dem Befehl /<em>newbot</em> dazu bringen kannst, einen neuen Bot zu registrieren. Zuerst wird ein Name für den Bot verlangt - das ist allerdings noch <em>nicht</em> der Name, mit dem der Bot später auch angesprochen wird. Das ist erst der sogenannte <em>username</em>, der im 2. Schritt verlangt wird. Ich nenne meinen Bot <em>@buecherBot</em>.</p>
+<p>Leider gibt es hier eine Restriktion: Der Name muss mit <em>bot</em> enden. Wer einen kurzen Namen wie @gif oder @youtube nutzen möchte, muss dazu vermutlich etwas mehr Aufwand betreiben. Als nächstes rufst du die Einstellungen des Bots auf, indem du das Inline-Menü mit /mybots öffnest.</p>
+<p>Für unseren Bot solltest du zunächst den Inline-Mode aktivieren. Damit kannst du den Bot im Textfeld direkt ansprechen. Das gehst du über den Punkt Bot-Settings zum Inline-Mode und aktivierst diesen.</p>
+<p>[caption id=&ldquo;attachment_1655&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/wie-entwickelt-man-einen-bot-fuer-telegramm/telegramm-bot-father.png"><img src="/2018/2018-03-02-wie-entwickelt-man-einen-amazon-bot-fuer-telegramm/images/telegramm-bot-father-300x200.png" alt="Inline-Mode für den Telegramm-Bot aktivieren"></a> Inline-Mode für den Telegramm-Bot aktivieren[/caption]</p>
+<p> </p>
+<p>Schließlich kannst du <em>Allow Groups</em> auf Nein setzen und die <em>Group Privacy</em> aktivieren. Da der Bot noch nicht in Gruppen aktiv sein soll, muss er weder Mitglied von Gruppen sein noch deren Nachrichten mitlesen.</p>
+<p>Als nächstes lässt du dir den API-Schlüssel anzeigen, damit du auch von außen mit dem Bot kommunizieren kannst. Der API-Schlüssel befindet sich im obersten Menü und ist folgendermaßen aufgebaut:</p>
+<p>123123123:128390123jKF19082_1293123123</p>
+<p>Das war es, was die Vorbereitung angeht. Weiter geht es mit PHP und einer kleinen Bot-Logik.</p>
+<h2 id="dem-bot-mit-php-leben-einhauchen">Dem Bot mit PHP Leben einhauchen</h2>
+<p>Als Library bzw. Framework nutzen wir das <a href="https://github.com/php-telegram-bot/core">Telegram-Bot-Repository</a> von Longman bzw. den dazugehörigen <a href="https://github.com/php-telegram-bot/telegram-bot-manager">Manager</a>, eine Art Wrapper, der die Steuerung etwas erleichtert.Damit du für den ersten Start bereits eine gute Grundlage hast, solltest du dir <a href="https://github.com/php-telegram-bot/example-bot">die Beispiel-Dateien von github</a> herunterladen. Auf der github-Seite wird zwar die Einstellung für die composer.json vorgegeben, allerdings hat der checkout damit bei mir nicht funktioniert. Mit folgenden Parametern klappte es dann:</p>
+<p>{
+&ldquo;require&rdquo;: {
+&ldquo;php-telegram-bot/telegram-bot-manager&rdquo;: &ldquo;^1.2&rdquo;,
+&ldquo;longman/telegram-bot&rdquo;: &ldquo;0.52 as 0.48&rdquo;
+}
+}</p>
+<p>Nachdem composer alle Abhängigkeiten heruntergeladen hat (<em>composer install</em>), muss man sich in der manager.php an die Grundeinstellungen machen. (Es kann passieren, dass du auf deinem System einige PHP-Module installieren musst. Composer wird dir die Namen der Module allerdings nennen. Du kannst sie dann relativ unkompliziert mit z.B. apt-get install php7.0-b_cmath php7.0-curl herunterladen und aktivieren.) Außerdem werde ich ein paar Änderungen an der Datei InlinequeryCommand.php_ aus dem Ordner Commands aus dem Beispiel-Repository vornehmen.</p>
+<p>Aber zuerst zur manager.php. Hier solltest du die folgenden Einstellungen vornehmen:</p>
+<ul>
+<li>
+<p><strong>bot_username</strong> - der Benutzername deines Bots, ohne das führende @</p>
+</li>
+<li>
+<p><strong>api_key</strong> - der API-Schlüssel, den dir der Bot-Father gegeben hat</p>
+</li>
+<li>
+<p><strong>secret</strong> - ein selbst erzeugtes Passwort um die Datei vor Zugriffen von außen zu schützen - die PHP-Datei liegt ja auf deinem öffentlichen Server und kann theoretisch von überall aufgerufen werden.</p>
+</li>
+<li>
+<p><strong>webhook-&gt;url</strong> - hier trägst du die URL zur manager.php-Datei ein, also <a href="https://telegramm.example.com/manager.php">https://telegramm.example.com/manager.php</a></p>
+</li>
+<li>
+<p><strong>commands-&gt;paths</strong> - diese Zeile muss auskommentiert sein und zu einem Pfad verweisen, der deine Bot-Commandos enthält. Wenn du dich an dem Bot-Example orientierst, sieht diese Einstellung so aus:</p>
+<pre><code>      'commands' =&gt; \[
+         // Define all paths for your custom commands
+         'paths'   =&gt; \[
+             \_\_DIR\_\_ . '/Commands'
+         \]
+</code></pre>
+</li>
+</ul>
+<p>Als nächstes kannst du noch ein paar zusätzliche Änderungen vornehmen, die aber für die Funktion des Bots nicht wichtig sind:</p>
+<ul>
+<li><strong>max_connections</strong> - offensichtlich die Anzahl der maximal zulässigen Verbindungen</li>
+<li><strong>logging</strong> - diese Zeilen kannst du aus-kommentieren, um das Logging zu aktivieren, gerade in der Anfangsphase ist das ganz nützlich</li>
+<li><strong>limiter</strong> - die Telegram-API lässt natürlich nur eine begrenzte Anzahl von Anfragen zu, um das eigene System zu schützen, offenbar bringt das Framework eine Funktion mit, um das Erreichen des Limits bestmöglich zu vermeiden - wie das funktioniert, kann ich nicht sagen, da dazu auch nicht mehr in der Doku steht, ich hab es erstmal aktiviert</li>
+</ul>
+<p>Grundsätzlich war es das erstmal, was die Voreinstellungen betrifft. Jetzt kannst du den sog. webhook aktivieren. Dazu rufst du die manager.php im Browser auf, wie z.B.</p>
+<p><a href="https://telegramm.example.com/manager.php">https://telegramm.example.com/manager.php</a></p>
+<h3 id="den-zugriff-von-außen-beschränken">Den Zugriff von außen beschränken</h3>
+<p>Wenn du alles richtig gemacht hast, erscheint jetzt erstmal ein Fehler. Und das ist auch gut so - denn schließlich soll der Zugriff von außen ja nicht jedem gewährt werden.</p>
+<p>Fatal error: Uncaught TelegramBot\TelegramBotManager\Exception\InvalidAccessException:
+Invalid access in &hellip;</p>
+<p>Also packst du noch das secret-Token an die URL, dass du weiter oben in der manager.php angegeben hast (nicht den API-Schlüssel von Telegramm!). Und damit du auch eine Aktion auslöst, setzt du erstmal den webhook mit dem Parameter a=set:</p>
+<p><a href="https://telegramm.example.com/manager.php?s=123123123&amp;a=set">https://telegramm.example.com/manager.php?s=123123123&a=set</a></p>
+<p>Dein Webhook für den Bot ist nun aktiv. Da du in der <em>manager.php</em> außerdem schon den Ordner commands freigegeben hast, kann der Bot nun schon auf Inline-Anfragen antworten. Im Telegramm-Client kannst du nun deinen Privat-Chat öffnen (&ldquo;Gespeichertes&rdquo;) und den Telegramm-Bot mit @buecherBot ansprechen. Der Bot sollte nun, wenn alles korrekt eingerichtet, so antworten, wie es in der Datei <em>InlinequeryCommand.php</em> vorgegeben ist. Nämlich mit einer sehr einfache 3-zeiligen Liste.</p>
+<p>Um nun ein Ergebnis von der Amazon API als Bilder-Liste darzustellen, habe ich <em>InlinequeryCommand.php</em> ein wenig angepasst. Zuerst benötigen wir die entsprechende Klasse, um nicht nur mit Text sondern auch mit Bildern zu antworten:</p>
+<p>use Longman\TelegramBot\Entities\InlineQuery\InlineQueryResultPhoto;</p>
+<p>Außerdem habe ich den Aufbau des Antwort-Objektes etwas vereinfacht (ich werde hier nicht weiter ins Detail gehen, auf $this-&gt;apiResult gehe ich später ein).</p>
+<p>foreach ($this-&gt;apiResult-&gt;items as $item) {</p>
+<p>$this-&gt;inlineQueryResult[] = new InlineQueryResultPhoto(array(
+&lsquo;id&rsquo;                    =&gt;  sizeof($this-&gt;inlineQueryResult),
+&rsquo;title&rsquo;          	=&gt; &lsquo;Search: &rsquo; . $query,
+&lsquo;description&rsquo;           =&gt; &lsquo;Info: &rsquo; . $information,
+&rsquo;thumb_url&rsquo;             =&gt; $thumbUrl,
+&lsquo;photo_url&rsquo;             =&gt; $imageUrl,
+&lsquo;caption&rsquo;             	=&gt; $linkUrl
+)
+);</p>
+<p>}</p>
+<p>$data[&lsquo;results&rsquo;] = &lsquo;[&rsquo; . implode(&rsquo;,&rsquo;, $this-&gt;inlineQueryResult) . &lsquo;]&rsquo;;</p>
+<p>return Request::answerInlineQuery($data);</p>
+<p>Grundsätzlich war es das schon. Du kannst nun noch alle möglichen anderen Funktionen des Bots nutzen. Schau dir dazu einfach den Commands-Ordner des Example-Repository an. Die Auswahl ist sehr groß, für meine Zwecke soll es aber erstmal bei der Inline-Query bleiben.</p>
+<h2 id="eine-suchanfrage-zu-amazon-schicken">Eine Suchanfrage zu Amazon schicken</h2>
+<p>Natürlich soll derTelegramm-Bot nun auch in der Lage sein, Anfragen der Benutzer zu Amazon zu schicken und mit einem vernünftigen Suchergebnis zu antworten. Zunächst benötigt man dafür einen Partner-Account bei <a href="https://partnernet.amazon.de">Amazon</a>. <a href="https://partnernet.amazon.de/assoc_credentials/home">In den Einstellungen</a> kann man sich dann ein Schlüsselpaar erstellen um die Suchanfragen zu authentifizieren. Und auch für die Suchanfrage selber gibt es eine PHP-API, nämlich <a href="https://github.com/Exeu/apai-io/">apai-io von exeu</a>. Die Einrichtung und der Aufbau sind relativ einfach. Nachdem composer die notwendigen Dateien heruntergeladen hat, packt man - wie üblich - ein paar Zeilen in eine PHP-Datei und hat die erste Anfrage an die Amazon-API fertig:</p>
+<pre><code>&lt;?php ini\_set('display\_errors', 1);
+
+require\_once \_\_DIR\_\_ . '/vendor/autoload.php';
+
+define('AWS\_API\_KEY', 'AKAKAKAKAKAKAKA');
+define('AWS\_API\_SECRET\_KEY', 'KALSKDLASKDLASDKLASDKLASKLDKASLDASDL
+define('AWS\_ASSOCIATE\_TAG', 't0000-21');
+
+use ApaiIO\\Configuration\\GenericConfiguration;
+use ApaiIO\\Operations\\Search;
+use ApaiIO\\ApaiIO;
+
+$conf = new GenericConfiguration();
+$client = new \\GuzzleHttp\\Client();
+$request = new \\ApaiIO\\Request\\GuzzleRequest($client);
+
+$conf
+	-&gt;setCountry('de')
+	-&gt;setAccessKey(AWS\_API\_KEY)
+	-&gt;setSecretKey(AWS\_API\_SECRET\_KEY)
+	-&gt;setAssociateTag(AWS\_ASSOCIATE\_TAG)
+	-&gt;setRequest($request);
+	
+$apaiIO = new ApaiIO($conf);
+
+$search = new Search();
+$search-&gt;setCategory('DVD');
+$search-&gt;setActor('Bruce Willis');
+$search-&gt;setKeywords('Stirb Langsam');
+
+$response = $apaiIO-&gt;runOperation($search);
+
+$results = simplexml\_load\_string( $response ); 
+</code></pre>
+<p>Leider gestalten sich die ersten Versuche mit der API etwas schwieriger. Nutzt man den Beispiel-Code, liefert das ganze Script nur einen sehr langen String zurück. In der weiterführenden <a href="http://apai-io.readthedocs.io/en/latest/chapters/responsetransformer.html">Dokumentation</a> wird zwar ein <em>setResponseTransformer</em> beschrieben (siehe auskommentierte Zeile oben). Doch auch dann ist die Antwort nicht nutzbar. Das Suchergebnis bleibt weiterhin ein langer String. Erst <a href="https://github.com/Exeu/apai-io/issues/48">Issue 48</a> gibt einen Hinweis auf die Lösung: <em>new SimpleXMLElement</em>.  Jetzt erhalte ich ein XML-Object, in dem ich mich mit einer Schleife durch das Ergebnis arbeiten kann. Oder man greift auf <a href="https://gist.github.com/ottanxyz/4a44a5094bf27606c12803590a92d131">die hier verwendete Funktion</a>  <em>simplexml_load_string</em> zurück - mein Favorit.</p>
+<p>Nun geht es darum, die Antwort in eine Schleife zu packen, um die notwendigen Informationen zu extrahieren. Das Suchergebnis muss also vorbereitet und zurück an denTelegramm-Bot geschickt werden.</p>
+<h2 id="die-hochzeit---amazons-antwort-an-dentelegramm-bot-weiterleiten">Die Hochzeit - Amazons-Antwort an denTelegramm-Bot weiterleiten</h2>
+<p>Bisher war die Amazon-Funktionalität in eine andere Datei ausgelagert. Also müssen erstmal Zugangsdaten und die Abhängigkeiten in die InlineQueryCommand.php übernommen werden. Ich mach mir das Leben nicht unnötig schwer, und packe das alles in die InlinequeryCommand.php. Sauberer wäre es vielleicht, die initiale bot-Klasse etwas zu erweitern. Außerdem  muss die Anfrage an den Bot an die Amazon-API durchgeschliffen werden. Wenn der Benutzer nur einen Suchbegriff angibt (Bruce Willis), wird danach in allen Kategorien gesucht. Wer die Suche einschränken möchte, muss dem Suchbegriff die entsprechende Kategorie voranstellen. Also z.B.: Books:Bibel Das ganze sieht dann in etwa so aus:</p>
+<p>$request = explode(&rsquo;:&rsquo;, trim($requestString));</p>
+<p>if (sizeof($request) == 1) {</p>
+<pre><code>$category = 'All';
+$keywords = trim($request\[0\]);
+</code></pre>
+<p>} else {</p>
+<pre><code>$category = trim($request\[0\]);
+$keywords = trim($request\[1\]);
+</code></pre>
+<p>}</p>
+<p>Kategorie und Keyword werden nun schlicht an die Amazon-API übergeben. Damit ich auch Vorschaubilder erhalte, muss ich das in der Suche explizit angeben. Die Anfrage an die API sieht nun also so aus:</p>
+<p>$search = new Search();
+$search-&gt;setCategory($category);
+$search-&gt;setKeywords($keywords);
+$search-&gt;setResponseGroup( array( &lsquo;Images&rsquo;, &lsquo;ItemAttributes&rsquo; ) );	
+$search-&gt;setPage(1);</p>
+<p>Das ganze wird nun in ein Objekt gepackt und in einer Schleife durchlaufen um die Antwort für den Bot zu erzeugen. Das hat sich bei den ersten Versuchen als schwierig erwiesen. Es hat eine Weile gedauert, bis ich herausgefunden habe, dass ich die Eigenschaften des Antwort-Objekts als String casten muss: (string)!</p>
+<p>foreach ($this-&gt;apiResult-&gt;Items-&gt;Item as $item) {</p>
+<p>$title  = (string) $item-&gt;ItemAttributes-&gt;Title;
+$url  = (string) $item-&gt;DetailPageURL;
+$thumbFileUrl  = (string) $item-&gt;LargeImage-&gt;URL;
+$thumbFileName = basename($thumbFileUrl);
+$thumbFileType = pathinfo($thumbFileName, PATHINFO_EXTENSION);</p>
+<p>if ($thumbFileType == &lsquo;jpg&rsquo; || $thumbFileType == &lsquo;jepg&rsquo;) {</p>
+<pre><code>$this-&gt;inlineQueryResult\[\] = new InlineQueryResultPhoto(
+array(
+		'id'                    =&gt; sizeof($this-&gt;inlineQueryResult),
+		'title'                 =&gt; $title,
+		'description'           =&gt; $title,
+		'caption'          		=&gt; $title@,
+		'thumb\_url'             =&gt; $thumbFileUrl,
+		'photo\_url'             =&gt; $thumbFileUrl,
+		'input\_message\_content' =&gt; new InputTextMessageContent(\[
+			'parse\_mode' =&gt; 'HTML',
+			'message\_text' =&gt; ' ' . 'Shop it @ &lt;a href=&quot;'.$url.'&quot;&gt;Amazon&lt;/a&gt;!'\])
+	)
+);
+</code></pre>
+<p>}</p>
+<p>if (sizeof($this-&gt;inlineQueryResult) &gt;= $this-&gt;limitResult) {</p>
+<pre><code>break;
+</code></pre>
+<p>}</p>
+<p>}</p>
+<p>Grundsätzlich war es das. Das ganze Script gibt es zum Nachlesen wie gesagt auf github.</p>
+<h2 id="zugriffsstatistiken-mit-botan-aufzeichnen-und-darstellen">Zugriffsstatistiken mit Botan aufzeichnen und darstellen</h2>
+<p>Um Botan nutzen zu können, brauchst du einen Account bei <a href="https://appmetrica.yandex.com/">AppMetrica</a> von Yandex. Dort kannst du direkt nach der Registrierung einen API-Schlüssel für deinen Bot anlegen:</p>
+<p>[caption id=&ldquo;attachment_1649&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/wie-entwickelt-man-einen-bot-fuer-telegramm/appmetrics-yandex-bot-api-key-anlegen.png"><img src="/2018/2018-03-02-wie-entwickelt-man-einen-amazon-bot-fuer-telegramm/images/appmetrics-yandex-bot-api-key-anlegen-300x130.png" alt="AppMetrics API Key für Bot anlegen"></a> AppMetrics API Key für Bot anlegen[/caption]</p>
+<p>Wenn das erledigt ist, gelangst du zu der Übersichtsseite deines Bots und siehst dort den API-Key, den du als token in der <em>manager.php</em> einträgst. Die entsprechenden Zeilen müssen natürlich auch auskommentiert werden:</p>
+<pre><code>    // Botan.io integration
+    'botan' =&gt; \[
+       'token' =&gt; '123123123-123123123-123123',
+    \],
+</code></pre>
+<p>Das ist es schon fast gewesen. Wenn da nicht der Datenschutz wäre. Wenn du Telegramm-Bot im Chat nun &ldquo;anrufst&rdquo;, erscheint der Aufruf einige Augenblicke später auch im Interface von AppMetrics. Allerdings sind dann auch eine UserId und der Vorname im Klartext enthalten. Um das zu vermeiden, musst du Methode <em>track</em> in der Botan-Klasse (Botan.php in vendor\longman\telegram-bot\src\) anpassen:</p>
+<p>Direkt an den Anfang der Methode habe ich die folgende Anonymisierung eingefügt:</p>
+<p>// ANONYMIZING STATS
+if (isset($update-&gt;inline_query)) {</p>
+<pre><code>if (isset($update-&gt;inline\_query\['from'\])) {
+
+	if (isset($update-&gt;inline\_query\['from'\]\['id'\])) {
+	
+		$update-&gt;inline\_query\['from'\]\['id'\] = '0';
+		$update-&gt;inline\_query\['from'\]\['first\_name'\] = 'anon';
+		$update-&gt;raw\_data\['inline\_query'\]\['from'\]\['id'\] = '0';
+		$update-&gt;raw\_data\['inline\_query'\]\['from'\]\['first\_name'\] = 'anon';
+			
+	}
+}
+</code></pre>
+<p>}</p>
+<p>Weiter unten wird eine UserId ($uid) ermittelt. Auch hier habe ich anonymisiert:</p>
+<p>// In case there is no from field assign id = 0
+// $uid = isset($data[&lsquo;from&rsquo;][&lsquo;id&rsquo;]) ? $data[&lsquo;from&rsquo;][&lsquo;id&rsquo;] : 0;
+// ANONYMIZING STATS
+$uid = 0;</p>
+<p>Jetzt dürften keine Klarnamen mehr übermittelt werden und der Bot ist startklar.</p>
+<p> </p>
+<p>Viel Spass mit deinem Telegramm-Bot.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> PHP, Telegram, Bot, API, Tutorial, Amazon</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>development</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Wie entwickelt man einen Amazon-Bot für Telegramm? - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>tutorial</dc:type>
+      
+      
+    </item><item>
+      <title>Wordpress: Slideshow im Header abhängig vom Inhalt</title>
+      <link>https://nickyreinert.de/2016/2016-11-24-wordpress-slideshow-im-header-abhaengig-vom-inhalt/</link>
+      <pubDate>Thu, 24 Nov 2016 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2016/2016-11-24-wordpress-slideshow-im-header-abhaengig-vom-inhalt/</guid>
+      <description>Heute bastelen wir uns in Wordpress einen Header, der eine Slideshow mit Bildern anzeigt, abhängig von der Seite die gerade angezeigt wird. Die Slideshow soll …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieses Tutorial erklärt, wie man in WordPress eine dynamische Bilder-Slideshow im Header erstellt, deren Inhalt sich je nach aufgerufener Seite ändert. Die Lösung nutzt die Plugins `NextGen Gallery` und `Smooth Gallery` in Kombination mit benutzerdefinierten Feldern, um seitenabhängige Galerien anzuzeigen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> WordPress, PHP, Theme-Entwicklung, Plugins, Web-Design</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Heute bastelen wir uns in Wordpress einen Header, der eine Slideshow mit Bildern anzeigt, abhängig von der Seite die gerade angezeigt wird. Die Slideshow soll sich die Bilder aus Gallerien holen, die der einzelnen Seite zugeordnet ist. Dazu greifen wir auf die &ldquo;<a href="http://codex.wordpress.org/Custom_Fields">Benutzerdefinierten Felder</a>&rdquo; in Wordpress sowie die beiden großartigen Wordpress-Plugins &ldquo;<a href="http://alexrabe.de/wordpress-plugins/nextgen-gallery/">NextGen Gallery</a>&rdquo; von Alex Raabe und &ldquo;<a href="http://uninuni.com/wordpress-plugin-nextgen-smooth-gallery/">Smooth Gallery</a>&rdquo; von uniuni zurück. Wichtig ist, dass man diese &ldquo;dynamischen Header&rdquo; ohne großen Aufwand auf jeder beliebigen Seite nutzen kann, damit der Gelegenheitsautor mit möglichst wenig technischen Kenntnissen damit umgehen kann.</p>
+<ol>
+<li>Wir benötigen mehrere Gallerien - voll mit Bildern.  Wie das funktioniert möchte ich hier nicht erklären, da das auf der Seite von Alex Raabe sehr gut getan wird. Jede Gallerie ist über eine ID eindeutig identifizierbar; ich merke mir erstmal die ID meiner ersten Gallery, die 1.</li>
+<li>Wir benötigen bei allen unseren Seiten ein benutzerdefiniertes Feld, ich nenne es &ldquo;gallery-id&rdquo; und fülle das Feld mit der ID meiner ersten Gallery: 1.</li>
+<li>Wir benötigen in der header.php folgenden Code dort, wo wir ihn benötigen ;) (macht z.B. im Header-Container Sinn)</li>
+</ol>
+<?php echo apply\_filters( "the\_content", '\[smooth=id:1;\]' ); ?>
+<p>Nun würden wir aber immer die Gallery mit der ID 1 anzeigen, wir wollen aber die Gallery sehen, deren ID auf der Seite  im benutzerdefinierten Feld genannt wurde. Diesen Wert liest man folgendermaßen aus:</p>
+<p>get_post_meta($post-&gt;ID, &lsquo;gallery-id&rsquo;, true);</p>
+<p>$post-&gt;ID gibt die ID der aktuellen Seite zurück (nicht zu verwechseln mit der Gallery-ID!)</p>
+<p>&lsquo;gallery-id&rsquo; ist der Name unseres benutzerdefinierten Felds</p>
+<p>true gibt  an, dass ein <em>String</em> und kein <em>Array</em> zurück gegeben wird - wichtig!</p>
+<p>Und wenn diese Zeile nun mit der ersten Code-Zeile kombiniert wird, sieht es folgendermaßen aus:</p>
+<p>echo apply_filters( &ldquo;the_content&rdquo;, &lsquo;[smooth=id:&rsquo;. get_post_meta($post-&gt;ID, &lsquo;gallery-id&rsquo;, true) .&rsquo;;]&rsquo; );</p>
+<p> </p>
+<p>Fertig. Nun muss der Autor der Seiten nur noch daran denken, das benutzerdefinierte Feld der jeweiligen Seite mit der gewünschten Gallery-ID zu füllen.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> WordPress, Tutorial, PHP, Theme</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>wordpress</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Wordpress: Slideshow im Header abhängig vom Inhalt - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>tutorial</dc:type>
+      
+      
+    </item><item>
+      <title>Welche Möglichkeiten habe ich um Weiterleitungen anzulegen?</title>
+      <link>https://nickyreinert.de/2016/2016-09-25-welche-moeglichkeiten-habe-ich-um-weiterleitungen-anzulegen/</link>
+      <pubDate>Sun, 25 Sep 2016 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2016/2016-09-25-welche-moeglichkeiten-habe-ich-um-weiterleitungen-anzulegen/</guid>
+      <description>Was sind Weiterleitungen? Du hast von einem alten Shop oder Content Management System auf ein neues System gewechselt, willst eine neue Permalink-Struktur …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Der Artikel erklärt die Notwendigkeit von 301-Weiterleitungen nach Website-Umzügen, um den SEO-Wert zu erhalten. Es werden zwei technische Methoden zur Implementierung vorgestellt: die manuelle Erstellung von Weiterleitungen mittels der PHP `header()`-Funktion und die dynamische Konfiguration über `.htaccess`-Regeln mit `mod_rewrite`.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> SEO, Webserver-Konfiguration, Apache, .htaccess, PHP, Website-Migration</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <h2 id="was-sind-weiterleitungen">Was sind Weiterleitungen?</h2>
+<p>Du hast von einem alten Shop oder Content Management System auf ein neues System gewechselt, willst eine neue Permalink-Struktur einführen oder hast einfach nur Inhalte verschoben? Das Problem in solchen Szenarien ist, dass die Verzeichnisstruktur nicht exakt übernommen werden kann. Doch keine Panik. Dass sich Inhalte und Verlinkungen im Internet ändern, gehört zum Konzept des WWW dazu. Wichtig ist, dass man diese Dynamik entsprechend berücksichtigt und dafür sorgt, dass eingehender Traffic auf die eigene Seite nicht auf die nicht-vorhandene Seiten stößt. Mit sogenannten Weiterleitungen.</p>
+<h2 id="suchmaschinen-index-und-backlinks">Suchmaschinen-Index und Backlinks</h2>
+<p>Zwei Arten von eingehenden Traffic kann man grundsätzlich unterscheiden: Erstens gibt es den Traffic der von einer Suchmaschine (<strong>organischer Traffic</strong>) kommt. Die Suchmaschine nutzt dafür einen Index, der sich aber nach bestimmten Regeln aktualisiert. Daneben gibt es Traffic über <strong>Backlinks</strong> von externen Seiten, die keine Suchmaschinen sind. Diese Backlinks sind natürlich auch veränderbar, aber, wenn man es so nennen will, redaktionell gepflegt. Streng genommen könnte man natürlich noch anderen Traffic unterscheiden, wie z.B. den aus der Suchmaschinen-Werbung (SEA). Doch da dieser Teil der eigenen Online-Marketing-Kampagne ist, versteht es sich von selber, dass die Links dort ordentlich gepflegt werden müssen.</p>
+<h2 id="wann-benötige-ich-eine-weiterleitung">Wann benötige ich eine Weiterleitung?</h2>
+<p>Die Suchmaschinen lassen sich eigentlich relativ unkompliziert mit einer aktuellen Sitemap befriedigen, die ja als aktuelles Verzeichnis der eigenen Seite. Google bietet in der Search Console sogar an, die Seite <a href="https://www.google.com/webmasters/tools/home?hl=de">neu zu indizieren</a>.</p>
+<p>Doch was ist mit den andern Suchmaschinen und vor allem all den wertvollen Backlinks, die nicht mehr gültig sind? Nicht jeder eingehend Link lässt sich so einfach aktualisieren und führt im ungünstigen Fall zum HTTP-Fehlercode 404 &ldquo;not found&rdquo;. Dieser sollte aus SEO-Sicht unbedingt vermieden werden. Mit eben jenen erwähnten Weiterleitungen.</p>
+<p>Um diese zu implementieren, gibt es freilich mehrere Möglichkeiten. Zunächst sollte man prüfen, welche Backlinks auf die eigene Seite überhaupt existieren. Je nachdem, wie viele Backlinks es gibt und wie die URL-Struktur der eigenen Seite beschaffen ist, bieten sich andere Möglichkeiten an. Man unterscheidet übrigens zwischen der temporären (HTTP-Statuscode 302) und der permanenten Weiterleitung(HTTP-Statuscode 302) . Die temporäre Weiterleitung kommt für unseren Fall nicht unbedingt infrage, da wir ja einen Umzug vor uns haben.</p>
+<h2 id="weiterleitung-per-header-in-einer-php-datei">Weiterleitung per header() in einer PHP-Datei</h2>
+<p>Eine ziemlich pragmatische und wenngleich effektive Methode ist es, die alte Ordner-Struktur per Hand nachzubilden und entsprechend PHP-Dateien anzulegen, die jeweils eine 301-Weiterleitung auf die neue URL enthalten (&quot;<a href="http://php.net/manual/de/function.header.php">header</a>&quot;). Das kann man machen, wird bei größeren System aber sehr schnell sehr aufwendig. Die PHP-Datei sollte unter dem Namen &ldquo;index.php&rdquo; in den jeweiligen Ordnern abgelegt werden und folgenden Code enthalten. Es folgt ein Beispiel für eine PHP-Datei befindet, die unter <em><a href="https://www.deine-seite.de/altes-ziel/index.php">https://www.deine-seite.de/altes-ziel/index.php</a></em> abgelegt ist. Diese enthält folgenden Code:</p>
+<?php
+   header("Location:https://www.deine-seite.de/neues-ziel/", true, 301); 
+   exit;
+
+Der erste Parameter verweist auf die neue Seite. Der zweite Parameter (_true_) legt lediglich fest, ob ein vorheriger Header ersetzt werden soll. Der letzte Parameter schließlich ist der HTTP-Statuscode, der übermittelt werden soll - also 301. Das exit am Schluss sorgt dafür, dass das PHP-Script am Ende auch wirklich abgeschlossen wird und dient hier nur als doppelter Boden. Ein schließendes ?> [wird nicht benötigt](https://developer.sugarcrm.com/2011/05/06/why-we-dont-using-closing-php-tags/).
+<p>Das ist nicht nur mühsam, sondern auch nicht dynamisch. Die nächste Variante nutzt eine Weiterleitung mit .htaccess.</p>
+<h2 id="weiterleitung-per-htaccess">Weiterleitung per .htaccess</h2>
+<p>In einer .htaccess-Datei gibt es erstmal zwei Möglichkeiten, eine Weiterleitung einzurichten. Nutzt man einen regulären Ausdruck, wird entsprechend jeder passende eingehende Traffic abgefangen und an die gewünschte Hauptseite weitergeleitet.</p>
+<p>Eine andere, etwas ausgefeiltere Möglichkeit ist es, die  alten Unterverzeichnisse bei Abfrage durch den Browser abzufangen und deren Namen als Suchparameter an das neue System weiterzuleiten.</p>
+<p>Hier zum Beispiel der Unterordner &ldquo;foobar&rdquo;, der als Suchparameter genutzt werden soll:</p>
+<p><a href="https://www.deine-seite.de/">www.deine-seite.de/</a><strong>foobar</strong></p>
+<p>Der Name soll nun als Suchparameter folgendermaßen genutzt werden:</p>
+<p><a href="https://www.deine-seite.de/index.php?search=">www.deine-seite.de/index.php?search=</a><strong>foobar</strong></p>
+<p>So sieht die dafür notwendige .htaccess-Datei aus:</p>
+<p>RewriteEngine On</p>
+<p>RewriteRule ^(/?)([a-zA-Z0-9]+)?([\.html]+)?/?$ /index.php?search=$2 [R=301,NC]</p>
+<p>RewriteRule ^(/?)([a-zA-Z0-9]+)?/([a-zA-Z0-9]+)?([\.html]+)?/?$ /index.php?search=$2\ $3 [L,R=301,NC]</p>
+<p>Die erste Regel fängt Aufrufe der ersten Pfad-Ebene ab. Die zweite Regel kann auch die Namen der darunter liegenden Pfade abgreifen und daraus einen kombinierten Suchbegriff erzeugen. Das ist z.B. hilfreich, wenn man die Pfade eines Shop-Systems nutzen will um daraus im neuen Shop die Suche zu erzeugen.</p>
+<p><a href="https://www.shop.de/foobar/hello">www.shop.de/foobar/hello</a>_world.html -&gt; <a href="https://www.shop.de/index.php?search=foobar%20hello">www.shop.de/index.php?search=foobar%20hello</a>_world</p>
+<p>Die .htaccess-Datei muss sich im Unterordner /foobar befinden, der auch physisch vorhanden sein muss. Man könnte die Weiterleitung auch im Root-Verzeichnis anlegen und bräuchte dann den Unterordner nicht. So vermeidet man aber unnötigen Overhead, da die Regel nicht bei den regulären Aufrufen aktiviert wird.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> htaccess, redir, weiterleitung</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Welche Möglichkeiten habe ich um Weiterleitungen anzulegen? - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
+      
+    </item><item>
+      <title>Wordpress-Security Checkliste</title>
+      <link>https://nickyreinert.de/2000/2000-01-01-wordpress-security-checkliste/</link>
+      <pubDate>Sat, 01 Jan 2000 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2000/2000-01-01-wordpress-security-checkliste/</guid>
+      <description>Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine detaillierte Checkliste zur Absicherung von WordPress-Installationen, gegliedert nach dem Grad des Nutzerzugriffs (WordPress.com, Shared Hosting, eigener Server). Der Artikel behandelt essenzielle Sicherheitspraktiken wie Updates, Backups, Staging-Systeme sowie technische Maßnahmen wie `.htaccess`-Schutz, korrekte Dateirechte und die Konfiguration von PHP.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> WordPress, Web-Sicherheit, Systemadministration, PHP, Server-Konfiguration</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch kriminelle Geister an und so schwirren immer wieder Nachrichten über Sicherheitslücken und gehackte WP-Seiten durch die einschlägigen Medien. Aus diesem Grund will ich mal meine Erfahrungen in Bezug auf Wordpress-Sicherheit an dieser Stelle zusammenfassen und zwar so kompakt wie möglich, damit diese Information als Checkliste genutzt werden kann.</p>
+<p>Wenn du Betreiber einer Wordpress-Seite bist, gibt es dafür drei Wege und unterschiedliche Freiheiten, sich selber um die Sicherheit der WP-Installation zu nutzen - im folgenden die &ldquo;Freiheitsgrade&rdquo; genannt: Bei &ldquo;wordpress as a service&rdquo; greifst du auf einen Angebot zurück, das bekannteste ist wordpress.com, bei dem du nur Zugriff auf das Backend hast und dementsprechend wenig Konfigurationsmöglichkeiten. Als Nutzer eines Shared Hosting hast du zusätzlich die Möglichkeit, per FTP oder SSH auf den Webspace zu gelangen und dort Einstellungen vorzunehmen. Und schließlich gibt es noch die Möglichkeit, einen eigenen Server zu nutzen, bei dem du dich auch um die Konfiguration auf Systemebene, also des Webserver kümmern musst. In dieser Reihenfolge möchte ich nun im folgenden Zusammenfassen, welche Möglichkeiten du hast, deine WP-Installation etwas sicherer zu gestalten.</p>
+<h2 id="aktuelle-updates">Aktuelle Updates</h2>
+<p>Zunächst zum Offensichtlichen: Sicherheitsupdates. Die automatischen Updates des WP-Cores (also dem, was WP ausmacht) sind mit jedem Freiheitsgrad konfigurierbar, bergen aber auch Risikos. So hatte z.B. das Update auf Version 4.9.3 Anfang 2018 den Auto-Update-Mechanismus deaktiviert. Spätere Sicherheitsupdates würden also ignoriert werden. Grundsätzlich ist das Auto-Update nur für sog. Minor-Versionen zu empfehlen, wodurch Sicherheitlücken und Bugs behoben werden. Wer diese Funktion auf einem Test-System auch für Major-Versionen aktivieren möchte, muss in der wp-config.php folgenden Parameter setzen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">define</span><span class="p">(</span> <span class="s1">&#39;WP_AUTO_UPDATE_CORE&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span> <span class="p">);</span>
+</span></span></code></pre></div><p>(der Parameter ist per default auf <em>minor</em> gesetzt.) Grundsätzlich ist das aber nicht zu empfehlen: Denn: Bevor ein großes Update eingespielt wird, sollte das auf Herz &amp; Nieren und natürlich Kompatibilität mit den vorhandenen Themes und Plugins getestet werden. Dazu sollte man ein Staging-System einrichten, worauf ich im nächsten Absatz eingehe.</p>
+<h2 id="ein-staging-system-nutzen">Ein Staging-System nutzen</h2>
+<p>Die Sicherheit der WP-Installation kann nicht nur durch Malware oder Angriffe von außen versehrt werden, sondern auch durch Bedienfehler. Ein wichtiger Baustein ist also ein Staging-System. Das ist im weitesten Sinne eine exakte Kopie der aktuelle WP-Installation. Das Staging-System erfüllt eine Reihe von Funktionen:</p>
+<ul>
+<li>Testen von Plugins &amp; Updates auf Kompatibilität</li>
+<li>Referenz-System zum Erkennen von verdächtigen Änderungen</li>
+<li>Testen von Änderungen am Theme</li>
+</ul>
+<p>Wie ein Staging-System eingerichtet wird, habe ich hier genauer erklärt. Was es mit dem 2. Punkt auf sich hat, erkläre ich weiter unten.</p>
+<h2 id="regelmäßige-backups">Regelmäßige Backups</h2>
+<p>Auch Backups sind ein wichtiger Teil eines Sicherheitskonzeptes. Hier gibt es je nach Freiheitsgrad verschiedene Möglichkeiten. Als Plugin empfehle ich zunächst das sehr weit verbreitete Updraft. Das Backup sollte unbedingt auf einen anderen Ort kopiert werden. Updraft unterstützt in der kostenlosen Version z.B. FTP. Wer kein Problem mit Dropbox oder Google Drive hat, kann natürlich auch die Cloud nutzen. Updraft unterstützt die Verschlüsselung der Datenbank-Sicherung nur in der bezahlten Version. Wer mit personenbezogenen Daten hantiert, sollte sich diese Funktion unbedingt zulegen!</p>
+<p>Eine bessere Alternative, die aber nur ab dem 2. Freiheitsgrad möglich ist, ist das Backup über die Kommandozeile. Das ist vor allem dann unumgänglich, wenn die WP-Installation sehr groß ist und nicht mehr mit den gängigen Plugins durchführbar ist. Außerdem funktioniert das unabhängig von Wordpress und kann demnach auch nicht durch andere Plugins beeinträchtigt werden. Wie genau man das einrichtet und vor allem auch die Wiederherstellung habe ich in diesem Beitrag genauer beschrieben.</p>
+<h2 id="plugin-sparsamkeit">Plugin-Sparsamkeit</h2>
+<p>Hierunter ist eher ein Konzept als eine konkrete Handlungsempfehlung zu verstehen. Vor allem technisch unbedarfte Nutzer tendieren dazu, sofort ein Plugin zu installieren, wenn eine bestimmte Funktion benötigt wird. Doch gerade unsaubere, nicht gepflegte Plugins bieten eine Angriffsfläche und noch dazu wirkt sich ein zunehmendes Plugin-Portfolio negativ auf die Performance aus. Wer ein Plugin installieren möchte, sollte dazu nur auf vertrauenswürdige und bekannte Quellen zurückgreifen. Im Klartext: <a href="https://de.wordpress.org/plugins/">https://de.wordpress.org/plugins/</a></p>
+<h2 id="die-offensichtlichen">Die offensichtlichen</h2>
+<ol start="2">
+<li>Admin-Benutzer umbenennen</li>
+</ol>
+<h2 id="die-technischen">Die technischen</h2>
+<ol>
+<li>Admin-Bereich mit .htaccess schützen</li>
+<li>Dateirechte korrekt setzen</li>
+<li>PHP-Ausführung in bestimmten Unterordner deaktivieren</li>
+</ol>
+<h2 id="plugins-und-themes">Plugins und Themes</h2>
+<p>Ein zentrales Element und der größte Vorteil von Wordpress ist seine fast unerreichbar funktionale Erweiterbarkeit und sehr große Community. Das zieht allerdings auch schwarze Schafe an.</p>
+<ol>
+<li>Installiere nicht wahllos Plugins, weil du eine bestimmte Funktion benötigst</li>
+<li>Installiere Plugins nur von vertrauenswürdigen Quellen</li>
+<li>Räume deinen Plugin-Ordner regelmäßig auf</li>
+</ol>
+<h2 id="die-mutigen">Die mutigen</h2>
+<h3 id="php-ini-parameter">PHP ini-Parameter</h3>
+<p>Es dürfte kein Geheimnis sein, dass PHP über die php.ini gesteuert wird. Es gibt allerdings einige sicherheitsrelevante Parameter, um die man sich allerdings selber kümmern muss. Die wichtigsten möchte ich hier vorstellen.</p>
+<p>Um die Übersicht über manuelle Änderungen nicht zu verlieren, solltest du die Einstellungen in einer separaten Datei (z.B. <em>security.ini</em>) speichern. Auf der Kommandozeile zeigt dir der folgende Befehl, aus welchem zusätzlichen Ordner PHP zusätzliche ini-Dateien liest:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">php --ini
+</span></span></code></pre></div><p>In den meisten Fällen dürfte das /etc/php/7.1/apache2/conf.d/ sein.</p>
+<p>Eine einfache aber sehr wirksame Maßnahme ist das deaktivieren potentiell gefährlicher PHP-Funktionen. Wie z.B. <a href="http://php.net/manual/en/function.shell-exec.php">shell_exec()</a> - im Wordpress-Umfeld gibt es kaum ein Szenario, in dem diese Funktion nützlich sein könnte. Um PHP-Funktionen zu deaktivieren, kannst du den ini-Parameter <a href="http://php.net/manual/de/ini.core.php#ini.disable-functions">disable_functions</a> nutzen.</p>
+<p>Dort legst du die <em>security.ini</em> ab und füllst sie entsprechend:</p>
+<p><a href="https://www.damianschwyrz.de/php-backdoors-und-shells-finden-eine-kurze-anleitung">https://www.damianschwyrz.de/php-backdoors-und-shells-finden-eine-kurze-anleitung</a></p>
+<p>siehe auch</p>
+<p><a href="https://binary-butterfly.de/artikel/wordpress-login-security-eine-stahltuer-in-der-wellblechhuette/">https://binary-butterfly.de/artikel/wordpress-login-security-eine-stahltuer-in-der-wellblechhuette/</a></p>
+<p>IP-Filter</p>
+<h3 id="den-admin-bereich-verstecken">Den Admin-Bereich verstecken</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-apache" data-lang="apache"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">&lt;IfModule</span> <span class="s">mod_rewrite.c</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="nb">RewriteEngine</span> <span class="k">on</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="nb">RewriteBase</span> /
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="c"># Move Wordpress login to /cms.</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="nb">RewriteRule</span> ^cms wp-login.php?cms=unlocked [L]
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^cms=unlocked
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^action=logout
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^loggedout=true
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_METHOD} !POST
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*)$ - [R=403,L]
+</span></span><span class="line"><span class="ln">12</span><span class="cl">
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
+</span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} ^loggedout=true
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*) ./cms? [R=302,NC,L]
+</span></span><span class="line"><span class="ln">16</span><span class="cl">
+</span></span><span class="line"><span class="ln">17</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
+</span></span><span class="line"><span class="ln">18</span><span class="cl">    <span class="nb">RewriteCond</span> %{HTTP_REFERER} !cms$
+</span></span><span class="line"><span class="ln">19</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_METHOD} POST
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*)$ - [R=403,L]
+</span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="nt">&lt;/IfModule&gt;</span>
+</span></span></code></pre></div><!-- https://wordpress.stackexchange.com/a/292691/132138
+
+## Die unnötigen
+
+### Sicherheits-Plugins
+
+siehe auch
+
+https://www.kuketz-blog.de/basisschutz-wordpress-absichern-teil1
+
+https://fastwp.de/487
+
+```bash
+chown user:user -R *
+find . -type d -exec chmod 755 {} \;
+find . -type f -exec chmod 644 {} \;
+
+chown www-data:www-data wp-content
+
+## Disable Editing in Dashboard
+define('DISALLOW_FILE_EDIT', true);
+
+<Directory /var/www/nickyreinert.de/www>
+# prevent   var_dump(scandir('/etc'));
+# see http://php.net/manual/de/ini.core.php#ini.open-basedir
+# alternativ: php für jeden virtuellen host mit separatem user ausführen und die dateirechte anpassen
+php_admin_value open_basedir "/var/www/nickyreinert.de/www"
+
+</Directory>
+```
+
+```ini
+# disable_functions in php.ini
+# list of function to disable globally #
+disable_functions =exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source
+```
+
+## PHP-FPM?
+
+Normalerweise ruft der Apache-Webserver den PHP-Interpreter jedes mal erneut auf. Der Nachteil: Viel Speicherverbrauch, lange Ladezeiten und ein globaler Benutzer. Etwas schneller ist FastCGI. Dabei läuft der Interpreter permanent im Hintergrund. FPM startet nicht nur einen sondern mehrere PHP-Prozesse im Hintergrund. -->
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> WordPress, Sicherheit, Anleitung, Checkliste</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>wordpress</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/image.png" type="image/jpeg">
+        <media:title>Wordpress-Security Checkliste - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>checklist</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>
