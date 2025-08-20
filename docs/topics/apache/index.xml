@@ -26,7 +26,7 @@
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Eine vollständige und detaillierte Anleitung zum PHP `memory_limit`. Der Artikel erklärt die Funktionsweise der Speichergrenze und beschreibt die komplexe Hierarchie der verschiedenen Konfigurationsorte – von der globalen `php.ini` über Webserver-Einstellungen in Apache und Nginx (`.htaccess`, `httpd.conf`) bis hin zu anwendungsspezifischen Definitionen in WordPress (`wp-config.php`) und auf Skriptebene (`ini_set`).</p>
+          <p>Eine vollständige und detaillierte Anleitung zum PHP &#39;memory_limit&#39;. Der Artikel erklärt die Funktionsweise der Speichergrenze und beschreibt die komplexe Hierarchie der verschiedenen Konfigurationsorte – von der globalen &#39;php.ini&#39; über Webserver-Einstellungen in Apache und Nginx (&#39;.htaccess&#39;, &#39;httpd.conf&#39;) bis hin zu anwendungsspezifischen Definitionen in WordPress (&#39;wp-config.php&#39;) und auf Skriptebene (&#39;ini_set&#39;).</p>
           
           
           <p><strong>Hauptthemen:</strong> PHP, Server-Administration, WordPress, Nginx, Apache, Performance-Tuning, Troubleshooting</p>
@@ -208,7 +208,7 @@
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Ein kurzer technischer Tipp für Web-Entwickler, der zeigt, wie man eine CSS-Datei über den HTTP `Link`-Header lädt. Diese Methode kann genutzt werden, um eine Staging-Umgebung visuell von einer Live-Umgebung zu unterscheiden und so Verwechslungen zu vermeiden. Der Artikel enthält Konfigurationsbeispiele für Nginx und Apache.</p>
+          <p>Ein kurzer technischer Tipp für Web-Entwickler, der zeigt, wie man eine CSS-Datei über den HTTP &#39;Link&#39;-Header lädt. Diese Methode kann genutzt werden, um eine Staging-Umgebung visuell von einer Live-Umgebung zu unterscheiden und so Verwechslungen zu vermeiden. Der Artikel enthält Konfigurationsbeispiele für Nginx und Apache.</p>
           
           
           <p><strong>Hauptthemen:</strong> CSS, HTTP, Web-Development, Server-Konfiguration, Nginx, Apache</p>
@@ -262,6 +262,318 @@
       
       
     </item><item>
+      <title>Apache und nginx parallel betreiben und mit ApacheBench gegeneinander antreten lassen</title>
+      <link>https://nickyreinert.de/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/</link>
+      <pubDate>Fri, 11 Oct 2019 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/</guid>
+      <description>Mein Ziel ist es, nginx und Apache als Webserver auf einem System laufen zu lassen. Alle HTTP/HTTPS-Anfragen werden von nginx beantwortet. Anfragen an den Port …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel beschreibt die parallele Konfiguration von Apache und Nginx auf einem System, wobei Nginx als Frontend und Apache auf alternativen Ports dient. Die Anleitung umfasst die Firewall-Einrichtung, die Apache-Virtual-Host-Konfiguration und die Durchführung von Performance-Tests mit ApacheBench, um die Leistungsfähigkeit beider Webserver zu vergleichen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Apache, Nginx, Webserver, Performance Testing, ApacheBench, Server Konfiguration, Linux, Benchmarking, HTTP/HTTPS</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Mein Ziel ist es, <strong>nginx</strong> und <strong>Apache</strong> als Webserver auf einem System laufen zu lassen. Alle HTTP/HTTPS-Anfragen werden von nginx beantwortet. Anfragen an den Port 8080 (für HTTP) oder 4443 (HTTPS) werden von Apache beantwortet. So kann ich nginx und Apache in einem <strong>Benchmark</strong> vergleichen, indem ich einfach nur die Ports ändere. Das Setup ist aber auch für andere Zwecke sinnvoll, wenn du z.B. die Burst-Einstellungen von nginx in Aktion sehen oder bestimmte Web-Dienste strikt mit Apache bedienen willst. Los gehts&hellip;</p>
+<p>Ich gehe mal davon aus, dass du nginx und Apache fertig eingerichtet hast. Nginx läuft idealerweise schon (<a href="https://www.nickyreinert.de/mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-1-3/">siehe meine 3-Teilige Anleitung</a>) Dann musst du zunächst mal dafür sorgen, dass die Firewall (z.B. iptables) die alternativen Ports 8080 und 4443 auch durchlässt. Das funktioniert folgendermaßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">sudo iptables -A INPUT -p tcp -m multiport --dports 8080,4443 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+</span></span></code></pre></div><p>Wenn du prüfen willst, ob die Änderung übernommen wurde, machst du das mit</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">iptables -L --line-numbers
+</span></span></code></pre></div><p>Den line-numbers-Parameter kannst du dir schenken - willst du aber einen Eintrag in iptables löschen, können die Zeilennummern sehr hilfreich sein, siehe:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">iptables -D INPUT 3
+</span></span></code></pre></div><p>Die 3 verweist auf die Zeilennummer, INPUT auf die Chain. Aber das nur um Rande. Weiter gehts mit unserem Server-Setup.</p>
+<p>Als nächstes teilst du Apache mit, dass ab sofort auf den alternativen Ports nach Anfragen gelauscht wird. Dazu passt du die Porteinstellung in der Datei /etc/apache2/ports.conf entsprechend an. Die if-Kondition macht die Sache etwas sauber, muss aber nicht sein:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Listen 8080
+</span></span><span class="line"><span class="ln">2</span><span class="cl">&lt;IfModule mod_ssl.c&gt;
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    Listen 4443
+</span></span><span class="line"><span class="ln">4</span><span class="cl">&lt;/IfModule&gt;
+</span></span></code></pre></div><p>Weiter geht es mit der Einstellung des virtuellen Hosts für Apache. Dazu legst du eine Datei mit der Endung &ldquo;conf&rdquo; im Ordner <strong>/etc/apache2/sites-available/</strong> an und füllst sie folgendermaßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="o">&lt;</span><span class="n">VirtualHost</span> <span class="o">*</span><span class="p">:</span><span class="mi">8080</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">        <span class="n">ServerName</span> <span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">        <span class="n">ServerAlias</span> <span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        <span class="n">Redirect</span> <span class="n">permanent</span> <span class="o">/</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">4443</span><span class="o">/</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        <span class="n">DocumentRoot</span> <span class="s2">&#34;/var/nginx/apache2_example_com/htdocs&#34;</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        <span class="n">DirectoryIndex</span> <span class="n">index</span><span class="o">.</span><span class="n">html</span> <span class="n">index</span><span class="o">.</span><span class="n">php</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="o">&lt;/</span><span class="n">VirtualHost</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="o">&lt;</span><span class="n">VirtualHost</span> <span class="o">*</span><span class="p">:</span><span class="mi">4443</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        <span class="n">ServerName</span> <span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">        <span class="n">ServerAlias</span> <span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        <span class="n">ErrorLog</span> <span class="s2">&#34;/var/log/apache2/example.com.error.log&#34;</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">        <span class="n">CustomLog</span> <span class="s2">&#34;/var/log/apache2/example.com.log&#34;</span> <span class="n">common</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">
+</span></span><span class="line"><span class="ln">18</span><span class="cl">        <span class="n">LogLevel</span> <span class="n">warn</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">
+</span></span><span class="line"><span class="ln">20</span><span class="cl">        <span class="n">DocumentRoot</span> <span class="s2">&#34;/var/nginx/apache2_example_com/htdocs&#34;</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">        <span class="n">DirectoryIndex</span> <span class="n">index</span><span class="o">.</span><span class="n">html</span> <span class="n">index</span><span class="o">.</span><span class="n">php</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">
+</span></span><span class="line"><span class="ln">23</span><span class="cl">        <span class="o">&lt;</span><span class="ne">Directory</span> <span class="s2">&#34;/var/nginx/apache2_example_com/htdocs&#34;</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">                <span class="n">Options</span> <span class="o">-</span><span class="n">Indexes</span> <span class="o">+</span><span class="n">FollowSymLinks</span> <span class="o">+</span><span class="n">MultiViews</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">                <span class="n">DirectoryIndex</span> <span class="n">index</span><span class="o">.</span><span class="n">php</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">                <span class="n">AllowOverride</span> <span class="n">All</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">                <span class="n">Require</span> <span class="n">all</span> <span class="n">granted</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">        <span class="o">&lt;/</span><span class="ne">Directory</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">
+</span></span><span class="line"><span class="ln">30</span><span class="cl">        <span class="n">RewriteEngine</span> <span class="n">on</span>
+</span></span><span class="line"><span class="ln">31</span><span class="cl">        <span class="n">Include</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">letsencrypt</span><span class="o">/</span><span class="n">options</span><span class="o">-</span><span class="n">ssl</span><span class="o">-</span><span class="n">apache</span><span class="o">.</span><span class="n">conf</span>
+</span></span><span class="line"><span class="ln">32</span><span class="cl">
+</span></span><span class="line"><span class="ln">33</span><span class="cl">        <span class="n">SSLCertificateFile</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">letsencrypt</span><span class="o">/</span><span class="n">live</span><span class="o">/</span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">fullchain</span><span class="o">.</span><span class="n">pem</span>
+</span></span><span class="line"><span class="ln">34</span><span class="cl">        <span class="n">SSLCertificateKeyFile</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">letsencrypt</span><span class="o">/</span><span class="n">live</span><span class="o">/</span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">privkey</span><span class="o">.</span><span class="n">pem</span>
+</span></span><span class="line"><span class="ln">35</span><span class="cl">
+</span></span><span class="line"><span class="ln">36</span><span class="cl"><span class="o">&lt;/</span><span class="n">VirtualHost</span><span class="o">&gt;</span>
+</span></span></code></pre></div><p>Ich will die Einstellungen nur kurz überspringen, da sie sich eigentlich selber erklären. Der erste Block greift die HTTP-Anfragen ab und leitet diese sofort weiter (<em>Redirect permanent</em>). Ich definiere hier zwar auch DocumentRoot und Index, aber das nur der Vollständigkeit halber. Der zweite Block kümmert sich um die HTTPS-Anfragen. Wie du siehst, passiert hier kein großer Zauber. Ich nutze PHP nur als Modul, setze ein paar Logging-Eigenschaften fest und übermittle die SSL-Zertifikate. <em>Easy peasy. Lemon squeezy.</em><br>
+Wie du siehst, nutze ich für Apache außerdem ein separates Verzeichnis. Achte bei <strong>Wordpress</strong> auch darauf, die URLs entsprechend anzupassen, sonst wird Wordpress die Anfragen immer wieder zu nginx weiteschicken:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">define(&#39;WP_HOME&#39;,&#39;https://example.com:4443&#39;);
+</span></span><span class="line"><span class="ln">2</span><span class="cl">define(&#39;WP_SITEURL&#39;,&#39;https://example.com:4443&#39;);
+</span></span></code></pre></div><p>Als nächstes gönnst du dem Apache-Server einen Neustart:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">sudo service apache2 restart
+</span></span></code></pre></div><p>Und das war es auch schon. Jetzt kannst du mit ApacheBench ein paar Requests abfeuern. Denk dran, dass du auf Windows ab für HTTP-Requests und abs für HTTPS-Requests nutzen musst. Mit diesem Aufruf teste ich erstmal die Performance von meinem Apache-Setup:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">abs -n 1000 -c 100 https://www.example.com:4443/
+</span></span></code></pre></div><p>Der Parameter <em>n</em> steht für die Anzahl von Anfragen insgesamt. Mit <em>c</em> kannst du festlegen, wieviele Anfragen du gleichzeitig abfeuern willst (<em>c</em> muss demnach kleiner sein als <em>n</em>). Der Forward-Slash am Ende ist wichtig, andernfalls erkennt <strong>abs</strong> die URL nicht an. Das gleiche mache ich ohne Port-Angabe um den nginx-Server anzusprechen. Und das sind die Ergebnisse:</p>
+<h3 id="auswertung-der-ergebnisse">Auswertung der Ergebnisse</h3>
+<p><img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik.png" alt=""></p>
+<p>Abbildung 1: Vergleich der Antwortzeiten von Apache und nginx</p>
+<p>Die Abbildung zeigt, wie hoch der Anteil der Anfragen ist, der nach einer bestimmten Zeit (in Millisekunden) beantwortet wurde. Nginx ist ganz klar Gewinner. Alle Anfrgaen wurden inerhalb von 4 Sekunden bearbeitet, die Hälfte der Anfragen soger innerhalb knapp 1 Sekunde. Bei Apache sieht das ungleich schlimmer aus. Allerdings wurden bei nginx 68 Anfragen abgewiesen, bei Apache 0 - eine Folge meiner Warteschlangen-Einstellung.<br>
+Die folgenden Diagramme zeigen noch mal die Zusammensetzung der Anfrage:</p>
+<ul>
+<li>Connect - Zeit bis die Verbindung hergestellt wird</li>
+<li>Waiting - Zeit bis zum ersten Datenpaket (Time-To-First-Byte, TTFB)</li>
+<li>Processing - Zeit, bis die vollständige Antwort vom Server eingangen ist, seit die Verbindung geöffnet wurd</li>
+<li>Total - Gesamte Wartezeit</li>
+</ul>
+<p><img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik-1.png" alt=""></p>
+<p>Abbildung 2: Messergebnisse für die Anfragen an Apache</p>
+<p><img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik-2.png" alt=""></p>
+<p>Abbildung 3: Messergebnisse für die Anfragen an nginx</p>
+<p>Die reine Verbindungszeit ist bei beiden Servern relativ niedrig, dieser Wert gibt aber auch eher Rückschlüsse auf die Qualität des Netzwerks. Die TTFB ist bei Apache relativ hoch., es dauert also eine ganze Weile, bis Apache die Anfrage verarbeitet und entsprechend die ersten Daten sendet. Das wird mit ziemlicher Sicherheit am grundsätzlich nicht sehr performanten php-mod liegen. Insgesamt ist das Ergebnis natürlich wenig überraschend. Mein Ziel war ja, mit nginx und php-fpm ein schnelles Setup zu schaffen. Was hiermit wohl gelungen sein dürfte (Anmerkungen zur Repräsentativität werden gerne entgegengenommen). Fairerweise sei aber noch angemerkt, dass ich Apache in der Standard-Einstellung verwende und wirklich keine Maßnahmen unternommen habe, um die Geschwindigkeit zu optimieren.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Apache, Nginx, Webserver, Performance, Benchmark, Linux</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Apache und nginx parallel betreiben und mit ApacheBench gegeneinander antreten lassen - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>performance_benchmark</dc:type>
+      
+      
+    </item><item>
+      <title>Wie wirken sich viele 301 Weiterleitungen auf die  Performance aus?</title>
+      <link>https://nickyreinert.de/2017/2017-10-26-wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/</link>
+      <pubDate>Thu, 26 Oct 2017 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2017/2017-10-26-wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/</guid>
+      <description>Um Weiterleitungen kommt man fast nicht herum. Vor allem im Bereich der Suchmaschinenoptimierung (SEO) sollte man vermeiden, dass es auf der Website zu …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel untersucht den Einfluss einer großen Anzahl von 301-Weiterleitungen, die über &#39;.htaccess&#39;-Dateien verwaltet werden, auf die Website-Performance. Basierend auf Messungen mit einem PHP-Skript wird gezeigt, dass die Antwortzeiten bei Zehntausenden von Weiterleitungen erheblich ansteigen, und es werden alternative Strategien zur effizienteren Verwaltung von Weiterleitungen vorgeschlagen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> SEO, Web Performance, 301 Redirects, .htaccess, Apache, PHP, Website Optimierung, HTTP Status Codes</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Um Weiterleitungen kommt man fast nicht herum. Vor allem im Bereich der Suchmaschinenoptimierung (SEO) sollte man vermeiden, dass es auf der Website zu 404-Fehlern kommt - also Ressourcen, die nicht (mehr) vorhanden sind.</p>
+<p>Ein Weg, um das zu beheben, ist die Einrichtung einer Weiterleitung von der alten, nicht mehr vorhandenen Ressource auf die neue Ressource.  Der HTTP-Statuscode dafür ist entweder 301 (temporär) oder 302 (für eine dauerhafte Weiterleitung). Weiterleitungen können z.B. mit einer .htaccess Datei eingerichtet werden. Dazu aktiviert man zunächst die sogenannte RewriteEngine, um eine URL zu einer anderen URL &ldquo;weiterzuleiten&rdquo;. Dann kann man beliebig viele, Regeln nach folgendem Prinzip festlegen (freilich gibt es noch weitaus mehr Möglichkeiten, wie z.B. reguläre Ausdrücke):</p>
+<p>RewriteEngine On
+Redirect 302 /redirect0r/foobar/1/ /redirect0r/foobar/index.php
+Redirect 302 /redirect0r/foobar/2/ /redirect0r/foobar/index.php</p>
+<p>Wenn man nun von einem System (z.B. Joomla) auf ein anderes System (z.B. Wordpress) umzieht und dabei nicht nur auf eine veraltete URL sondern auf 100 URLs stößt, die im neuen System nicht mehr existieren, stellt sich oft die Frage: Was mache ich mit all den alten URLs, die ich im neuen System nicht exakt abbilden kann? Macht es Sinn, die htaccess-Datei mit zahllosen Weiterleitungen zu überfluten? Es kommen zu ersten Zweifeln: Die htaccess-Datei wird bei jedem Aufruf der Website geladen. Kann eine große htaccess-Datei sich also negativ auf die Performance der Seite auswirken?</p>
+<p>Die Frage hat auch mich beschäftigt und deshalb habe ich ein kleines PHP-Script geschrieben, dass helfen soll, die Antwort zu finden.</p>
+<h2 id="funktion">Funktion</h2>
+<p>Der Quellcode für das PHP-Script ist über <a href="https://github.com/nickyreinert/redirect0r">github</a> verfügbar. Das Script kann im Browser oder über die Kommandozeile aufgerufen werden. Sämtliche Einstellungen werden in einer JSON-Datei vorgenommen.</p>
+<p>Der Ablauf des Scripts ist relativ einfach. In einer Schleife schreibt es eine beliebige Anzahl von Weiterleitungs-Regeln in eine htaccess-Datei. Diese Regeln haben folgenden Aufbau:</p>
+<p>Redirect 302 /foobar/<strong><em>i</em></strong>/ /foobar/index.php</p>
+<p>/foobar ist der Ordner, der für die Messung verwendet wird. In diesem Ordner befindet sich auch die htaccess-Datei. i ist eine fortlaufende Ziffer, die mit jedem Schleifendurchlauf inkrementiert wird. Schließlich wird das Ziel der Weiterleitung mit /foobar/index.php angegeben. Der Ordner und die Zieldatei sowie der Inhalt der Zieldatei können angepasst werden.</p>
+<p>Nicht jeder Schleifendurchlauf schreibt in die htaccess-Datei und ruft Test-URL sofort auf. Das geschieht in definierbaren Abschnitten. Diese Schrittweite ist definierbar. Die Zeit für den Aufruf wird schließlich gemessen .</p>
+<p>Weiterhin ist es möglich, die Aufrufe innerhalb einer Schrittweite zu wiederholen, also mehrere Abfragen nacheinander, um z.B. in der späteren Auswertung aus den Ergebnissen einen Mittelwert zu errechnen. Nach jeder Abfrage kann außerdem eine cool-down-Phase stattfinden, bevor der nächste Abruf stattfindet..</p>
+<h2 id="messergebnisse">Messergebnisse</h2>
+<p>Die Messergebnisse offenbaren keine Überraschung. Je größer die Datei, desto größer die Antwortzeiten.  Im Detail heißt das:</p>
+<p>Gemessen wurden mit drei verschiedenen Methoden:</p>
+<ul>
+<li>auf einem lokalen Webserver (MacBook Pro mit 16 GByte RAM und 2,7 GHz i5) per Aufruf im Browser (local server)</li>
+<li>auf einem gehosteten Webserver (unbekannte Hardware) per Aufruf im Browser (remote server)</li>
+<li>auf einem gehosteten Webserver per Aufruf auf der Kommandozeile (remote server CLI)</li>
+</ul>
+<p>Als Zeilenlimitin der htaccess-Datei wurden 100.000 Zeilen gewählt. Die Schrittweite beträgt 5.000. Nach jedem Aufruf gab es eine Pause von 3 Sekunden. Insgesamt gab es drei Aufrufe je Zeilenanzahl. Über diese 3 Aufrufe zu einer bestimmten Zeilenanzahl wurde schließlich der Mittelwert errechnet.</p>
+<p>Bei 10.000 Zeilen wurde bei allen Methoden ca. 90 ms gemessen. Bei 20.000 Zeilen in der htaccess-Datei beträgt die Reaktionszeiten knapp das doppelte, aber immer noch recht unauffällige 185 ms. Ab da gehen die gemessenen Zeit leicht auseinander, der lokale Server scheint die schlechtere Performance zu haben.</p>
+<p>Bei 60.000 Zeilen wird bei allen Methoden die &ldquo;magische&rdquo; Grenze von 1 Sekunde überschritten. Die Antwortzeiten steigen jetzt nicht mehr proportional. Bei 100.000 Zeilen benötigt der lokale Server schon über 4 Sekunden für die Antwort. Der gehostete Webserver braucht dafür über knapp 3 Sekunden.</p>
+<p>[caption id=&ldquo;attachment_1580&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/htaccess-geschwindigkeit.png"><img src="/2017/2017-10-26-wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/images/htaccess-geschwindigkeit-300x186.png" alt="Geschwindigkeit bei wachsender htaccess-Datei"></a> Geschwindigkeit bei wachsender htaccess-Datei[/caption]</p>
+<h2 id="fazit">Fazit</h2>
+<p>Natürlich wirkt sich eine große htaccess-Datei auf die Performance des Servers auf. Denn wie bereits bemerkt, muss der Webserver diese Datei bei jeder Anfrage öffnen und verarbeiten. Allerdings ist der negative Einfluss ziemlich gering und macht sich erst bei einer sehr großen Anzahl von Zeilen bemerkbar.</p>
+<p>Eine htaccess-Datei mit 10.000 Zeilen verringert die Antwortzeit kaum. Allerdings steigt die Antwortzeit überproportional an. Bei 100.000 Zeilen ist sie bereits 50 mal langsamer.</p>
+<p>Im Bereich ab 40.000 Zeilen dürfte der Einfluss auch nach außen hin spürbar sein. Natürlich hängt auch diese Erkenntnis stark von der verwendeten Hardware ab: Der lokale Webserver ist bei meinen Messungen etwas langsamer als der Server des Hosters.</p>
+<p>Wer eine htaccess-Datei mit 10.000 Weiterleitungen pflegt sollte grundsätzlich sein Konzept überdenken. Oft lässt sich das entweder durch einen sauberen Umzug bzw. eine Anpassung des neuen Systems oder durch Weiterleitungen mit regulären Ausdrücken besser lösen. Am besten ist es natürlich, wenn man gar nicht erst in die Verlegenheit kommt, Weiterleitungen nutzen zu müssen.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> apache, htacces, messung, php, redir, weiterleitung, Web Performance</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Wie wirken sich viele 301 Weiterleitungen auf die  Performance aus? - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>performance_analysis</dc:type>
+      
+      
+    </item><item>
+      <title>XAMPP startet nicht mehr, nachdem eine php-Extension hinzugefügt wurde</title>
+      <link>https://nickyreinert.de/2017/2017-10-19-xampp-startet-nicht-mehr-nachdem-eine-php-extension-hinzugefuegt-wurde/</link>
+      <pubDate>Thu, 19 Oct 2017 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2017/2017-10-19-xampp-startet-nicht-mehr-nachdem-eine-php-extension-hinzugefuegt-wurde/</guid>
+      <description>Ich hatte hier neulich das Problem, dass ich die mongodb Extension für PHP aktivieren wollte und sich danach der Apache-Dienst nicht mehr starten ließ. Aber der …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel beschreibt die Fehlersuche und temporäre Behebung eines Problems, bei dem XAMPP unter macOS nach dem Hinzufügen einer PHP-Erweiterung (z.B. MongoDB) den Apache-Dienst nicht mehr startet. Er führt durch die Analyse von Log-Dateien und Shell-Befehlen, um Berechtigungsprobleme zu identifizieren, und bietet eine Lösung zur Wiederherstellung der Funktionalität.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> XAMPP, PHP, Apache, macOS, Webserver, Troubleshooting, Entwicklungsumgebung, MongoDB</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Ich hatte hier neulich das Problem, dass ich die mongodb Extension für PHP aktivieren wollte und sich danach der Apache-Dienst nicht mehr starten ließ. Aber der Reihe nach:</p>
+<p>Das System ist OS 10.12.6 und ich nutze das XAMPP-Paket 7.1.9 mit entsprechend PHP 7.1. Außerdem habe ich mir homebrew installiert, da die Installation von pecl zu Umständlich (ich hätte alle möglichen  Abhängigkeiten installieren müssen). Mit homebrew habe ich mir also den aktuellen mongodb-Treiber installiert, das geht recht einfach mit:</p>
+<p>brew update
+brew install php71-mongodb</p>
+<p>Danach lässt sich die Extension in der /Applications/XAMPP/xamppfiles/etc/php.ini Datei aktivieren:</p>
+<p>extension=&quot;/usr/local/opt/php71-mongodb/mongodb.so&quot;</p>
+<p>Soweit. So einfach. Das Problem: Nachdem ich diese Zeile in der php.ini Datei hinzugefügt hatte, ließ sich der Apache-Dienst nicht mehr über die XAMPP-Oberfläche starten, obwohl diese mit root-Rechten ausgeführt wird. Leider gab auch die Log-Datei /Applications/XAMPP/xamppfiles/logs/error_log nicht viel her. Und auch nachdem ich die Zeile aus der php.ini-Datei entfernt habe, trat das Problem weiter auf. Ich bekam den Web-Server also nicht zum laufen und an keiner Stelle in den Log-Dateien war ersichtlich, was nicht stimmte.</p>
+<p>[caption id=&ldquo;attachment_1567&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/xampp-startet-nicht-mehr-nachdem-eine-php-extension-hinzugefuegt-wurde/XAMPP-UI-in-OS-X.png"><img src="/2017/2017-10-19-xampp-startet-nicht-mehr-nachdem-eine-php-extension-hinzugefuegt-wurde/images/XAMPP-UI-in-OS-X-300x209.png" alt="XAMPP UI in OS X um den Web-Server zu starten"></a> XAMPP UI in OS X um den Web-Server zu starten[/caption]</p>
+<h2 id="recherche-der-aufgerufenen-kommandos">Recherche der aufgerufenen Kommandos</h2>
+<p>Also musste ich mich auf die Fehlersuche machen. Und das ist recht umständlich, denn der Klick auf den Button im XAMPP-UI stößt eine etwas längere Befehlskette an an deren Ende der Start des http-Daemons steht:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">/Applications/XAMPP/xamppfiles/ctlscript.sh start apache
+</span></span><span class="line"><span class="ln">2</span><span class="cl">-&gt; 
+</span></span><span class="line"><span class="ln">3</span><span class="cl">/Applications/XAMPP/xamppfiles/apache2/scripts/ctl.sh start
+</span></span><span class="line"><span class="ln">4</span><span class="cl">-&gt;
+</span></span><span class="line"><span class="ln">5</span><span class="cl">/Applications/XAMPP/xamppfiles/xampp startapache 
+</span></span><span class="line"><span class="ln">6</span><span class="cl">-&gt; 
+</span></span><span class="line"><span class="ln">7</span><span class="cl">/Applications/XAMPP/xamppfiles/bin/apachectl -k start -E /Applications/XAMPP/xamppfiles/logs/error_log -DSSL -DPHP
+</span></span><span class="line"><span class="ln">8</span><span class="cl">-&gt;
+</span></span><span class="line"><span class="ln">9</span><span class="cl">/Applications/XAMPP/xamppfiles/bin/httpd -k start -E /Applications/XAMPP/xamppfiles/logs/error_log -DSSL -DPHP
+</span></span></code></pre></div><p>Ich hab mir also den letzten Aufruf geschnappt und auf der Konsole ausgeführt. Dort erhielt ich den ersten entscheidenen Hinweis - die log-Dateien waren nicht schreibbar:</p>
+<p>(13)Permission denied: AH00086: httpd: could not open error log file /Applications/XAMPP/xamppfiles/logs/error_log.
+AH00548: NameVirtualHost has no effect and will be removed in the next release /Applications/XAMPP/xamppfiles/etc/extra/httpd-vhosts.conf:40
+(13)Permission denied: AH00072: make_sock: could not bind to address [::]:80
+(13)Permission denied: AH00072: make_sock: could not bind to address 0.0.0.0:80
+no listening sockets available, shutting down</p>
+<p>Das lässt sich schnell mit folgendem Aufruf beheben:</p>
+<p>sudo chmod a+w /Applications/XAMPP/xamppfiles/logs/error_log</p>
+<p>Damit war es natürlich noch nicht getan. Erst jetzt konnte ich dem error.log entnehmen, was das eigentliche Problem war:</p>
+<p>AH00548: NameVirtualHost has no effect and will be removed in the next release /Applications/XAMPP/xamppfiles/etc/extra/httpd-vhosts.conf:40
+(13)Permission denied: AH00072: make_sock: could not bind to address [::]:80
+(13)Permission denied: AH00072: make_sock: could not bind to address 0.0.0.0:80
+no listening sockets available, shutting down
+AH00015: Unable to open logs</p>
+<h2 id="lösung---fehlende-rechte">Lösung - fehlende Rechte</h2>
+<p>Im Grunde war ja schon klar, was getan werden musste: Der Aufruf mit sudo. Damit lässt sich der Apache-Dienst also zumindest erstmal starten:</p>
+<p>sudo /Applications/XAMPP/xamppfiles/bin/httpd -k start -E /Applications/XAMPP/xamppfiles/logs/error_log -DSSL -DPHP</p>
+<p>Das eigentliche Problem bleibt freilich bestehen: Was hat das mit der php-Extension zu tun? Liegt es an dem mongodb-Treiber selber oder ist es ein generelles Problem? Bisher bin ich noch nicht dahinter gestiegen. Aber zumindest lässt sich der Web-Server erstmal wieder starten.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> mongodb, osx, php, xampp, Troubleshooting</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>development</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>XAMPP startet nicht mehr, nachdem eine php-Extension hinzugefügt wurde - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>troubleshooting_guide</dc:type>
+      
+      
+    </item><item>
       <title>Welche Möglichkeiten habe ich um Weiterleitungen anzulegen?</title>
       <link>https://nickyreinert.de/2016/2016-09-25-welche-moeglichkeiten-habe-ich-um-weiterleitungen-anzulegen/</link>
       <pubDate>Sun, 25 Sep 2016 00:00:00 +0000</pubDate>
@@ -274,7 +586,7 @@
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Der Artikel erklärt die Notwendigkeit von 301-Weiterleitungen nach Website-Umzügen, um den SEO-Wert zu erhalten. Es werden zwei technische Methoden zur Implementierung vorgestellt: die manuelle Erstellung von Weiterleitungen mittels der PHP `header()`-Funktion und die dynamische Konfiguration über `.htaccess`-Regeln mit `mod_rewrite`.</p>
+          <p>Der Artikel erklärt die Notwendigkeit von 301-Weiterleitungen nach Website-Umzügen, um den SEO-Wert zu erhalten. Es werden zwei technische Methoden zur Implementierung vorgestellt: die manuelle Erstellung von Weiterleitungen mittels der PHP &#39;header()&#39;-Funktion und die dynamische Konfiguration über &#39;.htaccess&#39;-Regeln mit &#39;mod_rewrite&#39;.</p>
           
           
           <p><strong>Hauptthemen:</strong> SEO, Webserver-Konfiguration, Apache, .htaccess, PHP, Website-Migration</p>

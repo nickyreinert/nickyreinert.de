@@ -15,10 +15,10 @@
     <copyright></copyright>
     <lastBuildDate>Tue, 01 Oct 2024 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/tags/cryptography/index.xml" rel="self" type="application/rss+xml" /><item>
       <title>The Bitcoin Puzzle</title>
-      <link>https://nickyreinert.de/en/blog/2024/10/01/the-bitcoin-puzzle/</link>
+      <link>https://nickyreinert.de/en/2024/2024-10-01-bitcoin-puzzle/</link>
       <pubDate>Tue, 01 Oct 2024 12:34:56 +0100</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/en/blog/2024/10/01/the-bitcoin-puzzle/</guid>
+      <guid>https://nickyreinert.de/en/2024/2024-10-01-bitcoin-puzzle/</guid>
       <description>In this post, I’ll explain how I fell into a deep rabbit hole. I’ll cover how the puzzle works and how the algorithm can be optimized in Python using techniques …</description>
       
       
@@ -73,7 +73,7 @@ Index 9:   Hash: 00[..]202   Address: C 1LeBZP5QCwwgXR[..]PUokyLHqe
 <li>2 x SHA-256</li>
 <li>and finally a (simple) Binary-58 encoding</li>
 </ul>
-<p><img src="/en/blog/2024/10/01/the-bitcoin-puzzle/required_computation_steps.png" alt="required computation steps"></p>
+<p><img src="/en/2024/2024-10-01-bitcoin-puzzle/required_computation_steps.png" alt="required computation steps"></p>
 <center><i>required computation steps from private key to wallet address</i></center>
 <p>The ultimate goal is to find the private key for a known wallet address. As you can see, obtaining the verifying key requires only one operation, while calculating the wallet address is the more complex part. Solving this puzzle requires you to follow all the steps.</p>
 <p>If you find a valid private key for a given wallet address, you can initiate a transaction signed with the now-known verifying key. You need to submit both the wallet address and the verifying key to get confirmation from the blockchain.</p>
@@ -83,7 +83,7 @@ Index 9:   Hash: 00[..]202   Address: C 1LeBZP5QCwwgXR[..]PUokyLHqe
 <p>Enough talk — let’s dive into the race and participate.</p>
 <h2 id="the-algorithm">The algorithm</h2>
 <p>First, we will create a public (or signing) key from the private key using the elliptic curve algorithm SECP256k1.</p>
-<p><img src="/en/blog/2024/10/01/the-bitcoin-puzzle/eliptic_curve.png" alt="eliptic curve"></p>
+<p><img src="/en/2024/2024-10-01-bitcoin-puzzle/eliptic_curve.png" alt="eliptic curve"></p>
 <center><i>An eliptic curve (Source: https://en.bitcoin.it/wiki/File:Secp256k1.png)</i></center>
 <p>Superficial Note on the Algorithm: SEC stands for Standards for Efficient Cryptography, P represents the prime number 2²⁵⁶ - 2³² - 977 on which this curve is based, 256 denotes the length of the private key in Bit and k1 refers to the Koblitz curve, a specific type of elliptic curve. The actual curve is defined by the equation:</p>
 <pre><code>y²=x³ + 7

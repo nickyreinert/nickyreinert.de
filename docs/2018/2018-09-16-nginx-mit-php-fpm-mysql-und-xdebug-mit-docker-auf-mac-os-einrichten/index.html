@@ -15,7 +15,7 @@
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/images/favicon.ico">
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
 
   
   
@@ -332,7 +332,38 @@
   <div class="post-date">September 16, 2018</div>
 
   
-  <article class="content">
+  
+  
+  
+  
+  
+  
+  
+  <details style="margin-top: 2rem; margin-bottom: 2rem;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#erste-schritte">Erste Schritte</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#den-mysql-container-starten">Den MySQL-Container starten</a></li>
+    <li><a href="#den-http-container-starten">Den HTTP-Container starten</a></li>
+    <li><a href="#xdebug-installieren">xdebug installieren</a></li>
+    <li><a href="#visual-studio-code">Visual Studio Code</a></li>
+    <li><a href="#fazit">Fazit</a></li>
+    <li><a href="#referenzen">Referenzen</a></li>
+  </ul>
+</nav></div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
     <p>Ich habe mich eine ganze weile erfolgreich vor <strong>Docker</strong> als lokale Entwicklungsumgebung gedrückt. Der Grund: Ich nutze eine kommerzielle Parallels Lizenz, über die ich Ubuntu virtualisiert laufen lasse und bin damit bisher ganz gut gefahren. Bisher. Paralles hat nämlich immer wieder Problem gemacht. So konnte ich nach manchen Updates von Parallels oder Ubuntu die <em>Parallels Tools</em> nicht mehr nutzen und musste diese umständlich neu installieren. Da die Doku dazu auch nur unvollständig vorliegt, war das regelmäßig eine ziemliche Zeitverschwendung. Die <em>Parallels Tools</em> sind aber notwendig, um von Ubuntu aus auf die Dateien des Gastsystems, Mac OS X, zuzugreifen.</p>
 <p>Beim letzten Update auf Ubuntu 18.04 ließen sich die <em>Parallels Tools</em> gar nicht mehr installieren. Die Ursache dafür ist wohl irgendeine Inkompatibilität eines abhängigen Paketes mit dem neuen Linux-Kernel. Wie auch immer: Ich war die Sorgen leid und auf der Suche nach einer Alternative. Weshalb ich <strong>Docker</strong> stieß. Der Vorteil: Docker ist weitaus performanter und portabler. Der Nachteil: Um damit eine funktionierende Entwicklungsumgebung zu schaffen, kommt man um die Shell nicht herum. Das mitgelieferte UI Kitematic liegt noch als Beta vor und lässt einige Funktionen einfach vermissen. Es gibt also einige kleinere Fallstricke, die es zu überwinde galt. Was mir gelungen ist. Wie, das werde ich nun genauer erläutern. <em>Viel Spass</em>.</p>
 <p>[caption id=&ldquo;attachment_2166&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/nginx-mit-php-fpm-und-mysql-mit-docker-auf-mac-os-einrichten/kitematic-scho%CC%88n-aber-noch-nutzlos.png"><img src="images/kitematic-scho%CC%88n-aber-noch-nutzlos-300x181.png" alt="Kitematic - schön aber (noch) weitestgehend nutzlos"></a> Kitematic - schön aber (noch) weitestgehend nutzlos[/caption]</p>
@@ -446,9 +477,59 @@ echo xdebug.remote_log=/tmp/php-xdebug.log &raquo; /usr/local/etc/php/conf.d/xde
 <h2 id="referenzen">Referenzen</h2>
 <p>Mein Dank gilt <a href="http://paislee.io/a-minimal-development-server-with-nginx-and-docker/">Caleb Sotelo</a>, von wo ich einen Großteil der Scripte habe. Ein Teil des Dockerfiles stammt von <a href="https://blog.philipphauer.de/debug-php-docker-container-idea-phpstorm/">philipphauer.de</a>. Danke!</p>
 
+    
   </article>
   
+  
+  
+  <div style="margin-top: 5rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
 
+      <p>Eine umfassende Anleitung zur Einrichtung einer lokalen Web-Entwicklungsumgebung auf macOS mit Docker. Das Tutorial beschreibt detailliert, wie man Container für Nginx, PHP-FPM und MySQL aufsetzt und miteinander verknüpft. Ein besonderer Fokus liegt auf der Erstellung eines benutzerdefinierten Docker-Images mittels Dockerfile, um Xdebug für das PHP-Debugging zu installieren und in Visual Studio Code zu integrieren.</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Docker</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">macOS</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Nginx</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">PHP-FPM</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">MySQL</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Xdebug</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Web-Development</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">DevOps</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 5 Minuten</p>
+      
+    </div>
+  </div>
+  
+  
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/2018/2018-09-16-willkommen-in-berlin/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/2018/2018-10-15-macos-mojave-3-tolle-neue-funktionen/">next →</a>
+    
+  </div>
 </main>
 
     <footer id="footer">

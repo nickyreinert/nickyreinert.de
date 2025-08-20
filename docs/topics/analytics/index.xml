@@ -6,258 +6,269 @@
      xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>Analytics auf Nicky Reinert</title>
-    <link>http://localhost:1313/topics/analytics/</link>
+    <link>https://nickyreinert.de/topics/analytics/</link>
     <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
     <generator>Hugo 0.148.2</generator>
     <language>de</language>
     <managingEditor></managingEditor>
     <webMaster></webMaster>
     <copyright></copyright>
-    <lastBuildDate>Sat, 04 Mar 2023 12:19:31 +0100</lastBuildDate><atom:link href="http://localhost:1313/topics/analytics/index.xml" rel="self" type="application/rss+xml" /><item>
-      <title>Die Nerd Enzyklopädie 4 - RegExen — Jetzt hast du zwei Probleme</title>
-      <link>http://localhost:1313/2023/2023-03-04-nerd-enzyklop%C3%A4die-4---regexen--jetzt-hast-du-zwei-probleme/</link>
-      <pubDate>Sat, 04 Mar 2023 12:19:31 +0100</pubDate>
+    <lastBuildDate>Fri, 02 Mar 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/analytics/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Wie entwickelt man einen Amazon-Bot für Telegramm?</title>
+      <link>https://nickyreinert.de/2018/2018-03-02-wie-entwickelt-man-einen-amazon-bot-fuer-telegramm/</link>
+      <pubDate>Fri, 02 Mar 2018 00:00:00 +0000</pubDate>
       <author></author>
-      <guid>http://localhost:1313/2023/2023-03-04-nerd-enzyklop%C3%A4die-4---regexen--jetzt-hast-du-zwei-probleme/</guid>
-      <description>Reguläre Ausdrücke sind umstritten: Geliebt als vielseitiges Werkzeug, verdammt als undurchschaubare Fehlerquelle. Nicht ohne Grund heißt es: Reguläre Ausdrücke …</description>
+      <guid>https://nickyreinert.de/2018/2018-03-02-wie-entwickelt-man-einen-amazon-bot-fuer-telegramm/</guid>
+      <description>Was ist ein Telegramm-Bot? Schon mal was von Telegramm gehört oder gar einem Telegramm-Bot gehört? Nein? Macht nichts. Telegramm ist ein Messenger, wie Whatsapp …</description>
       
       
       <content:encoded>&lt;![CDATA[
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Reguläre Ausdrücke sind umstritten: Geliebt als vielseitiges Werkzeug, verdammt als undurchschaubare Fehlerquelle.&#39; reading_time: 4 content_type: &#39;analysis</p>
+          <p>Diese umfassende Schritt-für-Schritt-Anleitung führt durch die Entwicklung eines Telegram-Bots mit PHP, der die Amazon-Produktsuche integriert. Das Tutorial behandelt die Bot-Registrierung, die Einrichtung des PHP-Bot-Frameworks, die Anbindung an die Amazon Product Advertising API, die Integration von Analytics mit Botan und die Anonymisierung von Nutzerdaten, um einen voll funktionsfähigen Amazon-Suchbot zu erstellen.</p>
           
           
-          <p><strong>Hauptthemen:</strong> Web, Ai, Security, Analytics, Design</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
-          
-        </div>
-        
-        
-        <p>Reguläre Ausdrücke sind umstritten: Geliebt als vielseitiges Werkzeug, verdammt als undurchschaubare Fehlerquelle. Nicht ohne Grund heißt es: Reguläre Ausdrücke lösen ein Problem und schaffen zwei neue.<br>
-Woher kommt diese Hassliebe?</p>
-<h2 id="eine-exotische-tierart">Eine exotische Tierart</h2>
-<p>Reguläre Ausdrücke, kurz RegExen, sind mitunter schwer zu entwickeln und irgendwann kaum noch lesbar. Das erschwert das Debugging, also die Fehlersuche. Wie wäre es zum Beispiel mit diesem Schmuckstück:</p>
-<pre><code>^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&amp;*])(?=.*[0–9].*[0–9])(?=.*[a-z].*[a-z].*[a-z]).{8}$
-</code></pre>
-<p>Na, erkannt? Diese RegExe überprüft ob eine Passwort-Zeichenfolge bestimmten Sicherheitsanforderungen entspricht. Diesen Hinweis kann man im Quellcode vielleicht noch dokumentieren. Aber was wenn sich die Sicherheitsanforderungen im Detail ändern?</p>
-<h2 id="mit-kanonen-auf-spatzen">Mit Kanonen auf Spatzen…</h2>
-<p>RegExen werden außerdem gerne dort eingesetzt, wo eigentlich bessere, standardisierte Lösungen vorhanden sind, wie z.B. für das Parsen von XML [<a href="https://flapenguin.me/xml-regex">FLAP1</a>]:</p>
-<pre><code>\s*  
-(?(?=&lt;)  
-  (?&lt;opentag&gt;  
-    &lt; \s*  
-    (?&lt;tagname&gt;\w+)  
-    (?&lt;attibute&gt;  
-      \s+  
-      (?&lt;attrname&gt;[^\s&gt;]+)  
-      =  
-      (?&lt;attrquote&gt;&quot;|'|)  
-      (?&lt;attrvalue&gt;[^\s&quot;'&gt;]+)  
-      (\k{attrquote})  
-    )*  
-    \s*  
-    (?&lt;selfclosing&gt;\/\s*)?  
-    &gt;  
-  )  
-  (?(&lt;selfclosing&gt;)|  
-    (?&lt;children&gt;(?R))  
-    (?&lt;closetag&gt;&lt;\s* \/ \s* \k{tagname} \s*&gt;)  
-  )  
-|  
-  (?&lt;text&gt;[^&lt;]*)  
-)*  
-\s*
-</code></pre>
-<p>Was aussieht als wäre deine Katze auf der Tastatur eingeschlafen, ist eine funktionsfähige RegExe. Mit genau einem Vorteil: Wenn man den Ausdruck Stück für Stück zerpflückt, um ihn zu verstehen, kann man viel über die Möglichkeiten regulärer Ausdrücke lernen. Im produktiven Betrieb sollte man trotzdem auf alternative Ansätze zurückgreifen, um mit XML-Daten zu arbeiten. Wie z.B. XML-Parser, die soll es ja wirklich geben.</p>
-<h2 id="backtracking">Backtracking</h2>
-<p>RegExen können auch zu handfesten Sicherheitsproblemen führen. Die Ursache liegt in der Art, wie RegExen verarbeitet werden. Sie durchlaufen einen String zeichenweise, bis eine Bedingung nicht mehr erfüllt wird und springen dann zu dem Zeichen zurück, an dem der Ausdruck vielleicht einen anderen Lösungsweg nehmen kann. Dieses Vorgehen nennt man <strong>Backtracking</strong>, also Rückverfolgung. Diese Funktion kann aber zu einem Rückkopplungs-Effekt führen, wodurch die Dauer der Verarbeitung exponentiell ansteigt. Die Folge nennt man „Catastrophic Backtracking“, eine wichtige Grundlage für <a href="https://medium.com/@nitinpatel_20236/what-are-evil-regexes-7b21058c747e">ReDOS</a> (<a href="https://medium.com/@nitinpatel_20236/what-are-evil-regexes-7b21058c747e">Regular Expression Denial Of Service</a>) Angriffe [<a href="https://www.regular-expressions.info/catastrophic.html">REGU1</a>]. Ein einfaches Beispiel ist dieser reguläre Ausdruck [<a href="https://medium.com/@nitinpatel_20236/what-are-evil-regexes-7b21058c747e">MEDI1</a>]:</p>
-<pre><code>(x+x+)+y.
-</code></pre>
-<p>Diese RegExe lässt sich sicherlich optimieren, sie soll auch nur zeigen, wie schnell die Verarbeitung eskalieren kann. Als Test-String dient diese einfache Zeichenkette:</p>
-<pre><code>xxxxxy
-</code></pre>
-<p>Die Verarbeitung erfordert in diesem Fall in <strong>123 Schritte</strong>. Passen wir die Zeichenkette nun etwas an:</p>
-<pre><code>xxxxxxxxxxxxxy
-</code></pre>
-<p>Mehr als <strong>38.000 Schritte</strong> sind jetzt erforderlich, um den regulären Ausdruck zu prüfen. Mit dem richtigen regulären Ausdruck und der passenden Zeichenkette kann ein Browser „mühelos“ zum Absturz gebracht werden.</p>
-<p>Der Einsatz von regulären Ausdrücken ist also streitbar. Übrigens: Dem Netscape Entwickler <strong>Jamie Zawinski</strong> wird zugeschrieben, diese Erkenntnis als erster in Worte gefasst zu haben. Er stellte bereits <strong>1997</strong> fest [<a href="https://blog.codinghorror.com/regular-expressions-now-you-have-two-problems/">CODI1</a>]:</p>
-<blockquote>
-<p>Some people, when confronted with a problem, think “I know, I’ll use regular expressions.” Now they have two problems.</p></blockquote>
-<p>Dieser Ausspruch geht wiederum auf <strong>David Tilbrook</strong> zurück, der sich (selber nur vage) erinnert, wie er <strong>1985</strong> auf einer Konferenz in <strong>Dublin</strong> die Nutzung des Kommandozeilen-Tools <strong>awk</strong> kommentiert [<a href="http://regex.info/blog/2006-09-15/247">REGE1</a>]:</p>
-<blockquote>
-<p>“If you have a problem and you think awk is the solution, then you have two problems.”</p></blockquote>
-<p><strong>RegExen</strong> und <strong>awk</strong> sind nicht die einzigen zweifelhaften Tools, auch <a href="http://regex.info/blog/2006-09-15/247">Perl</a> hat einen gewissen Ruf. Aber vermutlich ist das nur eine besondere Art von Nerd-Humor, vor der niemand sicher ist:</p>
-<p><img src="/2023/2023-03-04-nerd-enzyklop%C3%A4die-4---regexen--jetzt-hast-du-zwei-probleme/image.png" alt=""></p>
-<p style="text-align: center;font-style:italic">
-Bildquelle [[XKCD1](https://xkcd.com/1171/)]
-</p>
-
-        
-        
-      ]]></content:encoded>
-      
-      
-      
-      <category>nerdenz</category>
-      
-      
-      
-      
-      <media:content url="http://localhost:1313/images/posts/placeholder.jpg" type="image/jpeg">
-        <media:title>Die Nerd Enzyklopädie 4 - RegExen — Jetzt hast du zwei Probleme - Analysis</media:title>
-      </media:content>
-      
-      
-      
-      
-      
-      
-      
-    </item><item>
-      <title>COII - Cookie OptIn Interface als Wordpress Plugin</title>
-      <link>http://localhost:1313/2018/2018-03-03-coii/</link>
-      <pubDate>Sat, 03 Mar 2018 00:00:00 +0000</pubDate>
-      <author></author>
-      <guid>http://localhost:1313/2018/2018-03-03-coii/</guid>
-      <description>COII ist ein Plugin für Wordpress mit dem du dem Besucher deiner Seite die Möglichkeit gibst, dem Tracking durch z.B. Google Analytics bzw. Cookies zuzustimmen. …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>COII ist ein Plugin für Wordpress mit dem du dem Besucher deiner Seite die Möglichkeit gibst, dem Tracking durch z.B. Google Analytics bzw. Cookies zuzustimmen.&#39; reading_time: 3 content_type: &#39;analysis</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> Web, Wordpress, Git, Server, Automation, Security, Analytics</p>
+          <p><strong>Hauptthemen:</strong> PHP, Telegram Bot, Amazon API, API Integration, Web Development, Chatbots, Bot Development, Analytics, Datenschutz</p>
           
           
           
-          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
           
         </div>
         
         
-        <p>COII ist ein Plugin für Wordpress mit dem du dem Besucher deiner Seite die Möglichkeit gibst, dem Tracking durch z.B. Google Analytics bzw. Cookies zuzustimmen.</p>
-<h2 id="cookies-und-tracking">Cookies und Tracking</h2>
-<p>Grundsätzlich sind <strong>Cookies</strong> nicht verkehrt. Dabei handelt es sich um kleine Text-Dateien, die von einem Server auf dem Computer des Benutzers gespeichert werden, um Informationen zwischenzuspeichern. Für den Betrieb vieler Seiten sind sie oft unerlässlich. Dabei ist es wichtig zu wissen, dass nur der Server auf ein Cookie zugreifen darf, der es auch gesetzt hat. Grundsätzlich kann man zwei Arten unterscheiden: <strong>1st-Party- und 3rd-Party-Cookies</strong>. 1st-Party-Cookies werden von dem Server gespeichert, auf den der Besucher der Website gerade zugreift. Aktuell wäre das für dich z.B. ein Cookie von <a href="https://www.nickyreinert.de">www.nickyreinert.de</a>.</p>
-<p><strong>3rd-Party-Cookies</strong> werden von Dritten auf deinem Computer gespeichert. Das ist möglich, weil ich auf meiner Seite z.B. JavaScript von fremden Websiten einbinde. Diese &ldquo;rufen&rdquo; den anderen Server an. Sehr weit verbreitet ist z.B. Google Analytics. Google kann dann als dritte Partei ein Cookie auf deinem Computer speichern. Wenn du eine andere Website besuchst, die auch das JavaScript von Google Analytics einsetzt, darf Google auf genau diesen Cookie zugreifen und kann dann die Verknüpfung herstellen: Der Besuch meiner Seite, der Besuch der anderen Seite und vermutlich der Besuch vieler weiterer Seiten. Diese Art von Cookies kann man deswegen als Tracking-Cookie bezeichnen.</p>
-<p>Das Problem an der Sache sind die &ldquo;<strong>personenbezogene Daten</strong>&rdquo;. Eigentlich hat niemand ein Problem mit Cookies - so lange sie keine personenbezogenen Daten enthalten. Erst dann betritt man den rechtlich relevanten Raum des Datenschutzes.  Und mit der vor der Tür stehenden <strong>DSGVO</strong> bzw. der <strong>ePrivacy-Verordnung</strong> wird der Betreiber der Website (vermutlich) noch mehr in der Pflicht genommen, die personenbezogenen Daten seiner Besucher zu schützen. Oder: Im explizit das Wahlrecht zu geben: Lässt er das Tracking zu?</p>
-<p>Und dabei soll dir <strong>COII</strong> helfen.</p>
-<h2 id="funktionsweise-voncookies">Funktionsweise von Cookies</h2>
-<p>Beim ersten Besuch deiner Seite sieht der Benutzer einen einfachem Dialog, in dem er dem Tracking zustimmen kann. Oder eben widersprechen.</p>
-<p><strong>COII</strong> speichert die Information wiederum in einem Cookie und lädt die Seite automatisch neu. Wurde dem Tracking zugestimmt, wird das entsprechende Tracking-Pixel (JavaScript) geladen. Sonst nicht. COII  unterscheidet dabei allerdings vorerst nicht zwischen 1st- und 3rd-Party-Cookies.</p>
-<p>In den Einstellungen kannst du (bzw. musst du initial) den Text für den Dialog und die Buttons anpassen. Außerdem solltest du natürlich dein Tracking-Pixel hinterlegen. Sonst brauchst du dieses Plugin  nicht.</p>
-<p>Außerdem kannst du den Shortcode [ coii_dialogue ] auf jeder Seite oder jedem Beitrag - wie z.B. deiner Datenschutzbestimmung - nutzen, um dort die gleiche Abfrage darzustellen.</p>
-<p><strong>COII</strong> kannst du dir <a href="https://github.com/nickyreinert/coii/edit/master/README.txt">bei Github</a> oder direkt über das <a href="https://wordpress.org/plugins/cookie-optin-interface/">Wordpress-Repository</a> herunterladen.</p>
-
-        
-        
-      ]]></content:encoded>
-      
-      
-      
-      <category>wordpress</category>
-      
-      <category>projekte</category>
-      
-      
-      
-      
-      <media:content url="http://localhost:1313/images/posts/placeholder.jpg" type="image/jpeg">
-        <media:title>COII - Cookie OptIn Interface als Wordpress Plugin - Analysis</media:title>
-      </media:content>
-      
-      
-      
-      
-      
-      
-      
-    </item><item>
-      <title>Thema Datenschutz: Von Gesetzen, Verordnungen und Richtlinien</title>
-      <link>http://localhost:1313/2017/2017-11-02-thema-datenschutz-von-gesetzen-verordnungen-und-richtlinien/</link>
-      <pubDate>Thu, 02 Nov 2017 00:00:00 +0000</pubDate>
-      <author></author>
-      <guid>http://localhost:1313/2017/2017-11-02-thema-datenschutz-von-gesetzen-verordnungen-und-richtlinien/</guid>
-      <description>//Update 10.03.2018 - Anpassung zur e-Privacy-VO und etwas präzsiere Beschreibung des Unterschieds Verordnung / Richtlinie
-Ich will im Folgenden nicht auf die …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>_//Update 10.03.2018 - Anpassung zur e-Privacy-VO und etwas präzsiere Beschreibung des Unterschieds Verordnung / Richtlinie_&#39; reading_time: 5 content_type: &#39;analysis</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> Web, Wordpress, Mac, Ai, Security, Analytics</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> expert</p>
-          
-        </div>
-        
-        
-        <p><em>//Update 10.03.2018 - Anpassung zur e-Privacy-VO und etwas präzsiere Beschreibung des Unterschieds Verordnung / Richtlinie</em></p>
-<p>Ich will im Folgenden nicht auf die detaillierten  Auswirkungen der aktuellen und noch kommenden Verordnungen und Gesetze zum Thema Datenschutz eingehen. Das ist selbst mir zu komplex. Und langweilig. Allerdings habe ich bei meiner Recherche zu der aktuellen Situation festgestellt, dass viele Themen, zumindest die e-Privacy-Verordnung, noch gar nicht in Sack und Tüten sind. Doch gerade diese Verordnung soll doch den Datenschutz in der elektronischen Datenverarbeitung regeln? Um diesen Unwägbarkeiten zu begegnen habe ich mal versucht, die wichtigsten Fakten zusammenzutragen und etwas verständlicher zu formulieren.</p>
-<h2 id="datenschutz-im-europäischen-recht">Datenschutz im europäischen Recht</h2>
-<p>Zunächst ein mal zu den europäischen Verordnungen DSGVO und  e-Privacy-Verordnung, kurz ePrivVO.</p>
-<p>Die DSGVO ist ab dem 25. Mai 2018 rechtsgültig und wird damit die alte <a href="http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=CELEX:31995L0046:DE:HTML">Richtlinie 95/46/EG</a> zum Datenschutz ablösen. Die DSGVO ist allerdings „nur“ eine Verordnung, die den Datenschutz bzw. die Verarbeitung personenbezogener Daten im öffentlichen und privaten Bereich im Allgemeinen regelt.</p>
-<p>Der explizite Bezug zur elektronischen Datenverarbeitung (das Internet!) soll erst durch die e-Privacy-Verordnung (2002/58/EG) hergestellt werden. Diese regelt den Umgang mit Daten aus der elektronischen Datenverarbeitung. Die ePrivVo ersetzt damit die E-Privacy-Richtlinie <a href="http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2002:201:0037:0047:de:PDF">2002/58 EG</a> bzw. die Cookie-Richtlinie <a href="http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2009:337:0011:0036:de:PDF">2009/136/EG</a>. <strong>Aber Vorsicht</strong>: Trotzdem muss berücksichtigt werden, dass man mit dem Einsatz von Tracking-Pixeln bzw. Cookies unter Umständen auch personenbezogene Daten verarbeitet und damit indirekt natürlich schon jetzt im &ldquo;Rampenlicht der DSGVO steht&rdquo;.</p>
-<p>Die e-Privacy-Verordnung wird die DSGVO also ergänzen, nicht ersetzen. Sie ist aber noch nicht rechtsgültig. </p>
-<h2 id="ab-wann-gilt-die-e-privacy-verordnung">Ab wann gilt die e-Privacy-Verordnung?</h2>
-<p>Geplant ist es natürlich, dass die e-Privacy-Verordnung zusammen mit der DSGVO ab Mai 2018 in Kraft treten werden. Mittlerweile zeichnet sich aber ab, dass es erst in 2019 zu einer rechtsgültigen Umsetzung kommen wird.</p>
-<p>Die e-Privacy- Verordnung hat den Gesetzgebungsprozess bisher noch nicht vollständig durchschritten. Anfang des Jahres 2017 wurde ein erster Entwurf vorgestellt, über  den im Laufe des Jahres noch viel verhandelt wurde. Erst Ende Oktober hat das EU-Parlament einen finalen Entwurf auch angenommen.</p>
-<p>Als nächstes werden EU-Parlament, EU-Kommission und Mitgliedsstaaten im sogenannten Trilog über die endgültige Fassung diskutieren. Hier kann sich inhaltlich immer noch einiges ändern, nicht zuletzt, weil jetzt auch Lobbyverbände Einfluss nehmen können. Es bleibt also abzuwarten, ob die bisher sehr nutzerfreundliche Position erhalten bleibt.</p>
-<h2 id="warum-gibt-es-überhaupt-verordnung-anstatt-einer-richtlinie">Warum gibt es überhaupt Verordnung anstatt einer Richtlinie?</h2>
-<p>Verordnungen müssen in vollem Umfang in nationales Recht umgesetzt werden, Richtlinien können eher als Zielvorgabe verstanden werden (vgl. <a href="https://europa.eu/european-union/eu-law/legal-acts_de">europa.eu</a>). </p>
-<p>Das ist auch ein Grund, warum die bisherigen Richtlinien (wie z.B. die Cookie-Richtlinie) in ihrer Ausprägung eher schwammig war und es in der Folge in den europäischen Mitgliedsstaaten zu verschieden starken gesetzlichen Umsetzungen kam. So gibt es in Deutschland z.B. das <em>OptOut</em>, der Nutzer muss der Verwendung von Cookies widersprechen. In Belgien und Österreich gilt aber das <em>OptIn-Prinzip</em>, der Nutzer muss der Verwendung von Cookies zustimmen. Dennoch sind beide Vorgehen mit den Vorgaben der bisherigen Richtlinien vereinbar. Das soll sich mit den neuen Verordnungen ändern.</p>
-<p>Und natürlich mussten die Verordnungen an die geänderten technologischen Rahmenbedingungen angepasst werden.</p>
-<h2 id="was-ist-in-deutschland-zu-beachten">Was ist in Deutschland zu beachten?</h2>
-<p>In Deutschland verhielt es sich bisher ganz ähnlich. Das BDSG ist ein Gesetz, dass den Datenschutz ganz allgemein regelt. Erst das TMG und das TKG haben den Bezug zur elektronischen Datenverarbeitung hergestellt.</p>
-<p>Diese sollen nun, theoretisch, durch die DSGVO und die e-Privacy-Verordnung abgelöst werden. Aus diesem Grund gibt es auch ein &ldquo;<a href="https://www.gdd.de/downloads/aktuelles/stellungnahmen/2.%20Entwurf_Stand_23.11.2016_DSAnpUG-EU.pdf">Datenschutzanpassungsgesetz&rdquo;</a> (DSAnpUG-EU) sowie das neue Bundesdatenschutzgesetz (BDSG-E, BDSG-neu oder BDSG n.F.). Das BDSG n.F. wird <a href="https://www.bvdnet.de/bdsg-n-f-dsanpug-eu-im-bundesgesetzblatt-veroeffentlicht/">am 25.05.2018 in Kraft</a> treten.</p>
-<h2 id="was-ist-das-problem">Was ist das Problem?</h2>
-<p>Erstmal ist es nicht so, dass alle Vorgaben aus dem DSGVO und der ePrivVO ohne weiteres in nationales Recht übernommen werden müssen. Denn die europäischen Verordnungen enthalten sog. Öffnungsklauseln. Das erlaubt dem deutschen Gesetzgeber, in bestimmten Bereichen durch nationale Gesetzen andere Vorgaben zu machen.</p>
-<p>Außerdem ist die ePrivVO ja noch nicht final beschlossen. Sie kann also noch gar nicht in deutsches Recht umgesetzt werden. Es bleibt also abzuwarten, was die nächsten Verhandlungen bringen. Im Moment kann sich noch einiges ändern.</p>
+        <h2 id="was-ist-ein-telegramm-bot">Was ist ein Telegramm-Bot?</h2>
+<p>Schon mal was von Telegramm gehört oder gar einem Telegramm-Bot gehört? Nein? Macht nichts. Telegramm ist ein Messenger, wie Whatsapp oder Threema. Der große Vorteil von Telegramm gegenüber Whatsapp ist die Plattforum-Unabhängigkeit. Es gibt nicht nur Apps für Android und iOs, auch unter OS X (Mac) und Windows lässt sich Telegramm unkompliziert nutzen. Bei Whatsapp war das bisher nur über den Browser möglich, Threema bietet diese Möglichkeit gar nicht an.</p>
+<p>Außerdem bietet Telegramm ein sehr umfangreiche API an, die noch dazu sehr gut dokumentiert ist. Damit lassen sich sogenannte Telegramm-Bots entwickeln. Diese Bots können dann von den Nutzern mit @einBot angesprochen werden, um alle Möglichen Aufgaben auszuführen. Einer der bekanntesten ist vermutlich der @gif-Bot, der die Plattform giphy.com durchsuchen kann und die Ergebnisse in den Chat-Verlauf schicken kann. Und diese Art von Bots lassen sich auch selber entwickeln und anbieten. Unter anderem auch mit PHP.</p>
+<p>Wer die Kommunikation mit Telegramm nicht komplett von vorne aufbauen will, kann auf eine Bibliothek <a href="https://github.com/php-telegram-bot/core">von Longman auf github.com</a> zugreifen. Für meinen Geschmack ist diese leider etwas zu schlecht dokumentiert und mitunter etwas durcheinander organisiert. Noch dazu wird sie offenbar nur sporadisch betreut. Dennoch gibt es ein relativ großes Repository mit Beispielen, was definitiv sehr hilfreich  ist. Etwas verwirrend sind die beiden Repositories, die da <em>Core</em> und <em>Manager</em> heißen. Der <em>Manager</em> ist nur eine Art Wrapper für das Core-Repository. Dessen Nutzung erleichtert die Einrichtung und Entwicklung des Bots um ein vielfaches und bietet z.B. eine zentrale Datei (manager.php) an, um alle Funktionen zu steuern. Beim Core werden die jeweiligen Bot-Funktionen über verschiedene Dateien gesteuert.</p>
+<h3 id="was-ist-das-ziel">Was ist das Ziel?</h3>
+<p>Was ist also der Plan? Wir bauen uns einen Telegramm-Bot, mit dem sich Amazon nach Produkten durchsuchen lässt. Das Ergebnis wird in einem Grid dargestellt. Wählt man ein Element aus, erscheint es mit Link zum Produkt im Chat-Verlauf. Und mit einer Analytics-Plattform soll das ganze</p>
+<p>Um deinen eigenen Bot betreiben zu können brauchst du natürlich erstmal Telegramm und außerdem einen Web-Server und eine Domain für die du ein SSL-Zertifikat einrichten musst. Außerdem solltest du <a href="https://getcomposer.org/download/">composer</a> installiert haben und so ungefähr wissen, wie man damit umgeht.</p>
+<h2 id="anmelden-eines-bots">Anmelden eines Bots</h2>
+<p>Zunächst musst du deinen neuen Telegramm-Bot anmelden. Dazu nutzt du den BotFather (<a href="https://telegram.me/botfather">BotFather)</a>. dem du mit dem Befehl /<em>newbot</em> dazu bringen kannst, einen neuen Bot zu registrieren. Zuerst wird ein Name für den Bot verlangt - das ist allerdings noch <em>nicht</em> der Name, mit dem der Bot später auch angesprochen wird. Das ist erst der sogenannte <em>username</em>, der im 2. Schritt verlangt wird. Ich nenne meinen Bot <em>@buecherBot</em>.</p>
+<p>Leider gibt es hier eine Restriktion: Der Name muss mit <em>bot</em> enden. Wer einen kurzen Namen wie @gif oder @youtube nutzen möchte, muss dazu vermutlich etwas mehr Aufwand betreiben. Als nächstes rufst du die Einstellungen des Bots auf, indem du das Inline-Menü mit /mybots öffnest.</p>
+<p>Für unseren Bot solltest du zunächst den Inline-Mode aktivieren. Damit kannst du den Bot im Textfeld direkt ansprechen. Das gehst du über den Punkt Bot-Settings zum Inline-Mode und aktivierst diesen.</p>
+<p>[caption id=&ldquo;attachment_1655&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/wie-entwickelt-man-einen-bot-fuer-telegramm/telegramm-bot-father.png"><img src="/2018/2018-03-02-wie-entwickelt-man-einen-amazon-bot-fuer-telegramm/images/telegramm-bot-father-300x200.png" alt="Inline-Mode für den Telegramm-Bot aktivieren"></a> Inline-Mode für den Telegramm-Bot aktivieren[/caption]</p>
 <p> </p>
-<hr>
-<p> </p>
-<p>Ich bin zwar kein Rechtsanwalt, aber Datenschutzbeauftragter in einem Unternehmen, und habe deshalb eine Art Grundinteresse an der Thematik. Ich habe die Informationen selber zusammengetragen.Wer sich rechtssicher zu dem Thema informieren möchte, sollte natürlich einen Experten aufsuchen. Wer mehr zu dem Thema erfahren will, wird im Internet sehr schnell fündig.</p>
-<p>Zur weiteren Recherche empfehle ich die folgenden Seiten, die das Thema entweder kompakt genug oder sehr gut erklärt wiedergeben:</p>
+<p>Schließlich kannst du <em>Allow Groups</em> auf Nein setzen und die <em>Group Privacy</em> aktivieren. Da der Bot noch nicht in Gruppen aktiv sein soll, muss er weder Mitglied von Gruppen sein noch deren Nachrichten mitlesen.</p>
+<p>Als nächstes lässt du dir den API-Schlüssel anzeigen, damit du auch von außen mit dem Bot kommunizieren kannst. Der API-Schlüssel befindet sich im obersten Menü und ist folgendermaßen aufgebaut:</p>
+<p>123123123:128390123jKF19082_1293123123</p>
+<p>Das war es, was die Vorbereitung angeht. Weiter geht es mit PHP und einer kleinen Bot-Logik.</p>
+<h2 id="dem-bot-mit-php-leben-einhauchen">Dem Bot mit PHP Leben einhauchen</h2>
+<p>Als Library bzw. Framework nutzen wir das <a href="https://github.com/php-telegram-bot/core">Telegram-Bot-Repository</a> von Longman bzw. den dazugehörigen <a href="https://github.com/php-telegram-bot/telegram-bot-manager">Manager</a>, eine Art Wrapper, der die Steuerung etwas erleichtert.Damit du für den ersten Start bereits eine gute Grundlage hast, solltest du dir <a href="https://github.com/php-telegram-bot/example-bot">die Beispiel-Dateien von github</a> herunterladen. Auf der github-Seite wird zwar die Einstellung für die composer.json vorgegeben, allerdings hat der checkout damit bei mir nicht funktioniert. Mit folgenden Parametern klappte es dann:</p>
+<p>{
+&ldquo;require&rdquo;: {
+&ldquo;php-telegram-bot/telegram-bot-manager&rdquo;: &ldquo;^1.2&rdquo;,
+&ldquo;longman/telegram-bot&rdquo;: &ldquo;0.52 as 0.48&rdquo;
+}
+}</p>
+<p>Nachdem composer alle Abhängigkeiten heruntergeladen hat (<em>composer install</em>), muss man sich in der manager.php an die Grundeinstellungen machen. (Es kann passieren, dass du auf deinem System einige PHP-Module installieren musst. Composer wird dir die Namen der Module allerdings nennen. Du kannst sie dann relativ unkompliziert mit z.B. apt-get install php7.0-b_cmath php7.0-curl herunterladen und aktivieren.) Außerdem werde ich ein paar Änderungen an der Datei InlinequeryCommand.php_ aus dem Ordner Commands aus dem Beispiel-Repository vornehmen.</p>
+<p>Aber zuerst zur manager.php. Hier solltest du die folgenden Einstellungen vornehmen:</p>
 <ul>
-<li><a href="https://dsgvo.expert">dsgvo.expert</a></li>
-<li><a href="https://www.datenschutzbeauftragter-info.de">www.datenschutzbeauftragter-info.de</a></li>
-<li><a href="http://www.socialmediarecht.de/?s=dsgvo">Beitragsserie zum DSGVO auf socialmediarecht.de</a></li>
-<li><a href="https://netzpolitik.org/category/datenschutz/">netzpolitik.org</a></li>
+<li>
+<p><strong>bot_username</strong> - der Benutzername deines Bots, ohne das führende @</p>
+</li>
+<li>
+<p><strong>api_key</strong> - der API-Schlüssel, den dir der Bot-Father gegeben hat</p>
+</li>
+<li>
+<p><strong>secret</strong> - ein selbst erzeugtes Passwort um die Datei vor Zugriffen von außen zu schützen - die PHP-Datei liegt ja auf deinem öffentlichen Server und kann theoretisch von überall aufgerufen werden.</p>
+</li>
+<li>
+<p><strong>webhook-&gt;url</strong> - hier trägst du die URL zur manager.php-Datei ein, also <a href="https://telegramm.example.com/manager.php">https://telegramm.example.com/manager.php</a></p>
+</li>
+<li>
+<p><strong>commands-&gt;paths</strong> - diese Zeile muss auskommentiert sein und zu einem Pfad verweisen, der deine Bot-Commandos enthält. Wenn du dich an dem Bot-Example orientierst, sieht diese Einstellung so aus:</p>
+<pre><code>      'commands' =&gt; \[
+         // Define all paths for your custom commands
+         'paths'   =&gt; \[
+             \_\_DIR\_\_ . '/Commands'
+         \]
+</code></pre>
+</li>
 </ul>
-<p>Eine fast nicht mehr ganz so kompakte Übersicht, die aber auch viele Handlungsempfehlungen aus technischer Sicht enthält gibt es auf <a href="https://binary-butterfly.de/artikel/dsgvo-so-viel-panik-fuer-nichts-neues-und-warum-es-trotzdem-ein-grundlegendes-problem-gibt">binary-butterfly.de</a>.</p>
+<p>Als nächstes kannst du noch ein paar zusätzliche Änderungen vornehmen, die aber für die Funktion des Bots nicht wichtig sind:</p>
+<ul>
+<li><strong>max_connections</strong> - offensichtlich die Anzahl der maximal zulässigen Verbindungen</li>
+<li><strong>logging</strong> - diese Zeilen kannst du aus-kommentieren, um das Logging zu aktivieren, gerade in der Anfangsphase ist das ganz nützlich</li>
+<li><strong>limiter</strong> - die Telegram-API lässt natürlich nur eine begrenzte Anzahl von Anfragen zu, um das eigene System zu schützen, offenbar bringt das Framework eine Funktion mit, um das Erreichen des Limits bestmöglich zu vermeiden - wie das funktioniert, kann ich nicht sagen, da dazu auch nicht mehr in der Doku steht, ich hab es erstmal aktiviert</li>
+</ul>
+<p>Grundsätzlich war es das erstmal, was die Voreinstellungen betrifft. Jetzt kannst du den sog. webhook aktivieren. Dazu rufst du die manager.php im Browser auf, wie z.B.</p>
+<p><a href="https://telegramm.example.com/manager.php">https://telegramm.example.com/manager.php</a></p>
+<h3 id="den-zugriff-von-außen-beschränken">Den Zugriff von außen beschränken</h3>
+<p>Wenn du alles richtig gemacht hast, erscheint jetzt erstmal ein Fehler. Und das ist auch gut so - denn schließlich soll der Zugriff von außen ja nicht jedem gewährt werden.</p>
+<p>Fatal error: Uncaught TelegramBot\TelegramBotManager\Exception\InvalidAccessException:
+Invalid access in &hellip;</p>
+<p>Also packst du noch das secret-Token an die URL, dass du weiter oben in der manager.php angegeben hast (nicht den API-Schlüssel von Telegramm!). Und damit du auch eine Aktion auslöst, setzt du erstmal den webhook mit dem Parameter a=set:</p>
+<p><a href="https://telegramm.example.com/manager.php?s=123123123&amp;a=set">https://telegramm.example.com/manager.php?s=123123123&a=set</a></p>
+<p>Dein Webhook für den Bot ist nun aktiv. Da du in der <em>manager.php</em> außerdem schon den Ordner commands freigegeben hast, kann der Bot nun schon auf Inline-Anfragen antworten. Im Telegramm-Client kannst du nun deinen Privat-Chat öffnen (&ldquo;Gespeichertes&rdquo;) und den Telegramm-Bot mit @buecherBot ansprechen. Der Bot sollte nun, wenn alles korrekt eingerichtet, so antworten, wie es in der Datei <em>InlinequeryCommand.php</em> vorgegeben ist. Nämlich mit einer sehr einfache 3-zeiligen Liste.</p>
+<p>Um nun ein Ergebnis von der Amazon API als Bilder-Liste darzustellen, habe ich <em>InlinequeryCommand.php</em> ein wenig angepasst. Zuerst benötigen wir die entsprechende Klasse, um nicht nur mit Text sondern auch mit Bildern zu antworten:</p>
+<p>use Longman\TelegramBot\Entities\InlineQuery\InlineQueryResultPhoto;</p>
+<p>Außerdem habe ich den Aufbau des Antwort-Objektes etwas vereinfacht (ich werde hier nicht weiter ins Detail gehen, auf $this-&gt;apiResult gehe ich später ein).</p>
+<p>foreach ($this-&gt;apiResult-&gt;items as $item) {</p>
+<p>$this-&gt;inlineQueryResult[] = new InlineQueryResultPhoto(array(
+&lsquo;id&rsquo;                    =&gt;  sizeof($this-&gt;inlineQueryResult),
+&rsquo;title&rsquo;          	=&gt; &lsquo;Search: &rsquo; . $query,
+&lsquo;description&rsquo;           =&gt; &lsquo;Info: &rsquo; . $information,
+&rsquo;thumb_url&rsquo;             =&gt; $thumbUrl,
+&lsquo;photo_url&rsquo;             =&gt; $imageUrl,
+&lsquo;caption&rsquo;             	=&gt; $linkUrl
+)
+);</p>
+<p>}</p>
+<p>$data[&lsquo;results&rsquo;] = &lsquo;[&rsquo; . implode(&rsquo;,&rsquo;, $this-&gt;inlineQueryResult) . &lsquo;]&rsquo;;</p>
+<p>return Request::answerInlineQuery($data);</p>
+<p>Grundsätzlich war es das schon. Du kannst nun noch alle möglichen anderen Funktionen des Bots nutzen. Schau dir dazu einfach den Commands-Ordner des Example-Repository an. Die Auswahl ist sehr groß, für meine Zwecke soll es aber erstmal bei der Inline-Query bleiben.</p>
+<h2 id="eine-suchanfrage-zu-amazon-schicken">Eine Suchanfrage zu Amazon schicken</h2>
+<p>Natürlich soll derTelegramm-Bot nun auch in der Lage sein, Anfragen der Benutzer zu Amazon zu schicken und mit einem vernünftigen Suchergebnis zu antworten. Zunächst benötigt man dafür einen Partner-Account bei <a href="https://partnernet.amazon.de">Amazon</a>. <a href="https://partnernet.amazon.de/assoc_credentials/home">In den Einstellungen</a> kann man sich dann ein Schlüsselpaar erstellen um die Suchanfragen zu authentifizieren. Und auch für die Suchanfrage selber gibt es eine PHP-API, nämlich <a href="https://github.com/Exeu/apai-io/">apai-io von exeu</a>. Die Einrichtung und der Aufbau sind relativ einfach. Nachdem composer die notwendigen Dateien heruntergeladen hat, packt man - wie üblich - ein paar Zeilen in eine PHP-Datei und hat die erste Anfrage an die Amazon-API fertig:</p>
+<pre><code>&lt;?php ini\_set('display\_errors', 1);
+
+require\_once \_\_DIR\_\_ . '/vendor/autoload.php';
+
+define('AWS\_API\_KEY', 'AKAKAKAKAKAKAKA');
+define('AWS\_API\_SECRET\_KEY', 'KALSKDLASKDLASDKLASDKLASKLDKASLDASDL
+define('AWS\_ASSOCIATE\_TAG', 't0000-21');
+
+use ApaiIO\\Configuration\\GenericConfiguration;
+use ApaiIO\\Operations\\Search;
+use ApaiIO\\ApaiIO;
+
+$conf = new GenericConfiguration();
+$client = new \\GuzzleHttp\\Client();
+$request = new \\ApaiIO\\Request\\GuzzleRequest($client);
+
+$conf
+	-&gt;setCountry('de')
+	-&gt;setAccessKey(AWS\_API\_KEY)
+	-&gt;setSecretKey(AWS\_API\_SECRET\_KEY)
+	-&gt;setAssociateTag(AWS\_ASSOCIATE\_TAG)
+	-&gt;setRequest($request);
+	
+$apaiIO = new ApaiIO($conf);
+
+$search = new Search();
+$search-&gt;setCategory('DVD');
+$search-&gt;setActor('Bruce Willis');
+$search-&gt;setKeywords('Stirb Langsam');
+
+$response = $apaiIO-&gt;runOperation($search);
+
+$results = simplexml\_load\_string( $response ); 
+</code></pre>
+<p>Leider gestalten sich die ersten Versuche mit der API etwas schwieriger. Nutzt man den Beispiel-Code, liefert das ganze Script nur einen sehr langen String zurück. In der weiterführenden <a href="http://apai-io.readthedocs.io/en/latest/chapters/responsetransformer.html">Dokumentation</a> wird zwar ein <em>setResponseTransformer</em> beschrieben (siehe auskommentierte Zeile oben). Doch auch dann ist die Antwort nicht nutzbar. Das Suchergebnis bleibt weiterhin ein langer String. Erst <a href="https://github.com/Exeu/apai-io/issues/48">Issue 48</a> gibt einen Hinweis auf die Lösung: <em>new SimpleXMLElement</em>.  Jetzt erhalte ich ein XML-Object, in dem ich mich mit einer Schleife durch das Ergebnis arbeiten kann. Oder man greift auf <a href="https://gist.github.com/ottanxyz/4a44a5094bf27606c12803590a92d131">die hier verwendete Funktion</a>  <em>simplexml_load_string</em> zurück - mein Favorit.</p>
+<p>Nun geht es darum, die Antwort in eine Schleife zu packen, um die notwendigen Informationen zu extrahieren. Das Suchergebnis muss also vorbereitet und zurück an denTelegramm-Bot geschickt werden.</p>
+<h2 id="die-hochzeit---amazons-antwort-an-dentelegramm-bot-weiterleiten">Die Hochzeit - Amazons-Antwort an denTelegramm-Bot weiterleiten</h2>
+<p>Bisher war die Amazon-Funktionalität in eine andere Datei ausgelagert. Also müssen erstmal Zugangsdaten und die Abhängigkeiten in die InlineQueryCommand.php übernommen werden. Ich mach mir das Leben nicht unnötig schwer, und packe das alles in die InlinequeryCommand.php. Sauberer wäre es vielleicht, die initiale bot-Klasse etwas zu erweitern. Außerdem  muss die Anfrage an den Bot an die Amazon-API durchgeschliffen werden. Wenn der Benutzer nur einen Suchbegriff angibt (Bruce Willis), wird danach in allen Kategorien gesucht. Wer die Suche einschränken möchte, muss dem Suchbegriff die entsprechende Kategorie voranstellen. Also z.B.: Books:Bibel Das ganze sieht dann in etwa so aus:</p>
+<p>$request = explode(&rsquo;:&rsquo;, trim($requestString));</p>
+<p>if (sizeof($request) == 1) {</p>
+<pre><code>$category = 'All';
+$keywords = trim($request\[0\]);
+</code></pre>
+<p>} else {</p>
+<pre><code>$category = trim($request\[0\]);
+$keywords = trim($request\[1\]);
+</code></pre>
+<p>}</p>
+<p>Kategorie und Keyword werden nun schlicht an die Amazon-API übergeben. Damit ich auch Vorschaubilder erhalte, muss ich das in der Suche explizit angeben. Die Anfrage an die API sieht nun also so aus:</p>
+<p>$search = new Search();
+$search-&gt;setCategory($category);
+$search-&gt;setKeywords($keywords);
+$search-&gt;setResponseGroup( array( &lsquo;Images&rsquo;, &lsquo;ItemAttributes&rsquo; ) );	
+$search-&gt;setPage(1);</p>
+<p>Das ganze wird nun in ein Objekt gepackt und in einer Schleife durchlaufen um die Antwort für den Bot zu erzeugen. Das hat sich bei den ersten Versuchen als schwierig erwiesen. Es hat eine Weile gedauert, bis ich herausgefunden habe, dass ich die Eigenschaften des Antwort-Objekts als String casten muss: (string)!</p>
+<p>foreach ($this-&gt;apiResult-&gt;Items-&gt;Item as $item) {</p>
+<p>$title  = (string) $item-&gt;ItemAttributes-&gt;Title;
+$url  = (string) $item-&gt;DetailPageURL;
+$thumbFileUrl  = (string) $item-&gt;LargeImage-&gt;URL;
+$thumbFileName = basename($thumbFileUrl);
+$thumbFileType = pathinfo($thumbFileName, PATHINFO_EXTENSION);</p>
+<p>if ($thumbFileType == &lsquo;jpg&rsquo; || $thumbFileType == &lsquo;jepg&rsquo;) {</p>
+<pre><code>$this-&gt;inlineQueryResult\[\] = new InlineQueryResultPhoto(
+array(
+		'id'                    =&gt; sizeof($this-&gt;inlineQueryResult),
+		'title'                 =&gt; $title,
+		'description'           =&gt; $title,
+		'caption'          		=&gt; $title@,
+		'thumb\_url'             =&gt; $thumbFileUrl,
+		'photo\_url'             =&gt; $thumbFileUrl,
+		'input\_message\_content' =&gt; new InputTextMessageContent(\[
+			'parse\_mode' =&gt; 'HTML',
+			'message\_text' =&gt; ' ' . 'Shop it @ &lt;a href=&quot;'.$url.'&quot;&gt;Amazon&lt;/a&gt;!'\])
+	)
+);
+</code></pre>
+<p>}</p>
+<p>if (sizeof($this-&gt;inlineQueryResult) &gt;= $this-&gt;limitResult) {</p>
+<pre><code>break;
+</code></pre>
+<p>}</p>
+<p>}</p>
+<p>Grundsätzlich war es das. Das ganze Script gibt es zum Nachlesen wie gesagt auf github.</p>
+<h2 id="zugriffsstatistiken-mit-botan-aufzeichnen-und-darstellen">Zugriffsstatistiken mit Botan aufzeichnen und darstellen</h2>
+<p>Um Botan nutzen zu können, brauchst du einen Account bei <a href="https://appmetrica.yandex.com/">AppMetrica</a> von Yandex. Dort kannst du direkt nach der Registrierung einen API-Schlüssel für deinen Bot anlegen:</p>
+<p>[caption id=&ldquo;attachment_1649&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/wie-entwickelt-man-einen-bot-fuer-telegramm/appmetrics-yandex-bot-api-key-anlegen.png"><img src="/2018/2018-03-02-wie-entwickelt-man-einen-amazon-bot-fuer-telegramm/images/appmetrics-yandex-bot-api-key-anlegen-300x130.png" alt="AppMetrics API Key für Bot anlegen"></a> AppMetrics API Key für Bot anlegen[/caption]</p>
+<p>Wenn das erledigt ist, gelangst du zu der Übersichtsseite deines Bots und siehst dort den API-Key, den du als token in der <em>manager.php</em> einträgst. Die entsprechenden Zeilen müssen natürlich auch auskommentiert werden:</p>
+<pre><code>    // Botan.io integration
+    'botan' =&gt; \[
+       'token' =&gt; '123123123-123123123-123123',
+    \],
+</code></pre>
+<p>Das ist es schon fast gewesen. Wenn da nicht der Datenschutz wäre. Wenn du Telegramm-Bot im Chat nun &ldquo;anrufst&rdquo;, erscheint der Aufruf einige Augenblicke später auch im Interface von AppMetrics. Allerdings sind dann auch eine UserId und der Vorname im Klartext enthalten. Um das zu vermeiden, musst du Methode <em>track</em> in der Botan-Klasse (Botan.php in vendor\longman\telegram-bot\src\) anpassen:</p>
+<p>Direkt an den Anfang der Methode habe ich die folgende Anonymisierung eingefügt:</p>
+<p>// ANONYMIZING STATS
+if (isset($update-&gt;inline_query)) {</p>
+<pre><code>if (isset($update-&gt;inline\_query\['from'\])) {
+
+	if (isset($update-&gt;inline\_query\['from'\]\['id'\])) {
+	
+		$update-&gt;inline\_query\['from'\]\['id'\] = '0';
+		$update-&gt;inline\_query\['from'\]\['first\_name'\] = 'anon';
+		$update-&gt;raw\_data\['inline\_query'\]\['from'\]\['id'\] = '0';
+		$update-&gt;raw\_data\['inline\_query'\]\['from'\]\['first\_name'\] = 'anon';
+			
+	}
+}
+</code></pre>
+<p>}</p>
+<p>Weiter unten wird eine UserId ($uid) ermittelt. Auch hier habe ich anonymisiert:</p>
+<p>// In case there is no from field assign id = 0
+// $uid = isset($data[&lsquo;from&rsquo;][&lsquo;id&rsquo;]) ? $data[&lsquo;from&rsquo;][&lsquo;id&rsquo;] : 0;
+// ANONYMIZING STATS
+$uid = 0;</p>
+<p>Jetzt dürften keine Klarnamen mehr übermittelt werden und der Bot ist startklar.</p>
+<p> </p>
+<p>Viel Spass mit deinem Telegramm-Bot.</p>
 
         
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> php, telegram, bot, api, tutorial, amazon, Datenschutz</p>
+        </div>
         
       ]]></content:encoded>
       
       
       
-      <category>blog</category>
+      <category>development</category>
+      
+      <category>anleitungen</category>
       
       
       
       
-      <media:content url="http://localhost:1313/images/posts/placeholder.jpg" type="image/jpeg">
-        <media:title>Thema Datenschutz: Von Gesetzen, Verordnungen und Richtlinien - Analysis</media:title>
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Wie entwickelt man einen Amazon-Bot für Telegramm? - Titelbild</media:title>
       </media:content>
       
       
       
       
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
       
+      
+      
+      <dc:type>tutorial</dc:type>
       
       
     </item>

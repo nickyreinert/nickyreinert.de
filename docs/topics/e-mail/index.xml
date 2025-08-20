@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>E-Mail auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/topics/e-mail/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Wed, 02 Apr 2025 12:19:31 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/topics/e-mail/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Die Nerd Enzyklopädie 47 - Die 500-Meilen-E-Mail</title>
+      <link>https://nickyreinert.de/2025/2025-03-10-nerd-enzyklop%C3%A4die-47---die-500-meilen-e-mail/</link>
+      <pubDate>Wed, 02 Apr 2025 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2025/2025-03-10-nerd-enzyklop%C3%A4die-47---die-500-meilen-e-mail/</guid>
+      <description>Dieser Moment, in denen man an seiner Wahrnehmung zweifelt, weil ein Computer, der doch eigentlich nach den strengen Regeln der Logik arbeiten sollte, plötzlich …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine Nacherzählung aus der &#39;Nerd Enzyklopädie&#39; über die berühmte &#39;500-Meilen-E-Mail&#39;-Anekdote. Der Artikel beschreibt einen bizarren Softwarefehler, bei dem E-Mails nur innerhalb eines bestimmten Radius zugestellt wurden. Die Ursache war ein unentdecktes Downgrade des &#39;sendmail&#39;-Servers, das zu einem 0-Sekunden-Timeout führte, wodurch entfernte Server nicht rechtzeitig antworten konnten.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> E-Mail, Netzwerktechnik, Softwarefehler, Debugging, Systemadministration, Nerd-Kultur</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Dieser Moment, in denen man an seiner Wahrnehmung zweifelt, weil ein Computer, der doch eigentlich nach den strengen Regeln der Logik arbeiten sollte, plötzlich Dinge tut, die gar nicht mehr so logisch erscheinen. Dieser Moment muss <strong>2002</strong> wohl auch <strong>Trey Harris</strong> ereilt haben (<a href="https://web.mit.edu/jemorris/humor/500-miles">MIT1</a>).</p>
+<p>Harris, Mitglied der <strong>System Administrators Guild</strong> (SAGE), arbeitete als Admin für eine Universität in <strong>North Carolina</strong> und war dort für das E-Mail-System verantwortlich. Eines Tages rief ihn der Vorsitzende der Statistik-Abteilung an und behauptet, dass seine E-Mails nicht ankommen, sobald der Empfänger mehr als <strong>500 Meilen</strong> entfernt sei. Das Problem bestand offenbar schon ein paar Tage. Um es zu dokumentieren, hatte man auf einer Karte markiert, bei welchen Empfänger der E-Mail-Versand funktionierte. Und das funktioniere wohl nur bei Empfängern innerhalb eines 500-Meilen-Radius.</p>
+<p>Harris war skeptisch und testete das System selbst. Er sendete einige Test-E-Mails unter anderem nach <strong>Richmond</strong>, <strong>Atlanta</strong> und <strong>Washington</strong> - alle Ziele befinden sich innerhalb des 500 Meilen Radius. Ohne Probleme. Und dann nach <strong>Memphis</strong> - <strong>600 Meilen</strong> Distanz. Die E-Mail ging nicht durch. <strong>Providence</strong>, 580 Meilen? Kein Erfolg. <strong>New York</strong>, 420 Meilen? Funktioniert.</p>
+<p>Harris verglich die Konfigurationen des E-Mail-Servers mit anderen Systemen und fand keinerlei Auffälligkeiten. Zur weiteren Diagnose wählte er sich per Telnet auf den SMTP-Port des Servers ein. Der Server reagierte, wie erwartet mit dem <strong>SunOS Sendmail Logo</strong>. Und das führte Harris auf die richtige Fährte.</p>
+<p>Der Vorsitzende der Statistik-Abteilung erwähnte zwar, dass vor ein paar Tagen ein Wartungs-Updates für des Betriebssystems installiert wurde. Angeblich betraf das aber nicht <strong>sendmail</strong>, welches Harris vor längerer Zeit in der <strong>Version 8</strong> installiert hatte. Das besagte Update von SunOS enthielt jedoch noch die alte <strong>Version 5</strong> von sendmail! Der E-Mail-Server wurde durch das Update des Betriebssystem auf eine alte Version zurückgesetzt. Die Konfigurations-Dateien, die Harris für die Version 8 angelegt hatte, waren allerdings noch vorhanden. Nur waren sie nicht mit Version 5 kompatibel. So wurde für einige wichtige Parametern von sendmail der <strong>Standard-Wert 0</strong> angenommen.</p>
+<p>Einer dieser Parameter bezog sich auf das <strong>Timeout</strong> für die Verbindung zum externen SMTP-Server. Der Wert dafür betrug nun <strong>0 Sekunden</strong>.</p>
+<p>Aber was hatte das zu bedeuten? Wenn sendmail versucht, eine Verbindung mit einem externen SMTP-Server aufzubauen, schickt es eine Anfrage in das Internet und  wartete dann auf die Antwort. Aufgrund der Auslastung des Systems brauchte sendmail einen Augenblick, um die Routine für die Verarbeitung der Antwort aufzurufen.</p>
+<p>Harris fand heraus, das sendmail dafür etwa 3 Millisekunden benötigt. Eine Antwort, die nach 3 Millisekunden bei sendmail eintraf, wurde aufgrund des Timeouts als nicht erfolgreich gewertet.</p>
+<p>Da die Universität über ein Glasfasernetz an das Internet angeschlossen war, gelang eine derartige Anfrage mit nahezu Lichtgeschwindigkeit nach draußen. Also fragte sich Harris, wie weit das Signal innerhalb von 3 Millisekunden kommen konnte. Er bemühte <strong>units</strong>, ein Kommandozeilen-Programm, um die Distanz auszurechnen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ units
+</span></span><span class="line"><span class="ln">2</span><span class="cl">1311 units, 63 prefixes
+</span></span><span class="line"><span class="ln">3</span><span class="cl">You have: 3 millilightseconds
+</span></span><span class="line"><span class="ln">4</span><span class="cl">You want: miles
+</span></span><span class="line"><span class="ln">5</span><span class="cl">* 558.84719
+</span></span><span class="line"><span class="ln">6</span><span class="cl">/ 0.0017893979
+</span></span></code></pre></div><p>*(Das <em>-Zeichen ist kein Operator, sondern zeigt das Ergebnis an.)</em></p>
+<p>558 Meilen!  Harris hatte die Ursache für das seltsame Verhalten gefunden.</p>
+<p>Harris räumte später ein, einige technische Details, auch aus dramaturgischen Gründen, nicht ganz exakt wiedergeben zu haben. So musste  auch die Antwort vom SMTP-Server innerhalb von 3 Sekunden wieder bei sendmail landen, womit sich die verfügbare Zeit eigentlich auf 1,5 Millisekunden halbiert. Das ändert aber nichts daran, dass das Zusammenspiel aus Timeout, Übertragungsgeschwindigkeit und Verzögerung bei der Verarbeitung dafür gesorgt haben, dass E-Mails nur in einem bestimmten Radius versendet werden konnten, nämlich circa 500 Meilen…</p>
+<p>…but I would walk 500 miles, and I would walk 500 more…</p>
+<p><img src="/2025/2025-03-10-nerd-enzyklop%C3%A4die-47---die-500-meilen-e-mail/image.png" alt="alt text"></p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> E-Mail, Netzwerk, Nerd-Enzyklopädie, Anekdote</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 47 - Die 500-Meilen-E-Mail - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>historical_anecdote</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

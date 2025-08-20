@@ -25,7 +25,7 @@ oder auf Datei-Ebene im Script mit ini_set();
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/images/favicon.ico">
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
 
   
   
@@ -45,7 +45,7 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
   <meta property="og:type" content="article">
     <meta property="article:section" content="2020">
     <meta property="article:published_time" content="2020-10-23T00:00:00+00:00">
-    <meta property="article:modified_time" content="2025-08-20T12:38:10+02:00">
+    <meta property="article:modified_time" content="2025-08-20T21:05:13+02:00">
     <meta property="article:tag" content="Apache">
     <meta property="article:tag" content="Apache2">
     <meta property="article:tag" content="Memory-Limit">
@@ -63,7 +63,7 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
   <meta itemprop="description" content="Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. Viele Anleitungen sind oft unvollständig, und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:
 super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM oder global in der httpd.conf (Apache) oder server.conf (nginx) auf Ordner-Ebene in der user.ini auf Ordner-Ebene in der .htaccess-Datei auf Applikations-Ebene über die WordPress-Konstanten WP_MEMORY_LIMIT und WP_MAX_MEMORY_LIMIT oder auf Datei-Ebene im Script mit ini_set();">
   <meta itemprop="datePublished" content="2020-10-23T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2025-08-20T12:38:10+02:00">
+  <meta itemprop="dateModified" content="2025-08-20T21:05:13+02:00">
   <meta itemprop="wordCount" content="1655">
   <meta itemprop="keywords" content="PHP,memory_limit,php.ini,wp-config.php,.htaccess,Nginx,Apache,PHP-FPM,Server-Konfiguration,WordPress,Troubleshooting,Allowed memory size exhausted">
 
@@ -93,7 +93,7 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
     "headline": "Das Memory Limit von PHP und WordPress erhöhen - die vollständige Anleitung",
     "description": "Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die …",
     "datePublished": "2020-10-23T00:00:00Z",
-    "dateModified": "2025-08-20T12:38:10\u002b02:00",
+    "dateModified": "2025-08-20T21:05:13\u002b02:00",
     "author": {
       "@type": "Person",
       "name": "",
@@ -132,7 +132,7 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
     "articleSection": ["anleitungen", "blog", "hosting"],
     
     
-    "abstract": "Eine vollständige und detaillierte Anleitung zum PHP \u0060memory_limit\u0060. Der Artikel erklärt die Funktionsweise der Speichergrenze und beschreibt die komplexe Hierarchie der verschiedenen Konfigurationsorte – von der globalen \u0060php.ini\u0060 über Webserver-Einstellungen in Apache und Nginx (\u0060.htaccess\u0060, \u0060httpd.conf\u0060) bis hin zu anwendungsspezifischen Definitionen in WordPress (\u0060wp-config.php\u0060) und auf Skriptebene (\u0060ini_set\u0060).",
+    "abstract": "Eine vollständige und detaillierte Anleitung zum PHP \u0027memory_limit\u0027. Der Artikel erklärt die Funktionsweise der Speichergrenze und beschreibt die komplexe Hierarchie der verschiedenen Konfigurationsorte – von der globalen \u0027php.ini\u0027 über Webserver-Einstellungen in Apache und Nginx (\u0027.htaccess\u0027, \u0027httpd.conf\u0027) bis hin zu anwendungsspezifischen Definitionen in WordPress (\u0027wp-config.php\u0027) und auf Skriptebene (\u0027ini_set\u0027).",
     
     
     "genre": "comprehensive_guide",
@@ -202,7 +202,7 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
     ],
     
     "datePublished": "2020-10-23T00:00:00Z",
-    "dateModified": "2025-08-20T12:38:10\u002b02:00",
+    "dateModified": "2025-08-20T21:05:13\u002b02:00",
     "author": {
       "@type": "Person",
       "name": ""
@@ -338,7 +338,51 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
   <div class="post-date">October 23, 2020</div>
 
   
-  <article class="content">
+  
+  
+  
+  
+  
+  
+  
+  <details style="margin-top: 2rem; margin-bottom: 2rem;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#was-bedeutet-das-memory-limit-von-php">Was bedeutet das Memory Limit von PHP?</a></li>
+    <li><a href="#grundsätzliches">Grundsätzliches</a></li>
+    <li><a href="#das-memory-limit-in-php-einstellen">Das Memory Limit in PHP einstellen</a>
+      <ul>
+        <li><a href="#super-global-in-der-phpini">Super global in der php.ini</a></li>
+        <li><a href="#für-jeden-php-fpm-pool-in-der-poolconf">Für jeden PHP-FPM Pool in der pool.conf</a></li>
+      </ul>
+    </li>
+    <li><a href="#das-memory-limit-in-apache2-und-nginx-setzen">Das Memory-Limit in Apache2 und nginx setzen</a>
+      <ul>
+        <li><a href="#super-global-in-der-nginxconf--httpdconf">Super global in der nginx.conf / httpd.conf</a></li>
+        <li><a href="#global-für-jeden-virtuellen-host">Global für jeden virtuellen Host</a></li>
+        <li><a href="#global-für-jeden-ordner">Global für jeden Ordner</a></li>
+      </ul>
+    </li>
+    <li><a href="#das-memory-limit-auf-ordner-ebene-setzen">Das Memory-Limit auf Ordner-Ebene setzen</a>
+      <ul>
+        <li><a href="#für-jeden-ordner-mit-der-userini">Für jeden Ordner mit der .user.ini</a></li>
+        <li><a href="#für-jeden-ordner-mit-der-htaccess">Für jeden Ordner mit der .htaccess</a></li>
+      </ul>
+    </li>
+    <li><a href="#das-memory-limit-auf-applikations-ebene-setzen">Das Memory-Limit auf Applikations-Ebene setzen</a></li>
+    <li><a href="#das-memory-limit-auf-datei-ebene-setzen">Das Memory-Limit auf Datei-Ebene setzen</a></li>
+  </ul>
+</nav></div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
     <p>Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. <a href="https://wp-ninjas.de/wordpress-php-memory-limit">Viele</a> <a href="https://www.hosttest.de/artikel/was-ist-das-php-memory-limit-1411.html">Anleitungen</a> <a href="https://socialmediadozent.com/php-memory-limit-erhoehen/#Drei_Loesungen_um_das_PHP_Memory_Limit_zu_erhoehen">sind</a> <a href="https://www.how-to-wordpress.de/php-memory-limit/">oft</a> <a href="http://juliusbeckmann.de/blog/php-memory-limit-erhohen.html">unvollständig</a>, und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:</p>
 <ul>
 <li>super-global in der php.ini</li>
@@ -463,9 +507,57 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
 </span></span><span class="line"><span class="ln">5</span><span class="cl"> (…aufwendige Operation…);
 </span></span></code></pre></div><p>Die zweite Zeile in der file.php gibt als Rückgabe <strong>256M</strong> aus. Das Memory-Limit wird vererbt. Die vierte Zeile setzt das Limit allerdings auf 32 MByte und überschreibt damit den Wert von 256 MByte. Belegt die &ldquo;aufwendige Operation&rdquo; in index.php nur <strong>12 MByte</strong>, in der file.php nur jeweils <strong>5 MByte</strong>, funktioniert das gesamte Script einwandfrei. Wenn die &ldquo;aufwendige Operation&rdquo; in der Datei index.php z.B. mehr als <strong>22 MByte</strong> beansprucht, bricht PHP die Verarbeitung des Scripts ab. Warum? Weil das Limit nachträglich nach unten korrigiert wurde.</p>
 
+    
   </article>
   
+  
+  
+  <div style="margin-top: 5rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
 
+      <p>Eine vollständige und detaillierte Anleitung zum PHP &#39;memory_limit&#39;. Der Artikel erklärt die Funktionsweise der Speichergrenze und beschreibt die komplexe Hierarchie der verschiedenen Konfigurationsorte – von der globalen &#39;php.ini&#39; über Webserver-Einstellungen in Apache und Nginx (&#39;.htaccess&#39;, &#39;httpd.conf&#39;) bis hin zu anwendungsspezifischen Definitionen in WordPress (&#39;wp-config.php&#39;) und auf Skriptebene (&#39;ini_set&#39;).</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">PHP</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Server-Administration</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">WordPress</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Nginx</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Apache</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Performance-Tuning</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Troubleshooting</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 5 Minuten</p>
+      
+    </div>
+  </div>
+  
+  
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/2020/2020-10-08-automatisierte-wordpress-installation/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/2020/2020-10-24-marketing-killed-the-internet-star/">next →</a>
+    
+  </div>
 </main>
 
     <footer id="footer">

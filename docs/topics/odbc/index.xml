@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>ODBC auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/topics/odbc/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Wed, 24 Apr 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/odbc/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Den korrekten MySQL ODBC-Treiber für deinen Linux-Server installieren</title>
+      <link>https://nickyreinert.de/2019/2019-04-24-den-korrekten-mysql-odbc-treiber-fuer-deinen-linux-server-installieren/</link>
+      <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2019/2019-04-24-den-korrekten-mysql-odbc-treiber-fuer-deinen-linux-server-installieren/</guid>
+      <description>Wenn du denkst, du hast alles richtig gemacht, nachdem du einer der halb vollständigen Anleitungen da draußen gefolgt bist, und dann wirst du nach der …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel bietet eine detaillierte Anleitung zur Installation und Konfiguration des korrekten MySQL ODBC-Treibers auf einem Linux-Server (Ubuntu). Er behandelt die Auswahl der passenden Treiberversion, den Download, die Installation und Registrierung des Treibers sowie die Überprüfung der Funktionalität, inklusive der Behebung häufiger Fehler bei der Treiberinstallation.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> MySQL, ODBC, Linux, Server Administration, Datenbanken, Treiber Installation, Ubuntu, Troubleshooting</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Wenn du denkst, du hast alles richtig gemacht, nachdem du einer der halb vollständigen Anleitungen da draußen gefolgt bist, und dann wirst du nach der mühseligen Installation von ein paar ODBC-Treibern doch mit der folgenden Fehlermeldung begrüßt:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[ISQL]ERROR: Could not SQLDriverConnect
+</span></span><span class="line"><span class="ln">2</span><span class="cl">[01000][unixODBC][Driver Manager]Can&#39;t open lib &#39;/usr/local/lib/libmyodbc8w.so&#39; : file not found
+</span></span><span class="line"><span class="ln">3</span><span class="cl">[ISQL]ERROR: Could not SQLDriverConnect
+</span></span></code></pre></div><p>Doch tatsächlich existiert die Datei. Die Fehlermeldung ist nur etwas unpräzise und vermutlich hast du die falschen Treiber heruntergeladen. Damit dir das nicht noch mal passiert, hier eine endgültige, hoffentlich vollständige Anleitung zur Installation der MySQL-ODBC Treiber (unter Ubuntu, aber leicht übertragbar auf andere Distributionen):</p>
+<h2 id="die-richtige-treiber-version-herunterladen">Die richtige Treiber-Version herunterladen</h2>
+<p>Zunächst musst du herausbekommen, welche Betriebssystem-Version du nutzt. Das funktioniert mit:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ lsb_release -a
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Distributor ID: Ubuntu
+</span></span><span class="line"><span class="ln">3</span><span class="cl">Description:    Ubuntu 16.04.5 LTS
+</span></span><span class="line"><span class="ln">4</span><span class="cl">Release:        16.04
+</span></span><span class="line"><span class="ln">5</span><span class="cl">Codename:       xenial
+</span></span></code></pre></div><p>Außerdem benötigst du noch deinen Architektur-Typ, also 32- oder 64bit. Wenn LSB diese Info nicht liefert, kannst du folgendes probieren:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ uname -a
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Linux 192.168.10.10 4.4.0-042stab136.1 #1 SMP Wed Feb 27 09:04:24 MSK 2019 x86_64 x86_64 x86_64 GNU/Linux
+</span></span></code></pre></div><p>Mit diesen Informationen ausgestattet, besorgst du dir nun die passenden Treiber-Dateien von <a href="https://dev.mysql.com/downloads/connector/odbc/">https://dev.mysql.com/downloads/connector/odbc/</a> - ich gehe mal davon aus, dass du die aktuellste MySQL-Version benutzt und deshalb auch die Treiber in der Version 8 benötigst.</p>
+<p>Kopiere dir am besten den Download-Link, damit du das Archiv direkt auf dem Server mit wget herunterladen kannst, z.B. so:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="o">$</span> <span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">dev</span><span class="o">.</span><span class="n">mysql</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">get</span><span class="o">/</span><span class="n">Downloads</span><span class="o">/</span><span class="n">Connector</span><span class="o">-</span><span class="n">ODBC</span><span class="o">/</span><span class="mf">8.0</span><span class="o">/</span><span class="n">mysql</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">odbc</span><span class="o">-</span><span class="mf">8.0</span><span class="o">.</span><span class="mi">15</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ubuntu16</span><span class="o">.</span><span class="mi">04</span><span class="o">-</span><span class="n">x86</span><span class="o">-</span><span class="mi">64</span><span class="n">bit</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</span></span></code></pre></div><h2 id="die-treiber-installieren-und-registrieren">Die Treiber installieren und registrieren</h2>
+<p>Wenn der Download beendet wurde, entpackst du die Datei mit den folgenden Befehlen und wechselst danach in das soeben entstandene Verzeichnis:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ gunzip mysql-connector-odbc-8.0.15-linux-ubuntu16.04-x86-64bit.tar.gz
+</span></span><span class="line"><span class="ln">2</span><span class="cl">$ tar xvf mysql-connector-odbc-8.0.15-linux-ubuntu16.04-x86-64bit.tar
+</span></span><span class="line"><span class="ln">3</span><span class="cl">$ cd mysql-connector-odbc-8.0.15-linux-ubuntu16.04-x86-64bit
+</span></span></code></pre></div><p>Nun kopierst du das Installations-Script - was du vermutlich nicht benötigen wirst - und die Treiber-Dateien in die entsprechenden Ordner:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ cp bin/* /usr/local/bin
+</span></span><span class="line"><span class="ln">2</span><span class="cl">$ cp lib/* /usr/local/lib
+</span></span></code></pre></div><p>Das war es schon fast. Als nächstes musst du die Treiber noch &ldquo;anmelden&rdquo;. Mit diesem Befehl bekommst du heraus, wo sich die Einstellungs-Datei für ODBC befindet.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ odbcinst -j
+</span></span><span class="line"><span class="ln">2</span><span class="cl">unixODBC 2.3.6
+</span></span><span class="line"><span class="ln">3</span><span class="cl">DRIVERS............: /etc/odbcinst.ini
+</span></span><span class="line"><span class="ln">4</span><span class="cl">SYSTEM DATA SOURCES: /etc/odbc.ini
+</span></span><span class="line"><span class="ln">5</span><span class="cl">FILE DATA SOURCES..: /etc/ODBCDataSources
+</span></span><span class="line"><span class="ln">6</span><span class="cl">USER DATA SOURCES..: /root/.odbc.ini
+</span></span><span class="line"><span class="ln">7</span><span class="cl">SQLULEN Size.......: 8
+</span></span><span class="line"><span class="ln">8</span><span class="cl">SQLLEN Size........: 8
+</span></span><span class="line"><span class="ln">9</span><span class="cl">SQLSETPOSIROW Size.: 8
+</span></span></code></pre></div><p>Es kann durchaus sein, dass die Datei für die Treiber (/etc/odbcinst.ini) noch nicht existiert, dann legst du sie einfach an und ergänzt die folgenden Zeilen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ nano /etc/odbcinst.ini
+</span></span><span class="line"><span class="ln">2</span><span class="cl">[MySQL ODBC 8.0 Unicode Driver]
+</span></span><span class="line"><span class="ln">3</span><span class="cl">Driver=/usr/local/lib/libmyodbc8w.so
+</span></span><span class="line"><span class="ln">4</span><span class="cl">UsageCount = 1
+</span></span><span class="line"><span class="ln">5</span><span class="cl">[MySQL ODBC 8.0 ANSI Treiber]
+</span></span><span class="line"><span class="ln">6</span><span class="cl">Driver=/usr/local/lib/libmyodbc8a.so
+</span></span><span class="line"><span class="ln">7</span><span class="cl">UsageCount = 1
+</span></span></code></pre></div><p>Wie du siehst, steckt dahinter keine Raktentechnologie und in den meisten Fällen dürften diese Grundeinstellungen ausreichen. Du kannst die Datei natürlich noch ausbauen, eine ganze Menge zusätzlicher Parameter festlegen und nicht nur für MySQL nutzen (<a href="https://www.systutorials.com/docs/linux/man/5-odbcinst.ini/">siehe hier</a>).</p>
+<h2 id="die-funktionalität-testen">Die Funktionalität testen</h2>
+<p>Zum Abschluss kannst du folgendermaßen prüfen, ob die Einrichtung funktioniert hat. Wie du siehst, referenzierst du die oben registrierten Treiber:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ isql -v -k &#34;DRIVER={MySQL ODBC 8.0 Unicode Driver};SERVER=192.168.10.99;UID=root;PWD=password&#34;
+</span></span></code></pre></div><p>Sollte der Aufruf mit der folgenden Fehlermeldung quittiert werden, prüfe zunächst, ob die Datei vorhanden ist. Wenn dem so ist, ist es möglich, dass du oben die falschen Architektur oder Version der Treiber ausgewählt hast - auch dann beschwert sich isql, dass die Datei &ldquo;nicht gefunden werden kann&rdquo;:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[01000][unixODBC][Driver Manager]Can&#39;t open lib &#39;/usr/local/lib/libmyodbc8w.so&#39; : file not found
+</span></span><span class="line"><span class="ln">2</span><span class="cl">[ISQL]ERROR: Could not SQLDriverConnect
+</span></span></code></pre></div><p>Ansonsten solltest du auf die Konsole von deinem MySQL-Server gelangen, die in etwa so aussieht - und dann hast du alles richtig gemacht:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">+---------------------------------------+
+</span></span><span class="line"><span class="ln">2</span><span class="cl">| Connected!                            |
+</span></span><span class="line"><span class="ln">3</span><span class="cl">|                                       |
+</span></span><span class="line"><span class="ln">4</span><span class="cl">| sql-statement                         |
+</span></span><span class="line"><span class="ln">5</span><span class="cl">| help [tablename]                      |
+</span></span><span class="line"><span class="ln">6</span><span class="cl">| quit                                  |
+</span></span><span class="line"><span class="ln">7</span><span class="cl">|                                       |
+</span></span><span class="line"><span class="ln">8</span><span class="cl">+---------------------------------------+
+</span></span><span class="line"><span class="ln">9</span><span class="cl">SQL&gt;
+</span></span></code></pre></div>
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> MySQL, ODBC, Linux, Server, Anleitung, Datenbank</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Den korrekten MySQL ODBC-Treiber für deinen Linux-Server installieren - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>how-to_guide</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

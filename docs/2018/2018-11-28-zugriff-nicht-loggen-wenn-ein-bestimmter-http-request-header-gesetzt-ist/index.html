@@ -16,7 +16,7 @@ Zuerst benötigst du dafür ein Plugin, um den HTTP-Request-Header zu modifizier
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/images/favicon.ico">
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
 
   
   
@@ -314,7 +314,18 @@ Zuerst benötigst du dafür ein Plugin, um den HTTP-Request-Header zu modifizier
   <div class="post-date">November 28, 2018</div>
 
   
-  <article class="content">
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
     <p>OK, ich tu mich etwas schwer, das folgende in einen Titel zu gießen, der nicht länger ist, als die eigentlich Anleitung. Wenn du an deiner Webseite arbeitest, möchtest du vielleicht vermeiden, dass deine Aufrufe mit deinem Browser im Log-File von <strong>nginx</strong> landen. Dafür gibt es eine Menge Möglichkeiten, ich mag die folgende aber besonders.</p>
 <p>Zuerst benötigst du dafür ein Plugin, um den <strong>HTTP-Request-Header</strong> zu modifizieren. Ich nutze dafür <a href="https://addons.mozilla.org/en-US/firefox/addon/modheader-firefox/">ModHeader für Firefox,</a> für Chrome gibt es ähnliche Plugins. Dort legst du einen benutzerdefinierten Header an, dem du z.B. &ldquo;true&rdquo; als Wert zuweist. Bei diesem Plugin kannst du außerdem festlegen, dass der Header nur auf einer bestimmten Seite hinzugefügt wird.</p>
 <p>[caption id=&ldquo;attachment_2395&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/zugriff-nicht-loggen-wenn-ein-bestimmter-request-header-gesetzt-ist/modHeader.png"><img src="/2018/2018-11-28-zugriff-nicht-loggen-wenn-ein-bestimmter-http-request-header-gesetzt-ist/images/modHeader-300x163.png" alt="ModHeader Firefox Plugin"></a> ModHeader Firefox Plugin[/caption]</p>
@@ -330,9 +341,53 @@ default 1;
 </code></pre>
 <p>Der zweite Parameter ist das Log-File - natürlich. Der dritte Parameter verweist auf mein benutzerdefiniertes Log-Format, das muss hier nicht unbedingt stehen. Und am Ende schließlich kommt die Bedingung, dass nämlich nur geloggt wird, wenn $log_this wahr bzw. 1 ist. Jetzt startest du nginx neu&hellip; et voilá - Anfragen an deine Seite von deinem Browser aus werden ignoriert.</p>
 
+    
   </article>
   
+  
+  
+  <div style="margin-top: 5rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
 
+      <p>Dieses Tutorial beschreibt eine Methode, um eigene Zugriffe bei der Web-Entwicklung aus den Nginx-Logdateien auszuschließen. Die Lösung kombiniert ein Browser-Plugin zur Modifikation von HTTP-Headern mit einer serverseitigen Nginx-Konfiguration, die das Logging auf Basis eines benutzerdefinierten Headers bedingt deaktiviert.</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Nginx</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Webserver-Konfiguration</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Logging</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Web-Development</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">HTTP</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 5 Minuten</p>
+      
+    </div>
+  </div>
+  
+  
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/2018/2018-11-23-ein-blasendiagramm-bubble-chart-mit-nominal-skala-in-excel/">← prev</a>
+    
+    
+    <a></a>
+    
+  </div>
 </main>
 
     <footer id="footer">

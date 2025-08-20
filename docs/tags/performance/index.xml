@@ -13,7 +13,137 @@
     <managingEditor></managingEditor>
     <webMaster></webMaster>
     <copyright></copyright>
-    <lastBuildDate>Sun, 18 Nov 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/performance/index.xml" rel="self" type="application/rss+xml" /><item>
+    <lastBuildDate>Fri, 11 Oct 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/performance/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Apache und nginx parallel betreiben und mit ApacheBench gegeneinander antreten lassen</title>
+      <link>https://nickyreinert.de/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/</link>
+      <pubDate>Fri, 11 Oct 2019 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/</guid>
+      <description>Mein Ziel ist es, nginx und Apache als Webserver auf einem System laufen zu lassen. Alle HTTP/HTTPS-Anfragen werden von nginx beantwortet. Anfragen an den Port …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel beschreibt die parallele Konfiguration von Apache und Nginx auf einem System, wobei Nginx als Frontend und Apache auf alternativen Ports dient. Die Anleitung umfasst die Firewall-Einrichtung, die Apache-Virtual-Host-Konfiguration und die Durchführung von Performance-Tests mit ApacheBench, um die Leistungsfähigkeit beider Webserver zu vergleichen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Apache, Nginx, Webserver, Performance Testing, ApacheBench, Server Konfiguration, Linux, Benchmarking, HTTP/HTTPS</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Mein Ziel ist es, <strong>nginx</strong> und <strong>Apache</strong> als Webserver auf einem System laufen zu lassen. Alle HTTP/HTTPS-Anfragen werden von nginx beantwortet. Anfragen an den Port 8080 (für HTTP) oder 4443 (HTTPS) werden von Apache beantwortet. So kann ich nginx und Apache in einem <strong>Benchmark</strong> vergleichen, indem ich einfach nur die Ports ändere. Das Setup ist aber auch für andere Zwecke sinnvoll, wenn du z.B. die Burst-Einstellungen von nginx in Aktion sehen oder bestimmte Web-Dienste strikt mit Apache bedienen willst. Los gehts&hellip;</p>
+<p>Ich gehe mal davon aus, dass du nginx und Apache fertig eingerichtet hast. Nginx läuft idealerweise schon (<a href="https://www.nickyreinert.de/mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-1-3/">siehe meine 3-Teilige Anleitung</a>) Dann musst du zunächst mal dafür sorgen, dass die Firewall (z.B. iptables) die alternativen Ports 8080 und 4443 auch durchlässt. Das funktioniert folgendermaßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">sudo iptables -A INPUT -p tcp -m multiport --dports 8080,4443 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+</span></span></code></pre></div><p>Wenn du prüfen willst, ob die Änderung übernommen wurde, machst du das mit</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">iptables -L --line-numbers
+</span></span></code></pre></div><p>Den line-numbers-Parameter kannst du dir schenken - willst du aber einen Eintrag in iptables löschen, können die Zeilennummern sehr hilfreich sein, siehe:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">iptables -D INPUT 3
+</span></span></code></pre></div><p>Die 3 verweist auf die Zeilennummer, INPUT auf die Chain. Aber das nur um Rande. Weiter gehts mit unserem Server-Setup.</p>
+<p>Als nächstes teilst du Apache mit, dass ab sofort auf den alternativen Ports nach Anfragen gelauscht wird. Dazu passt du die Porteinstellung in der Datei /etc/apache2/ports.conf entsprechend an. Die if-Kondition macht die Sache etwas sauber, muss aber nicht sein:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Listen 8080
+</span></span><span class="line"><span class="ln">2</span><span class="cl">&lt;IfModule mod_ssl.c&gt;
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    Listen 4443
+</span></span><span class="line"><span class="ln">4</span><span class="cl">&lt;/IfModule&gt;
+</span></span></code></pre></div><p>Weiter geht es mit der Einstellung des virtuellen Hosts für Apache. Dazu legst du eine Datei mit der Endung &ldquo;conf&rdquo; im Ordner <strong>/etc/apache2/sites-available/</strong> an und füllst sie folgendermaßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="o">&lt;</span><span class="n">VirtualHost</span> <span class="o">*</span><span class="p">:</span><span class="mi">8080</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">        <span class="n">ServerName</span> <span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">        <span class="n">ServerAlias</span> <span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        <span class="n">Redirect</span> <span class="n">permanent</span> <span class="o">/</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">4443</span><span class="o">/</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        <span class="n">DocumentRoot</span> <span class="s2">&#34;/var/nginx/apache2_example_com/htdocs&#34;</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        <span class="n">DirectoryIndex</span> <span class="n">index</span><span class="o">.</span><span class="n">html</span> <span class="n">index</span><span class="o">.</span><span class="n">php</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="o">&lt;/</span><span class="n">VirtualHost</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="o">&lt;</span><span class="n">VirtualHost</span> <span class="o">*</span><span class="p">:</span><span class="mi">4443</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        <span class="n">ServerName</span> <span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">        <span class="n">ServerAlias</span> <span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        <span class="n">ErrorLog</span> <span class="s2">&#34;/var/log/apache2/example.com.error.log&#34;</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">        <span class="n">CustomLog</span> <span class="s2">&#34;/var/log/apache2/example.com.log&#34;</span> <span class="n">common</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">
+</span></span><span class="line"><span class="ln">18</span><span class="cl">        <span class="n">LogLevel</span> <span class="n">warn</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">
+</span></span><span class="line"><span class="ln">20</span><span class="cl">        <span class="n">DocumentRoot</span> <span class="s2">&#34;/var/nginx/apache2_example_com/htdocs&#34;</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">        <span class="n">DirectoryIndex</span> <span class="n">index</span><span class="o">.</span><span class="n">html</span> <span class="n">index</span><span class="o">.</span><span class="n">php</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">
+</span></span><span class="line"><span class="ln">23</span><span class="cl">        <span class="o">&lt;</span><span class="ne">Directory</span> <span class="s2">&#34;/var/nginx/apache2_example_com/htdocs&#34;</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">                <span class="n">Options</span> <span class="o">-</span><span class="n">Indexes</span> <span class="o">+</span><span class="n">FollowSymLinks</span> <span class="o">+</span><span class="n">MultiViews</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">                <span class="n">DirectoryIndex</span> <span class="n">index</span><span class="o">.</span><span class="n">php</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">                <span class="n">AllowOverride</span> <span class="n">All</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">                <span class="n">Require</span> <span class="n">all</span> <span class="n">granted</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">        <span class="o">&lt;/</span><span class="ne">Directory</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">
+</span></span><span class="line"><span class="ln">30</span><span class="cl">        <span class="n">RewriteEngine</span> <span class="n">on</span>
+</span></span><span class="line"><span class="ln">31</span><span class="cl">        <span class="n">Include</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">letsencrypt</span><span class="o">/</span><span class="n">options</span><span class="o">-</span><span class="n">ssl</span><span class="o">-</span><span class="n">apache</span><span class="o">.</span><span class="n">conf</span>
+</span></span><span class="line"><span class="ln">32</span><span class="cl">
+</span></span><span class="line"><span class="ln">33</span><span class="cl">        <span class="n">SSLCertificateFile</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">letsencrypt</span><span class="o">/</span><span class="n">live</span><span class="o">/</span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">fullchain</span><span class="o">.</span><span class="n">pem</span>
+</span></span><span class="line"><span class="ln">34</span><span class="cl">        <span class="n">SSLCertificateKeyFile</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">letsencrypt</span><span class="o">/</span><span class="n">live</span><span class="o">/</span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">privkey</span><span class="o">.</span><span class="n">pem</span>
+</span></span><span class="line"><span class="ln">35</span><span class="cl">
+</span></span><span class="line"><span class="ln">36</span><span class="cl"><span class="o">&lt;/</span><span class="n">VirtualHost</span><span class="o">&gt;</span>
+</span></span></code></pre></div><p>Ich will die Einstellungen nur kurz überspringen, da sie sich eigentlich selber erklären. Der erste Block greift die HTTP-Anfragen ab und leitet diese sofort weiter (<em>Redirect permanent</em>). Ich definiere hier zwar auch DocumentRoot und Index, aber das nur der Vollständigkeit halber. Der zweite Block kümmert sich um die HTTPS-Anfragen. Wie du siehst, passiert hier kein großer Zauber. Ich nutze PHP nur als Modul, setze ein paar Logging-Eigenschaften fest und übermittle die SSL-Zertifikate. <em>Easy peasy. Lemon squeezy.</em><br>
+Wie du siehst, nutze ich für Apache außerdem ein separates Verzeichnis. Achte bei <strong>Wordpress</strong> auch darauf, die URLs entsprechend anzupassen, sonst wird Wordpress die Anfragen immer wieder zu nginx weiteschicken:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">define(&#39;WP_HOME&#39;,&#39;https://example.com:4443&#39;);
+</span></span><span class="line"><span class="ln">2</span><span class="cl">define(&#39;WP_SITEURL&#39;,&#39;https://example.com:4443&#39;);
+</span></span></code></pre></div><p>Als nächstes gönnst du dem Apache-Server einen Neustart:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">sudo service apache2 restart
+</span></span></code></pre></div><p>Und das war es auch schon. Jetzt kannst du mit ApacheBench ein paar Requests abfeuern. Denk dran, dass du auf Windows ab für HTTP-Requests und abs für HTTPS-Requests nutzen musst. Mit diesem Aufruf teste ich erstmal die Performance von meinem Apache-Setup:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">abs -n 1000 -c 100 https://www.example.com:4443/
+</span></span></code></pre></div><p>Der Parameter <em>n</em> steht für die Anzahl von Anfragen insgesamt. Mit <em>c</em> kannst du festlegen, wieviele Anfragen du gleichzeitig abfeuern willst (<em>c</em> muss demnach kleiner sein als <em>n</em>). Der Forward-Slash am Ende ist wichtig, andernfalls erkennt <strong>abs</strong> die URL nicht an. Das gleiche mache ich ohne Port-Angabe um den nginx-Server anzusprechen. Und das sind die Ergebnisse:</p>
+<h3 id="auswertung-der-ergebnisse">Auswertung der Ergebnisse</h3>
+<p><img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik.png" alt=""></p>
+<p>Abbildung 1: Vergleich der Antwortzeiten von Apache und nginx</p>
+<p>Die Abbildung zeigt, wie hoch der Anteil der Anfragen ist, der nach einer bestimmten Zeit (in Millisekunden) beantwortet wurde. Nginx ist ganz klar Gewinner. Alle Anfrgaen wurden inerhalb von 4 Sekunden bearbeitet, die Hälfte der Anfragen soger innerhalb knapp 1 Sekunde. Bei Apache sieht das ungleich schlimmer aus. Allerdings wurden bei nginx 68 Anfragen abgewiesen, bei Apache 0 - eine Folge meiner Warteschlangen-Einstellung.<br>
+Die folgenden Diagramme zeigen noch mal die Zusammensetzung der Anfrage:</p>
+<ul>
+<li>Connect - Zeit bis die Verbindung hergestellt wird</li>
+<li>Waiting - Zeit bis zum ersten Datenpaket (Time-To-First-Byte, TTFB)</li>
+<li>Processing - Zeit, bis die vollständige Antwort vom Server eingangen ist, seit die Verbindung geöffnet wurd</li>
+<li>Total - Gesamte Wartezeit</li>
+</ul>
+<p><img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik-1.png" alt=""></p>
+<p>Abbildung 2: Messergebnisse für die Anfragen an Apache</p>
+<p><img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik-2.png" alt=""></p>
+<p>Abbildung 3: Messergebnisse für die Anfragen an nginx</p>
+<p>Die reine Verbindungszeit ist bei beiden Servern relativ niedrig, dieser Wert gibt aber auch eher Rückschlüsse auf die Qualität des Netzwerks. Die TTFB ist bei Apache relativ hoch., es dauert also eine ganze Weile, bis Apache die Anfrage verarbeitet und entsprechend die ersten Daten sendet. Das wird mit ziemlicher Sicherheit am grundsätzlich nicht sehr performanten php-mod liegen. Insgesamt ist das Ergebnis natürlich wenig überraschend. Mein Ziel war ja, mit nginx und php-fpm ein schnelles Setup zu schaffen. Was hiermit wohl gelungen sein dürfte (Anmerkungen zur Repräsentativität werden gerne entgegengenommen). Fairerweise sei aber noch angemerkt, dass ich Apache in der Standard-Einstellung verwende und wirklich keine Maßnahmen unternommen habe, um die Geschwindigkeit zu optimieren.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Apache, Nginx, Webserver, Performance, Benchmark, Linux</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Apache und nginx parallel betreiben und mit ApacheBench gegeneinander antreten lassen - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>performance_benchmark</dc:type>
+      
+      
+    </item><item>
       <title>Wordpress Debugging und Wartung oder: Keine Panik vor dem White Screen of Death und HTTP 500</title>
       <link>https://nickyreinert.de/2018/2018-11-18-wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death/</link>
       <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
@@ -26,7 +156,7 @@
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Eine umfassende Anleitung zur Fehlersuche und Wartung von WordPress. Der Artikel erklärt, wie man Probleme wie den &#34;White Screen of Death&#34; (WSoD) und HTTP-500-Fehler systematisch analysiert. Vorgestellt werden drei wesentliche Werkzeuge: die Entwicklerkonsole des Browsers, das Plugin &#34;Query Monitor&#34; zur Performance-Analyse und die korrekte Konfiguration des WordPress-Debug-Modus über `wp-config.php` und `.htaccess`.</p>
+          <p>Eine umfassende Anleitung zur Fehlersuche und Wartung von WordPress. Der Artikel erklärt, wie man Probleme wie den &#39;White Screen of Death&#39; (WSoD) und HTTP-500-Fehler systematisch analysiert. Vorgestellt werden drei wesentliche Werkzeuge: die Entwicklerkonsole des Browsers, das Plugin &#39;Query Monitor&#39; zur Performance-Analyse und die korrekte Konfiguration des WordPress-Debug-Modus über &#39;wp-config.php&#39; und &#39;.htaccess&#39;.</p>
           
           
           <p><strong>Hauptthemen:</strong> WordPress, Debugging, Troubleshooting, Performance, PHP, Web-Development</p>
@@ -185,6 +315,287 @@ Ach ja - wenn all das da oben nicht funktioniert, dann kannst du tatsächlich au
       
       
       <dc:type>troubleshooting_guide</dc:type>
+      
+      
+    </item><item>
+      <title>Download-Geschwindigkeit messen und in Google DataStudio darstellen</title>
+      <link>https://nickyreinert.de/2017/2017-11-16-download-geschwindigkeit-messen-und-in-googledata-studio-darstellen/</link>
+      <pubDate>Thu, 16 Nov 2017 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2017/2017-11-16-download-geschwindigkeit-messen-und-in-googledata-studio-darstellen/</guid>
+      <description>Alles beginnt mit einer fixen Idee. Meine war es, die Download-Geschwindigkeit meines Internet-Anschlusses zu messen. Doch das ist nur aussagekräftig, wenn man …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel beschreibt ein Projekt zur automatisierten Messung der Internet-Download-Geschwindigkeit und deren Visualisierung in Google Data Studio. Er erläutert ein Shell-Skript für wiederkehrende Downloads und Geschwindigkeitsberechnungen sowie die Entwicklung eines Google Data Studio Community Connectors zur Integration der Messdaten aus CSV-Dateien, die über Google Drive synchronisiert werden.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Internet Performance, Download Speed, Google Data Studio, Shell Scripting, Data Visualization, Google Apps Script, Automation, Monitoring</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Alles beginnt mit einer fixen Idee. Meine war es, die Download-Geschwindigkeit meines Internet-Anschlusses zu messen. Doch das ist nur aussagekräftig, wenn man es regelmäßig macht. Und um das ganze abzurunden, sollte man die Ergebnisse doch irgendwie noch in einem bunten Diagramm darstellen können. Aus der Idee wurde also ein Plan und schließlich ein Projekt.</p>
+<p>Die Aufgabe lautet also: Ein Script soll in regelmäßigen Abständen Test-Dateien herunterladen. Die Dauer dafür und der Zeitpunkt des Tests schreibe ich in eine CSV-Datei, die mit GoogleDrive synchronisiert ist. Von dort werden die Ergebnisse im DataStudio von Google automatisch ausgelesen.</p>
+<h2 id="schritt-1---das-automatisierte-download-script">Schritt 1 - das automatisierte Download-Script</h2>
+<p>Damit der Test möglichst unterschiedliche Szenarien abdeckt, wollte ich nicht nur eine sondern mehrere Dateien verschiedener Größe anbieten. Dazu habe ich auf http://speedtest.ftp.otenet.gr zurückgegriffen. Dort werden verschiedene Dateigrößen zum Download angeboten.</p>
+<p>Außerdem will ich jede Datei mehr als ein mal herunterladen und schließlich nach jedem Download eine Pause einlegen.</p>
+<p>Die Hauptfunktionen möchte ich kurz erläutern:</p>
+<ul>
+<li>In den ersten beiden Schleife wird jeder Eintrag aus <strong>sourceFileSizes</strong> einmal durchlaufen und zwar so oft, wie mit <strong>loops</strong> festgelegt:</li>
+</ul>
+<p>for sourceFileSize in &ldquo;${sourceFileSizes[@]}&rdquo;;
+do
+while [ $i -lt $loops ]; do
+&hellip;
+done
+done</p>
+<ul>
+<li>Innerhalb der Schleife wird im Grund nur die Test-Datei per wget an einen definierten Ort heruntergeladen. Außerdem soll natürlich die Dauer dafür gemessen werden. Das funktioniert ganz einfach und extrem präzise in Nanosekunden bzw. über den Unix-Timestamp.</li>
+</ul>
+<p>startTime=$(($(date +%s%N)))</p>
+<p>wget &ndash;quiet
+&ndash;output-document=$destinationFolder$sourceFileSize&quot;Mb.db.tmp&quot;
+$sourceBaseUrl$sourceFileSize&quot;Mb.db&quot;</p>
+<p>endTime=$(($(date +%s%N)))</p>
+<p>delayNsecs=$(($endTime - $startTime))</p>
+<ul>
+<li>Die Berechnung der Geschwindigkeit ist etwas kompliziert, da ich auf der Shell nicht ohne weiteres Dezimalzahlen (float numbers) verarbeiten kann. Ich muss also mit <strong>awk</strong> arbeiten. Awk hingegen greift nicht auf die lokalen Variablen zu. Diese muss ich mit dem Parameter -v erst explizit übergeben. Am Ende entstehen dann Zeile wie diese, die im Grunde nur MByte in MBit umrechnen (mit 8 multiplizieren) und dann durch die Dauer in Sekunden dividieren. Das Ergebnis ist dann die Geschwindigkeit <strong>MBit/Sekunde</strong> - und damit perfekt vergleichbar mit der versprochenen Geschwindigkeit des Anbieters.</li>
+</ul>
+<p>MBitPerSec=
+$(awk
+-v sourceFileSize=$sourceFileSize
+-v delayMSecs=$delaySecs
+&lsquo;BEGIN{printf &ldquo;%.4f\n&rdquo;, ( sourceFileSize * 8 / delayMSecs)}&rsquo;)</p>
+<ul>
+<li>Schließlich wird der ganze Spaß natürlich noch in die CSV-Datei geschrieben:</li>
+</ul>
+<p>echo &ldquo;$(date &lsquo;+%Y-%m-%d %H:%M:%S&rsquo;),
+$delayNsecs,
+$delaySecs,
+$MBitPerSec,
+$sourceFileSize&quot;MByte&rdquo;&quot;
+&raquo; $journalFile</p>
+<ul>
+<li>Am Ende wird entweder das Script verlassen, wenn zuletzt die 1GByte-Datei heruntergeladen wurde. Da das Script mehrmals am Tag läuft, will ich das Volumen nicht unnötig strapazieren. Oder es wird eine definierte Pause eingelegt, damit sich die Leitung abkühlen kann.</li>
+</ul>
+<p>Das komplette Script gibt es auf <a href="https://github.com/nickyreinert/speedTest/blob/master/speedTest.sh">github.</a></p>
+<p>Das ganze muss nun nur in der CronTabelle des Systems regelmäßig aufgerufen werden. Der Zielordner</p>
+<p>/share/Download/Speedtest/</p>
+<p>wird außerdem mit GoogleDrive synchronisiert.</p>
+<p>Die fertige Datei besitzt fünf Spalten, die den Zeitpunkt, die Dauer und die heruntergeladene Datei beinhalten:</p>
+<p>column1,column2,column3,column4,column5
+2017-10-31 11:48:36,1072562724,1.072562724,7.45877124105611,1MByte
+2017-10-31 11:48:37,899356112,0.899356112,8.89525282950432,1MByte
+2017-10-31 11:48:38,1002897956,1.002897956,7.97688334305469,1MByte</p>
+<p>Anmerkung: Ich nutze den Netzwerkspeicher von QNAP, das TS-431. Für diesen wird ein Backup &amp; Sync-Plugin angeboten, das lokale Ordner mit einem Ordner in GoogleDrive synchronisiert.</p>
+<h2 id="schritt-2---der-community-connector-für-das-datastudio">Schritt 2 - der Community Connector für das DataStudio</h2>
+<p>Das Google DataStudio bringt von Hause aus schon eine Reihe von Schnittstellen mit, über die es möglich ist, auf z.B. Datenbanken oder Online-Dienste zurückzugreifen um in Echzeit an allerlei Messreihen zu kommen. Doch leider fehlt hier bisher ein Verbindung zu CSV-Dateien. Den Connector musste ich mir also erst selber erstellen.</p>
+<p>Der Connector ist im Moment noch sehr einfach gehalten. Es ermöglicht keine großen Anpassungen und ist sicherlich noch verbesserungsfähig (<a href="https://datastudio.google.com/datasources/create?connectorId=AKfycbxxafV6ymAs6S2DRADTGKzJ2aNCdwrnMgRIMt-KJAzoO-YESKc19U9z2w">Link zum Connector</a>):</p>
+<p>function getConfig() {
+var config = {
+configParams: [
+{
+type: &ldquo;INFO&rdquo;,
+name: &ldquo;csvConnector&rdquo;,
+text: &ldquo;The CSV-Connector currently supports a fixed amount of three columns. Name them column1, column2 and column3. Column1 is the dimension, column2 holds the metrics and column3 may be used as an additional category. You may change the label in the next window.&rdquo;
+}
+,{
+type: &ldquo;TEXTINPUT&rdquo;,
+name: &ldquo;url&rdquo;,
+helpText: &ldquo;If you want to use a CSV-file from GoogleDrive, use this format where 123 at the end is your document id: <a href="https://drive.google.com/uc?export=download&amp;id=123%22">https://drive.google.com/uc?export=download&id=123"</a>,
+displayName: &ldquo;Provide the url to your csv file.&rdquo;
+}</p>
+<pre><code>\]
+</code></pre>
+<p>};
+return config;</p>
+<p>};</p>
+<p>var csvDataSchema = [
+{
+name: &lsquo;column1&rsquo;,
+label: &lsquo;column1&rsquo;,
+dataType: &lsquo;STRING&rsquo;,
+semantics: {
+conceptType: &lsquo;DIMENSION&rsquo;
+}
+},
+{
+name: &lsquo;column2&rsquo;,
+label: &lsquo;column2&rsquo;,
+dataType: &lsquo;NUMBER&rsquo;,
+semantics: {
+&ldquo;isReaggregatable&rdquo;: true,
+conceptType: &lsquo;METRIC&rsquo;
+}
+},{
+name: &lsquo;column3&rsquo;,
+label: &lsquo;column3&rsquo;,
+dataType: &lsquo;STRING&rsquo;,
+semantics: {
+&ldquo;isReaggregatable&rdquo;: false,
+conceptType: &lsquo;DIMENSION&rsquo;
+}</p>
+<p>}
+];</p>
+<p>function getSchema(request) {</p>
+<p>return {schema: csvDataSchema};</p>
+<p>};</p>
+<p>function isAdminUser() {
+return true;
+}</p>
+<p>function csvToObject(array) {</p>
+<p>var headers = array[0];</p>
+<p>var jsonData = [];
+for ( var i = 1, length = array.length; i &lt; length; i++ )
+{
+var row = array[i];
+var data = {};
+for ( var x = 0; x &lt; row.length; x++ )
+{
+data[headers[x]] = row[x];
+}
+jsonData.push(data);</p>
+<pre><code>}
+
+return jsonData;
+</code></pre>
+<p>}
+/*
+function stringToObject(string, separator)
+{
+var object = {};</p>
+<p>var array = string.split(separator);</p>
+<p>for (var i = 0; i &lt; array.length; i++) {</p>
+<pre><code>if (i % 2 === 0) { 
+
+  object\[array\[i\]\] = array\[i + 1\];
+
+} else { 
+
+  continue;
+  
+}
+</code></pre>
+<p>}</p>
+<p>return object
+}
+*/</p>
+<p>function getData(request) {</p>
+<p>/*
+I DONT GET SPLIT TO WORK SO FOR NOW THIS ONLY SUPPORTS PREPARED AND WORKING SHARING URL
+FOR GOOGLE DRIVE
+if (request.configParams.isGoogleDrive == &ldquo;true&rdquo;)
+{
+var urlString = request.configParams.url.toString();</p>
+<pre><code>var urlArray = urlString.split(&quot;?&quot;);
+
+  var params = stringToObject(urlArray, '&quot;');
+
+  var docId = params\[&quot;id&quot;\];
+
+  var url = &quot;https://drive.google.com/uc?export=download&amp;id=&quot; + docId;
+</code></pre>
+<p>} else {</p>
+<pre><code>  var url = request.configParams.url;
+</code></pre>
+<p>}
+*/</p>
+<p>var url = request.configParams.url;</p>
+<p>var dataSchema = [];</p>
+<p>request.fields.forEach(function(field) {
+for (var i = 0; i &lt; csvDataSchema.length; i++) {
+if (csvDataSchema[i].name === field.name) {
+dataSchema.push(csvDataSchema[i]);
+break;
+}
+}
+});</p>
+<p>var csvFile = UrlFetchApp.fetch(url);</p>
+<p>var csvData = Utilities.parseCsv(csvFile);</p>
+<p>var sourceData = csvToObject(csvData);</p>
+<p>var data = [];</p>
+<p>sourceData.forEach(function(row) {
+var values = [];
+dataSchema.forEach(function(field) {
+switch(field.name) {
+case &lsquo;column1&rsquo;:
+values.push(row.column1);
+break;
+case &lsquo;column2&rsquo;:
+values.push(row.column2);
+break;
+case &lsquo;column3&rsquo;:
+values.push(row.column3);
+break;
+default:
+values.push(&rsquo;&rsquo;);
+}
+});
+data.push({
+values: values
+});
+});</p>
+<p>return {
+schema: dataSchema,
+rows: data
+};</p>
+<p>};</p>
+<p>function getAuthType() {
+var response = {
+&ldquo;type&rdquo;: &ldquo;NONE&rdquo;
+};
+return response;
+}</p>
+<p> </p>
+<p>Leider unterstützt der Connector bisher nur drei Spalten mit vorgegebene Spalten-Namen. In einer nächsten Version sollte der Connector die Datei bereits im Vorfeld auslesen um die Spalten-Konfiguration selber zu erkennen.</p>
+<p> </p>
+<h2 id="schritt-3---darstellung-im-datastudio">Schritt 3 - Darstellung im DataStudio</h2>
+<p>Im Data Studio ein Diagramm erstellen, dass die Messwerte der regelmäßigen Test-Download darstellt: Darum muss ich mich noch kümmern.</p>
+<p> </p>
+<h2 id="links-und-noch-mehr-links">Links und noch  mehr Links</h2>
+<p><a href="https://github.com/nickyreinert/speedTest/blob/master/speedTest.sh">Link zu GitHub mit dem Quellcode</a></p>
+<p><a href="https://datastudio.google.com/datasources/create?connectorId=AKfycbxxafV6ymAs6S2DRADTGKzJ2aNCdwrnMgRIMt-KJAzoO-YESKc19U9z2w">Link zum Connector</a></p>
+<p><a href="https://developers.google.com/datastudio/connector/get-started">Einführung und Doku auf developers.google.com</a></p>
+<p><a href="https://www.benlcollins.com/data-studio/community-connector/">kleinere Beispiele auf benlcollins.com</a></p>
+<p><a href="https://github.com/google/datastudio">andere Projekte auf github.com</a></p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> apache, htacces, messung, php, redir, weiterleitung, Google Data Studio, Performance</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>development</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Download-Geschwindigkeit messen und in Google DataStudio darstellen - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>project_showcase</dc:type>
       
       
     </item>

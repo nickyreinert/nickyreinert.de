@@ -26,7 +26,7 @@
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Ein umfassender Leitfaden mit zahlreichen Code-Snippets zur Optimierung einer WordPress-Installation in Bezug auf Geschwindigkeit und Sicherheit. Der Artikel behandelt Themen wie das Deaktivieren von Emojis und Gravatar, serverseitige Komprimierung, das Verschieben von Skripten, das Absichern der XML-RPC- und REST-APIs sowie das Aufräumen des HTML-Headers durch Änderungen in `functions.php`, `.htaccess` und `wp-config.php`.</p>
+          <p>Ein umfassender Leitfaden mit zahlreichen Code-Snippets zur Optimierung einer WordPress-Installation in Bezug auf Geschwindigkeit und Sicherheit. Der Artikel behandelt Themen wie das Deaktivieren von Emojis und Gravatar, serverseitige Komprimierung, das Verschieben von Skripten, das Absichern der XML-RPC- und REST-APIs sowie das Aufräumen des HTML-Headers durch Änderungen in &#39;functions.php&#39;, &#39;.htaccess&#39; und &#39;wp-config.php&#39;.</p>
           
           
           <p><strong>Hauptthemen:</strong> WordPress, Performance-Optimierung, Web-Sicherheit, PHP, Server-Konfiguration, Frontend-Optimierung</p>
@@ -363,7 +363,7 @@ Zunächst solltest du die Anzahl der Revisionen pro Beitrag eingrenzen. Dazu set
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Ein kurzer technischer Tipp für Web-Entwickler, der zeigt, wie man eine CSS-Datei über den HTTP `Link`-Header lädt. Diese Methode kann genutzt werden, um eine Staging-Umgebung visuell von einer Live-Umgebung zu unterscheiden und so Verwechslungen zu vermeiden. Der Artikel enthält Konfigurationsbeispiele für Nginx und Apache.</p>
+          <p>Ein kurzer technischer Tipp für Web-Entwickler, der zeigt, wie man eine CSS-Datei über den HTTP &#39;Link&#39;-Header lädt. Diese Methode kann genutzt werden, um eine Staging-Umgebung visuell von einer Live-Umgebung zu unterscheiden und so Verwechslungen zu vermeiden. Der Artikel enthält Konfigurationsbeispiele für Nginx und Apache.</p>
           
           
           <p><strong>Hauptthemen:</strong> CSS, HTTP, Web-Development, Server-Konfiguration, Nginx, Apache</p>
@@ -417,22 +417,22 @@ Zunächst solltest du die Anzahl der Revisionen pro Beitrag eingrenzen. Dazu set
       
       
     </item><item>
-      <title>Wordpress-Security Checkliste</title>
-      <link>https://nickyreinert.de/2000/2000-01-01-wordpress-security-checkliste/</link>
-      <pubDate>Sat, 01 Jan 2000 00:00:00 +0000</pubDate>
+      <title>Apache und nginx parallel betreiben und mit ApacheBench gegeneinander antreten lassen</title>
+      <link>https://nickyreinert.de/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/</link>
+      <pubDate>Fri, 11 Oct 2019 00:00:00 +0000</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/2000/2000-01-01-wordpress-security-checkliste/</guid>
-      <description>Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch …</description>
+      <guid>https://nickyreinert.de/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/</guid>
+      <description>Mein Ziel ist es, nginx und Apache als Webserver auf einem System laufen zu lassen. Alle HTTP/HTTPS-Anfragen werden von nginx beantwortet. Anfragen an den Port …</description>
       
       
       <content:encoded>&lt;![CDATA[
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Eine detaillierte Checkliste zur Absicherung von WordPress-Installationen, gegliedert nach dem Grad des Nutzerzugriffs (WordPress.com, Shared Hosting, eigener Server). Der Artikel behandelt essenzielle Sicherheitspraktiken wie Updates, Backups, Staging-Systeme sowie technische Maßnahmen wie `.htaccess`-Schutz, korrekte Dateirechte und die Konfiguration von PHP.</p>
+          <p>Dieser Artikel beschreibt die parallele Konfiguration von Apache und Nginx auf einem System, wobei Nginx als Frontend und Apache auf alternativen Ports dient. Die Anleitung umfasst die Firewall-Einrichtung, die Apache-Virtual-Host-Konfiguration und die Durchführung von Performance-Tests mit ApacheBench, um die Leistungsfähigkeit beider Webserver zu vergleichen.</p>
           
           
-          <p><strong>Hauptthemen:</strong> WordPress, Web-Sicherheit, Systemadministration, PHP, Server-Konfiguration</p>
+          <p><strong>Hauptthemen:</strong> Apache, Nginx, Webserver, Performance Testing, ApacheBench, Server Konfiguration, Linux, Benchmarking, HTTP/HTTPS</p>
           
           
           
@@ -441,135 +441,99 @@ Zunächst solltest du die Anzahl der Revisionen pro Beitrag eingrenzen. Dazu set
         </div>
         
         
-        <p>Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch kriminelle Geister an und so schwirren immer wieder Nachrichten über Sicherheitslücken und gehackte WP-Seiten durch die einschlägigen Medien. Aus diesem Grund will ich mal meine Erfahrungen in Bezug auf Wordpress-Sicherheit an dieser Stelle zusammenfassen und zwar so kompakt wie möglich, damit diese Information als Checkliste genutzt werden kann.</p>
-<p>Wenn du Betreiber einer Wordpress-Seite bist, gibt es dafür drei Wege und unterschiedliche Freiheiten, sich selber um die Sicherheit der WP-Installation zu nutzen - im folgenden die &ldquo;Freiheitsgrade&rdquo; genannt: Bei &ldquo;wordpress as a service&rdquo; greifst du auf einen Angebot zurück, das bekannteste ist wordpress.com, bei dem du nur Zugriff auf das Backend hast und dementsprechend wenig Konfigurationsmöglichkeiten. Als Nutzer eines Shared Hosting hast du zusätzlich die Möglichkeit, per FTP oder SSH auf den Webspace zu gelangen und dort Einstellungen vorzunehmen. Und schließlich gibt es noch die Möglichkeit, einen eigenen Server zu nutzen, bei dem du dich auch um die Konfiguration auf Systemebene, also des Webserver kümmern musst. In dieser Reihenfolge möchte ich nun im folgenden Zusammenfassen, welche Möglichkeiten du hast, deine WP-Installation etwas sicherer zu gestalten.</p>
-<h2 id="aktuelle-updates">Aktuelle Updates</h2>
-<p>Zunächst zum Offensichtlichen: Sicherheitsupdates. Die automatischen Updates des WP-Cores (also dem, was WP ausmacht) sind mit jedem Freiheitsgrad konfigurierbar, bergen aber auch Risikos. So hatte z.B. das Update auf Version 4.9.3 Anfang 2018 den Auto-Update-Mechanismus deaktiviert. Spätere Sicherheitsupdates würden also ignoriert werden. Grundsätzlich ist das Auto-Update nur für sog. Minor-Versionen zu empfehlen, wodurch Sicherheitlücken und Bugs behoben werden. Wer diese Funktion auf einem Test-System auch für Major-Versionen aktivieren möchte, muss in der wp-config.php folgenden Parameter setzen:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">define</span><span class="p">(</span> <span class="s1">&#39;WP_AUTO_UPDATE_CORE&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span> <span class="p">);</span>
-</span></span></code></pre></div><p>(der Parameter ist per default auf <em>minor</em> gesetzt.) Grundsätzlich ist das aber nicht zu empfehlen: Denn: Bevor ein großes Update eingespielt wird, sollte das auf Herz &amp; Nieren und natürlich Kompatibilität mit den vorhandenen Themes und Plugins getestet werden. Dazu sollte man ein Staging-System einrichten, worauf ich im nächsten Absatz eingehe.</p>
-<h2 id="ein-staging-system-nutzen">Ein Staging-System nutzen</h2>
-<p>Die Sicherheit der WP-Installation kann nicht nur durch Malware oder Angriffe von außen versehrt werden, sondern auch durch Bedienfehler. Ein wichtiger Baustein ist also ein Staging-System. Das ist im weitesten Sinne eine exakte Kopie der aktuelle WP-Installation. Das Staging-System erfüllt eine Reihe von Funktionen:</p>
+        <p>Mein Ziel ist es, <strong>nginx</strong> und <strong>Apache</strong> als Webserver auf einem System laufen zu lassen. Alle HTTP/HTTPS-Anfragen werden von nginx beantwortet. Anfragen an den Port 8080 (für HTTP) oder 4443 (HTTPS) werden von Apache beantwortet. So kann ich nginx und Apache in einem <strong>Benchmark</strong> vergleichen, indem ich einfach nur die Ports ändere. Das Setup ist aber auch für andere Zwecke sinnvoll, wenn du z.B. die Burst-Einstellungen von nginx in Aktion sehen oder bestimmte Web-Dienste strikt mit Apache bedienen willst. Los gehts&hellip;</p>
+<p>Ich gehe mal davon aus, dass du nginx und Apache fertig eingerichtet hast. Nginx läuft idealerweise schon (<a href="https://www.nickyreinert.de/mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-1-3/">siehe meine 3-Teilige Anleitung</a>) Dann musst du zunächst mal dafür sorgen, dass die Firewall (z.B. iptables) die alternativen Ports 8080 und 4443 auch durchlässt. Das funktioniert folgendermaßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">sudo iptables -A INPUT -p tcp -m multiport --dports 8080,4443 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+</span></span></code></pre></div><p>Wenn du prüfen willst, ob die Änderung übernommen wurde, machst du das mit</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">iptables -L --line-numbers
+</span></span></code></pre></div><p>Den line-numbers-Parameter kannst du dir schenken - willst du aber einen Eintrag in iptables löschen, können die Zeilennummern sehr hilfreich sein, siehe:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">iptables -D INPUT 3
+</span></span></code></pre></div><p>Die 3 verweist auf die Zeilennummer, INPUT auf die Chain. Aber das nur um Rande. Weiter gehts mit unserem Server-Setup.</p>
+<p>Als nächstes teilst du Apache mit, dass ab sofort auf den alternativen Ports nach Anfragen gelauscht wird. Dazu passt du die Porteinstellung in der Datei /etc/apache2/ports.conf entsprechend an. Die if-Kondition macht die Sache etwas sauber, muss aber nicht sein:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Listen 8080
+</span></span><span class="line"><span class="ln">2</span><span class="cl">&lt;IfModule mod_ssl.c&gt;
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    Listen 4443
+</span></span><span class="line"><span class="ln">4</span><span class="cl">&lt;/IfModule&gt;
+</span></span></code></pre></div><p>Weiter geht es mit der Einstellung des virtuellen Hosts für Apache. Dazu legst du eine Datei mit der Endung &ldquo;conf&rdquo; im Ordner <strong>/etc/apache2/sites-available/</strong> an und füllst sie folgendermaßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="o">&lt;</span><span class="n">VirtualHost</span> <span class="o">*</span><span class="p">:</span><span class="mi">8080</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">        <span class="n">ServerName</span> <span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">        <span class="n">ServerAlias</span> <span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        <span class="n">Redirect</span> <span class="n">permanent</span> <span class="o">/</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">4443</span><span class="o">/</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        <span class="n">DocumentRoot</span> <span class="s2">&#34;/var/nginx/apache2_example_com/htdocs&#34;</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        <span class="n">DirectoryIndex</span> <span class="n">index</span><span class="o">.</span><span class="n">html</span> <span class="n">index</span><span class="o">.</span><span class="n">php</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="o">&lt;/</span><span class="n">VirtualHost</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="o">&lt;</span><span class="n">VirtualHost</span> <span class="o">*</span><span class="p">:</span><span class="mi">4443</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        <span class="n">ServerName</span> <span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">        <span class="n">ServerAlias</span> <span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        <span class="n">ErrorLog</span> <span class="s2">&#34;/var/log/apache2/example.com.error.log&#34;</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">        <span class="n">CustomLog</span> <span class="s2">&#34;/var/log/apache2/example.com.log&#34;</span> <span class="n">common</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">
+</span></span><span class="line"><span class="ln">18</span><span class="cl">        <span class="n">LogLevel</span> <span class="n">warn</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">
+</span></span><span class="line"><span class="ln">20</span><span class="cl">        <span class="n">DocumentRoot</span> <span class="s2">&#34;/var/nginx/apache2_example_com/htdocs&#34;</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">        <span class="n">DirectoryIndex</span> <span class="n">index</span><span class="o">.</span><span class="n">html</span> <span class="n">index</span><span class="o">.</span><span class="n">php</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">
+</span></span><span class="line"><span class="ln">23</span><span class="cl">        <span class="o">&lt;</span><span class="ne">Directory</span> <span class="s2">&#34;/var/nginx/apache2_example_com/htdocs&#34;</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">                <span class="n">Options</span> <span class="o">-</span><span class="n">Indexes</span> <span class="o">+</span><span class="n">FollowSymLinks</span> <span class="o">+</span><span class="n">MultiViews</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">                <span class="n">DirectoryIndex</span> <span class="n">index</span><span class="o">.</span><span class="n">php</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">                <span class="n">AllowOverride</span> <span class="n">All</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">                <span class="n">Require</span> <span class="n">all</span> <span class="n">granted</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">        <span class="o">&lt;/</span><span class="ne">Directory</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">
+</span></span><span class="line"><span class="ln">30</span><span class="cl">        <span class="n">RewriteEngine</span> <span class="n">on</span>
+</span></span><span class="line"><span class="ln">31</span><span class="cl">        <span class="n">Include</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">letsencrypt</span><span class="o">/</span><span class="n">options</span><span class="o">-</span><span class="n">ssl</span><span class="o">-</span><span class="n">apache</span><span class="o">.</span><span class="n">conf</span>
+</span></span><span class="line"><span class="ln">32</span><span class="cl">
+</span></span><span class="line"><span class="ln">33</span><span class="cl">        <span class="n">SSLCertificateFile</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">letsencrypt</span><span class="o">/</span><span class="n">live</span><span class="o">/</span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">fullchain</span><span class="o">.</span><span class="n">pem</span>
+</span></span><span class="line"><span class="ln">34</span><span class="cl">        <span class="n">SSLCertificateKeyFile</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">letsencrypt</span><span class="o">/</span><span class="n">live</span><span class="o">/</span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">privkey</span><span class="o">.</span><span class="n">pem</span>
+</span></span><span class="line"><span class="ln">35</span><span class="cl">
+</span></span><span class="line"><span class="ln">36</span><span class="cl"><span class="o">&lt;/</span><span class="n">VirtualHost</span><span class="o">&gt;</span>
+</span></span></code></pre></div><p>Ich will die Einstellungen nur kurz überspringen, da sie sich eigentlich selber erklären. Der erste Block greift die HTTP-Anfragen ab und leitet diese sofort weiter (<em>Redirect permanent</em>). Ich definiere hier zwar auch DocumentRoot und Index, aber das nur der Vollständigkeit halber. Der zweite Block kümmert sich um die HTTPS-Anfragen. Wie du siehst, passiert hier kein großer Zauber. Ich nutze PHP nur als Modul, setze ein paar Logging-Eigenschaften fest und übermittle die SSL-Zertifikate. <em>Easy peasy. Lemon squeezy.</em><br>
+Wie du siehst, nutze ich für Apache außerdem ein separates Verzeichnis. Achte bei <strong>Wordpress</strong> auch darauf, die URLs entsprechend anzupassen, sonst wird Wordpress die Anfragen immer wieder zu nginx weiteschicken:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">define(&#39;WP_HOME&#39;,&#39;https://example.com:4443&#39;);
+</span></span><span class="line"><span class="ln">2</span><span class="cl">define(&#39;WP_SITEURL&#39;,&#39;https://example.com:4443&#39;);
+</span></span></code></pre></div><p>Als nächstes gönnst du dem Apache-Server einen Neustart:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">sudo service apache2 restart
+</span></span></code></pre></div><p>Und das war es auch schon. Jetzt kannst du mit ApacheBench ein paar Requests abfeuern. Denk dran, dass du auf Windows ab für HTTP-Requests und abs für HTTPS-Requests nutzen musst. Mit diesem Aufruf teste ich erstmal die Performance von meinem Apache-Setup:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">abs -n 1000 -c 100 https://www.example.com:4443/
+</span></span></code></pre></div><p>Der Parameter <em>n</em> steht für die Anzahl von Anfragen insgesamt. Mit <em>c</em> kannst du festlegen, wieviele Anfragen du gleichzeitig abfeuern willst (<em>c</em> muss demnach kleiner sein als <em>n</em>). Der Forward-Slash am Ende ist wichtig, andernfalls erkennt <strong>abs</strong> die URL nicht an. Das gleiche mache ich ohne Port-Angabe um den nginx-Server anzusprechen. Und das sind die Ergebnisse:</p>
+<h3 id="auswertung-der-ergebnisse">Auswertung der Ergebnisse</h3>
+<p><img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik.png" alt=""></p>
+<p>Abbildung 1: Vergleich der Antwortzeiten von Apache und nginx</p>
+<p>Die Abbildung zeigt, wie hoch der Anteil der Anfragen ist, der nach einer bestimmten Zeit (in Millisekunden) beantwortet wurde. Nginx ist ganz klar Gewinner. Alle Anfrgaen wurden inerhalb von 4 Sekunden bearbeitet, die Hälfte der Anfragen soger innerhalb knapp 1 Sekunde. Bei Apache sieht das ungleich schlimmer aus. Allerdings wurden bei nginx 68 Anfragen abgewiesen, bei Apache 0 - eine Folge meiner Warteschlangen-Einstellung.<br>
+Die folgenden Diagramme zeigen noch mal die Zusammensetzung der Anfrage:</p>
 <ul>
-<li>Testen von Plugins &amp; Updates auf Kompatibilität</li>
-<li>Referenz-System zum Erkennen von verdächtigen Änderungen</li>
-<li>Testen von Änderungen am Theme</li>
+<li>Connect - Zeit bis die Verbindung hergestellt wird</li>
+<li>Waiting - Zeit bis zum ersten Datenpaket (Time-To-First-Byte, TTFB)</li>
+<li>Processing - Zeit, bis die vollständige Antwort vom Server eingangen ist, seit die Verbindung geöffnet wurd</li>
+<li>Total - Gesamte Wartezeit</li>
 </ul>
-<p>Wie ein Staging-System eingerichtet wird, habe ich hier genauer erklärt. Was es mit dem 2. Punkt auf sich hat, erkläre ich weiter unten.</p>
-<h2 id="regelmäßige-backups">Regelmäßige Backups</h2>
-<p>Auch Backups sind ein wichtiger Teil eines Sicherheitskonzeptes. Hier gibt es je nach Freiheitsgrad verschiedene Möglichkeiten. Als Plugin empfehle ich zunächst das sehr weit verbreitete Updraft. Das Backup sollte unbedingt auf einen anderen Ort kopiert werden. Updraft unterstützt in der kostenlosen Version z.B. FTP. Wer kein Problem mit Dropbox oder Google Drive hat, kann natürlich auch die Cloud nutzen. Updraft unterstützt die Verschlüsselung der Datenbank-Sicherung nur in der bezahlten Version. Wer mit personenbezogenen Daten hantiert, sollte sich diese Funktion unbedingt zulegen!</p>
-<p>Eine bessere Alternative, die aber nur ab dem 2. Freiheitsgrad möglich ist, ist das Backup über die Kommandozeile. Das ist vor allem dann unumgänglich, wenn die WP-Installation sehr groß ist und nicht mehr mit den gängigen Plugins durchführbar ist. Außerdem funktioniert das unabhängig von Wordpress und kann demnach auch nicht durch andere Plugins beeinträchtigt werden. Wie genau man das einrichtet und vor allem auch die Wiederherstellung habe ich in diesem Beitrag genauer beschrieben.</p>
-<h2 id="plugin-sparsamkeit">Plugin-Sparsamkeit</h2>
-<p>Hierunter ist eher ein Konzept als eine konkrete Handlungsempfehlung zu verstehen. Vor allem technisch unbedarfte Nutzer tendieren dazu, sofort ein Plugin zu installieren, wenn eine bestimmte Funktion benötigt wird. Doch gerade unsaubere, nicht gepflegte Plugins bieten eine Angriffsfläche und noch dazu wirkt sich ein zunehmendes Plugin-Portfolio negativ auf die Performance aus. Wer ein Plugin installieren möchte, sollte dazu nur auf vertrauenswürdige und bekannte Quellen zurückgreifen. Im Klartext: <a href="https://de.wordpress.org/plugins/">https://de.wordpress.org/plugins/</a></p>
-<h2 id="die-offensichtlichen">Die offensichtlichen</h2>
-<ol start="2">
-<li>Admin-Benutzer umbenennen</li>
-</ol>
-<h2 id="die-technischen">Die technischen</h2>
-<ol>
-<li>Admin-Bereich mit .htaccess schützen</li>
-<li>Dateirechte korrekt setzen</li>
-<li>PHP-Ausführung in bestimmten Unterordner deaktivieren</li>
-</ol>
-<h2 id="plugins-und-themes">Plugins und Themes</h2>
-<p>Ein zentrales Element und der größte Vorteil von Wordpress ist seine fast unerreichbar funktionale Erweiterbarkeit und sehr große Community. Das zieht allerdings auch schwarze Schafe an.</p>
-<ol>
-<li>Installiere nicht wahllos Plugins, weil du eine bestimmte Funktion benötigst</li>
-<li>Installiere Plugins nur von vertrauenswürdigen Quellen</li>
-<li>Räume deinen Plugin-Ordner regelmäßig auf</li>
-</ol>
-<h2 id="die-mutigen">Die mutigen</h2>
-<h3 id="php-ini-parameter">PHP ini-Parameter</h3>
-<p>Es dürfte kein Geheimnis sein, dass PHP über die php.ini gesteuert wird. Es gibt allerdings einige sicherheitsrelevante Parameter, um die man sich allerdings selber kümmern muss. Die wichtigsten möchte ich hier vorstellen.</p>
-<p>Um die Übersicht über manuelle Änderungen nicht zu verlieren, solltest du die Einstellungen in einer separaten Datei (z.B. <em>security.ini</em>) speichern. Auf der Kommandozeile zeigt dir der folgende Befehl, aus welchem zusätzlichen Ordner PHP zusätzliche ini-Dateien liest:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">php --ini
-</span></span></code></pre></div><p>In den meisten Fällen dürfte das /etc/php/7.1/apache2/conf.d/ sein.</p>
-<p>Eine einfache aber sehr wirksame Maßnahme ist das deaktivieren potentiell gefährlicher PHP-Funktionen. Wie z.B. <a href="http://php.net/manual/en/function.shell-exec.php">shell_exec()</a> - im Wordpress-Umfeld gibt es kaum ein Szenario, in dem diese Funktion nützlich sein könnte. Um PHP-Funktionen zu deaktivieren, kannst du den ini-Parameter <a href="http://php.net/manual/de/ini.core.php#ini.disable-functions">disable_functions</a> nutzen.</p>
-<p>Dort legst du die <em>security.ini</em> ab und füllst sie entsprechend:</p>
-<p><a href="https://www.damianschwyrz.de/php-backdoors-und-shells-finden-eine-kurze-anleitung">https://www.damianschwyrz.de/php-backdoors-und-shells-finden-eine-kurze-anleitung</a></p>
-<p>siehe auch</p>
-<p><a href="https://binary-butterfly.de/artikel/wordpress-login-security-eine-stahltuer-in-der-wellblechhuette/">https://binary-butterfly.de/artikel/wordpress-login-security-eine-stahltuer-in-der-wellblechhuette/</a></p>
-<p>IP-Filter</p>
-<h3 id="den-admin-bereich-verstecken">Den Admin-Bereich verstecken</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-apache" data-lang="apache"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">&lt;IfModule</span> <span class="s">mod_rewrite.c</span><span class="nt">&gt;</span>
-</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="nb">RewriteEngine</span> <span class="k">on</span>
-</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="nb">RewriteBase</span> /
-</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="c"># Move Wordpress login to /cms.</span>
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="nb">RewriteRule</span> ^cms wp-login.php?cms=unlocked [L]
-</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
-</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^cms=unlocked
-</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^action=logout
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^loggedout=true
-</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_METHOD} !POST
-</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*)$ - [R=403,L]
-</span></span><span class="line"><span class="ln">12</span><span class="cl">
-</span></span><span class="line"><span class="ln">13</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
-</span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} ^loggedout=true
-</span></span><span class="line"><span class="ln">15</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*) ./cms? [R=302,NC,L]
-</span></span><span class="line"><span class="ln">16</span><span class="cl">
-</span></span><span class="line"><span class="ln">17</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
-</span></span><span class="line"><span class="ln">18</span><span class="cl">    <span class="nb">RewriteCond</span> %{HTTP_REFERER} !cms$
-</span></span><span class="line"><span class="ln">19</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_METHOD} POST
-</span></span><span class="line"><span class="ln">20</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*)$ - [R=403,L]
-</span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="nt">&lt;/IfModule&gt;</span>
-</span></span></code></pre></div><!-- https://wordpress.stackexchange.com/a/292691/132138
+<p><img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik-1.png" alt=""></p>
+<p>Abbildung 2: Messergebnisse für die Anfragen an Apache</p>
+<p><img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik-2.png" alt=""></p>
+<p>Abbildung 3: Messergebnisse für die Anfragen an nginx</p>
+<p>Die reine Verbindungszeit ist bei beiden Servern relativ niedrig, dieser Wert gibt aber auch eher Rückschlüsse auf die Qualität des Netzwerks. Die TTFB ist bei Apache relativ hoch., es dauert also eine ganze Weile, bis Apache die Anfrage verarbeitet und entsprechend die ersten Daten sendet. Das wird mit ziemlicher Sicherheit am grundsätzlich nicht sehr performanten php-mod liegen. Insgesamt ist das Ergebnis natürlich wenig überraschend. Mein Ziel war ja, mit nginx und php-fpm ein schnelles Setup zu schaffen. Was hiermit wohl gelungen sein dürfte (Anmerkungen zur Repräsentativität werden gerne entgegengenommen). Fairerweise sei aber noch angemerkt, dass ich Apache in der Standard-Einstellung verwende und wirklich keine Maßnahmen unternommen habe, um die Geschwindigkeit zu optimieren.</p>
 
-## Die unnötigen
-
-### Sicherheits-Plugins
-
-siehe auch
-
-https://www.kuketz-blog.de/basisschutz-wordpress-absichern-teil1
-
-https://fastwp.de/487
-
-```bash
-chown user:user -R *
-find . -type d -exec chmod 755 {} \;
-find . -type f -exec chmod 644 {} \;
-
-chown www-data:www-data wp-content
-
-## Disable Editing in Dashboard
-define('DISALLOW_FILE_EDIT', true);
-
-<Directory /var/www/nickyreinert.de/www>
-# prevent   var_dump(scandir('/etc'));
-# see http://php.net/manual/de/ini.core.php#ini.open-basedir
-# alternativ: php für jeden virtuellen host mit separatem user ausführen und die dateirechte anpassen
-php_admin_value open_basedir "/var/www/nickyreinert.de/www"
-
-</Directory>
-```
-
-```ini
-# disable_functions in php.ini
-# list of function to disable globally #
-disable_functions =exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source
-```
-
-## PHP-FPM?
-
-Normalerweise ruft der Apache-Webserver den PHP-Interpreter jedes mal erneut auf. Der Nachteil: Viel Speicherverbrauch, lange Ladezeiten und ein globaler Benutzer. Etwas schneller ist FastCGI. Dabei läuft der Interpreter permanent im Hintergrund. FPM startet nicht nur einen sondern mehrere PHP-Prozesse im Hintergrund. -->
         
         
         <div class="tags">
-          <p><strong>Tags:</strong> WordPress, Sicherheit, Anleitung, Checkliste</p>
+          <p><strong>Tags:</strong> Apache, Nginx, Webserver, Performance, Benchmark, Linux</p>
         </div>
         
       ]]></content:encoded>
       
       
       
-      <category>wordpress</category>
-      
-      <category>anleitungen</category>
+      <category>hosting</category>
       
       
       
       
-      <media:content url="https://nickyreinert.de/image.png" type="image/jpeg">
-        <media:title>Wordpress-Security Checkliste - Titelbild</media:title>
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Apache und nginx parallel betreiben und mit ApacheBench gegeneinander antreten lassen - Titelbild</media:title>
       </media:content>
       
       
@@ -579,7 +543,332 @@ Normalerweise ruft der Apache-Webserver den PHP-Interpreter jedes mal erneut auf
       
       
       
-      <dc:type>checklist</dc:type>
+      <dc:type>performance_benchmark</dc:type>
+      
+      
+    </item><item>
+      <title>Mehrere virtuelle Server mit nginx und PHP-FPM für Wordpress (Teil 3 / 3)</title>
+      <link>https://nickyreinert.de/2019/2019-10-02-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fuer-wordpress-teil-3-3/</link>
+      <pubDate>Wed, 02 Oct 2019 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2019/2019-10-02-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fuer-wordpress-teil-3-3/</guid>
+      <description>Im letzten Teil geht es um die Einrichtung von PHP-FPM und ich gebe eine kleine Zusammenfassung bzw. Überblick über die Struktur des gesamten Setups. Wenn alles …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser dritte Teil der Serie zur Einrichtung einer sicheren und performanten Webserver-Umgebung für WordPress konzentriert sich auf die Konfiguration von PHP-FPM-Pools. Er behandelt detailliert Sicherheitsaspekte wie Benutzerisolation und Chroot-Umgebungen, Performance-Optimierungen für PHP-Prozesse sowie die Verwaltung von Sessions und das Deaktivieren gefährlicher PHP-Funktionen, um ein robustes Multi-Site-Setup zu gewährleisten.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Nginx, PHP-FPM, WordPress, Server Konfiguration, Webserver Sicherheit, Chroot, Performance Optimierung, PHP, Linux</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Im letzten Teil geht es um die Einrichtung von PHP-FPM und ich gebe eine kleine Zusammenfassung bzw. Überblick über die Struktur des gesamten Setups. Wenn alles korrekt eingerichtet ist, solltet ihr nun einen gut funktionierenden Webserver auf Basis von nginx haben, der PHP-FPM nutzt und gut mit Wordpress laufen sollte. Der Server arbeitet für mehrere unterschiedliche Domains, die so gut wie möglich im System getrennt sind.</p>
+<h2 id="die-einrichtung-der-php-pools">Die Einrichtung der PHP-Pools</h2>
+<p>Um den ganzen Bums zum Laufen zu bringen fehlt jetzt nur noch PHP. Den Großteil haben wir schon geschafft, weshalb ich die Einrichtung von PHP nicht in einen neuen Beitrag gepackt habe.</p>
+<p>Wie im ersten Teil schon angedeutet, nutze ich PHP-FPM. Die Einstellungen jedes einzelen virtuellen Servers befinden sich demnach in <strong>/etc/php/7.3/fpm/pool.d/</strong> und hat die Endung .conf.</p>
+<p>Mit dem Parameter <strong>listen</strong> stellst du die Verbindung zu nginx her. Es wird ein Socket erstellt, über den nginx und PHP-FPM Informationen austauschen. Die Variable <strong>$pool</strong> enthält den Namen des Pools. Mit <strong>prefix</strong> legst du Standard-Ordner dieses Pools fest.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># der Namen des Pools (kann mit $pool referenziert werden</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="p">[</span><span class="n">example_com</span><span class="p">]</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="n">listen</span> <span class="o">=</span> <span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">php</span><span class="o">/</span><span class="n">php</span><span class="o">-</span><span class="n">fpm</span><span class="o">-$</span><span class="n">pool</span><span class="o">.</span><span class="n">sock</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="n">prefix</span> <span class="o">=</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/$</span><span class="n">pool</span>
+</span></span></code></pre></div><p>Jetzt gibt ein paar wichtige Sicherheitsfeatures: Jeder <strong>Pool</strong> hat seinen eigenen Benutzer. Hierzu muss man nicht viel erklären: Der Vorteil hier ist, dass sich die PHP-Prozesse verschiedener Server, da sie ja unterschiedlichen Nutzer &ldquo;gehören&rdquo; grundsätzlich erstmal nicht in die Quere kommen können:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">user = $pool-php
+</span></span><span class="line"><span class="ln">2</span><span class="cl">group = www-data
+</span></span><span class="line"><span class="ln">3</span><span class="cl">listen.owner = $pool-php
+</span></span><span class="line"><span class="ln">4</span><span class="cl">listen.group = www-data
+</span></span></code></pre></div><p>Mit chdir und chroot schließt du diesen Pool in einen bestimmten Ordner ein. Ich hatte oben ja bereits <strong>$prefix</strong> definiert. Diese Parameter arbeiten eng mit den FastCGI-Einstellungen von <strong>nginx</strong> zusammen und sind eine beliebte Fehlerquelle. Mit chroot denkt PHP, dass dieser Ordner der Root-Ordner ist. Warum ist das wichtig? Unsere Root-Ordner liegen (siehe Teil 1) alle in einem eigenen Unterordner. So kann PHP nicht ausbrechen und z.B. auf <strong>sensible Systembereiche</strong> oder die Unterordner anderer Pools / Server zugreifen. Der Parameter <strong>chdir</strong> legt lediglich fest, dass root auch wirklich root ist. Hier könnte man htdocs als Root festlegen. Da wir in der nginx-Einstellung aber <strong>htdocs</strong> als Pfad voranstellen, kann das hier so bleiben. Bedenke, dass sich alle folgenden Pfadangaben immer relativ zu den hier festgelegten Einstellungen stattfinden.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">chdir</span> <span class="o">=</span> <span class="o">/</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">chroot</span> <span class="o">=</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">example1</span>
+</span></span></code></pre></div><p>Weiter geht es mit der Konfiguration der PHP-Prozesse. Mit <strong>pm=dynamic</strong> legen wir fest, dass der Prozess-Manager prozesse dynamisch starten kann. Mit <strong>pm=static</strong> startest du immer eine feste Anzahl von Prozessen. (Bei Servern mit hoher Last kann das durchaus Sinn machen, <a href="https://haydenjames.io/php-fpm-tuning-using-pm-static-max-performance/">wie hier beschrieben wird</a>). Bei einer kleineren Seite reicht <strong>pm=ondemand</strong> völlig aus. Wir erinnern uns: Die Prozesse dienen als Interpretor für unsere PHP-Scripte. Ein Prozess bearbeitet eine Anfrage. Wenn du mehr Traffic erwartest, solltest du diese Werte also erhöhen.</p>
+<p><strong>max_children</strong> gibt die Obergrenze dafür fest. <strong>start_servers=1</strong> besagt, dass mindestens 1 Prozess sofort gestartet wird. Mit <strong>min_spare_servers</strong> legst du fest, wieviele Prozesse mindestens &ldquo;vorrätig&rdquo; sind, <strong>max_spare_servers</strong> legt dafür die Obergrenze fest. Wie viele Prozesse du maximale starten solltest, errechnest du ganz einfach folgender maßen:</p>
+<p>Rufe den folgenden Code auf um den Speicherverbrauch deines PHP-Services zu erhalten:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">ps --no-headers -o &#34;rss,cmd&#34; -C php-fpm7.3 | awk &#39;{ sum+=$1 } END { printf (&#34;%d%s\n&#34;, sum/NR/1024,&#34;Mb&#34;) }&#39;
+</span></span></code></pre></div><p>Den freien Speicher lässt du folgendermaßen anzeigen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">free -h
+</span></span></code></pre></div><p>Angenommen, du hast 4.096 MByte freien Speicher zur Verfügung und ein PHP-Prozess verbraucht 4 MByte, dann kannst du insgesamt 1.024 Prozesse starten. Wenn du mehrere virtuelle Server betreibst, teilen diese sich natürlich dieses Kontingent. Im folgenden ein Beispiel: Es werden maximal 1.024 Prozesse gestartet. 100 Prozesse sind immer aktiv, auch wenn sie ungenutzt sind. Sind alle 100 Prozesse beschäftigt, werden mindestens 50 Prozesse gestartet, aber niemals mehr als 200 - das Spiel funktioniert so lange, bis das Kontingent von 1.024 ausgeschöpft ist.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">pm = dynamic
+</span></span><span class="line"><span class="ln">2</span><span class="cl">pm.max_children = 1024
+</span></span><span class="line"><span class="ln">3</span><span class="cl">pm.start_servers = 100
+</span></span><span class="line"><span class="ln">4</span><span class="cl">pm.min_spare_servers = 50
+</span></span><span class="line"><span class="ln">5</span><span class="cl">pm.max_spare_servers = 200
+</span></span></code></pre></div><p>Wenn dein Server relativ klein ist, solltest du den <strong>On-Demand-Modus</strong> nutzen. Hier wird ein Prozess nur dann gestartet, wenn der Bedarf da ist. Das spart Speicher und ist in der Regel auch nicht merkbar langsamer.</p>
+<p>Der Parameter <strong>catch_workers_output</strong> steuert die Ausgabe des PHP-Prozesses. Wie alle Log-Einstellungen, kann <a href="https://twitter.com/leofeyer/status/486862436948250624">dieser erhebliche Auswirkungen auf die Performance haben</a>. Falls du also noch ein paar Millisekunden mehr herausholen willst, setze diesen Wert auf <strong>no</strong>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">catch_workers_output = yes
+</span></span></code></pre></div><p>Die folgenden Einstellungen werden eigentlich in der php.ini vorgenommen. Ich will sie hier aber auf Server-Ebene definieren, da die virtuellen Server ja durchaus unterschiedliche Ansprüche haben.</p>
+<h3 id="sessions-cookies-und-referrer">Sessions, Cookies und Referrer</h3>
+<p>Wenn du eine zusätzliche Sicherheitshürde einbauen willst, kannst du den Pfad der <strong>PHP-Sessions</strong> hier ändern. Wenn du in deiner Web-Anwendung nicht mit <strong>JavaScript</strong> auf <strong>Cookies</strong> zugreifen willst, kannst du den Cookie-Zugriff außerdem nur auf HTTP einschränken. Und schließlich macht es Sinn, dass eine Session nur vom eigenen Server genutzt werden kann, wenn also dein Server im Referrer übermittelt wird.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">php_value[session.save_path] = /sessions
+</span></span><span class="line"><span class="ln">2</span><span class="cl">php_value[session.cookie_httponly] = 1
+</span></span><span class="line"><span class="ln">3</span><span class="cl">php_value[session.referer_check] = example.com
+</span></span></code></pre></div><p>Sehr nützlich und ein wichtiges Sicherheitsfeature ist <strong>disable_functions</strong>. Es gibt eine nicht geringe Anzahl von PHP-Funktionen, mit denen sich Systemfunktionen steuern lassen. Diese solltest du grundsätzlich nicht zulassen. Ein weiteres Sicherheitsfeature sind <strong>allow_url_fopen</strong> und <strong>allow_url_include</strong>. Damit unterbindest du das Einbinden von schadhaften Code.<br>
+Die Einstellungen zum Log werde ich nicht weiter erläuter, da sie wie so oft selbsterklärend sind. Beachte, dass das Logging immer auch gewisse Auswirkungen auf die Performance haben. Andererseits kann die regelmäßige Log-Analyse aber auch rechzeitig wichtige Hinweise auf (Sicherheits-)Probleme deines Systems liefern!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="n">php_admin_value</span><span class="p">[</span><span class="n">disable_functions</span><span class="p">]</span> <span class="o">=</span> <span class="n">php_uname</span><span class="p">,</span> <span class="n">getmyuid</span><span class="p">,</span> <span class="n">getmypid</span><span class="p">,</span> <span class="n">passthru</span><span class="p">,</span> <span class="n">leak</span><span class="p">,</span> <span class="n">listen</span><span class="p">,</span> <span class="n">diskfreespace</span><span class="p">,</span> <span class="n">tmpfile</span><span class="p">,</span> <span class="n">link</span><span class="p">,</span> <span class="n">ignore_user_abord</span><span class="p">,</span> <span class="n">shell_exec</span><span class="p">,</span> <span class="n">dl</span><span class="p">,</span> <span class="n">set_time_limit</span><span class="p">,</span> <span class="n">exec</span><span class="p">,</span> <span class="n">system</span><span class="p">,</span> <span class="n">high</span><span class="o">$</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="n">php_admin_flag</span><span class="p">[</span><span class="n">allow_url_fopen</span><span class="p">]</span> <span class="o">=</span> <span class="n">on</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="n">php_admin_flag</span><span class="p">[</span><span class="n">allow_url_include</span><span class="p">]</span> <span class="o">=</span> <span class="n">off</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="c1"># das Speicherlimit pro Script-Aufrufeinstellen</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="n">php_admin_value</span><span class="p">[</span><span class="n">memory_limit</span><span class="p">]</span> <span class="o">=</span> <span class="mi">256</span><span class="n">M</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="c1"># Logging-Einstellung</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="n">php_flag</span><span class="p">[</span><span class="n">display_errors</span><span class="p">]</span> <span class="o">=</span> <span class="n">off</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="n">php_admin_value</span><span class="p">[</span><span class="n">error_log</span><span class="p">]</span> <span class="o">=</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="nb">log</span><span class="o">/</span><span class="n">php</span><span class="o">-</span><span class="n">fpm</span><span class="o">/$</span><span class="n">pool</span><span class="o">.</span><span class="n">log</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="n">php_admin_flag</span><span class="p">[</span><span class="n">log_errors</span><span class="p">]</span> <span class="o">=</span> <span class="n">on</span>
+</span></span></code></pre></div><p>Die Einstellung von PHP ist damit abgeschlossen. Zum Abschluss gönne <strong>PHP</strong> und <strong>nginx</strong> noch einen Neustart. Danach sollte dein System rund laufen.</p>
+<h2 id="zusammenfassung">Zusammenfassung</h2>
+<p>Wenn du es bis hierhin geschafft hast, unterstützt dein Setup nun einen relativ performanten Server für mehrere Domains (aka virtuelle Server, virtual Hosts), der PHP-FPM nutzt und eine ziemlich solide Sicherheits-Grundeinstellung mitbringt.</p>
+<p>Jeder einzelne virtuelle Server hat seine eigene Umgebung im Dateisystem, aus der er kaum ausbrechen kann. Die PHP-Prozesse sind voneinander getrennt, genauso wie die Speicherbereiche für den Cache. Außerdem ist das ganze darauf ausgerichtet, möglichst gut mit Wordpress zu laufen. Um das ganze System für Wordpress perfekt abzurunden, gibt es noch eine Handvoll Möglichkeiten, die ich gesondert vorstellen werden.</p>
+<p><img src="/2019/2019-10-02-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fuer-wordpress-teil-3-3/images/zusammenfassung-700x394.png" alt=""></p>
+<p>Grobe schematische Übersicht des Setups für mehrere virtuelle Server mit nginx und PHP-FPM</p>
+<h2 id="nachtrag">Nachtrag</h2>
+<p>Wenn du noch ein paar zusätzliche Informatioen benötigst, sei dir der der ähnlich ausgerichtete Artikel auf <a href="https://binary-butterfly.de/artikel/das-perfekte-php-wordpress-setup/">binary-butterfly.de</a> empfohlen. Die Einstellungen für nginx und PHP unterscheiden sich kaum, dafür erfährst du dort auch, wie du zusätzlich mehrere SSH-Nutzer mit ins Boot holen kannst.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Nginx, PHP-FPM, WordPress, Server Konfiguration, Tutorial</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>wordpress</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Mehrere virtuelle Server mit nginx und PHP-FPM für Wordpress (Teil 3 / 3) - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>tutorial</dc:type>
+      
+      
+    </item><item>
+      <title>SSL-Verifizierung mit PHP schlägt fehlt (Fehler 14090086)</title>
+      <link>https://nickyreinert.de/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/</link>
+      <pubDate>Sat, 14 Oct 2017 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/</guid>
+      <description>Wenn dich PHP mit dieser Fehlermeldung (oder einer ähnlichen Fehlernummer) begrüßt, dann liegt es wohl daran, dass beim Abruf einer SSL-Ressource die Identität …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel bietet Lösungen für SSL-Verifizierungsfehler in PHP (Fehler 14090086) beim Zugriff auf externe Ressourcen. Er erklärt die Risiken der Verifizierungsunterdrückung und zeigt detailliert, wie man die vollständige Zertifikatskette manuell einrichtet und PHP global über &#39;openssl.cafile&#39; konfiguriert, um eine korrekte SSL-Authentifizierung zu gewährleisten.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> PHP, SSL, Zertifikate, Websicherheit, Troubleshooting, OpenSSL, cURL, Server Konfiguration</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Wenn dich PHP mit dieser Fehlermeldung (oder einer ähnlichen Fehlernummer) begrüßt, dann liegt es wohl daran, dass beim Abruf einer SSL-Ressource die Identität nicht verifiziert werden konnte. Und das ist auch gut so, denn der Sinn von SSL ist ja das Herstellen einer gesicherten Verbindung.<br>
+So sieht die Fehlermeldung bei Verwendung von <em>file_get_contents();</em> aus. Aber auch andere Funktionen, mit denen man auf externe Ressourcen verweisen kann, werfen diesen Fehler, wie z.B. <em>imagecreatefrompng();</em>.</p>
+<p>Warning: file_get_contents(): SSL operation failed with code 1.
+OpenSSL Error messages:
+error:14090086:SSL routines:ssl3_get_server_certificate:certificate
+verify failed in /website/script.php
+on line 50</p>
+<p>Warning: file_get_contents():
+Failed to enable crypto in /website/script.php<br>
+on line 50</p>
+<p>Warning: file_get_contents(<a href="https://www.nickyreinert.de/foobar.json%29">https://www.nickyreinert.de/foobar.json)</a>:
+failed to open stream: operation failed in /website/script.php<br>
+on line 50</p>
+<p>Die Erklärung ist simpel: PHP kennt den Aussteller des Zertifikates für <a href="https://www.nickyreinert.de">https://www.nickyreinert.de</a> nicht und verweigert aus Sicherheitsgründen den Aufbau einer Verbindung. Die Ursachen hingegen können vielfältig sein, oft ist der Aussteller des Zertifikats z.B. nicht bekannt. Wir müssen also entweder dafür sorgen, dass PHP dem Aussteller vertraut oder festlegen, dass PHP die Zertifikate gar nicht erst prüft.</p>
+<h2 id="verifizierung-des-ssl-hosts-unterdrücken">Verifizierung des SSL Hosts unterdrücken</h2>
+<p>Das ist die quick&rsquo;n&rsquo;dirty Lösung. Zumindest <em>file_get_contents()</em>; kann mit Parametern gefüttert werden, die die Verifizierung der Ressource unterdrücken:</p>
+<p>$stream = stream_context_create(array(    
+$stream = stream_context_create(array(
+&ldquo;ssl&rdquo;=&gt;array(     
+&ldquo;verify_peer&rdquo;=&gt; false,    
+&ldquo;verify_peer_name&rdquo;=&gt; false, ),
+&lsquo;http&rsquo; =&gt; array(    
+&rsquo;timeout&rsquo; =&gt; 30     ) )     );</p>
+<p>$result = file_get_contents($url, 0, $stream);</p>
+<p>Wer auf eine eigene Ressource zurückgreift, z.B. im lokalen Netz oder zu Testzwecken, kann damit leben. Aus Sicherheitsgründen ist die Lösung allerdings nicht zu empfehlen. Außerdem erlaubt nicht jede Funktion die Angabe eines Stream-Contextes, wie z.B. <em>imagecreatefromjpeg();</em></p>
+<h2 id="die-zertifikatskette-manuell-einrichten">Die Zertifikatskette manuell einrichten</h2>
+<p>Man kommt also nicht darum, die saubere Lösung zu nutzen. Dazu muss man wissen, dass es in den allermeisten Fällen nicht nur um das eine Zertifikat geht, sondern um die gesamte Zertifikatskette. Diese beinhaltet auch die Zertifikate der Stellen, die dem infragekommenden Server, also <a href="https://www.nickyreinert.de">https://www.nickyreinert.de</a>, das Zertifikat ausgestellt haben. Wenn PHP diese Stellen nicht kennt, geht es auch davon aus, dass die von dort ausgestellten Zertifikate nicht gültig sind.</p>
+<p><a href="https://www.nickyreinert.de/files/1561/ssl-zertifikats-kette.png"><img src="/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/images/ssl-zertifikats-kette-300x219.png" alt=" SSL Zertifikats-Kette mit den Intermediate Zertifikaten"></a></p>
+<p>SSL Zertifikats-Kette mit den Intermediate Zertifikaten</p>
+<p>Um die Zertifikatskette zu erhalten, kannst du einen Service wie <a href="https://whatsmychaincert.com/">https://whatsmychaincert.com/</a> nutzen. Dieser liefert dir eine Datei mit der  kompletten Zertifikatskette. Oder du machst dich selber auf die Suche. Jedes Zertfikat enthält den Namen des Ausstellers bzw. den Typ des Zertifikats. Damit lassen sich die notwendigen Zwischenzertifkate auch manuell zusammenstellen.</p>
+<h2 id="php-die-zertifikatskette-mitteilen">PHP die Zertifikatskette mitteilen</h2>
+<p>Die Datei mit der Zertifikatskette gehört nun, oh Wunder, an einen Ort, den PHP erreichen kann. Dann musst du PHP noch mitteilen, dass es auch diese Zertifikatskette berücksichtigen soll. Auch das passiert über den Stream-Context, den ich oben schon angesprochen habe. Doch diesmal erlauben wir PHP, den SSL-Host zu verfizieren und verweisen auf die Zertifikatskette, die wir oben erstellt haben:</p>
+<p>$stream = stream_context_create(array(
+&ldquo;ssl&rdquo;=&gt;array(    
+&ldquo;cafile&rdquo; =&gt; &ldquo;<a href="https://www.nickyreinert.de.pem">www.nickyreinert.de.pem</a>&rdquo;,    
+&ldquo;verify_peer&rdquo;=&gt; true,    
+&ldquo;verify_peer_name&rdquo;=&gt; true, ),&lsquo;http&rsquo; =&gt; array(    
+&rsquo;timeout&rsquo; =&gt; $this-&gt;configUrlTimeOut     ) )
+;
+$config = file_get_contents($url, 0, $stream);</p>
+<p>Geschafft. PHP sollte nun, zur Laufzeit, den SSL-Host überprüfen und dabei auf die Zertifikate zurückgreifen, die die Authentizität einwandfrei bestätigen.</p>
+<p>Man kann den Verweis auch an anderer Stelle global definieren. Die PHP-Funktion openssl_get_cert_locations(); teilt uns direkt mit, wo PHP nach gültigen Zertifikaten sucht:</p>
+<p>Array
+(
+[default_cert_file] =&gt; /Applications/XAMPP/xamppfiles/share/openssl/cert.pem
+[default_cert_file_env] =&gt; SSL_CERT_FILE
+[default_cert_dir] =&gt; /Applications/XAMPP/xamppfiles/share/openssl/certs
+[default_cert_dir_env] =&gt; SSL_CERT_DIR
+[default_private_dir] =&gt; /Applications/XAMPP/xamppfiles/share/openssl/private
+[default_default_cert_area] =&gt; /Applications/XAMPP/xamppfiles/share/openssl
+[ini_cafile] =&gt; /Applications/XAMPP/xamppfiles/share/curl/curl-ca-bundle.crt
+[ini_capath] =&gt;
+)</p>
+<p>Der entscheidende Parameter lautet <strong>ini_cafile</strong>. Diese wird in der php.ini mit dem Parameter</p>
+<p>openssl.cafile=/Applications/XAMPP/xamppfiles/share/curl/curl-ca-bundle.crt</p>
+<p>gesetzt. Die gleiche Info erhältst du auch über die bekannte Funktion phpinfo(), dort lautet der Parameter <strong>openssl.cafile</strong>.</p>
+<p>In der entsprechenden Datei liegen eine Menge von Root-Zertifikaten, bzw. Certificate-Authorities. Sprich die Aussteller, denen PHP grundsätzlich vertraut. Mitunter macht es mehr Sinn, diese Einstellung in der php.ini zu nutzen, damit auch curl() darauf zurückgreifen kann.</p>
+<p>Wenn du PHP-FPM benutzt, musst du den Parameter übrigens folgendermaßen ansprechen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">php_admin_value[openssl.cafile] = /Applications/XAMPP/xamppfiles/share/curl/curl-ca-bundle.crt
+</span></span></code></pre></div><h2 id="zusammenfassung">Zusammenfassung</h2>
+<p>Die SSL-Fehlermeldung hat ihren Sinn. PHP ist nicht in der Lage, die Authentizität des Servers zu überprüfen. Der korrekte Weg das Problem zu beheben, ist das Zertifikat der entsprechenden Seite herunterzuladen, die Intermediate-Zertifikate und das Root-Zertifikat zu besorgen und alle Zertifikate im PEM-Format in eine Text-Datei zu packen.<br>
+Danach kannst du entweder auf die URL zugreifen und über den Stream-Kontext auf diese Datei mit der Zertifikats-Kette verweisen, oder du legst in den globalen PHP-Einstellungen fest, dass PHP diese Datei beim nächsten Mal berücksichtigen soll.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> certificate-chain, curl, intermediate, php, ssl, zertifikate, zertifikatskette, Troubleshooting</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>SSL-Verifizierung mit PHP schlägt fehlt (Fehler 14090086) - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>troubleshooting_guide</dc:type>
+      
+      
+    </item><item>
+      <title>SFTP auf Microsoft IIS korrekt einrichten</title>
+      <link>https://nickyreinert.de/2015/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten/</link>
+      <pubDate>Wed, 14 Oct 2015 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2015/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten/</guid>
+      <description>Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Problem, denen du begegnen wirst.
+Du kannst die Verbindung zum …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt häufige Probleme bei der Einrichtung eines SFTP-Servers auf Microsoft IIS, darunter Zertifikatsfehler, Probleme mit passiven Verbindungen und Benutzerberechtigungen. Er bietet Lösungen, wie die korrekte Generierung von Server-Zertifikaten mittels PowerShell und die Behebung von Verbindungsschwierigkeiten.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> SFTP, Microsoft IIS, Server Konfiguration, Netzwerksicherheit, Zertifikate, PowerShell, Troubleshooting, Windows Server</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Problem, denen du begegnen wirst.</p>
+<blockquote>
+<ol>
+<li>
+<ol>
+<li>
+<p>Du kannst die Verbindung zum Server nicht herstellen, weil das Server-Zertifikat ungültig ist. Die Fehlermeldung in FileZilla lautet dann z.B.<br>
+GnuTLS error -48: Key usage violation in certificate has been detected. Could not connect to server</p>
+</li>
+<li>
+<p>Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast, kann die Verbindung nicht vollendet werden. FileZilla bleibt dann z.B. bei der folgenden Zeile stehen:</p>
+<p>150 Opening BINARY mode data connection</p>
+</li>
+</ol>
+</li>
+</ol></blockquote>
+<p>3. Und schließlich kann es sein, dass der Benutzer nicht die nötigen Zugriffsrechte für den Ordner hat, den du in den Einstellungen des FTP-Servers angegeben hast.</p>
+<p>Keine Sorge. Mit diesen drei Probleme durfte auch ich schon kämpfen und ich habe die Lösungen hier zusammengetragen. Also.. eins nach dem anderen.</p>
+<p>Die Ursache des ersten Problems ist der Assistent, mit dem man im IIS das Server-Zertifikat erstellt. Auf den Punkt gebracht, nutzt dieser ein paar falsche Parameter. Aus diesem Grund muss das Zertifikat per Hand in der PowerShell erstellt werden. Wichtig: In der normalen Konsole funktioniert das nicht.</p>
+<p><a href="https://superuser.com/questions/1167351/filezilla-reporting-gnutls-error-48-key-usage-violation-in-certificate-has-be">https://superuser.com/questions/1167351/filezilla-reporting-gnutls-error-48-key-usage-violation-in-certificate-has-be</a></p>
+<p>According to a post in the <a href="https://forums.iis.net/t/1234970.aspx">IIS forums</a>, you can generate the certificate with PowerShell instead until the issue is fixed by Microsoft:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">New-SelfSignedCertificate -CertStoreLocation cert:\LocalMachine\My -dnsname ftp.example.com
+</span></span></code></pre></div><p>Replace <code>ftp.example.com</code> by your server&rsquo;s hostname.</p>
+<p>You will get a fingerprint, copy that. Set a password for the private key:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$password = ConvertTo-SecureString -String &#34;password goes here&#34; -Force -AsPlainText
+</span></span></code></pre></div><p>Now export it (you can change <code>C:\cert.pfx</code> to the path you want to save it to, just make sure it ends in <code>.pfx</code>):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Export-PfxCertificate -cert cert:\LocalMachine\My\FINGERPRINT -FilePath C:\cert.pfx -Password $password
+</span></span></code></pre></div><p>Benutzer anlegen</p>
+<p><a href="https://www.nickyreinert.de/files/ssl-zertifikat-auf-windows-korrekt-installieren/windows-server-ssl-zertifikat-zuweisen.png"><img src="/2015/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten/images/windows-server-ssl-zertifikat-zuweisen-300x121.png" alt=""></a></p>
+<p><strong>siehe auch:</strong></p>
+<p><a href="https://www.visualsvn.com/support/topic/00056/">https://www.visualsvn.com/support/topic/00056/</a></p>
+<p>[http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/ http://ekiwi-blog.de/?p=3465](<a href="http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/">http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/</a> <a href="http://ekiwi-blog.de/?p=3465">http://ekiwi-blog.de/?p=3465</a>)</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> SFTP, IIS, Windows Server, Anleitung, Troubleshooting, Netzwerk</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>SFTP auf Microsoft IIS korrekt einrichten - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>troubleshooting_guide</dc:type>
       
       
     </item>

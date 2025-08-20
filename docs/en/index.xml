@@ -15,10 +15,10 @@
     <copyright></copyright>
     <lastBuildDate>Fri, 15 Aug 2025 12:34:56 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/en/index.xml" rel="self" type="application/rss+xml" /><item>
       <title>How to simulate proof of work in SQL and BigQuery</title>
-      <link>https://nickyreinert.de/en/blog/2025/08/15/how-to-simulate-proof-of-work-in-sql-and-bigquery/</link>
+      <link>https://nickyreinert.de/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/</link>
       <pubDate>Fri, 15 Aug 2025 12:34:56 +0000</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/en/blog/2025/08/15/how-to-simulate-proof-of-work-in-sql-and-bigquery/</guid>
+      <guid>https://nickyreinert.de/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/</guid>
       <description>(or: How does blockchain mining work?)
 A miner has to solve a mathematical problem to validate a block for the Blockhain. The so called Proof of Work requires a …</description>
       
@@ -27,7 +27,7 @@ A miner has to solve a mathematical problem to validate a block for the Blockhai
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>A technical, two-part tutorial that first explains the Bitcoin &#34;Proof of Work&#34; mining algorithm in detail, and then demonstrates how to simulate this computationally intensive process using only SQL in Google BigQuery. The guide provides a complete BigQuery script that reconstructs the block header and iterates through the nonce and version fields to find a valid hash.</p>
+          <p>A technical, two-part tutorial that first explains the Bitcoin &#39;Proof of Work&#39; mining algorithm in detail, and then demonstrates how to simulate this computationally intensive process using only SQL in Google BigQuery. The guide provides a complete BigQuery script that reconstructs the block header and iterates through the nonce and version fields to find a valid hash.</p>
           
           
           <p><strong>Hauptthemen:</strong> Blockchain, Bitcoin, SQL, Google BigQuery, Data Engineering, Cryptography</p>
@@ -49,7 +49,7 @@ A miner has to solve a mathematical problem to validate a block for the Blockhai
 <h2 id="why-does-the-blockchain-rely-on-hashes">Why does the blockchain rely on hashes?</h2>
 <p>Every block in a blockchain contains two kind of information: A couple of <strong>transactions details</strong> and a <strong>block header</strong>. Among other details the header contains <strong>two</strong> important <strong>hashes</strong>: One hash for all the transactions of the current block and one hash for the header of the previous block.</p>
 <p>If you would tamper the transaction data of lets say block <strong>#1337</strong>, the hash of this block’s header would change. But as the next block’s header contains a hash for the original block #1337, you could simply compare both hashes and come to the conclusion, that the data in block #1337 has changed.</p>
-<p><img src="/en/blog/2025/08/15/how-to-simulate-proof-of-work-in-sql-and-bigquery/assets/image7.png" alt="How hashes ensure data integrity in a blockchain"></p>
+<p><img src="/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/assets/image7.png" alt="How hashes ensure data integrity in a blockchain"></p>
 <p>This sounds easy, because calculating one hash only takes milliseconds, even on slow computers. That’s why the blockchain protocol defines a very special requirement that every header’s hash has to meet: The hash of a block header has to be lower than a given number, the target.</p>
 <blockquote>
 <p>S ide note: Besides that there are some other rules that make the calculation even more difficult: For example you need to double-hash the information and you need to calculate the Merkle root of all transactions of the current block.</p></blockquote>
@@ -57,7 +57,7 @@ A miner has to solve a mathematical problem to validate a block for the Blockhai
 <p>The whole process is so complicated, that even powerful computers will take around 10 minutes to find a solution. That’s by the way a reason why Bitcoin is not the payment method: If you’d like to buy a <strong>coffee</strong>, you may have to wait around 10 minutes until your transaction is confirmed.</p>
 <h2 id="the-block-header">The block header</h2>
 <p>Let’s see what kind of information a block header contains. This is the header of <a href="https://learnmeabitcoin.com/explorer/block/00000000000000000006b9bf976b004581c19d800948d2eab77c8f9e07b9f088">block number 727938</a>:</p>
-<p><img src="/en/blog/2025/08/15/how-to-simulate-proof-of-work-in-sql-and-bigquery/assets/image4.png" alt=""></p>
+<p><img src="/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/assets/image4.png" alt=""></p>
 <p>You will find six important fields here:</p>
 <ul>
 <li>a <strong>version</strong> field,</li>
@@ -87,16 +87,16 @@ A miner has to solve a mathematical problem to validate a block for the Blockhai
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">0x170a40c0
 </span></span></code></pre></div><p>A hash is a number with 32 bytes. And that’s strange: How can you limit a 32 byte number using only 4 bytes? Here it is: The first byte of the bit field defines an <strong>exponent</strong>: 0x17. The remaining 3 bytes define the <strong>mantissa</strong>: 0x0a40c0. The base is 256 and you need to substract 3 (length of the mantissa) from the exponent. So this is the formula to calculate the target:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">target = 0x0a40c0 × 256⁽⁰ˣ¹⁷ ⁻ ³⁾⁾
-</span></span></code></pre></div><p><img src="/en/blog/2025/08/15/how-to-simulate-proof-of-work-in-sql-and-bigquery/assets/image1.png" alt="The bit field"></p>
+</span></span></code></pre></div><p><img src="/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/assets/image1.png" alt="The bit field"></p>
 <p>The target will be adjusted every <strong>2,016 blocks</strong>, which is roughly two weeks (6 blocks per hour × 24 hours × 7 days x 2 = 2,016). Why? The mathematical problem needs to be difficult enough to keep the chain safe but it must not be to difficult, because you do not want to wait more than 10 minutes for a transaction to be confirmed. As computing power changes or miners joining and leaving the network, the target and therefore the difficulty as to be adjusted.</p>
 <h2 id="the-merkle-root">The Merkle root</h2>
 <p>The Merkle root is a hash of all transactions of **the current block **(and a little more, I’m not going to much into detail here). Basically it’s pretty easy: You take two transactions and hash them to get Hash #1. Then you take two more transactions, hash them and get Hash #2. Now you take Hash #1 and Hash #2, hash it and get: Hash #3. You’re building an upside tree, where the transactions are on the bottom and the branches are dozens of hashes eventually leading to the root hash.</p>
-<p><img src="/en/blog/2025/08/15/how-to-simulate-proof-of-work-in-sql-and-bigquery/assets/image3.png" alt="a simple Merkle root"></p>
+<p><img src="/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/assets/image3.png" alt="a simple Merkle root"></p>
 <p>If the search space is not enough, the miner can change the order of the transactions to create a different Merkle root. This would change the block message and therefore lead to a different hash.</p>
 <h2 id="the-timestamp">The timestamp</h2>
 <p>The timestamp, well, shows at what time the block was validated. In fact there is a lot more to tell about the timestamp, but not in a mathematical way.</p>
 <p>The protocol uses the timestamp to see, how fast blocks are mined. As already explained, the network uses this value to adjust the difficulty.</p>
-<p><img src="/en/blog/2025/08/15/how-to-simulate-proof-of-work-in-sql-and-bigquery/assets/image6.png" alt="The date field"></p>
+<p><img src="/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/assets/image6.png" alt="The date field"></p>
 <p>A miner can use the timestamp field to increase the search space. A valid timestamp has to be <strong>greater</strong> than the median timestamp of the last 11 blocks and lower than the network-time plus <strong>2 hours</strong>. Eventually this gives you a <strong>3 hour</strong> window where you can adjust the timestamp to gain extra search space. 3 hours are 10,800 seconds (which is roughly 2¹³).</p>
 <h2 id="the-version-field">The version field</h2>
 <p>Last but definitely not least: The version field contains a lot more than you would expect. The version field is 4 bytes long and it</p>
@@ -106,16 +106,16 @@ A miner has to solve a mathematical problem to validate a block for the Blockhai
 <li>offers additional search space.</li>
 </ul>
 <p>That’s a lot of information and it’s not that easy to pull it out of those 4 bytes. The current protocol version requires the **first 3 bits **(!) to be at least <strong>0b001</strong> (2 in decimal):</p>
-<p><img src="/en/blog/2025/08/15/how-to-simulate-proof-of-work-in-sql-and-bigquery/assets/image8.png" alt=""></p>
+<p><img src="/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/assets/image8.png" alt=""></p>
 <p>Besides that, the last 13 bits are used for soft forks signaling. This simply means, if a miner is ready for a particular soft fork, he flips on of those bits to 1. Imagine there’s a soft fork BIPx that requires the 1 bit to be flipped, that’s how the miner signals readiness for BIPx:</p>
-<p><img src="/en/blog/2025/08/15/how-to-simulate-proof-of-work-in-sql-and-bigquery/assets/image10.png" alt=""></p>
+<p><img src="/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/assets/image10.png" alt=""></p>
 <p>This would lead to a version field like this:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">0x20000001
 </span></span></code></pre></div><p>As you may have noticed, this leaves 16 bits open (32 bits at all, mins 3 bits for the version and 13 bits for soft forks = 16 bits left). This gives the miner 2¹⁶ more options to find a good hash! That technique is called overt ASIC boost. Lets take the version field from <a href="https://blockstream.info/block/00000000000000000006b9bf976b004581c19d800948d2eab77c8f9e07b9f088?expand=">block #727938</a> for example: 0x344dc004</p>
 <p>This is the bit representation of the hexadecimal value:</p>
-<p><img src="/en/blog/2025/08/15/how-to-simulate-proof-of-work-in-sql-and-bigquery/assets/image9.png" alt=""></p>
+<p><img src="/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/assets/image9.png" alt=""></p>
 <p>So apparently the miner took 0b1010001001101110 (0d41582) as an additional resource to finally find the fitting nonce 0xa4124353.</p>
-<p><img src="/en/blog/2025/08/15/how-to-simulate-proof-of-work-in-sql-and-bigquery/assets/image5.png" alt="The version field"></p>
+<p><img src="/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/assets/image5.png" alt="The version field"></p>
 <h2 id="block-header-summary">Block header summary</h2>
 <p>So after all you have <strong>six fields</strong> in your header, where only <strong>two fields</strong> are fixed and <strong>cannot</strong> be changed in order to find a hash below the given target: The <strong>bit</strong> field, that describes the <strong>target</strong> itself and the hash for the **previous header — **the vital element of the Blockchain concept..</p>
 <p>Besides that you may change the <strong>nonce</strong>, the one field actually designed to change. The <strong>Merkle</strong> <strong>root</strong>, by re-arranging or considering different transactions. The <strong>version</strong> field and the <strong>timestamp</strong> by exploiting the 3 hour time window.</p>
@@ -146,7 +146,7 @@ A miner has to solve a mathematical problem to validate a block for the Blockhai
 </span></span></code></pre></div><p>And that’s the result:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">000000000000000000078c7ad45ab182796bbb419c361aa3eaffaa8ddd00d4f0
 </span></span></code></pre></div><p>that you now may compare to <a href="https://blockstream.info/block/000000000000000000078c7ad45ab182796bbb419c361aa3eaffaa8ddd00d4f0">the actual header hash the next block refers to</a>:</p>
-<p><img src="/en/blog/2025/08/15/how-to-simulate-proof-of-work-in-sql-and-bigquery/assets/image2.png" alt=""></p>
+<p><img src="/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/assets/image2.png" alt=""></p>
 <h2 id="prepare-the-inner-loop">Prepare the inner loop</h2>
 <p>We’re going to wrap everything into a while-loop, add a break-out condition for safety reasons and start with a comparison of the just found hash and a target. Because that’s what it’s all about: Find a “number” (hash) that is lower than another “number” (target).</p>
 <p>The target value is hidden in the bits field. And as already mentioned, we need to do the math to get the numeric target. The mantissa comes from the last 3 bytes, the exponent is the first byte. And the target comes from this equation:</p>
@@ -219,10 +219,10 @@ A miner has to solve a mathematical problem to validate a block for the Blockhai
       
     </item><item>
       <title>The Thin Line Between Scam and Ambitious Entrepreneurship</title>
-      <link>https://nickyreinert.de/en/blog/2025/08/12/the-thin-line-between-scam-and-ambitious-entrepreneurship/</link>
+      <link>https://nickyreinert.de/en/2025/2025-08-06-thin-line-between-scam-and-ambitious-entrepreneurship/</link>
       <pubDate>Tue, 12 Aug 2025 19:00:00 +0000</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/en/blog/2025/08/12/the-thin-line-between-scam-and-ambitious-entrepreneurship/</guid>
+      <guid>https://nickyreinert.de/en/2025/2025-08-06-thin-line-between-scam-and-ambitious-entrepreneurship/</guid>
       <description>German Version
 I&rsquo;m not a fan of mobile games Not because I don&rsquo;t like playing, but because a questionable business model has developed around mobile …</description>
       
@@ -231,7 +231,7 @@ I&rsquo;m not a fan of mobile games Not because I don&rsquo;t like playing, but 
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Ein kritischer Essay, der die fragwürdigen Geschäftspraktiken von Mobile-Game-Publishern untersucht, insbesondere im Hinblick auf Monetarisierung und Werbung. Anhand von Beispielen wie `Dozer Demolish` werden Probleme wie irreführende Altersfreigaben, mangelhafter Datenschutz, aggressive und altersunangemessene Werbung sowie nicht-konforme Einwilligungsdialoge beleuchtet.</p>
+          <p>Ein kritischer Essay, der die fragwürdigen Geschäftspraktiken von Mobile-Game-Publishern untersucht, insbesondere im Hinblick auf Monetarisierung und Werbung. Anhand von Beispielen wie &#39;Dozer Demolish&#39; werden Probleme wie irreführende Altersfreigaben, mangelhafter Datenschutz, aggressive und altersunangemessene Werbung sowie nicht-konforme Einwilligungsdialoge beleuchtet.</p>
           
           
           <p><strong>Hauptthemen:</strong> Mobile Gaming, Monetarisierung, Werbung, Datenschutz, Jugendschutz, Dark Patterns, Geschäftsmodelle</p>
@@ -663,10 +663,10 @@ Data cannot be deleted.</p></blockquote>
       
     </item><item>
       <title>wad - about chatbots, captchas, and Chromecast</title>
-      <link>https://nickyreinert.de/en/blog/2025/08/09/wad-about-chatbots-captchas-and-chromecast/</link>
+      <link>https://nickyreinert.de/en/2025/2025-08-10-we-are-doomed/</link>
       <pubDate>Sat, 09 Aug 2025 12:34:56 +0000</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/en/blog/2025/08/09/wad-about-chatbots-captchas-and-chromecast/</guid>
+      <guid>https://nickyreinert.de/en/2025/2025-08-10-we-are-doomed/</guid>
       <description>New month, new category – &ldquo;We are doomed&rdquo; (wad) is about &ldquo;smart and new technology&rdquo; that turns out to be not so smart. But new, at …</description>
       
       
@@ -674,7 +674,7 @@ Data cannot be deleted.</p></blockquote>
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>A critical and humorous blog post from the &#34;We are doomed&#34; series, highlighting the shortcomings of &#34;smart&#34; technology through three anecdotes. The author recounts frustrating experiences with Google&#39;s Gemini chatbot (failing to provide information about Google&#39;s own product), ambiguous CAPTCHAs, and the fragmented, incompatible ecosystem of Google&#39;s Chromecast and Pixel devices.</p>
+          <p>A critical and humorous blog post from the &#39;We are doomed&#39; series, highlighting the shortcomings of &#39;smart&#39; technology through three anecdotes. The author recounts frustrating experiences with Google&#39;s Gemini chatbot (failing to provide information about Google&#39;s own product), ambiguous CAPTCHAs, and the fragmented, incompatible ecosystem of Google&#39;s Chromecast and Pixel devices.</p>
           
           
           <p><strong>Hauptthemen:</strong> Künstliche Intelligenz, Chatbots, CAPTCHA, Google Ecosystem, User Experience, Technology Criticism</p>
@@ -764,10 +764,10 @@ Not only that, but also notice how Google's own AI chatbot doesn’t even know t
       
     </item><item>
       <title>My 2,718281828459045235 Cents - State Of AI: Year 3 of the hype. Things I learned.</title>
-      <link>https://nickyreinert.de/en/blog/2025/08/01/my-2718281828459045235-cents-state-of-ai-year-3-of-the-hype.-things-i-learned./</link>
+      <link>https://nickyreinert.de/en/2025/2025-08-01-mtc---state-of-ai/</link>
       <pubDate>Fri, 01 Aug 2025 12:34:56 +0100</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/en/blog/2025/08/01/my-2718281828459045235-cents-state-of-ai-year-3-of-the-hype.-things-i-learned./</guid>
+      <guid>https://nickyreinert.de/en/2025/2025-08-01-mtc---state-of-ai/</guid>
       <description>What about coding People don&rsquo;t get tired of announcing that AI will replace developers. Mostly salespeople. Microsoft claims that AI is already writing …</description>
       
       
@@ -775,7 +775,7 @@ Not only that, but also notice how Google's own AI chatbot doesn’t even know t
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Ein kritischer Essay über den aktuellen Stand der Künstlichen Intelligenz (KI) und Large Language Models (LLMs) aus der Perspektive eines Entwicklers. Der Artikel beleuchtet die Grenzen von LLMs beim Coding (z.B. bei der SVG-Generierung), kritisiert ihre Herangehensweise an die Fehlerbehebung und schlägt `Sieben Regeln des AIngagements` für effektives Prompting vor. Zudem spekuliert er über die zukünftige Entwicklung von Sprache und Benutzeroberflächen im Kontext von KI.</p>
+          <p>Ein kritischer Essay über den aktuellen Stand der Künstlichen Intelligenz (KI) und Large Language Models (LLMs) aus der Perspektive eines Entwicklers. Der Artikel beleuchtet die Grenzen von LLMs beim Coding (z.B. bei der SVG-Generierung), kritisiert ihre Herangehensweise an die Fehlerbehebung und schlägt &#39;Sieben Regeln des AIngagements&#39; für effektives Prompting vor. Zudem spekuliert er über die zukünftige Entwicklung von Sprache und Benutzeroberflächen im Kontext von KI.</p>
           
           
           <p><strong>Hauptthemen:</strong> Künstliche Intelligenz, Large Language Models, Softwareentwicklung, Workflow-Optimierung, Mensch-Computer-Interaktion, Prompt Engineering, Zukunft der Technologie</p>
@@ -1041,10 +1041,10 @@ Not only that, but also notice how Google's own AI chatbot doesn’t even know t
       
     </item><item>
       <title>Monitor SSL Traffic On Android</title>
-      <link>https://nickyreinert.de/en/blog/2025/07/01/monitor-ssl-traffic-on-android/</link>
+      <link>https://nickyreinert.de/en/2025/2025-07-01-monitor-ssl-traffic-on-android/</link>
       <pubDate>Tue, 01 Jul 2025 12:34:56 +0100</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/en/blog/2025/07/01/monitor-ssl-traffic-on-android/</guid>
+      <guid>https://nickyreinert.de/en/2025/2025-07-01-monitor-ssl-traffic-on-android/</guid>
       <description>Fantastic Preface Monitoring SSL Traffic of Android Apps is quite a challenge these days. While it&rsquo;s an important way to understand how Apps work, find …</description>
       
       
@@ -1230,10 +1230,10 @@ Not only that, but also notice how Google's own AI chatbot doesn’t even know t
       
     </item><item>
       <title>Adobe Launch DTM Naming Conventions</title>
-      <link>https://nickyreinert.de/en/blog/2025/04/01/adobe-launch-dtm-naming-conventions/</link>
+      <link>https://nickyreinert.de/en/2025/2025-04-01-adobe-launch-dtm-naming-conventions/</link>
       <pubDate>Tue, 01 Apr 2025 12:34:56 +0200</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/en/blog/2025/04/01/adobe-launch-dtm-naming-conventions/</guid>
+      <guid>https://nickyreinert.de/en/2025/2025-04-01-adobe-launch-dtm-naming-conventions/</guid>
       <description>I&rsquo;ve worked with Adobe Tracking Suite (which is Adobe Launch and all it&rsquo;s sibblings) for quite a while and I saw many, some quite chaotic, tracking …</description>
       
       
@@ -1421,10 +1421,10 @@ Logging works the same as error handling:</p>
       
     </item><item>
       <title>How to develop in 2025: Improve your Workflow with VS Code, GitHub &amp; Copilot </title>
-      <link>https://nickyreinert.de/en/blog/2025/03/19/how-to-develop-in-2025-improve-your-workflow-with-vs-code-github-copilot/</link>
+      <link>https://nickyreinert.de/en/2025/2025-03-19-developing-vscode/</link>
       <pubDate>Wed, 19 Mar 2025 12:34:56 +0200</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/en/blog/2025/03/19/how-to-develop-in-2025-improve-your-workflow-with-vs-code-github-copilot/</guid>
+      <guid>https://nickyreinert.de/en/2025/2025-03-19-developing-vscode/</guid>
       <description>VS Code Workspace Settings Shortcuts First of all, I strongly suggest adding some custom shortcuts because the default ones are a bit unintuitive. For example, …</description>
       
       
@@ -1650,10 +1650,10 @@ Logging works the same as error handling:</p>
       
     </item><item>
       <title>Advent of Code - Day 8 - Missing Operators (Ruby)</title>
-      <link>https://nickyreinert.de/en/blog/2024/12/08/advent-of-code-day-8-missing-operators-ruby/</link>
+      <link>https://nickyreinert.de/en/2024/2024-12-08-aoc-day-8/</link>
       <pubDate>Sun, 08 Dec 2024 12:34:56 +0200</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/en/blog/2024/12/08/advent-of-code-day-8-missing-operators-ruby/</guid>
+      <guid>https://nickyreinert.de/en/2024/2024-12-08-aoc-day-8/</guid>
       <description>(task | solution)
 The first time I read through the riddle, I was like: &ldquo;Phew, no way, I&rsquo;m going to skip this!&rdquo; I looked at the example and …</description>
       
@@ -1662,7 +1662,7 @@ The first time I read through the riddle, I was like: &ldquo;Phew, no way, I&rsq
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>A write-up of the author&#39;s solution to Day 8 of the Advent of Code 2024 challenge, implemented in Ruby. The article explains how visualization helps to understand the puzzle, which involves finding symmetrical points based on pairs of `siblings`` on a grid. A complete Ruby code snippet for the brute-force solution to Part 1 is provided.</p>
+          <p>A write-up of the author&#39;s solution to Day 8 of the Advent of Code 2024 challenge, implemented in Ruby. The article explains how visualization helps to understand the puzzle, which involves finding symmetrical points based on pairs of &#39;siblings&#39;&#39; on a grid. A complete Ruby code snippet for the brute-force solution to Part 1 is provided.</p>
           
           
           <p><strong>Hauptthemen:</strong> Advent of Code, Ruby, Problem-Solving, Algorithmen, Computational Geometry</p>
@@ -1679,10 +1679,10 @@ The first time I read through the riddle, I was like: &ldquo;Phew, no way, I&rsq
 <p>However, I thought it might be a good idea to use Ruby this time — my first time with this language. I won’t bother you with the environment setup. Again, I’m just using a containerized environment, which makes things so much easier.</p>
 <h3 id="solution-to-the-first-part">Solution to the First Part</h3>
 <p>So, what is this about? It’s about finding siblings on a surface, connecting them with a straight line, and then extending this line to find two symmetric points. The total number of all those points forms the solution to this riddle. The green and red cells represent two categories of siblings on the map, and the blue cells represent the symmetric points (called <code>antinodes</code>) that we need to find. If you connect them (with red lines), you’ll see how all of them pass through two cells of the same color:</p>
-<p><img src="/en/blog/2024/12/08/advent-of-code-day-8-missing-operators-ruby/image-2.png" alt="alt text"></p>
+<p><img src="/en/2024/2024-12-08-aoc-day-8/image-2.png" alt="alt text"></p>
 <p>Looks difficult, right? Don’t tell me, it took me a while to understand the &ldquo;gibberish&rdquo; of the riddle – no offense, riddle master.</p>
 <p>But wait until we add row and column numbers to the map and focus on just one group:</p>
-<p><img src="/en/blog/2024/12/08/advent-of-code-day-8-missing-operators-ruby/image-1.png" alt="alt text"></p>
+<p><img src="/en/2024/2024-12-08-aoc-day-8/image-1.png" alt="alt text"></p>
 <p>Now it seems quite easy: We just need to somehow identify the row and column distance between two siblings and use that to place the corresponding <code>antinode</code>.</p>
 <p>Let me just throw my solution into the ring. It’s not the most elegant, but it gets the job done:</p>
 <ul>
@@ -1759,10 +1759,10 @@ The first time I read through the riddle, I was like: &ldquo;Phew, no way, I&rsq
       
     </item><item>
       <title>Advent of Code - Day 7 - Missing Operators (C&#43;&#43;)</title>
-      <link>https://nickyreinert.de/en/blog/2024/12/07/advent-of-code-day-7-missing-operators-c-/</link>
+      <link>https://nickyreinert.de/en/2024/2024-12-07-aoc-day-7/</link>
       <pubDate>Sat, 07 Dec 2024 12:34:56 +0200</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/en/blog/2024/12/07/advent-of-code-day-7-missing-operators-c-/</guid>
+      <guid>https://nickyreinert.de/en/2024/2024-12-07-aoc-day-7/</guid>
       <description>(task | solution)
 This is the kind of task I really enjoy: finding algorithms for simple mathematical challenges! Let&rsquo;s go—this time in&hellip; C++! …</description>
       
@@ -1836,10 +1836,10 @@ This is the kind of task I really enjoy: finding algorithms for simple mathemati
       
     </item><item>
       <title>Advent of Code - Day 6 - Walking the map (JavaScript)</title>
-      <link>https://nickyreinert.de/en/blog/2024/12/06/advent-of-code-day-6-walking-the-map-javascript/</link>
+      <link>https://nickyreinert.de/en/2024/2024-12-06-aoc-day-6/</link>
       <pubDate>Fri, 06 Dec 2024 12:34:56 +0200</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/en/blog/2024/12/06/advent-of-code-day-6-walking-the-map-javascript/</guid>
+      <guid>https://nickyreinert.de/en/2024/2024-12-06-aoc-day-6/</guid>
       <description>(task | solution)
 This task looks tricky, so I am once again choosing a simple language that I am familiar with: JavaScript (which, by the way, was developed in …</description>
       
@@ -1869,7 +1869,7 @@ This task looks tricky, so I am once again choosing a simple language that I am 
 <p>The second part is kind of tricky. They want us to find positions of additional obstacles that make the maze unsolvable.</p>
 <p>Well, there&rsquo;s an easy pattern behind it. You will see it if you visualize it:</p>
 <p>An infinite loop occurs when you have four obstacles on each edge of a rectangle, like this:</p>
-<p><img src="/en/blog/2024/12/06/advent-of-code-day-6-walking-the-map-javascript/image.png" alt="alt text"></p>
+<p><img src="/en/2024/2024-12-06-aoc-day-6/image.png" alt="alt text"></p>
 <p>So, all we need to do at every step on our path is to try to draw a rectangle. If it has three existing obstacles, we get one potential solution for an &ldquo;artificial obstacle.</p>
 <p>In case you&rsquo;re wondering: I didn&rsquo;t finish the second part. I know the solution approach, but seeing that I am three days behind already, I stopped working on it.</p>
 <h2 id="whats-up-javascript">Whats up, JavaScript?</h2>
@@ -1910,10 +1910,10 @@ This task looks tricky, so I am once again choosing a simple language that I am 
       
     </item><item>
       <title>Advent of Code - Day 5 - Printer Updates (Bash)</title>
-      <link>https://nickyreinert.de/en/blog/2024/12/05/advent-of-code-day-5-printer-updates-bash/</link>
+      <link>https://nickyreinert.de/en/2024/2024-12-05-aoc-day-5/</link>
       <pubDate>Thu, 05 Dec 2024 12:34:56 +0200</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/en/blog/2024/12/05/advent-of-code-day-5-printer-updates-bash/</guid>
+      <guid>https://nickyreinert.de/en/2024/2024-12-05-aoc-day-5/</guid>
       <description>(task | solution)
 It&rsquo;s the fifth day of our outrageous adventure, and we are dealing with printer updates. To solve this riddle, we are getting back to …</description>
       
@@ -1986,10 +1986,10 @@ It&rsquo;s the fifth day of our outrageous adventure, and we are dealing with pr
       
     </item><item>
       <title>Advent of Code - Day 4 - Finding patterns (Excel)</title>
-      <link>https://nickyreinert.de/en/blog/2024/12/04/advent-of-code-day-4-finding-patterns-excel/</link>
+      <link>https://nickyreinert.de/en/2024/2024-12-04-aoc-day-4/</link>
       <pubDate>Wed, 04 Dec 2024 12:34:56 +0200</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/en/blog/2024/12/04/advent-of-code-day-4-finding-patterns-excel/</guid>
+      <guid>https://nickyreinert.de/en/2024/2024-12-04-aoc-day-4/</guid>
       <description>(task)
 I Made It to Day 4!
 And today&rsquo;s task perfectly fits Excel. Some—if not most—people don&rsquo;t like Excel and would never consider it a serious …</description>
@@ -1999,7 +1999,7 @@ And today&rsquo;s task perfectly fits Excel. Some—if not most—people don&rsq
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>A walkthrough of the author&#39;s solution to Day 4 of the Advent of Code 2024 challenge, solved entirely within Microsoft Excel. The article demonstrates how to use Excel formulas like `SEQUENCE`, `CONCAT`, and boolean casting to efficiently find and count specific text patterns in a large grid of characters for both parts of the puzzle.</p>
+          <p>A walkthrough of the author&#39;s solution to Day 4 of the Advent of Code 2024 challenge, solved entirely within Microsoft Excel. The article demonstrates how to use Excel formulas like &#39;SEQUENCE&#39;, &#39;CONCAT&#39;, and boolean casting to efficiently find and count specific text patterns in a large grid of characters for both parts of the puzzle.</p>
           
           
           <p><strong>Hauptthemen:</strong> Advent of Code, Excel, Problem-Solving, Algorithmen, Data-Analysis</p>
@@ -2020,9 +2020,9 @@ And today&rsquo;s task perfectly fits Excel. Some—if not most—people don&rsq
 <p><em>_LENGTH refers to <code>[C2]</code></em></p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[D1]=MID(B4;SEQUENCE(1;_LENGTH);1)
 </span></span></code></pre></div><p>If you pull this formula down, you get a matrix like this (referring to the example input):</p>
-<p><img src="/en/blog/2024/12/04/advent-of-code-day-4-finding-patterns-excel/image-1.png" alt="alt text"></p>
+<p><img src="/en/2024/2024-12-04-aoc-day-4/image-1.png" alt="alt text"></p>
 <p>The following image shows all possible solutions:</p>
-<p><img src="/en/blog/2024/12/04/advent-of-code-day-4-finding-patterns-excel/starting_matrix.png" alt="starting matrix"></p>
+<p><img src="/en/2024/2024-12-04-aoc-day-4/starting_matrix.png" alt="starting matrix"></p>
 <p>We start with the most simple solution, where <code>XMAS</code> is <em>plotted</em> from the center to the right. The surrounding <code>if-condition</code> is temporary, only to make the result visible:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=IF(CONCAT(G21;H21;I21;J21)=&#34;XMAS&#34;;&#34;+&#34;;&#34;&#34;)
 </span></span></code></pre></div><p>It&rsquo;s quite easy, right? We copy the formula (not the result of the cell!) to a text editor and modify it to get the other seven directions.</p>
@@ -2045,10 +2045,10 @@ And today&rsquo;s task perfectly fits Excel. Some—if not most—people don&rsq
 </span></span><span class="line"><span class="ln">7</span><span class="cl">    --(VERKETTEN(G21;G20;G19;G18)=&#34;XMAS&#34;)+
 </span></span><span class="line"><span class="ln">8</span><span class="cl">    --(VERKETTEN(G21;H20;I19;J18)=&#34;XMAS&#34;)
 </span></span></code></pre></div><p>And now apply it to our testing dataset. Copy the cell (not the formula!) next to our matrix. It should refer to the first column in the first row. Then drag it to the right and down to cover the whole area. You should end up with something like this:</p>
-<p><img src="/en/blog/2024/12/04/advent-of-code-day-4-finding-patterns-excel/image-5.png" alt="alt text"></p>
+<p><img src="/en/2024/2024-12-04-aoc-day-4/image-5.png" alt="alt text"></p>
 <p>The sum of the matrix is 18 — which is exactly the number of <code>XMAS</code> hidden in the test dataset. Now take the actual puzzle input, copy it to your sheet, and apply your <em>magic formula</em> to it. If you want to avoid dragging the formula to the right and down, you could use <code>SEQUENCE</code> again, but we&rsquo;ll save that for later&hellip;</p>
 <p>The good thing about the Excel approach is that the second part doesn&rsquo;t make it more complicated. We stick with our strategy and now just look for all possible variations of <code>X-MAS</code>. There are four:</p>
-<p><img src="/en/blog/2024/12/04/advent-of-code-day-4-finding-patterns-excel/image-6.png" alt="alt text"></p>
+<p><img src="/en/2024/2024-12-04-aoc-day-4/image-6.png" alt="alt text"></p>
 <p>And our formula changes a little. We know that <code>A</code> has to be in the middle. We concatenate the surrounding four cells and just test for all four possible combinations of <code>S</code> and <code>M</code>, which leads us to something like this:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=--(OR(CONCAT(F210;G209;G211;E211;E209)=&#34;AMSSM&#34;;
 </span></span><span class="line"><span class="ln">2</span><span class="cl">    CONCAT(F210;G209;G211;E211;E209)=&#34;ASSMM&#34;;
@@ -2092,10 +2092,10 @@ And today&rsquo;s task perfectly fits Excel. Some—if not most—people don&rsq
       
     </item><item>
       <title>Advent of Code - Day 3 - Multiplications (Python)</title>
-      <link>https://nickyreinert.de/en/blog/2024/12/03/advent-of-code-day-3-multiplications-python/</link>
+      <link>https://nickyreinert.de/en/2024/2024-12-03-aoc-day-3/</link>
       <pubDate>Tue, 03 Dec 2024 12:34:56 +0200</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/en/blog/2024/12/03/advent-of-code-day-3-multiplications-python/</guid>
+      <guid>https://nickyreinert.de/en/2024/2024-12-03-aoc-day-3/</guid>
       <description>(task | solution) As I reached the third day of my adventure, I had already learned something new that significantly improves the process: the devcontainer.json …</description>
       
       
@@ -2215,10 +2215,10 @@ As I reached the third day of my adventure, I had already learned something new 
       
     </item><item>
       <title>Advent of Code - Day 2 - Increasing and decreasing (Rust)</title>
-      <link>https://nickyreinert.de/en/blog/2024/12/02/advent-of-code-day-2-increasing-and-decreasing-rust/</link>
+      <link>https://nickyreinert.de/en/2024/2024-12-02-aoc-day-2/</link>
       <pubDate>Mon, 02 Dec 2024 12:34:56 +0200</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/en/blog/2024/12/02/advent-of-code-day-2-increasing-and-decreasing-rust/</guid>
+      <guid>https://nickyreinert.de/en/2024/2024-12-02-aoc-day-2/</guid>
       <description>(task | solution)
 This task is about testing if integers in a list are increasing or decreasing. I&rsquo;ll try Rust, and I assume I need nerves of steel for …</description>
       
@@ -2340,10 +2340,10 @@ This task is about testing if integers in a list are increasing or decreasing. I
       
     </item><item>
       <title>Advent of Code - Day 1 - Differences and Products (F#)</title>
-      <link>https://nickyreinert.de/en/blog/2024/12/01/advent-of-code-day-1-differences-and-products-f/</link>
+      <link>https://nickyreinert.de/en/2024/2024-12-01-aoc-day-1/</link>
       <pubDate>Sun, 01 Dec 2024 12:34:56 +0200</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/en/blog/2024/12/01/advent-of-code-day-1-differences-and-products-f/</guid>
+      <guid>https://nickyreinert.de/en/2024/2024-12-01-aoc-day-1/</guid>
       <description>(task | solution)
 As the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. …</description>
       
@@ -2479,10 +2479,10 @@ As the challenge at AoC is not about the syntax but the algorithm, I decided to 
       
     </item><item>
       <title>sudoku</title>
-      <link>https://nickyreinert.de/en/blog/2024/10/17/sudoku/</link>
+      <link>https://nickyreinert.de/en/2024/2024-10-18-sudoku/</link>
       <pubDate>Thu, 17 Oct 2024 12:34:56 +0100</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/en/blog/2024/10/17/sudoku/</guid>
+      <guid>https://nickyreinert.de/en/2024/2024-10-18-sudoku/</guid>
       <description>How to build a brute force Sudoku solver Follow my journey on how to build an algorithm that lets you create or solve Sudoku puzzles!
 Follow my steps or jump …</description>
       
@@ -2509,7 +2509,7 @@ Follow my steps or jump …</description>
 <p>Follow my steps or jump ahead — this is the Jupyter notebook: <a href="https://gist.github.com/nickyreinert/966299333429ef685338e5feb5056126">https://gist.github.com/nickyreinert/966299333429ef685338e5feb5056126</a></p></blockquote>
 <h1 id="warmup--introduction"><strong>Warmup — introduction</strong></h1>
 <p>Before we start, we need to get familiar with how <strong>Sudoku</strong> works. I suggest we number each cell in the giant grid from <code>1</code> to <code>81</code>. This way, we can programmatically loop <strong>from the top-left to the bottom-right</strong> to find valid solutions:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudoku_positions.png" alt="sudoku positions"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudoku_positions.png" alt="sudoku positions"></p>
 <p><strong>Sudoku</strong> has three rules: a number can’t exist twice in the same <strong>column</strong>, <strong>row</strong>, or <strong>section</strong>. So, first, we need a way to identify the column, row, and section for each position.</p>
 <p>Every row contains <code>9</code> cells, so the row index is simply:</p>
 <pre><code>ceil(position / 9)
@@ -2521,9 +2521,9 @@ Follow my steps or jump …</description>
 <pre><code>((position — 1) % 9) + 1
 </code></pre>
 <p>The section index is a little trickier. It’s a combo of the row and column index and some tweaks. There’s probably a clever mathematical approach, or you can just trial-and-error your way through (my usual strategy). Here’s a starting point:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudoku_cols_and_rows.png" alt="sudoku columns and rows"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudoku_cols_and_rows.png" alt="sudoku columns and rows"></p>
 <p>We take the floor of a third of each position now. It seems like we could just sum them to get the fitting section index, with a little adjustment. Here’s the magic:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudouku_from_cols_and_rows_to_sections.png" alt="sudouku from cols and rows to sections"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudouku_from_cols_and_rows_to_sections.png" alt="sudouku from cols and rows to sections"></p>
 <p>And that’s the formula to get the section index:</p>
 <pre><code>(col // 3) + (((row // 3) — 1) * 3)
 </code></pre>
@@ -2597,7 +2597,7 @@ visualize(solutions)
 </code></pre>
 <p>Seems like our basic loop is working fine. Let’s add some fine-tuning and limit it to the numbers from 1 to 9. We can just introduce an inner loop to keep things simple:</p>
 <p>Output:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/suduko_first_attempt.png" alt="suduko first attempt"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/suduko_first_attempt.png" alt="suduko first attempt"></p>
 <p>Seems like our basic loop is working fine. Let’s add some fine-tuning and limit it to the numbers from 1 to 9. We can just introduce an inner loop to keep things simple:</p>
 <pre><code>reset_containers()  
 
@@ -2618,7 +2618,7 @@ for position in range(1, 82):
 visualize(solutions)
 </code></pre>
 <p>Output:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudoku_second_attempt.png" alt="sudoku second attempt"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudoku_second_attempt.png" alt="sudoku second attempt"></p>
 <p>There are a lot of empty spots in the grid, what are we missing? Let’s introduce a conditional that stops when there’s no solution:</p>
 <pre><code>reset_containers()  
 
@@ -2642,7 +2642,7 @@ for position in range(1, 82):
 visualize(solutions)
 </code></pre>
 <p>Output:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudoku_third_attempt.png" alt="sudoku third attempt"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudoku_third_attempt.png" alt="sudoku third attempt"></p>
 <p>Quite good, but just stopping the loop when we hit a dead end probably won’t get us to a solution. We need to keep track of dead ends, and we need the ability to go back, choose another path, and try again. Let’s start with a container that holds “impossible” paths for each of our 81 positions.</p>
 <p>We’ll also switch from a limited <code>for-loop</code> to an &ldquo;infinite&rdquo; <code>while-loop</code> because now we’re not just incrementing from 1 to 81 — we’ll be going back and forth. Of course, it’s always a good idea to use a stop condition, like <code>max_iterations</code>, so we don’t accidentally run into an actual endless loop when using <code>while</code>.</p>
 <p>Let’s put all of that into a new “big” init function!</p>
@@ -2725,7 +2725,7 @@ print(f'Done after {iteration - 1:,.0f} iterations.')
 visualize(solutions)
 </code></pre>
 <p>Output:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudoku_fail.png" alt="sudoku fail"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudoku_fail.png" alt="sudoku fail"></p>
 <p>An empty grid? Why for flux sake? Well, our housekeeping is incomplete — we didn’t properly clean up the dead end container:</p>
 <pre><code>dead_ends[position] = []
 </code></pre>
@@ -2806,7 +2806,7 @@ solve_game(max_iterations=10_000)
 visualize(solutions)
 </code></pre>
 <p>Output:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudoku_finally_solved.png" alt="sudoku finally solved"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudoku_finally_solved.png" alt="sudoku finally solved"></p>
 <p>Wohaa! Looks like our little loop is already producing a valid result. But how does it perform when we add some numbers to the solution?</p>
 <p>To work with a pre-filled grid, we need to implement another container — let’s call it <code>target</code>. We’ll add a simple check: If the target contains the current position, we’ll treat it as a constant. Copy it over to the other containers and skip to the next position:</p>
 <pre><code>if position in target:   
@@ -2909,7 +2909,7 @@ solve_game(debug = False, max_iterations = 5_000, target = {16: 2})
 visualize(solutions)
 </code></pre>
 <p>Output:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudoku_finally_working.png" alt="sudoku finally working"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudoku_finally_working.png" alt="sudoku finally working"></p>
 <p>Farn-tastic! But don’t get too hyped, we’re not there yet. What about different solutions, variations? When we reach the last cell at position 81, in row 9 and column 9, we find exactly one solution for each previous cell. But how do we check for other options? To understand our next approach, imagine the solution as a huge 81-digit number, with all possible solutions branching out like a massive tree. The leftmost branch is the smallest number, and we’re going to find “higher” numbers, which are also valid solutions.</p>
 <p>Let’s start with a simple idea: What if, as soon as we reach the end of the grid, we:</p>
 <ul>
@@ -3130,9 +3130,9 @@ solve_game(debug=False, max_iterations=1_000_000, target = {80: 7})
 visualize(solutions[len(solutions) - 1])
 </code></pre>
 <p>And that’s our achievment:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudoku_multiple_solutions.png" alt="sudoku multiple solutions"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudoku_multiple_solutions.png" alt="sudoku multiple solutions"></p>
 <p>Our brute-force Sudoku solving algorithm is ready! Well, I bet there are a couple of steps to optimize — not only code-style-wise, but also to make it run faster. I’d say that’s your homework. There are <strong>6,670,903,752,021,072,936,960</strong> possible paths (that’s 6 sextillion and a bit more, it can be writte as ~6 x 10^21, which is a reference to Blade Runner: Dr. Ana Stelline was born on the 10/6/21). Can you catch them all? How long does it take on your machine to get 1 million solutions?</p>
-<p><img src="/en/blog/2024/10/17/sudoku/blade_runner_stelline.png" alt="blade runner stelline"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/blade_runner_stelline.png" alt="blade runner stelline"></p>
 <center><i>Blade Runner's `Dr. Ana Stelline` (c) Warner Bros https://www.warnerbros.com/movies/blade-runner-2049</i></center>
 <p>Just one more thing… I asked ChatGPT to build a small function that checks if all solutions are valid. Wait, what? ChatGPT? Why haven’t we asked it earlier?</p>
 <p>Because developing algorithms is fun?</p>
@@ -3142,10 +3142,10 @@ visualize(solutions[len(solutions) - 1])
     print('All good!')
 </code></pre>
 <p>Just kidding — you’ll find the actual implementation in the notebook. Before I send you off into your well-deserved time off, let’s quickly go over some visualizations. I “discovered” 295,295 solutions (took me 100 million iterations and roughly 45 seconds), and this is how they look like in an image:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudoku_solutions_visualized.png" alt="sudoku solutions visualized"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudoku_solutions_visualized.png" alt="sudoku solutions visualized"></p>
 <p>Finding <strong>300,000 solutions</strong> out of <strong>6 sextillion possibilities</strong> is like picking a single grain of sand from all the sand on Earth.</p>
 <p>For the following visualization, I calculated the difference between each solution — remember, they’re all essentially enormous numbers!</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudoku_solutions_difference.png" alt="sudoku solutions difference"></p>
+<p><img src="/en/2024/2024-10-18-sudoku/sudoku_solutions_difference.png" alt="sudoku solutions difference"></p>
 <p>There are some interesting points to observe. On the symlog scale of outliers, you can clearly see bands of numbers. There’s also one outlier way out of the region, meaning that from solution <strong>149,652</strong> to <strong>149,653</strong>, the loop has to revert to a very high position in our “solution tree.”</p>
 <p>Can you find any more salient features? Let me know!</p>
 
@@ -3180,10 +3180,10 @@ visualize(solutions[len(solutions) - 1])
       
     </item><item>
       <title>sudoku</title>
-      <link>https://nickyreinert.de/en/blog/2024/10/17/sudoku/</link>
+      <link>https://nickyreinert.de/en/2025/2024-10-18-sudoku/</link>
       <pubDate>Thu, 17 Oct 2024 12:34:56 +0100</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/en/blog/2024/10/17/sudoku/</guid>
+      <guid>https://nickyreinert.de/en/2025/2024-10-18-sudoku/</guid>
       <description>How to build a brute force Sudoku solver Follow my journey on how to build an algorithm that lets you create or solve Sudoku puzzles!
 Follow my steps or jump …</description>
       
@@ -3210,7 +3210,7 @@ Follow my steps or jump …</description>
 <p>Follow my steps or jump ahead — this is the Jupyter notebook: <a href="https://gist.github.com/nickyreinert/966299333429ef685338e5feb5056126">https://gist.github.com/nickyreinert/966299333429ef685338e5feb5056126</a></p></blockquote>
 <h1 id="warmup--introduction"><strong>Warmup — introduction</strong></h1>
 <p>Before we start, we need to get familiar with how <strong>Sudoku</strong> works. I suggest we number each cell in the giant grid from <code>1</code> to <code>81</code>. This way, we can programmatically loop <strong>from the top-left to the bottom-right</strong> to find valid solutions:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudoku_positions.png" alt="sudoku positions"></p>
+<p><img src="/en/2025/2024-10-18-sudoku/sudoku_positions.png" alt="sudoku positions"></p>
 <p><strong>Sudoku</strong> has three rules: a number can’t exist twice in the same <strong>column</strong>, <strong>row</strong>, or <strong>section</strong>. So, first, we need a way to identify the column, row, and section for each position.</p>
 <p>Every row contains <code>9</code> cells, so the row index is simply:</p>
 <pre><code>ceil(position / 9)
@@ -3222,9 +3222,9 @@ Follow my steps or jump …</description>
 <pre><code>((position — 1) % 9) + 1
 </code></pre>
 <p>The section index is a little trickier. It’s a combo of the row and column index and some tweaks. There’s probably a clever mathematical approach, or you can just trial-and-error your way through (my usual strategy). Here’s a starting point:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudoku_cols_and_rows.png" alt="sudoku columns and rows"></p>
+<p><img src="/en/2025/2024-10-18-sudoku/sudoku_cols_and_rows.png" alt="sudoku columns and rows"></p>
 <p>We take the floor of a third of each position now. It seems like we could just sum them to get the fitting section index, with a little adjustment. Here’s the magic:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudouku_from_cols_and_rows_to_sections.png" alt="sudouku from cols and rows to sections"></p>
+<p><img src="/en/2025/2024-10-18-sudoku/sudouku_from_cols_and_rows_to_sections.png" alt="sudouku from cols and rows to sections"></p>
 <p>And that’s the formula to get the section index:</p>
 <pre><code>(col // 3) + (((row // 3) — 1) * 3)
 </code></pre>
@@ -3298,7 +3298,7 @@ visualize(solutions)
 </code></pre>
 <p>Seems like our basic loop is working fine. Let’s add some fine-tuning and limit it to the numbers from 1 to 9. We can just introduce an inner loop to keep things simple:</p>
 <p>Output:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/suduko_first_attempt.png" alt="suduko first attempt"></p>
+<p><img src="/en/2025/2024-10-18-sudoku/suduko_first_attempt.png" alt="suduko first attempt"></p>
 <p>Seems like our basic loop is working fine. Let’s add some fine-tuning and limit it to the numbers from 1 to 9. We can just introduce an inner loop to keep things simple:</p>
 <pre><code>reset_containers()  
 
@@ -3319,7 +3319,7 @@ for position in range(1, 82):
 visualize(solutions)
 </code></pre>
 <p>Output:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudoku_second_attempt.png" alt="sudoku second attempt"></p>
+<p><img src="/en/2025/2024-10-18-sudoku/sudoku_second_attempt.png" alt="sudoku second attempt"></p>
 <p>There are a lot of empty spots in the grid, what are we missing? Let’s introduce a conditional that stops when there’s no solution:</p>
 <pre><code>reset_containers()  
 
@@ -3343,7 +3343,7 @@ for position in range(1, 82):
 visualize(solutions)
 </code></pre>
 <p>Output:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudoku_third_attempt.png" alt="sudoku third attempt"></p>
+<p><img src="/en/2025/2024-10-18-sudoku/sudoku_third_attempt.png" alt="sudoku third attempt"></p>
 <p>Quite good, but just stopping the loop when we hit a dead end probably won’t get us to a solution. We need to keep track of dead ends, and we need the ability to go back, choose another path, and try again. Let’s start with a container that holds “impossible” paths for each of our 81 positions.</p>
 <p>We’ll also switch from a limited <code>for-loop</code> to an &ldquo;infinite&rdquo; <code>while-loop</code> because now we’re not just incrementing from 1 to 81 — we’ll be going back and forth. Of course, it’s always a good idea to use a stop condition, like <code>max_iterations</code>, so we don’t accidentally run into an actual endless loop when using <code>while</code>.</p>
 <p>Let’s put all of that into a new “big” init function!</p>
@@ -3426,7 +3426,7 @@ print(f'Done after {iteration - 1:,.0f} iterations.')
 visualize(solutions)
 </code></pre>
 <p>Output:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudoku_fail.png" alt="sudoku fail"></p>
+<p><img src="/en/2025/2024-10-18-sudoku/sudoku_fail.png" alt="sudoku fail"></p>
 <p>An empty grid? Why for flux sake? Well, our housekeeping is incomplete — we didn’t properly clean up the dead end container:</p>
 <pre><code>dead_ends[position] = []
 </code></pre>
@@ -3507,7 +3507,7 @@ solve_game(max_iterations=10_000)
 visualize(solutions)
 </code></pre>
 <p>Output:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudoku_finally_solved.png" alt="sudoku finally solved"></p>
+<p><img src="/en/2025/2024-10-18-sudoku/sudoku_finally_solved.png" alt="sudoku finally solved"></p>
 <p>Wohaa! Looks like our little loop is already producing a valid result. But how does it perform when we add some numbers to the solution?</p>
 <p>To work with a pre-filled grid, we need to implement another container — let’s call it <code>target</code>. We’ll add a simple check: If the target contains the current position, we’ll treat it as a constant. Copy it over to the other containers and skip to the next position:</p>
 <pre><code>if position in target:   
@@ -3610,7 +3610,7 @@ solve_game(debug = False, max_iterations = 5_000, target = {16: 2})
 visualize(solutions)
 </code></pre>
 <p>Output:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudoku_finally_working.png" alt="sudoku finally working"></p>
+<p><img src="/en/2025/2024-10-18-sudoku/sudoku_finally_working.png" alt="sudoku finally working"></p>
 <p>Farn-tastic! But don’t get too hyped, we’re not there yet. What about different solutions, variations? When we reach the last cell at position 81, in row 9 and column 9, we find exactly one solution for each previous cell. But how do we check for other options? To understand our next approach, imagine the solution as a huge 81-digit number, with all possible solutions branching out like a massive tree. The leftmost branch is the smallest number, and we’re going to find “higher” numbers, which are also valid solutions.</p>
 <p>Let’s start with a simple idea: What if, as soon as we reach the end of the grid, we:</p>
 <ul>
@@ -3831,9 +3831,9 @@ solve_game(debug=False, max_iterations=1_000_000, target = {80: 7})
 visualize(solutions[len(solutions) - 1])
 </code></pre>
 <p>And that’s our achievment:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudoku_multiple_solutions.png" alt="sudoku multiple solutions"></p>
+<p><img src="/en/2025/2024-10-18-sudoku/sudoku_multiple_solutions.png" alt="sudoku multiple solutions"></p>
 <p>Our brute-force Sudoku solving algorithm is ready! Well, I bet there are a couple of steps to optimize — not only code-style-wise, but also to make it run faster. I’d say that’s your homework. There are <strong>6,670,903,752,021,072,936,960</strong> possible paths (that’s 6 sextillion and a bit more, it can be writte as ~6 x 10^21, which is a reference to Blade Runner: Dr. Ana Stelline was born on the 10/6/21). Can you catch them all? How long does it take on your machine to get 1 million solutions?</p>
-<p><img src="/en/blog/2024/10/17/sudoku/blade_runner_stelline.png" alt="blade runner stelline"></p>
+<p><img src="/en/2025/2024-10-18-sudoku/blade_runner_stelline.png" alt="blade runner stelline"></p>
 <center><i>Blade Runner's `Dr. Ana Stelline` (c) Warner Bros https://www.warnerbros.com/movies/blade-runner-2049</i></center>
 <p>Just one more thing… I asked ChatGPT to build a small function that checks if all solutions are valid. Wait, what? ChatGPT? Why haven’t we asked it earlier?</p>
 <p>Because developing algorithms is fun?</p>
@@ -3843,10 +3843,10 @@ visualize(solutions[len(solutions) - 1])
     print('All good!')
 </code></pre>
 <p>Just kidding — you’ll find the actual implementation in the notebook. Before I send you off into your well-deserved time off, let’s quickly go over some visualizations. I “discovered” 295,295 solutions (took me 100 million iterations and roughly 45 seconds), and this is how they look like in an image:</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudoku_solutions_visualized.png" alt="sudoku solutions visualized"></p>
+<p><img src="/en/2025/2024-10-18-sudoku/sudoku_solutions_visualized.png" alt="sudoku solutions visualized"></p>
 <p>Finding <strong>300,000 solutions</strong> out of <strong>6 sextillion possibilities</strong> is like picking a single grain of sand from all the sand on Earth.</p>
 <p>For the following visualization, I calculated the difference between each solution — remember, they’re all essentially enormous numbers!</p>
-<p><img src="/en/blog/2024/10/17/sudoku/sudoku_solutions_difference.png" alt="sudoku solutions difference"></p>
+<p><img src="/en/2025/2024-10-18-sudoku/sudoku_solutions_difference.png" alt="sudoku solutions difference"></p>
 <p>There are some interesting points to observe. On the symlog scale of outliers, you can clearly see bands of numbers. There’s also one outlier way out of the region, meaning that from solution <strong>149,652</strong> to <strong>149,653</strong>, the loop has to revert to a very high position in our “solution tree.”</p>
 <p>Can you find any more salient features? Let me know!</p>
 
@@ -3877,10 +3877,10 @@ visualize(solutions[len(solutions) - 1])
       
     </item><item>
       <title>The Bitcoin Puzzle</title>
-      <link>https://nickyreinert.de/en/blog/2024/10/01/the-bitcoin-puzzle/</link>
+      <link>https://nickyreinert.de/en/2024/2024-10-01-bitcoin-puzzle/</link>
       <pubDate>Tue, 01 Oct 2024 12:34:56 +0100</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/en/blog/2024/10/01/the-bitcoin-puzzle/</guid>
+      <guid>https://nickyreinert.de/en/2024/2024-10-01-bitcoin-puzzle/</guid>
       <description>In this post, I’ll explain how I fell into a deep rabbit hole. I’ll cover how the puzzle works and how the algorithm can be optimized in Python using techniques …</description>
       
       
@@ -3935,7 +3935,7 @@ Index 9:   Hash: 00[..]202   Address: C 1LeBZP5QCwwgXR[..]PUokyLHqe
 <li>2 x SHA-256</li>
 <li>and finally a (simple) Binary-58 encoding</li>
 </ul>
-<p><img src="/en/blog/2024/10/01/the-bitcoin-puzzle/required_computation_steps.png" alt="required computation steps"></p>
+<p><img src="/en/2024/2024-10-01-bitcoin-puzzle/required_computation_steps.png" alt="required computation steps"></p>
 <center><i>required computation steps from private key to wallet address</i></center>
 <p>The ultimate goal is to find the private key for a known wallet address. As you can see, obtaining the verifying key requires only one operation, while calculating the wallet address is the more complex part. Solving this puzzle requires you to follow all the steps.</p>
 <p>If you find a valid private key for a given wallet address, you can initiate a transaction signed with the now-known verifying key. You need to submit both the wallet address and the verifying key to get confirmation from the blockchain.</p>
@@ -3945,7 +3945,7 @@ Index 9:   Hash: 00[..]202   Address: C 1LeBZP5QCwwgXR[..]PUokyLHqe
 <p>Enough talk — let’s dive into the race and participate.</p>
 <h2 id="the-algorithm">The algorithm</h2>
 <p>First, we will create a public (or signing) key from the private key using the elliptic curve algorithm SECP256k1.</p>
-<p><img src="/en/blog/2024/10/01/the-bitcoin-puzzle/eliptic_curve.png" alt="eliptic curve"></p>
+<p><img src="/en/2024/2024-10-01-bitcoin-puzzle/eliptic_curve.png" alt="eliptic curve"></p>
 <center><i>An eliptic curve (Source: https://en.bitcoin.it/wiki/File:Secp256k1.png)</i></center>
 <p>Superficial Note on the Algorithm: SEC stands for Standards for Efficient Cryptography, P represents the prime number 2²⁵⁶ - 2³² - 977 on which this curve is based, 256 denotes the length of the private key in Bit and k1 refers to the Koblitz curve, a specific type of elliptic curve. The actual curve is defined by the equation:</p>
 <pre><code>y²=x³ + 7

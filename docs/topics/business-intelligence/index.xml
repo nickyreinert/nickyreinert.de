@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Business Intelligence auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/topics/business-intelligence/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Mon, 15 Jul 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/business-intelligence/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Fokussierter Drill-Down mit Tableau</title>
+      <link>https://nickyreinert.de/2019/2019-07-15-fokussierter-drill-down-mit-tableau/</link>
+      <pubDate>Mon, 15 Jul 2019 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2019/2019-07-15-fokussierter-drill-down-mit-tableau/</guid>
+      <description>In Tableau gibt es die eigentlich sehr nützliche Möglichkeit, Dimensionen beliebig zu kombinieren und in einer Hierarchie zusammenzufassen. Diese Funktion ist …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel beschreibt eine Methode zur Implementierung eines fokussierten Drill-Downs in Tableau, optimiert für große Datensätze mit hochkardinalen Dimensionen. Er erläutert, wie durch den Einsatz von berechneten Feldern, Parametern und Aktionen eine performantere und übersichtlichere Navigation durch Datenhierarchien realisiert werden kann, um die Einschränkungen der Standard-Hierarchiefunktion von Tableau zu umgehen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Tableau, Datenvisualisierung, Business Intelligence, Datenanalyse, Drill-Down, Hierarchien, Performance Optimierung, Dashboard Design</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>In Tableau gibt es die eigentlich sehr nützliche Möglichkeit, Dimensionen beliebig zu kombinieren und in einer Hierarchie zusammenzufassen. Diese Funktion ist sehr intuitiv hat aber einen Haken: Wenn man bei großen Datenmengen und Dimensionen mit hoher Kardinalität einen Drill Down macht, werden die Abfragen nicht nur irrsinnig langsam, je tiefer man kommt. Die Übersicht geht auch komplett verloren.</p>
+<p>Um das zu demonstrieren habe ich eine Datenquelle mit 1 Mio. Zeilen und 10 Dimensionen erzeugt. Der Drill-Down auf Ebene 8 dauert hier auf normaler Hardware über 20 Sekunden und das Ergebnis ist&hellip; nun ja: Für eine schnellen Überblick kaum zu gebrauchen:</p>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-700x380.png" alt=" Drill-Down auf die 8. Ebene einer Hierarchie mit hoher Kardinalität: Übersicht ade "></a></p>
+<p>Drill-Down auf die 8. Ebene einer Hierarchie mit hoher Kardinalität: Übersicht ade</p>
+<p>Im Folgenden beschreibe ich einen Weg, wie man einen fokussierten Drill-Down ermöglicht, der weitaus performanter und vor allem übersichtlicher ist. Man könnte zwar die eingebaute Quick-Filter-Funktion nutzen, das ist dann aber relativ umständlich, da man je Ebene mindestens zwei Klicks benötigt und vor allem immer noch nicht übersichtlich:</p>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-2.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-2.png" alt="Die Quick-Filter-Funktion bei mehreren Dimensionen in einer Hierarchie"></a></p>
+<p>Drill-Down bei mehreren Dimensionen einer Hierarchie unter Verwendung des Quick-Filters: Unpraktisch</p>
+<p>Bevor ich die Schritte im einzelnen erkläre, möchte ich zeigen, was das Ziel der ganzen Übung sein soll:</p>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-1.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-1-700x526.png" alt="Schematische Darstellung der Logik"></a></p>
+<p>Schematische Darstellung der Logik</p>
+<p>Die Namen der einzelnen Dimensonen werden für jedes Level zusammengefasst. Jede Dimension in der Hierarchie wird außerdem durch einen <strong>Index</strong> repräsentiert, der die Tiefe wiederspiegelt. Dadurch entsteht ein Pfad nach dem Schema <strong>nameA.nameB.NameC.nameD.nameX</strong> usw. Diese Pfad soll als Filter dienen. So kann ich mit einem einzigen Filter mehrere Dimensionen abdecken.</p>
+<p>Ein Klick auf eine Zeile im Arbeitsblatt &ldquo;<strong>main</strong>&rdquo; soll dafür sorgen, dass der Index für die aktuelle Ebene um 1 hochgezählt wird - man also tiefer in den Baum hineingeht. Außerdem wird der Pfad für die entsprechende Ebene als Filter genutzt. Dadurch erhalte ich eine Ansicht, die einem kombinierten Filter gleicht, immer nur die Zeilen anzeigt, die ich beim Drill-Down ausgewählt habe. Klicke ich auf das zweite Arbeitsblatt, wird der Index heruntergezählt, also immer die nächsthöhere Ebene angezeigt. Außerdem wird bei dem zusammengesetzten Pfad das letzte Element entfernt, wodurch sich gleichzeitig die Filterbedingung ändert.<br>
+Um diese Mechanik umzusetzen, benötigen wir also zwei Felder, eines enthält immer den aktuellen <strong>Index + 1</strong> für die nächste Ebene und <strong>Index - 1</strong> für die nächst höhere Ebene. Außerdem gibt es ein Feld, dass den aktuellen Pfad enthält, also z.B. <strong>nameA.nameB.nameC</strong>. Ein weiteres Feld enthält den nächsten Pfad, je nachdem wo der Nutzer klickt, also z.B. <strong>nameA.nameB.nameC.nameD</strong> und ein Feld enthält den Pfad für die zuvor ausgewählte Ebene, also z.B. <strong>nameA.nameB</strong>. Das ganze wird mit ein paar Aktionen und Filtern so miteinander kombiniert, dass der Benutzer interaktiv durch die Hierarchie reisen kann.<br>
+Klar soweit? Los geht&rsquo;s:</p>
+<p>Du benötigst zwei Arbeitsblätter und ein Dashboard, das die beiden Arbeitsbelätter beherbergt. Als Namen wähle ich &ldquo;<strong>main</strong>&rdquo; für die eigentliche Darstellung der KPIs und &ldquo;<strong>go back</strong>&rdquo; für die Navigation. Wir beginnen mit der Erstellung der beiden Parameter.<br>
+Der Parameter &ldquo;<strong>current level index</strong>&rdquo; enthält, entsprechend der Anzahl der Dimensionen, die Ziffern 1 bis 10. Der Parameter &ldquo;<strong>level name concatenated</strong>&rdquo; dient später als Filter-Element und enthält den oben erwähnten Pfad:</p>
+<ul>
+<li>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-breadcrumb-navigation-in-tableau/parameter_level_name_concatenated.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/parameter_level_name_concatenated.png" alt="Parameter level name concatenated"></a></p>
+<p>Parameter level name concatenated</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-breadcrumb-navigation-in-tableau/parameter_current_level_index.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/parameter_current_level_index.png" alt="Parameter current level index"></a></p>
+<p>Parameter current level index</p>
+</li>
+</ul>
+<p>Nun erstellst du einen Filter, der sich auf den Parameter &ldquo;<strong>level name concatenated</strong>&rdquo; bezieht. Das vereinfacht den weiteren Prozess ungemein, da du kein Filter-Aktion anlegen musst, sondern Tableau den Filter immer dynamisch anpasst. Dazu legst du einen Filter für das Arbeitsblatt &ldquo;<strong>main</strong>&rdquo; an und wählst im Reiter &ldquo;Bedingung&rdquo; die Option &ldquo;nach Formel&rdquo; aus. Als Formel verwendest du diese:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[level name concatenated] = [current level filter]
+</span></span></code></pre></div><p>So sollte der Filter dann in Tableau aussehen:</p>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-4.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-4.png" alt="Filter mit einer Formel als Bedingung"></a></p>
+<p>Filter mit einer Formel als Bedingung</p>
+<p>Weiter geht es mit ein paar berechneten Feldern:</p>
+<p>Das erste Feld nennt sich &ldquo;<strong>current level</strong>&rdquo;, dass den Parameter &ldquo;<strong>current level index</strong>&rdquo; nutzt um die entsprechende Dimension darzustellen. Die Formel dazu ist simpel:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">IF     [current level index] = 1 THEN [Dimension1] 
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">ELSEIF [current level index] = 2 THEN [Dimension2]
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">ELSEIF [current level index] = 3 THEN [Dimension3]
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">ELSEIF [current level index] = 4 THEN [Dimension4] 
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">ELSEIF [current level index] = 5 THEN [Dimension5] 
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">ELSEIF [current level index] = 6 THEN [Dimension6] 
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">ELSEIF [current level index] = 7 THEN [Dimension7] 
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">ELSEIF [current level index] = 8 THEN [Dimension8] 
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">ELSEIF [current level index] = 9 THEN [Dimension9] 
+</span></span><span class="line"><span class="ln">10</span><span class="cl">ELSEIF [current level index] = 10 THEN [Dimension10] 
+</span></span><span class="line"><span class="ln">11</span><span class="cl">END
+</span></span></code></pre></div><p>Als nächstes gibt es zwei Felder, die auch mit einer einfachen Formel auskommen: &ldquo;<strong>previous level index</strong>&rdquo; und &ldquo;<strong>next level index</strong>&rdquo;. Previous level index dient dazu, den Index herunter zu zählen. Hier könnte man sicherlich eine eleganter Lösung nutzen, um das Prinzip zu verdeutlichen, habe ich das mit einer einfachen Wenn-Dann-Bedingung realisiert:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">IF [current level index] = 1 then 1
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">ELSEIF [current level index] = 2 then 1
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">ELSEIF [current level index] = 3 then 2
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">ELSEIF [current level index] = 4 then 3
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">ELSEIF [current level index] = 5 then 4
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">ELSEIF [current level index] = 6 then 5
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">ELSEIF [current level index] = 7 then 6
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">ELSEIF [current level index] = 8 then 7
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">ELSEIF [current level index] = 9 then 8
+</span></span><span class="line"><span class="ln">10</span><span class="cl">ELSEIF [current level index] = 10 then 9
+</span></span><span class="line"><span class="ln">11</span><span class="cl">END
+</span></span></code></pre></div><p>Bei &ldquo;<strong>next level index</strong>&ldquo;läuft es genau anders rum:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">IF     [current level index] = 1 THEN 2
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">ELSEIF [current level index] = 2 THEN 3
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">ELSEIF [current level index] = 3 THEN 4
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">ELSEIF [current level index] = 4 THEN 5
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">ELSEIF [current level index] = 5 THEN 6
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">ELSEIF [current level index] = 6 THEN 7
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">ELSEIF [current level index] = 7 THEN 8
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">ELSEIF [current level index] = 8 THEN 9
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">ELSEIF [current level index] = 9 THEN 10
+</span></span><span class="line"><span class="ln">10</span><span class="cl">END
+</span></span></code></pre></div><p>Weiter geht es mit den Pfaden, die wir für den Filter benötigen. Jetzt wird es etwas komplizierter: Das Feld &ldquo;<strong>current level concat</strong>&rdquo; fasst zunächst, entsprechen der aktuell ausgewählten Ebene, die Namen der vorherigen Ebenen zusammen. So entsteht der Pfad:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">IF     [current level index] = 1  THEN [Dimension1] 
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">ELSEIF [current level index] = 2  THEN [Dimension1] + &#34;.&#34; + [Dimension2]
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">ELSEIF [current level index] = 3  THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3]
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">ELSEIF [current level index] = 4  THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4]
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">ELSEIF [current level index] = 5  THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5]
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">ELSEIF [current level index] = 6  THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5] + &#34;.&#34; + [Dimension6]
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">ELSEIF [current level index] = 7  THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5] + &#34;.&#34; + [Dimension6] + &#34;.&#34; + [Dimension7]
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">ELSEIF [current level index] = 8  THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5] + &#34;.&#34; + [Dimension6] + &#34;.&#34; + [Dimension7] + &#34;.&#34; + [Dimension8]
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">ELSEIF [current level index] = 9  THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5] + &#34;.&#34; + [Dimension6] + &#34;.&#34; + [Dimension7] + &#34;.&#34; + [Dimension8] + &#34;.&#34; + [Dimension9]
+</span></span><span class="line"><span class="ln">10</span><span class="cl">ELSEIF [current level index] = 10 THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5] + &#34;.&#34; + [Dimension6] + &#34;.&#34; + [Dimension7] + &#34;.&#34; + [Dimension8] + &#34;.&#34; + [Dimension9] + &#34;.&#34; + [Dimension10]
+</span></span><span class="line"><span class="ln">11</span><span class="cl">END
+</span></span></code></pre></div><p>Das Feld &ldquo;<strong>current level filter</strong>&rdquo; ist ähnlich aufgebaut. Da der Filter sich aber strenggenommen auf die vorherige Eben bezieht, sieht der Pfad etwas anders aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">IF     [current level index] = 1 THEN &#34;.&#34; 
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">ELSEIF [current level index] = 2 THEN [Dimension1] 
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">ELSEIF [current level index] = 3 THEN [Dimension1] + &#34;.&#34; + [Dimension2]
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">ELSEIF [current level index] = 4 THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3]
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">ELSEIF [current level index] = 5 THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4]
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">ELSEIF [current level index] = 6 THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5]
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">ELSEIF [current level index] = 7 THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5] + &#34;.&#34; + [Dimension6]
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">ELSEIF [current level index] = 8 THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5] + &#34;.&#34; + [Dimension6] + &#34;.&#34; + [Dimension7]
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">ELSEIF [current level index] = 9 THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5] + &#34;.&#34; + [Dimension6] + &#34;.&#34; + [Dimension7] + &#34;.&#34; + [Dimension8]
+</span></span><span class="line"><span class="ln">10</span><span class="cl">ELSEIF [current level index] = 10 THEN [Dimension1] + &#34;.&#34; + [Dimension2] + &#34;.&#34; + [Dimension3] + &#34;.&#34; + [Dimension4] + &#34;.&#34; + [Dimension5] + &#34;.&#34; + [Dimension6] + &#34;.&#34; + [Dimension7] + &#34;.&#34; + [Dimension8] + &#34;.&#34; + [Dimension9]
+</span></span><span class="line"><span class="ln">11</span><span class="cl">END
+</span></span></code></pre></div><p>Beim Feld &ldquo;<strong>previous level concat</strong>&rdquo; wird es schon etwas schwieriger, da ich hier immer das letzte Element des Pfades entfernen muss. Das erinnert ein wenig an eine aus dem Ruder gelaufene Excel-Funktion, ist leider aber - nach meinem aktuellen Kenntnisstand - nicht einfacher zu realisieren, da die Behandlung von Strings in Tableau eben eingeschränkt sit. Sachdienliche Hinweise werden dankbar entgegen genommen.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">IF [current level index] = 1 THEN 
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    &#34;.&#34;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">ELSEIF [current level index] = 2 THEN
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    &#34;.&#34;
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">ELSEIF [current level index] = 3 THEN
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    LEFT([level name concatenated], FIND([level name concatenated], &#39;.&#39;, 1) - 1)
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">ELSEIF [current level index] = 4 THEN
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    LEFT([level name concatenated], FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, 1) + 1) - 1)
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">ELSEIF [current level index] = 5 THEN
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    LEFT([level name concatenated], FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, 1) + 1) + 1) - 1)
+</span></span><span class="line"><span class="ln">11</span><span class="cl">ELSEIF [current level index] = 6 THEN
+</span></span><span class="line"><span class="ln">12</span><span class="cl">    LEFT([level name concatenated], FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, 1) + 1)) + 1) + 1) - 1)
+</span></span><span class="line"><span class="ln">13</span><span class="cl">ELSEIF [current level index] = 7 THEN
+</span></span><span class="line"><span class="ln">14</span><span class="cl">    LEFT([level name concatenated], FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, 1) + 1) + 1) + 1) + 1) + 1) - 1)
+</span></span><span class="line"><span class="ln">15</span><span class="cl">ELSEIF [current level index] = 8 THEN
+</span></span><span class="line"><span class="ln">16</span><span class="cl">    LEFT([level name concatenated], FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, 1) + 1) + 1) + 1) + 1) + 1) + 1) - 1)
+</span></span><span class="line"><span class="ln">17</span><span class="cl">ELSEIF [current level index] = 9 THEN
+</span></span><span class="line"><span class="ln">18</span><span class="cl">    LEFT([level name concatenated], FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) - 1)
+</span></span><span class="line"><span class="ln">19</span><span class="cl">ELSEIF [current level index] = 10 THEN
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    LEFT([level name concatenated], FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) - 1)
+</span></span><span class="line"><span class="ln">21</span><span class="cl">END
+</span></span></code></pre></div><p>Das gröbste ist somit erledigt, du solltest nun die folgenden Felder und Parameter haben. Achte darauf, dass du die Felder als Dimension nutzt:</p>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-3.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-3.png" alt="Alle berechneten Felder und Parameter auf einen Blick"></a></p>
+<p>Alle berechneten Felder und Parameter auf einen Blick</p>
+<p>Nun ziehst du die Felder &ldquo;<strong>next level index</strong>&rdquo;, &ldquo;<strong>current level</strong>&rdquo; und &ldquo;<strong>current level concat</strong>&rdquo; auf das Arbeitsblatt &ldquo;<strong>main</strong>&rdquo;, die Felder &ldquo;<strong>previous level index</strong>&rdquo; und &ldquo;<strong>previous level concat</strong>&rdquo; gehören auf das Arbeitsblatt &ldquo;<strong>go back</strong>&rdquo;.</p>
+<ul>
+<li>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-5-700x172.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-5-700x172.png" alt="Arbeitsblatt main mit allen nötigen Feldern"></a></p>
+<p>Arbeitsblatt main mit allen nötigen Feldern</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-6.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-6.png" alt="Arbeitsblatt “go back” mit allen nötigen Feldern"></a></p>
+<p>Arbeitsblatt &ldquo;go back&rdquo; mit allen nötigen Feldern</p>
+</li>
+</ul>
+<h3 id="das-dashboard-mit-leben-füllen">Das Dashboard mit Leben füllen</h3>
+<p>Abschließend geht es an die Aktionen um das Dashboard mit Leben zu füllen. Insgesamt benötigen wir vier Aktionen zur Änderung eines Parameters. Die ersten beiden Aktionen sorgen dafür, dass der aktuelle Index entsprechen hoch- und runtergezählt wird. Die Aktion &ldquo;<strong>increase level index</strong>&rdquo; nutzt als Quellblatt &ldquo;<strong>main</strong>&rdquo; sowie das Feld &ldquo;<strong>next level index</strong>&rdquo; und verweist auf den Parameter &ldquo;<strong>current level index</strong>&rdquo;. Und vice versa die Aktion &ldquo;<strong>decrease level index</strong>&rdquo; mit dem Quellblatt &ldquo;<strong>go back</strong>&rdquo;, dem Feld &ldquo;<strong>previous level index&rdquo;</strong> und ebenfalls dem Ziel-Parameter &ldquo;<strong>current level index</strong>&rdquo;:</p>
+<ul>
+<li>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-7.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-7.png" alt="Aktion zur Parameter-Steuerng: Den Level-Index um 1 erhöhen…"></a></p>
+<p>Aktion zur Parameter-Steuerng: Den Level-Index um 1 erhöhen&hellip;</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-8.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-8.png" alt="…und um eins verringern"></a></p>
+<p>&hellip;und um eins verringern</p>
+</li>
+</ul>
+<p>Danach benötigen wir eine Aktion, um den Filter-Parameter &ldquo;<strong>level name concatenated</strong>&rdquo; zu setzen: Dieser erhält den Wert aus dem berechneten Feld &ldquo;<strong>current level concat</strong>&rdquo;, wenn man auf das Arbeitsblatt &ldquo;<strong>main</strong>&rdquo; klickt. Und beim Arbeitsblatt &ldquo;<strong>go back</strong>&rdquo; ist es wieder genau andersrum: Hier kommt der Wert aus dem Feld &ldquo;<strong>previous level concat</strong>&rdquo;:</p>
+<ul>
+<li>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-9.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-9.png" alt="Die Aktion um den Filter für die nächsttiefere Eben zu setzen.."></a></p>
+<p>Die Aktion um den Filter für die nächsttiefere Eben zu setzen..</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-10.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-10.png" alt="… und für die darüberliegende Ebene"></a></p>
+<p>&hellip; und für die darüberliegende Ebene</p>
+</li>
+</ul>
+<h3 id="et-voila">Et voila</h3>
+<p>Das war es. Du kannst nun das Dashboard nutzen, um beliebig durch deine Dimensionen zu klicken. Hier und da lässt sich das ganze sicherlich noch etwas optimieren. Zuerst kannst du z.B. die &ldquo;Steuerfelder&rdquo; ausblenden, um nur die relevanten Informationen zu präsentieren (in der Regel über rechte Maustaste &ldquo;<strong>Kopfzeile ausblenden</strong>&rdquo;). Außerdem kann man die Formeln optimieren und z.B. verhindern, dass der Nutzer tiefer klickt, als die verwendete Anzahl von Dimensionen. Das sind aber nur kleinere Baustellen. Das wichtigste Ziel sollte erreicht sein: Die Darstellung ist weitaus übersichtlicher und vor allem kann man nun in Sekundenbruchteilen bis zur letzten Eben navigieren.<br>
+Natürlich kann man das ganze auch mit einem Chart kombinieren, was der Sache noch etwas mehr Glanz verleiht. Auf Tableau Public habe ich eine Dashboard veröffentlicht, dass das ganze in Aktion zeigt. Aus Gründen ist die Datenquelle dort allerdings nur 100.000 Zeilen groß:</p>
+<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-10.png">https://public.tableau.com/profile/nr1871#!/vizhome/focussedDrillDown/dashboard</a></p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Tableau, Datenvisualisierung, Business Intelligence, Datenanalyse, Tutorial</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>anleitungen</category>
+      
+      <category>development</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Fokussierter Drill-Down mit Tableau - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>tutorial</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

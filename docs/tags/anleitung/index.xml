@@ -26,7 +26,7 @@
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Eine umfassende Dokumentation für die Version 2.0 des Plugins &#34;WP Word Cloud&#34;. Der Artikel beschreibt die erweiterten Funktionen, darunter die Erstellung von Wortwolken aus diversen Quellen (URL, SQL, Post-ID), eine interaktive Frontend-Bearbeitung und eine clientseitige Texterkennung (OCR) für Bilder. Es wird eine detaillierte Anleitung zur Installation und zur Verwendung aller Shortcode-Parameter gegeben.</p>
+          <p>Eine umfassende Dokumentation für die Version 2.0 des Plugins &#39;WP Word Cloud&#39;. Der Artikel beschreibt die erweiterten Funktionen, darunter die Erstellung von Wortwolken aus diversen Quellen (URL, SQL, Post-ID), eine interaktive Frontend-Bearbeitung und eine clientseitige Texterkennung (OCR) für Bilder. Es wird eine detaillierte Anleitung zur Installation und zur Verwendung aller Shortcode-Parameter gegeben.</p>
           
           
           <p><strong>Hauptthemen:</strong> WordPress, Plugins, Datenvisualisierung, JavaScript, OCR, Tesseract.js</p>
@@ -288,7 +288,7 @@ Eine einfache Implementierung sieht z.B. so aus:</p>
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Eine detaillierte Schritt-für-Schritt-Anleitung zur prozeduralen Erzeugung eines Labyrinths mit reinem JavaScript und HTML. Das Tutorial entwickelt iterativ einen Algorithmus, der von einem einfachen Pfad bis zu einer komplexen Lösung mit dem `Recursive Backtracker`-Ansatz führt, um ein lösbares Labyrinth mit Sackgassen zu generieren.</p>
+          <p>Eine detaillierte Schritt-für-Schritt-Anleitung zur prozeduralen Erzeugung eines Labyrinths mit reinem JavaScript und HTML. Das Tutorial entwickelt iterativ einen Algorithmus, der von einem einfachen Pfad bis zu einer komplexen Lösung mit dem &#39;Recursive Backtracker&#39;-Ansatz führt, um ein lösbares Labyrinth mit Sackgassen zu generieren.</p>
           
           
           <p><strong>Hauptthemen:</strong> JavaScript, Algorithmen, Game-Development, Prozedurale Generierung, HTML DOM</p>
@@ -1044,6 +1044,401 @@ Auch die Liste möglicher Ausgänge wird etwas anders organisiert:</p>
       
       
     </item><item>
+      <title>Wie kannst du SSH sicherer machen? Security through obscurity?</title>
+      <link>https://nickyreinert.de/2019/2019-07-13-wie-kannst-du-ssh-sicherer-machen-security-through-obscurity/</link>
+      <pubDate>Sat, 13 Jul 2019 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2019/2019-07-13-wie-kannst-du-ssh-sicherer-machen-security-through-obscurity/</guid>
+      <description>Diese Abbildung, meine geneigten Freunde, zeigt die Zugriffsversuche für SSH auf meinen Server. Zugegeben: Es ist nicht viel und wird sich vermutlich kaum auf …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel beleuchtet Methoden zur Erhöhung der SSH-Sicherheit, insbesondere durch das Ändern des Standard-Ports. Er erklärt die Umsetzung dieser &#39;Security through obscurity&#39;-Strategie, einschließlich der Konfiguration von &#39;sshd_config&#39;, Firewall-Regeln (iptables) und &#39;fail2ban&#39;, um unerwünschte Zugriffsversuche zu reduzieren und das System sicherer zu machen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> SSH, Serversicherheit, Linux, Netzwerksicherheit, Firewall, fail2ban, Security through obscurity, Server Administration</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Diese Abbildung, meine geneigten Freunde, zeigt die Zugriffsversuche für SSH auf meinen Server. Zugegeben: Es ist nicht viel und wird sich vermutlich kaum auf die Performance des gesamten Systems auswirken. Mit diesem Grundrauschen muss aber eigentlich jeder leben, der einen SSH-Dienst über den Standard-Port 22 betreibt.</p>
+<p><img src="/2019/2019-07-13-wie-kannst-du-ssh-sicherer-machen-security-through-obscurity/images/grafik-700x335.png" alt=""></p>
+<p>SSH-Zugriff der letzten 30 Tage</p>
+<p>Wenn sich diese Zugriffe nicht auf die Performance auswirken, macht es dann wenigstens aus Sicherheitsgründen Sinn, diese Zugriffe zu unterbinden? Und die einfachste Möglichkeit das zu erreichen ist es, den SSH-Standardport (22) zu ändern. Mit meiner Argumentation folge ich denen <a href="https://security.stackexchange.com/questions/189726/does-it-improve-security-to-use-obscure-port-numbers">in einem sehr interessanten SO-Thread</a> zu dem Thema: <strong>Security through obscurity</strong>.</p>
+<p>Es gibt da draußen einen Haufen Bots, die sämtliche erreichbare IP-Adressen des Internets permanent nach Schwachstellen absuchen, nicht nur für SSH. In der Regel wird dazu eine Anfrage, z.B. mit einem Standardpasswort, an den Standardport von SSH gesendet. Die Chance, dass jemand sein System nicht ausreichend oder überhaupt nicht gesichert hat, sind scheinbar hoch genug, sonst würde sich dieses stumpfe Abgrasen nicht lohnen.</p>
+<p>Um das zu vermeiden, bietet es sich an, den Standard-Port zu ändern. Du wirst das abgrasen nicht verhindern, aber die Chancen stehen recht gut, dass die Bots das Interesse an dich verlieren und die Anfragen irgendwann nachlassen. Das ist aber spekulativ und auch nur ein kosmetischer Faktor. Wichtiger ist: Du wirst dein System dadurch ein ganz bisschen sicherer machen. Sollte morgen z.B. eine Sicherheitslücke für SSH bekannt werden, grasen die Bots die Standard-Ports ab um diese Lücke auszutesten. Die Zeit, alle denkbaren Ports zu testen, haben die Bots nicht, da Aufwand-Nutzen hier in keinem Verhältnis stehen.</p>
+<p>Zunächst änderst du den Port von 22 auf eine beliebige Ziffer unter 1024. Warum das? Ports ab 1024 können auch von &ldquo;nicht-priviligerten&rdquo; Nutzern verwendet werden. Jemand, der Zugriff auf dein System hat, kann ohne Root-Rechte einen Port öffnen. Läuft SSH nun auf Port 12345, könnte ein normaler Benutzer SSH zum Absturz bringen, seinen eigenen Dienst auf diesem Port lauschen lassen und somit SSH simulieren. Blöd. Also Port &lt; 1024. Das stellst du in der Datei <strong>/etc/ssh/sshd_config</strong> ein:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"># What ports, IPs and protocols we listen for
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Port 22
+</span></span><span class="line"><span class="ln">3</span><span class="cl">Port 999
+</span></span></code></pre></div><p>Du kannst du beliebig viele Ports definieren, indem du einfach eine weitere Zeile einfügst. Für den Anfang empfehle ich, SSH weiterhin auf Port 22 laufen zu lassen, damit du dich nicht aussperrst. Danach startest du den SSH-Daemon neu (<strong>service sshd restart</strong>), verbindest dich auf den neuen Port und de-aktivierst Port 22 final, indem du die Zeile auskommentierst.<br>
+Wenn du schon mal da bist: Der Vollständigkeit halber solltest du auch daran denken, SSH nur mit Private-Publi-Key-Authenzifizierung zu nutzen und unbedingt die Passwort-Authentifizierung deaktivieren:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">PubkeyAuthentication yes
+</span></span><span class="line"><span class="ln">2</span><span class="cl">PasswordAuthentication no
+</span></span><span class="line"><span class="ln">3</span><span class="cl">PermitRootLogin no
+</span></span></code></pre></div><p>Den SSH-Zugriff für den <strong>Root-Benutzer zu deaktivieren</strong>, ist eine weitere wichtige Sicherheitseinstellung. Du solltest dich nur mit &ldquo;unpriviligierten&rdquo; Nutzern am System anmelden können. Der Zugriff auf der CLI erfolgt dann immer mit <strong>sudo.</strong> Aber das nur am Rande&hellip;</p>
+<p>Wenn du <strong>iptables</strong> als Firewall nutzt, was hoffentlich der Fall ist, wirst du feststellen, dass du dich noch nicht auf Port 999 mit SSH verbinden kannst. Natürlich musst du den Port auch noch in der Firewall freigeben:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">iptables -A INPUT -m state --state NEW -m tcp -p tcp --dport 999 -j ACCEPT
+</span></span></code></pre></div><p>Beim Einsatz von fail2ban solltest du auch dort einstellen, dass SSH auf einem anderen Port arbeitet, damit fail2ban weiterhin Anmeldeversuche und BruteForce-Attacken abwehren kann. Die Einstellung dazu findest du in der Datei /etc/fail2ban/jail.conf oder /etc/fail2ban/jail.local. Dort gibt es einen Abschnitt [sshd] , in dem du den Port von ssh auf deinen neuen Port, z.B. 999, festlegst:</p>
+<p><img src="/2019/2019-07-13-wie-kannst-du-ssh-sicherer-machen-security-through-obscurity/images/grafik.png" alt=""></p>
+<p>Gegebenenfalls musst du diese Einstellung auch noch für SSH-Varianten wie z.B. Dropbear anpassen.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> SSH, Sicherheit, Linux, Server, Anleitung, Netzwerk</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Wie kannst du SSH sicherer machen? Security through obscurity? - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>security_guide</dc:type>
+      
+      
+    </item><item>
+      <title>Den korrekten MySQL ODBC-Treiber für deinen Linux-Server installieren</title>
+      <link>https://nickyreinert.de/2019/2019-04-24-den-korrekten-mysql-odbc-treiber-fuer-deinen-linux-server-installieren/</link>
+      <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2019/2019-04-24-den-korrekten-mysql-odbc-treiber-fuer-deinen-linux-server-installieren/</guid>
+      <description>Wenn du denkst, du hast alles richtig gemacht, nachdem du einer der halb vollständigen Anleitungen da draußen gefolgt bist, und dann wirst du nach der …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel bietet eine detaillierte Anleitung zur Installation und Konfiguration des korrekten MySQL ODBC-Treibers auf einem Linux-Server (Ubuntu). Er behandelt die Auswahl der passenden Treiberversion, den Download, die Installation und Registrierung des Treibers sowie die Überprüfung der Funktionalität, inklusive der Behebung häufiger Fehler bei der Treiberinstallation.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> MySQL, ODBC, Linux, Server Administration, Datenbanken, Treiber Installation, Ubuntu, Troubleshooting</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Wenn du denkst, du hast alles richtig gemacht, nachdem du einer der halb vollständigen Anleitungen da draußen gefolgt bist, und dann wirst du nach der mühseligen Installation von ein paar ODBC-Treibern doch mit der folgenden Fehlermeldung begrüßt:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[ISQL]ERROR: Could not SQLDriverConnect
+</span></span><span class="line"><span class="ln">2</span><span class="cl">[01000][unixODBC][Driver Manager]Can&#39;t open lib &#39;/usr/local/lib/libmyodbc8w.so&#39; : file not found
+</span></span><span class="line"><span class="ln">3</span><span class="cl">[ISQL]ERROR: Could not SQLDriverConnect
+</span></span></code></pre></div><p>Doch tatsächlich existiert die Datei. Die Fehlermeldung ist nur etwas unpräzise und vermutlich hast du die falschen Treiber heruntergeladen. Damit dir das nicht noch mal passiert, hier eine endgültige, hoffentlich vollständige Anleitung zur Installation der MySQL-ODBC Treiber (unter Ubuntu, aber leicht übertragbar auf andere Distributionen):</p>
+<h2 id="die-richtige-treiber-version-herunterladen">Die richtige Treiber-Version herunterladen</h2>
+<p>Zunächst musst du herausbekommen, welche Betriebssystem-Version du nutzt. Das funktioniert mit:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ lsb_release -a
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Distributor ID: Ubuntu
+</span></span><span class="line"><span class="ln">3</span><span class="cl">Description:    Ubuntu 16.04.5 LTS
+</span></span><span class="line"><span class="ln">4</span><span class="cl">Release:        16.04
+</span></span><span class="line"><span class="ln">5</span><span class="cl">Codename:       xenial
+</span></span></code></pre></div><p>Außerdem benötigst du noch deinen Architektur-Typ, also 32- oder 64bit. Wenn LSB diese Info nicht liefert, kannst du folgendes probieren:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ uname -a
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Linux 192.168.10.10 4.4.0-042stab136.1 #1 SMP Wed Feb 27 09:04:24 MSK 2019 x86_64 x86_64 x86_64 GNU/Linux
+</span></span></code></pre></div><p>Mit diesen Informationen ausgestattet, besorgst du dir nun die passenden Treiber-Dateien von <a href="https://dev.mysql.com/downloads/connector/odbc/">https://dev.mysql.com/downloads/connector/odbc/</a> - ich gehe mal davon aus, dass du die aktuellste MySQL-Version benutzt und deshalb auch die Treiber in der Version 8 benötigst.</p>
+<p>Kopiere dir am besten den Download-Link, damit du das Archiv direkt auf dem Server mit wget herunterladen kannst, z.B. so:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="o">$</span> <span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">dev</span><span class="o">.</span><span class="n">mysql</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">get</span><span class="o">/</span><span class="n">Downloads</span><span class="o">/</span><span class="n">Connector</span><span class="o">-</span><span class="n">ODBC</span><span class="o">/</span><span class="mf">8.0</span><span class="o">/</span><span class="n">mysql</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">odbc</span><span class="o">-</span><span class="mf">8.0</span><span class="o">.</span><span class="mi">15</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ubuntu16</span><span class="o">.</span><span class="mi">04</span><span class="o">-</span><span class="n">x86</span><span class="o">-</span><span class="mi">64</span><span class="n">bit</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</span></span></code></pre></div><h2 id="die-treiber-installieren-und-registrieren">Die Treiber installieren und registrieren</h2>
+<p>Wenn der Download beendet wurde, entpackst du die Datei mit den folgenden Befehlen und wechselst danach in das soeben entstandene Verzeichnis:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ gunzip mysql-connector-odbc-8.0.15-linux-ubuntu16.04-x86-64bit.tar.gz
+</span></span><span class="line"><span class="ln">2</span><span class="cl">$ tar xvf mysql-connector-odbc-8.0.15-linux-ubuntu16.04-x86-64bit.tar
+</span></span><span class="line"><span class="ln">3</span><span class="cl">$ cd mysql-connector-odbc-8.0.15-linux-ubuntu16.04-x86-64bit
+</span></span></code></pre></div><p>Nun kopierst du das Installations-Script - was du vermutlich nicht benötigen wirst - und die Treiber-Dateien in die entsprechenden Ordner:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ cp bin/* /usr/local/bin
+</span></span><span class="line"><span class="ln">2</span><span class="cl">$ cp lib/* /usr/local/lib
+</span></span></code></pre></div><p>Das war es schon fast. Als nächstes musst du die Treiber noch &ldquo;anmelden&rdquo;. Mit diesem Befehl bekommst du heraus, wo sich die Einstellungs-Datei für ODBC befindet.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ odbcinst -j
+</span></span><span class="line"><span class="ln">2</span><span class="cl">unixODBC 2.3.6
+</span></span><span class="line"><span class="ln">3</span><span class="cl">DRIVERS............: /etc/odbcinst.ini
+</span></span><span class="line"><span class="ln">4</span><span class="cl">SYSTEM DATA SOURCES: /etc/odbc.ini
+</span></span><span class="line"><span class="ln">5</span><span class="cl">FILE DATA SOURCES..: /etc/ODBCDataSources
+</span></span><span class="line"><span class="ln">6</span><span class="cl">USER DATA SOURCES..: /root/.odbc.ini
+</span></span><span class="line"><span class="ln">7</span><span class="cl">SQLULEN Size.......: 8
+</span></span><span class="line"><span class="ln">8</span><span class="cl">SQLLEN Size........: 8
+</span></span><span class="line"><span class="ln">9</span><span class="cl">SQLSETPOSIROW Size.: 8
+</span></span></code></pre></div><p>Es kann durchaus sein, dass die Datei für die Treiber (/etc/odbcinst.ini) noch nicht existiert, dann legst du sie einfach an und ergänzt die folgenden Zeilen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ nano /etc/odbcinst.ini
+</span></span><span class="line"><span class="ln">2</span><span class="cl">[MySQL ODBC 8.0 Unicode Driver]
+</span></span><span class="line"><span class="ln">3</span><span class="cl">Driver=/usr/local/lib/libmyodbc8w.so
+</span></span><span class="line"><span class="ln">4</span><span class="cl">UsageCount = 1
+</span></span><span class="line"><span class="ln">5</span><span class="cl">[MySQL ODBC 8.0 ANSI Treiber]
+</span></span><span class="line"><span class="ln">6</span><span class="cl">Driver=/usr/local/lib/libmyodbc8a.so
+</span></span><span class="line"><span class="ln">7</span><span class="cl">UsageCount = 1
+</span></span></code></pre></div><p>Wie du siehst, steckt dahinter keine Raktentechnologie und in den meisten Fällen dürften diese Grundeinstellungen ausreichen. Du kannst die Datei natürlich noch ausbauen, eine ganze Menge zusätzlicher Parameter festlegen und nicht nur für MySQL nutzen (<a href="https://www.systutorials.com/docs/linux/man/5-odbcinst.ini/">siehe hier</a>).</p>
+<h2 id="die-funktionalität-testen">Die Funktionalität testen</h2>
+<p>Zum Abschluss kannst du folgendermaßen prüfen, ob die Einrichtung funktioniert hat. Wie du siehst, referenzierst du die oben registrierten Treiber:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ isql -v -k &#34;DRIVER={MySQL ODBC 8.0 Unicode Driver};SERVER=192.168.10.99;UID=root;PWD=password&#34;
+</span></span></code></pre></div><p>Sollte der Aufruf mit der folgenden Fehlermeldung quittiert werden, prüfe zunächst, ob die Datei vorhanden ist. Wenn dem so ist, ist es möglich, dass du oben die falschen Architektur oder Version der Treiber ausgewählt hast - auch dann beschwert sich isql, dass die Datei &ldquo;nicht gefunden werden kann&rdquo;:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[01000][unixODBC][Driver Manager]Can&#39;t open lib &#39;/usr/local/lib/libmyodbc8w.so&#39; : file not found
+</span></span><span class="line"><span class="ln">2</span><span class="cl">[ISQL]ERROR: Could not SQLDriverConnect
+</span></span></code></pre></div><p>Ansonsten solltest du auf die Konsole von deinem MySQL-Server gelangen, die in etwa so aussieht - und dann hast du alles richtig gemacht:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">+---------------------------------------+
+</span></span><span class="line"><span class="ln">2</span><span class="cl">| Connected!                            |
+</span></span><span class="line"><span class="ln">3</span><span class="cl">|                                       |
+</span></span><span class="line"><span class="ln">4</span><span class="cl">| sql-statement                         |
+</span></span><span class="line"><span class="ln">5</span><span class="cl">| help [tablename]                      |
+</span></span><span class="line"><span class="ln">6</span><span class="cl">| quit                                  |
+</span></span><span class="line"><span class="ln">7</span><span class="cl">|                                       |
+</span></span><span class="line"><span class="ln">8</span><span class="cl">+---------------------------------------+
+</span></span><span class="line"><span class="ln">9</span><span class="cl">SQL&gt;
+</span></span></code></pre></div>
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> MySQL, ODBC, Linux, Server, Anleitung, Datenbank</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Den korrekten MySQL ODBC-Treiber für deinen Linux-Server installieren - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>how-to_guide</dc:type>
+      
+      
+    </item><item>
+      <title>WordPress Tag Cloud mit Umlauten (äöü) korrekt sortieren - Oder: Der WordPress Filter im Live-Beispiel erklärt</title>
+      <link>https://nickyreinert.de/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/</link>
+      <pubDate>Thu, 18 Apr 2019 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/</guid>
+      <description>Das schöne an PHP: Viele Wege führen nach Rom.
+Das Problem mit PHP: Viele Wege führen nach Rom.
+Denn diese Vielfallt stellt den Entwickler von Welt mituner vor …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel zeigt, wie man WordPress Tag Clouds mit Umlauten (äöü) korrekt sortiert, indem man einen benutzerdefinierten PHP-Filter nutzt. Er demonstriert die Implementierung einer natürlichen, nicht-sensitiven Sortierung durch temporäres Ersetzen von Umlauten und dient als praktisches Beispiel für die Anwendung von WordPress-Filtern zur Anpassung von Kernfunktionen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> WordPress, PHP, Filter, Hooks, Tag Cloud, Umlaute, Sortierung, Web Development, Customization</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Das schöne an PHP: Viele Wege führen nach Rom.</p>
+<p>Das Problem mit PHP: Viele Wege führen nach Rom.</p>
+<p>Denn diese Vielfallt stellt den Entwickler von Welt mituner vor eine schwierige Frage: <a href="http://nickology.com/2012/07/03/php-faster-array-lookup-than-using-in_array/">Welcher Weg ist der kürzeste</a>? Will man z.B. einen Wert (<em>needle</em>) in einem Array (<em>haystack</em>) suchen, gibt es in PHP zehn verschiedene Methoden. Du hast richtig gelesen: Zehn. Ich unterscheide einerseits auch die strikten und nicht-strikten Vergleiche, andererseits lasse ich die wirklich exotischen Methoden außen vor. Welche Methoden am schnellsten sind, werde ich versuchen im Folgenden herauszufinden. Außerdem schaue ich mir an ob es unter den letzten PHP-Versionen (7.0 bis 7.3*) Unterschiede in der Geschwindigkeit gibt.</p>
+<p><em>* Genau genommen sind es PHP 7.0.33-1, PHP 7.1.26-1, PHP 7.2.14-1, PHP 7.3.1-3</em></p>
+<p>Eins vorweg: Wenn du mit Schmalspur-Arrays arbeitest, die nur 12 Einträge enthalten, deren Werte nur ein ein Zeichen lang sind, kannst du hier gleich aussteigen. Du wirst schnell feststellen, dass sich Geschwindigkeitsvorteile erst bemerkbar machen, wenn die Arrays und ihre Werte länger werden.</p>
+<p>Im folgenden Stelle ich die Methoden kurz vor. Dann beschreibe ich, wie ich die Messungen durchgeführt habe. Danach gibts das bunte Zahlenwerk, in dem ich erst die Methoden miteinander vergleiche und dann die PHP-Versionen.</p>
+<p><em><strong>tl;dr:</strong></em> in_array() und nicht strikter Vergleich schlägt alle anderen Methoden. Ende der Durchsage.</p>
+<h2 id="welche-methoden-gibt-es-um-ein-array-nach-einem-wert-zu-durchsuchen">Welche Methoden gibt es, um ein Array nach einem Wert zu durchsuchen</h2>
+<h3 id="array_search---strikt--nicht-strikt">array_search - strikt / nicht strikt</h3>
+<p>Diese Methode ist der klassische Weg. Array_search() durchsucht ein Array nach einem beliebigen Wert und liefert dann den dazugehörigen Schlüssel zurück. Ist der dritte Parameter auf TRUE gesetzt, erfolgt eine strikte Suche, bei dem nicht nur Inhalt sondern auch Typ überprüft werden (ein &ldquo;typstarker Vergleich&rdquo;).</p>
+<h3 id="in_array---strikt--nicht-strikt">in_array - strikt / nicht strikt</h3>
+<p>Diese Methode ist ähnlich zu der erst genannten. Allerdings wird hier nur ein Booleanscher Wert zurückgegeben, der anzeigt, ob der Wert im Array enthalten ist. Oder nicht. Auch in_array unterstützt typstarke Vergleiche.</p>
+<h3 id="foreach---strikt--nicht-strikt">foreach - strikt / nicht strikt</h3>
+<p>Natürlich hat man auch die Möglichkeit mit einer Schleife die Suche maximal zu individualisieren. Innerhalb der Schleife kann man beliebige Ereignise definieren und natürlich auch einen typstarken Vergleich anstellen. Ich habe die Schleife, für die Vergleichbarkeit, sehr einfach gehalten. Ist der Vergleich erfolgreich, wird die Schleife mit break; verlassen.</p>
+<h3 id="isset">isset</h3>
+<p>Diese Methode ist eigentlich nicht das Mittel der Wahl, um ein Array nach einem Wert zu durchsuchen. Da ich aber sehen will, wie sich dieser Umweg im Vergleich schlägt, habe ich die Methode trotzdem mit aufgenommen. Zunächst nutze ich array_flip() um aus Schlüsseln Werte und vice versa zu machen. Dann kann ich mit isset() prüfen, ob der Schlüssel sprich der ehemalige Wert vorhanden ist.<br>
+Dazu muss gesagt werden, dass diese Methode ansich sehr schnell sein kann. Wenn der Anwendungsfall es zulässt, dass du deine Daten als Schlüssel und nicht als Wert in einem Array ablegst, solltest du diese Funktion bevorzugen! Das klappt natürlich nicht, wenn du mit NULL-Werten oder nicht uniquen Werten arbeitest!</p>
+<h3 id="array_intersect">array_intersect</h3>
+<p>Auch das ist ein Exot, der für diese Zwecke eigentlich wenig sinnvoll ist. Was nicht heißt, dass es auch hierfür Anwendungsfälle geben kann. Mit <strong>array_intersect()</strong> wird eine Teilmenge von zwei Arrays erzeugt. Ich übergebe die zu suchende <em>needle</em> als Array und bilde die Teilmenge mit dem <em>haystack</em>. Ist das Ergebnis-Array größer als 0, enthält der Heuhaufen die Nadel. Der Vorteil: Sucht man mehr als eine Nadel, kann man mit der Schnittmenge sehr gut weiterarbeiten. Von dieser Methode gibt es einige verrückte Abwandlungen, die ich hier aber nicht alle getrennt betrachten möchte.</p>
+<h3 id="array_keys---strikt--nicht-strikt">array_keys - strikt / nicht strikt</h3>
+<p>Der nächste Exot in dieser Reihe ist <strong>array_keys().</strong> Hier kann man ebenfalls einen striken typsicheren Vergleich anstrengen. Die Methode arbeitet ähnlich wie <strong>array_intersect()</strong>, liefert jedoch eine Teilmenge der Schlüssel zurück, die den gesuchten Wert enthalten. Auch dieser Weg ist eigentlich ein Umweg der nur in bestimmten Situationen anwendbar.</p>
+<h2 id="methodik-und-testaufbau">Methodik und Testaufbau</h2>
+<p>Um der ganzen Sache wenigstens einen blassen wissenschaftlichen Anstrich zu verpassen, will ich das Vorgehen kurz erläutern. Der Quellcode ist auf <a href="https://github.com/nickyreinert/compareArrayLookupMethodsInPHP/tree/master">github.com</a> verfügbar.</p>
+<p>Ich habe etwa 10.000 Arbeitsstunden in einer sehr ausgeklügeltes PHP-Script investiert. Dieses Script erzeugt ein zufälliges Array mit einer vorgegeben Länge an Keys (<strong>initArrayLength</strong>) und füllt dieses mit Werte, die eine vorgebene Länge haben (<strong>arrayValueLengths</strong>). Die Länge des Arrays kann zur Laufzeit erhöht werden, indem eine Potenz (<strong>maxPowers</strong>) angwendet wird. Danach wird dieses Array mit der angegeben Methode durchsucht (<strong>lookupMethod</strong>). Die Anzahl der Suchvorgänge wird mit <strong>maxIterations</strong> angegeben. Ist <strong>forceNewRandomArray</strong> auf 1 (aka TRUE) gesetzt, wird nach jedem Durchgang ein neues Array erzeugt.</p>
+<p>Um die in PHP eingebaute &ldquo;static optimization&rdquo; zu umgehen, gibt es den Parameter <strong>disableOptimization</strong>. Ist dieser mit 1 aktiviert, wird vor jedem Aufruf ein <strong>sleep(0);</strong> abgesetzt. Das verzögert den Programmablauf nicht, blockiert aber dieses Feature. Für die Messung habe ich den Parameter stets deaktiviert.</p>
+<p>Außerdem lässt sich mit <strong>forceNewRandomArray</strong> = 0 festlegen, dass das Array nicht bei jedem Durchlauf neu erzeugt wird. Das beschleunigt die Laufzeit bei großen Arrays erheblich.</p>
+<p>Die <em>needle</em>, also der zu suchende Wert, befindet sich immer am Ende des Arrays.</p>
+<p>Die Zeitmessung wird mit <strong>microtime(true);</strong> vorgenommen. Diese Methode erlaubt eine mikrosekunden-genaue Messung. So sieht beispielhaft die Implementierung für die Methode <strong>in_array()</strong> aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">		private function useInArray($strictMode) {
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">			$startTime = microtime(true);
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">			if ($this-&gt;disableOptimization) {sleep(0);}
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">			$result = in_array($this-&gt;needle, $this-&gt;haystack, $strictMode);
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">			$endTime = microtime(true);
+</span></span><span class="line"><span class="ln">10</span><span class="cl">
+</span></span><span class="line"><span class="ln">11</span><span class="cl">			$this-&gt;currentResults[&#39;delay&#39;] = number_format(($endTime - $startTime), 25, &#34;,&#34;, &#34;.&#34;);
+</span></span><span class="line"><span class="ln">12</span><span class="cl">
+</span></span><span class="line"><span class="ln">13</span><span class="cl">			$this-&gt;currentResults[&#39;memory_usage&#39;] = memory_get_usage(true);
+</span></span></code></pre></div><p>Das ganze Script wird in der Kommandozeile ausgeführt. <strong>Pro-Tipp:</strong> In einer Screen-Session! Ein Beispiel-Aufruf sieht demnach so aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">php-cgi7.0 -q compareLookups.php initArrayLength=10 arrayValueLengths=1,10,50,100 maxPowers=5 maxIterations=1000 forceNewRandomArray=1 breakAfterFound=1 disableOptimization=0 lookupMethod=in_array phpVersion=7.0 comment=initial_comparison
+</span></span></code></pre></div><p>Damit das ganze automatisiert und für alle Methoden einmal aufgerufen wird habe ich diese Zeile etwas abgewandelt in ein Shell-Script gepackt und dieses Script dann ausgeführt. Das Shell-Script gibt es ebenfalls bei github - siehe oben. Die ganze Chose läuft auf einem virtuellen self-managed Server, der mit <strong>Ubuntu 16.04</strong> betrieben wird. Die Kiste hat acht Kerne mit jeweils einer <strong>Intel Xeon CPU E5-2680 v3 @ 2.50GHz</strong> und <strong>16 GByte RAM</strong>.</p>
+<p>Ich habe Arrays mit einer Länge von 10, 100, 1.000, 10.000 und 100.000 Schlüsseln untersucht, die jeweils Werte mit einer Länge von 1, 10, 50, 100 Zeichen enthalten. Jede Variation wurde mit jeder Methode 1.000 mal gemessen. Insgesamt habe ich so 800.000 mal Arrays durchsucht, oder: Je Methode 80.000 Durchläufe.</p>
+<h2 id="ergebnisse">Ergebnisse</h2>
+<p>Zunächst zur Übersicht des Gesamtergebnisses in Abbildung 1 und 2: Die durchschnittliche Dauer in Mikrosekunden über alle Durchläufe hinweg. <strong>Die Länge der Arrays wirkt sich überproportional auf die Dauer aus</strong>. Das fällt vor allem bei <strong>array_intersect()</strong> auf: Ein Array mit 10.000 Schlüsseln benötigt durchschnittlich 2,479 ms, bei 100.000 Schlüsseln sind es 38,572 ms. Anders bei zunehmender Größe der Werte: Steigen dies um den Faktor 10 (10 Zeichen bzw. 100 Zeichen je Wert), dauert die Suche im Schnitt nicht mal 2 ms länger.</p>
+<ul>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-2-700x227.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-2-700x227.png" alt="Durchschnittliche Dauer in Mikrosekunden je Methode"></a></p>
+<p>Durchschnittliche Dauer in Mikrosekunden je Methode</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-1-700x241.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-1-700x241.png" alt="Durchschnittliche Dauer in Mikrosekunden je Methode"></a></p>
+<p>Durchschnittliche Dauer in Mikrosekunden je Methode</p>
+</li>
+</ul>
+<p>Die folgenden Abbildungen 3 bis 7 zeigen die exakten Messwerte für alle Methoden.</p>
+<ul>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-3-700x421.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-3-700x421.png" alt="Abbildung 3: Durchschnittliche Dauer bei 10 Schlüsseln"></a></p>
+<p>Abbildung 3: Durchschnittliche Dauer bei 10 Schlüsseln</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-4-700x470.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-4-700x470.png" alt="Abbildung 4: Durchschnittliche Dauer bei 100 Schlüsseln"></a></p>
+<p>Abbildung 4: Durchschnittliche Dauer bei 100 Schlüsseln</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-5-700x419.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-5-700x419.png" alt="Abbildung 5: Durchschnittliche Dauer bei 1.000 Schlüsseln"></a></p>
+<p>Abbildung 5: Durchschnittliche Dauer bei 1.000 Schlüsseln</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-6-700x421.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-6-700x421.png" alt="Abbildung 6: Durchschnittliche Dauer bei 10.000 Schlüsseln"></a></p>
+<p>Abbildung 6: Durchschnittliche Dauer bei 10.000 Schlüsseln</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-7-700x425.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-7-700x425.png" alt="Abbildung 7: Durchschnittliche Dauer bei 100.000 Schlüsseln"></a></p>
+<p>Abbildung 7: Durchschnittliche Dauer bei 100.000 Schlüsseln</p>
+</li>
+</ul>
+<p>Zur bessern Übersicht zeigen die folgenden beiden Abbildungen die Messungen ohne <strong>array_intersect()</strong>. Man sieht, dass <strong>isset()</strong> bei Werten mit einer Länge von 1 zumindest bei der foreach-Schleife mithalten kann. Ob der strikte Vergleich ein Nachteil ist, kann man schwer sagen. In der foreach-Schleife ist der strikte Vergleich minimal schneller, die anderen Methoden sind mit dem strikten Vergleich etwas langsamer. Tendentiell scheint <strong>non strict</strong> aber <strong>immer etwas schneller</strong> zu sein, wenn auch nur wenige Mikrosekunden.</p>
+<ul>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-12-700x254.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-12-700x254.png" alt="Abbildung 12: Durchschnittliche Dauer ohne array_intersect()"></a></p>
+<p>Abbildung 12: Durchschnittliche Dauer ohne array_intersect()</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-11-700x261.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-11-700x261.png" alt="Abbildung 11: Durchschnittliche Dauer ohne array_intersect()"></a></p>
+<p>Abbildung 11: Durchschnittliche Dauer ohne array_intersect()</p>
+</li>
+</ul>
+<p>Wie machen sich die aktuellen PHP-Versionen im Vergleich? Das zeigt Abbildung 13**. Im Vergleich zu PHP 7.0 bringen Version 7.1 und 7.3 einen Geschwindigkeitsschub**. Nicht jedoch PHP 7.2, hier waren die Durchläufe im Schnitt viel langsamer als unter PHP 7.0. Am auffälligsten sind die Auswirkungen bei der foreach-Schleife. PHP 7.3 sorgt hier durchschnittlich 25% schnellere Durchläufe.</p>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-13.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-13-700x429.png" alt=""></a></p>
+<p>Abbildung 13: Veränderung der durchschnittlichen Dauer je Methode und PHP-Version.</p>
+<p>Ähnlich geht es beim Speicherverbrauch zu. Hier tut sich erst mit PHP 7.3 einiges, der Verbrauch sinkt um knapp 25%!</p>
+<h2 id="fehlerquellen">Fehlerquellen</h2>
+<p>Die gibt es. Zum einen meine zauberhafte Implementierung des Scripts. Wer weiß, ob mir da nicht irgendwo ein Fehler untergelaufen ist. Außerdem meine vielleicht etwas lasche Interpretation der Ergebnisse. Statistik war zwar Teil meines Studiums, aber erstens ist das lange her und zweitens hatte ich an dem Tag einen starken Kater. An die Party dazu kann ich mich in Teilen gut erinnern, die Vorlesung ist wie ausgelöscht.</p>
+<p>Außerdem sollte erwähnt werden, dass ich den Server nebenbei auch als öffentlichen Web-Server benutze (allerdings ohne nennenswerte Auslastung). Die Messung habe ich deshalb nachts ausgeführt. Ich gehe aber trotzdem davon aus, dass die meisten Ausreißer auf dieses Setup zurückzuführen sind.</p>
+<h3 id="ausreißer">Ausreißer</h3>
+<p>Davon gibt es eine Menge. Die Ursache sind mannigfaltig und schwer nachvollziehbar. Ich habe hier nicht viel wissenschaftlichen Aufwand betrieben sondern nur die augenscheinlichen Fehlmessungen entfernt. Die folgenden Abbildungen sollen beispielhaft zeigen, wie oft und offensichtlich Ausreißer aufgetreten sind.</p>
+<ul>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-8-700x690.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-8-700x690.png" alt="Abbildung 8: Ausreißer"></a></p>
+<p>Abbildung 8: Ausreißer</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-9-700x450.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-9-700x450.png" alt="Abbildung 9: Durchschnittliche Dauer je Methode"></a></p>
+<p>Abbildung 9: Durchschnittliche Dauer je Methode</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-10-700x543.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-10-700x543.png" alt="Abbildung 10: Durchschnittliche Dauer je Methode, bereinigt"></a></p>
+<p>Abbildung 10: Durchschnittliche Dauer je Methode, bereinigt</p>
+</li>
+</ul>
+<h2 id="static-optimization">Static Optimization</h2>
+<p>Wenn man sich die Ergebnisse einmal anschaut, fällt etwas auf: Obwohl <strong>microtime()</strong> mit einer sehr hohen Genauigkeit misst, scheinen manche Methoden bereits nach 0 Sekunden fertig zu sein. Der Grund dafür dürfte einerseits natürlich die Hardware und andererseits die <a href="http://biagiocosenza.com/papers/PopovCC17.pdf">static optimization</a> sein. Das Feature übersteigt meinen Kompetenzbereich leider bei weitem, deswegen kann ich nur laienhaft daherplappern:</p>
+<ul>
+<li>Mit <em>sleep(0);</em> innerhalb der Zeitmessung (siehe auch oben) kann man dieses Feature ausbooten.</li>
+<li>Und außerdem scheint es eine Art unteres Limit für diese &ldquo;schnellste Zeit&rdquo; zu geben. So gibt es Messungen mit größeren Arrays, die exakt die gleiche Dauer aufweisen: 0,000000953674 Sekunden. Wird das Array noch größer, dauert es sogar <strong>exakt</strong> doppelt so lang, nämlich 0,000001907349 Sekunden. Diese Reihe kann man in Grenzen weiterführen. Zufall? Fragen! Wer dazu eine fundierte Erklärung hat, kann das gerne in den Kommentaren mitteilen.</li>
+</ul>
+<p>Die folgenden Abbildungen zeigen die Häufigkeiten der unterschiedlicher Messwerte bis 10 Mikrosekunden. Auch hier ist noch mal interessant zu beobachten, wie die Messungen der Durchläufe kaum voneinander abweichen.</p>
+<ul>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-14.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-14.png" alt="Abbildung 14: Verteilung der Messwerte für alle Messungen"></a></p>
+<p>Abbildung 14: Verteilung der Messwerte für alle Messungen</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-15-700x171.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-15-700x171.png" alt="Abbildung 15: Verteilung der Messwerte für die foreach-Schleife (nicht strikter Vergleich)"></a></p>
+<p>Abbildung 15: Verteilung der Messwerte für die foreach-Schleife (nicht strikter Vergleich)</p>
+</li>
+</ul>
+<h2 id="fazit">Fazit</h2>
+<p>Grundsätzlich sollte man eines nicht vergessen: Die Messungen finden im <strong>Mikrosekundenbereich</strong> statt. Selbst die langsamste Methode <strong>array_intersect()</strong> hat für große Arrays nur 120 Mikrosekunden benötigt, im Schnitt liegt die Dauer bei etwa 8 Millisekunden. Auch große Arrays (100.000 Schlüssel, 100 Zeichen je Wert) waren im Schnitt nach 45 Millisekunden abgefertigt. Soviel zu den subjektiven, absoluten Zahlen, die abhängig von den Begleitumständen natürlich weitaus schlechter aussehen können.</p>
+<p>Im Vergleich mit allen anderen Methoden ist <strong>array_intersect()</strong> absolut keine Wahl. <strong>Isset()</strong> kann unter bestimmten Bedingungen tatsächlich das Mittel der Wahl sein (siehe oben), verliert im direkten Vergleich aber.</p>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-16.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-16-700x281.png" alt="Abbildung 16: Durchschnittliche Dauer insgesamt je Methode"></a></p>
+<p>Abbildung 16: Durchschnittliche Dauer insgesamt je Methode</p>
+<p>Interessant ist, dass der nicht strikte Vergleich insgesamt etwas schneller ist - außer bei der Verwendung der foreach-Schleife! Diese ist allerdings grundsätzlich fast doppelt so langsam wie die anderen Methoden. Und diese liegen fast immer gleich auf so das man sagen kann, dass es hier keine Präferenz gibt.</p>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-17.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-17-700x238.png" alt=""></a></p>
+<p>Abbildung 17: Durchschnittliche Dauer insgesamt der schnellsten Methoden.</p>
+<p>Um es mit den Worten einer weisen Philosophin zu sagen: <em>&ldquo;Ich kann Dir nur die Tür zeigen. Hindurchgehen musst Du alleine&rdquo;</em>. Nutze die Erkenntnisse dafür, die richtige Methode für den richtigen Zweck zu wählen. Du weißt nun, mit welcher Methode man einen großen Array in PHP optimal durchsuchen kann. Und nebenbei hast du vielleicht noch gelernt, welche Methoden es überhaupt gibt. Wenn dich das glücklich macht, habe ich mein Ziel erreicht.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> anleitung, filter, php, tagcloud, tutorial, wordcloud, wordpress, Customization</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>blog</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>WordPress Tag Cloud mit Umlauten (äöü) korrekt sortieren - Oder: Der WordPress Filter im Live-Beispiel erklärt - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>tutorial</dc:type>
+      
+      
+    </item><item>
       <title>WordPress Tag Cloud mit Umlauten (äöü) korrekt sortieren - Oder: Der WordPress Filter im Live-Beispiel erklärt</title>
       <link>https://nickyreinert.de/2019/2019-04-18-wordpress-tag-cloud-mit-umlauten-aeoeue-korrekt-sortieren-oder-der-wordpress-filter-im-live-beispiel-erklaert/</link>
       <pubDate>Thu, 18 Apr 2019 00:00:00 +0000</pubDate>
@@ -1160,7 +1555,7 @@ Auch die Liste möglicher Ausgänge wird etwas anders organisiert:</p>
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Eine umfassende Anleitung zur Fehlersuche und Wartung von WordPress. Der Artikel erklärt, wie man Probleme wie den &#34;White Screen of Death&#34; (WSoD) und HTTP-500-Fehler systematisch analysiert. Vorgestellt werden drei wesentliche Werkzeuge: die Entwicklerkonsole des Browsers, das Plugin &#34;Query Monitor&#34; zur Performance-Analyse und die korrekte Konfiguration des WordPress-Debug-Modus über `wp-config.php` und `.htaccess`.</p>
+          <p>Eine umfassende Anleitung zur Fehlersuche und Wartung von WordPress. Der Artikel erklärt, wie man Probleme wie den &#39;White Screen of Death&#39; (WSoD) und HTTP-500-Fehler systematisch analysiert. Vorgestellt werden drei wesentliche Werkzeuge: die Entwicklerkonsole des Browsers, das Plugin &#39;Query Monitor&#39; zur Performance-Analyse und die korrekte Konfiguration des WordPress-Debug-Modus über &#39;wp-config.php&#39; und &#39;.htaccess&#39;.</p>
           
           
           <p><strong>Hauptthemen:</strong> WordPress, Debugging, Troubleshooting, Performance, PHP, Web-Development</p>
@@ -1444,6 +1839,784 @@ Eine …</description>
       
       
     </item><item>
+      <title>Welche Arten von SSL-Zertifikaten gibt es?</title>
+      <link>https://nickyreinert.de/2017/2017-09-30-welche-arten-von-ssl-zertifikaten-gibt-es/</link>
+      <pubDate>Sat, 30 Sep 2017 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2017/2017-09-30-welche-arten-von-ssl-zertifikaten-gibt-es/</guid>
+      <description>SSL-Zertifikate spielen seit einiger Zeit eine sehr wichtige Rolle. Zwar gibt es die verschlüsselte Datenübertragung von Websiten über https schon länger …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel erläutert die verschiedenen Arten von SSL-Zertifikaten, unterschieden nach Validierungsgrad (Domain Validation, Organization Validation, Extended Validation) und Geltungsbereich (Einzeldomain, Wildcard, Multi-Domain/SAN). Zudem wird der SSL-Zertifizierungsprozess und das Konzept der Zertifikatsketten detailliert beschrieben, um die Bedeutung von SSL für Webseiten und SEO zu verdeutlichen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> SSL Zertifikate, Websicherheit, HTTPS, Zertifizierungsstellen, Domain Validation, Extended Validation, Wildcard Zertifikate, SEO, Netzwerkprotokolle</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>SSL-Zertifikate spielen seit einiger Zeit eine sehr wichtige Rolle. Zwar gibt es die verschlüsselte Datenübertragung von Websiten über https schon  länger (bereits 1994 wurde die erste Version offiziell vorgestellt) aber erst in 2014 nahm die Bedeutung für SEO zu. <a href="https://webmasters.googleblog.com/2014/08/https-as-ranking-signal.html">Im August 2014</a> hat Google bekannt gegeben, dass SSL nun zu den Ranking-Faktoren zählt.  Fast zeitgleich (Anfang 2017) haben die beiden bekanntesten Browser Chrome und Firefox eine neue Version vorgestellt. Von nun an werden Webseiten, die SSL nicht nutzen explizit als unsicher ausgezeichnet. Langfristig wird also kein Weg an einem SSL-Zertifikat vorbeiführen.</p>
+<p>Es gibt sehr viele Anbieter, bei denen man SSL-Zertifikate bestellen kann und die Preise sind sehr unterschiedlich. So bietet Lets Encrypt kostenlose Zertifikate an und andere Anbieter verlangen dafür mehrere hundert Euro im Jahr. Der Grund dafür ist, dass es natürlich verschiedene Unterscheidungen bei den Zertifikaten gibt. Die eine betrifft die Art, wie das Zertifikat überprüft wird und die andere beschreibt den Gültigkeitsbereich eines Zertifikats.</p>
+<h2 id="wie-funktioniert-die-ssl-zertifizierung">Wie funktioniert die SSL Zertifizierung?</h2>
+<p>Ich werde ich nicht zu tief ins Detail gehen und eigentlich reicht es auch aus, das Grundprinzip zu verstehen: Wenn du für deine Internetseite ein Zertifikat einrichten willst, musst du dafür einen sogenannten Private Key und einen Antrag, das CSR (Certificat Signing Request) erstellen. Der Private Key ist der Augapfel, den du beschützen musst. Der CSR enthält die Informationen zu der Person bzw. Organisation, die hinter der Website steckt, die das SSL-Zertifikat erhalten soll. Dazu gehören z.B. der Name, die Anschrift und vor allem natürlich die Domain, über die die Webseite erreichbar ist. Außerdem ist auch die CA in dem Zertifikat vertreten. Warum das wichtig ist, erkläre ich weiter unten.</p>
+<p>Das CSR wird dann an eine Zertifizierungsstelle geschickt (die sogenannte CA, Certification Authority), die dir als Antwort ein Zertifikat ausstellt.</p>
+<p>Dieses Zertifikat wird dann auf deinem Webserver installiert und jedem Browser, der die Seite aufruft, übermittelt. Der Browser erkennt dann die CA, die das Zertifikat ausgestellt hat und kann der Website dann &ldquo;vertrauen&rdquo; bzw. die verschlüsselte Verbindung aufbauen.</p>
+<p>[caption id=&ldquo;attachment_1612&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/welche-arten-von-ssl-zertifikaten-gibt-es/Zertifikat-U%CC%88bersicht.png"><img src="images/Zertifikat-U%CC%88bersicht-300x233.png" alt="Übersicht über den Zertifizierungsprozess"></a> Übersicht über den Zertifizierungsprozess[/caption]</p>
+<p>Das Zertifikat bzw. das SSL-Protokoll kann nun zwei Aufgaben erfüllen: Es verschlüsselt die Kommunikation und schafft idealerweise Vertrauen.</p>
+<h2 id="unterscheidung-nach-der-art-der-validierung">Unterscheidung nach der Art der Validierung</h2>
+<p>Ein Zertifikat soll also Vertrauen schaffen. Das heißt, <a href="https://www.ssl.com/article/dv-ov-and-ev-certificates/">der Inhaber des Zertifikates muss sich validieren</a>. Dies macht er gegenüber der Zertifizierungsstelle (<strong>Certification Authority</strong>, CA). Dafür gibt es drei Möglichkeiten. Die schnellste und daher oft günstigste Variante ist die <strong>Domain Validation</strong> (DV).Die CA prüft dabei lediglich, ob der Antragsteller Besitzer der Domain ist.</p>
+<p>Die nächst Stufe ist die <strong>Organization Validation</strong> (OV). Dabei enthält das Zertifikat auch Informationen zum Unternehmen bzw. dem Besitzer der Domain, wie den Namen und die Anschrift. Diese Informationen  werden von der CA zusätzlich geprüft und validiert.</p>
+<p>Die höchste Stufe schließlich ist die <strong>Extended Validation</strong> (EV). Auch hier wird natürlich die Authentizität des Antragstellers geprüft. Der Aufwand ist hier allerdings ungleich höher. So verlangt ssl.com z.B. die Übermittlung unterschriebener Dokumente, unter anderem von einem Notar. Außerdem werden verschiedene Eigenschaften des Unternehmens geprüft, nicht zuletzt die ladungsfähige Anschrift oder die Telefonnummer. Im Browser wird die EV  dann durch kenntlich gemacht, dass der Name des Unternehmens bzw. Besitzer neben der URL dargestellt wird:</p>
+<p>[caption id=&ldquo;attachment_1531&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;729&rdquo;]<a href="https://www.nickyreinert.de/files/welche-arten-von-ssl-zertifikaten-gibt-es/ssl-ev-darstellung-im-browser.png"><img src="/2017/2017-09-30-welche-arten-von-ssl-zertifikaten-gibt-es/images/ssl-ev-darstellung-im-browser.png" alt="Darstellung des Extended Validation Zertifikats im Browser"></a> Darstellung des Extended Validation Zertifikats im Browser[/caption]</p>
+<p>Natürlich können die Preisunterschiede auch andere Gründe haben, wie z.B. ganz banal die Kostenkalkulation des Anbieters oder die Aufwände, die z.B. der eigene Hoster mit der Pflege und Beantragung hat.</p>
+<h2 id="unterscheidung-nach-umfang-des-zertifikats">Unterscheidung nach Umfang des Zertifikats</h2>
+<p>Natürlich wird ein Zertifikat immer nur für einen bestimmten Adressaten, eine Domain ausgeschrieben, wie z.B. <a href="https://www.example.com">www.example.com</a>. Doch auch hier gibt es Ausnahmen. Wie zum Beispiel das Wildcard-Zertifikat. Damit ist es möglich, beliebig viele Sub-Domains ebenfalls in das Zertifikat mit aufzunehmen. So könnte ein Wildcard-Zertifikat für *.example.com jede Sub-Domain unterhalb von example.com verwendet werden: <a href="https://www.example.com">www.example.com</a>, mail.example.com, ftp.example.com und so weiter. Für untergeordnete Sub-Domains (sub.www.example.com) funktioniert das allerdings nicht.</p>
+<p>Daneben gibt es Multi-Domain-Zertifikate, auch SAN (Subject Alternative Name) genannt. Diese Zertifikate können für beliebige Domains ausgestellt werden. Die Domains müssen aber explizit angegeben werden. So kann ein SAN-Zertifikat für <a href="https://www.example.com">www.example.com</a>, ftp.foobar.org und mail.google.com genutzt werden.</p>
+<h2 id="was-ist-eine-zertifikats-kette">Was ist eine Zertifikats-Kette?</h2>
+<p>[caption id=&ldquo;attachment_1614&rdquo; align=&ldquo;alignright&rdquo; width=&ldquo;238&rdquo;]<a href="https://www.nickyreinert.de/files/welche-arten-von-ssl-zertifikaten-gibt-es/zertifikatskette.png"><img src="/2017/2017-09-30-welche-arten-von-ssl-zertifikaten-gibt-es/images/zertifikatskette-238x300.png" alt="Zertifikatskette mit Zwischenzertifikaten und Root-Zertifikaten"></a> Zertifikatskette mit Zwischenzertifikaten und Root-Zertifikaten[/caption]</p>
+<p>Nun ist es so, dass der Browser nicht nur blind irgendwelchen Zertifikaten vertraut. Die könnte man sich ja auch selber ausstellen. Aus diesem Grund gibt es so genannte Wurzel-Zertifikate bzw. Zertifikate von Root CAs. Es gibt also Organisationen, denen der Browser vertraut. Deren Zertifikate sind oft im lokalen Speicher installiert und der Browser kann prüfen, ob das  Zertifikat für <a href="https://www.example.com">www.example.com</a> von einer vertrauenswürdigen Organisation ausgestellt wurde. Denn das Zertifikat erhält ja auch den Verweis auf die Stelle, von der das Zertifikat einmal ausgestellt wurde. Oft ist es allerdings so, dass man Zertifikate nicht nur bei den Root CAs bestellt, sondern auch bei deren &ldquo;Delegierten&rdquo; - den Intermediate CAs. Um dem Browser nun klar zu machen, dass er auch der Intermediate CA vertrauen kann, muss eben diese Zertifikats-Kette übermittelt werden. Das ist im Grunde nichts weiter als ein Liste von Zertifikaten, mit denen die Vertrauenswürdigkeit der beteiligten Zertifikats-Stellen bescheinigt wird.</p>
+<p>Der Server hinter <a href="https://www.example.com">www.example.com</a> liefert also nicht nur das Zertifikat für die Seite selber aus, sondern auch alle Zwischenzertifikate - in der sogenannten Zertifikatskette.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> SSL, Zertifikate, Websicherheit, HTTPS, SEO, Anleitung</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Welche Arten von SSL-Zertifikaten gibt es? - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>technical_explainer</dc:type>
+      
+      
+    </item><item>
+      <title>Defekte MP4 Videodatei reparieren</title>
+      <link>https://nickyreinert.de/2017/2017-09-24-defekte-mp4-videodatei-reparieren/</link>
+      <pubDate>Sun, 24 Sep 2017 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2017/2017-09-24-defekte-mp4-videodatei-reparieren/</guid>
+      <description>Hilfe verspricht in diesem Fall &ldquo;Video Repair Software&rdquo; von Grau für Windows und MacOS. Alles was du benötigst ist, neben der defekten MP4 …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel evaluiert verschiedene Softwarelösungen zur Reparatur defekter MP4-Videodateien, darunter &#39;Grau Video Repair Software&#39;, &#39;Yodot MOV Repair Tool&#39; und &#39;Remo Repair MOV&#39;. Er beleuchtet deren Funktionen, Einschränkungen und die Erfahrungen des Autors bei der Wiederherstellung einer beschädigten Datei, wobei die meisten Versuche, einschließlich manueller Reparaturen, erfolglos blieben.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Videoreparatur, MP4, Videodateien, Software-Tools, Troubleshooting, Datenrettung, Multimedia</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Hilfe verspricht in diesem Fall &ldquo;<a href="http://grauonline.de/cms2/?page_id=5">Video Repair Software</a>&rdquo; von <em>Grau</em> für Windows und MacOS. Alles was du benötigst ist, neben der defekten MP4 Videodatei, eine funktionierende Referenz-Datei, die mit der gleichen Android-Kamera aufgezeichnet wurde. Du fütterst die Software mit den beiden Video-Dateien, startest den &ldquo;Scan&rdquo; und kannst, wenn dein Glück dich nicht vollkommen verlassen hast, die Vorschau der Reparatur verfolgen und das Video und als funktionierende Video-Datei exportieren.</p>
+<p>[caption id=&ldquo;attachment_1001&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;150&rdquo;]<a href="http://www.freecoffee.de/wp-content/uploads/2014/02/Bildschirmfoto-2014-02-08-um-10.14.02.png"><img src="images/Bildschirmfoto-2014-02-08-um-10.14.02-150x150.png" alt="Bildschirmfoto 2014-02-08 um 10.14.02"></a> Grau GbR Video Repair Software[/caption]</p>
+<p>Leider ist die Software nicht kostenlos erhältlich und repariert im DemoModus nur 50% der Videodatei. Meine defekte MP4 Videodatei konnte ich zwar komplett exportieren, aber der Ton war nur bis zur etwa der Hälfte wiederhergestellt. Ob das an der Testversion oder dem Defekt der Datei liegt, lässt sich nicht sagen. Auf der Suche nach einer Alternative fand ich das <a href="http://www.yodot.com/download/thank-you-for-downloading-ymovr.html">MOV Repair Tool</a> von Yodot, das ebenfalls für Windows und MacOS erhältlich ist. Die Software bietet keine Einstellungsmöglichkeiten an und verlangt als Input lediglich die defekte MP4 Videodatei.</p>
+<p>[caption id=&ldquo;attachment_1002&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;150&rdquo;]<a href="http://www.freecoffee.de/wp-content/uploads/2014/02/Bildschirmfoto-2014-02-08-um-10.25.44.png"><img src="images/Bildschirmfoto-2014-02-08-um-10.25.44-150x150.png" alt="Bildschirmfoto 2014-02-08 um 10.25.44"></a> Yodot MOV Repair Tool[/caption]</p>
+<p>Leider bricht das Tool die Reparatur mit der Meldung ab, dass das Kameramodell nicht unterstützt wird. Der dritte Versuch startet mit <a href="http://www.fixmp4.com/de/">Repair MOV</a> von Remo - einer weiteren kostenpflichtigen Software, die damit wirbt, defekte Videodateien reparieren zu können. Diese Software verlangt ebenfalls eine Referenzdatei. Ein Video, das direkt von der Android-Kamera stammt, wird  zwar nicht akzeptiert. Jedoch nimmt Repair MOV interessanterweise die reparierte Videodatei aus meinem ersten Durchgang an.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2014/02/Bildschirmfoto-2014-02-08-um-10.35.53.png"><img src="images/Bildschirmfoto-2014-02-08-um-10.35.53-150x150.png" alt="Bildschirmfoto 2014-02-08 um 10.35.53"></a></p>
+<p> </p>
+<p>Nach dem die &ldquo;Reparatur&rdquo; beendet ist, kann man sich die Vorschau innerhalb der Software anzeigen lassen. Zum Exportieren des Videos muss man die Software jedoch lizensieren. Der Vorschaubildschirm bleibt bei mir allerdings schwarz.</p>
+<p>[caption id=&ldquo;attachment_1004&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;150&rdquo;]<a href="http://www.freecoffee.de/wp-content/uploads/2014/02/Bildschirmfoto-2014-02-08-um-10.46.43.png"><img src="images/Bildschirmfoto-2014-02-08-um-10.46.43-150x80.png" alt="Bildschirmfoto 2014-02-08 um 10.46.43"></a> Hexcode einer MP4 Videodatei[/caption]</p>
+<p>Fazit: Eins von drei kostenpflichtigen Tools schafft es, die defekte MP4-Datei zu reparieren. Ansonsten ist das Angebot leider mager. Ein Blick in den Header der defekten Datei und der Versuch, den defekt auf &ldquo;Nerd-Weise&rdquo; zu beheben, schlug letztlich auch fehl. Der Hex-Editor zeigt einen großen Bereich, der mit Nullen gefüllt ist. Hier scheint der Fehler zu liegen. Diese zu entfernen, bringt leider nicht den gewünschten Erfolg - genauso wenig, wie die Header einer defekten und funktionierenden MP4-Datei zu &ldquo;synchronisieren&rdquo;.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Video, Reparatur, Software, Tools, Anleitung, Troubleshooting</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>tools</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Defekte MP4 Videodatei reparieren - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>software_review</dc:type>
+      
+      
+    </item><item>
+      <title>Eduroam mit Windows Mobile</title>
+      <link>https://nickyreinert.de/2017/2017-09-24-eduroam-mit-windows-mobile/</link>
+      <pubDate>Sun, 24 Sep 2017 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2017/2017-09-24-eduroam-mit-windows-mobile/</guid>
+      <description>Eine Schritt-Für-Schritt-Anleitung, um Windows Mobile 6.x - Geräte mit dem Eduroam-Netzwerk zu verbinden.
+[toc=&ldquo;2,3&rdquo; title=&ldquo;Inhalt&rdquo;] …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Diese Schritt-für-Schritt-Anleitung erklärt, wie Windows Mobile 6.x Geräte mit dem Eduroam-Netzwerk verbunden werden. Sie deckt die Installation des SecureW2 Clients, die Zertifikatsinstallation (einschließlich manueller Registrierung in der Registry) und die Konfiguration des WLAN-Zugangs ab, um eine erfolgreiche Verbindung herzustellen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Eduroam, Windows Mobile, WLAN Konfiguration, Netzwerkzugang, Zertifikate, Mobile Geräte, Anleitung</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Eine Schritt-Für-Schritt-Anleitung, um Windows Mobile 6.x - Geräte mit dem Eduroam-Netzwerk zu verbinden.</p>
+<p>[toc=&ldquo;2,3&rdquo; title=&ldquo;Inhalt&rdquo;]</p>
+<h3 id="vorbereitung">Vorbereitung</h3>
+<p>Als mobiles Gerät kommt ein HTC Blackstone / Touch HD mit dem Betriebssystem Windows Mobile 6.1 zum Einsatz. Das Betriebssystem ist komplett in Englisch, erst wird dennoch weitestgehend versucht, neben den englischen Bezeichnungen die entsprechenden deutschen zu verwenden. Diese Anleitung erhebt selbstverständlich keinen Anspruch auf Vollständigkeit noch garantiert sie den Erfolg. Kommentare oder Änderungswünsche sind herzlich willkommen. Unbedingt benötigt werden, neben einem mobilen Gerät mit Windows Mobile 6.x:</p>
+<ul>
+<li>der SecureW2 Client für Windows Mobile 5/6 von <a href="http://www.securew2.com/products/eapsuite/" title="http://www.securew2.com/products/eapsuite/">secureW2.com</a>,
+<ul>
+<li>(oder die CAB-Datei, für die direkte Installation <a href="http://www.freecoffee.de/files/SecureW2.cab" title="http://www.freecoffee.de/files/SecureW2.cab">hier herunterladen</a>)</li>
+</ul>
+</li>
+<li>das Zertifikat der Deutschen Telekom (Download vom <a href="http://www.rz.uni-augsburg.de/service/uauxca/zertifikate/telekom-root-2-cer.cer" title="http://www.rz.uni-augsburg.de/service/uauxca/zertifikate/telekom-root-2-cer.cer">Rechenzentrum der Uni Augsburg</a>),</li>
+<li>eine funktionierende Verbindung vom Desktop PC zum mobilen Gerät über ActiveSync (bis Windows XP) oder dem Windows Mobile Device Center (ab Windows Vista)</li>
+</ul>
+<p>und <em>eventuell</em></p>
+<ul>
+<li>eine Software zur Fernsteuerung zur Arbeitserleichterung wie z.B. MyMobiler (die Software nutzt die ActiveSync-Verbindung und erlaubt es, das Gerät komplett vom Computer zu bedienen, Download von <a href="http://www.mymobiler.com/" title="http://www.mymobiler.com/">mymobiler.com</a>) sowie</li>
+<li>einen Registryeditor (Total Commander für Pocket PC (ARM/XSCALE/PXA) auf <a href="http://www.ghisler.com/pocketpc.htm" title="http://www.ghisler.com/pocketpc.htm">ghisler.com</a> oder den Mobile Registry Editor auf <a href="http://www.chip.de/downloads/Mobile-Registry-Editor_31232153.html" title="http://www.chip.de/downloads/Mobile-Registry-Editor_31232153.html">chip.de</a>, beide Freeware).</li>
+</ul>
+<p><em>In dieser Anleitung verwende ich den Total Commander, da dieser zur Standarsoftware auf meinem Gerät gehört und die Bedienung des eingebauten Registryeditors weitaus komfortabler ist.</em></p>
+<h3 id="installation-von-securew2">Installation von SecureW2</h3>
+<p>Nach dem Starten der Installationsdatei <em>SecureW2_EAP_Suite_113_CE.exe</em> fordert das Programm zur Auswahl einer Sprache auf. Wir bestätigen daraufhin die Willkommensmeldung und akzeptieren die Lizenzbedingungen. Im nächsten Fenster wählen wir, sofern noch nicht geschehen, den <em>TTLS Client</em> aus und starten die Installation mit <em>Installieren</em>.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/1-securew2.png"><img src="images/1-securew2-300x233.png" alt="" title="1-securew2"></a></p>
+<p>Daraufhin übertrag ActiveSync die Programmdateien zum Gerät und informiert darüber, dass auf dem Gerät weitere Eingaben notwendig sind. ActiveSync wird vorerst mit einem Mausklick auf <em>OK</em> geschlossen. (Ist das Gerät nicht angeschlossen, holt ActiveSync die Übertragung bei der nächsten Verbindung nach.)</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/2-active-sync.png"><img src="images/2-active-sync-300x199.png" alt="" title="2-active-sync"></a></p>
+<p>Auf dem mobilen Gerät wird nun der Speicherort für <em>SecureW2</em> ausgewählt und mit <em>Install / Installieren</em> die Software installiert. War die Installation erfolgreich, wird der Vorgang mit <em>OK</em> auf dem Gerät abgeschlossen. Gleichzeitig wurde auch die Installationsroutine auf dem Computer beendet und kann geschlossen werden.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/3-install-securew2.png"><img src="images/3-install-securew2-180x300.png" alt="" title="3-install-securew2"></a></p>
+<h3 id="installation-des-zertifikates">Installation des Zertifikates</h3>
+<p>Wer die Installationsdatei des Zertifikates, <em>g_rootcert.cer</em>, nicht direkt auf dem Gerät gespeichert hat, überträgt diese per Drag&rsquo;n&rsquo;Drop oder einem Dateimanager seiner Wahl auf das Gerät. Auf dem Desktopcomputer erreicht man dieses über das Symbol <em>Mobiles Gerät</em> im <em>Arbeitsplatz</em>-Ordner.Den Unterordner <em>Mobiles Gerät\Meine Documente</em> erreicht man auch mit ActiveSync über das Menü <em>Extras / PocketPC durchsuchen</em>.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/4-activesync.png"><img src="images/4-activesync-300x289.png" alt="" title="4-activesync"></a></p>
+<p>Auf dem mobilen Gerät wird das Zertifikat installiert, indem man es dort im <em>Datei Explorer</em> einfach startet, d.h. einmal anklickt. Windows Mobile bestätigt dann die hoffentlich erfolgreiche Installation.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/5-confirm-cert.png"><img src="images/5-confirm-cert-180x300.png" alt="" title="5-confirm-cert"></a></p>
+<p>In den Einstellungen des mobilene Gerätes, unter dem zweiten Reiter <em>System</em>, startet man nun den <em>Zertifikatemanager</em> und überprüft unter dem Reiter <em>Root / Wurzel</em> ob das Zertifikat der Deutschen Telekom korrekt angezeigt wird.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/6-cert-manager.png"><img src="images/6-cert-manager-180x300.png" alt="" title="6-cert-manager"></a><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/7-cert-manager-root.png"><img src="images/7-cert-manager-root-180x300.png" alt="" title="7-cert-manager-root"></a></p>
+<p>Ist dem nicht so, muss das Zertifikat in der Registry per Hand eingetragen werden, damit der SecureW2 Client es bei der ersten Verbindung mit dem Netzwerk als &ldquo;vertrauenswürdiges Wurzelzertifikat&rdquo; erkennt. Dazu benötigen wir auf dem Gerät den bereits oben erwähnten Registryeditor. Das Vorgehen wird im Folgenden anhand des Total Commanders erläutert.</p>
+<h4 id="manuelles-registrieren-des-zertifikats">Manuelles Registrieren des Zertifikats</h4>
+<p>Die heruntergeladene Datei <em>tcmdpocketarm.cab</em> wird, wie oben schon einmal erwähnt, auf das Gerät kopiert und dort ausgeführt. Nach dem Öffnen der CAB-Datei wird das Programm installiert und wir starten die Software.<strong>Hinweis</strong>: Das Öffnen von Ordnern und Dateien erfolgt hier nicht wie gewohnt mit einem Klick, sondern durch Doppelklick. Mit Klick auf den <em>Schrägstrich</em> in der rechten oberen Ecke gelangen wir in das Hauptverzeichnis und wählen dort den Ordner <em>\\Plugins</em> und dann den Ordner <em>Registry</em> aus.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/8-total-commander.png"><img src="images/8-total-commander-162x300.png" alt="" title="8-total-commander"></a></p>
+<p>Dort klicken wir nun nacheinander auf <em>HKCU</em>, <em>Comm</em>, <em>Security</em> sowie <em>SystemCertificates</em> und finden dort Namen wie <em>root</em>, <em>trust</em>, <em>ca</em> usw.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/9-sys-certs.png"><img src="images/9-sys-certs-162x300.png" alt="" title="9-sys-certs"></a></p>
+<p>Als nächstes prüfen wir, ob sich im Ordner (bzw. Schlüssel) <em>trust</em> und dort unter <em>certificates</em> ein Ordner mit einem kryptischen Namen befindet. Wird dieser dort angezeigt, kann mit der Installation von SecureW2 fortgefahren werden.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/10-hash-name.png"><img src="images/10-hash-name-162x300.png" alt="" title="10-hash-name"></a></p>
+<p>Ist dem nicht so, wechseln wir durch einfaches Klicken auf den doppelten Punkt in der rechten oberen Ecke wieder 2 Ebenen nach oben und betrachten den Ordner <em>root</em> und dort <em>certificates</em>. Hier muss sich nun ein Ordner mit kryptischen Namen befinden. Durch Drücken auf diesen Ordnernamen und langes Halten öffnet sich das Kontextmenü. Wir wählen <em>In die Zwischenablage kopieren</em> aus und wechseln wieder in den Schlüssel bzw. Ordner <em>trust\certificates</em> (vorher zweimal auf den doppelten Punkt oben rechts) um dort erneut das Kontextmenü zu öffnen und per Klick auf <em>Hier einfügen (Kopieren)</em> den Schlüssel dort zu hinterlegen. Genauso müssen wir nun mit dem Wert <em>UpdateTime</em> verfahren, der sich direkt unter <em>root</em> befindet und in den Ordner trust gehört. (Nicht in den dortigen Unterordner <em>certificates</em>) Die Ordnerstruktur sollte nun wie folgt aussehen:</p>
+<p>\systemcertificats
+\root
+\certificates
+\85a408c09c193e5d51587dcd61330f
+.updatetime
+\trust
+\certificates
+\85a408c09c193e5d51587dcd61330f
+.updatetime</p>
+<p>Der Name &ldquo;85a408c09c193e5d51587dcd61330f&rdquo; weicht dabei von Gerät zu Gerät ab!</p>
+<p>Das Zertifikat <strong>sollte</strong> jetzt auch als vertrauenswürdig registriert sein und von <em>SecureW2</em> erkannt werden.</p>
+<h3 id="einrichtung-des-wlan-zugangs">Einrichtung des WLAN-Zugangs</h3>
+<p>Für gewöhnlich erkennt Windows Mobile die Art der Verschlüsselung selber, an der Stelle soll trotzdem nochmal auf die einzelnen Punkte eingegangen werden. Der Authentifizierungstyp lautet WPA2mit AES-Verschlüsselung.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/11-wlan1.png"><img src="images/11-wlan1-180x300.png" alt="" title="11-wlan1"></a></p>
+<p>Als EAP-Type wird der installierte SecureW2 TTLS-Client ausgewählt und über die <em>Eigenschaften / Properties</em> eingerichtet.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/12-wlan2.png"><img src="images/12-wlan2-180x300.png" alt="" title="12-wlan2"></a></p>
+<p>Ob ein neues Profil angelegt oder das Defaultprofil bearbeitet wird, ist vermutlich Geschmackssache. Um jede Fehlerquelle auszuschließen, habe ich ein neues Profil mit dem Namen <em>HTW</em> verwendet.Die Verbindung benutzt eine äußere, anonyme Identität. Per Klick auf <em>Erweitert</em> gelangt man zu den erweiterten Einstellungen. Hier muss ein Haken bei der Option <em>Benutzern erlauben, neue Verbindungen einzurichten</em> gesetzt werden.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/13-wlan3.png"><img src="images/13-wlan3-180x300.png" alt="" title="13-wlan3"></a><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/13b-wlan4.png"><img src="images/13b-wlan4-180x300.png" alt="" title="13b-wlan4"></a></p>
+<p>Unter dem Reiter <em>Zertifikate</em> wird <em>Serverzertifikate überprüfen</em> angehakt. Das untere Fenster <em>vertrauenswürdige CAs</em> ist zu dem Zeitpunkt noch leer. Nach der ersten (erfolgreichen) Verbindung findet ihr hier bzw. in der Liste unter Hinzufügen das Zertifikat der <em>Deutschen Telekom</em>.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/14-wlan5.png"><img src="images/14-wlan5-180x300.png" alt="" title="14-wlan5"></a></p>
+<p>Unter Authentifizerung wählen wir <em>PAP</em> aus.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/15-wlan6.png"><img src="images/15-wlan6-180x300.png" alt="" title="15-wlan6"></a></p>
+<p>Als letztes tragen wir die WLAN-Zugangsdaten in der bekannten Form (<em>sMatrikel@htw-berlin.de</em>) unter <em>Benutzerkennung</em> ein.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/16-wlan7.png"><img src="images/16-wlan7-180x300.png" alt="" title="16-wlan7"></a></p>
+<p>Nach Bestätigung mit <em>OK</em> fragt die Software, ob wir die Vertrauensliste von Windows verwenden möchten, was wir natürlich bestätigen.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/17-wlan8.png"><img src="images/17-wlan8-180x300.png" alt="" title="17-wlan8"></a></p>
+<p>Damit können wir die Einstellungen des Profiles mit <em>OK</em> endgültig übernehmen und die Konfiguration des WLAN-Zugangs abschließen. Bei der nächsten Verbindung mit dem Netzwerk erkennt <em>SecureW2</em> nun das <em>Telekom Zertifikat</em> an und bittet darum das (Wurzel)-Zertifikat mitsamt der zugehörigen &ldquo;Unterzertifikate&rdquo; zu installieren. Dabei ist lediglich eine Bestätigung erforderlich und der Zugang zu <em>eduroam</em> kann genutzt werden.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Eduroam, Windows Mobile, WLAN, Anleitung, Netzwerk</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>tools</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Eduroam mit Windows Mobile - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>how-to_guide</dc:type>
+      
+      
+    </item><item>
+      <title>Xperia Z2 Rooten unter Mac</title>
+      <link>https://nickyreinert.de/2017/2017-09-24-xperia-z2-rooten-unter-mac/</link>
+      <pubDate>Sun, 24 Sep 2017 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2017/2017-09-24-xperia-z2-rooten-unter-mac/</guid>
+      <description>Es gibt zwar hier und da Anleitungen um das Xperia Z2 von Sony zu rooten, aber eben nicht für Mac-User. Dabei ist das fast genauso einfach; ich fasse mal …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Diese Anleitung beschreibt den Prozess des Rootens eines Sony Xperia Z2 Smartphones unter macOS. Sie umfasst Schritte zum Entsperren des Bootloaders, zur Einrichtung von ADB und Fastboot sowie zur Verwendung des Easy Root Tools, um Root-Zugriff auf das Gerät zu erhalten, inklusive wichtiger Hinweise zur Datensicherung.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Android Rooting, Sony Xperia, macOS, Smartphone Modding, ADB, Fastboot, Mobile Devices, Anleitung</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Es gibt zwar hier und da Anleitungen um das Xperia Z2 von Sony zu rooten, aber eben nicht für Mac-User. Dabei ist das fast genauso einfach; ich fasse mal zusammen. Es gibt mit dem EasyRootTool die Möglichkeit, das Gerät zu rooten, ohne den Bootloader zu entsperren - für Garantiezwecke ist das vielleicht ganz sinnvoll. Ich beschreibe im Folgenden trotzdem, wie du den Bootloader entsperrst und danach das Xperia rootest.</p>
+<h2 id="bootloader-entsperren">Bootloader entsperren</h2>
+<p>1. Backup aller wichtigen Daten! ;)</p>
+<p>- Daran sollte man natürlich immer denken, auch wenn die folgenden Schritte in der Regel keine Änderung an der SD-Karte vornehmen - dort wo eure persönlichen Daten eigentlich liegen sollten.</p>
+<p>2. Den Bootloader befreien - angeblich ist das mit dem Paket aus Schritt 3 nicht notwendig. Ich nehme es trotzdem mal hier auf:</p>
+<p>- Besorge dir unter http://developer.sonymobile.com/unlockbootloader/email-verification/ einen Unlock-Key</p>
+<p>- Lade dir den Installer für ADB und Fastboot <a href="https://code.google.com/p/adb-fastboot-install/downloads/detail?name=Androidv4.zip&amp;can=2&amp;q=">&gt;&gt;hier&laquo;</a> herunter. <a href="http://wiki.cyanogenmod.org/w/Doc:_adb_intro">ADB</a> steht für die Android Debug Bridge und wird im wesentlichen dazu benötigt, von deinem Mac aus auf das Android-Gerät zuzugreifen um darauf Änderungen vornehmen zu können. Und mit <a href="http://wiki.cyanogenmod.org/w/Doc:_fastboot_intro">Fastboot</a> kannst du eine Partition auf deinem Android neu beschreiben.</p>
+<p>- Nachdem Entpacken machst du dein Smartphone aus und drückst dann die Tasten &ldquo;Volume-Up&rdquo; und &ldquo;Power&rdquo; gleichzeitig - die LED vom Xperia sollte nun rot leuchten. Du schließt das Gerät per USB an deinen Mac an und wechselst du in das Verzeichnis, dort gibst du zwei Befehle ein:</p>
+<p>fastboot devices
+fastboot -i 0x0fce oem unlock 0xDEIN_SONY_KEY</p>
+<p>Fertig. Der Boot-Loader ist &ldquo;frei&rdquo;. Nun folgt der Root-Prozess:</p>
+<h2 id="xperia-z2-rooten">Xperia Z2 rooten</h2>
+<p>Dazu gibt es das <a href="http://forum.xda-developers.com/showthread.php?t=2784900">Easy Root Tool</a> - wie immer von den XDA-Developers. Du hast das Xperia wieder hochgefahren und musst folgende Optionen in den Einstellungen ändern:</p>
+<p>1. Unter &ldquo;Sicherheit&rdquo;: Unbekannte Quellen erlauben - ja</p>
+<p>2. Unter: &ldquo;Über das Telefon&rdquo; klickst du 10 Mal auf &ldquo;Build Nummer&rdquo; - danach sind die Entwickler-Optionen freigeschaltet. Dort musst du USB-Debugging aktivieren.</p>
+<p>3. Das angeschaltete Xperia schließt du nun per USB an deinen Mac an und startest über die Konsole das Shellskript install.sh: (Du kannst das Skript notfalls auch als Superuser ausführen: sudo ./install.sh)</p>
+<p>./install.sh </p>
+<p>Nach einigen Augenblicken ist das Skript durchgelaufen und bestätigt dir den Erfolg. Du solltest dein Smartphone nun einmal neu starten und dir aus dem PlayStore SuperSU oder eine ähnliche App besorgen, mit der du die Root-Anfragen der Apps verwalten kannst.</p>
+<p>Fertig.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Android, Rooting, macOS, Smartphone, Anleitung</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>tools</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Xperia Z2 Rooten unter Mac - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>how-to_guide</dc:type>
+      
+      
+    </item><item>
+      <title>Tastenkombinationen und Makros in Office 2010</title>
+      <link>https://nickyreinert.de/2017/2017-09-16-tastenkombinationen-und-makros-in-office-2010/</link>
+      <pubDate>Sat, 16 Sep 2017 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2017/2017-09-16-tastenkombinationen-und-makros-in-office-2010/</guid>
+      <description>Möchte man in Office 2010 eigene Makros und Tastenkombinationen nutzen und kombinieren, ist das Vorgehen dazu bei den drei am meisten genutzten Programmpaketen …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel beschreibt die Einrichtung von benutzerdefinierten Tastenkombinationen und Makros in Microsoft Office 2010 (Word, Excel, PowerPoint). Er beleuchtet die unterschiedlichen Methoden für jede Anwendung, einschließlich der Verwendung von VBA-Code für Word und Excel sowie eines Add-ons für PowerPoint, um die Produktivität zu steigern.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Microsoft Office, Tastenkombinationen, Makros, VBA Programmierung, Produktivität, Office 2010</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Möchte man in Office 2010 eigene Makros und Tastenkombinationen nutzen und kombinieren, ist das Vorgehen dazu bei den drei am meisten genutzten Programmpaketen Word, Excel und PowerPoint leider nicht identisch.</p>
+<p>Unter Word 2010 lassen sich eigene Tastenkombinationen (Shortcuts) noch relativ einfach festlegen: Im Kontextmenü (Rechte Maustaste) des Menübandes (neudeutsch: <a href="https://de.wikipedia.org/wiki/Ribbon"><em>Ribbon</em></a>) gelangt man zum Dialogfeld &ldquo;Menüband anpassen&rdquo; (Abbildung 1). Von dort geht es in das Dialogfeld &ldquo;Tastatur anpassen&rdquo; wo man sämtliche Word-Aktionen nach gusto mit Tastenkombinationen verknüpfen kann.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2014/02/Word-2010-Shortcuts.png"><img src="images/Word-2010-Shortcuts-300x300.png" alt="Word 2010 - Shortcuts"></a></p>
+<p>Allerdings ist es in Word nicht ohne weiteres möglich, auch eigene Makros mit Tastenkombinationen zu belegen. Der Umweg führt über <a href="http://www.vbaexpress.com/kb/getarticle.php?kb_id=621">ein paar  Zeilen VBA</a> und die Methode <a href="http://msdn.microsoft.com/de-de/library/microsoft.office.interop.word.keybindings.add%28v=office.11%29.aspx">KeyBindings</a>. Der Parameter <a href="http://msdn.microsoft.com/en-us/library/office/aa613356%28v=office.10%29.aspx">BuildKeyCode</a> erwartet die gewünschte Tastenkombination. Und der Parameter Command schließlich die gewünschte <em>Sub</em>.</p>
+<p>Sub Workbook_Open()
+With Application
+&rsquo; Auf welches Dokument bezieht sich diese Änderung?
+&rsquo; Alternativ &ldquo;NormalTemplate&rdquo; für das
+.CustomizationContext = ThisDocument</p>
+<pre><code>     ' die eigentliche Zuordnung beginnt hier
+    .KeyBindings.Add **KeyCode**:=BuildKeyCode(wdKeyControl, wdKeyH), \_
+    KeyCategory:=wdKeyCategoryCommand, \_
+    **Command**:=&quot;MachWas&quot;
+End With
+</code></pre>
+<p>End Sub</p>
+<p>Sub MachWas()
+MsgBox &ldquo;Hallo Welt&rdquo;
+End Sub</p>
+<p>In Excel 2010 gibt es die Möglichkeit, Tastenkombinationen bestimmten Aktionen direkt zuzuordnen, allerdings nicht mehr. Dafür ist die Einbindung über VBA etwas weniger kompliziert möglich - dazu dient das Ereignis &ldquo;<a href="http://msdn.microsoft.com/en-us/library/office/aa195807%28v=office.11%29.aspx">OnKey</a>&rdquo;:</p>
+<p>Private Sub Workbook_Open()
+Application.OnKey &ldquo;+{H}&rdquo;, &ldquo;MachWas&rdquo;
+End Sub</p>
+<p>In PowerPoint schließlich funktioniert  die einfache Verwaltung der Tastenkombination ebenfalls nicht ohne Umwege. Abhilfe schafft das kostenpflichtige AddOn ShortCut Manager. Dieses ist 30 Tage lang kostenfrei nutzbar.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Microsoft Office, Office 2010, VBA, Anleitung, Produktivität</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>office</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Tastenkombinationen und Makros in Office 2010 - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>how-to_guide</dc:type>
+      
+      
+    </item><item>
+      <title>SFTP auf Microsoft IIS korrekt einrichten</title>
+      <link>https://nickyreinert.de/2015/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten/</link>
+      <pubDate>Wed, 14 Oct 2015 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2015/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten/</guid>
+      <description>Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Problem, denen du begegnen wirst.
+Du kannst die Verbindung zum …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt häufige Probleme bei der Einrichtung eines SFTP-Servers auf Microsoft IIS, darunter Zertifikatsfehler, Probleme mit passiven Verbindungen und Benutzerberechtigungen. Er bietet Lösungen, wie die korrekte Generierung von Server-Zertifikaten mittels PowerShell und die Behebung von Verbindungsschwierigkeiten.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> SFTP, Microsoft IIS, Server Konfiguration, Netzwerksicherheit, Zertifikate, PowerShell, Troubleshooting, Windows Server</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Problem, denen du begegnen wirst.</p>
+<blockquote>
+<ol>
+<li>
+<ol>
+<li>
+<p>Du kannst die Verbindung zum Server nicht herstellen, weil das Server-Zertifikat ungültig ist. Die Fehlermeldung in FileZilla lautet dann z.B.<br>
+GnuTLS error -48: Key usage violation in certificate has been detected. Could not connect to server</p>
+</li>
+<li>
+<p>Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast, kann die Verbindung nicht vollendet werden. FileZilla bleibt dann z.B. bei der folgenden Zeile stehen:</p>
+<p>150 Opening BINARY mode data connection</p>
+</li>
+</ol>
+</li>
+</ol></blockquote>
+<p>3. Und schließlich kann es sein, dass der Benutzer nicht die nötigen Zugriffsrechte für den Ordner hat, den du in den Einstellungen des FTP-Servers angegeben hast.</p>
+<p>Keine Sorge. Mit diesen drei Probleme durfte auch ich schon kämpfen und ich habe die Lösungen hier zusammengetragen. Also.. eins nach dem anderen.</p>
+<p>Die Ursache des ersten Problems ist der Assistent, mit dem man im IIS das Server-Zertifikat erstellt. Auf den Punkt gebracht, nutzt dieser ein paar falsche Parameter. Aus diesem Grund muss das Zertifikat per Hand in der PowerShell erstellt werden. Wichtig: In der normalen Konsole funktioniert das nicht.</p>
+<p><a href="https://superuser.com/questions/1167351/filezilla-reporting-gnutls-error-48-key-usage-violation-in-certificate-has-be">https://superuser.com/questions/1167351/filezilla-reporting-gnutls-error-48-key-usage-violation-in-certificate-has-be</a></p>
+<p>According to a post in the <a href="https://forums.iis.net/t/1234970.aspx">IIS forums</a>, you can generate the certificate with PowerShell instead until the issue is fixed by Microsoft:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">New-SelfSignedCertificate -CertStoreLocation cert:\LocalMachine\My -dnsname ftp.example.com
+</span></span></code></pre></div><p>Replace <code>ftp.example.com</code> by your server&rsquo;s hostname.</p>
+<p>You will get a fingerprint, copy that. Set a password for the private key:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$password = ConvertTo-SecureString -String &#34;password goes here&#34; -Force -AsPlainText
+</span></span></code></pre></div><p>Now export it (you can change <code>C:\cert.pfx</code> to the path you want to save it to, just make sure it ends in <code>.pfx</code>):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Export-PfxCertificate -cert cert:\LocalMachine\My\FINGERPRINT -FilePath C:\cert.pfx -Password $password
+</span></span></code></pre></div><p>Benutzer anlegen</p>
+<p><a href="https://www.nickyreinert.de/files/ssl-zertifikat-auf-windows-korrekt-installieren/windows-server-ssl-zertifikat-zuweisen.png"><img src="/2015/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten/images/windows-server-ssl-zertifikat-zuweisen-300x121.png" alt=""></a></p>
+<p><strong>siehe auch:</strong></p>
+<p><a href="https://www.visualsvn.com/support/topic/00056/">https://www.visualsvn.com/support/topic/00056/</a></p>
+<p>[http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/ http://ekiwi-blog.de/?p=3465](<a href="http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/">http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/</a> <a href="http://ekiwi-blog.de/?p=3465">http://ekiwi-blog.de/?p=3465</a>)</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> SFTP, IIS, Windows Server, Anleitung, Troubleshooting, Netzwerk</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>SFTP auf Microsoft IIS korrekt einrichten - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>troubleshooting_guide</dc:type>
+      
+      
+    </item><item>
+      <title>MacTubes - Youtube ohne Flash</title>
+      <link>https://nickyreinert.de/2013/2013-12-16-mactubes-youtube-ohne-flash/</link>
+      <pubDate>Mon, 16 Dec 2013 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2013/2013-12-16-mactubes-youtube-ohne-flash/</guid>
+      <description>Flash hat einen gravierenden Nachteil: Der Mac fängt innerhalb weniger Minuten an zu glühen. Das Surfen auf YouTube wird also zur akkustischen und haptischen …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel stellt &#39;MacTubes&#39; vor, eine kostenlose Mac-Software, die es ermöglicht, YouTube-Videos ohne den ressourcenintensiven Flash Player anzusehen. Er beleuchtet die Vorteile wie die Vermeidung von Überhitzung und Lärm sowie Funktionen zur Video-Wiedergabe und zur Organisation von Suchanfragen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Mac Software, YouTube, Flash Alternative, Video Player, Systemoptimierung, Freeware</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Flash hat einen gravierenden Nachteil: Der Mac fängt innerhalb weniger Minuten an zu glühen. Das Surfen auf YouTube wird also zur akkustischen und haptischen Tortur für den Schoß. Alternativ beginnt auch die Lackierung des Schreibtisches sich  zu lösen. Abhilfe schafft die Freeware &ldquo;<a href="http://www.macupdate.com/app/mac/28608/mactubes/">MacTubes</a>&rdquo;.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/06/Bildschirmfoto-2011-06-18-um-13.14.52.png"><img src="images/Bildschirmfoto-2011-06-18-um-13.14.52-300x178.png" alt="" title="Bildschirmfoto 2011-06-18 um 13.14.52"></a></p>
+<p>Du hast die Möglichkeit, zwischen verschiedenen Abspielprogrammen zu wählen. So kann man die Videos z.B. über QuickTime oder einen internen Player abspielen. Außerdem lassen sich &ldquo;Suchen&rdquo; speichern oder auf bestimmte Länder oder Kategorien eingrenzen. Die gespeicherten Suchen (Nach Autor oder Keyword) können auch in Ordnern organisiert werden.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Mac, YouTube, Software, Anleitung, Flash Alternative</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>tools</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>MacTubes - Youtube ohne Flash - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>software_review</dc:type>
+      
+      
+    </item><item>
+      <title>MacOS Finder und die SMB / Windows - Netzwerkfreigaben</title>
+      <link>https://nickyreinert.de/2013/2013-02-24-macos-finder-und-die-smb-windows-netzwerkfreigaben/</link>
+      <pubDate>Sun, 24 Feb 2013 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2013/2013-02-24-macos-finder-und-die-smb-windows-netzwerkfreigaben/</guid>
+      <description>Immer wenn ich die Verbindung zu meinem Heimnetz hergestellt habe, sei es über WLAN oder Kabel, dauerte es eine gefühlte Ewigkeit, bis der Finder (sic!) mein …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine Anleitung aus dem Jahr 2013 zur Behebung langsamer Verbindungen von macOS Finder zu SMB/Windows-Netzwerkfreigaben (z.B. NAS). Der Artikel beschreibt eine Lösung, die das Erstellen und Speichern einer &#39;nsmb.conf&#39;-Datei im &#39;/etc&#39;-Verzeichnis mit spezifischen Konfigurationen beinhaltet, um die Erkennung und Verbindung zu beschleunigen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> macOS, SMB, Netzwerkfreigaben, NAS, Troubleshooting, System-Konfiguration</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Immer wenn ich die Verbindung zu meinem Heimnetz hergestellt habe, sei es über WLAN oder Kabel, dauerte es eine gefühlte Ewigkeit, bis der Finder (sic!) mein NAS gefunden hat, obwohl beide am gleichen Switch hängen. Es half dabei auch nichts, wenn ich direkt zum NAS verbinden wollte, weil ich die IP-Adresse kenne (Apfel + K). Das hab ich eine Weile ignoriert, dann akzeptiert, aber irgendwann konnte ich die Geduld nicht mehr aufbringen und habe mich auf die Suche nach einer Lösung gemacht.</p>
+<p>Diese fand ich in den <a href="https://discussions.apple.com/thread/2172049?start=15&amp;tstart=0">Apple Support Foren.</a> Ein langer Beitrag kurz zusammengefasst:</p>
+<p>1. Erstelle ein Textdatei mit dem Inhalt</p>
+<blockquote>
+<p>[default]
+minauth=none
+streams=no
+soft=yes
+notify_off=yes
+domain=DOMAIN_NAME_DEINER_NETZWERKFREIGABE
+port445=no_netbios
+[NAME_DEINER_NETZWERKFREIGABE]
+addr=IP-ADRESSE_DEINER_FREIGABE</p></blockquote>
+<p>2. Speichere die Datei mit dem Namen &ldquo;nsmb.conf&rdquo; unter /etc ab. (Ggf.mit der Konsole / dem Terminal arbeiten). 3. Starte dein Mac(Book) neu.</p>
+<p>Danach dauerte es nur noch Bruchteile von Sekunden, bis die Netzwerkfreigabe im Finder sichtbar war.</p>
+<p> </p>
+<p>Update: Mit dem kostenfrei erhältlichen <a href="http://www.apple.com/de/osx/">Update auf MacOS 10.9 Mavericks</a> scheint dieses Problem behoben zu sein!</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> macOS, Netzwerk, Troubleshooting, Anleitung</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>os-x</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>MacOS Finder und die SMB / Windows - Netzwerkfreigaben - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>troubleshooting_guide</dc:type>
+      
+      
+    </item><item>
+      <title>GPS-Daten umwandeln</title>
+      <link>https://nickyreinert.de/2012/2012-05-24-gps-daten-umwandeln/</link>
+      <pubDate>Thu, 24 May 2012 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2012/2012-05-24-gps-daten-umwandeln/</guid>
+      <description>Ich habe jetzt eine ganze Weile gesucht, um entweder online, unter Windows oder MacOS meine GPS-Logdateien meines HTC Touch HD im NMEA-Format irgendwie in das …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel stellt nützliche Tools zur Umwandlung von GPS-Daten vor, insbesondere von NMEA- in GPX-Formate. Er hebt &#39;RouteConverter&#39; als kostenlose, plattformübergreifende Lösung hervor und erwähnt &#39;GPSPhotoLinker&#39; zur Synchronisierung von Fotos mit aufgezeichneten GPS-Tracks, um Geoinformationen in Bildmetadaten zu speichern.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> GPS, Geodaten, Datenkonvertierung, Software-Tools, Fotografie, NMEA, GPX</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Ich habe jetzt eine ganze Weile gesucht, um entweder online, unter Windows oder MacOS meine GPS-Logdateien meines HTC Touch HD im NMEA-Format irgendwie in das etwas bequemere GPX-Format umwandeln zu können. Zuerst stieß ich dabei auf <a href="http://www.gpsvisualizer.com/">gps-visualizer.com</a>, eine Seite mit breitem Angebot, die aber vor meinen &ldquo;großen&rdquo; Dateien (etwa 120 MB) kapitulierte.</p>
+<p>Mit <a href="http://www.routeconverter.de/">RouteConverter</a> bin ich schließlich auf das passende Tool für Windows, Linux und MacOS gestoßen. Das Tool unterstützt erstens <a href="http://www.routeconverter.de/formats/de">eine große Menge von Formaten</a> und ist zweitens kostenlos. Bingo. Die Routen werden außerdem direkt in GoogleMaps angezeigt und lassen sich bearbeiten und natürlich exportieren. Screenshots vom Programm gibt es zur Genüge auf der <a href="http://www.routeconverter.de/tour/de">Website</a>.</p>
+<p><strong>Update:</strong> Und wenn du dann noch einen Haufen Fotos mit deinem aufgezeichneten GPS-Track synchronisieren willst, greifst du zu <a href="http://www.earlyinnovations.com/gpsphotolinker/">GPSPhotoLinker</a>. Die Software erlaubt dir, entweder eine oder mehrere GPX-Dateien auszuwählen. Du passt dann nur noch die Zeitzone der GPX-Dateien an, fügst beliebig viele Fotos hinzu und lässt das Programm dann den Rest machen: Die Aufnahmezeit deiner Bilder mit den Zeiten der Track-Daten abgleichen und die GPS-Informationen in den Metadaten der Bilder speichern. Fertig.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> GPS, Software, Tools, Anleitung, Geodaten</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>tools</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>GPS-Daten umwandeln - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>software_review</dc:type>
+      
+      
+    </item><item>
+      <title>NTFS unter Mac OS / OS X</title>
+      <link>https://nickyreinert.de/2010/2010-06-24-ntfs-unter-mac-os-os-x/</link>
+      <pubDate>Thu, 24 Jun 2010 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2010/2010-06-24-ntfs-unter-mac-os-os-x/</guid>
+      <description>NTFS und MacOs gehören nicht unbedingt zusammen. Man kommt also nicht um 3rd-Party-Software herum, um die NTFS unter MacOs nachzurüsten. Hier hilft ein Tool …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel bietet eine Anleitung zur Aktivierung von NTFS-Lese- und Schreibzugriff unter Mac OS X. Es wird die Verwendung von Drittanbieter-Tools wie MacFuse und NTFS-3G beschrieben, um die Kompatibilität mit NTFS-formatierten Laufwerken zu gewährleisten.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Mac OS, NTFS, Dateisysteme, Software-Installation, System-Tools</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>NTFS und MacOs gehören nicht unbedingt zusammen. Man kommt also nicht um 3rd-Party-Software herum, um die NTFS unter MacOs nachzurüsten. Hier hilft ein Tool namens <strong>MacFuse</strong> weiter, das auf dem Mac verschiedene Dateisysteme implementieren kann sowie <strong>NTFS-3G</strong>, eben der passende Treiber für NTFS-Laufwerke.</p>
+<p>Beide Programme (bzw. Treiber) stehen als DMG-Datei zur Verfügung. Von NTFS-3G existiert auch eine kommerzielle Variante, die <a href="http://macntfs-3g.blogspot.com/">von Tuxera vertrieben</a> wird. Die kostenlose Variante fällt unter den &ldquo;Verantwortungsbereich&rdquo; von catacombae und reicht für unsere Zwecke eigentlich völlig aus.</p>
+<p><a href="http://code.google.com/p/macfuse/">MacFuse auf code.google.com</a></p>
+<p><a href="http://sourceforge.net/projects/catacombae/files/NTFS-3G%20for%20Mac%20OS%20X/2010.10.2/">NTFS-3G auf sourceforge.net</a> 1. MacFuse herunterladen und installieren</p>
+<p>2. Neustart</p>
+<p>3 NTFS-3G herunterladen und installieren</p>
+<p>4. Neustart</p>
+<p>Fertig.  Der Rest funktioniert automatisch. Viel Spass.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Mac OS, NTFS, Anleitung, Software</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>os-x</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>NTFS unter Mac OS / OS X - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>how-to_guide</dc:type>
+      
+      
+    </item><item>
       <title>Wordpress-Security Checkliste</title>
       <link>https://nickyreinert.de/2000/2000-01-01-wordpress-security-checkliste/</link>
       <pubDate>Sat, 01 Jan 2000 00:00:00 +0000</pubDate>
@@ -1456,14 +2629,14 @@ Eine …</description>
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Eine detaillierte Checkliste zur Absicherung von WordPress-Installationen, gegliedert nach dem Grad des Nutzerzugriffs (WordPress.com, Shared Hosting, eigener Server). Der Artikel behandelt essenzielle Sicherheitspraktiken wie Updates, Backups, Staging-Systeme sowie technische Maßnahmen wie `.htaccess`-Schutz, korrekte Dateirechte und die Konfiguration von PHP.</p>
+          <p>Diese detaillierte Checkliste bietet umfassende Anleitungen zur Absicherung von WordPress-Installationen. Sie behandelt essenzielle Sicherheitspraktiken wie regelmäßige Updates, Backups, die Nutzung von Staging-Systemen sowie technische Maßnahmen wie &#39;.htaccess&#39;-Schutz, korrekte Dateirechte und die sichere Konfiguration von PHP, angepasst an verschiedene Hosting-Szenarien.</p>
           
           
-          <p><strong>Hauptthemen:</strong> WordPress, Web-Sicherheit, Systemadministration, PHP, Server-Konfiguration</p>
+          <p><strong>Hauptthemen:</strong> WordPress Sicherheit, Webserver Konfiguration, PHP Sicherheit, Datensicherung, Systemhärtung, Cybersecurity</p>
           
           
           
-          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
           
         </div>
         
@@ -1581,7 +2754,7 @@ Normalerweise ruft der Apache-Webserver den PHP-Interpreter jedes mal erneut auf
         
         
         <div class="tags">
-          <p><strong>Tags:</strong> WordPress, Sicherheit, Anleitung, Checkliste</p>
+          <p><strong>Tags:</strong> WordPress, Sicherheit, Anleitung, Checkliste, Webserver</p>
         </div>
         
       ]]></content:encoded>
@@ -1606,7 +2779,7 @@ Normalerweise ruft der Apache-Webserver den PHP-Interpreter jedes mal erneut auf
       
       
       
-      <dc:type>checklist</dc:type>
+      <dc:type>security_checklist</dc:type>
       
       
     </item>

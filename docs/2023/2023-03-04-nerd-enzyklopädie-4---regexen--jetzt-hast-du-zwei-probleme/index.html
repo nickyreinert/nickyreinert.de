@@ -21,11 +21,11 @@ Na, erkannt? Diese RegExe überprüft ob eine Passwort-Zeichenfolge bestimmten S
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/images/favicon.ico">
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
 
   
   
-  <meta name="keywords" content=" Webentwicklung  Software Development  Programmierung  SEO  Analytics  Hosting  DevOps  WordPress  Hugo  Tools  Projekte  Anleitungen  Datenschutz  Digitale Kultur  Künstliche Intelligenz  KI  Autismus ">
+  <meta name="keywords" content=" RegEx  Reguläre Ausdrücke  Backtracking  ReDOS  Denial of Service  Jamie Zawinski  awk  Nerd Enzyklopädie  Programmierer-Humor ">
   
 
   
@@ -44,6 +44,11 @@ Eine exotische Tierart Reguläre Ausdrücke, kurz RegExen, sind mitunter schwer 
     <meta property="article:section" content="2023">
     <meta property="article:published_time" content="2023-03-04T12:19:31+01:00">
     <meta property="article:modified_time" content="2023-03-04T12:19:31+01:00">
+    <meta property="article:tag" content="RegEx">
+    <meta property="article:tag" content="Programmierung">
+    <meta property="article:tag" content="Sicherheit">
+    <meta property="article:tag" content="Nerd-Enzyklopädie">
+    <meta property="article:tag" content="Humor">
 
 
   
@@ -60,7 +65,7 @@ Eine exotische Tierart Reguläre Ausdrücke, kurz RegExen, sind mitunter schwer 
   <meta itemprop="datePublished" content="2023-03-04T12:19:31+01:00">
   <meta itemprop="dateModified" content="2023-03-04T12:19:31+01:00">
   <meta itemprop="wordCount" content="505">
-  <meta itemprop="keywords" content="Nerdenz,Web,IT,Tools">
+  <meta itemprop="keywords" content="RegEx,Reguläre Ausdrücke,Backtracking,ReDOS,Denial of Service,Jamie Zawinski,awk,Nerd Enzyklopädie,Programmierer-Humor">
 
   
   <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
@@ -123,14 +128,16 @@ Eine exotische Tierart Reguläre Ausdrücke, kurz RegExen, sind mitunter schwer 
     "timeRequired": "PT5M",
     
     
+    "keywords": ["RegEx", "Programmierung", "Sicherheit", "Nerd-Enzyklopädie", "Humor"],
+    
     
     "articleSection": ["nerdenz"],
     
     
-    "abstract": "Dieser Artikel behandelt Die Nerd Enzyklopädie 4 - RegExen — Jetzt hast du zwei Probleme und bietet praktische Einblicke in das Thema.",
+    "abstract": "Eine humorvolle und kritische Auseinandersetzung mit regulären Ausdrücken (RegEx) und dem bekannten Programmierer-Meme \u0027Jetzt hast du zwei Probleme\u0027. Der Artikel beleuchtet die Komplexität, den Missbrauch und die Sicherheitsrisiken (Catastrophic Backtracking, ReDOS) von RegEx und verfolgt die Ursprünge des berühmten Zitats.",
     
     
-    "genre": "guide",
+    "genre": "technical_explainer",
     
     
     "educationalLevel": "intermediate",
@@ -147,7 +154,7 @@ Eine exotische Tierart Reguläre Ausdrücke, kurz RegExen, sind mitunter schwer 
     "proficiencyLevel": "intermediate",
     
     
-    "dependencies": ["Grundlegende IT-Kenntnisse"],
+    "dependencies": ["Grundkenntnisse in Programmierung und Textverarbeitung"],
     
     
     "about": [
@@ -155,19 +162,37 @@ Eine exotische Tierart Reguläre Ausdrücke, kurz RegExen, sind mitunter schwer 
       
       {
         "@type": "Thing",
-        "name": "Web"
+        "name": "Reguläre Ausdrücke"
       }
       
       , 
       {
         "@type": "Thing",
-        "name": "IT"
+        "name": "Programmierung"
       }
       
       , 
       {
         "@type": "Thing",
-        "name": "Tools"
+        "name": "Softwareentwicklung"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Sicherheit"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Nerd-Kultur"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Algorithmen"
       }
       
     ],
@@ -309,7 +334,31 @@ Eine exotische Tierart Reguläre Ausdrücke, kurz RegExen, sind mitunter schwer 
   <div class="post-date">March 4, 2023</div>
 
   
-  <article class="content">
+  
+  
+  
+  
+  
+  
+  
+  <details style="margin-top: 2rem; margin-bottom: 2rem;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#eine-exotische-tierart">Eine exotische Tierart</a></li>
+    <li><a href="#mit-kanonen-auf-spatzen">Mit Kanonen auf Spatzen…</a></li>
+    <li><a href="#backtracking">Backtracking</a></li>
+  </ul>
+</nav></div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
     <p>Reguläre Ausdrücke sind umstritten: Geliebt als vielseitiges Werkzeug, verdammt als undurchschaubare Fehlerquelle. Nicht ohne Grund heißt es: Reguläre Ausdrücke lösen ein Problem und schaffen zwei neue.<br>
 Woher kommt diese Hassliebe?</p>
 <h2 id="eine-exotische-tierart">Eine exotische Tierart</h2>
@@ -369,9 +418,55 @@ Woher kommt diese Hassliebe?</p>
 Bildquelle [[XKCD1](https://xkcd.com/1171/)]
 </p>
 
+    
   </article>
   
+  
+  
+  <div style="margin-top: 5rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
 
+      <p>Eine humorvolle und kritische Auseinandersetzung mit regulären Ausdrücken (RegEx) und dem bekannten Programmierer-Meme &#39;Jetzt hast du zwei Probleme&#39;. Der Artikel beleuchtet die Komplexität, den Missbrauch und die Sicherheitsrisiken (Catastrophic Backtracking, ReDOS) von RegEx und verfolgt die Ursprünge des berühmten Zitats.</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Reguläre Ausdrücke</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Programmierung</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Softwareentwicklung</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Sicherheit</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Nerd-Kultur</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Algorithmen</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 5 Minuten</p>
+      
+    </div>
+  </div>
+  
+  
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/2023/2023-03-01-die-nerd-enzyklop%C3%A4die---640k-speicher-sind-genug/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/2023/2023-03-07-nerd-enzyklop%C3%A4die-5---gesehen-gelacht-f8/">next →</a>
+    
+  </div>
 </main>
 
     <footer id="footer">

@@ -15,7 +15,7 @@
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/images/favicon.ico">
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
 
   
   
@@ -34,7 +34,7 @@
   <meta property="og:type" content="article">
     <meta property="article:section" content="2020">
     <meta property="article:published_time" content="2020-04-11T00:00:00+00:00">
-    <meta property="article:modified_time" content="2025-08-20T12:38:10+02:00">
+    <meta property="article:modified_time" content="2025-08-20T21:05:13+02:00">
     <meta property="article:tag" content="Anleitung">
     <meta property="article:tag" content="JavaScript">
     <meta property="article:tag" content="Labyrinth">
@@ -49,7 +49,7 @@
   <meta itemprop="name" content="Wie erstelle ich ein Labyrinth mit JavaScript?">
   <meta itemprop="description" content="Durch Zufall bin ich irgendwann mal auf diesen BASIC-Einzeiler gestoßen, mit dem sich eine Art Pseudo-Labyrinth erstellen lässt. Ich habe versucht, das in Plain JavaScript halbwegs kompakt nachzubauen. Dabei kann man kaum übersehen, dass es sich keineswegs um ein richtiges Labyrinth handelt, sondern eher um eine zufällige Anordnung von Strichen ohne Lösungsweg. Also habe ich mich gefragt, wie schwer es wohl sein kann, ein Labyrinth programmatisch und vor allem kompakt zu erzeugen. Dazu gibt es zwar eine Menge Lösungsansätze, mein Ziel ist aber, die Herangehensweise zu beschreiben. Und da wir ja gerade alle zuhause abhängen, ist diese kleine Anleitung entstanden.">
   <meta itemprop="datePublished" content="2020-04-11T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2025-08-20T12:38:10+02:00">
+  <meta itemprop="dateModified" content="2025-08-20T21:05:13+02:00">
   <meta itemprop="wordCount" content="3504">
   <meta itemprop="keywords" content="JavaScript,Labyrinth,Maze,Algorithmus,Game-Development,Procedural Generation,Recursive Backtracker,Tutorial,HTML,DOM">
 
@@ -78,7 +78,7 @@
     "headline": "Wie erstelle ich ein Labyrinth mit JavaScript?",
     "description": "Durch Zufall bin ich irgendwann mal auf diesen BASIC-Einzeiler gestoßen, mit dem sich eine Art Pseudo-Labyrinth erstellen lässt. Ich habe versucht, das in Plain …",
     "datePublished": "2020-04-11T00:00:00Z",
-    "dateModified": "2025-08-20T12:38:10\u002b02:00",
+    "dateModified": "2025-08-20T21:05:13\u002b02:00",
     "author": {
       "@type": "Person",
       "name": "",
@@ -117,7 +117,7 @@
     "articleSection": ["blog"],
     
     
-    "abstract": "Eine detaillierte Schritt-für-Schritt-Anleitung zur prozeduralen Erzeugung eines Labyrinths mit reinem JavaScript und HTML. Das Tutorial entwickelt iterativ einen Algorithmus, der von einem einfachen Pfad bis zu einer komplexen Lösung mit dem \u0060Recursive Backtracker\u0060-Ansatz führt, um ein lösbares Labyrinth mit Sackgassen zu generieren.",
+    "abstract": "Eine detaillierte Schritt-für-Schritt-Anleitung zur prozeduralen Erzeugung eines Labyrinths mit reinem JavaScript und HTML. Das Tutorial entwickelt iterativ einen Algorithmus, der von einem einfachen Pfad bis zu einer komplexen Lösung mit dem \u0027Recursive Backtracker\u0027-Ansatz führt, um ein lösbares Labyrinth mit Sackgassen zu generieren.",
     
     
     "genre": "tutorial",
@@ -175,7 +175,7 @@
     ],
     
     "datePublished": "2020-04-11T00:00:00Z",
-    "dateModified": "2025-08-20T12:38:10\u002b02:00",
+    "dateModified": "2025-08-20T21:05:13\u002b02:00",
     "author": {
       "@type": "Person",
       "name": ""
@@ -311,7 +311,36 @@
   <div class="post-date">April 11, 2020</div>
 
   
-  <article class="content">
+  
+  
+  
+  
+  
+  
+  
+  <details style="margin-top: 2rem; margin-bottom: 2rem;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#vorbereitung">Vorbereitung</a></li>
+    <li><a href="#schritt-1-der-simpelste-lösungsweg">Schritt 1: Der simpelste Lösungsweg</a></li>
+    <li><a href="#schritt-2-einen-funken-abwechslung">Schritt 2: Einen Funken Abwechslung</a></li>
+    <li><a href="#schritt-3-die-wände-einreißen">Schritt 3: Die Wände einreißen</a></li>
+    <li><a href="#schritt-4-noch-mehr-abwechslung">Schritt 4: Noch mehr Abwechslung</a></li>
+    <li><a href="#schritt-5-mehr-bewegungsfreiheit">Schritt 5: Mehr Bewegungsfreiheit</a></li>
+    <li><a href="#schritt-6-das-sackgassenproblem">Schritt 6: Das Sackgassenproblem</a></li>
+    <li><a href="#schritt-7-noch-mehr-sackgassen">Schritt 7: Noch mehr Sackgassen!</a></li>
+  </ul>
+</nav></div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
     <p>Durch Zufall bin ich irgendwann mal <a href="http://www.slate.com/articles/technology/books/2012/11/computer_programming_10_print_chr_205_5_rnd_1_goto_10_from_mit_press_reviewed.html">auf diesen BASIC-Einzeiler gestoßen</a>, mit dem sich eine Art Pseudo-Labyrinth erstellen lässt. Ich habe versucht, das <a href="https://htmlpreview.github.io/?https://github.com/nickyreinert/maze/blob/master/pseudo_maze.html">in Plain JavaScript</a> halbwegs kompakt nachzubauen. Dabei kann man kaum übersehen, dass es sich keineswegs um ein richtiges Labyrinth handelt, sondern eher um eine zufällige Anordnung von Strichen ohne Lösungsweg. Also habe ich mich gefragt, wie schwer es wohl sein kann, ein Labyrinth programmatisch und vor allem kompakt zu erzeugen. Dazu gibt es zwar <a href="https://en.wikipedia.org/wiki/Maze_generation_algorithm#Recursive_backtracker">eine Menge Lösungsansätze</a>, mein Ziel ist aber, die Herangehensweise zu beschreiben. Und da wir ja gerade alle zuhause abhängen, ist diese kleine Anleitung entstanden.</p>
 <h2 id="vorbereitung">Vorbereitung</h2>
 <p>Der aus meiner Sicht einfachste Ansatz ist es, eine Fläche mit schon gesetzten Wänden möglichst chaotisch zu durchpflügen. Wir brauchen also erstmal eine Fläche mit x * y Zellen, die jeweils mit Wänden voneinandern getrennt sind. In JavaScript sieht das folgendermaßen aus:</p>
@@ -1026,9 +1055,53 @@ Auch die Liste möglicher Ausgänge wird etwas anders organisiert:</p>
 <p><img src="/2020/2020-04-11-wie-erstelle-ich-ein-labyrinth-mit-javascript/images/grafik-13-700x699.png" alt=""></p>
 <p>Natürlich gibt es an der einen oder anderen Stelle noch Optimierungspotential. Ich hab die ganze Logik noch mit einer Navigation und einer Stopp-Uhr ausgestattet. So sieht das ganze dann als Zeitvertreib für die Quarantäne aus: <a href="https://nickyreinert.github.io/maze/">https://nickyreinert.github.io/maze/</a></p>
 
+    
   </article>
   
+  
+  
+  <div style="margin-top: 5rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
 
+      <p>Eine detaillierte Schritt-für-Schritt-Anleitung zur prozeduralen Erzeugung eines Labyrinths mit reinem JavaScript und HTML. Das Tutorial entwickelt iterativ einen Algorithmus, der von einem einfachen Pfad bis zu einer komplexen Lösung mit dem &#39;Recursive Backtracker&#39;-Ansatz führt, um ein lösbares Labyrinth mit Sackgassen zu generieren.</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">JavaScript</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Algorithmen</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Game-Development</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Prozedurale Generierung</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">HTML DOM</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 5 Minuten</p>
+      
+    </div>
+  </div>
+  
+  
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/2020/2020-02-24-sonys-xperia-modellchaos/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/2020/2020-05-11-how-to-create-a-maze-algorithm-with-javascript/">next →</a>
+    
+  </div>
 </main>
 
     <footer id="footer">

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Speichermanagement auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/topics/speichermanagement/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Mon, 01 May 2023 12:19:31 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/topics/speichermanagement/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Die Nerd Enzyklopädie 23 - 30 x 10 = 1.000</title>
+      <link>https://nickyreinert.de/2023/2023-05-01-nerd-enzyklop%C3%A4die-23---30-x-10--1.000/</link>
+      <pubDate>Mon, 01 May 2023 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2023/2023-05-01-nerd-enzyklop%C3%A4die-23---30-x-10--1.000/</guid>
+      <description>
+Wenn du deinen Python-Nachlass mit ein wenig Pfeffer würzen willst, empfiehlt es sich, die „Definition eines Integers“ zu ändern. Wenn du in Python eine Zahl …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine humorvolle Demonstration aus der &#39;Nerd Enzyklopädie&#39;, die zeigt, wie man in Python die interne Darstellung von Integer-Objekten mittels &#39;ctypes&#39; manipuliert. Der Artikel präsentiert ein Code-Beispiel, das dazu führt, dass eine scheinbar einfache Multiplikation wie &#39;30 * 10&#39; ein unerwartetes Ergebnis von &#39;1000&#39; liefert, und warnt vor den daraus resultierenden Debugging-Herausforderungen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Python, Speichermanagement, Programmierung, Debugging, Nerd-Kultur</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p><img src="/2023/2023-05-01-nerd-enzyklop%C3%A4die-23---30-x-10--1.000/image1.png" alt=""></p>
+<p>Wenn du deinen Python-Nachlass mit ein wenig Pfeffer würzen willst, empfiehlt es sich, die „Definition eines Integers“ zu ändern. Wenn du in Python eine Zahl verwendest, nehmen wir die 30, verwendet Python die 30 als Referenz auf ein Objekt im Speicher, in dem wiederum der Wert 30 hinterlegt wird. Die 30 ist also ein Verweis auf ein Objekt, das den tatsächlichen Wert enthält. In der Regel sollten Verweis und Wert gleich sein, sonst wird das mit der Mathematik schwierig.</p>
+<p>Schwierig? Das mögen Nerds doch!</p>
+<p>Mit dieser Funktion kannst du einen derartigen Verweis anpassen und einen abweichenden Wert hinterlegen:</p>
+<pre><code>import ctypes   
+def reference(val):  
+  return ctypes.cast(id(val), ctypes.POINTER(ctypes.c_int))
+</code></pre>
+<p>Und so aktivierst du den „Spaß“:</p>
+<pre><code>reference(30)[6] = 100
+</code></pre>
+<p>Willst du nun mit der Ziffer 30 mathematische Operationen durchführen, erzeugt das interessante Ergebnisse:</p>
+<pre><code>&gt;&gt;&gt; 30 * 10  
+&gt;&gt;&gt; 1000
+</code></pre>
+<p>Viel Spaß beim Debuggen!</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Python, Code-Trick, Nerd-Enzyklopädie, Debugging</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 23 - 30 x 10 = 1.000 - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>code_demonstration</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

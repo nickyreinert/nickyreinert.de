@@ -15,11 +15,11 @@
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/images/favicon.ico">
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
 
   
   
-  <meta name="keywords" content=" Backup  duplicity  GnuPG  GPG  Verschlüsselung  Bash  Shell-Script  cron  MySQL  mysqldump  WebDAV  Server  Linux  SysAdmin  WordPress ">
+  <meta name="keywords" content=" Backup  Webserver  Linux  duplicity  GnuPG  Bash Scripting  MySQL Backup  Datensicherung  Server Sicherheit  WebDAV  Automatisierung  Tutorial ">
   
 
   
@@ -34,12 +34,13 @@
   <meta property="og:type" content="article">
     <meta property="article:section" content="2018">
     <meta property="article:published_time" content="2018-08-23T00:00:00+00:00">
-    <meta property="article:modified_time" content="2025-08-20T12:38:10+02:00">
+    <meta property="article:modified_time" content="2025-08-20T21:05:13+02:00">
     <meta property="article:tag" content="Backup">
     <meta property="article:tag" content="Bash">
     <meta property="article:tag" content="Hosting">
     <meta property="article:tag" content="Shell">
     <meta property="article:tag" content="Web-Server">
+    <meta property="article:tag" content="Server Sicherheit">
 
 
   
@@ -51,9 +52,9 @@
   <meta itemprop="name" content="Den eigenen Web-Server sichern">
   <meta itemprop="description" content="Die Datensicherung des eigenen, öffentlichen Webservers ist nicht nur wichtig, sie kann auch auf vielen Wegen geschehen und wirft vermutlich gerade deshalb sehr viele Fragen auf. Soll ich ein Image des ganzen Servers anlegen oder nur einzelne Ordner sichern? Wie oft muss ich ein Backup machen und wie gelange ich im Notfall an die Daten? Reicht es aus, z.B. als Wordpress-Nutzer, ein Plugin zu verwenden oder ist es sinnvoller externe Software zu nutzen?">
   <meta itemprop="datePublished" content="2018-08-23T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2025-08-20T12:38:10+02:00">
-  <meta itemprop="wordCount" content="2543">
-  <meta itemprop="keywords" content="Backup,duplicity,GnuPG,GPG,Verschlüsselung,Bash,Shell-Script,cron,MySQL,mysqldump,WebDAV,Server,Linux,SysAdmin,WordPress">
+  <meta itemprop="dateModified" content="2025-08-20T21:05:13+02:00">
+  <meta itemprop="wordCount" content="2576">
+  <meta itemprop="keywords" content="Backup,Webserver,Linux,duplicity,GnuPG,Bash Scripting,MySQL Backup,Datensicherung,Server Sicherheit,WebDAV,Automatisierung,Tutorial">
 
   
   <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
@@ -80,7 +81,7 @@
     "headline": "Den eigenen Web-Server sichern",
     "description": "Die Datensicherung des eigenen, öffentlichen Webservers ist nicht nur wichtig, sie kann auch auf vielen Wegen geschehen und wirft vermutlich gerade deshalb sehr …",
     "datePublished": "2018-08-23T00:00:00Z",
-    "dateModified": "2025-08-20T12:38:10\u002b02:00",
+    "dateModified": "2025-08-20T21:05:13\u002b02:00",
     "author": {
       "@type": "Person",
       "name": "",
@@ -108,18 +109,18 @@
     },
     
     "url": "https:\/\/nickyreinert.de\/2018\/2018-08-23-den-eigenen-web-server-sichern\/",
-    "wordCount":  2543 ,
+    "wordCount":  2576 ,
     
     "timeRequired": "PT5M",
     
     
-    "keywords": ["backup", "bash", "hosting", "shell", "web-server"],
+    "keywords": ["backup", "bash", "hosting", "shell", "web-server", "Server Sicherheit"],
     
     
     "articleSection": ["hosting"],
     
     
-    "abstract": "Eine umfassende Anleitung zur Erstellung einer automatisierten und sicheren Backup-Strategie für einen Webserver. Das Tutorial beschreibt den Einsatz von \u0060duplicity\u0060 und GnuPG für verschlüsselte, inkrementelle Backups von Webseiten-Dateien und MySQL-Datenbanken. Es werden komplette Bash-Skripte zur Verfügung gestellt, die virtuelle Hosts automatisch erkennen und die Backups via WebDAV in der Cloud speichern.",
+    "abstract": "Diese umfassende Anleitung beschreibt die Implementierung einer automatisierten und sicheren Backup-Strategie für Webserver. Sie behandelt den Einsatz von \u0027duplicity\u0027 und GnuPG für verschlüsselte, inkrementelle Backups von Webseiten-Dateien und MySQL-Datenbanken, inklusive Bash-Skripten zur automatischen Erkennung virtueller Hosts und zur Speicherung der Backups in der Cloud via WebDAV.",
     
     
     "genre": "tutorial",
@@ -139,7 +140,7 @@
     "proficiencyLevel": "advanced",
     
     
-    "dependencies": ["Erfahrung in der Linux-Server-Administration (SSH, Kommandozeile)", "Kenntnisse in Bash-Scripting", "Grundlegendes Verständnis von Webservern (Apache\/Nginx) und MySQL"],
+    "dependencies": ["Erfahrung mit Linux-Server-Administration (SSH, Kommandozeile)", "Kenntnisse in Bash-Scripting", "Grundlegendes Verständnis von Webservern (Apache\/Nginx) und MySQL"],
     
     
     "about": [
@@ -147,31 +148,19 @@
       
       {
         "@type": "Thing",
-        "name": "Server-Administration"
+        "name": "Server Administration"
       }
       
       , 
       {
         "@type": "Thing",
-        "name": "Backup"
+        "name": "Backup Strategie"
       }
       
       , 
       {
         "@type": "Thing",
-        "name": "DevOps"
-      }
-      
-      , 
-      {
-        "@type": "Thing",
-        "name": "Bash-Scripting"
-      }
-      
-      , 
-      {
-        "@type": "Thing",
-        "name": "Web-Sicherheit"
+        "name": "Datensicherung"
       }
       
       , 
@@ -180,10 +169,40 @@
         "name": "Linux"
       }
       
+      , 
+      {
+        "@type": "Thing",
+        "name": "Bash Scripting"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Webserver Sicherheit"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "duplicity"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "GnuPG"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "MySQL"
+      }
+      
     ],
     
     "datePublished": "2018-08-23T00:00:00Z",
-    "dateModified": "2025-08-20T12:38:10\u002b02:00",
+    "dateModified": "2025-08-20T21:05:13\u002b02:00",
     "author": {
       "@type": "Person",
       "name": ""
@@ -319,7 +338,53 @@
   <div class="post-date">August 23, 2018</div>
 
   
-  <article class="content">
+  
+  
+  
+  
+  
+  
+  
+  <details style="margin-top: 2rem; margin-bottom: 2rem;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#die-backup-strategie">Die Backup-Strategie</a>
+      <ul>
+        <li><a href="#wo-soll-das-backup-gespeichert-werden">Wo soll das Backup gespeichert werden?</a></li>
+        <li><a href="#welche-software-soll-ich-nutzen">Welche Software soll ich nutzen?</a></li>
+        <li><a href="#wie-oft-soll-ich-ein-backup-anlegen">Wie oft soll ich ein Backup anlegen?</a></li>
+        <li><a href="#welche-daten-sollen-gesichert-werden">Welche Daten sollen gesichert werden?</a></li>
+      </ul>
+    </li>
+    <li><a href="#vorbereitung">Vorbereitung</a>
+      <ul>
+        <li><a href="#duplicity-und-verschlüsselung-einrichten">Duplicity und Verschlüsselung einrichten</a></li>
+        <li><a href="#cloud-speicher-einrichten">Cloud-Speicher einrichten</a></li>
+        <li><a href="#mysql-benutzer-einrichten">MySQL-Benutzer einrichten</a></li>
+      </ul>
+    </li>
+    <li><a href="#die-backup-strategie-umsetzen">Die Backup-Strategie umsetzen</a>
+      <ul>
+        <li><a href="#die-zugangsdaten-ablegen">Die Zugangsdaten ablegen</a></li>
+        <li><a href="#die-ordner-der-virtuellen-hosts-sichern">Die Ordner der virtuellen Hosts sichern</a></li>
+        <li><a href="#die-datenbanken-des-mysql-servers-sichern">Die Datenbanken des MySQL-Servers sichern</a></li>
+        <li><a href="#die-daten-mit-duplicity-verschlüsselt-sichern">Die Daten mit duplicity verschlüsselt sichern</a></li>
+        <li><a href="#automatisieren-mit-cron">Automatisieren mit cron</a></li>
+        <li><a href="#github">Github</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
     <p>Die <strong>Datensicherung</strong> des eigenen, öffentlichen Webservers ist nicht nur wichtig, sie kann auch auf vielen Wegen geschehen und wirft vermutlich gerade deshalb sehr viele Fragen auf. Soll ich ein Image des ganzen Servers anlegen oder nur einzelne Ordner sichern? <strong>Wie oft</strong> muss ich ein Backup machen und wie gelange ich im Notfall an die Daten? Reicht es aus, z.B. als Wordpress-Nutzer, ein Plugin zu verwenden oder ist es sinnvoller externe Software zu nutzen?</p>
 <p>Ich habe versucht ein paar solcher Fragen, auch für mich selber, zu beantworten und als Konsequenz daraus ein <strong>Backup-Strategie</strong> zu entwickeln und dann auch umzusetzen. Das Ziel ist ein gesunder <strong>Mittelweg zwischen Sicherheit und Bedienbarkeit</strong>. Da ich selber sehr oft mit Wordpress arbeite, soll dieser Beitrag vornehmlich die Wordpress-Nutzer ansprechen. Wenn du Wordpress allerdings nur als Service nutzt (z.B. auf wordpress.org), wird dir dieser Beitrag wenig weiterhelfen. Außerdem ist es sehr hilfreich, wenn du per <strong>SSH Zugriff</strong> auf deinen Server hast. Sicherlich gibt es auch Möglichkeiten, den hier aufgezeigten Weg ohne SSH zu beschreiten - wie das funktioniert, muss man aber im Einzelnen sehen.</p>
 <h2 id="die-backup-strategie">Die Backup-Strategie</h2>
@@ -329,7 +394,7 @@
 <h3 id="welche-software-soll-ich-nutzen">Welche Software soll ich nutzen?</h3>
 <p>Die Auswahl von Plugins für automatische Backups mit Wordpress ist sehr umfangreich, einige davon sind kostenlos und die große Mehrheit ist sehr bequem zu bedienen. Die Backups laufen automatisch und auch die Wiederherstellung ist nur einen Mausklick entfernt. Das klingt paradiesisch, aber der Schein trügt. Zunächst halte ich es für absurd, ein System aus sich selber heraus zu sichern. Das ist wie ein <strong>Feuerlöscher</strong>, der bei <strong>Waldbrandgefahr</strong> zwischen den trockenen Bäumen steht.</p>
 <p>Sicher kann ich mit den zahlreichen Wordpress-Plugins die Datenbank und das Dateisystem sichern. Aber der Prozess wird eben innerhalb eines System ausgeführt, das auch von außen erreichbar ist. Wenn nur ein anderes Plugin kompromittiert wird, gefährdet das die ganze Backup-Strategie. Außerdem muss ich, bei der Verwendung mehrerer Wordpress-Instanzen jedes Backup-Plugin einzeln pflegen.</p>
-<p>Auch die regelmäßige Datensicherung, die viele Hoster von sich aus anbieten, reicht mir nicht aus, da diese nur minimal gesteuert werden kann und dort immer das ganze System gesichert wird, man also bei der Wiederherstellung nicht selektieren kann, welche Backup, welcher Ordner oder welche Datenbank zurück gespielt werden soll. Ich habe mich also für <strong>duplicity</strong> entschieden. <a href="http://duplicity.nongnu.org/"><strong>Duplicity</strong></a> wird über die Kommandozeile bedient (deshalb der notwendige SSH-Zugang), unterstützt viele Protokolle (FTP, <strong>WebDav</strong>, Amazon S3, rsync, &hellip;) und es gibt sogar eine grafische Benutzeroberfläche - wenn man doch nicht ohne kann. Außerdem bietet duplicity die Verschlüsselung mit <strong>GnuPG</strong> an und ist damit auch bestens geeignet, um die Datensicherung in der Cloud abzulegen.</p>
+<p>Auch die regelmäßige Datensicherung, die viele Hoster von sich aus anbieten, reicht mir nicht aus, da diese nur minimal gesteuert werden kann und dort immer das ganze System gesichert wird, man also bei der Wiederherstellung nicht selektieren kann, welche Backup, welcher Ordner oder welche Datenbank zurück gespielt werden soll. Ich habe mich also für <strong>duplicity</strong> entschieden. <a href="http://duplicity.nongnu.org/"><strong>Duplicity</strong></a> wird über die Kommandozeile bedient (deshalb der notwendige SSH-Zugang), unterstützt viele Protokolle (FTP, <strong>WebDav</strong>, Amazon S3, rsync, &hellip;) und es gibt sogar eine grafische Benutzeroberfläche - wenn man doch nicht ohne kann. Außerdem bietet duplicity die Verschlüsselung mit <strong>GnuPG</strong> an und ist damit auch bestens geeignet, um die Datensicherung in der Cloud abzulegen.</p>
 <h3 id="wie-oft-soll-ich-ein-backup-anlegen">Wie oft soll ich ein Backup anlegen?</h3>
 <p>Die Frage sollte mich nicht länger beschäftigen, vor allem weil ich dazu <a href="https://blog.yadutaf.fr/2012/09/08/lazy-man-backup-strategy-with-duplicity-part-1/">einen sehr schönen Blog-Eintrag gefunden</a> habe. Dazu muss erklärt werden, dass <strong>duplicity</strong> mit <strong>inkrementellen Backups</strong> arbeitet. Dabei wird initial ein komplettes Backup angelegt. Danach werden nur noch die Änderungen an den zu sichernden Dateien erfasst. Für die Wiederherstellung muss also erst das letzte volle Backup zurückgespielt werden, um darauf dann die inkrementellen Backups &ldquo;anzuwenden. Der Backup-Plan lautet also wie folgt:</p>
 <ul>
@@ -365,7 +430,7 @@
 </span></span></code></pre></div><p>Das ging schnell und hat auch gar nicht weh getan. ;)</p>
 <h2 id="die-backup-strategie-umsetzen">Die Backup-Strategie umsetzen</h2>
 <h3 id="die-zugangsdaten-ablegen">Die Zugangsdaten ablegen</h3>
-<p>Die Informationen, die wir oben gesammelt haben, werden erstmal in der Datei <strong>backup.conf</strong> abgelegt. Bitte beachte, dass die Id für den öffentlichen Schlüssel nur ein Verweis ist. Die tatsächlichen Schlüssel liegen im Benutzerordner unter <em>~/.gnugpg/</em>.</p>
+<p>Die Informationen, die wir oben gesammelt haben, werden erstmal in der Datei <strong>backup.conf</strong> abgelegt. Bitte beachte, dass die Id für den öffentlichen Schlüssel nur ein Verweis ist. Die tatsächlichen Schlüssel liegen im Benutzerordner unter <em>~/.gnugpg/</em> .</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1"># mit diesem Wert steuerst du die Ausgabe von duplicity</span>
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c1"># je höher, desto mehr Debug-Nachrichten werden ausgegeben</span>
 </span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="c1"># das hilft bei der Fehlersuche</span>
@@ -393,97 +458,102 @@
 </span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="c1"># und die E-Mail-Adresse des Absenders</span>
 </span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="k">export</span> <span class="n">LOCAL_EMAIL</span><span class="o">=</span><span class="n">sender</span><span class="err">@</span><span class="n">foobar</span><span class="o">.</span><span class="n">com</span>
 </span></span></code></pre></div><p>Die Zugangsdaten für den MySQL-Server gehören in eine andere Datei, nämlich <strong>database.conf</strong>:</p>
-<p>[client]
-user=mysql_user
-password=mysql_password
-host=localhost</p>
-<h3 id="die-ordner-der-virtuellen-hosts-sichern">Die Ordner der virtuellen Hosts sichern</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[client]
+</span></span><span class="line"><span class="ln">2</span><span class="cl">user=mysql_user
+</span></span><span class="line"><span class="ln">3</span><span class="cl">password=mysql_password
+</span></span><span class="line"><span class="ln">4</span><span class="cl">host=localhost
+</span></span></code></pre></div><h3 id="die-ordner-der-virtuellen-hosts-sichern">Die Ordner der virtuellen Hosts sichern</h3>
 <p>Im Folgenden werde ich die Shell-Scripte und den Prozess ganz kurz erklären.</p>
 <p>Zunächst will ich zwei Server-System unterstützen: nginx und apache2. Dazu frage ich den ersten Parameter ab:</p>
-<p>if [[ $1 == &lsquo;apache&rsquo;  ]]
-then</p>
-<pre><code>    SERVER\_SOFTWARE='apache'
-</code></pre>
-<p>elif [[ $1 == &rsquo;nginx&rsquo;  ]]
-then
-SERVER_SOFTWARE=&lsquo;nginx&rsquo;</p>
-<p>else</p>
-<pre><code>    echo 'Keine Server-Architektur angegeben, probiere mal nginx oder apache'
-</code></pre>
-<p>fi</p>
-<p>Wie oben schon angedeutet, will ich nicht einmal das ganze Dateisystem sichern, sondern nur <strong>relevante Ordner</strong>. Dazu muss ich erwähnen, dass ich für jede Domain eine Konfigurations-Datei angelegt habe - so ist es im übrigen auch üblich (siehe z.B. <em>/etc/apache2/sites-enabled/</em>). Jede dieser Dateien enthält den Verweis auf den Ordner der jeweiligen Domain (oft z.B. <em>/var/www/&hellip;</em>) Diese Informationen gilt es nun automatisch herauszufinden. Ich nutze dafür zunächst den folgenden Aufruf, der mir erstmal eine <strong>ungefilterte  Liste der gesamten Webserver-Konfiguration</strong> ausgibt:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">if [[ $1 == &#39;apache&#39;  ]]
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">then
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        SERVER_SOFTWARE=&#39;apache&#39;
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">elif [[ $1 == &#39;nginx&#39;  ]]
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">then
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        SERVER_SOFTWARE=&#39;nginx&#39;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
+</span></span><span class="line"><span class="ln">10</span><span class="cl">else
+</span></span><span class="line"><span class="ln">11</span><span class="cl">
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        echo &#39;Keine Server-Architektur angegeben, probiere mal nginx oder apache&#39;
+</span></span><span class="line"><span class="ln">13</span><span class="cl">
+</span></span><span class="line"><span class="ln">14</span><span class="cl">fi
+</span></span></code></pre></div><p>Wie oben schon angedeutet, will ich nicht einmal das ganze Dateisystem sichern, sondern nur <strong>relevante Ordner</strong>. Dazu muss ich erwähnen, dass ich für jede Domain eine Konfigurations-Datei angelegt habe - so ist es im übrigen auch üblich (siehe z.B. <em>/etc/apache2/sites-enabled/</em>). Jede dieser Dateien enthält den Verweis auf den Ordner der jeweiligen Domain (oft z.B. <em>/var/www/&hellip;</em>) Diese Informationen gilt es nun automatisch herauszufinden. Ich nutze dafür zunächst den folgenden Aufruf, der mir erstmal eine <strong>ungefilterte  Liste der gesamten Webserver-Konfiguration</strong> ausgibt:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">/usr/sbin/apache2ctl -S
-</span></span></code></pre></div><p><img src="/2018/2018-08-23-den-eigenen-web-server-sichern/images/apachectl-ausgabe.png" alt=""></p>
+</span></span></code></pre></div><p><img src="/2018/2018-08-23-den-eigenen-web-server-sichern/images/apachectl-ausgabe.png" alt="apachectl-ausgabe.png"></p>
 <p>Die Ausgabe ist stark gekürzt und enthält natürlich mehr als nur eine Domain und diese auch immer doppelt - einmal für https und einmal für http. Ich benötige aus dieser Liste nun einmal den Pfad zur Konfigurations-Datei jeder Domain. Dazu reduziere ich die Ausgabe also auf die gewünschten Zeilen und extrahiere dann mit <em>awk</em> und <em>sed</em> den Verweis zu der jeweiligen Konfigurations-Datei. Das ist der komplette Aufruf:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">/usr/sbin/apache2ctl -S | grep &#34;port 80 namevhost&#34; | awk -F &#39; &#39; &#39;{ print $5 }&#39; | sed -E &#39;s/[:()]//g&#39; | sed -E &#39;s/[ 0-9]$//g&#39;
 </span></span></code></pre></div><p>Das Ergebnis ist eine Liste von Konfigurationsdateien, die ich mit <em>grep</em> nach der Angabe des Ordners durchsuchen kann:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">grep -oE &#39;DocumentRoot \&#34;(.*)\&#34;&#39; $configFile | awk -F &#39; &#39; &#39;{ print $2 }&#39; | sed -E &#39;s/[&#34;]//g&#39;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">grep -oE &#39;DocumentRoot &#34;(.*)&#34;&#39; $configFile | awk -F &#39; &#39; &#39;{ print $2 }&#39; | sed -E &#39;s/[&#34;]//g&#39;
 </span></span></code></pre></div><p>Diesen Ordner kann ich dann an das Backup-Script übergeben, auf das ich später zurück kommen werden. Das ganze Script ist auf github verfügbar.</p>
 <p>Ich muss hier allerdings erwähnen, dass das ganze eine <strong>kleinen Nachteil</strong> hat: Es werden nur aktivierte virtuelle Hosts erkannt. Wer zusätzliche andere Ordner sichern will, die z.B. nicht über die virtual host-Konfiguration genutzt werden, muss dies per Hand tun - doch dazu später mehr.</p>
 <p>Für nginx nutze ich eine etwas einfachere Variante: Ich nehme einfach alle Dateien mit der Endung conf aus dem Konfigurations-Ordner von nginx. Das funktioniert eben nur, solange du die Konfiguration zentral an einem Ort verwaltest. Der ganze Abschnitt sieht dann so aus:</p>
-<p>if [[ $SERVER_SOFTWARE == &lsquo;apache&rsquo; ]]
-then
-configFilesString=$(/usr/sbin/apache2ctl -S | grep &ldquo;port 80 namevhost&rdquo; | awk -F &rsquo; &rsquo; &lsquo;{ print $5 }&rsquo; | sed -E &rsquo;s/[:()]//g&rsquo; | sed -E &rsquo;s/[ 0-9]$//g&rsquo;)
-configFiles=($(echo &ldquo;$configFilesString&rdquo; | tr &lsquo;,&rsquo; &rsquo; &lsquo;))</p>
-<p>elif [[ $SERVER_SOFTWARE == &rsquo;nginx&rsquo; ]]
-then</p>
-<pre><code>    configFiles=(/etc/nginx/conf.d/\*.conf)
-</code></pre>
-<p>fi</p>
-<p> </p>
-<p><strong>Update November 2018:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">if [[ $SERVER_SOFTWARE == &#39;apache&#39; ]]
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">then
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">        configFilesString=$(/usr/sbin/apache2ctl -S | grep &#34;port 80 namevhost&#34; | awk -F &#39; &#39; &#39;{ print $5 }&#39; | sed -E &#39;s/[:()]//g&#39; | sed -E &#39;s/[ 0-9]$//g&#39;)
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        configFiles=($(echo &#34;$configFilesString&#34; | tr &#39; ,&#39; &#39; &#39; ))
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">elif [[ $SERVER_SOFTWARE == &#39;nginx&#39; ]]
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">then
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">        configFiles=(/etc/nginx/conf.d/*.conf)
+</span></span><span class="line"><span class="ln">10</span><span class="cl">
+</span></span><span class="line"><span class="ln">11</span><span class="cl">fi
+</span></span></code></pre></div><p><strong>Update November 2018:</strong></p>
 <p><em>Da ich mittlerweile auf nginx und php-fpm umgestiegen bin, habe ich auch das Script entsprechend angepasst. Es kann nun für beide Server-Typen angewendet werden.</em></p>
 <p>Nun kann ich jede Config-Datei einmal einlesen um herauszubekommen, an welcher Stelle im Dateisystem sich der Ordner mit dem Document Root befindet - den wollen wir ja schließlich sichern:</p>
-<p>if [[ $SERVER_SOFTWARE == &lsquo;apache&rsquo; ]]
-then</p>
-<pre><code>srcFolder=$(grep -oE 'DocumentRoot \\&quot;(.\*)\\&quot;' $configFile | awk -F ' ' '{ print $2 }' | sed -E 's/\[&quot;\]//g')
-dstFolder=$(basename $srcFolder)
-</code></pre>
-<p>elif [[ $SERVER_SOFTWARE == &rsquo;nginx&rsquo; ]]
-then</p>
-<pre><code>srcFolder=$(grep -oE 'root (.\*);' $configFile | awk -F ' ' '{ print $2 }' | sed -E 's/\[;\]//g')
-dstFolder=$(basename ${srcFolder%htdocs})
-</code></pre>
-<p>fi</p>
-<p> </p>
-<h3 id="die-datenbanken-des-mysql-servers-sichern">Die Datenbanken des MySQL-Servers sichern</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">if [[ $SERVER_SOFTWARE == &#39;apache&#39; ]]
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">then
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">	srcFolder=$(grep -oE &#39;DocumentRoot \&#34;(.*)\&#34;&#39; $configFile | awk -F &#39; &#39; &#39;{ print $2 }&#39; | sed -E &#39;s/[\&#34;]//g&#39;)
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">	dstFolder=$(basename $srcFolder)
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">elif [[ $SERVER_SOFTWARE == &#39;nginx&#39; ]]
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">then
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	srcFolder=$(grep -oE &#39;root (.*);&#39; $configFile | awk -F &#39; &#39; &#39;{ print $2 }&#39; | sed -E &#39;s/[;]//g&#39;)
+</span></span><span class="line"><span class="ln">11</span><span class="cl">	dstFolder=$(basename ${srcFolder%htdocs})
+</span></span><span class="line"><span class="ln">12</span><span class="cl">
+</span></span><span class="line"><span class="ln">13</span><span class="cl">fi
+</span></span></code></pre></div><h3 id="die-datenbanken-des-mysql-servers-sichern">Die Datenbanken des MySQL-Servers sichern</h3>
 <p>Nun geht es an die Datenbanken. Dazu nutze ich den CLI-MySQL-Client und frage erstmal einfach alle Datenbanken ab:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">mysql --defaults-extra-file=database.conf -Bse &#39;show databases&#39;
 </span></span></code></pre></div><p>Die Zugangsdaten zum Server übergebe ich in der Datei <strong>database.conf</strong>. Ich könnte das auch über die Kommandozeile tun, würde dann aber eine Warnung von MySQL erhalten, dass das nicht sicher sei:</p>
 <blockquote>
 <p><em>Warning: Using a password on the command line interface can be insecure.</em></p></blockquote>
 <p>Da die Ausgabe von mysql nur einen String zurückgibt, muss ich den erst in ein Array umwandeln, dass ich dann durch-loopen kann. Dazu gibt es zwei Wege - den unteren finde ich etwas eleganter. Entscheide dich einfach für einen:</p>
-<p>databasesArray=($(echo &ldquo;$databasesString&rdquo; | tr &lsquo;,&rsquo; &rsquo; &lsquo;))
-IFS=&rsquo;_&rsquo; read -r -a databasesArray&laquo;&lt; &ldquo;$databasesString&rdquo;</p>
-<p>Nun hast du also ein Array, dass deine Datenbanken enthält. Als nächstes brauchst du eine Schleife um für jede Datenbank ein Dump anzulegen:</p>
-<p>ignoreDatabases=[&lsquo;information_schema,sys,performance_schema&rsquo;]
-for database in &ldquo;${databasesArray[@]}&rdquo;
-do</p>
-<pre><code>    if \[\[ ! &quot; ${ignoreDatabases\[\*\]} &quot; == \*&quot;${database}&quot;\* \]\]
-    then
-        ...
-    fi
-</code></pre>
-<p>done</p>
-<p>Wie du siehst, habe ich noch eine Abfrage eingebaut, damit nicht benötigte System-Datenbanken ausgelassen werden. Jetzt kümmern wir uns um den eigentlichen Dump. Die folgenden Zeilen kommen an die Stelle mit den drei Punkten&hellip;</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">databasesArray=($(echo &#34;$databasesString&#34; | tr &#39; ,&#39; &#39; &#39; ))
+</span></span><span class="line"><span class="ln">2</span><span class="cl">IFS=&#39;_&#39; read -r -a databasesArray&lt;&lt;&lt; &#34;$databasesString&#34;
+</span></span></code></pre></div><p>Nun hast du also ein Array, dass deine Datenbanken enthält. Als nächstes brauchst du eine Schleife um für jede Datenbank ein Dump anzulegen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">ignoreDatabases=[&#39;information_schema,sys,performance_schema&#39;]
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">for database in &#34;${databasesArray[@]}&#34;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">do
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        if [[ ! &#34; ${ignoreDatabases[*]} &#34; == *&#34;${database}&#34;* ]]
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        then
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">            ...
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        fi
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
+</span></span><span class="line"><span class="ln">10</span><span class="cl">done
+</span></span></code></pre></div><p>Wie du siehst, habe ich noch eine Abfrage eingebaut, damit nicht benötigte System-Datenbanken ausgelassen werden. Jetzt kümmern wir uns um den eigentlichen Dump. Die folgenden Zeilen kommen an die Stelle mit den drei Punkten&hellip;</p>
 <p>Jetzt werden die Daten aus der jeweiligen Datenbank gezogen. Wenn <strong>mysqldump</strong> einen Fehler zurück gibt, schicke ich mir diesen per E-Mail. Danach wird das Script aufgerufen, dass den Dump mit duplicity an einen &ldquo;sicheren&rdquo; Ort kopiert. Zum Abschluss wird der Dump wieder entfernt.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">result=&#34;$( ( mysqldump --defaults-extra-file=database.conf ${database} &gt; ${BASE\_PATH\_TEMP}${database}.sql ) 2&gt;&amp;1 )&#34;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">result=&#34;$( ( mysqldump --defaults-extra-file=database.conf ${database} &gt; ${BASE_PATH_TEMP}${database}.sql ) 2&gt;&amp;1 )&#34;
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl">
 </span></span><span class="line"><span class="ln"> 3</span><span class="cl">len=${#result}
 </span></span><span class="line"><span class="ln"> 4</span><span class="cl">
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl">if \[ &#34;$len&#34; -gt &#34;0&#34; \]
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">if [ &#34;$len&#34; -gt &#34;0&#34; ]
 </span></span><span class="line"><span class="ln"> 6</span><span class="cl">then
-</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	echo $result | mail -s &#34;Error when dumping mysql database ${database}&#34; $SUPERVISOR\_EMAIL -r $LOCAL\_EMAIL
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	echo $result | mail -s &#34;Error when dumping mysql database ${database}&#34; $SUPERVISOR_EMAIL -r $LOCAL_EMAIL
 </span></span><span class="line"><span class="ln"> 8</span><span class="cl">
 </span></span><span class="line"><span class="ln"> 9</span><span class="cl">fi
 </span></span><span class="line"><span class="ln">10</span><span class="cl">
-</span></span><span class="line"><span class="ln">11</span><span class="cl">./backupFilesystem.sh -f ${BASE\_PATH\_TEMP}${database}.sql -d &#34;${BASE\_PATH\_BACKUP}databases/${database}&#34;
+</span></span><span class="line"><span class="ln">11</span><span class="cl">./backupFilesystem.sh -f ${BASE_PATH_TEMP}${database}.sql -d &#34;${BASE_PATH_BACKUP}databases/${database}&#34;
 </span></span><span class="line"><span class="ln">12</span><span class="cl">
-</span></span><span class="line"><span class="ln">13</span><span class="cl">rm ${BASE\_PATH\_TEMP}${database}.sql
-</span></span></code></pre></div><p> </p>
-<p>Eine Sache gibt es zu beachten, die ich hier nicht weiter beschreiben: Ich nutze &ldquo;<strong>mail</strong>&rdquo; um die Fehlernachrichten zu versenden. Ihr könnte hier einen eigenen E-Mail-Client oder eine andere Variante der Fehlerbenachrichtigung nutzen, das bleibt euch überlassen.</p>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">rm ${BASE_PATH_TEMP}${database}.sql
+</span></span></code></pre></div><p>Eine Sache gibt es zu beachten, die ich hier nicht weiter beschreiben: Ich nutze &ldquo;<strong>mail</strong>&rdquo; um die Fehlernachrichten zu versenden. Ihr könnte hier einen eigenen E-Mail-Client oder eine andere Variante der Fehlerbenachrichtigung nutzen, das bleibt euch überlassen.</p>
 <h3 id="die-daten-mit-duplicity-verschlüsselt-sichern">Die Daten mit duplicity verschlüsselt sichern</h3>
-<p>Nun geht es ans Eingemachte bzw. die tatsächliche Datensicherung. Das Script <strong>backupFilesystem.sh</strong> erwartet zwei Parameter: Die Dateien bzw. der Ordner, der gesichert werden soll und der Name des Zielordners.</p>
+<p>Nun geht es ans Eingemachte bzw. die tatsächliche Datensicherung. Das Script <strong>backupFilesystem.sh</strong> erwartet zwei Parameter: Die Dateien bzw. der Ordner, der gesichert werden soll und der Name des Zielordners.</p>
 <p>Danach wird duplicity mehr als ein mal aufgerufen. Zunächst wird, wenn das letzte Vollbackup älter ist als 1 Monat, ein komplettes Backup angelegt. Danach wird duplicity angewiesen, Backups, die älter sind als 12 Monate, zu entfernen. Dann werden außerdem die inkrementellen Backups entfernt, die älter sind als 1 Monat. Das ganze wird einmal aufgerufen um die Backups lokal abzulegen und dann ein 2. Mal für den WebDav-Speicher.</p>
 <p>Wer Ordner und Dateien <strong>manuell sichern</strong> will, kann also dieses Script mit den entsprechenden Parametern aufrufen.</p>
 <h3 id="automatisieren-mit-cron">Automatisieren mit cron</h3>
@@ -494,11 +564,63 @@ do</p>
 </span></span></code></pre></div><p>Willst du zusätzliche Ordner sichern, kannst du das über das Script <em>backupFilesystem.sh</em> tun, z.B:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">0 1 * * * root /bin/bash /backup/backupFilesystem.sh -f /home/ -d /private-backup/home/
 </span></span></code></pre></div><h3 id="github">Github</h3>
-<p>Die gesammelten Scripte und Vorlagen für die Konfigurationsdateien findest du auf <a href="https://github.com/nickyreinert/completeWebServerBackup">github.com</a>. Du kopierst einfach den Inhalt des Ordners <em>scripts</em> an einen Ort auf deinen Server, wie z.B. <em>/backup.</em></p>
+<p>Die gesammelten Scripte und Vorlagen für die Konfigurationsdateien findest du auf <a href="https://github.com/nickyreinert/completeWebServerBackup">github.com</a>. Du kopierst einfach den Inhalt des Ordners <em>scripts</em> an einen Ort auf deinen Server, wie z.B. <em>/backup.</em></p>
 
+    
   </article>
   
+  
+  
+  <div style="margin-top: 5rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
 
+      <p>Diese umfassende Anleitung beschreibt die Implementierung einer automatisierten und sicheren Backup-Strategie für Webserver. Sie behandelt den Einsatz von &#39;duplicity&#39; und GnuPG für verschlüsselte, inkrementelle Backups von Webseiten-Dateien und MySQL-Datenbanken, inklusive Bash-Skripten zur automatischen Erkennung virtueller Hosts und zur Speicherung der Backups in der Cloud via WebDAV.</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Server Administration</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Backup Strategie</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Datensicherung</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Linux</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Bash Scripting</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Webserver Sicherheit</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">duplicity</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">GnuPG</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">MySQL</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 5 Minuten</p>
+      
+    </div>
+  </div>
+  
+  
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/2018/2018-08-12-wordpress-page-builder-pro-und-contra/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/2018/2018-08-24-die-os-x-bash/">next →</a>
+    
+  </div>
 </main>
 
     <footer id="footer">

@@ -16,11 +16,11 @@ Das System ist OS 10.12.6 und ich nutze das XAMPP-Paket 7.1.9 mit entsprechend P
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/images/favicon.ico">
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
 
   
   
-  <meta name="keywords" content=" Webentwicklung  Software Development  Programmierung  SEO  Analytics  Hosting  DevOps  WordPress  Hugo  Tools  Projekte  Anleitungen  Datenschutz  Digitale Kultur  Künstliche Intelligenz  KI  Autismus ">
+  <meta name="keywords" content=" XAMPP  PHP  Apache  macOS  MongoDB  Extension  Troubleshooting  Webserver  Entwicklungsumgebung  Fehlerbehebung ">
   
 
   
@@ -36,11 +36,12 @@ Das System ist OS 10.12.6 und ich nutze das XAMPP-Paket 7.1.9 mit entsprechend P
   <meta property="og:type" content="article">
     <meta property="article:section" content="2017">
     <meta property="article:published_time" content="2017-10-19T00:00:00+00:00">
-    <meta property="article:modified_time" content="2025-08-20T09:03:20+02:00">
+    <meta property="article:modified_time" content="2025-08-20T20:47:33+02:00">
     <meta property="article:tag" content="Mongodb">
     <meta property="article:tag" content="Osx">
     <meta property="article:tag" content="Php">
     <meta property="article:tag" content="Xampp">
+    <meta property="article:tag" content="Troubleshooting">
 
 
   
@@ -53,9 +54,9 @@ Das System ist OS 10.12.6 und ich nutze das XAMPP-Paket 7.1.9 mit entsprechend P
   <meta itemprop="description" content="Ich hatte hier neulich das Problem, dass ich die mongodb Extension für PHP aktivieren wollte und sich danach der Apache-Dienst nicht mehr starten ließ. Aber der Reihe nach:
 Das System ist OS 10.12.6 und ich nutze das XAMPP-Paket 7.1.9 mit entsprechend PHP 7.1. Außerdem habe ich mir homebrew installiert, da die Installation von pecl zu Umständlich (ich hätte alle möglichen Abhängigkeiten installieren müssen). Mit homebrew habe ich mir also den aktuellen mongodb-Treiber installiert, das geht recht einfach mit:">
   <meta itemprop="datePublished" content="2017-10-19T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2025-08-20T09:03:20+02:00">
+  <meta itemprop="dateModified" content="2025-08-20T20:47:33+02:00">
   <meta itemprop="wordCount" content="478">
-  <meta itemprop="keywords" content="Mongodb,Osx,Php,Xampp">
+  <meta itemprop="keywords" content="XAMPP,PHP,Apache,macOS,MongoDB,Extension,Troubleshooting,Webserver,Entwicklungsumgebung,Fehlerbehebung">
 
   
   <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
@@ -83,7 +84,7 @@ Das System ist OS 10.12.6 und ich nutze das XAMPP-Paket 7.1.9 mit entsprechend P
     "headline": "XAMPP startet nicht mehr, nachdem eine php-Extension hinzugefügt wurde",
     "description": "Ich hatte hier neulich das Problem, dass ich die mongodb Extension für PHP aktivieren wollte und sich danach der Apache-Dienst nicht mehr starten ließ. Aber der …",
     "datePublished": "2017-10-19T00:00:00Z",
-    "dateModified": "2025-08-20T09:03:20\u002b02:00",
+    "dateModified": "2025-08-20T20:47:33\u002b02:00",
     "author": {
       "@type": "Person",
       "name": "",
@@ -116,19 +117,19 @@ Das System ist OS 10.12.6 und ich nutze das XAMPP-Paket 7.1.9 mit entsprechend P
     "timeRequired": "PT5M",
     
     
-    "keywords": ["mongodb", "osx", "php", "xampp"],
+    "keywords": ["mongodb", "osx", "php", "xampp", "Troubleshooting"],
     
     
     "articleSection": ["development", "anleitungen"],
     
     
-    "abstract": "Dieser Artikel behandelt XAMPP startet nicht mehr, nachdem eine php-Extension hinzugefügt wurde und bietet praktische Einblicke in das Thema.",
+    "abstract": "Dieser Artikel beschreibt die Fehlersuche und temporäre Behebung eines Problems, bei dem XAMPP unter macOS nach dem Hinzufügen einer PHP-Erweiterung (z.B. MongoDB) den Apache-Dienst nicht mehr startet. Er führt durch die Analyse von Log-Dateien und Shell-Befehlen, um Berechtigungsprobleme zu identifizieren, und bietet eine Lösung zur Wiederherstellung der Funktionalität.",
     
     
-    "genre": "guide",
+    "genre": "troubleshooting_guide",
     
     
-    "educationalLevel": "intermediate",
+    "educationalLevel": "advanced",
     
     "inLanguage": "de"
   },
@@ -139,10 +140,10 @@ Das System ist OS 10.12.6 und ich nutze das XAMPP-Paket 7.1.9 mit entsprechend P
     "headline": "XAMPP startet nicht mehr, nachdem eine php-Extension hinzugefügt wurde",
     "description": "Ich hatte hier neulich das Problem, dass ich die mongodb Extension für PHP aktivieren wollte und sich danach der Apache-Dienst nicht mehr starten ließ. Aber der …",
     
-    "proficiencyLevel": "intermediate",
+    "proficiencyLevel": "advanced",
     
     
-    "dependencies": ["Grundlegende IT-Kenntnisse"],
+    "dependencies": ["Grundkenntnisse in XAMPP und PHP", "Vertrautheit mit der macOS-Kommandozeile"],
     
     
     "about": [
@@ -150,25 +151,55 @@ Das System ist OS 10.12.6 und ich nutze das XAMPP-Paket 7.1.9 mit entsprechend P
       
       {
         "@type": "Thing",
-        "name": "Development"
+        "name": "XAMPP"
       }
       
       , 
       {
         "@type": "Thing",
-        "name": "Programming"
+        "name": "PHP"
       }
       
       , 
       {
         "@type": "Thing",
-        "name": "Code"
+        "name": "Apache"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "macOS"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Webserver"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Troubleshooting"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Entwicklungsumgebung"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "MongoDB"
       }
       
     ],
     
     "datePublished": "2017-10-19T00:00:00Z",
-    "dateModified": "2025-08-20T09:03:20\u002b02:00",
+    "dateModified": "2025-08-20T20:47:33\u002b02:00",
     "author": {
       "@type": "Person",
       "name": ""
@@ -304,7 +335,30 @@ Das System ist OS 10.12.6 und ich nutze das XAMPP-Paket 7.1.9 mit entsprechend P
   <div class="post-date">October 19, 2017</div>
 
   
-  <article class="content">
+  
+  
+  
+  
+  
+  
+  
+  <details style="margin-top: 2rem; margin-bottom: 2rem;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#recherche-der-aufgerufenen-kommandos">Recherche der aufgerufenen Kommandos</a></li>
+    <li><a href="#lösung---fehlende-rechte">Lösung - fehlende Rechte</a></li>
+  </ul>
+</nav></div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
     <p>Ich hatte hier neulich das Problem, dass ich die mongodb Extension für PHP aktivieren wollte und sich danach der Apache-Dienst nicht mehr starten ließ. Aber der Reihe nach:</p>
 <p>Das System ist OS 10.12.6 und ich nutze das XAMPP-Paket 7.1.9 mit entsprechend PHP 7.1. Außerdem habe ich mir homebrew installiert, da die Installation von pecl zu Umständlich (ich hätte alle möglichen  Abhängigkeiten installieren müssen). Mit homebrew habe ich mir also den aktuellen mongodb-Treiber installiert, das geht recht einfach mit:</p>
 <p>brew update
@@ -343,9 +397,59 @@ AH00015: Unable to open logs</p>
 <p>sudo /Applications/XAMPP/xamppfiles/bin/httpd -k start -E /Applications/XAMPP/xamppfiles/logs/error_log -DSSL -DPHP</p>
 <p>Das eigentliche Problem bleibt freilich bestehen: Was hat das mit der php-Extension zu tun? Liegt es an dem mongodb-Treiber selber oder ist es ein generelles Problem? Bisher bin ich noch nicht dahinter gestiegen. Aber zumindest lässt sich der Web-Server erstmal wieder starten.</p>
 
+    
   </article>
   
+  
+  
+  <div style="margin-top: 5rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
 
+      <p>Dieser Artikel beschreibt die Fehlersuche und temporäre Behebung eines Problems, bei dem XAMPP unter macOS nach dem Hinzufügen einer PHP-Erweiterung (z.B. MongoDB) den Apache-Dienst nicht mehr startet. Er führt durch die Analyse von Log-Dateien und Shell-Befehlen, um Berechtigungsprobleme zu identifizieren, und bietet eine Lösung zur Wiederherstellung der Funktionalität.</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">XAMPP</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">PHP</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Apache</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">macOS</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Webserver</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Troubleshooting</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Entwicklungsumgebung</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">MongoDB</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 5 Minuten</p>
+      
+    </div>
+  </div>
+  
+  
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/2017/2017-10-26-wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/">next →</a>
+    
+  </div>
 </main>
 
     <footer id="footer">

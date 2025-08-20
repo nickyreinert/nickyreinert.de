@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Fefes Blog auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/tags/fefes-blog/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Tue, 05 Nov 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/fefes-blog/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Fefes Blog - Eine Analyse</title>
+      <link>https://nickyreinert.de/2019/2019-11-05-fefes-blog-eine-analyse/</link>
+      <pubDate>Tue, 05 Nov 2019 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2019/2019-11-05-fefes-blog-eine-analyse/</guid>
+      <description>Nach der gar nicht mal so großen öffentlichen Wahrnehmung meiner laienhaften statistischen Analyse des Flirtportals der BVG &ldquo;Augenblicke&rdquo;, habe ich …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel bietet eine statistische Analyse von Fefes Blog, einem bekannten deutschen IT-Sicherheits- und Politik-Blog. Er untersucht die Entwicklung der Beitragsfrequenz, die Häufigkeit von Wörtern und externen Quellen, sowie die Blog-Zeiten. Zudem werden technische Aspekte des Web Scrapings und die Interpretation des Blog-eigenen Zeitstempelformats beleuchtet.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Web Analyse, Datenanalyse, Blog Analyse, Web Scraping, Python, Tableau, IT Sicherheit, Fefes Blog, Statistik</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Nach der gar nicht mal so großen öffentlichen Wahrnehmung meiner laienhaften <a href="https://www.nickyreinert.de/augenblicke-eine-statistische-analyse-des-flirt-portals-der-bvg/">statistischen Analyse des Flirtportals der BVG &ldquo;Augenblicke&rdquo;</a>, habe ich mich mal einem anderem Projekt gewidmet. Es geht um <a href="http://blog.fefe.de">Fefes Blog</a>, einer meiner ersten Anlaufstellen, wenn ich mir die tägliche Nachrichtendosis gebe. Inspiriert wurde ich dazu durch eine <a href="https://www.netaction.de/datenvisualisierung-von-fefes-blogzeiten/">Analyse der Blogzeiten von Fefe</a>, die allerdings schon acht Jahre zurück liegt.<br>
+Für meine Analyse des BVG-Portal hatte ich damals noch PHP gewählt, um die Seiten auszulesen und in eine Datenbank zu hauen. Das war ziemlich aufwendig. Diesmal wollte ich es mit Python probieren und damit auch gleich mein erstes Projekt in dieser Sprache realisieren (der Quellcode steht <a href="https://github.com/nickyreinert/fefeScrape">auf Github</a> zur Verfügung).</p>
+<p>Die ersten Schritte mit Python waren etwas holprig. Mit der Zeit zeigt sich aber, dass das Scraping hier weitaus bequemer ist als mit PHP. Außerdem ist Fefes Blog eine ziemlich angenehme Datenquelle, da Fefe seit Anbeginn auf eine wirklich saubere und konsistente Seitenstruktur setzt. Pures HTML. Es ist ein Traum. Danke, Fefe. Ein paar Hintergründe zur Datenerfassung gibt es am Ende.</p>
+<h2 id="auswertung">Auswertung</h2>
+<p>Insgesamt habe ich 43.908 Einträge im Zeitraum von Ende März 2005 bis Anfang November 2019 ausgewertet. Nach meiner Zählung hat Fefe einen sehr reichen Wortschatz: ich konnte 141.048 verschiedene &ldquo;Wörter&rdquo; ausfindig machen. Außerdem verweißt Fefe auf 8.862 externe Quellen. Auf sich selber hat Fefe innerhalb des Zeitraums 2.661 mal verlinkt. Auch wenn Fefe den Spiegel oft als &ldquo;ehemaliges Nachrichtenmagazin&rdquo; bezeichnet: Der Spiegel ist mit 4.447 Verlinkungen die meist genutzt Quelle, gefolgt von heise.de (3.252). Man muss aber auch eingestehen, dass die Verlinkung zum Spiegel seit 2010 stark abnimmt.</p>
+<p><a href="/2019/2019-11-05-fefes-blog-eine-analyse/images/fefe_words-1.png"><img src="/2019/2019-11-05-fefes-blog-eine-analyse/images/fefe_words-1-700x339.png" alt="Fefes Quellen - Spiegel Online, Heise und… er selbst ;)"></a></p>
+<p>Fefes Quellen - Spiegel Online, Heise und&hellip; er selbst ;)</p>
+<p>Insgesamt kann man einen Abwärtstrend der Nachrichtenfrequenz bei Fefe feststellen. Seinen Höhepunkt hatte Fefe gleich zu Beginn: Im Juli 2005 gab es 528 Einträge. Den zweiten Höhepunkt erreichte Fefes Blog knapp 10 Jahre später. Im April 2015 gab es 440 Einträge. Ansonsten zeigt der Trend leider nach unten. Im Schnitt gibt es jeden Monat 244 Beiträge (Median 238). Für November 2019 sagt das Prognosemodul von Tableau übrigens 182 Einträge voraus.</p>
+<p><a href="/2019/2019-11-05-fefes-blog-eine-analyse/images/monthly.png"><img src="/2019/2019-11-05-fefes-blog-eine-analyse/images/monthly-700x361.png" alt="Anzahl der Einträge pro Monat im Jahresverlauf"></a></p>
+<p>Anzahl der Einträge pro Monat im Jahresverlauf</p>
+<p><a href="/2019/2019-11-05-fefes-blog-eine-analyse/images/blogging-times.png"><img src="/2019/2019-11-05-fefes-blog-eine-analyse/images/blogging-times-62x300.png" alt="Anzahl der Nachrichten je Tageszeit im Jahresverlauf"></a></p>
+<p>Anzahl der Nachrichten je Tageszeit im Jahresverlauf</p>
+<p>In Anlehnung an mein Vorbild, habe ich mir natürlich auch angeschaut, zu welcher Tagszeit Fefe aktiv ist. Zunächst erkennt man, dass Fefe bevorzugt nachmittags aktiv ist. Aber scheinbar gibt es auch hier saisonale Unterschiede. So ist er im Januar bis Juli 2006, den März ausgeschlossen, eher ab 17 Uhr aktiv, danach aber wieder über den ganzen Tag verteilt (Nachtstunden ausgeschlossen). Im April und Mai 2007 konzentrieren sich die Nachrichten wieder auf den späten Nachmittag. In den folgenden Jahren, bis 2015, sind es immer wieder die Frühsommer / Frühlingsmonate, in denen sich die Beiträge zu dieser Tageszeit konzentrieren. Entweder ist Fefe ist ein ausgesprochener Frühlingsmensch. Eine andere Erklärung sind Projekte, die in diesen Monaten stattfinden und ein Bloggen erst zum Nachmittag zulassen. Denkbar ist auch, dass Fefe aufgrund seiner (zyklischen?) Reisetätigkeit und dem damit verbundenen Zeitzonenwechsel zu unterschiedlichen Zeiten bloggt.</p>
+<p>Kreuzt man den Wochentag mit der Tageszeit, zeigt sich, wann Fefe die meisten Beiträge absetzt. Mittwochs um 17 Uhr. Das Wochenende ist Fefe heilig, die Beitragsfrequenz ist hier sehr niedrig. Auch zu den typischen Nachtzeiten gibt es nur sehr wenige Einträge. Hier gibt es öfter auffällige Konzentrationen, wie z.B. im Frühling 2015, die ich auch auf Zeitzonenwechsel - sprich Reisen - schiebe.</p>
+<p><a href="/2019/2019-11-05-fefes-blog-eine-analyse/images/wochentag-x-uhrzeit-nachrichten-1.png"><img src="/2019/2019-11-05-fefes-blog-eine-analyse/images/wochentag-x-uhrzeit-nachrichten-1.png" alt="Anzahl der Nachrichten je Wochentag und Tageszeit"></a></p>
+<p>Anzahl der Nachrichten je Wochentag und Tageszeit</p>
+<p>Die längsten Nachrichten entstehen übrigens zur Nachtzeit (oder je nach Sichtweise, während den Reisen in andere Zeitzonen). Montags, um 5 Uhr, ist die durchschnittliche Wortzahl am höchsten. Der Median weist dazu übrigens den Sonntag um 2 Uhr nachts aus.</p>
+<ul>
+<li>
+<p><a href="/2019/2019-11-05-fefes-blog-eine-analyse/images/wochentag-x-uhrzeit-wortzahl-avg-1.png"><img src="/2019/2019-11-05-fefes-blog-eine-analyse/images/wochentag-x-uhrzeit-wortzahl-avg-1.png" alt=""></a></p>
+<p>Wortanzahl (Mittelwert) je Wochentag und Tageszeit</p>
+</li>
+<li>
+<p><a href="/2019/2019-11-05-fefes-blog-eine-analyse/images/wochentag-x-uhrzeit-wortzahl-median-1.png"><img src="/2019/2019-11-05-fefes-blog-eine-analyse/images/wochentag-x-uhrzeit-wortzahl-median-1.png" alt=""></a></p>
+<p>Wortanzahl (Median) je Wochentag und Tageszeit</p>
+</li>
+</ul>
+<p>Eine Wortwolke, analog der Wolke der externen Quellen, ist aufgrund der schieren Menge etwas zu aufwendig und hätte auch nur wenig Informationsgehalt, weshalb ich darauf mal verzichte. Hier nur eine Darstellung der häufigsten Wörter, weil es so schön aussieht:</p>
+<p><a href="/2019/2019-11-05-fefes-blog-eine-analyse/images/woerter.png"><img src="/2019/2019-11-05-fefes-blog-eine-analyse/images/woerter-700x387.png" alt="Spektakuläre Topliste der verwendeten Wörter"></a></p>
+<p>Spektakuläre Topliste der verwendeten Wörter</p>
+<p>Was ich allerdings liefern kann, ist eine Liste der Fefe-Kunstwörter, wie z.B. &ldquo;<a href="https://blog.fefe.de/?ts=a27615a6">Notfall-Soforthilfe-Klopapier&rdquo;</a>. Das längste dieser Art ist &ldquo;<a href="https://blog.fefe.de/?ts=b293636b">Webforen-Besserwisser-Klugscheißer-Korinthenkacker-Sockenpuppen-Grabenkriegen&rdquo;</a>. Das folgende Diagramm zeigt die Top 33 der Fef&rsquo;schen Wortschöpfungen:</p>
+<p><a href="/2019/2019-11-05-fefes-blog-eine-analyse/images/grafik.png"><img src="/2019/2019-11-05-fefes-blog-eine-analyse/images/grafik-700x368.png" alt="Fefes Wortschöpfungen Top 33"></a></p>
+<p>Fefes Wortschöpfungen Top 33</p>
+<p>Kommen wir zu den Verweisen auf externe Quellen. Der Spiegel (Online) gehört wie gesagt zu den favorisierten Quellen von Fefe. Ansonsten ist Fefe nicht wählerisch, was Quellen angeht. Die Auswahl ist immens. Interessant ist, wie z.B. <em>Twitter</em> seit 2009 immer öfter zu den verlinkten Quellen gehört. Auf <em>The Guardian</em> hingegen wurde von Fefe 2013 zum letzten Mal verwiesen. Auf sich selber verweist Fefe natürlich auch hin und wieder. Am häufigsten in 2008, mit abnemender Tendenz.</p>
+<p><a href="/2019/2019-11-05-fefes-blog-eine-analyse/images/jahr-quellen-ab-50.png"><img src="/2019/2019-11-05-fefes-blog-eine-analyse/images/jahr-quellen-ab-50-700x391.png" alt="Verwendete Quellen / Domains"></a></p>
+<p>Verwendete Quellen / Domains</p>
+<h2 id="fazit">Fazit</h2>
+<p>Und was ist jetzt Fefes WLAN-Passwort? Wir wissen es nicht. Und wir werden es auch nicht erfahren, wenn wir seinen Blog noch drölf mal parsen. Vielleicht sind die zahlreichen zusammengesetzen Substantive als Indiz hilfreich? Egal.</p>
+<p>Also gibt es kein Fazit, mit Ausnahme der Feststellung, dass es zeitliche Muster gibt, Fefe ein außerordentliche fleißiger Autor ist aber sonst, leider, die Tendenz der Nachrichtenanzahl in den letzten Jahren zurück gegangen ist.</p>
+<h2 id="fehlerquellen-und-technische-hintergründe">Fehlerquellen und technische Hintergründe</h2>
+<p>Auch wenn der HTML-Code sehr aufgeräumt ist, vor Fehlern ist auch Fefe nicht gefeit. So gibt es zum Beispiel 110 nicht bzw. falsch geschlossene <A>-Tags. Hier musste ich per Script stumpf ein schließendes </a> setzen, was die Auswertung der Quellen / Domains ein wenig, aber kaum merklich, verfälscht.</p>
+<p>Auch bei den Wörtern musste ich etwas aufräumen, um so z.B. alle möglichen Nicht-Buchstaben entfernen. Danach musste ich die Liste noch ein wenig von Hand sortieren, un so z.B. ein paar verirrte URL zu entfernen.</p>
+<p>Die verlinkten Quellen war recht einfach zu handhaben. Hier habe ich lediglich die Präfixe entfernt, wenn diese mit www und ggf. einer Ziffer beginnen. Trotzdem muss bei dieser Liste berücksichtigt werden, dass manche Quellen über mehrere Domains erreichbar sind. So verweist Fefe z.B. auf das Angebot der BBC mit zehn verschiedenen Varianten:</p>
+<p><a href="/2019/2019-11-05-fefes-blog-eine-analyse/images/grafik-1.png"><img src="/2019/2019-11-05-fefes-blog-eine-analyse/images/grafik-1-700x341.png" alt="Varianten für den Verweis zur BBC"></a></p>
+<p>Varianten für den Verweis zur BBC</p>
+<p>Der Fefe-Timestamp ist eine Geschichte für sich. Alleine wäre ich vermutlich kaum auf die Idee gekommen, dass hinter der eindeutigen Id, mit der jeder Beitrag erreichbar ist, tatsächlich eine Zeitangabe steckt. <a href="https://www.netaction.de/datenvisualisierung-von-fefes-blogzeiten/">Meine Inspirationsvorlage</a> hat hier zum Glück sehr gute Vorarbeit geleistet und erklärt, wie sich der alphanumerische Wert in ein lesbares Datum umwandeln lässt. Es handelt sich bei dem Wert nämlich um einen Hexadezimalangabe, die zunächst in eine Dezimalziffer umgewandelt werden muss. Danach erfolgt eine bitweise XOR-Operation um einen bestimmten Schlüssel: <strong>0xFEFEC0DE</strong>. Das ergibt schließlich einen Unix-Zeitstempel, der sich in ein lesbares Datum umwandeln lässt.</p>
+<p>Zuletzt noch ein Hinweis zu den Daten aus den Anfangszeiten, also März bis Juni 2005. Vermutlich hat Fefe diese nachträglich eingefügt, da dort der Zeitstempel jeweils auf 12 bis 13 Uhr zeigt. Diese Monate habe ich aus den Analysen mit den Tageszeiten ausgeschlossen.</p>
+<p>Zuletzt noch ein Hinweis zu den verwendeten Tools:</p>
+<p>Einerseits nutze ich für die Auswertung und Darstellung <a href="https://public.tableau.com/en-us/s/">Tableau Public</a>, dass es auch als kostenlose Variante gibt. Für die Wordcloud nutze ich <a href="http://www.wordle.net/">Wordle</a>. Wordle gab es eine zeitlang nur als WebApp, mittlerweile läuft Wordle aber auch als native OSX- oder Windows-Anwendung. Das Python-Script habe ich mit <a href="https://code.visualstudio.com/">Visual Studio Code</a> geschrieben, das im Begriff ist, Notepad++ als Allround-IDE abzulösen. Und mit Excel habe ich die Daten etwas bereinigt, das klappt damit immer noch fixer als mit Tableau.</p>
+<h2 id="update">UPDATE</h2>
+<p>Durch Zufall bin ich eben noch auf <a href="https://weltliteratur.net/Fefe-Research-Institute/">eine etwas tiefere Textanalyse</a> gestoßen, die auch sehr interessant ist.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Fefes Blog, Datenanalyse, Web Scraping, Python, Statistik</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>blog</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Fefes Blog - Eine Analyse - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>data_analysis</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

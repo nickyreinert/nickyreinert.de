@@ -15,7 +15,7 @@
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/images/favicon.ico">
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
 
   
   
@@ -279,7 +279,7 @@
   <div class="post-header">
     <div class="navigation">
       
-      <a class="link prev" href="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/">&lt;&lt;&lt;</a>
+      <a class="link prev" href="/2019/2019-01-26-dateien-von-einem-kaputten-android-smartphone-retten/">&lt;&lt;&lt;</a>
       
       
       <h1 style="flex-grow: 1; text-align: center;" itemprop="headline">Mehrere virtuelle Server mit nginx und PHP-FPM für Wordpress (Teil 1 / 3)</h1>
@@ -294,7 +294,55 @@
   <div class="post-date">April 12, 2019</div>
 
   
-  <article class="content">
+  
+  
+  
+  
+  
+  
+  
+  <details style="margin-top: 2rem; margin-bottom: 2rem;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#ziel">Ziel</a></li>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#ordnerstruktur">Ordnerstruktur</a>
+      <ul>
+        <li><a href="#begin-init-info">BEGIN INIT INFO</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#end-init-info">END INIT INFO</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#die-globale-konfiguration-für-nginx">Die globale Konfiguration für nginx</a>
+      <ul>
+        <li><a href="#logging">Logging</a></li>
+        <li><a href="#der-cache">Der Cache</a></li>
+        <li><a href="#welches-dateisystem-für-den-cache---tempfs-oder-ramfs">Welches Dateisystem für den Cache - tempfs oder ramfs?</a></li>
+        <li><a href="#ssl">SSL</a></li>
+        <li><a href="#gzip---kompression">GZIP - Kompression</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
     <p>Bisher war ich immer recht zufrieden mit der Geschwindigkeit meiner selbstgehosteten Wordpress-Seiten. Im Schnitt hat es nicht länger als 2 Sekunden gedauert, bis die Inhalte aufgebaut waren. Mal mehr, mal weniger. Und das schien mir ein akzeptabler Wert zu sein. Ich nutzte eine der üblichen Standard-Installationen, die da draußen wohl weit verbreitet ist: <strong>Apache2</strong> mit <strong>mod_php</strong>. Der PHP-Interpreter ist dabei &ldquo;Teil&rdquo; des Apache2-Servers. Das ist unkompliziert und schnell zu installieren und somit einfach eine pragmatische Lösung und auch deshalb wohl sehr weit verbreitet. Aber: Die einfachsten Lösungen sind oft nicht die besten. Geschweige denn, die sichersten.</p>
 <h2 id="ziel">Ziel</h2>
 <p>Um es kurz zu machen: Das Ziel ist es, einen sicheren und schnellen Web-Server mit <strong>Nginx</strong>, <strong>PHP-FPM</strong> und <strong>chroot</strong> aufzusetzen, mit dem sich mehrere getrennte Webseiten betreiben lassen. Um der Sache einen Zweck zu geben, werde ich mich im Folgenden an Wordpress orientieren.</p>
@@ -579,9 +627,49 @@ stop)
 <p>Mit <em>gzip_vary</em> sorgst du dafür, dass komprimierte und unkomprimierte Ressourcen gecached werden. Der Parameter <em>gzip_min_length</em> legt fest, wie groß eine Ressource mindestens sein muss, um komprimiert zu werden. Mit gzip_proxied sorgst du dafür, dass Anfragen von Proxies komprimierte Daten bekommen und <em>gzip_types</em> definiert die Ressourcen-Typen, die komprimiert werden. Und schließlich sorgen wir noch dafür, dass Anfragen vom alten Internet Explorer nicht komprimiert werden, da dieser damit nicht arbeiten kann: <em>gzip_disable</em>.</p>
 <p>Das war es mit der Einrichtung von nginx. Weiter geht es im 2. Teil mit den <strong>Servern</strong> bzw. wie sie unter Apache genannt werden: <strong>virtual hosts</strong>.</p>
 
+    
   </article>
   
+  
+  
+  <div style="margin-top: 5rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
 
+      <p>Dieser Artikel behandelt Mehrere virtuelle Server mit nginx und PHP-FPM für Wordpress (Teil 1 / 3) und bietet praktische Einblicke in das Thema.</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Web</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">WordPress</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Development</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 5 Minuten</p>
+      
+    </div>
+  </div>
+  
+  
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/2019/2019-01-26-dateien-von-einem-kaputten-android-smartphone-retten/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/2019/2019-04-18-wordpress-tag-cloud-mit-umlauten-aeoeue-korrekt-sortieren-oder-der-wordpress-filter-im-live-beispiel-erklaert/">next →</a>
+    
+  </div>
 </main>
 
     <footer id="footer">

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Websicherheit auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/tags/websicherheit/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Sat, 30 Sep 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/websicherheit/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Welche Arten von SSL-Zertifikaten gibt es?</title>
+      <link>https://nickyreinert.de/2017/2017-09-30-welche-arten-von-ssl-zertifikaten-gibt-es/</link>
+      <pubDate>Sat, 30 Sep 2017 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2017/2017-09-30-welche-arten-von-ssl-zertifikaten-gibt-es/</guid>
+      <description>SSL-Zertifikate spielen seit einiger Zeit eine sehr wichtige Rolle. Zwar gibt es die verschlüsselte Datenübertragung von Websiten über https schon länger …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel erläutert die verschiedenen Arten von SSL-Zertifikaten, unterschieden nach Validierungsgrad (Domain Validation, Organization Validation, Extended Validation) und Geltungsbereich (Einzeldomain, Wildcard, Multi-Domain/SAN). Zudem wird der SSL-Zertifizierungsprozess und das Konzept der Zertifikatsketten detailliert beschrieben, um die Bedeutung von SSL für Webseiten und SEO zu verdeutlichen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> SSL Zertifikate, Websicherheit, HTTPS, Zertifizierungsstellen, Domain Validation, Extended Validation, Wildcard Zertifikate, SEO, Netzwerkprotokolle</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>SSL-Zertifikate spielen seit einiger Zeit eine sehr wichtige Rolle. Zwar gibt es die verschlüsselte Datenübertragung von Websiten über https schon  länger (bereits 1994 wurde die erste Version offiziell vorgestellt) aber erst in 2014 nahm die Bedeutung für SEO zu. <a href="https://webmasters.googleblog.com/2014/08/https-as-ranking-signal.html">Im August 2014</a> hat Google bekannt gegeben, dass SSL nun zu den Ranking-Faktoren zählt.  Fast zeitgleich (Anfang 2017) haben die beiden bekanntesten Browser Chrome und Firefox eine neue Version vorgestellt. Von nun an werden Webseiten, die SSL nicht nutzen explizit als unsicher ausgezeichnet. Langfristig wird also kein Weg an einem SSL-Zertifikat vorbeiführen.</p>
+<p>Es gibt sehr viele Anbieter, bei denen man SSL-Zertifikate bestellen kann und die Preise sind sehr unterschiedlich. So bietet Lets Encrypt kostenlose Zertifikate an und andere Anbieter verlangen dafür mehrere hundert Euro im Jahr. Der Grund dafür ist, dass es natürlich verschiedene Unterscheidungen bei den Zertifikaten gibt. Die eine betrifft die Art, wie das Zertifikat überprüft wird und die andere beschreibt den Gültigkeitsbereich eines Zertifikats.</p>
+<h2 id="wie-funktioniert-die-ssl-zertifizierung">Wie funktioniert die SSL Zertifizierung?</h2>
+<p>Ich werde ich nicht zu tief ins Detail gehen und eigentlich reicht es auch aus, das Grundprinzip zu verstehen: Wenn du für deine Internetseite ein Zertifikat einrichten willst, musst du dafür einen sogenannten Private Key und einen Antrag, das CSR (Certificat Signing Request) erstellen. Der Private Key ist der Augapfel, den du beschützen musst. Der CSR enthält die Informationen zu der Person bzw. Organisation, die hinter der Website steckt, die das SSL-Zertifikat erhalten soll. Dazu gehören z.B. der Name, die Anschrift und vor allem natürlich die Domain, über die die Webseite erreichbar ist. Außerdem ist auch die CA in dem Zertifikat vertreten. Warum das wichtig ist, erkläre ich weiter unten.</p>
+<p>Das CSR wird dann an eine Zertifizierungsstelle geschickt (die sogenannte CA, Certification Authority), die dir als Antwort ein Zertifikat ausstellt.</p>
+<p>Dieses Zertifikat wird dann auf deinem Webserver installiert und jedem Browser, der die Seite aufruft, übermittelt. Der Browser erkennt dann die CA, die das Zertifikat ausgestellt hat und kann der Website dann &ldquo;vertrauen&rdquo; bzw. die verschlüsselte Verbindung aufbauen.</p>
+<p>[caption id=&ldquo;attachment_1612&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/welche-arten-von-ssl-zertifikaten-gibt-es/Zertifikat-U%CC%88bersicht.png"><img src="images/Zertifikat-U%CC%88bersicht-300x233.png" alt="Übersicht über den Zertifizierungsprozess"></a> Übersicht über den Zertifizierungsprozess[/caption]</p>
+<p>Das Zertifikat bzw. das SSL-Protokoll kann nun zwei Aufgaben erfüllen: Es verschlüsselt die Kommunikation und schafft idealerweise Vertrauen.</p>
+<h2 id="unterscheidung-nach-der-art-der-validierung">Unterscheidung nach der Art der Validierung</h2>
+<p>Ein Zertifikat soll also Vertrauen schaffen. Das heißt, <a href="https://www.ssl.com/article/dv-ov-and-ev-certificates/">der Inhaber des Zertifikates muss sich validieren</a>. Dies macht er gegenüber der Zertifizierungsstelle (<strong>Certification Authority</strong>, CA). Dafür gibt es drei Möglichkeiten. Die schnellste und daher oft günstigste Variante ist die <strong>Domain Validation</strong> (DV).Die CA prüft dabei lediglich, ob der Antragsteller Besitzer der Domain ist.</p>
+<p>Die nächst Stufe ist die <strong>Organization Validation</strong> (OV). Dabei enthält das Zertifikat auch Informationen zum Unternehmen bzw. dem Besitzer der Domain, wie den Namen und die Anschrift. Diese Informationen  werden von der CA zusätzlich geprüft und validiert.</p>
+<p>Die höchste Stufe schließlich ist die <strong>Extended Validation</strong> (EV). Auch hier wird natürlich die Authentizität des Antragstellers geprüft. Der Aufwand ist hier allerdings ungleich höher. So verlangt ssl.com z.B. die Übermittlung unterschriebener Dokumente, unter anderem von einem Notar. Außerdem werden verschiedene Eigenschaften des Unternehmens geprüft, nicht zuletzt die ladungsfähige Anschrift oder die Telefonnummer. Im Browser wird die EV  dann durch kenntlich gemacht, dass der Name des Unternehmens bzw. Besitzer neben der URL dargestellt wird:</p>
+<p>[caption id=&ldquo;attachment_1531&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;729&rdquo;]<a href="https://www.nickyreinert.de/files/welche-arten-von-ssl-zertifikaten-gibt-es/ssl-ev-darstellung-im-browser.png"><img src="/2017/2017-09-30-welche-arten-von-ssl-zertifikaten-gibt-es/images/ssl-ev-darstellung-im-browser.png" alt="Darstellung des Extended Validation Zertifikats im Browser"></a> Darstellung des Extended Validation Zertifikats im Browser[/caption]</p>
+<p>Natürlich können die Preisunterschiede auch andere Gründe haben, wie z.B. ganz banal die Kostenkalkulation des Anbieters oder die Aufwände, die z.B. der eigene Hoster mit der Pflege und Beantragung hat.</p>
+<h2 id="unterscheidung-nach-umfang-des-zertifikats">Unterscheidung nach Umfang des Zertifikats</h2>
+<p>Natürlich wird ein Zertifikat immer nur für einen bestimmten Adressaten, eine Domain ausgeschrieben, wie z.B. <a href="https://www.example.com">www.example.com</a>. Doch auch hier gibt es Ausnahmen. Wie zum Beispiel das Wildcard-Zertifikat. Damit ist es möglich, beliebig viele Sub-Domains ebenfalls in das Zertifikat mit aufzunehmen. So könnte ein Wildcard-Zertifikat für *.example.com jede Sub-Domain unterhalb von example.com verwendet werden: <a href="https://www.example.com">www.example.com</a>, mail.example.com, ftp.example.com und so weiter. Für untergeordnete Sub-Domains (sub.www.example.com) funktioniert das allerdings nicht.</p>
+<p>Daneben gibt es Multi-Domain-Zertifikate, auch SAN (Subject Alternative Name) genannt. Diese Zertifikate können für beliebige Domains ausgestellt werden. Die Domains müssen aber explizit angegeben werden. So kann ein SAN-Zertifikat für <a href="https://www.example.com">www.example.com</a>, ftp.foobar.org und mail.google.com genutzt werden.</p>
+<h2 id="was-ist-eine-zertifikats-kette">Was ist eine Zertifikats-Kette?</h2>
+<p>[caption id=&ldquo;attachment_1614&rdquo; align=&ldquo;alignright&rdquo; width=&ldquo;238&rdquo;]<a href="https://www.nickyreinert.de/files/welche-arten-von-ssl-zertifikaten-gibt-es/zertifikatskette.png"><img src="/2017/2017-09-30-welche-arten-von-ssl-zertifikaten-gibt-es/images/zertifikatskette-238x300.png" alt="Zertifikatskette mit Zwischenzertifikaten und Root-Zertifikaten"></a> Zertifikatskette mit Zwischenzertifikaten und Root-Zertifikaten[/caption]</p>
+<p>Nun ist es so, dass der Browser nicht nur blind irgendwelchen Zertifikaten vertraut. Die könnte man sich ja auch selber ausstellen. Aus diesem Grund gibt es so genannte Wurzel-Zertifikate bzw. Zertifikate von Root CAs. Es gibt also Organisationen, denen der Browser vertraut. Deren Zertifikate sind oft im lokalen Speicher installiert und der Browser kann prüfen, ob das  Zertifikat für <a href="https://www.example.com">www.example.com</a> von einer vertrauenswürdigen Organisation ausgestellt wurde. Denn das Zertifikat erhält ja auch den Verweis auf die Stelle, von der das Zertifikat einmal ausgestellt wurde. Oft ist es allerdings so, dass man Zertifikate nicht nur bei den Root CAs bestellt, sondern auch bei deren &ldquo;Delegierten&rdquo; - den Intermediate CAs. Um dem Browser nun klar zu machen, dass er auch der Intermediate CA vertrauen kann, muss eben diese Zertifikats-Kette übermittelt werden. Das ist im Grunde nichts weiter als ein Liste von Zertifikaten, mit denen die Vertrauenswürdigkeit der beteiligten Zertifikats-Stellen bescheinigt wird.</p>
+<p>Der Server hinter <a href="https://www.example.com">www.example.com</a> liefert also nicht nur das Zertifikat für die Seite selber aus, sondern auch alle Zwischenzertifikate - in der sogenannten Zertifikatskette.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> SSL, Zertifikate, Websicherheit, HTTPS, SEO, Anleitung</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Welche Arten von SSL-Zertifikaten gibt es? - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>technical_explainer</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

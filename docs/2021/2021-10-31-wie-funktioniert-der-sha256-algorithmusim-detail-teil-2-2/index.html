@@ -17,7 +17,7 @@ Bevor es los geht möchte ich noch einmal die Zusammenhänge verdeutlichen: Wir 
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/images/favicon.ico">
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
 
   
   
@@ -304,7 +304,38 @@ Vorbemerkung Bevor es los geht möchte ich noch einmal die Zusammenhänge verdeu
   <div class="post-date">October 31, 2021</div>
 
   
-  <article class="content">
+  
+  
+  
+  
+  
+  
+  
+  <details style="margin-top: 2rem; margin-bottom: 2rem;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#vorbemerkung">Vorbemerkung</a></li>
+        <li><a href="#dekompressions">Dekompressions</a></li>
+        <li><a href="#die-schleife">Die Schleife!</a></li>
+        <li><a href="#die-kompression">Die Kompression</a></li>
+        <li><a href="#haschee-gesundheit-was">Haschee. Gesundheit. Was?</a></li>
+        <li><a href="#epilog">Epilog</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
     <p>Wenn du <a href="https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/">den ersten Teil</a> erfolgreich verarbeitet hast, bist du bestens gewappnet, um in diesem Teil zu erfahren, wie die einzelnen Komponenten bzw. Funktionen nun zusammenspielen.</p>
 <h3 id="vorbemerkung">Vorbemerkung</h3>
 <p>Bevor es los geht möchte ich noch einmal die Zusammenhänge verdeutlichen: Wir werden gleich eine Nachricht (<strong>Message</strong>) erzeugen, deren Länge einem Vielfachen von <strong>512 Bit</strong> entspricht; im Beispiel genau <strong>512 Bit</strong>. Die Nachricht wird in <strong>Message-Blocks</strong> zerlegt, die exakt <strong>512 Bit</strong> lang sind. Jeder Message-Block wird wiederum zu einer <strong>Message-Schedule</strong> zerlegt, mit <strong>16 Wörtern</strong> (Words) zu je <strong>32 Bit</strong> Länge. Die Länge der Wörter muss und wird immer <strong>32 Bit</strong> sein! Der Message-Schedule wird dann aber erweitert, um <strong>64 Wörter zu</strong> enthalten. Seine Länge dann: <strong>2.048 Bit</strong>. Und grafisch:</p>
@@ -447,9 +478,49 @@ new\_compression\_constants\[4\] = bin(
 <p>Willst du den Prozess noch etwas interaktiver nachvollziehen, möchte ich dir <a href="https://www.youtube.com/watch?v=f9EbD6iY9zI">dieses Video</a> empfehlen. Dort wird der Algorithmus in Ruby nachgebaut und die einzelnen Rechenschritte auch etwas genauer erklärt.</p>
 <p>Und warum ist SHA-256 für das Mining von Kryptowährungen jetzt so wichtig? Kurz: Der Hash validiert die Gültigkeit des <em>Kassenbuches</em>. Beim Mining geht es darum, aus einer gegebenen Nachricht und einem frei wählbaren Zusatz exakt einen gegebenen Ziel-Hash zu berechnen. Der Algorithmus muss also wahnsinng oft durchlaufen werden. Da das sehr aufwendig ist, kostet das Zeit und wird entsprechend belohnt.</p>
 
+    
   </article>
   
+  
+  
+  <div style="margin-top: 5rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
 
+      <p>Dieser Artikel behandelt Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&amp;nbsp;2/2) und bietet praktische Einblicke in das Thema.</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Web</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">IT</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Tools</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 5 Minuten</p>
+      
+    </div>
+  </div>
+  
+  
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/2021/2021-04-21-maze-game/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/">next →</a>
+    
+  </div>
 </main>
 
     <footer id="footer">

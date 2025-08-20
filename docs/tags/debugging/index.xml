@@ -13,7 +13,79 @@
     <managingEditor></managingEditor>
     <webMaster></webMaster>
     <copyright></copyright>
-    <lastBuildDate>Sun, 18 Nov 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/debugging/index.xml" rel="self" type="application/rss+xml" /><item>
+    <lastBuildDate>Mon, 01 May 2023 12:19:31 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/tags/debugging/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Die Nerd Enzyklopädie 23 - 30 x 10 = 1.000</title>
+      <link>https://nickyreinert.de/2023/2023-05-01-nerd-enzyklop%C3%A4die-23---30-x-10--1.000/</link>
+      <pubDate>Mon, 01 May 2023 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2023/2023-05-01-nerd-enzyklop%C3%A4die-23---30-x-10--1.000/</guid>
+      <description>
+Wenn du deinen Python-Nachlass mit ein wenig Pfeffer würzen willst, empfiehlt es sich, die „Definition eines Integers“ zu ändern. Wenn du in Python eine Zahl …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine humorvolle Demonstration aus der &#39;Nerd Enzyklopädie&#39;, die zeigt, wie man in Python die interne Darstellung von Integer-Objekten mittels &#39;ctypes&#39; manipuliert. Der Artikel präsentiert ein Code-Beispiel, das dazu führt, dass eine scheinbar einfache Multiplikation wie &#39;30 * 10&#39; ein unerwartetes Ergebnis von &#39;1000&#39; liefert, und warnt vor den daraus resultierenden Debugging-Herausforderungen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Python, Speichermanagement, Programmierung, Debugging, Nerd-Kultur</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p><img src="/2023/2023-05-01-nerd-enzyklop%C3%A4die-23---30-x-10--1.000/image1.png" alt=""></p>
+<p>Wenn du deinen Python-Nachlass mit ein wenig Pfeffer würzen willst, empfiehlt es sich, die „Definition eines Integers“ zu ändern. Wenn du in Python eine Zahl verwendest, nehmen wir die 30, verwendet Python die 30 als Referenz auf ein Objekt im Speicher, in dem wiederum der Wert 30 hinterlegt wird. Die 30 ist also ein Verweis auf ein Objekt, das den tatsächlichen Wert enthält. In der Regel sollten Verweis und Wert gleich sein, sonst wird das mit der Mathematik schwierig.</p>
+<p>Schwierig? Das mögen Nerds doch!</p>
+<p>Mit dieser Funktion kannst du einen derartigen Verweis anpassen und einen abweichenden Wert hinterlegen:</p>
+<pre><code>import ctypes   
+def reference(val):  
+  return ctypes.cast(id(val), ctypes.POINTER(ctypes.c_int))
+</code></pre>
+<p>Und so aktivierst du den „Spaß“:</p>
+<pre><code>reference(30)[6] = 100
+</code></pre>
+<p>Willst du nun mit der Ziffer 30 mathematische Operationen durchführen, erzeugt das interessante Ergebnisse:</p>
+<pre><code>&gt;&gt;&gt; 30 * 10  
+&gt;&gt;&gt; 1000
+</code></pre>
+<p>Viel Spaß beim Debuggen!</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Python, Code-Trick, Nerd-Enzyklopädie, Debugging</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 23 - 30 x 10 = 1.000 - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>code_demonstration</dc:type>
+      
+      
+    </item><item>
       <title>Wordpress Debugging und Wartung oder: Keine Panik vor dem White Screen of Death und HTTP 500</title>
       <link>https://nickyreinert.de/2018/2018-11-18-wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death/</link>
       <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
@@ -26,7 +98,7 @@
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Eine umfassende Anleitung zur Fehlersuche und Wartung von WordPress. Der Artikel erklärt, wie man Probleme wie den &#34;White Screen of Death&#34; (WSoD) und HTTP-500-Fehler systematisch analysiert. Vorgestellt werden drei wesentliche Werkzeuge: die Entwicklerkonsole des Browsers, das Plugin &#34;Query Monitor&#34; zur Performance-Analyse und die korrekte Konfiguration des WordPress-Debug-Modus über `wp-config.php` und `.htaccess`.</p>
+          <p>Eine umfassende Anleitung zur Fehlersuche und Wartung von WordPress. Der Artikel erklärt, wie man Probleme wie den &#39;White Screen of Death&#39; (WSoD) und HTTP-500-Fehler systematisch analysiert. Vorgestellt werden drei wesentliche Werkzeuge: die Entwicklerkonsole des Browsers, das Plugin &#39;Query Monitor&#39; zur Performance-Analyse und die korrekte Konfiguration des WordPress-Debug-Modus über &#39;wp-config.php&#39; und &#39;.htaccess&#39;.</p>
           
           
           <p><strong>Hauptthemen:</strong> WordPress, Debugging, Troubleshooting, Performance, PHP, Web-Development</p>

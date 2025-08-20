@@ -1,0 +1,905 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Anekdote auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/tags/anekdote/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Wed, 02 Apr 2025 12:19:31 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/tags/anekdote/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Die Nerd Enzyklopädie 47 - Die 500-Meilen-E-Mail</title>
+      <link>https://nickyreinert.de/2025/2025-03-10-nerd-enzyklop%C3%A4die-47---die-500-meilen-e-mail/</link>
+      <pubDate>Wed, 02 Apr 2025 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2025/2025-03-10-nerd-enzyklop%C3%A4die-47---die-500-meilen-e-mail/</guid>
+      <description>Dieser Moment, in denen man an seiner Wahrnehmung zweifelt, weil ein Computer, der doch eigentlich nach den strengen Regeln der Logik arbeiten sollte, plötzlich …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine Nacherzählung aus der &#39;Nerd Enzyklopädie&#39; über die berühmte &#39;500-Meilen-E-Mail&#39;-Anekdote. Der Artikel beschreibt einen bizarren Softwarefehler, bei dem E-Mails nur innerhalb eines bestimmten Radius zugestellt wurden. Die Ursache war ein unentdecktes Downgrade des &#39;sendmail&#39;-Servers, das zu einem 0-Sekunden-Timeout führte, wodurch entfernte Server nicht rechtzeitig antworten konnten.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> E-Mail, Netzwerktechnik, Softwarefehler, Debugging, Systemadministration, Nerd-Kultur</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Dieser Moment, in denen man an seiner Wahrnehmung zweifelt, weil ein Computer, der doch eigentlich nach den strengen Regeln der Logik arbeiten sollte, plötzlich Dinge tut, die gar nicht mehr so logisch erscheinen. Dieser Moment muss <strong>2002</strong> wohl auch <strong>Trey Harris</strong> ereilt haben (<a href="https://web.mit.edu/jemorris/humor/500-miles">MIT1</a>).</p>
+<p>Harris, Mitglied der <strong>System Administrators Guild</strong> (SAGE), arbeitete als Admin für eine Universität in <strong>North Carolina</strong> und war dort für das E-Mail-System verantwortlich. Eines Tages rief ihn der Vorsitzende der Statistik-Abteilung an und behauptet, dass seine E-Mails nicht ankommen, sobald der Empfänger mehr als <strong>500 Meilen</strong> entfernt sei. Das Problem bestand offenbar schon ein paar Tage. Um es zu dokumentieren, hatte man auf einer Karte markiert, bei welchen Empfänger der E-Mail-Versand funktionierte. Und das funktioniere wohl nur bei Empfängern innerhalb eines 500-Meilen-Radius.</p>
+<p>Harris war skeptisch und testete das System selbst. Er sendete einige Test-E-Mails unter anderem nach <strong>Richmond</strong>, <strong>Atlanta</strong> und <strong>Washington</strong> - alle Ziele befinden sich innerhalb des 500 Meilen Radius. Ohne Probleme. Und dann nach <strong>Memphis</strong> - <strong>600 Meilen</strong> Distanz. Die E-Mail ging nicht durch. <strong>Providence</strong>, 580 Meilen? Kein Erfolg. <strong>New York</strong>, 420 Meilen? Funktioniert.</p>
+<p>Harris verglich die Konfigurationen des E-Mail-Servers mit anderen Systemen und fand keinerlei Auffälligkeiten. Zur weiteren Diagnose wählte er sich per Telnet auf den SMTP-Port des Servers ein. Der Server reagierte, wie erwartet mit dem <strong>SunOS Sendmail Logo</strong>. Und das führte Harris auf die richtige Fährte.</p>
+<p>Der Vorsitzende der Statistik-Abteilung erwähnte zwar, dass vor ein paar Tagen ein Wartungs-Updates für des Betriebssystems installiert wurde. Angeblich betraf das aber nicht <strong>sendmail</strong>, welches Harris vor längerer Zeit in der <strong>Version 8</strong> installiert hatte. Das besagte Update von SunOS enthielt jedoch noch die alte <strong>Version 5</strong> von sendmail! Der E-Mail-Server wurde durch das Update des Betriebssystem auf eine alte Version zurückgesetzt. Die Konfigurations-Dateien, die Harris für die Version 8 angelegt hatte, waren allerdings noch vorhanden. Nur waren sie nicht mit Version 5 kompatibel. So wurde für einige wichtige Parametern von sendmail der <strong>Standard-Wert 0</strong> angenommen.</p>
+<p>Einer dieser Parameter bezog sich auf das <strong>Timeout</strong> für die Verbindung zum externen SMTP-Server. Der Wert dafür betrug nun <strong>0 Sekunden</strong>.</p>
+<p>Aber was hatte das zu bedeuten? Wenn sendmail versucht, eine Verbindung mit einem externen SMTP-Server aufzubauen, schickt es eine Anfrage in das Internet und  wartete dann auf die Antwort. Aufgrund der Auslastung des Systems brauchte sendmail einen Augenblick, um die Routine für die Verarbeitung der Antwort aufzurufen.</p>
+<p>Harris fand heraus, das sendmail dafür etwa 3 Millisekunden benötigt. Eine Antwort, die nach 3 Millisekunden bei sendmail eintraf, wurde aufgrund des Timeouts als nicht erfolgreich gewertet.</p>
+<p>Da die Universität über ein Glasfasernetz an das Internet angeschlossen war, gelang eine derartige Anfrage mit nahezu Lichtgeschwindigkeit nach draußen. Also fragte sich Harris, wie weit das Signal innerhalb von 3 Millisekunden kommen konnte. Er bemühte <strong>units</strong>, ein Kommandozeilen-Programm, um die Distanz auszurechnen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ units
+</span></span><span class="line"><span class="ln">2</span><span class="cl">1311 units, 63 prefixes
+</span></span><span class="line"><span class="ln">3</span><span class="cl">You have: 3 millilightseconds
+</span></span><span class="line"><span class="ln">4</span><span class="cl">You want: miles
+</span></span><span class="line"><span class="ln">5</span><span class="cl">* 558.84719
+</span></span><span class="line"><span class="ln">6</span><span class="cl">/ 0.0017893979
+</span></span></code></pre></div><p>*(Das <em>-Zeichen ist kein Operator, sondern zeigt das Ergebnis an.)</em></p>
+<p>558 Meilen!  Harris hatte die Ursache für das seltsame Verhalten gefunden.</p>
+<p>Harris räumte später ein, einige technische Details, auch aus dramaturgischen Gründen, nicht ganz exakt wiedergeben zu haben. So musste  auch die Antwort vom SMTP-Server innerhalb von 3 Sekunden wieder bei sendmail landen, womit sich die verfügbare Zeit eigentlich auf 1,5 Millisekunden halbiert. Das ändert aber nichts daran, dass das Zusammenspiel aus Timeout, Übertragungsgeschwindigkeit und Verzögerung bei der Verarbeitung dafür gesorgt haben, dass E-Mails nur in einem bestimmten Radius versendet werden konnten, nämlich circa 500 Meilen…</p>
+<p>…but I would walk 500 miles, and I would walk 500 more…</p>
+<p><img src="/2025/2025-03-10-nerd-enzyklop%C3%A4die-47---die-500-meilen-e-mail/image.png" alt="alt text"></p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> E-Mail, Netzwerk, Nerd-Enzyklopädie, Anekdote</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 47 - Die 500-Meilen-E-Mail - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>historical_anecdote</dc:type>
+      
+      
+    </item><item>
+      <title>Die Nerd Enzyklopädie 46 - Bastard Operator From Hell</title>
+      <link>https://nickyreinert.de/2025/2025-03-10-nerd-enzyklop%C3%A4die-46---bastard-operator-from-hell/</link>
+      <pubDate>Mon, 10 Mar 2025 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2025/2025-03-10-nerd-enzyklop%C3%A4die-46---bastard-operator-from-hell/</guid>
+      <description>Wer sich mit Nerd-Kultur beschäftigt, kommt am Bastard Operator From Hell, kurz BOfH (zu deutsch sinngemäß in etwa „Mistkerl-Admin aus der Hölle&quot;), nicht …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine Einführung aus der &#39;Nerd Enzyklopädie&#39; in den &#39;Bastard Operator From Hell&#39; (BOfH), eine ikonische Figur der Nerd-Kultur. Der Artikel beleuchtet die satirischen Erzählungen von Simon Paul Travaglia über einen zynischen IT-Administrator, der seine Nutzer quält, und beschreibt die Entstehung, Verbreitung und den kulturellen Einfluss dieser Geschichten, inklusive der deutschen Adaption als BAfH.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> IT-Folklore, Nerd-Kultur, Systemadministration, Humor, Satire, Internetgeschichte</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Wer sich mit Nerd-Kultur beschäftigt, kommt am <strong>Bastard Operator From Hell</strong>, kurz <strong>BOfH</strong> (zu deutsch sinngemäß in etwa „Mistkerl-Admin aus der Hölle&quot;), nicht herum.</p>
+<p>Der BOFH ist eine fiktive Figur aus den satirischen Erzählungen von <strong>Simon Paul Travaglia</strong>, die erst in einer Universität, später in einem Büro als Operator - also einer Art Service-Mitarbeiter oder laut Wikipedia „Systembetreuer“ - tätig ist.</p>
+<p>Travaglia arbeitete Ende der 1980er Jahre an der Universität von Waikato (Neuseeland) selbst als Operator. Seine Aufgabe war der technische Support und er beschreibt seinen, wie er es selbst nennt, nervigen und langweiligen Arbeitsalltag so:</p>
+<blockquote>
+<p>All the power and none of the responsibility. Good Times. You could do ANYTHING to a user and no-one would know. Well, they&rsquo;d know, but they couldn&rsquo;t prove a thing. ~ Travaglia (BOFH1)</p></blockquote>
+<p>Bei einem Umzug in ein anderes Gebäude fiel ihm ein alter ungenutzter Tandy TRS-80 Model 100, Spitzname Trash 80, in die Hände. Der Trash 80 war der Vorläufer des modernen Notebooks. Das RS steht für Radio Shack, einem bekannten Elektronikhändler in den USA. Travaglia verfasste damit in seiner Freizeit, wie er es selber nannte, zusammenhangslose, „seltsame&quot; Geschichten („oddball stories&quot;).
+In regelmäßigen Abständen nahm er das „Notebook“ mit ins Büro, um dort einige seiner „Rants“ im Usenet unter dem Titel „Striped Irregular Bucket“ zu veröffentlichen. In einem dieser Rants beschreibt er den wenig zimperlichen Umgang mit einem Hilfesuchenden Angestellten wie folgt (MYTH1) :</p>
+<quote> 
+[…]
+So I fill in a couple of hours by killing users off and deleting their files, then waiting for them to call...
+<p>&ldquo;Um, I can&rsquo;t find my files&rdquo; the wimpering simp on the phone says</p>
+<p>&ldquo;Files? What files?&rdquo;</p>
+<p>&ldquo;The files in my account. My thesis, my research - all gone!&rdquo;</p>
+<p>&ldquo;Gone ay? What&rsquo;s your username?&rdquo;</p>
+<p>&ldquo;TURGEN&rdquo;</p>
+<p>&ldquo;TROJAN?! LIKE THE CONDOM?&rdquo;</p>
+<p>&ldquo;No TURGEN. T-U-R&rdquo;</p>
+<p>&ldquo;OH Turgen, like TURD, but with a GEN instead of a D&hellip; Ok lets see&rdquo; I make vague clicking noises my dragging the quicklimed man&rsquo;s fingers back and forth across the keypad. &ldquo;Uh-huh&rdquo; &gt;drag drag&lt; &ldquo;Yeah..&rdquo; &gt;dragedy poke&lt; &ldquo;AH! - You haven&rsquo;t got any files&rdquo;</p>
+<p>&ldquo;I KNOW!&rdquo;</p>
+<p>&ldquo;Well, what are you calling ME for? We don&rsquo;t make the files you know, we just look after them. And chopitty-chop too, your thesis looks like it&rsquo;s due in a couple of days..&rdquo;</p>
+<p>I hang up - he&rsquo;ll call back. Meantime I open up a copy of &ldquo;VMS BASTARD OPERATORS MANUAL FROM HELL&rdquo; I&rsquo;m reading the article I sent in about getting rid of those trouble users&hellip;</p>
+<p>[…]
+</quote></p>
+<p>Diese und zahlreiche weitere Erzählungen des zynischen, gemeinen und bis dahin noch unbekannten Operators fanden recht schnell großen Anklang, dennoch pausierte er seine Arbeit daran zunächst, wohl auch weil ihm die Inspiration fehlte (BJASH1) .
+Ende der 1992er Jahre arbeitete er in London für Enterprise Oil PLC, einem damals sehr erfolgreichen Ölförderunternehmen, aber das hat für die Geschichte keine Relevanz. Travaglia verfasste hier zwei weitere Episoden über den BOFH und erinnert sich vor allem an den abenteuerlichen Prozess der Veröffentlichung: Die Enterprise Oil besaß keinen Zugang zum Internet, also schlich er sich abends in das University College London, schrieb dort einige Geschichten, die er über einen langsamen Telnet-Zugang auf einer Virtuellen Maschine im Usenet veröffentlichen konnte.
+Travaglia kehrte London den Rücken und begab sich wieder nach Neuseeland, um dort als Analyst Programmer zu arbeiten. Er veröffentlichte nun nur noch sporadisch neue Episoden bis er, ermuntert durch Maxwell Cooter, Journalist beim Network Week Magazin, in fast regelmäßigen Abständen neue BOFH-Geschichten für eben das Network Week Magazine, später auch The Register oder Datamation zu schreiben und sogar in Buch-Form zu veröffentlichen.
+Auch wenn der teils schmerzbefreite Humor ein wenig aus der Zeit gefallen zu sein scheint, ist der BOFH nach wie vor ein fester Bestandteil der Nerd-Kultur.
+Florian Schiel begann 1997 damit die BOfH Geschichten ins Deutsche zu übersetzen, und entwickelt später mit dem BAfH einen eigenen erfolgreichen deutschen Ableger. Der BAfH treibt sein Unwesen als Systemadministrator an der Universität München.</p>
+<p>Wer die Welt einmal aus der Sicht eines unterforderten, aber auch ziemlich arroganten und gelangweilten Administrators erleben möchte, der sollte sich BOfH und BAfH auf die Liste der Bettlektüre setzen. Eine fast vollständige Sammlung aller Erlebnisse von Travaglias Original gibt es hier: (ARCH1)</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> IT-Geschichte, Nerd-Kultur, Humor, Anekdote</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 46 - Bastard Operator From Hell - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>cultural_analysis</dc:type>
+      
+      
+    </item><item>
+      <title>Die Nerd Enzyklopädie 44 - Von Fliegenklatschen und Häkeldeckchen</title>
+      <link>https://nickyreinert.de/2024/2024-01-10-nerd-enzyklop%C3%A4die-44---von-fliegenklatschen-und-h%C3%A4keldeckchen/</link>
+      <pubDate>Wed, 10 Jan 2024 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2024/2024-01-10-nerd-enzyklop%C3%A4die-44---von-fliegenklatschen-und-h%C3%A4keldeckchen/</guid>
+      <description>Auch damals, als Informationen noch auf Lochkarten gespeichert wurden, ließ man es sich nicht nehmen, den Kolleg:innen kleine Streiche zu spielen. Wie z.B. alle …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine humorvolle Anekdote aus der &#39;Nerd Enzyklopädie&#39; über Streiche mit Lochkarten in den frühen Tagen der Computertechnik. Der Artikel erklärt, wie das Ausstanzen aller Löcher auf einer Lochkarte zu Instabilität führte und wie diese manipulierten Karten humorvolle Namen wie &#39;Fliegenklatsche&#39; oder &#39;Häkeldeckchen&#39; erhielten.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Computergeschichte, Lochkarten, Humor, Nerd-Kultur, IT-Folklore</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Auch damals, als Informationen noch auf <strong>Lochkarten</strong> gespeichert wurden, ließ man es sich nicht nehmen, den Kolleg:innen kleine Streiche zu spielen. Wie z.B. alle verfügbaren Löcher einer Lochkarte ausstanzen! Die Folge: Aufgrund der vielen Löcher war das Papier nicht mehr stabil genug. Die Karte konnte leichter verbiegen und so den Mechanismus im Kartenleser blockieren.</p>
+<p><img src="/2024/2024-01-10-nerd-enzyklop%C3%A4die-44---von-fliegenklatschen-und-h%C3%A4keldeckchen/image_1.png" alt=""></p>
+<center>normale Lochkarte und „Fliegenklatsche“</center><br />
+<p>Und diese Art von manipulierten Lochkarten bekamen entsprechende Namen: **whoppee card (**Spaßkarte), <strong>lace card</strong> (Spitzenkarte, in Anlehnung an die kunstvoll ausgestanzten Grußkarten), <strong>flyswatter</strong> (Fiegenklatsche), <strong>IBM doily</strong> (Häkeldeckchen) oder <strong>ventilator card</strong> (Beatmungskarte) [<a href="http://catb.org/jargon/oldversions/jarg421.txt">CATB3</a>, <a href="https://en.wikipedia.org/wiki/Lace_card">WIKI19</a>].</p>
+<p><img src="/2024/2024-01-10-nerd-enzyklop%C3%A4die-44---von-fliegenklatschen-und-h%C3%A4keldeckchen/image_2.png" alt=""></p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> IT-Geschichte, Nerd-Enzyklopädie, Humor, Anekdote</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 44 - Von Fliegenklatschen und Häkeldeckchen - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>historical_anecdote</dc:type>
+      
+      
+    </item><item>
+      <title>Die Nerd Enzyklopädie 42 - Mit einem nassen Seil ins Internet</title>
+      <link>https://nickyreinert.de/2023/2023-10-05-nerd-enzyklop%C3%A4die-42---mit-einem-nassen-seil-ins-internet/</link>
+      <pubDate>Thu, 05 Oct 2023 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2023/2023-10-05-nerd-enzyklop%C3%A4die-42---mit-einem-nassen-seil-ins-internet/</guid>
+      <description>
+Nerd-Enzyklopädie #42
+Um Breitband-Internet in die Wohnungen und Büros zu bekommen, wird viel Aufwand betrieben und am Ende beschweren sich die Kunden …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine humorvolle Anekdote aus der &#39;Nerd Enzyklopädie&#39; über einen britischen Internet-Techniker, dem es gelang, Daten über ein nasses Seil zu übertragen. Der Artikel beschreibt das Experiment, bei dem über eine Distanz von 2 Metern eine Geschwindigkeit von 3,5 MBit/Sekunde erreicht wurde, und beleuchtet die unerwarteten Möglichkeiten der Datenübertragung.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Netzwerktechnik, Internet, Kuriositäten, Nerd-Kultur, Datenübertragung</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p><img src="/2023/2023-10-05-nerd-enzyklop%C3%A4die-42---mit-einem-nassen-seil-ins-internet/image1.png" alt=""></p>
+<p>Nerd-Enzyklopädie #42</p>
+<p>Um Breitband-Internet in die Wohnungen und Büros zu bekommen, wird viel Aufwand betrieben und am Ende beschweren sich die Kunden trotzdem. Als Internet-Provider hat man es wahrlich nicht leicht.<br>
+Kupferkabel, Glasfaserleitungen oder große Satelliten-Anlagen sind den meisten von uns ein Begriff. Aber es geht auch günstiger: Einem Techniker des Internet-Anbieters Andrew &amp; Arnolds aus dem Vereinigten Königreich ist es gelungen, ein nasses Seil als Übertragungsmedium zu nutzen. Über eine Entfernung von 2 Metern erreichte er so eine Übertragungsgeschwindigkeit von 3,5 MBit/Sekunde! Reicht für die Prokrastination!</p>
+<p><img src="/2023/2023-10-05-nerd-enzyklop%C3%A4die-42---mit-einem-nassen-seil-ins-internet/image2.png" alt=""></p>
+<p>Nasses Seil [<a href="https://www.revk.uk/2017/12/its-official-adsl-works-over-wet-string.html">REVK1</a>]</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Netzwerk, Kuriosität, Nerd-Enzyklopädie, Anekdote</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 42 - Mit einem nassen Seil ins Internet - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>technical_anecdote</dc:type>
+      
+      
+    </item><item>
+      <title>Die Nerd Enzyklopädie 38 - Du Idiot</title>
+      <link>https://nickyreinert.de/2023/2023-06-16-nerd-enzyklop%C3%A4die-38---du-idiot/</link>
+      <pubDate>Fri, 16 Jun 2023 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2023/2023-06-16-nerd-enzyklop%C3%A4die-38---du-idiot/</guid>
+      <description>
+You fool. You absolute, unmitigated, unadulterated, complete and utter, fool” [GIST2]
+Das ist die unverblümte, ungeschönte und zeitlose Reaktion von Robert J. …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine Erkundung aus der &#39;Nerd Enzyklopädie&#39; über das ikonische Zitat &#39;You fool&#39; von OpenPGP-Entwickler Robert J. Hansen. Der Artikel beleuchtet den Hintergrund dieses Ausbruchs: einen Angriff auf das SKS-Netzwerk, der durch die Ausnutzung bekannter Schwachstellen in einer veralteten, als Proof-of-Concept gedachten Software erfolgte, und dient als Warnung vor vernachlässigter Softwarewartung in kritischen Infrastrukturen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Software-Sicherheit, OpenPGP, SKS-Netzwerk, Softwarewartung, IT-Sicherheit, Nerd-Kultur</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p><img src="/2023/2023-06-16-nerd-enzyklop%C3%A4die-38---du-idiot/image1.png" alt=""></p>
+<blockquote>
+<p>You fool. You absolute, unmitigated, unadulterated, complete and utter, fool” [<a href="https://gist.github.com/rjhansen/67ab921ffb4084c865b3618d6955275f">GIST2</a>]</p></blockquote>
+<p>Das ist die unverblümte, ungeschönte und zeitlose Reaktion von <strong>Robert J. Hansen</strong>, einem Entwickler von <strong>OpenPGP</strong>, nach einen Angriff auf das <strong>SKS - Netzwerk</strong>. Er richtet sich damit an diejenigen, die diesen Angriff zu verantworten haben.</p>
+<p>Das SKS-Netzwerk (<strong>Synchronizing Key Server</strong>) speichert öffentliche Schlüssel, die sich z.B. für die vertrauenswürdige Kommunikation über E-Mail nutzen lassen. Die Server nutzen dazu eine in <strong>OCaml</strong> entwickelte Software, die von <strong>Yaron Minsky</strong> im Rahmen einer Doktorarbeit geschrieben wurde und eigentlich nur als <strong>Proof Of Concept</strong> gedacht war.</p>
+<p>Die Programmiersprache ist nicht sehr weit verbreitet, die Software sehr komplex und damit nur schwer zu warten. Das System ist also weder für den produktiven Einsatz noch für hohe Belastungen ausgelegt — eben ein Proof Of Concept [<a href="https://securityaffairs.co/88071/hacking/poisoning-pgp-sks-key-network.html">SECU1</a>].</p>
+<p>Und es gab Probleme, die schon seit Jahren bekannt waren. So durfte man beliebig viele, auch irrelevante, Informationen ungeprüft auf den Server laden, die dann nicht mehr gelöscht werden konnten.</p>
+<p>Eine Software, die kaum gewartet und optimiert wird, die Teil einer kritischen Infrastruktur ist, mit bekannten Sicherheitslücken — was kann da schon schief gehen?</p>
+<p>Das zeigte sich im <strong>Sommer 2019</strong>. Unbekannte nutzten die Schwachstelle aus und überfluteten die öffentlichen Schlüssel von <strong>Robert J. Hansen</strong> und <strong>Daniel Kahn Gillmor</strong>, ebenfalls Open-PGP Entwickler, mit Spam. So zwangen sie das veraltete System in die Knie und Programme, die darauf angewiesen waren, konnten nicht mehr verwendet werden [<strong>FIFT1</strong>]. Ein absehbarer Super-GAU, auf den Hansen in einem relativ langen, ikonischen Kommentar auf GitHub entsprechend ungehalten reagiert.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Sicherheit, OpenPGP, Nerd-Enzyklopädie, Anekdote</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 38 - Du Idiot - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>historical_anecdote</dc:type>
+      
+      
+    </item><item>
+      <title>Die Nerd Enzyklopädie 36 - Das kik &amp; left-pad Drama</title>
+      <link>https://nickyreinert.de/2023/2023-06-10-nerd-enzyklop%C3%A4die-36---das-kik--left-pad-drama/</link>
+      <pubDate>Sat, 10 Jun 2023 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2023/2023-06-10-nerd-enzyklop%C3%A4die-36---das-kik--left-pad-drama/</guid>
+      <description>
+NPM (Node Package Manager) ist ein Paket Manager für JavaScript und eine Plattform für Pakete, also Software, um die Funktionalität von JavaScript zu …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine Nacherzählung des &#39;kik &amp; left-pad Dramas&#39; von 2016, das die JavaScript-Entwicklergemeinschaft erschütterte. Der Artikel erklärt, wie die Entfernung eines kleinen, aber weit verbreiteten npm-Pakets namens &#39;left-pad&#39; aufgrund eines Namensstreits zu weitreichenden Problemen in Tausenden von Softwareprojekten führte und die Fragilität moderner Software-Abhängigkeiten aufzeigte.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> JavaScript, npm, Open Source, Softwareentwicklung, Abhängigkeiten, Nerd-Kultur, Fallstudie</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p><img src="/2023/2023-06-10-nerd-enzyklop%C3%A4die-36---das-kik--left-pad-drama/image1.png" alt=""></p>
+<p><strong>NPM (Node Package Manager)</strong> ist ein Paket Manager für <strong>JavaScript</strong> und eine Plattform für Pakete, also Software, um die Funktionalität von <strong>JavaScript</strong> zu erweitern. Es gibt einige Pakete, die sehr populär sind und in vielen JavaScript-Programmen verwendet werden. Dass das nicht nur praktisch ist sondern auch kritische Abhängigkeiten erzeugt, demonstrierte <strong>Azer Koçulu</strong> im Jahr <strong>2016</strong>.</p>
+<p>Koçulu stellte damals über NPM eine Vielzahl von Paketen zur Verfügung, darunter auch <strong>kik</strong>, ein kaum bekanntes Paket, um Templates zu erstellen. kik ist aber auch der Name einer Messenger-App mit seinerzeit rund <strong>270. Mio</strong>. aktiven Nutzer:innen.<br>
+Eines Tages erhielt Koculu Post von <strong>Bob Stratton</strong>, einem Rechtsanwalt, der die Interessen von <strong>Kik interactive</strong> vertrat, dem Unternehmen hinter dem Messenger. Stratton bat darum, dass Koculu sein Paket umbenennt, verwies dabei auf die eingetragene Handelsmarke und bot im Gegenzug sogar <strong>30.000 Dollar</strong> an.</p>
+<p>Für Koculu war das keine Option, also nahm Stratton Kontakt mit NPM auf. Dort schlug man sich auf die Seite von Stratton, was Koculu nicht sonderlich wohlwollend aufnahm. Er fühlte sich als <strong>David</strong> im Kampf gegen <strong>Goliath</strong>. Koçulu gegen die seit jeher wenig beliebten Patentanwälte!</p>
+<p>Seine Konsequenz: Er zog all seine <strong>273 Pakete</strong> von NPM zurück. Darunter befand sich auch „<strong>left-pad</strong>“, ein unscheinbares Paket, das nur aus 11 Zeilen bestand und lediglich dem Zweck diente, eine Zeichenkette mit einem bestimmten Wert zu befüllen.</p>
+<p>Das löste eine Kaskade von Ereignissen aus: left-pad wurde von vielen Entwickler:innen in ihren Projekten genutzt, darunter auch Pakete, die wiederum in anderen Projekten genutzt wurden. So entstanden tausende Abhängigkeiten und Fehlermeldungen. Es kam zu massiven Problemen bei Updates und der Entwicklung, nur weil 11 Zeilen simpler JavaScript Code nicht mehr verfügbar waren.</p>
+<p>Das Problem wurde zum Glück relativ schnell behoben. Innerhalb von 10 Minuten veröffentlichte <strong>Cameron Westland</strong> eine Alternative. Insgesamt dauerte die Fehlerbehebung <strong>2,5 Stunden</strong> [<a href="https://blog.npmjs.org/post/141577284765/kik-left-pad-and-npm">NPM1</a>] [<a href="https://www.infoworld.com/article/3047177/how-one-yanked-javascript-package-wreaked-havoc.html">INFO4</a>].</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> JavaScript, npm, Open-Source, Nerd-Enzyklopädie, Anekdote</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 36 - Das kik &amp; left-pad Drama - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>historical_anecdote</dc:type>
+      
+      
+    </item><item>
+      <title>Die Nerd Enzyklopädie 31 - Der allererste Bug</title>
+      <link>https://nickyreinert.de/2023/2023-05-25-nerd-enzyklop%C3%A4die-31---der-allererste-bug/</link>
+      <pubDate>Thu, 25 May 2023 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2023/2023-05-25-nerd-enzyklop%C3%A4die-31---der-allererste-bug/</guid>
+      <description>
+Als ein Bug wird ein Fehler in einem Programm verstanden. Am 9. September des Jahres 1945 soll es sich zugetragen habe, dass der Mark II, ein Computer der …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine historische Untersuchung aus der &#39;Nerd Enzyklopädie&#39; über den Ursprung des Begriffs &#39;Bug&#39; in der Informatik. Der Artikel entlarvt den Mythos der Motte im Harvard Mark II Computer als Ursprung und verfolgt die wahre Etymologie des Wortes zurück zu Thomas Edison im späten 19. Jahrhundert, während er Grace Hoppers Rolle bei der Popularisierung des Begriffs in der Computerwelt würdigt.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Computergeschichte, Softwarefehler, Etymologie, Nerd-Kultur, Informatik</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p><img src="/2023/2023-05-25-nerd-enzyklop%C3%A4die-31---der-allererste-bug/image1.png" alt=""></p>
+<p>Als ein Bug wird ein <strong>Fehler in einem Programm</strong> verstanden. Am <strong>9. September des Jahres 1945</strong> soll es sich zugetragen habe, dass der <strong>Mark II</strong>, ein Computer der <strong>Harvard University</strong>, eine Fehlermeldung≤ ausgab. Selbst Universitäts-Computer sind davor nicht gefeit.</p>
+<p>Man öffnete im Rahmen der Fehlersuche also den Computer — die waren zu der Zeit ja etwas größer als die Smartwatch an unserem Handgelenk — und fand die offensichtliche Ursache des Problems: Eine <strong>Motte</strong>! Sie wollte es sich im <strong>Panel F im Relay 70</strong> gemütlich machen und hat dieses wagemutige Vorhaben mit dem Leben bezahlt - die Todesursache ist leider nicht überliefert.</p>
+<p>Die leiblichen Überreste der Motte wurden in ein Logbuch geklebt (warum eigentlich?) und von <strong>Dr. Grace Hopper</strong> mit der berühmten Bemerkung kommentiert: “First actual case of bug being found.”</p>
+<p><img src="/2023/2023-05-25-nerd-enzyklop%C3%A4die-31---der-allererste-bug/image2.png" alt=""></p>
+<p style="text-align: center;font-style:italic">Quelle [[AMER1](https://americanhistory.si.edu/collections/search/object/nmah_334663)]</p>
+<p>Zwar war das der erste dokumentierte Fall einer Motte in einem Computer. Doch das war mitnichten, wie oft angenommen, die Geburt des Begriffs Bug als Synonym für einen Fehler in einem System. Dazu kam es weitaus früher, nämlich <strong>Ende des 19. Jahrhunderts</strong> durch unseren alten Bekannten <strong>Thomas Edison</strong>:</p>
+<blockquote>
+<p>‘Bugs’ — as such little faults and difficulties are called — show themselves and months of intense watching, study and labor are requisite before commercial success or failure is certainly reached.<br>
+Thomas Edison an Theodore Puskas, 1878 [<a href="https://www.computerworld.com/article/2515435/moth-in-the-machine--debugging-the-origins-of--bug-.html">COMP1</a>]</p></blockquote>
+<p>Der Begriff fand dann sogar Einzug in das <strong>Oxford English Dictionary</strong>:</p>
+<blockquote>
+<p>a defect or fault in a machine, plan, or the like.</p></blockquote>
+<p>Dort wird als Quelle die <strong>Pall Mall Gazette</strong> angegeben [<a href="https://daily.jstor.org/the-bug-in-the-computer-bug-story/">JSTO1</a>]:</p>
+<blockquote>
+<p>“Mr [Thomas] Edison… had been up the two previous nights discovering a ‘bug’ in his phonograph — an expression for solving a difficulty, and implying that some imaginary insect had secreted itself inside and is causing all the trouble.<br>
+Thomas Edison, March 11, 1889</p></blockquote>
+<p>Es sollte auch erwähnt werden, dass <strong>Dr. Hopper</strong> die Motte weder gefunden noch in das Logbuch geklebt, sondern nur den ikonischen Kommentar darunter verfasste [<a href="https://www.pcwelt.de/article/1484644/die-beruhmtesten-bugs-der-it-geschichte.html">PCWE1</a>].</p>
+<p>Nichtsdestotrotz sollten wir erfurchtsvoll anerkennen, dass die Motte in Panel F ihr Leben dafür gelassen hat, dem Begriff Bug zum Durchbruch zu verhelfen, ihn zu prägen. Danke, Motte.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> IT-Geschichte, Softwarefehler, Nerd-Enzyklopädie, Anekdote</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 31 - Der allererste Bug - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>historical_anecdote</dc:type>
+      
+      
+    </item><item>
+      <title>Die Nerd Enzyklopädie 27 - Die Geschichte von Mel</title>
+      <link>https://nickyreinert.de/2023/2023-05-13-nerd-enzyklop%C3%A4die-27---die-geschichte-von-mel/</link>
+      <pubDate>Sat, 13 May 2023 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2023/2023-05-13-nerd-enzyklop%C3%A4die-27---die-geschichte-von-mel/</guid>
+      <description>
+Die “Geschichte von Mel“ ist eine Reminiszenz an die frühen Jahre der Informationstechnologie. In der Geschichte verarbeitet Ed Nather seine Erlebnisse als …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine Nacherzählung der berühmten Anekdote &#39;Die Geschichte von Mel&#39; aus der Computerprogrammierung. Der Artikel beleuchtet das Genie des legendären Programmierers Mel Kaye, seine unkonventionellen Optimierungstechniken in Assemblersprache und die Herausforderungen, die sein selbstmodifizierender Code für andere Entwickler darstellte, insbesondere am Beispiel eines manipulierten Blackjack-Spiels.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Computergeschichte, Programmierung, Assemblersprache, Folklore, Nerd-Kultur, Softwareentwicklung</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p><img src="/2023/2023-05-13-nerd-enzyklop%C3%A4die-27---die-geschichte-von-mel/image1.png" alt=""></p>
+<p>Die “<strong>Geschichte von Mel</strong>“ ist eine Reminiszenz an die frühen Jahre der Informationstechnologie. In der Geschichte verarbeitet <strong>Ed Nather</strong> seine Erlebnisse als Softwareentwickler bei der <strong>Royal McBee Computer Corporation</strong>, einem Hersteller von Computern.</p>
+<p>In <strong>1956</strong> vertrieb die Royal McBee zusammen mit der <strong>General Precision Inc</strong>. den <strong>LGP-30</strong>, einen „<strong>röhrenbestückten Magnettrommelrechner</strong>“ [<a href="http://computermuseum.informatik.uni-stuttgart.de/dev/lgp30/">STUT1</a>]. Der Rechner kostete damals beeindruckende <strong>47.000 USD</strong>, was heute in etwa <strong>470.000 USD</strong> entspricht [<a href="https://en.wikipedia.org/wiki/LGP-30">WIKI8</a>].</p>
+<p><strong>Melvin „Mel“ Kaye</strong> (geb. <strong>Kornitzky</strong>), Nathers Kollege, entwickelte für diesen Computer ein BlackJack-Spiel, das sich sehr großer Beliebtheit erfreute und z.B. auf Messen zu Demonstrationszwecken vorgeführt wurde.</p>
+<p>Mit dem <strong>RPC 4000</strong> veröffentlichte die RoyalBee in <strong>1960</strong> einen leistungsfähigeren Nachfolger für den LGP-30. Das <strong>230-kg-Ungetüm</strong> ging damals für saftige <strong>87.500 USD</strong> über die hoffentlich stabile Ladentheke [<a href="https://en.wikipedia.org/wiki/LGP-30">WIKI8</a>]. Um auf Messen weiterhin für Unterhaltung zu sorgen, wurde Kaye damit beauftragt, sein BlackJack-Spiel auf den RPC 4000 zu portieren.<br>
+Auf Anraten des Vertriebs bat die Geschäftsführung Kaye darum, einen Schalter einzubauen, mit dem sich einstellen lässt, dass der Computer verliert. Mutmaßlich, um den interessierten Käufen auf den Messen wohlwollend zu begegnen.</p>
+<p>Nather porträtiert Kaye als <strong>Archetypen eines ethischen Hackers</strong>. Ein exzellenter Softwareentwickler mit Prinzipien. Kaye kam dem Wunsch der Geschäftsführung nicht ganz nach. Er implementierte eine umgekehrte Funktion und so sorgte der Schalter dafür, dass der Computer immer gewinnt.</p>
+<p>Ein Ärgernis für die Geschäftsführung und den Vertrieb. Da Kaye die RoyalBee kurz darauf verließ, offensichtlich weil sich seine Werte nicht mit denen des Unternehmens deckten [<a href="https://melsloop.com/docs/the-story-of-mel/pages/preface">MELS1</a>], wurde Nather damit beauftragt, den „Bug“ zu beheben. Und das fiel ihm nicht sonderlich leicht, dafür hatte Kaye mit einigen programmatischen Hürden gesorgt.<br>
+Nather beschreibt sein Vorgehen als Abenteuer und Kaye als „<strong>unbesungenes Genie</strong>“. Die technischen Finessen und Tricks, die Kaye in den Quellcode eingebaut hatte, beeindruckten Nather zutiefst:</p>
+<blockquote>
+<p>When the light went on it nearly blinded me.<br>
+(The Story of Mel, Ed Nather, 1983)</p></blockquote>
+<p>So berichtet Nather von Endlosschleifen und Quellcode, der sich selber modifizierte. Letztlich gelang es Nather nicht, den Bug zu beheben, vielleicht auch aus Respekt vor dessen Schöpfer. Also blieb die Funktion des Schalters bestehen: Er sorgte weiterhin dafür, dass der Computer gewinnt.</p>
+<p>Wann genau sich die Geschichte zugetragen hat, ist nicht sicher überliefert. Nather verarbeitet das Geschehen in Gedichtform und veröffentlichte dies am <strong>21. Mai 1983</strong> im Usenet [<a href="http://www.catb.org/jargon/html/story-of-mel.html">CATB1</a>].</p>
+<p>Vermutlich hätten wir nie erfahren, um wen es sich bei „Mel“ handelt. Nather hatte Kaye nicht direkt namentlich erwähnt. Erst in <strong>2012</strong> begann der Programmierer <strong>Anthony Cuozzo</strong> die Hintergründe der Geschichte zu recherchieren. Per E-Mail nahem er Kontakt zum vermeintlichen Kaye auf und erhielt genau eine Antwort [<a href="https://melsloop.com/docs/the-story-of-mel/pages/mel-kaye-cv">MELS2</a>]:</p>
+<blockquote>
+<p>Mel Kaye <a href="mailto:rimel3@roadrunner.com">rimel3@roadrunner.com</a><br>
+Tue, Apr 17, 2012 at 12:01 PM<br>
+To: acuozzo@<em><strong>.</strong></em>**<em><strong>.</strong></em><br>
+— -<br>
+Yes, I did, many, many years ago I worked for both of them.<br>
+I believe I worked for Royal McBee first.<br>
+Mel Kaye</p></blockquote>
+<p>Danach hörte er nie wieder etwas von ihm.</p>
+<p><em>Melvin Kaye verstarb 2018.</em></p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Computergeschichte, Programmierung, Nerd-Enzyklopädie, Anekdote</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 27 - Die Geschichte von Mel - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>historical_anecdote</dc:type>
+      
+      
+    </item><item>
+      <title>Die Nerd Enzyklopädie 26 - FOCAL</title>
+      <link>https://nickyreinert.de/2023/2023-05-10-nerd-enzyklop%C3%A4die-26---focal/</link>
+      <pubDate>Wed, 10 May 2023 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2023/2023-05-10-nerd-enzyklop%C3%A4die-26---focal/</guid>
+      <description>
+FOCAL (für Formulating On-line Calculations in Algebraic Language) ist eine Programmiersprache, die 1968 erstmals vorgestellt wurde. Entwickelt wurde sie von …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine historische Erkundung aus der &#39;Nerd Enzyklopädie&#39; über die Programmiersprache FOCAL (Formulating On-line Calculations in Algebraic Language), entwickelt 1968 von Richard Merrill (DEC). Der Artikel beleuchtet FOCALs Einsatz auf PDP-Computern, seine Ähnlichkeit mit BASIC, die Gründe für seine begrenzte Popularität (u.a. durch eine Anekdote über Microsoft) und seinen kurzen zweiten Frühling in der Sowjetunion.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Programmiersprachen, Computergeschichte, DEC, BASIC, Nerd-Kultur</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p><img src="/2023/2023-05-10-nerd-enzyklop%C3%A4die-26---focal/image1.png" alt=""></p>
+<p><strong>FOCAL</strong> (für <strong>Formulating On-line Calculations in Algebraic Language</strong>) ist eine Programmiersprache, die <strong>1968</strong> erstmals vorgestellt wurde. Entwickelt wurde sie von <strong>Richard Merrill</strong> von <strong>DEC</strong>, Digital Equipment Corporation.</p>
+<p>FOCAL war für den Einsatz auf den <strong>PDP</strong> Computern gedacht (<strong>Programed Data Processors</strong>). <strong>1969</strong> veröffentliche <strong>Jim Storer,</strong> damals Schüler an der <strong>Lexington High School</strong>, für den <strong>PDP-8</strong> das in FOCAL geschrieben Spiel <strong>Lunar Lander</strong>. Der Programmcode bestand aus nur 40 Zeilen! FOCAL ist vergleichbar mit <strong>BASIC</strong>; aber bei weitem nicht so populär. Ein Grund war sicherlich die strenge Lizenzierungs-Politik von DEC. Aber auch <strong>Microsoft</strong> könnte, wenn man diese Spekulation zulässt, seinen Teil zum Misserfolg von FOCAL beigetragen haben.</p>
+<p>Microsoft vertrieb damals einen FOCAL-Interpreter. <strong>1980</strong> wurde der Verkauf aber eingestellt. Der Grund ist banal: Nachdem eine Bestellung für diese Software einging, konnte man das <strong>Master-Tape</strong> nicht mehr finden, um eine Kopie anzufertigen. Die Bestellung wurde kurzerhand mit dem Hinweis storniert, dass das Produkt nicht mehr verkauft wird. Dass es vermutlich einfach nur „verloren“ ging, behielt man für sich [<a href="https://devblogs.microsoft.com/oldnewthing/20200616-00/?p=103869">MICR3</a>].</p>
+<p>In der damaligen Sowjetunion erlebte FOCAL Mitte der <strong>1980er</strong> Jahre einen zweiten Frühling. Der russische Heimcomputer <strong>Electronica BK</strong>, eine Kopie des <strong>PDP-11</strong>, wurde zusammen mit FOCAL ausgeliefert. Aber auch dort wurde FOCAL später durch BASIC verdrängt…</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Programmiersprache, IT-Geschichte, Nerd-Enzyklopädie, Anekdote</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 26 - FOCAL - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>historical_anecdote</dc:type>
+      
+      
+    </item><item>
+      <title>Die Nerd Enzyklopädie 25 - Bare Metal Programming</title>
+      <link>https://nickyreinert.de/2023/2023-05-07-nerd-enzyklop%C3%A4die-25---bare-metal-programming/</link>
+      <pubDate>Sun, 07 May 2023 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2023/2023-05-07-nerd-enzyklop%C3%A4die-25---bare-metal-programming/</guid>
+      <description>
+Übersetzt heißt „bare metal programming“ etwa so viel wie „Programmieren am reinen Metall“. Gemeint ist damit, dass man eine Software entwickelt, die direkt …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine humorvolle Anekdote aus der &#39;Nerd Enzyklopädie&#39;, die das Konzept des &#39;Bare Metal Programming&#39; veranschaulicht. Der Artikel erzählt die Geschichte eines Entwicklers, der bei einem Programmfehler auf einem &#39;discrete component&#39; Computer buchstäblich mit einem Schraubenzieher in die Hardware eingreifen musste, um das System zu stoppen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Programmierung, Hardware, Computergeschichte, Nerd-Kultur, Softwareentwicklung</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p><img src="/2023/2023-05-07-nerd-enzyklop%C3%A4die-25---bare-metal-programming/image1.png" alt=""></p>
+<p>Übersetzt heißt „bare metal programming“ etwa so viel wie „Programmieren am reinen Metall“. Gemeint ist damit, dass man eine Software entwickelt, die direkt mit der Hardware kommuniziert, ohne Umwege über Bibliotheken, Schnittstellen oder ein Betriebssystem.</p>
+<p>Ein Entwickler, dessen Name nicht überliefert ist, weshalb das ganze vielleicht eher der Kategorie „sympathische Legende“ zuzuordnen ist, nahm den Begriff des „Bare Metal Programmings“ Ende der der 1980er etwas zu wörtlich. Er arbeitete an einem „discrete component“ Computer, also einem Computer, bei dem die Transistoren sichtbar im Gerät verbaut sind (der erste Supercomputer, der IBM 7030 von 1961, bestand aus 169.100 Transistoren. Damit benötigte alleine die CPU eine Fläche von knapp 83qm [<a href="http://ed-thelen.org/comp-hist/vs-ibm-stretch.html">EDTH1</a>].)</p>
+<p>Das Programm unseres Entwicklers schien jedenfalls einen Bug zu haben, weshalb er versucht hat das Programm zu stoppen. Was ihm nicht gelang, da das System — bugbedingt — alle Steuersignale ignorierte. Auch der Versuch den Computer selber anzuhalten, war nicht von Erfolg gekrönt. Da er das Gerät — aus Angst vor Datenverlust — nicht einfach ausschalten wollte, rief er einen Techniker dazu.</p>
+<p>Bei dieser Art von Computern konnte man recht leicht feststellen, an welcher Stelle ein Programm bzw. eine einzelne Anweisung verarbeitet wurde, da die zuständigen Komponenten ja buchstäblich sicht- und greifbar waren. Man sah sich also zu einer ungewöhnlichen Maßnahme gezwungen, die wohl nicht deutlicher zeigen konnte, wie „Bare Metal Programming“ auch aussehen kann: Der Computer wurde geöffnet, um mit einem Schraubenzieher einen Kurzschluss an der Komponente zu erzeugen, von der man annahm, dass sie für den Bug verantwortlich war [<a href="https://yarchive.net/comp/tales.html">YARC1</a>].</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Programmierung, Hardware, Nerd-Enzyklopädie, Anekdote</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 25 - Bare Metal Programming - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>technical_anecdote</dc:type>
+      
+      
+    </item><item>
+      <title>Die Nerd Enzyklopädie 16 - USERSEEUSERDO</title>
+      <link>https://nickyreinert.de/2023/2023-04-10-nerd-enzyklop%C3%A4die-16---userseeuserdo/</link>
+      <pubDate>Mon, 10 Apr 2023 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2023/2023-04-10-nerd-enzyklop%C3%A4die-16---userseeuserdo/</guid>
+      <description>„User See User Do“ ist eine Anspielung auf das englische Sprichwort “Monkey See, Monkey Do“, was in etwa so viel heißt wie “Was der Affe sieht, das macht er …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine Erklärung aus der &#39;Nerd Enzyklopädie&#39; über die &#39;USERSEEUSERDO&#39;-Funktion in Windows 3.1. Der Artikel beleuchtet, wie diese Funktion zur Simulation von Benutzerverhalten für Stresstests des Betriebssystems eingesetzt wurde und ihren Namen vom Sprichwort &#39;Monkey See, Monkey Do&#39; ableitet.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Windows, Software Testing, Betriebssysteme, IT-Geschichte, Nerd-Kultur</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>„<strong>User See User Do</strong>“ ist eine Anspielung auf das englische Sprichwort “<strong>Monkey See, Monkey Do</strong>“, was in etwa so viel heißt wie “Was der Affe sieht, das macht er nach”. So weit, so despektierlich.<br>
+Bei <strong>USER­SEE­USER­DO</strong> handelt es sich um eine Funktion innerhalb von <strong>Windows 3.1</strong>., die die Entwickler<em>innen dazu genutzt haben, Stresstests durchzuführen. Das Ziel der Funktion ist es, das Verhalten der Nutzer</em>innen zu simulieren, mit all seinen vielleicht nicht ganz so sinnvollen Ausprägungen, um die Funktionalität des Betriebssystems auch unter den widrigsten Bedingungen zu prüfen. [<a href="https://devblogs.microsoft.com/oldnewthing/20190731-00/?p=102743">MICR2</a>]</p>
+<p><img src="/2023/2023-04-10-nerd-enzyklop%C3%A4die-16---userseeuserdo/image1.png" alt=""></p>
+<p style="text-align: center;font-style:italic">
+crayion.com: “Monkey See, Monkey Do”
+</p>
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Windows, Testing, Nerd-Enzyklopädie, Anekdote</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 16 - USERSEEUSERDO - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>historical_anecdote</dc:type>
+      
+      
+    </item><item>
+      <title>Die Nerd Enzyklopädie 14 - FCKGW-RHQQ2-YXRKT-8TG6W-2B7Q8</title>
+      <link>https://nickyreinert.de/2023/2023-04-04-nerd-enzyklop%C3%A4die-14---fckgw-rhqq2-yxrkt-8tg6w-2b7q8/</link>
+      <pubDate>Tue, 04 Apr 2023 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2023/2023-04-04-nerd-enzyklop%C3%A4die-14---fckgw-rhqq2-yxrkt-8tg6w-2b7q8/</guid>
+      <description>Hätte ich diese Zeichenfolge vor 20 Jahren veröffentlicht, würde morgen vermutlich der Staatsanwalt an meine Tür klopfen. Heute kann ich damit ein T-Shirt …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine historische Anekdote aus der &#39;Nerd Enzyklopädie&#39; über den berüchtigten Windows XP Volumenlizenzschlüssel &#39;FCKGW-RHQQ2-YXRKT-8TG6W-2B7Q8&#39;. Der Artikel beleuchtet die Geschichte dieses Schlüssels, seine Verbreitung durch Hacker, Microsofts Reaktion und die Entwicklung von Lizenzschutzmechanismen in der Softwareindustrie.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Softwarepiraterie, Lizenzmanagement, Windows XP, IT-Geschichte, Nerd-Kultur, Hacking</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Hätte ich diese Zeichenfolge vor 20 Jahren veröffentlicht, würde morgen vermutlich der Staatsanwalt an meine Tür klopfen. Heute kann ich damit ein T-Shirt bedrucken und beim Verband der Software-Industrie sorglos über die Flure flanieren.</p>
+<p>Es handelt sich hierbei um einen <strong>Lizenzschlüssel</strong>, der Ende der <strong>1990er</strong> Jahre zu zweifelhafter Berühmtheit gelangte. Die Software-Industrie versuchte (damals wie auch heute) ihre Produkte mit <strong>Lizenzschlüsseln</strong> vor unerwünschten Kopien zu schützen. Diese mussten beim ersten Start der Software eingegeben werden, um das Programm nutzen zu können. So auch beim Betriebsystem <strong>Windows XP</strong>, das am <strong>28. August 2001</strong> erschien. Microsoft verteilte dafür unter anderem auch sogenannte Volumen-Lizenzschlüssel, die Unternehmen nutzen konnten, um gleich mehrere Kopien von Windows zu aktivieren.</p>
+<p>Der Hacker-Gruppe <strong>devil’s0wn</strong> gelang <strong>35 Tage</strong> vor dem offiziellen Start von Windows XP der Coup schlechthin: Sie gelangten an eine Kopie des Betriebssystem und brachten diese zusammen mit dem funktionierenden Volumen-Lizenzschlüssel <strong>FCKGW-RHQQ2-YXRKT-8TG6W-2B7Q8</strong> in Umlauf.<br>
+Das Foto einer selbstgebrannten CD und diesem Schlüssel machte im Internet die Runde und kann durchaus als Mittelfinger in Richtung Microsoft gedeutet werden:</p>
+<p><img src="/2023/2023-04-04-nerd-enzyklop%C3%A4die-14---fckgw-rhqq2-yxrkt-8tg6w-2b7q8/image1.png" alt=""></p>
+<p style="text-align: center;font-style:italic">
+  Die legendäre Aufnahme der Raubkopie von Windows XP einen Monat bevor das Betriebssystem offiziell erscheinen sollte.
+</p>
+<p>Microsoft reagierte relativ spät und setzte den Schlüssel erst im August <strong>2004</strong> auf eine Blockier-Liste, um die weitere Nutzung zu unterbinden. Die Zeichenfolge sicherte sich trotzdem einen Platz in der IT-Popkultur und wird mittlerweile sogar auf T-Shirts vertrieben.</p>
+<p>Andere berühmte Lizenzschlüssel sind z.B. die <strong>111–1111111</strong> und die <strong>000–0000007</strong> für <strong>Window 95</strong>. Die Mechanismen, um die Gültigkeit von Lizenzschlüsseln zu bewerten, waren damals noch nicht sehr ausgereift. Heutzutage muss man die Software aufwendig aktivieren oder benötigt eine Internetverbindung, um die Rechtmäßigkeit der Kopie prüfen zu können. In Windows 95 gab es ein paar einfache Regeln, nach denen der Lizenzschlüssel überprüft wurde. Im Prinzip bestand der Schlüssel nur aus einer Datumsangabe und einer Zahl, deren <strong>Quersumme 7</strong> ergibt [<a href="https://infosecwriteups.com/reversing-microsofts-windows95-product-key-check-mechanism-ca7e825014b6">INFOS1</a>]. Natürlich gab es auch Ausnahmen, so wurden auch 10 mal die 1 oder die James-Bond-Zeichenfolge akzeptiert.</p>
+<p>Mittlerweile sind die Methoden der Software-Industrie weitaus ausgefeilter. So kann z.B. über eine ständige Internet-Verbindung die Validität geprüft werden. Oder es gibt Launcher, die die jeweilige Software starten und den Lizenz-Status überwachen.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Windows, IT-Geschichte, Nerd-Enzyklopädie, Anekdote</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 14 - FCKGW-RHQQ2-YXRKT-8TG6W-2B7Q8 - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>historical_anecdote</dc:type>
+      
+      
+    </item><item>
+      <title>Die Nerd Enzyklopädie 7 - Das allererste Easter-Egg</title>
+      <link>https://nickyreinert.de/2023/2023-03-13-nerd-enzyklop%C3%A4die-7---das-allererste-easter-egg/</link>
+      <pubDate>Mon, 13 Mar 2023 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2023/2023-03-13-nerd-enzyklop%C3%A4die-7---das-allererste-easter-egg/</guid>
+      <description>Als Easter Egg - also Osterei - wird eine versteckte Botschaft, Feature oder Gimmick in einem Programm, Computerspiel und eigentlich überall bezeichnet. Der …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine historische Erkundung aus der &#39;Nerd Enzyklopädie&#39; über die Ursprünge von &#39;Easter Eggs&#39; in Software und Spielen. Der Artikel beleuchtet frühe Beispiele wie den &#39;make love&#39;-Befehl und das Spiel &#39;Moonlander&#39;, konzentriert sich aber auf das erste bekannte Easter Egg in Ataris &#39;Adventure&#39; von Warren Robinett und die Prägung des Begriffs durch Steve Wright.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Computergeschichte, Gaming, Softwareentwicklung, Easter Egg, Nerd-Kultur, Atari</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Als Easter Egg - also Osterei - wird eine versteckte Botschaft, Feature oder Gimmick in einem Programm, Computerspiel und eigentlich überall bezeichnet. Der Kreativität sind keine Grenzen gesetzt. So z.B. der Aufkleber mit dem Intel-Logo auf der CPU-Verpackung, der auf der Rückseite wie das Innenleben einer CPU aussieht [REDDI1].</p>
+<p>Das erste bekannte Easter Egg überhaupt  befindet sich im <strong>make</strong>-Befehl der Computer <strong>PDP-6</strong> und <strong>PDP-10.</strong> Führte man den Befehl mit dem Argument <strong>love</strong> gab es die Ausgabe <strong>not war</strong> zurück, bevor es die Ausführung fortführte:</p>
+<pre><code>$ make love
+
+not war
+</code></pre>
+<p><strong>Moonlander (1973)</strong> von <strong>Jack Burness</strong> von <strong>DEC</strong> (Digital Equipment Corporation) war das erste Spiel mit einer versteckten Funktion. Bewegte man sich lange genug horizontal, erschien irgendwann ein McDonalds Restaurant. Das Spiel wurde für den <strong>GT40</strong> entwickelt und diente eher dazu, die Fähigkeiten des Terminals zu demonstrieren. 1979 adaptierte <strong>Atari</strong> mit <strong>Lunar Lander</strong> das Konzept und entwickelte daraus ein „echtes“ Spiel.</p>
+<p>Der Begriff Easter Egg wurde allerdings erst in <strong>1979</strong> geprägt und zwar bei eben jenem Unternehmen: <strong>Atari</strong>. Das Management von Atari hatte ja bekanntermaßen ein schwieriges Verhältnis zu seinen Mitarbeitern (siehe —&gt; Die Entstehungsgeschichte von Activision). Einerseits war man nicht an Gehaltsverhandlungen interessiert, andererseits hielt man es nicht für nötig, die Namen der Entwickler beim Abspann der Spiele zu erwähnen. Heutzutage eine Selbstverständlichkeit. Also die Erwähnung, nicht die Nicht-Erwähnung.</p>
+<p>Der Grund für diese Praxis: Man wollte verhindern, dass die Konkurrenz weiß, wen sie bei Atari abwerben muss. Der Entwickler des Spiels <strong>Adventure</strong>, <strong>Warren Roinett</strong>, wählte eine ganz besondere Form des Protests: Er verewigte sich mit diesen Worten innerhalb eines Raum, der im Spiel nur schwer zu erreichen war:</p>
+<p><img src="/2023/2023-03-13-nerd-enzyklop%C3%A4die-7---das-allererste-easter-egg/Adventure_EastereggPNG.png" alt=""></p>
+<p style="text-align: center;font-style:italic">
+„Created by Warren Robinett“ in Ataris Adventure, 1979 \[WIKI4\]
+</p>
+<p>Das Easter Egg wurde erst nach dem Weggang von <strong>Robinett</strong> entdeckt. Der 15-jährige <strong>Adam Clayton</strong> aus Salt Lake City fand die „geheime Botschaft“ und beschrieb in einem Brief an Atari, welche Schritte notwendig waren, um in den versteckten Raum zu gelangen (ob jemand anders die Entdeckung vor ihm gemacht hat, ist nicht übermittelt). <strong>Adam Clayton</strong> wurde später selber Software-Entwickler, entwickelte sogar Spiele für die Atari-System und arbeitet heute für <strong>Warner Bros Entertainment</strong>.</p>
+<p>Die Begeisterung seitens Atari hielt sich in Grenzen. Da Robinett das Unternehmen bereits verlassen hat, machte man sich im Quellcode auf die Suche nach dem Easter Egg. <strong>Brad Stewart</strong> fand die entsprechende Stelle, tat sich aber auch schwer damit, die Nachricht zu entfernen. Weniger aus technischer Sicht, vielmehr aus rebellischem Antrieb. Er hielt mehr davon, die Nachricht durch „Fixed by Brad Stewart“ zu ersetzen [WARR1].</p>
+<p>Atari verzichtete schließlich auf die Anpassung des Spiels, nicht nur, weil die Herstellung eines neue ROM-Masters - sozusagen die Vorlage für die Massenproduktion - etwa <strong>10.000 USD</strong> gekostet hätte. <strong>Steve Wright</strong>, damals Direktor für Software Development bei Atari, fand Gefallen an der Idee einer versteckten Botschaft und wählte dafür den Begriff „Easter Egg“. In vielen Spielem (und wie gesagt auch in anderen Produkten) sollten fortan diese kleinen versteckten Botschaften zu finden sein.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Gaming, IT-Geschichte, Nerd-Enzyklopädie, Anekdote</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 7 - Das allererste Easter-Egg - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>historical_anecdote</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

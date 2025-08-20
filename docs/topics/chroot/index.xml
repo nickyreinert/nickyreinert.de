@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Chroot auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/topics/chroot/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Wed, 02 Oct 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/chroot/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Mehrere virtuelle Server mit nginx und PHP-FPM für Wordpress (Teil 3 / 3)</title>
+      <link>https://nickyreinert.de/2019/2019-10-02-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fuer-wordpress-teil-3-3/</link>
+      <pubDate>Wed, 02 Oct 2019 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2019/2019-10-02-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fuer-wordpress-teil-3-3/</guid>
+      <description>Im letzten Teil geht es um die Einrichtung von PHP-FPM und ich gebe eine kleine Zusammenfassung bzw. Überblick über die Struktur des gesamten Setups. Wenn alles …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser dritte Teil der Serie zur Einrichtung einer sicheren und performanten Webserver-Umgebung für WordPress konzentriert sich auf die Konfiguration von PHP-FPM-Pools. Er behandelt detailliert Sicherheitsaspekte wie Benutzerisolation und Chroot-Umgebungen, Performance-Optimierungen für PHP-Prozesse sowie die Verwaltung von Sessions und das Deaktivieren gefährlicher PHP-Funktionen, um ein robustes Multi-Site-Setup zu gewährleisten.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Nginx, PHP-FPM, WordPress, Server Konfiguration, Webserver Sicherheit, Chroot, Performance Optimierung, PHP, Linux</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Im letzten Teil geht es um die Einrichtung von PHP-FPM und ich gebe eine kleine Zusammenfassung bzw. Überblick über die Struktur des gesamten Setups. Wenn alles korrekt eingerichtet ist, solltet ihr nun einen gut funktionierenden Webserver auf Basis von nginx haben, der PHP-FPM nutzt und gut mit Wordpress laufen sollte. Der Server arbeitet für mehrere unterschiedliche Domains, die so gut wie möglich im System getrennt sind.</p>
+<h2 id="die-einrichtung-der-php-pools">Die Einrichtung der PHP-Pools</h2>
+<p>Um den ganzen Bums zum Laufen zu bringen fehlt jetzt nur noch PHP. Den Großteil haben wir schon geschafft, weshalb ich die Einrichtung von PHP nicht in einen neuen Beitrag gepackt habe.</p>
+<p>Wie im ersten Teil schon angedeutet, nutze ich PHP-FPM. Die Einstellungen jedes einzelen virtuellen Servers befinden sich demnach in <strong>/etc/php/7.3/fpm/pool.d/</strong> und hat die Endung .conf.</p>
+<p>Mit dem Parameter <strong>listen</strong> stellst du die Verbindung zu nginx her. Es wird ein Socket erstellt, über den nginx und PHP-FPM Informationen austauschen. Die Variable <strong>$pool</strong> enthält den Namen des Pools. Mit <strong>prefix</strong> legst du Standard-Ordner dieses Pools fest.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># der Namen des Pools (kann mit $pool referenziert werden</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="p">[</span><span class="n">example_com</span><span class="p">]</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="n">listen</span> <span class="o">=</span> <span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">php</span><span class="o">/</span><span class="n">php</span><span class="o">-</span><span class="n">fpm</span><span class="o">-$</span><span class="n">pool</span><span class="o">.</span><span class="n">sock</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="n">prefix</span> <span class="o">=</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/$</span><span class="n">pool</span>
+</span></span></code></pre></div><p>Jetzt gibt ein paar wichtige Sicherheitsfeatures: Jeder <strong>Pool</strong> hat seinen eigenen Benutzer. Hierzu muss man nicht viel erklären: Der Vorteil hier ist, dass sich die PHP-Prozesse verschiedener Server, da sie ja unterschiedlichen Nutzer &ldquo;gehören&rdquo; grundsätzlich erstmal nicht in die Quere kommen können:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">user = $pool-php
+</span></span><span class="line"><span class="ln">2</span><span class="cl">group = www-data
+</span></span><span class="line"><span class="ln">3</span><span class="cl">listen.owner = $pool-php
+</span></span><span class="line"><span class="ln">4</span><span class="cl">listen.group = www-data
+</span></span></code></pre></div><p>Mit chdir und chroot schließt du diesen Pool in einen bestimmten Ordner ein. Ich hatte oben ja bereits <strong>$prefix</strong> definiert. Diese Parameter arbeiten eng mit den FastCGI-Einstellungen von <strong>nginx</strong> zusammen und sind eine beliebte Fehlerquelle. Mit chroot denkt PHP, dass dieser Ordner der Root-Ordner ist. Warum ist das wichtig? Unsere Root-Ordner liegen (siehe Teil 1) alle in einem eigenen Unterordner. So kann PHP nicht ausbrechen und z.B. auf <strong>sensible Systembereiche</strong> oder die Unterordner anderer Pools / Server zugreifen. Der Parameter <strong>chdir</strong> legt lediglich fest, dass root auch wirklich root ist. Hier könnte man htdocs als Root festlegen. Da wir in der nginx-Einstellung aber <strong>htdocs</strong> als Pfad voranstellen, kann das hier so bleiben. Bedenke, dass sich alle folgenden Pfadangaben immer relativ zu den hier festgelegten Einstellungen stattfinden.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">chdir</span> <span class="o">=</span> <span class="o">/</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">chroot</span> <span class="o">=</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">example1</span>
+</span></span></code></pre></div><p>Weiter geht es mit der Konfiguration der PHP-Prozesse. Mit <strong>pm=dynamic</strong> legen wir fest, dass der Prozess-Manager prozesse dynamisch starten kann. Mit <strong>pm=static</strong> startest du immer eine feste Anzahl von Prozessen. (Bei Servern mit hoher Last kann das durchaus Sinn machen, <a href="https://haydenjames.io/php-fpm-tuning-using-pm-static-max-performance/">wie hier beschrieben wird</a>). Bei einer kleineren Seite reicht <strong>pm=ondemand</strong> völlig aus. Wir erinnern uns: Die Prozesse dienen als Interpretor für unsere PHP-Scripte. Ein Prozess bearbeitet eine Anfrage. Wenn du mehr Traffic erwartest, solltest du diese Werte also erhöhen.</p>
+<p><strong>max_children</strong> gibt die Obergrenze dafür fest. <strong>start_servers=1</strong> besagt, dass mindestens 1 Prozess sofort gestartet wird. Mit <strong>min_spare_servers</strong> legst du fest, wieviele Prozesse mindestens &ldquo;vorrätig&rdquo; sind, <strong>max_spare_servers</strong> legt dafür die Obergrenze fest. Wie viele Prozesse du maximale starten solltest, errechnest du ganz einfach folgender maßen:</p>
+<p>Rufe den folgenden Code auf um den Speicherverbrauch deines PHP-Services zu erhalten:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">ps --no-headers -o &#34;rss,cmd&#34; -C php-fpm7.3 | awk &#39;{ sum+=$1 } END { printf (&#34;%d%s\n&#34;, sum/NR/1024,&#34;Mb&#34;) }&#39;
+</span></span></code></pre></div><p>Den freien Speicher lässt du folgendermaßen anzeigen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">free -h
+</span></span></code></pre></div><p>Angenommen, du hast 4.096 MByte freien Speicher zur Verfügung und ein PHP-Prozess verbraucht 4 MByte, dann kannst du insgesamt 1.024 Prozesse starten. Wenn du mehrere virtuelle Server betreibst, teilen diese sich natürlich dieses Kontingent. Im folgenden ein Beispiel: Es werden maximal 1.024 Prozesse gestartet. 100 Prozesse sind immer aktiv, auch wenn sie ungenutzt sind. Sind alle 100 Prozesse beschäftigt, werden mindestens 50 Prozesse gestartet, aber niemals mehr als 200 - das Spiel funktioniert so lange, bis das Kontingent von 1.024 ausgeschöpft ist.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">pm = dynamic
+</span></span><span class="line"><span class="ln">2</span><span class="cl">pm.max_children = 1024
+</span></span><span class="line"><span class="ln">3</span><span class="cl">pm.start_servers = 100
+</span></span><span class="line"><span class="ln">4</span><span class="cl">pm.min_spare_servers = 50
+</span></span><span class="line"><span class="ln">5</span><span class="cl">pm.max_spare_servers = 200
+</span></span></code></pre></div><p>Wenn dein Server relativ klein ist, solltest du den <strong>On-Demand-Modus</strong> nutzen. Hier wird ein Prozess nur dann gestartet, wenn der Bedarf da ist. Das spart Speicher und ist in der Regel auch nicht merkbar langsamer.</p>
+<p>Der Parameter <strong>catch_workers_output</strong> steuert die Ausgabe des PHP-Prozesses. Wie alle Log-Einstellungen, kann <a href="https://twitter.com/leofeyer/status/486862436948250624">dieser erhebliche Auswirkungen auf die Performance haben</a>. Falls du also noch ein paar Millisekunden mehr herausholen willst, setze diesen Wert auf <strong>no</strong>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">catch_workers_output = yes
+</span></span></code></pre></div><p>Die folgenden Einstellungen werden eigentlich in der php.ini vorgenommen. Ich will sie hier aber auf Server-Ebene definieren, da die virtuellen Server ja durchaus unterschiedliche Ansprüche haben.</p>
+<h3 id="sessions-cookies-und-referrer">Sessions, Cookies und Referrer</h3>
+<p>Wenn du eine zusätzliche Sicherheitshürde einbauen willst, kannst du den Pfad der <strong>PHP-Sessions</strong> hier ändern. Wenn du in deiner Web-Anwendung nicht mit <strong>JavaScript</strong> auf <strong>Cookies</strong> zugreifen willst, kannst du den Cookie-Zugriff außerdem nur auf HTTP einschränken. Und schließlich macht es Sinn, dass eine Session nur vom eigenen Server genutzt werden kann, wenn also dein Server im Referrer übermittelt wird.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">php_value[session.save_path] = /sessions
+</span></span><span class="line"><span class="ln">2</span><span class="cl">php_value[session.cookie_httponly] = 1
+</span></span><span class="line"><span class="ln">3</span><span class="cl">php_value[session.referer_check] = example.com
+</span></span></code></pre></div><p>Sehr nützlich und ein wichtiges Sicherheitsfeature ist <strong>disable_functions</strong>. Es gibt eine nicht geringe Anzahl von PHP-Funktionen, mit denen sich Systemfunktionen steuern lassen. Diese solltest du grundsätzlich nicht zulassen. Ein weiteres Sicherheitsfeature sind <strong>allow_url_fopen</strong> und <strong>allow_url_include</strong>. Damit unterbindest du das Einbinden von schadhaften Code.<br>
+Die Einstellungen zum Log werde ich nicht weiter erläuter, da sie wie so oft selbsterklärend sind. Beachte, dass das Logging immer auch gewisse Auswirkungen auf die Performance haben. Andererseits kann die regelmäßige Log-Analyse aber auch rechzeitig wichtige Hinweise auf (Sicherheits-)Probleme deines Systems liefern!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="n">php_admin_value</span><span class="p">[</span><span class="n">disable_functions</span><span class="p">]</span> <span class="o">=</span> <span class="n">php_uname</span><span class="p">,</span> <span class="n">getmyuid</span><span class="p">,</span> <span class="n">getmypid</span><span class="p">,</span> <span class="n">passthru</span><span class="p">,</span> <span class="n">leak</span><span class="p">,</span> <span class="n">listen</span><span class="p">,</span> <span class="n">diskfreespace</span><span class="p">,</span> <span class="n">tmpfile</span><span class="p">,</span> <span class="n">link</span><span class="p">,</span> <span class="n">ignore_user_abord</span><span class="p">,</span> <span class="n">shell_exec</span><span class="p">,</span> <span class="n">dl</span><span class="p">,</span> <span class="n">set_time_limit</span><span class="p">,</span> <span class="n">exec</span><span class="p">,</span> <span class="n">system</span><span class="p">,</span> <span class="n">high</span><span class="o">$</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="n">php_admin_flag</span><span class="p">[</span><span class="n">allow_url_fopen</span><span class="p">]</span> <span class="o">=</span> <span class="n">on</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="n">php_admin_flag</span><span class="p">[</span><span class="n">allow_url_include</span><span class="p">]</span> <span class="o">=</span> <span class="n">off</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="c1"># das Speicherlimit pro Script-Aufrufeinstellen</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="n">php_admin_value</span><span class="p">[</span><span class="n">memory_limit</span><span class="p">]</span> <span class="o">=</span> <span class="mi">256</span><span class="n">M</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="c1"># Logging-Einstellung</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="n">php_flag</span><span class="p">[</span><span class="n">display_errors</span><span class="p">]</span> <span class="o">=</span> <span class="n">off</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="n">php_admin_value</span><span class="p">[</span><span class="n">error_log</span><span class="p">]</span> <span class="o">=</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="nb">log</span><span class="o">/</span><span class="n">php</span><span class="o">-</span><span class="n">fpm</span><span class="o">/$</span><span class="n">pool</span><span class="o">.</span><span class="n">log</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="n">php_admin_flag</span><span class="p">[</span><span class="n">log_errors</span><span class="p">]</span> <span class="o">=</span> <span class="n">on</span>
+</span></span></code></pre></div><p>Die Einstellung von PHP ist damit abgeschlossen. Zum Abschluss gönne <strong>PHP</strong> und <strong>nginx</strong> noch einen Neustart. Danach sollte dein System rund laufen.</p>
+<h2 id="zusammenfassung">Zusammenfassung</h2>
+<p>Wenn du es bis hierhin geschafft hast, unterstützt dein Setup nun einen relativ performanten Server für mehrere Domains (aka virtuelle Server, virtual Hosts), der PHP-FPM nutzt und eine ziemlich solide Sicherheits-Grundeinstellung mitbringt.</p>
+<p>Jeder einzelne virtuelle Server hat seine eigene Umgebung im Dateisystem, aus der er kaum ausbrechen kann. Die PHP-Prozesse sind voneinander getrennt, genauso wie die Speicherbereiche für den Cache. Außerdem ist das ganze darauf ausgerichtet, möglichst gut mit Wordpress zu laufen. Um das ganze System für Wordpress perfekt abzurunden, gibt es noch eine Handvoll Möglichkeiten, die ich gesondert vorstellen werden.</p>
+<p><img src="/2019/2019-10-02-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fuer-wordpress-teil-3-3/images/zusammenfassung-700x394.png" alt=""></p>
+<p>Grobe schematische Übersicht des Setups für mehrere virtuelle Server mit nginx und PHP-FPM</p>
+<h2 id="nachtrag">Nachtrag</h2>
+<p>Wenn du noch ein paar zusätzliche Informatioen benötigst, sei dir der der ähnlich ausgerichtete Artikel auf <a href="https://binary-butterfly.de/artikel/das-perfekte-php-wordpress-setup/">binary-butterfly.de</a> empfohlen. Die Einstellungen für nginx und PHP unterscheiden sich kaum, dafür erfährst du dort auch, wie du zusätzlich mehrere SSH-Nutzer mit ins Boot holen kannst.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Nginx, PHP-FPM, WordPress, Server Konfiguration, Tutorial</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>wordpress</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Mehrere virtuelle Server mit nginx und PHP-FPM für Wordpress (Teil 3 / 3) - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>tutorial</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

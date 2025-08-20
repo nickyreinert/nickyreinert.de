@@ -17,11 +17,11 @@ Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und unbeding
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/images/favicon.ico">
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
 
   
   
-  <meta name="keywords" content=" WordPress  Bash  Shell Script  Automatisierung  Installation  Setup  wp-cli  DevOps  Content Seeding  Dummy Content ">
+  <meta name="keywords" content=" WordPress  Automatisierung  Bash Script  wp-cli  Installation  Konfiguration  DevOps  Content Seeding  Dummy Content  Server Setup  Tutorial ">
   
 
   
@@ -37,8 +37,8 @@ Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und
   <meta property="og:type" content="article">
     <meta property="article:section" content="2020">
     <meta property="article:published_time" content="2020-10-08T00:00:00+00:00">
-    <meta property="article:modified_time" content="2025-08-20T12:38:10+02:00">
-    <meta property="article:tag" content="Automatiierung">
+    <meta property="article:modified_time" content="2025-08-20T21:05:13+02:00">
+    <meta property="article:tag" content="Automatisierung">
     <meta property="article:tag" content="Bash">
     <meta property="article:tag" content="Installation">
     <meta property="article:tag" content="Script">
@@ -56,9 +56,9 @@ Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und
   <meta itemprop="description" content="Et voilá. Ein BASH Script, um WordPress automatisiert über die Kommandozeile zu installieren, inklusive Theme und beliebigen Plugins sowie - wenn benötigt - zufälligen Beiträgen, Kategorien, Tags und Bildern.
 Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und unbedingt Backups nutzen. Das Script verwendet, wenn der entsprechende Parameter gesetzt ist, den Befehl “rm -rf”, um einen Ordner komplett zu löschen. Dieser Schritt lässt sich nicht widerrufen. Außerdem wird, sofern per Parameter gefordert, eine Datenbank mit “DROP DATABASE” komplett entfernt. Wenn du das Script auf eine existierende WordPress-Installation oder Datenbank anwendest, können existierende Daten überschrieben werden!">
   <meta itemprop="datePublished" content="2020-10-08T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2025-08-20T12:38:10+02:00">
+  <meta itemprop="dateModified" content="2025-08-20T21:05:13+02:00">
   <meta itemprop="wordCount" content="940">
-  <meta itemprop="keywords" content="WordPress,Bash,Shell Script,Automatisierung,Installation,Setup,wp-cli,DevOps,Content Seeding,Dummy Content">
+  <meta itemprop="keywords" content="WordPress,Automatisierung,Bash Script,wp-cli,Installation,Konfiguration,DevOps,Content Seeding,Dummy Content,Server Setup,Tutorial">
 
   
   <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
@@ -86,7 +86,7 @@ Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und
     "headline": "Automatisierte WordPress Installation",
     "description": "Et voilá. Ein BASH Script, um WordPress automatisiert über die Kommandozeile zu installieren, inklusive Theme und beliebigen Plugins sowie - wenn benötigt - …",
     "datePublished": "2020-10-08T00:00:00Z",
-    "dateModified": "2025-08-20T12:38:10\u002b02:00",
+    "dateModified": "2025-08-20T21:05:13\u002b02:00",
     "author": {
       "@type": "Person",
       "name": "",
@@ -119,13 +119,13 @@ Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und
     "timeRequired": "PT5M",
     
     
-    "keywords": ["automatiierung", "bash", "installation", "script", "setup", "wordpress"],
+    "keywords": ["automatisierung", "bash", "installation", "script", "setup", "wordpress", "DevOps"],
     
     
     "articleSection": ["blog", "development", "tools", "wordpress"],
     
     
-    "abstract": "Eine Vorstellung und Dokumentation eines Bash-Skripts zur vollautomatischen Installation und Konfiguration von WordPress. Das Skript nutzt \u0060wp-cli\u0060 zur Einrichtung des Cores, der Datenbank, von Themes und Plugins und kann die neue Instanz mit einer großen Menge an zufällig generiertem Content (Beiträge, Kategorien, Bilder) über externe APIs befüllen.",
+    "abstract": "Dieser Artikel stellt ein Bash-Skript zur vollautomatischen Installation und Konfiguration von WordPress vor. Das Skript nutzt \u0027wp-cli\u0027 zur Einrichtung von Core, Datenbank, Themes und Plugins und kann die neue WordPress-Instanz mit zufällig generiertem Content (Beiträge, Kategorien, Bilder) über externe APIs befüllen, was es zu einem nützlichen Tool für Entwickler und Administratoren macht.",
     
     
     "genre": "project_documentation",
@@ -145,7 +145,7 @@ Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und
     "proficiencyLevel": "advanced",
     
     
-    "dependencies": ["Erfahrung mit der Linux-Kommandozeile (Bash)", "Kenntnisse in der WordPress-Administration", "Verständnis von \u0060wp-cli\u0060 ist hilfreich"],
+    "dependencies": ["Erfahrung mit der Linux-Kommandozeile (Bash)", "Grundkenntnisse in WordPress-Administration", "Optional: Verständnis von \u0060wp-cli\u0060"],
     
     
     "about": [
@@ -165,7 +165,7 @@ Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und
       , 
       {
         "@type": "Thing",
-        "name": "Bash-Scripting"
+        "name": "Bash Scripting"
       }
       
       , 
@@ -183,13 +183,25 @@ Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und
       , 
       {
         "@type": "Thing",
-        "name": "Server-Administration"
+        "name": "Server Administration"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Web Development"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Content Generation"
       }
       
     ],
     
     "datePublished": "2020-10-08T00:00:00Z",
-    "dateModified": "2025-08-20T12:38:10\u002b02:00",
+    "dateModified": "2025-08-20T21:05:13\u002b02:00",
     "author": {
       "@type": "Person",
       "name": ""
@@ -325,12 +337,46 @@ Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und
   <div class="post-date">October 8, 2020</div>
 
   
-  <article class="content">
+  
+  
+  
+  
+  
+  
+  
+  <details style="margin-top: 2rem; margin-bottom: 2rem;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#warnung">Warnung!</a></li>
+    <li><a href="#funktionsweise">Funktionsweise</a></li>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#zufällige-inhalte">Zufällige Inhalte</a></li>
+    <li><a href="#einstellungen">Einstellungen</a>
+      <ul>
+        <li><a href="#datenbank">Datenbank</a></li>
+        <li><a href="#wordpress">WordPress</a></li>
+        <li><a href="#theme-und-plugins">Theme und Plugins</a></li>
+        <li><a href="#inhalte">Inhalte</a></li>
+        <li><a href="#standard-parameter">Standard-Parameter</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
     <p>Et voilá. Ein BASH Script, um WordPress automatisiert über die Kommandozeile zu installieren, inklusive Theme und beliebigen Plugins sowie - wenn benötigt - zufälligen Beiträgen, Kategorien, Tags und Bildern.</p>
 <h2 id="warnung">Warnung!</h2>
-<p>Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und unbedingt <strong>Backups</strong> nutzen. Das Script verwendet, wenn der entsprechende Parameter gesetzt ist, den Befehl &ldquo;<strong>rm -rf</strong>&rdquo;, um einen Ordner komplett zu <strong>löschen</strong>. Dieser Schritt lässt sich nicht widerrufen. Außerdem wird, sofern per Parameter gefordert, eine Datenbank mit &ldquo;<strong>DROP DATABASE</strong>&rdquo; komplett entfernt. Wenn du das Script auf eine existierende WordPress-Installation oder Datenbank anwendest, können existierende Daten <strong>überschrieben</strong> werden!</p>
+<p>Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und unbedingt <strong>Backups</strong> nutzen. Das Script verwendet, wenn der entsprechende Parameter gesetzt ist, den Befehl &ldquo;rm -rf&rdquo;, um einen Ordner komplett zu <strong>löschen</strong>. Dieser Schritt lässt sich nicht widerrufen. Außerdem wird, sofern per Parameter gefordert, eine Datenbank mit &ldquo;DROP DATABASE&rdquo; komplett entfernt. Wenn du das Script auf eine existierende WordPress-Installation oder Datenbank anwendest, können existierende Daten <strong>überschrieben</strong> werden!</p>
 <h2 id="funktionsweise">Funktionsweise</h2>
-<p>Das Script wird über die Kommandozeile aufgerufen und nutzt die <a href="https://wp-cli.org/de/">WordPress Kommandozeilen-Benutzeroberfläche,</a> um <strong>WordPress</strong> zu installieren sowie samt <strong>Themes</strong> und <strong>Plugins</strong> einzurichten. Du kannst außerdem beliebig viele <strong>Beiträge</strong> anlegen. Die Inhalte für die Beiträge stammen von einem Online-Dienst für zufällige englische Texte: <a href="http://metaphorpsum.com/paragraphs">metaphorpsum.com/paragraphs</a>. Außerdem werden zufällige <strong>Textauszüge</strong> (Excerpts) sowie <strong>Schlagwörter</strong> (Tags) und sogar <strong>Bilder</strong> jedem Beitrag hinzugefügt. Beiträge werden außerdem Kategorien zugeordnet. Diese werden ebenfalls <strong>zufällig</strong> bis zu einer Tiefe von 2 Ebenen erzeugt.</p>
+<p>Das Script wird über die Kommandozeile aufgerufen und nutzt die <a href="https://wp-cli.org/de/">WordPress Kommandozeilen-Benutzeroberfläche,</a> um <strong>WordPress</strong> zu installieren sowie samt <strong>Themes</strong> und <strong>Plugins</strong> einzurichten. Du kannst außerdem beliebig viele <strong>Beiträge</strong> anlegen. Die Inhalte für die Beiträge stammen von einem Online-Dienst für zufällige englische Texte: <a href="http://metaphorpsum.com/paragraphs/">metaphorpsum.com/paragraphs</a>. Außerdem werden zufällige <strong>Textauszüge</strong> (Excerpts) sowie <strong>Schlagwörter</strong> (Tags) und sogar <strong>Bilder</strong> jedem Beitrag hinzugefügt. Beiträge werden außerdem Kategorien zugeordnet. Diese werden ebenfalls <strong>zufällig</strong> bis zu einer Tiefe von 2 Ebenen erzeugt.</p>
 <h2 id="installation">Installation</h2>
 <p>Du findest den Sourcecode auf github: <a href="https://github.com/nickyreinert/AutomatedWordPressInstallation">https://github.com/nickyreinert/AutomatedWordPressInstallation</a>.</p>
 <p>Nach der Installation kopierst du die Datei settings-template zu .settings, um in dieser Datei die Einstellungen für deine WordPress-Installation vorzunehmen. Du startest den Prozess mit <strong>bash start.sh</strong> oder setzt den Ausführen-Flag für bash.sh um diese direkt auszuführen:</p>
@@ -353,11 +399,11 @@ Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und
 </span></span><span class="line"><span class="ln">4</span><span class="cl">DB_ROOT_PASSWORD=secret
 </span></span></code></pre></div><p>Willst du eine frische Datenbank anlegen, solltest du die alte Datenbank mit DB_DROP=yes löschen. Soll eine neue Datenbank angelegt werden, müssen die Zugangsdaten für einen privilegierten Nutzer angegeben werden: Mit den folgenden Parameter legst du fest, wie WordPress auf die Datenbank zugreift:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">DB_HOST=127.0.0.1
-</span></span><span class="line"><span class="ln">2</span><span class="cl">DB_NAME=&#34;${PROJECT}_database&#34;
+</span></span><span class="line"><span class="ln">2</span><span class="cl">DB_NAME=&#34;${PROJECT}&#34;
 </span></span><span class="line"><span class="ln">3</span><span class="cl">DB_PREFIX=&#34;wp_&#34;
 </span></span><span class="line"><span class="ln">4</span><span class="cl">
 </span></span><span class="line"><span class="ln">5</span><span class="cl">ADD_DB_USER=yes|no
-</span></span><span class="line"><span class="ln">6</span><span class="cl">DB_USER=&#34;${PROJECT}_dbuser&#34;
+</span></span><span class="line"><span class="ln">6</span><span class="cl">DB_USER=&#34;${PROJECT}&#34;
 </span></span><span class="line"><span class="ln">7</span><span class="cl">DB_USER_PASSWORD=$(cat /dev/urandom | tr -dc &#39;a-zA-Z0-9&#39; | fold -w 32 | head -n 1)
 </span></span></code></pre></div><p>Das Passwort wird im Beispiel zufällig erzeugt, willst du ein eigenes Passwort verwenden, kannst du den Parameter überschreiben, z.B:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">DB_USER_PASSWORT=secret
@@ -409,9 +455,59 @@ Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und
 </span></span><span class="line"><span class="ln">3</span><span class="cl">RANDOM_TEXT_API_URL=&#39;http://metaphorpsum.com/paragraphs/&#39;
 </span></span><span class="line"><span class="ln">4</span><span class="cl">RANDOM_IMAGE_API_URI=&#39;https://picsum.photos/200/300.jpg&#39;
 </span></span></code></pre></div>
+    
   </article>
   
+  
+  
+  <div style="margin-top: 5rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
 
+      <p>Dieser Artikel stellt ein Bash-Skript zur vollautomatischen Installation und Konfiguration von WordPress vor. Das Skript nutzt &#39;wp-cli&#39; zur Einrichtung von Core, Datenbank, Themes und Plugins und kann die neue WordPress-Instanz mit zufällig generiertem Content (Beiträge, Kategorien, Bilder) über externe APIs befüllen, was es zu einem nützlichen Tool für Entwickler und Administratoren macht.</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">WordPress</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Automatisierung</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Bash Scripting</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">DevOps</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">wp-cli</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Server Administration</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Web Development</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Content Generation</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 5 Minuten</p>
+      
+    </div>
+  </div>
+  
+  
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/2020/2020-09-09-das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/">next →</a>
+    
+  </div>
 </main>
 
     <footer id="footer">

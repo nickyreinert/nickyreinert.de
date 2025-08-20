@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Makros auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/topics/makros/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Sat, 16 Sep 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/makros/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Tastenkombinationen und Makros in Office 2010</title>
+      <link>https://nickyreinert.de/2017/2017-09-16-tastenkombinationen-und-makros-in-office-2010/</link>
+      <pubDate>Sat, 16 Sep 2017 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2017/2017-09-16-tastenkombinationen-und-makros-in-office-2010/</guid>
+      <description>Möchte man in Office 2010 eigene Makros und Tastenkombinationen nutzen und kombinieren, ist das Vorgehen dazu bei den drei am meisten genutzten Programmpaketen …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel beschreibt die Einrichtung von benutzerdefinierten Tastenkombinationen und Makros in Microsoft Office 2010 (Word, Excel, PowerPoint). Er beleuchtet die unterschiedlichen Methoden für jede Anwendung, einschließlich der Verwendung von VBA-Code für Word und Excel sowie eines Add-ons für PowerPoint, um die Produktivität zu steigern.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Microsoft Office, Tastenkombinationen, Makros, VBA Programmierung, Produktivität, Office 2010</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Möchte man in Office 2010 eigene Makros und Tastenkombinationen nutzen und kombinieren, ist das Vorgehen dazu bei den drei am meisten genutzten Programmpaketen Word, Excel und PowerPoint leider nicht identisch.</p>
+<p>Unter Word 2010 lassen sich eigene Tastenkombinationen (Shortcuts) noch relativ einfach festlegen: Im Kontextmenü (Rechte Maustaste) des Menübandes (neudeutsch: <a href="https://de.wikipedia.org/wiki/Ribbon"><em>Ribbon</em></a>) gelangt man zum Dialogfeld &ldquo;Menüband anpassen&rdquo; (Abbildung 1). Von dort geht es in das Dialogfeld &ldquo;Tastatur anpassen&rdquo; wo man sämtliche Word-Aktionen nach gusto mit Tastenkombinationen verknüpfen kann.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2014/02/Word-2010-Shortcuts.png"><img src="images/Word-2010-Shortcuts-300x300.png" alt="Word 2010 - Shortcuts"></a></p>
+<p>Allerdings ist es in Word nicht ohne weiteres möglich, auch eigene Makros mit Tastenkombinationen zu belegen. Der Umweg führt über <a href="http://www.vbaexpress.com/kb/getarticle.php?kb_id=621">ein paar  Zeilen VBA</a> und die Methode <a href="http://msdn.microsoft.com/de-de/library/microsoft.office.interop.word.keybindings.add%28v=office.11%29.aspx">KeyBindings</a>. Der Parameter <a href="http://msdn.microsoft.com/en-us/library/office/aa613356%28v=office.10%29.aspx">BuildKeyCode</a> erwartet die gewünschte Tastenkombination. Und der Parameter Command schließlich die gewünschte <em>Sub</em>.</p>
+<p>Sub Workbook_Open()
+With Application
+&rsquo; Auf welches Dokument bezieht sich diese Änderung?
+&rsquo; Alternativ &ldquo;NormalTemplate&rdquo; für das
+.CustomizationContext = ThisDocument</p>
+<pre><code>     ' die eigentliche Zuordnung beginnt hier
+    .KeyBindings.Add **KeyCode**:=BuildKeyCode(wdKeyControl, wdKeyH), \_
+    KeyCategory:=wdKeyCategoryCommand, \_
+    **Command**:=&quot;MachWas&quot;
+End With
+</code></pre>
+<p>End Sub</p>
+<p>Sub MachWas()
+MsgBox &ldquo;Hallo Welt&rdquo;
+End Sub</p>
+<p>In Excel 2010 gibt es die Möglichkeit, Tastenkombinationen bestimmten Aktionen direkt zuzuordnen, allerdings nicht mehr. Dafür ist die Einbindung über VBA etwas weniger kompliziert möglich - dazu dient das Ereignis &ldquo;<a href="http://msdn.microsoft.com/en-us/library/office/aa195807%28v=office.11%29.aspx">OnKey</a>&rdquo;:</p>
+<p>Private Sub Workbook_Open()
+Application.OnKey &ldquo;+{H}&rdquo;, &ldquo;MachWas&rdquo;
+End Sub</p>
+<p>In PowerPoint schließlich funktioniert  die einfache Verwaltung der Tastenkombination ebenfalls nicht ohne Umwege. Abhilfe schafft das kostenpflichtige AddOn ShortCut Manager. Dieses ist 30 Tage lang kostenfrei nutzbar.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Microsoft Office, Office 2010, VBA, Anleitung, Produktivität</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>office</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Tastenkombinationen und Makros in Office 2010 - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>how-to_guide</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

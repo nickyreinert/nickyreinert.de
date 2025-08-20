@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Windows Mobile auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/tags/windows-mobile/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Sun, 24 Sep 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/windows-mobile/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Eduroam mit Windows Mobile</title>
+      <link>https://nickyreinert.de/2017/2017-09-24-eduroam-mit-windows-mobile/</link>
+      <pubDate>Sun, 24 Sep 2017 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2017/2017-09-24-eduroam-mit-windows-mobile/</guid>
+      <description>Eine Schritt-Für-Schritt-Anleitung, um Windows Mobile 6.x - Geräte mit dem Eduroam-Netzwerk zu verbinden.
+[toc=&ldquo;2,3&rdquo; title=&ldquo;Inhalt&rdquo;] …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Diese Schritt-für-Schritt-Anleitung erklärt, wie Windows Mobile 6.x Geräte mit dem Eduroam-Netzwerk verbunden werden. Sie deckt die Installation des SecureW2 Clients, die Zertifikatsinstallation (einschließlich manueller Registrierung in der Registry) und die Konfiguration des WLAN-Zugangs ab, um eine erfolgreiche Verbindung herzustellen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Eduroam, Windows Mobile, WLAN Konfiguration, Netzwerkzugang, Zertifikate, Mobile Geräte, Anleitung</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Eine Schritt-Für-Schritt-Anleitung, um Windows Mobile 6.x - Geräte mit dem Eduroam-Netzwerk zu verbinden.</p>
+<p>[toc=&ldquo;2,3&rdquo; title=&ldquo;Inhalt&rdquo;]</p>
+<h3 id="vorbereitung">Vorbereitung</h3>
+<p>Als mobiles Gerät kommt ein HTC Blackstone / Touch HD mit dem Betriebssystem Windows Mobile 6.1 zum Einsatz. Das Betriebssystem ist komplett in Englisch, erst wird dennoch weitestgehend versucht, neben den englischen Bezeichnungen die entsprechenden deutschen zu verwenden. Diese Anleitung erhebt selbstverständlich keinen Anspruch auf Vollständigkeit noch garantiert sie den Erfolg. Kommentare oder Änderungswünsche sind herzlich willkommen. Unbedingt benötigt werden, neben einem mobilen Gerät mit Windows Mobile 6.x:</p>
+<ul>
+<li>der SecureW2 Client für Windows Mobile 5/6 von <a href="http://www.securew2.com/products/eapsuite/" title="http://www.securew2.com/products/eapsuite/">secureW2.com</a>,
+<ul>
+<li>(oder die CAB-Datei, für die direkte Installation <a href="http://www.freecoffee.de/files/SecureW2.cab" title="http://www.freecoffee.de/files/SecureW2.cab">hier herunterladen</a>)</li>
+</ul>
+</li>
+<li>das Zertifikat der Deutschen Telekom (Download vom <a href="http://www.rz.uni-augsburg.de/service/uauxca/zertifikate/telekom-root-2-cer.cer" title="http://www.rz.uni-augsburg.de/service/uauxca/zertifikate/telekom-root-2-cer.cer">Rechenzentrum der Uni Augsburg</a>),</li>
+<li>eine funktionierende Verbindung vom Desktop PC zum mobilen Gerät über ActiveSync (bis Windows XP) oder dem Windows Mobile Device Center (ab Windows Vista)</li>
+</ul>
+<p>und <em>eventuell</em></p>
+<ul>
+<li>eine Software zur Fernsteuerung zur Arbeitserleichterung wie z.B. MyMobiler (die Software nutzt die ActiveSync-Verbindung und erlaubt es, das Gerät komplett vom Computer zu bedienen, Download von <a href="http://www.mymobiler.com/" title="http://www.mymobiler.com/">mymobiler.com</a>) sowie</li>
+<li>einen Registryeditor (Total Commander für Pocket PC (ARM/XSCALE/PXA) auf <a href="http://www.ghisler.com/pocketpc.htm" title="http://www.ghisler.com/pocketpc.htm">ghisler.com</a> oder den Mobile Registry Editor auf <a href="http://www.chip.de/downloads/Mobile-Registry-Editor_31232153.html" title="http://www.chip.de/downloads/Mobile-Registry-Editor_31232153.html">chip.de</a>, beide Freeware).</li>
+</ul>
+<p><em>In dieser Anleitung verwende ich den Total Commander, da dieser zur Standarsoftware auf meinem Gerät gehört und die Bedienung des eingebauten Registryeditors weitaus komfortabler ist.</em></p>
+<h3 id="installation-von-securew2">Installation von SecureW2</h3>
+<p>Nach dem Starten der Installationsdatei <em>SecureW2_EAP_Suite_113_CE.exe</em> fordert das Programm zur Auswahl einer Sprache auf. Wir bestätigen daraufhin die Willkommensmeldung und akzeptieren die Lizenzbedingungen. Im nächsten Fenster wählen wir, sofern noch nicht geschehen, den <em>TTLS Client</em> aus und starten die Installation mit <em>Installieren</em>.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/1-securew2.png"><img src="images/1-securew2-300x233.png" alt="" title="1-securew2"></a></p>
+<p>Daraufhin übertrag ActiveSync die Programmdateien zum Gerät und informiert darüber, dass auf dem Gerät weitere Eingaben notwendig sind. ActiveSync wird vorerst mit einem Mausklick auf <em>OK</em> geschlossen. (Ist das Gerät nicht angeschlossen, holt ActiveSync die Übertragung bei der nächsten Verbindung nach.)</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/2-active-sync.png"><img src="images/2-active-sync-300x199.png" alt="" title="2-active-sync"></a></p>
+<p>Auf dem mobilen Gerät wird nun der Speicherort für <em>SecureW2</em> ausgewählt und mit <em>Install / Installieren</em> die Software installiert. War die Installation erfolgreich, wird der Vorgang mit <em>OK</em> auf dem Gerät abgeschlossen. Gleichzeitig wurde auch die Installationsroutine auf dem Computer beendet und kann geschlossen werden.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/3-install-securew2.png"><img src="images/3-install-securew2-180x300.png" alt="" title="3-install-securew2"></a></p>
+<h3 id="installation-des-zertifikates">Installation des Zertifikates</h3>
+<p>Wer die Installationsdatei des Zertifikates, <em>g_rootcert.cer</em>, nicht direkt auf dem Gerät gespeichert hat, überträgt diese per Drag&rsquo;n&rsquo;Drop oder einem Dateimanager seiner Wahl auf das Gerät. Auf dem Desktopcomputer erreicht man dieses über das Symbol <em>Mobiles Gerät</em> im <em>Arbeitsplatz</em>-Ordner.Den Unterordner <em>Mobiles Gerät\Meine Documente</em> erreicht man auch mit ActiveSync über das Menü <em>Extras / PocketPC durchsuchen</em>.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/4-activesync.png"><img src="images/4-activesync-300x289.png" alt="" title="4-activesync"></a></p>
+<p>Auf dem mobilen Gerät wird das Zertifikat installiert, indem man es dort im <em>Datei Explorer</em> einfach startet, d.h. einmal anklickt. Windows Mobile bestätigt dann die hoffentlich erfolgreiche Installation.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/5-confirm-cert.png"><img src="images/5-confirm-cert-180x300.png" alt="" title="5-confirm-cert"></a></p>
+<p>In den Einstellungen des mobilene Gerätes, unter dem zweiten Reiter <em>System</em>, startet man nun den <em>Zertifikatemanager</em> und überprüft unter dem Reiter <em>Root / Wurzel</em> ob das Zertifikat der Deutschen Telekom korrekt angezeigt wird.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/6-cert-manager.png"><img src="images/6-cert-manager-180x300.png" alt="" title="6-cert-manager"></a><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/7-cert-manager-root.png"><img src="images/7-cert-manager-root-180x300.png" alt="" title="7-cert-manager-root"></a></p>
+<p>Ist dem nicht so, muss das Zertifikat in der Registry per Hand eingetragen werden, damit der SecureW2 Client es bei der ersten Verbindung mit dem Netzwerk als &ldquo;vertrauenswürdiges Wurzelzertifikat&rdquo; erkennt. Dazu benötigen wir auf dem Gerät den bereits oben erwähnten Registryeditor. Das Vorgehen wird im Folgenden anhand des Total Commanders erläutert.</p>
+<h4 id="manuelles-registrieren-des-zertifikats">Manuelles Registrieren des Zertifikats</h4>
+<p>Die heruntergeladene Datei <em>tcmdpocketarm.cab</em> wird, wie oben schon einmal erwähnt, auf das Gerät kopiert und dort ausgeführt. Nach dem Öffnen der CAB-Datei wird das Programm installiert und wir starten die Software.<strong>Hinweis</strong>: Das Öffnen von Ordnern und Dateien erfolgt hier nicht wie gewohnt mit einem Klick, sondern durch Doppelklick. Mit Klick auf den <em>Schrägstrich</em> in der rechten oberen Ecke gelangen wir in das Hauptverzeichnis und wählen dort den Ordner <em>\\Plugins</em> und dann den Ordner <em>Registry</em> aus.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/8-total-commander.png"><img src="images/8-total-commander-162x300.png" alt="" title="8-total-commander"></a></p>
+<p>Dort klicken wir nun nacheinander auf <em>HKCU</em>, <em>Comm</em>, <em>Security</em> sowie <em>SystemCertificates</em> und finden dort Namen wie <em>root</em>, <em>trust</em>, <em>ca</em> usw.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/9-sys-certs.png"><img src="images/9-sys-certs-162x300.png" alt="" title="9-sys-certs"></a></p>
+<p>Als nächstes prüfen wir, ob sich im Ordner (bzw. Schlüssel) <em>trust</em> und dort unter <em>certificates</em> ein Ordner mit einem kryptischen Namen befindet. Wird dieser dort angezeigt, kann mit der Installation von SecureW2 fortgefahren werden.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/10-hash-name.png"><img src="images/10-hash-name-162x300.png" alt="" title="10-hash-name"></a></p>
+<p>Ist dem nicht so, wechseln wir durch einfaches Klicken auf den doppelten Punkt in der rechten oberen Ecke wieder 2 Ebenen nach oben und betrachten den Ordner <em>root</em> und dort <em>certificates</em>. Hier muss sich nun ein Ordner mit kryptischen Namen befinden. Durch Drücken auf diesen Ordnernamen und langes Halten öffnet sich das Kontextmenü. Wir wählen <em>In die Zwischenablage kopieren</em> aus und wechseln wieder in den Schlüssel bzw. Ordner <em>trust\certificates</em> (vorher zweimal auf den doppelten Punkt oben rechts) um dort erneut das Kontextmenü zu öffnen und per Klick auf <em>Hier einfügen (Kopieren)</em> den Schlüssel dort zu hinterlegen. Genauso müssen wir nun mit dem Wert <em>UpdateTime</em> verfahren, der sich direkt unter <em>root</em> befindet und in den Ordner trust gehört. (Nicht in den dortigen Unterordner <em>certificates</em>) Die Ordnerstruktur sollte nun wie folgt aussehen:</p>
+<p>\systemcertificats
+\root
+\certificates
+\85a408c09c193e5d51587dcd61330f
+.updatetime
+\trust
+\certificates
+\85a408c09c193e5d51587dcd61330f
+.updatetime</p>
+<p>Der Name &ldquo;85a408c09c193e5d51587dcd61330f&rdquo; weicht dabei von Gerät zu Gerät ab!</p>
+<p>Das Zertifikat <strong>sollte</strong> jetzt auch als vertrauenswürdig registriert sein und von <em>SecureW2</em> erkannt werden.</p>
+<h3 id="einrichtung-des-wlan-zugangs">Einrichtung des WLAN-Zugangs</h3>
+<p>Für gewöhnlich erkennt Windows Mobile die Art der Verschlüsselung selber, an der Stelle soll trotzdem nochmal auf die einzelnen Punkte eingegangen werden. Der Authentifizierungstyp lautet WPA2mit AES-Verschlüsselung.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/11-wlan1.png"><img src="images/11-wlan1-180x300.png" alt="" title="11-wlan1"></a></p>
+<p>Als EAP-Type wird der installierte SecureW2 TTLS-Client ausgewählt und über die <em>Eigenschaften / Properties</em> eingerichtet.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/12-wlan2.png"><img src="images/12-wlan2-180x300.png" alt="" title="12-wlan2"></a></p>
+<p>Ob ein neues Profil angelegt oder das Defaultprofil bearbeitet wird, ist vermutlich Geschmackssache. Um jede Fehlerquelle auszuschließen, habe ich ein neues Profil mit dem Namen <em>HTW</em> verwendet.Die Verbindung benutzt eine äußere, anonyme Identität. Per Klick auf <em>Erweitert</em> gelangt man zu den erweiterten Einstellungen. Hier muss ein Haken bei der Option <em>Benutzern erlauben, neue Verbindungen einzurichten</em> gesetzt werden.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/13-wlan3.png"><img src="images/13-wlan3-180x300.png" alt="" title="13-wlan3"></a><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/13b-wlan4.png"><img src="images/13b-wlan4-180x300.png" alt="" title="13b-wlan4"></a></p>
+<p>Unter dem Reiter <em>Zertifikate</em> wird <em>Serverzertifikate überprüfen</em> angehakt. Das untere Fenster <em>vertrauenswürdige CAs</em> ist zu dem Zeitpunkt noch leer. Nach der ersten (erfolgreichen) Verbindung findet ihr hier bzw. in der Liste unter Hinzufügen das Zertifikat der <em>Deutschen Telekom</em>.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/14-wlan5.png"><img src="images/14-wlan5-180x300.png" alt="" title="14-wlan5"></a></p>
+<p>Unter Authentifizerung wählen wir <em>PAP</em> aus.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/15-wlan6.png"><img src="images/15-wlan6-180x300.png" alt="" title="15-wlan6"></a></p>
+<p>Als letztes tragen wir die WLAN-Zugangsdaten in der bekannten Form (<em>sMatrikel@htw-berlin.de</em>) unter <em>Benutzerkennung</em> ein.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/16-wlan7.png"><img src="images/16-wlan7-180x300.png" alt="" title="16-wlan7"></a></p>
+<p>Nach Bestätigung mit <em>OK</em> fragt die Software, ob wir die Vertrauensliste von Windows verwenden möchten, was wir natürlich bestätigen.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/17-wlan8.png"><img src="images/17-wlan8-180x300.png" alt="" title="17-wlan8"></a></p>
+<p>Damit können wir die Einstellungen des Profiles mit <em>OK</em> endgültig übernehmen und die Konfiguration des WLAN-Zugangs abschließen. Bei der nächsten Verbindung mit dem Netzwerk erkennt <em>SecureW2</em> nun das <em>Telekom Zertifikat</em> an und bittet darum das (Wurzel)-Zertifikat mitsamt der zugehörigen &ldquo;Unterzertifikate&rdquo; zu installieren. Dabei ist lediglich eine Bestätigung erforderlich und der Zugang zu <em>eduroam</em> kann genutzt werden.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Eduroam, Windows Mobile, WLAN, Anleitung, Netzwerk</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>tools</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Eduroam mit Windows Mobile - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>how-to_guide</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

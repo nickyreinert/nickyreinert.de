@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Hooks auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/topics/hooks/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Thu, 18 Apr 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/hooks/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>WordPress Tag Cloud mit Umlauten (äöü) korrekt sortieren - Oder: Der WordPress Filter im Live-Beispiel erklärt</title>
+      <link>https://nickyreinert.de/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/</link>
+      <pubDate>Thu, 18 Apr 2019 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/</guid>
+      <description>Das schöne an PHP: Viele Wege führen nach Rom.
+Das Problem mit PHP: Viele Wege führen nach Rom.
+Denn diese Vielfallt stellt den Entwickler von Welt mituner vor …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel zeigt, wie man WordPress Tag Clouds mit Umlauten (äöü) korrekt sortiert, indem man einen benutzerdefinierten PHP-Filter nutzt. Er demonstriert die Implementierung einer natürlichen, nicht-sensitiven Sortierung durch temporäres Ersetzen von Umlauten und dient als praktisches Beispiel für die Anwendung von WordPress-Filtern zur Anpassung von Kernfunktionen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> WordPress, PHP, Filter, Hooks, Tag Cloud, Umlaute, Sortierung, Web Development, Customization</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Das schöne an PHP: Viele Wege führen nach Rom.</p>
+<p>Das Problem mit PHP: Viele Wege führen nach Rom.</p>
+<p>Denn diese Vielfallt stellt den Entwickler von Welt mituner vor eine schwierige Frage: <a href="http://nickology.com/2012/07/03/php-faster-array-lookup-than-using-in_array/">Welcher Weg ist der kürzeste</a>? Will man z.B. einen Wert (<em>needle</em>) in einem Array (<em>haystack</em>) suchen, gibt es in PHP zehn verschiedene Methoden. Du hast richtig gelesen: Zehn. Ich unterscheide einerseits auch die strikten und nicht-strikten Vergleiche, andererseits lasse ich die wirklich exotischen Methoden außen vor. Welche Methoden am schnellsten sind, werde ich versuchen im Folgenden herauszufinden. Außerdem schaue ich mir an ob es unter den letzten PHP-Versionen (7.0 bis 7.3*) Unterschiede in der Geschwindigkeit gibt.</p>
+<p><em>* Genau genommen sind es PHP 7.0.33-1, PHP 7.1.26-1, PHP 7.2.14-1, PHP 7.3.1-3</em></p>
+<p>Eins vorweg: Wenn du mit Schmalspur-Arrays arbeitest, die nur 12 Einträge enthalten, deren Werte nur ein ein Zeichen lang sind, kannst du hier gleich aussteigen. Du wirst schnell feststellen, dass sich Geschwindigkeitsvorteile erst bemerkbar machen, wenn die Arrays und ihre Werte länger werden.</p>
+<p>Im folgenden Stelle ich die Methoden kurz vor. Dann beschreibe ich, wie ich die Messungen durchgeführt habe. Danach gibts das bunte Zahlenwerk, in dem ich erst die Methoden miteinander vergleiche und dann die PHP-Versionen.</p>
+<p><em><strong>tl;dr:</strong></em> in_array() und nicht strikter Vergleich schlägt alle anderen Methoden. Ende der Durchsage.</p>
+<h2 id="welche-methoden-gibt-es-um-ein-array-nach-einem-wert-zu-durchsuchen">Welche Methoden gibt es, um ein Array nach einem Wert zu durchsuchen</h2>
+<h3 id="array_search---strikt--nicht-strikt">array_search - strikt / nicht strikt</h3>
+<p>Diese Methode ist der klassische Weg. Array_search() durchsucht ein Array nach einem beliebigen Wert und liefert dann den dazugehörigen Schlüssel zurück. Ist der dritte Parameter auf TRUE gesetzt, erfolgt eine strikte Suche, bei dem nicht nur Inhalt sondern auch Typ überprüft werden (ein &ldquo;typstarker Vergleich&rdquo;).</p>
+<h3 id="in_array---strikt--nicht-strikt">in_array - strikt / nicht strikt</h3>
+<p>Diese Methode ist ähnlich zu der erst genannten. Allerdings wird hier nur ein Booleanscher Wert zurückgegeben, der anzeigt, ob der Wert im Array enthalten ist. Oder nicht. Auch in_array unterstützt typstarke Vergleiche.</p>
+<h3 id="foreach---strikt--nicht-strikt">foreach - strikt / nicht strikt</h3>
+<p>Natürlich hat man auch die Möglichkeit mit einer Schleife die Suche maximal zu individualisieren. Innerhalb der Schleife kann man beliebige Ereignise definieren und natürlich auch einen typstarken Vergleich anstellen. Ich habe die Schleife, für die Vergleichbarkeit, sehr einfach gehalten. Ist der Vergleich erfolgreich, wird die Schleife mit break; verlassen.</p>
+<h3 id="isset">isset</h3>
+<p>Diese Methode ist eigentlich nicht das Mittel der Wahl, um ein Array nach einem Wert zu durchsuchen. Da ich aber sehen will, wie sich dieser Umweg im Vergleich schlägt, habe ich die Methode trotzdem mit aufgenommen. Zunächst nutze ich array_flip() um aus Schlüsseln Werte und vice versa zu machen. Dann kann ich mit isset() prüfen, ob der Schlüssel sprich der ehemalige Wert vorhanden ist.<br>
+Dazu muss gesagt werden, dass diese Methode ansich sehr schnell sein kann. Wenn der Anwendungsfall es zulässt, dass du deine Daten als Schlüssel und nicht als Wert in einem Array ablegst, solltest du diese Funktion bevorzugen! Das klappt natürlich nicht, wenn du mit NULL-Werten oder nicht uniquen Werten arbeitest!</p>
+<h3 id="array_intersect">array_intersect</h3>
+<p>Auch das ist ein Exot, der für diese Zwecke eigentlich wenig sinnvoll ist. Was nicht heißt, dass es auch hierfür Anwendungsfälle geben kann. Mit <strong>array_intersect()</strong> wird eine Teilmenge von zwei Arrays erzeugt. Ich übergebe die zu suchende <em>needle</em> als Array und bilde die Teilmenge mit dem <em>haystack</em>. Ist das Ergebnis-Array größer als 0, enthält der Heuhaufen die Nadel. Der Vorteil: Sucht man mehr als eine Nadel, kann man mit der Schnittmenge sehr gut weiterarbeiten. Von dieser Methode gibt es einige verrückte Abwandlungen, die ich hier aber nicht alle getrennt betrachten möchte.</p>
+<h3 id="array_keys---strikt--nicht-strikt">array_keys - strikt / nicht strikt</h3>
+<p>Der nächste Exot in dieser Reihe ist <strong>array_keys().</strong> Hier kann man ebenfalls einen striken typsicheren Vergleich anstrengen. Die Methode arbeitet ähnlich wie <strong>array_intersect()</strong>, liefert jedoch eine Teilmenge der Schlüssel zurück, die den gesuchten Wert enthalten. Auch dieser Weg ist eigentlich ein Umweg der nur in bestimmten Situationen anwendbar.</p>
+<h2 id="methodik-und-testaufbau">Methodik und Testaufbau</h2>
+<p>Um der ganzen Sache wenigstens einen blassen wissenschaftlichen Anstrich zu verpassen, will ich das Vorgehen kurz erläutern. Der Quellcode ist auf <a href="https://github.com/nickyreinert/compareArrayLookupMethodsInPHP/tree/master">github.com</a> verfügbar.</p>
+<p>Ich habe etwa 10.000 Arbeitsstunden in einer sehr ausgeklügeltes PHP-Script investiert. Dieses Script erzeugt ein zufälliges Array mit einer vorgegeben Länge an Keys (<strong>initArrayLength</strong>) und füllt dieses mit Werte, die eine vorgebene Länge haben (<strong>arrayValueLengths</strong>). Die Länge des Arrays kann zur Laufzeit erhöht werden, indem eine Potenz (<strong>maxPowers</strong>) angwendet wird. Danach wird dieses Array mit der angegeben Methode durchsucht (<strong>lookupMethod</strong>). Die Anzahl der Suchvorgänge wird mit <strong>maxIterations</strong> angegeben. Ist <strong>forceNewRandomArray</strong> auf 1 (aka TRUE) gesetzt, wird nach jedem Durchgang ein neues Array erzeugt.</p>
+<p>Um die in PHP eingebaute &ldquo;static optimization&rdquo; zu umgehen, gibt es den Parameter <strong>disableOptimization</strong>. Ist dieser mit 1 aktiviert, wird vor jedem Aufruf ein <strong>sleep(0);</strong> abgesetzt. Das verzögert den Programmablauf nicht, blockiert aber dieses Feature. Für die Messung habe ich den Parameter stets deaktiviert.</p>
+<p>Außerdem lässt sich mit <strong>forceNewRandomArray</strong> = 0 festlegen, dass das Array nicht bei jedem Durchlauf neu erzeugt wird. Das beschleunigt die Laufzeit bei großen Arrays erheblich.</p>
+<p>Die <em>needle</em>, also der zu suchende Wert, befindet sich immer am Ende des Arrays.</p>
+<p>Die Zeitmessung wird mit <strong>microtime(true);</strong> vorgenommen. Diese Methode erlaubt eine mikrosekunden-genaue Messung. So sieht beispielhaft die Implementierung für die Methode <strong>in_array()</strong> aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">		private function useInArray($strictMode) {
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">			$startTime = microtime(true);
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">			if ($this-&gt;disableOptimization) {sleep(0);}
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">			$result = in_array($this-&gt;needle, $this-&gt;haystack, $strictMode);
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">			$endTime = microtime(true);
+</span></span><span class="line"><span class="ln">10</span><span class="cl">
+</span></span><span class="line"><span class="ln">11</span><span class="cl">			$this-&gt;currentResults[&#39;delay&#39;] = number_format(($endTime - $startTime), 25, &#34;,&#34;, &#34;.&#34;);
+</span></span><span class="line"><span class="ln">12</span><span class="cl">
+</span></span><span class="line"><span class="ln">13</span><span class="cl">			$this-&gt;currentResults[&#39;memory_usage&#39;] = memory_get_usage(true);
+</span></span></code></pre></div><p>Das ganze Script wird in der Kommandozeile ausgeführt. <strong>Pro-Tipp:</strong> In einer Screen-Session! Ein Beispiel-Aufruf sieht demnach so aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">php-cgi7.0 -q compareLookups.php initArrayLength=10 arrayValueLengths=1,10,50,100 maxPowers=5 maxIterations=1000 forceNewRandomArray=1 breakAfterFound=1 disableOptimization=0 lookupMethod=in_array phpVersion=7.0 comment=initial_comparison
+</span></span></code></pre></div><p>Damit das ganze automatisiert und für alle Methoden einmal aufgerufen wird habe ich diese Zeile etwas abgewandelt in ein Shell-Script gepackt und dieses Script dann ausgeführt. Das Shell-Script gibt es ebenfalls bei github - siehe oben. Die ganze Chose läuft auf einem virtuellen self-managed Server, der mit <strong>Ubuntu 16.04</strong> betrieben wird. Die Kiste hat acht Kerne mit jeweils einer <strong>Intel Xeon CPU E5-2680 v3 @ 2.50GHz</strong> und <strong>16 GByte RAM</strong>.</p>
+<p>Ich habe Arrays mit einer Länge von 10, 100, 1.000, 10.000 und 100.000 Schlüsseln untersucht, die jeweils Werte mit einer Länge von 1, 10, 50, 100 Zeichen enthalten. Jede Variation wurde mit jeder Methode 1.000 mal gemessen. Insgesamt habe ich so 800.000 mal Arrays durchsucht, oder: Je Methode 80.000 Durchläufe.</p>
+<h2 id="ergebnisse">Ergebnisse</h2>
+<p>Zunächst zur Übersicht des Gesamtergebnisses in Abbildung 1 und 2: Die durchschnittliche Dauer in Mikrosekunden über alle Durchläufe hinweg. <strong>Die Länge der Arrays wirkt sich überproportional auf die Dauer aus</strong>. Das fällt vor allem bei <strong>array_intersect()</strong> auf: Ein Array mit 10.000 Schlüsseln benötigt durchschnittlich 2,479 ms, bei 100.000 Schlüsseln sind es 38,572 ms. Anders bei zunehmender Größe der Werte: Steigen dies um den Faktor 10 (10 Zeichen bzw. 100 Zeichen je Wert), dauert die Suche im Schnitt nicht mal 2 ms länger.</p>
+<ul>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-2-700x227.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-2-700x227.png" alt="Durchschnittliche Dauer in Mikrosekunden je Methode"></a></p>
+<p>Durchschnittliche Dauer in Mikrosekunden je Methode</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-1-700x241.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-1-700x241.png" alt="Durchschnittliche Dauer in Mikrosekunden je Methode"></a></p>
+<p>Durchschnittliche Dauer in Mikrosekunden je Methode</p>
+</li>
+</ul>
+<p>Die folgenden Abbildungen 3 bis 7 zeigen die exakten Messwerte für alle Methoden.</p>
+<ul>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-3-700x421.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-3-700x421.png" alt="Abbildung 3: Durchschnittliche Dauer bei 10 Schlüsseln"></a></p>
+<p>Abbildung 3: Durchschnittliche Dauer bei 10 Schlüsseln</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-4-700x470.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-4-700x470.png" alt="Abbildung 4: Durchschnittliche Dauer bei 100 Schlüsseln"></a></p>
+<p>Abbildung 4: Durchschnittliche Dauer bei 100 Schlüsseln</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-5-700x419.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-5-700x419.png" alt="Abbildung 5: Durchschnittliche Dauer bei 1.000 Schlüsseln"></a></p>
+<p>Abbildung 5: Durchschnittliche Dauer bei 1.000 Schlüsseln</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-6-700x421.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-6-700x421.png" alt="Abbildung 6: Durchschnittliche Dauer bei 10.000 Schlüsseln"></a></p>
+<p>Abbildung 6: Durchschnittliche Dauer bei 10.000 Schlüsseln</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-7-700x425.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-7-700x425.png" alt="Abbildung 7: Durchschnittliche Dauer bei 100.000 Schlüsseln"></a></p>
+<p>Abbildung 7: Durchschnittliche Dauer bei 100.000 Schlüsseln</p>
+</li>
+</ul>
+<p>Zur bessern Übersicht zeigen die folgenden beiden Abbildungen die Messungen ohne <strong>array_intersect()</strong>. Man sieht, dass <strong>isset()</strong> bei Werten mit einer Länge von 1 zumindest bei der foreach-Schleife mithalten kann. Ob der strikte Vergleich ein Nachteil ist, kann man schwer sagen. In der foreach-Schleife ist der strikte Vergleich minimal schneller, die anderen Methoden sind mit dem strikten Vergleich etwas langsamer. Tendentiell scheint <strong>non strict</strong> aber <strong>immer etwas schneller</strong> zu sein, wenn auch nur wenige Mikrosekunden.</p>
+<ul>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-12-700x254.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-12-700x254.png" alt="Abbildung 12: Durchschnittliche Dauer ohne array_intersect()"></a></p>
+<p>Abbildung 12: Durchschnittliche Dauer ohne array_intersect()</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-11-700x261.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-11-700x261.png" alt="Abbildung 11: Durchschnittliche Dauer ohne array_intersect()"></a></p>
+<p>Abbildung 11: Durchschnittliche Dauer ohne array_intersect()</p>
+</li>
+</ul>
+<p>Wie machen sich die aktuellen PHP-Versionen im Vergleich? Das zeigt Abbildung 13**. Im Vergleich zu PHP 7.0 bringen Version 7.1 und 7.3 einen Geschwindigkeitsschub**. Nicht jedoch PHP 7.2, hier waren die Durchläufe im Schnitt viel langsamer als unter PHP 7.0. Am auffälligsten sind die Auswirkungen bei der foreach-Schleife. PHP 7.3 sorgt hier durchschnittlich 25% schnellere Durchläufe.</p>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-13.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-13-700x429.png" alt=""></a></p>
+<p>Abbildung 13: Veränderung der durchschnittlichen Dauer je Methode und PHP-Version.</p>
+<p>Ähnlich geht es beim Speicherverbrauch zu. Hier tut sich erst mit PHP 7.3 einiges, der Verbrauch sinkt um knapp 25%!</p>
+<h2 id="fehlerquellen">Fehlerquellen</h2>
+<p>Die gibt es. Zum einen meine zauberhafte Implementierung des Scripts. Wer weiß, ob mir da nicht irgendwo ein Fehler untergelaufen ist. Außerdem meine vielleicht etwas lasche Interpretation der Ergebnisse. Statistik war zwar Teil meines Studiums, aber erstens ist das lange her und zweitens hatte ich an dem Tag einen starken Kater. An die Party dazu kann ich mich in Teilen gut erinnern, die Vorlesung ist wie ausgelöscht.</p>
+<p>Außerdem sollte erwähnt werden, dass ich den Server nebenbei auch als öffentlichen Web-Server benutze (allerdings ohne nennenswerte Auslastung). Die Messung habe ich deshalb nachts ausgeführt. Ich gehe aber trotzdem davon aus, dass die meisten Ausreißer auf dieses Setup zurückzuführen sind.</p>
+<h3 id="ausreißer">Ausreißer</h3>
+<p>Davon gibt es eine Menge. Die Ursache sind mannigfaltig und schwer nachvollziehbar. Ich habe hier nicht viel wissenschaftlichen Aufwand betrieben sondern nur die augenscheinlichen Fehlmessungen entfernt. Die folgenden Abbildungen sollen beispielhaft zeigen, wie oft und offensichtlich Ausreißer aufgetreten sind.</p>
+<ul>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-8-700x690.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-8-700x690.png" alt="Abbildung 8: Ausreißer"></a></p>
+<p>Abbildung 8: Ausreißer</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-9-700x450.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-9-700x450.png" alt="Abbildung 9: Durchschnittliche Dauer je Methode"></a></p>
+<p>Abbildung 9: Durchschnittliche Dauer je Methode</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-10-700x543.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-10-700x543.png" alt="Abbildung 10: Durchschnittliche Dauer je Methode, bereinigt"></a></p>
+<p>Abbildung 10: Durchschnittliche Dauer je Methode, bereinigt</p>
+</li>
+</ul>
+<h2 id="static-optimization">Static Optimization</h2>
+<p>Wenn man sich die Ergebnisse einmal anschaut, fällt etwas auf: Obwohl <strong>microtime()</strong> mit einer sehr hohen Genauigkeit misst, scheinen manche Methoden bereits nach 0 Sekunden fertig zu sein. Der Grund dafür dürfte einerseits natürlich die Hardware und andererseits die <a href="http://biagiocosenza.com/papers/PopovCC17.pdf">static optimization</a> sein. Das Feature übersteigt meinen Kompetenzbereich leider bei weitem, deswegen kann ich nur laienhaft daherplappern:</p>
+<ul>
+<li>Mit <em>sleep(0);</em> innerhalb der Zeitmessung (siehe auch oben) kann man dieses Feature ausbooten.</li>
+<li>Und außerdem scheint es eine Art unteres Limit für diese &ldquo;schnellste Zeit&rdquo; zu geben. So gibt es Messungen mit größeren Arrays, die exakt die gleiche Dauer aufweisen: 0,000000953674 Sekunden. Wird das Array noch größer, dauert es sogar <strong>exakt</strong> doppelt so lang, nämlich 0,000001907349 Sekunden. Diese Reihe kann man in Grenzen weiterführen. Zufall? Fragen! Wer dazu eine fundierte Erklärung hat, kann das gerne in den Kommentaren mitteilen.</li>
+</ul>
+<p>Die folgenden Abbildungen zeigen die Häufigkeiten der unterschiedlicher Messwerte bis 10 Mikrosekunden. Auch hier ist noch mal interessant zu beobachten, wie die Messungen der Durchläufe kaum voneinander abweichen.</p>
+<ul>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-14.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-14.png" alt="Abbildung 14: Verteilung der Messwerte für alle Messungen"></a></p>
+<p>Abbildung 14: Verteilung der Messwerte für alle Messungen</p>
+</li>
+<li>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-15-700x171.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-15-700x171.png" alt="Abbildung 15: Verteilung der Messwerte für die foreach-Schleife (nicht strikter Vergleich)"></a></p>
+<p>Abbildung 15: Verteilung der Messwerte für die foreach-Schleife (nicht strikter Vergleich)</p>
+</li>
+</ul>
+<h2 id="fazit">Fazit</h2>
+<p>Grundsätzlich sollte man eines nicht vergessen: Die Messungen finden im <strong>Mikrosekundenbereich</strong> statt. Selbst die langsamste Methode <strong>array_intersect()</strong> hat für große Arrays nur 120 Mikrosekunden benötigt, im Schnitt liegt die Dauer bei etwa 8 Millisekunden. Auch große Arrays (100.000 Schlüssel, 100 Zeichen je Wert) waren im Schnitt nach 45 Millisekunden abgefertigt. Soviel zu den subjektiven, absoluten Zahlen, die abhängig von den Begleitumständen natürlich weitaus schlechter aussehen können.</p>
+<p>Im Vergleich mit allen anderen Methoden ist <strong>array_intersect()</strong> absolut keine Wahl. <strong>Isset()</strong> kann unter bestimmten Bedingungen tatsächlich das Mittel der Wahl sein (siehe oben), verliert im direkten Vergleich aber.</p>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-16.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-16-700x281.png" alt="Abbildung 16: Durchschnittliche Dauer insgesamt je Methode"></a></p>
+<p>Abbildung 16: Durchschnittliche Dauer insgesamt je Methode</p>
+<p>Interessant ist, dass der nicht strikte Vergleich insgesamt etwas schneller ist - außer bei der Verwendung der foreach-Schleife! Diese ist allerdings grundsätzlich fast doppelt so langsam wie die anderen Methoden. Und diese liegen fast immer gleich auf so das man sagen kann, dass es hier keine Präferenz gibt.</p>
+<p><a href="https://www.nickyreinert.de/files/in-einem-array-suchen-mit-foreach-in_array-isset-oder-intersect-was-ist-schneller/grafik-17.png"><img src="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/images/grafik-17-700x238.png" alt=""></a></p>
+<p>Abbildung 17: Durchschnittliche Dauer insgesamt der schnellsten Methoden.</p>
+<p>Um es mit den Worten einer weisen Philosophin zu sagen: <em>&ldquo;Ich kann Dir nur die Tür zeigen. Hindurchgehen musst Du alleine&rdquo;</em>. Nutze die Erkenntnisse dafür, die richtige Methode für den richtigen Zweck zu wählen. Du weißt nun, mit welcher Methode man einen großen Array in PHP optimal durchsuchen kann. Und nebenbei hast du vielleicht noch gelernt, welche Methoden es überhaupt gibt. Wenn dich das glücklich macht, habe ich mein Ziel erreicht.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> anleitung, filter, php, tagcloud, tutorial, wordcloud, wordpress, Customization</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>blog</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>WordPress Tag Cloud mit Umlauten (äöü) korrekt sortieren - Oder: Der WordPress Filter im Live-Beispiel erklärt - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>tutorial</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

@@ -15,7 +15,7 @@
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/images/favicon.ico">
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
 
   
   
@@ -293,7 +293,7 @@
       <h1 style="flex-grow: 1; text-align: center;" itemprop="headline">WordPress Tag Cloud mit Umlauten (äöü) korrekt sortieren - Oder: Der WordPress Filter im Live-Beispiel erklärt</h1>
       
       
-      <a class="link next" href="/2019/2019-04-24-den-korrekten-mysql-odbc-treiber-fuer-deinen-linux-server-installieren/">>>></a>
+      <a class="link next" href="/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/">>>></a>
       
     </div>
   </div>
@@ -302,7 +302,18 @@
   <div class="post-date">April 18, 2019</div>
 
   
-  <article class="content">
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
     <p>WordPress bringt von Hause aus ein Widget mit, dass die verwendeten Tags als Cloud darstellt (wer es ein wenig schöner mag, <a href="https://www.nickyreinert.de/wordpress-word-cloud-2-0/">greift auf mein WordCloud Plugin zurück</a>). Das Ganze hat nur einen Haken: Die entsprechende WordPress-Funktion <strong><a href="https://developer.wordpress.org/reference/functions/wp_generate_tag_cloud/">wp_generate_tag_cloud</a></strong> nutzt <strong>aosort()</strong> als Sortierfunktion. Und die kommt mit Umlauten nicht sonderlich gut klar. Eine Lösung wäre also, die Umlaute für die Sortierung zu übersetzen, also Ä ind Ae, ö in oe und so weiter.</p>
 <p>Das schöne an WordPress: Sehr viele Funktionalitäten lassen sich über <strong>Hooks</strong> und <strong>Filter</strong> modifizieren. So bietet auch der Sortier-Algorithmus die Möglichkeit an, den Array mit einer eigenen Funktion zu filtern. Die perfekte Gelegenheit, um sich mit dem Thema <strong>Filter mal</strong> etwas näher zu beschäftigen. Ein Blick in den Source-Code von <strong>wp_generate_tag_cloud()</strong> zeigt ab Zeile 875 (seit Version 4.8.0):</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">    /**
@@ -351,9 +362,49 @@
 <p>In der letzten Schleife sorgen wir dafür, dass die nun sortierte Tag-Liste wieder unsere ursprünglichen Umlaute enthält und geben die sortierte Liste dann zurück.</p>
 <p>Das war es auch schon. Unsere Liste ist, unter Berücksichtigung der deutschen Umlaute, sauber sortiert. Ab dort übernimmt WordPress die weitere Verarbeitung. Und wir haben gelernt, wie wir einen <strong>einfachen Filter</strong> in WordPress implementieren.</p>
 
+    
   </article>
   
+  
+  
+  <div style="margin-top: 5rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
 
+      <p>Dieser Artikel behandelt WordPress Tag Cloud mit Umlauten (äöü) korrekt sortieren - Oder: Der WordPress Filter im Live-Beispiel erklärt und bietet praktische Einblicke in das Thema.</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Web</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">WordPress</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Development</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 5 Minuten</p>
+      
+    </div>
+  </div>
+  
+  
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/2019/2019-04-12-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-1-3/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/">next →</a>
+    
+  </div>
 </main>
 
     <footer id="footer">

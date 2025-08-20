@@ -16,7 +16,7 @@ Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/images/favicon.ico">
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
 
   
   
@@ -36,7 +36,7 @@ Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit
   <meta property="og:type" content="article">
     <meta property="article:section" content="2020">
     <meta property="article:published_time" content="2020-07-01T00:00:00+00:00">
-    <meta property="article:modified_time" content="2025-08-20T12:38:10+02:00">
+    <meta property="article:modified_time" content="2025-08-20T21:05:13+02:00">
     <meta property="article:tag" content="Einstellungen">
     <meta property="article:tag" content="Setup">
     <meta property="article:tag" content="Wordpress">
@@ -52,7 +52,7 @@ Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit
   <meta itemprop="description" content="Das Thema Geschwindigkeit liegt bei uns allen ganz weit oben auf der Agenda. Oft allerdings nur passiv, wenn man ungeduldig auf der Tastatur trommelt und auf das Laden einer Internetseite wartet. Aktiv fehlt oft der richtige Impuls. Was kann man noch tun, außer die Bilder kleinzuhalten, um WordPress zu beschleunigen?
 Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit deiner WordPress-Seite zu optimieren. Und da neben der Geschwindigkeit die Sicherheit ein weiteres beliebtes Thema ist, werde ich auch dazu ein paar kleine Kniffe mit großer Wirkung zeigen. Doch zunächst ein paar…">
   <meta itemprop="datePublished" content="2020-07-01T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2025-08-20T12:38:10+02:00">
+  <meta itemprop="dateModified" content="2025-08-20T21:05:13+02:00">
   <meta itemprop="wordCount" content="2799">
   <meta itemprop="keywords" content="WordPress,Performance,Geschwindigkeit,Sicherheit,Optimierung,functions.php,.htaccess,wp-config.php,WPO,Core Web Vitals,gzip,defer,async,XML-RPC,REST API">
 
@@ -82,7 +82,7 @@ Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit
     "headline": "Leitfaden für ein sicheres und schnelles WordPress-Setup",
     "description": "Das Thema Geschwindigkeit liegt bei uns allen ganz weit oben auf der Agenda. Oft allerdings nur passiv, wenn man ungeduldig auf der Tastatur trommelt und auf …",
     "datePublished": "2020-07-01T00:00:00Z",
-    "dateModified": "2025-08-20T12:38:10\u002b02:00",
+    "dateModified": "2025-08-20T21:05:13\u002b02:00",
     "author": {
       "@type": "Person",
       "name": "",
@@ -121,7 +121,7 @@ Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit
     "articleSection": ["blog"],
     
     
-    "abstract": "Ein umfassender Leitfaden mit zahlreichen Code-Snippets zur Optimierung einer WordPress-Installation in Bezug auf Geschwindigkeit und Sicherheit. Der Artikel behandelt Themen wie das Deaktivieren von Emojis und Gravatar, serverseitige Komprimierung, das Verschieben von Skripten, das Absichern der XML-RPC- und REST-APIs sowie das Aufräumen des HTML-Headers durch Änderungen in \u0060functions.php\u0060, \u0060.htaccess\u0060 und \u0060wp-config.php\u0060.",
+    "abstract": "Ein umfassender Leitfaden mit zahlreichen Code-Snippets zur Optimierung einer WordPress-Installation in Bezug auf Geschwindigkeit und Sicherheit. Der Artikel behandelt Themen wie das Deaktivieren von Emojis und Gravatar, serverseitige Komprimierung, das Verschieben von Skripten, das Absichern der XML-RPC- und REST-APIs sowie das Aufräumen des HTML-Headers durch Änderungen in \u0027functions.php\u0027, \u0027.htaccess\u0027 und \u0027wp-config.php\u0027.",
     
     
     "genre": "optimization_guide",
@@ -185,7 +185,7 @@ Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit
     ],
     
     "datePublished": "2020-07-01T00:00:00Z",
-    "dateModified": "2025-08-20T12:38:10\u002b02:00",
+    "dateModified": "2025-08-20T21:05:13\u002b02:00",
     "author": {
       "@type": "Person",
       "name": ""
@@ -321,7 +321,46 @@ Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit
   <div class="post-date">July 1, 2020</div>
 
   
-  <article class="content">
+  
+  
+  
+  
+  
+  
+  
+  <details style="margin-top: 2rem; margin-bottom: 2rem;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#grundsätze">Grundsätze</a></li>
+    <li><a href="#warnung">Warnung</a></li>
+    <li><a href="#nutze-keine-standard-einstellungen">Nutze keine Standard-Einstellungen</a></li>
+    <li><a href="#emoticons-und-emojis">Emoticons und Emojis</a></li>
+    <li><a href="#gravatar-deaktivieren">Gravatar deaktivieren</a></li>
+    <li><a href="#gzip-und-deflate">GZIP und Deflate</a></li>
+    <li><a href="#cron-job-deaktivieren">Cron-Job deaktivieren</a></li>
+    <li><a href="#scripte-im-footer-laden">Scripte im Footer laden</a></li>
+    <li><a href="#javascript-ausführung-verzögern">JavaScript Ausführung verzögern</a></li>
+    <li><a href="#versionsinfos-entfernen">Versionsinfos entfernen</a></li>
+    <li><a href="#google-fonts-deaktivieren">Google Fonts deaktivieren</a></li>
+    <li><a href="#die-beitrags-historie-verschlanken">Die Beitrags-Historie verschlanken</a></li>
+    <li><a href="#oembeds-deaktivieren">oEmbeds deaktivieren</a></li>
+    <li><a href="#den-header-aufräumen">Den Header aufräumen</a></li>
+    <li><a href="#cache-plugin">Cache-Plugin</a></li>
+    <li><a href="#die-xml-rpc-schnittstelle-deaktivieren">Die XML-RPC-Schnittstelle deaktivieren</a></li>
+    <li><a href="#die-rest-api-verweise-entfernen">Die REST-API-Verweise entfernen</a></li>
+    <li><a href="#fazit">Fazit</a></li>
+  </ul>
+</nav></div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
     <p>Das Thema Geschwindigkeit liegt bei uns allen ganz weit oben auf der Agenda. Oft allerdings nur passiv, wenn man ungeduldig auf der Tastatur trommelt und auf das Laden einer Internetseite wartet. Aktiv fehlt oft der richtige Impuls. Was kann man noch tun, außer die Bilder kleinzuhalten, um WordPress zu beschleunigen?</p>
 <p>Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit deiner WordPress-Seite zu optimieren. Und da neben der Geschwindigkeit die Sicherheit ein weiteres beliebtes Thema ist, werde ich auch dazu ein paar kleine Kniffe mit großer Wirkung zeigen. Doch zunächst ein paar&hellip;</p>
 <h2 id="grundsätze">Grundsätze</h2>
@@ -605,9 +644,55 @@ Zunächst solltest du die Anzahl der Revisionen pro Beitrag eingrenzen. Dazu set
 <p>Das war es erstmal. Wenn du jetzt noch das Gefühl hast, dass dein WordPress zu langsam ist, wirf mal einen Blick in die Entwickler-Konsole und schau nach, welche Ressourcen lange dauern oder ob du Anfragen doppelt absetzt. Es gibt vor allem auf Server-Seite, also unterhalb von WordPress, noch eine Menge Möglichkeiten. Einige davon habe ich in der <a href="https://www.nickyreinert.de/mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-1-3/">Artikel-Serie zum perfekten Web-Server-Setup aufgeführt</a>. Außerdem gibt es hier eine wirklich brilliante Artikel-Serie zum Thema Sicherheit, die du dir unbedingt lesen solltest. Hier werden unzählige wichtige Hinweise gegeben,</p>
 <p>Zum Abschluss noch mal der Hinweis: Es handelt sich hierbei um mitunter tiefe Eingriffe in die <strong>WordPress-Mechanik</strong>. Solltest du in der Zukunft Probleme mit deiner Seite haben, nimm diese Änderungen Schritt für Schritt zurück. Arbeite mit einem Staging-System und nutze Backups. Bei Probleme und Inkompatiblitäten freue ich mich über sachdienliche Hinweise, die ich in den Artikel einbauen kann!</p>
 
+    
   </article>
   
+  
+  
+  <div style="margin-top: 5rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
 
+      <p>Ein umfassender Leitfaden mit zahlreichen Code-Snippets zur Optimierung einer WordPress-Installation in Bezug auf Geschwindigkeit und Sicherheit. Der Artikel behandelt Themen wie das Deaktivieren von Emojis und Gravatar, serverseitige Komprimierung, das Verschieben von Skripten, das Absichern der XML-RPC- und REST-APIs sowie das Aufräumen des HTML-Headers durch Änderungen in &#39;functions.php&#39;, &#39;.htaccess&#39; und &#39;wp-config.php&#39;.</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">WordPress</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Performance-Optimierung</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Web-Sicherheit</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">PHP</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Server-Konfiguration</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Frontend-Optimierung</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 5 Minuten</p>
+      
+    </div>
+  </div>
+  
+  
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/2020/2020-06-22-dinge-die-nicht-existieren/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/2020/2020-09-09-das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/">next →</a>
+    
+  </div>
 </main>
 
     <footer id="footer">

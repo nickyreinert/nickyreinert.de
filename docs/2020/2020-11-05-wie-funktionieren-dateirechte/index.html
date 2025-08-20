@@ -15,7 +15,7 @@
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/images/favicon.ico">
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
 
   
   
@@ -34,7 +34,7 @@
   <meta property="og:type" content="article">
     <meta property="article:section" content="2020">
     <meta property="article:published_time" content="2020-11-05T00:00:00+00:00">
-    <meta property="article:modified_time" content="2025-08-20T12:38:10+02:00">
+    <meta property="article:modified_time" content="2025-08-20T21:05:13+02:00">
     <meta property="article:tag" content="Chmod">
     <meta property="article:tag" content="Dateirechte">
     <meta property="article:tag" content="Sysop">
@@ -50,7 +50,7 @@
   <meta itemprop="name" content="Wie funktionieren Dateirechte?">
   <meta itemprop="description" content="Die korrekten Dateirechte sollten eine wichtige Rolle spielen, wenn du an einem Sicherheitskonzept für deine Webseite bzw. Wordpress arbeitest. Leider wird das Thema Dateirechte oft stiefmütterlich behandelt, nicht zuletzt weil es fälschlicherweise als zu kompliziert angesehen wird. Dabei muss es das gar nicht sein: Das Grundprinzip ist einfach: Du willst nicht, dass jedermann Dateien ändern, ausführen oder lesen kann. Sicherlich gibt es feine Abstufungen. und genau die möchte ich hier erklären.">
   <meta itemprop="datePublished" content="2020-11-05T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2025-08-20T12:38:10+02:00">
+  <meta itemprop="dateModified" content="2025-08-20T21:05:13+02:00">
   <meta itemprop="wordCount" content="2588">
   <meta itemprop="keywords" content="Dateirechte,Permissions,chmod,chown,Linux,Server,Sicherheit,WordPress,Apache,Nginx,FTP,SysAdmin,Hosting">
 
@@ -79,7 +79,7 @@
     "headline": "Wie funktionieren Dateirechte?",
     "description": "Die korrekten Dateirechte sollten eine wichtige Rolle spielen, wenn du an einem Sicherheitskonzept für deine Webseite bzw. Wordpress arbeitest. Leider wird das …",
     "datePublished": "2020-11-05T00:00:00Z",
-    "dateModified": "2025-08-20T12:38:10\u002b02:00",
+    "dateModified": "2025-08-20T21:05:13\u002b02:00",
     "author": {
       "@type": "Person",
       "name": "",
@@ -118,7 +118,7 @@
     "articleSection": ["anleitungen", "hosting", "wordpress"],
     
     
-    "abstract": "Eine detaillierte Anleitung zum Verständnis und zur korrekten Konfiguration von Dateirechten auf einem Linux-Webserver, speziell für WordPress. Der Artikel erklärt die Grundlagen von Benutzern, Gruppen und den Rechten (Lesen, Schreiben, Ausführen) und demonstriert die Anwendung von \u0060chmod\u0060 und \u0060chown\u0060. Es werden sichere, praxisnahe Konfigurationen und Skripte zur Härtung einer WordPress-Installation vorgestellt.",
+    "abstract": "Eine detaillierte Anleitung zum Verständnis und zur korrekten Konfiguration von Dateirechten auf einem Linux-Webserver, speziell für WordPress. Der Artikel erklärt die Grundlagen von Benutzern, Gruppen und den Rechten (Lesen, Schreiben, Ausführen) und demonstriert die Anwendung von \u0027chmod\u0027 und \u0027chown\u0027. Es werden sichere, praxisnahe Konfigurationen und Skripte zur Härtung einer WordPress-Installation vorgestellt.",
     
     
     "genre": "comprehensive_guide",
@@ -182,7 +182,7 @@
     ],
     
     "datePublished": "2020-11-05T00:00:00Z",
-    "dateModified": "2025-08-20T12:38:10\u002b02:00",
+    "dateModified": "2025-08-20T21:05:13\u002b02:00",
     "author": {
       "@type": "Person",
       "name": ""
@@ -318,7 +318,36 @@
   <div class="post-date">November 5, 2020</div>
 
   
-  <article class="content">
+  
+  
+  
+  
+  
+  
+  
+  <details style="margin-top: 2rem; margin-bottom: 2rem;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#die-grundlagen-wie-verarbeitet-ein-web-server-anfragen">Die Grundlagen: Wie verarbeitet ein Web-Server Anfragen?</a></li>
+    <li><a href="#lesen-schreiben-ausführen---was-bedeutet-das-eigentlich">Lesen, Schreiben, Ausführen - Was bedeutet das eigentlich?</a></li>
+    <li><a href="#besitzrechte-einer-datei">Besitzrechte einer Datei</a></li>
+    <li><a href="#wie-funktionieren-chown-und-chmod">Wie funktionieren chown und chmod?</a></li>
+    <li><a href="#dateirechte-in-der-realität">Dateirechte in der Realität</a></li>
+    <li><a href="#ausführen-von-php-code-in-bestimmten-ordnern-unterbinden">Ausführen von PHP-Code in bestimmten Ordnern unterbinden</a></li>
+    <li><a href="#fs_method">FS_METHOD</a></li>
+    <li><a href="#wenig-aufwand-viel-nutzen">Wenig Aufwand, viel Nutzen</a></li>
+  </ul>
+</nav></div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
     <p>Die korrekten <strong>Dateirechte</strong> sollten eine wichtige Rolle spielen, wenn du an einem Sicherheitskonzept für deine Webseite bzw. Wordpress arbeitest. Leider wird das Thema Dateirechte oft stiefmütterlich behandelt, nicht zuletzt weil es fälschlicherweise als zu kompliziert angesehen wird. Dabei muss es das gar nicht sein: Das Grundprinzip ist einfach: Du willst nicht, dass jedermann Dateien <strong>ändern</strong>, <strong>ausführen</strong> oder <strong>lesen</strong> kann. Sicherlich gibt es feine Abstufungen. und genau die möchte ich hier erklären.</p>
 <p>Achtung: Das Ziel dieses Beitrags ist nicht, dir eine fertige Lösung für deine WordPress-Installation bzw. dein Projekt zu geben. Das ist nicht möglich. Warum? Es gibt zig unterschiedliche Konfigurationen. Es mag allgemeingültige Lösungen geben, diese sind aber bei weitem nicht sicher. Stichwort: chmod 777 * -R</p>
 <p>Du solltest nach der Lektüre aber das Konzept verstehen und vielleicht sogar in der Lage sein, die Dateirechte selbstständig zu setzen.</p>
@@ -473,9 +502,55 @@ php_flag engine off</p>
 <p>Die korrekten Datei und Ordner-Rechte für WordPress prüfen</p>
 <p><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/testFileFolderPermissions.php_-1.zip">testFileFolderPermissions.php_-1</a><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/testFileFolderPermissions.php_-1.zip">Herunterladen</a></p>
 
+    
   </article>
   
+  
+  
+  <div style="margin-top: 5rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
 
+      <p>Eine detaillierte Anleitung zum Verständnis und zur korrekten Konfiguration von Dateirechten auf einem Linux-Webserver, speziell für WordPress. Der Artikel erklärt die Grundlagen von Benutzern, Gruppen und den Rechten (Lesen, Schreiben, Ausführen) und demonstriert die Anwendung von &#39;chmod&#39; und &#39;chown&#39;. Es werden sichere, praxisnahe Konfigurationen und Skripte zur Härtung einer WordPress-Installation vorgestellt.</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Linux</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Server-Administration</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Web-Sicherheit</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">WordPress</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Dateirechte</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">SysAdmin</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 5 Minuten</p>
+      
+    </div>
+  </div>
+  
+  
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/2020/2020-10-24-marketing-killed-the-internet-star/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/2020/2020-12-09-einfuehrung-in-stemming-und-lemmatisierung-deutscher-texte-mit-python/">next →</a>
+    
+  </div>
 </main>
 
     <footer id="footer">

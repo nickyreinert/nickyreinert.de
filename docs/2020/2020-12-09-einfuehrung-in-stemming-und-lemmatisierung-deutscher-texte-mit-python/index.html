@@ -15,7 +15,7 @@
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/images/favicon.ico">
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
 
   
   
@@ -323,7 +323,40 @@
   <div class="post-date">December 9, 2020</div>
 
   
-  <article class="content">
+  
+  
+  
+  
+  
+  
+  
+  <details style="margin-top: 2rem; margin-bottom: 2rem;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#stemming-mit-porter-lancaster-und-snowball">Stemming mit Porter, Lancaster und Snowball</a>
+      <ul>
+        <li><a href="#installation-und-anwendung">Installation und Anwendung</a></li>
+      </ul>
+    </li>
+    <li><a href="#lemmatisieren-mit-hannovertagger-wordnet-spacy-und-iwnlp">Lemmatisieren mit HannoverTagger, WordNet, Spacy und IWNLP</a>
+      <ul>
+        <li><a href="#was-ist-mit-germalemma-und-german-lemmatizer">Was ist mit GermaLemma und German Lemmatizer?</a></li>
+        <li><a href="#installation-und-anwendung-1">Installation und Anwendung</a></li>
+      </ul>
+    </li>
+    <li><a href="#fazit">Fazit</a></li>
+  </ul>
+</nav></div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
     <p>Um beim <strong>Text Mining</strong> zusammengehörende Wörter zu gruppieren, bedient man sich im <strong>Natural Language Processing</strong> (<strong>NLP</strong>) zweier Methoden: <strong>Lemmatisierung</strong> (lemmatising) und <strong>Stemming</strong>. Das ist notwendig, um z.B. einen Text besser kategorisieren bzw. mit Stichworten versehen zu können. Eines der wichtigsten Anwendungsgebiete ist sicherlich die Indexierung von Dokumenten durch eine Suchmaschine. Ein ganz einfaches Beispiel: Enthält ein Dokument sehr oft das Wort <em>Häuser</em> und der Nutzer sucht nach dem Begriff <em>Haus</em>, wird das relevante Dokument wohl nicht in den Suchergebnissen auftauchen.</p>
 <p>Um das zu umgehen, müssen flektierte und abgeleitete Wörter zu Ihrer Grundform zurückgeführt werden. Beim <strong>Stemming</strong> werden dazu einfache heuritische Methoden angewendet, bei dem das Suffix der Wörter entfernt wird. Aus dem Wort <em>Katzen</em> wird so dessen Grundform <em>Katze</em>. Bei der Plural-Form <em>Häuser</em> ist das etwas schwieriger. Mit dem Abschneiden des Suffixes kommt man hier nicht weit, weshalb man sich bei der <strong>Lemmatisierung</strong> an Listen bzw. Datenbanken orientiert, die die reflektierte Formen enthalten und so eine sichere Verknüpfung von <em>Häuser</em> zur Singular-Form <em>Haus</em> erlauben.</p>
 <p>Soviel zur Theorie. In der Praxis gibt es <strong>Python</strong> und eine Vielzahl von Modulen, die einem eine Menge Arbeit abnehmen. Im Folgenden vergleiche ich ein halbes Dutzend Module, die die <strong>Lemmatisierung</strong> und das <strong>Stemming</strong> beherrschen und auch für <strong>Deutsche Texte</strong> anwendbar sind.</p>
@@ -421,9 +454,57 @@
 <p>Die Verarbeitung englischer Texte ist, aufgrund der großen Verbreitung der Sprache, gar kein Problem. Bei deutschen Texten wird es schon etwas schwieriger, allerdings liefern <strong>HanTa</strong>, <strong>IWNLP</strong> und auch <strong>SpaCy</strong> recht gute Ergebnisse ab. Mein subjektiver Favorit ist <strong>HanTa</strong>. Aber die Stichprobe ist viel zu gering, um hier einen klaren Favoriten identifizieren zu können.</p>
 <p>Der Vergleich dient eher nicht als repräsentivate Untersuchung aller denkbaren Varianten, soll aber einen kleinen Einblick in <strong>NLP</strong> und die automatisierte Text-Verarbeitung im <strong>Text-Mining</strong> geben und ein paar Code-Beispiele liefern, um den Einsteig in Python zu erleichtern. Ich hoffe das ist gelungen!</p>
 
+    
   </article>
   
+  
+  
+  <div style="margin-top: 5rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
 
+      <p>Eine technische Einführung und ein Vergleich verschiedener Python-Bibliotheken für das Stemming und die Lemmatisierung deutscher Texte. Der Artikel erklärt die Konzepte, stellt Bibliotheken wie NLTK, SpaCy, HannoverTagger und IWNLP vor, zeigt deren Installation und Anwendung anhand von Code-Beispielen und vergleicht ihre Ergebnisse bei der Normalisierung deutscher Wörter.</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Python</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Natural Language Processing</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">NLP</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Text Mining</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Stemming</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Lemmatisierung</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Data Science</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 5 Minuten</p>
+      
+    </div>
+  </div>
+  
+  
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/2020/2020-11-05-wie-funktionieren-dateirechte/">← prev</a>
+    
+    
+    <a></a>
+    
+  </div>
 </main>
 
     <footer id="footer">

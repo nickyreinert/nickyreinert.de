@@ -26,7 +26,7 @@
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Eine vollständige und detaillierte Anleitung zum PHP `memory_limit`. Der Artikel erklärt die Funktionsweise der Speichergrenze und beschreibt die komplexe Hierarchie der verschiedenen Konfigurationsorte – von der globalen `php.ini` über Webserver-Einstellungen in Apache und Nginx (`.htaccess`, `httpd.conf`) bis hin zu anwendungsspezifischen Definitionen in WordPress (`wp-config.php`) und auf Skriptebene (`ini_set`).</p>
+          <p>Eine vollständige und detaillierte Anleitung zum PHP &#39;memory_limit&#39;. Der Artikel erklärt die Funktionsweise der Speichergrenze und beschreibt die komplexe Hierarchie der verschiedenen Konfigurationsorte – von der globalen &#39;php.ini&#39; über Webserver-Einstellungen in Apache und Nginx (&#39;.htaccess&#39;, &#39;httpd.conf&#39;) bis hin zu anwendungsspezifischen Definitionen in WordPress (&#39;wp-config.php&#39;) und auf Skriptebene (&#39;ini_set&#39;).</p>
           
           
           <p><strong>Hauptthemen:</strong> PHP, Server-Administration, WordPress, Nginx, Apache, Performance-Tuning, Troubleshooting</p>
@@ -196,6 +196,185 @@
       
       
     </item><item>
+      <title>Den korrekten MySQL ODBC-Treiber für deinen Linux-Server installieren</title>
+      <link>https://nickyreinert.de/2019/2019-04-24-den-korrekten-mysql-odbc-treiber-fuer-deinen-linux-server-installieren/</link>
+      <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2019/2019-04-24-den-korrekten-mysql-odbc-treiber-fuer-deinen-linux-server-installieren/</guid>
+      <description>Wenn du denkst, du hast alles richtig gemacht, nachdem du einer der halb vollständigen Anleitungen da draußen gefolgt bist, und dann wirst du nach der …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel bietet eine detaillierte Anleitung zur Installation und Konfiguration des korrekten MySQL ODBC-Treibers auf einem Linux-Server (Ubuntu). Er behandelt die Auswahl der passenden Treiberversion, den Download, die Installation und Registrierung des Treibers sowie die Überprüfung der Funktionalität, inklusive der Behebung häufiger Fehler bei der Treiberinstallation.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> MySQL, ODBC, Linux, Server Administration, Datenbanken, Treiber Installation, Ubuntu, Troubleshooting</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Wenn du denkst, du hast alles richtig gemacht, nachdem du einer der halb vollständigen Anleitungen da draußen gefolgt bist, und dann wirst du nach der mühseligen Installation von ein paar ODBC-Treibern doch mit der folgenden Fehlermeldung begrüßt:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[ISQL]ERROR: Could not SQLDriverConnect
+</span></span><span class="line"><span class="ln">2</span><span class="cl">[01000][unixODBC][Driver Manager]Can&#39;t open lib &#39;/usr/local/lib/libmyodbc8w.so&#39; : file not found
+</span></span><span class="line"><span class="ln">3</span><span class="cl">[ISQL]ERROR: Could not SQLDriverConnect
+</span></span></code></pre></div><p>Doch tatsächlich existiert die Datei. Die Fehlermeldung ist nur etwas unpräzise und vermutlich hast du die falschen Treiber heruntergeladen. Damit dir das nicht noch mal passiert, hier eine endgültige, hoffentlich vollständige Anleitung zur Installation der MySQL-ODBC Treiber (unter Ubuntu, aber leicht übertragbar auf andere Distributionen):</p>
+<h2 id="die-richtige-treiber-version-herunterladen">Die richtige Treiber-Version herunterladen</h2>
+<p>Zunächst musst du herausbekommen, welche Betriebssystem-Version du nutzt. Das funktioniert mit:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ lsb_release -a
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Distributor ID: Ubuntu
+</span></span><span class="line"><span class="ln">3</span><span class="cl">Description:    Ubuntu 16.04.5 LTS
+</span></span><span class="line"><span class="ln">4</span><span class="cl">Release:        16.04
+</span></span><span class="line"><span class="ln">5</span><span class="cl">Codename:       xenial
+</span></span></code></pre></div><p>Außerdem benötigst du noch deinen Architektur-Typ, also 32- oder 64bit. Wenn LSB diese Info nicht liefert, kannst du folgendes probieren:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ uname -a
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Linux 192.168.10.10 4.4.0-042stab136.1 #1 SMP Wed Feb 27 09:04:24 MSK 2019 x86_64 x86_64 x86_64 GNU/Linux
+</span></span></code></pre></div><p>Mit diesen Informationen ausgestattet, besorgst du dir nun die passenden Treiber-Dateien von <a href="https://dev.mysql.com/downloads/connector/odbc/">https://dev.mysql.com/downloads/connector/odbc/</a> - ich gehe mal davon aus, dass du die aktuellste MySQL-Version benutzt und deshalb auch die Treiber in der Version 8 benötigst.</p>
+<p>Kopiere dir am besten den Download-Link, damit du das Archiv direkt auf dem Server mit wget herunterladen kannst, z.B. so:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="o">$</span> <span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">dev</span><span class="o">.</span><span class="n">mysql</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">get</span><span class="o">/</span><span class="n">Downloads</span><span class="o">/</span><span class="n">Connector</span><span class="o">-</span><span class="n">ODBC</span><span class="o">/</span><span class="mf">8.0</span><span class="o">/</span><span class="n">mysql</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">odbc</span><span class="o">-</span><span class="mf">8.0</span><span class="o">.</span><span class="mi">15</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ubuntu16</span><span class="o">.</span><span class="mi">04</span><span class="o">-</span><span class="n">x86</span><span class="o">-</span><span class="mi">64</span><span class="n">bit</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</span></span></code></pre></div><h2 id="die-treiber-installieren-und-registrieren">Die Treiber installieren und registrieren</h2>
+<p>Wenn der Download beendet wurde, entpackst du die Datei mit den folgenden Befehlen und wechselst danach in das soeben entstandene Verzeichnis:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ gunzip mysql-connector-odbc-8.0.15-linux-ubuntu16.04-x86-64bit.tar.gz
+</span></span><span class="line"><span class="ln">2</span><span class="cl">$ tar xvf mysql-connector-odbc-8.0.15-linux-ubuntu16.04-x86-64bit.tar
+</span></span><span class="line"><span class="ln">3</span><span class="cl">$ cd mysql-connector-odbc-8.0.15-linux-ubuntu16.04-x86-64bit
+</span></span></code></pre></div><p>Nun kopierst du das Installations-Script - was du vermutlich nicht benötigen wirst - und die Treiber-Dateien in die entsprechenden Ordner:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ cp bin/* /usr/local/bin
+</span></span><span class="line"><span class="ln">2</span><span class="cl">$ cp lib/* /usr/local/lib
+</span></span></code></pre></div><p>Das war es schon fast. Als nächstes musst du die Treiber noch &ldquo;anmelden&rdquo;. Mit diesem Befehl bekommst du heraus, wo sich die Einstellungs-Datei für ODBC befindet.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ odbcinst -j
+</span></span><span class="line"><span class="ln">2</span><span class="cl">unixODBC 2.3.6
+</span></span><span class="line"><span class="ln">3</span><span class="cl">DRIVERS............: /etc/odbcinst.ini
+</span></span><span class="line"><span class="ln">4</span><span class="cl">SYSTEM DATA SOURCES: /etc/odbc.ini
+</span></span><span class="line"><span class="ln">5</span><span class="cl">FILE DATA SOURCES..: /etc/ODBCDataSources
+</span></span><span class="line"><span class="ln">6</span><span class="cl">USER DATA SOURCES..: /root/.odbc.ini
+</span></span><span class="line"><span class="ln">7</span><span class="cl">SQLULEN Size.......: 8
+</span></span><span class="line"><span class="ln">8</span><span class="cl">SQLLEN Size........: 8
+</span></span><span class="line"><span class="ln">9</span><span class="cl">SQLSETPOSIROW Size.: 8
+</span></span></code></pre></div><p>Es kann durchaus sein, dass die Datei für die Treiber (/etc/odbcinst.ini) noch nicht existiert, dann legst du sie einfach an und ergänzt die folgenden Zeilen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ nano /etc/odbcinst.ini
+</span></span><span class="line"><span class="ln">2</span><span class="cl">[MySQL ODBC 8.0 Unicode Driver]
+</span></span><span class="line"><span class="ln">3</span><span class="cl">Driver=/usr/local/lib/libmyodbc8w.so
+</span></span><span class="line"><span class="ln">4</span><span class="cl">UsageCount = 1
+</span></span><span class="line"><span class="ln">5</span><span class="cl">[MySQL ODBC 8.0 ANSI Treiber]
+</span></span><span class="line"><span class="ln">6</span><span class="cl">Driver=/usr/local/lib/libmyodbc8a.so
+</span></span><span class="line"><span class="ln">7</span><span class="cl">UsageCount = 1
+</span></span></code></pre></div><p>Wie du siehst, steckt dahinter keine Raktentechnologie und in den meisten Fällen dürften diese Grundeinstellungen ausreichen. Du kannst die Datei natürlich noch ausbauen, eine ganze Menge zusätzlicher Parameter festlegen und nicht nur für MySQL nutzen (<a href="https://www.systutorials.com/docs/linux/man/5-odbcinst.ini/">siehe hier</a>).</p>
+<h2 id="die-funktionalität-testen">Die Funktionalität testen</h2>
+<p>Zum Abschluss kannst du folgendermaßen prüfen, ob die Einrichtung funktioniert hat. Wie du siehst, referenzierst du die oben registrierten Treiber:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ isql -v -k &#34;DRIVER={MySQL ODBC 8.0 Unicode Driver};SERVER=192.168.10.99;UID=root;PWD=password&#34;
+</span></span></code></pre></div><p>Sollte der Aufruf mit der folgenden Fehlermeldung quittiert werden, prüfe zunächst, ob die Datei vorhanden ist. Wenn dem so ist, ist es möglich, dass du oben die falschen Architektur oder Version der Treiber ausgewählt hast - auch dann beschwert sich isql, dass die Datei &ldquo;nicht gefunden werden kann&rdquo;:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[01000][unixODBC][Driver Manager]Can&#39;t open lib &#39;/usr/local/lib/libmyodbc8w.so&#39; : file not found
+</span></span><span class="line"><span class="ln">2</span><span class="cl">[ISQL]ERROR: Could not SQLDriverConnect
+</span></span></code></pre></div><p>Ansonsten solltest du auf die Konsole von deinem MySQL-Server gelangen, die in etwa so aussieht - und dann hast du alles richtig gemacht:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">+---------------------------------------+
+</span></span><span class="line"><span class="ln">2</span><span class="cl">| Connected!                            |
+</span></span><span class="line"><span class="ln">3</span><span class="cl">|                                       |
+</span></span><span class="line"><span class="ln">4</span><span class="cl">| sql-statement                         |
+</span></span><span class="line"><span class="ln">5</span><span class="cl">| help [tablename]                      |
+</span></span><span class="line"><span class="ln">6</span><span class="cl">| quit                                  |
+</span></span><span class="line"><span class="ln">7</span><span class="cl">|                                       |
+</span></span><span class="line"><span class="ln">8</span><span class="cl">+---------------------------------------+
+</span></span><span class="line"><span class="ln">9</span><span class="cl">SQL&gt;
+</span></span></code></pre></div>
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> MySQL, ODBC, Linux, Server, Anleitung, Datenbank</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Den korrekten MySQL ODBC-Treiber für deinen Linux-Server installieren - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>how-to_guide</dc:type>
+      
+      
+    </item><item>
+      <title>Dateien von einem kaputten Android-Smartphone retten</title>
+      <link>https://nickyreinert.de/2019/2019-01-26-dateien-von-einem-kaputten-android-smartphone-retten/</link>
+      <pubDate>Sat, 26 Jan 2019 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2019/2019-01-26-dateien-von-einem-kaputten-android-smartphone-retten/</guid>
+      <description>Ich hab hier gerade ein altes LG Nexus auf dem Tisch liegen, bei dem das Display in der unteren Hälfte nach einem Sturz nicht mehr funktioniert. Und das ist ja …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel beschreibt, wie man Daten von einem defekten Android-Smartphone (z.B. mit kaputtem Display) mithilfe des Google-Tools &#39;Android File Transfer&#39; für Mac retten kann. Er hebt die einfache Bedienung des Tools hervor, das den Zugriff auf das Dateisystem ermöglicht und das Kopieren von Dateien per Drag-and-Drop erlaubt.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Android, Datenrettung, Smartphone, macOS, Dateimanagement, Troubleshooting, Mobile Geräte</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Ich hab hier gerade ein altes LG Nexus auf dem Tisch liegen, bei dem das Display in der unteren Hälfte nach einem Sturz nicht mehr funktioniert. Und das ist ja eigentlich der Supergau. Denn für gewöhnlich schützt man sein Gerät ja mit einer Geste vor fremden Zugriffen. Das Problem ist also: Wenn früh um sechs Uhr der voreingestellte Wecker angeht, kannst du ihn nicht mehr deaktivieren. Und außerdem kommst du nicht mehr an deine Dateien ran, wenn das Smartphone, wie eben das Nexus von LG, seine Daten nicht gerade auf einer externen Speicherkarte ablegt.</p>
+<p>Das Nexus war zwar bei einer Werkstatt, mit dem Auftrag, die Daten aus dem internen Speicher wieder herzustellen. Doch die konnten wohl auch nicht viel machen. Also wurden die Daten abgeschrieben und das Nexus verstaubte seit Jahren im Schrank in der Hoffnung, die Zukunft würde die Lösung bringen. Und das tut sie&hellip;</p>
+<p>Heute bin ich nämlich zufällig auf ein Tool von Google für den Mac gestoßen, das zwar nicht das Wecker-Problem löst, aber zumindest den Zugriff auf deine Daten ermöglicht: <a href="https://www.android.com/filetransfer/">Android File Transfer</a>. Einige werden jetzt denken: Alter Hut. Aber ich höre gerade das erstmal von <em>AFT.</em> Und offenbar kannten die Experten diese Software bisher auch nicht.</p>
+<p><a href="https://www.nickyreinert.de/files/grafik-14.png"><img src="/2019/2019-01-26-dateien-von-einem-kaputten-android-smartphone-retten/images/grafik-14-700x457.png" alt=""></a></p>
+<p>Android File Transfer - Zugriff auf das Dateisystems deines Android-Gerätes</p>
+<p>Zur Bedienung: Du lädst das dmg-Archiv runter, kopierst das Tool in deinen App-Ordner und startest es. Nachdem du dein Android-Gerät per USB angeschlossen hast, kannst du durch das Dateisystem browsen und Dateien und Ordner beliebig ber Drag&rsquo;n&rsquo;Drop auf deinen Computer kopieren. Problem gelöst.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Android, Datenrettung, Smartphone, Mac, Troubleshooting</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>tools</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Dateien von einem kaputten Android-Smartphone retten - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>how-to_guide</dc:type>
+      
+      
+    </item><item>
       <title>Wordpress Debugging und Wartung oder: Keine Panik vor dem White Screen of Death und HTTP 500</title>
       <link>https://nickyreinert.de/2018/2018-11-18-wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death/</link>
       <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
@@ -208,7 +387,7 @@
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Eine umfassende Anleitung zur Fehlersuche und Wartung von WordPress. Der Artikel erklärt, wie man Probleme wie den &#34;White Screen of Death&#34; (WSoD) und HTTP-500-Fehler systematisch analysiert. Vorgestellt werden drei wesentliche Werkzeuge: die Entwicklerkonsole des Browsers, das Plugin &#34;Query Monitor&#34; zur Performance-Analyse und die korrekte Konfiguration des WordPress-Debug-Modus über `wp-config.php` und `.htaccess`.</p>
+          <p>Eine umfassende Anleitung zur Fehlersuche und Wartung von WordPress. Der Artikel erklärt, wie man Probleme wie den &#39;White Screen of Death&#39; (WSoD) und HTTP-500-Fehler systematisch analysiert. Vorgestellt werden drei wesentliche Werkzeuge: die Entwicklerkonsole des Browsers, das Plugin &#39;Query Monitor&#39; zur Performance-Analyse und die korrekte Konfiguration des WordPress-Debug-Modus über &#39;wp-config.php&#39; und &#39;.htaccess&#39;.</p>
           
           
           <p><strong>Hauptthemen:</strong> WordPress, Debugging, Troubleshooting, Performance, PHP, Web-Development</p>
@@ -382,7 +561,7 @@ Ach ja - wenn all das da oben nicht funktioniert, dann kannst du tatsächlich au
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Eine detaillierte Checkliste und Anleitung zur Fehlerbehebung bei einem WordPress-Umzug. Der Artikel führt schrittweise durch potenzielle Fehlerquellen, von lokalen DNS-Cache-Problemen im Browser und Betriebssystem über die korrekte Domain- und Hoster-Konfiguration bis hin zu den notwendigen Anpassungen in der WordPress-Datenbank und der `wp-config.php`.</p>
+          <p>Eine detaillierte Checkliste und Anleitung zur Fehlerbehebung bei einem WordPress-Umzug. Der Artikel führt schrittweise durch potenzielle Fehlerquellen, von lokalen DNS-Cache-Problemen im Browser und Betriebssystem über die korrekte Domain- und Hoster-Konfiguration bis hin zu den notwendigen Anpassungen in der WordPress-Datenbank und der &#39;wp-config.php&#39;.</p>
           
           
           <p><strong>Hauptthemen:</strong> WordPress, Website-Migration, DNS, Webhosting, Troubleshooting, Server-Administration</p>
@@ -482,6 +661,508 @@ Ach ja - wenn all das da oben nicht funktioniert, dann kannst du tatsächlich au
       
       
     </item><item>
+      <title>XAMPP startet nicht mehr, nachdem eine php-Extension hinzugefügt wurde</title>
+      <link>https://nickyreinert.de/2017/2017-10-19-xampp-startet-nicht-mehr-nachdem-eine-php-extension-hinzugefuegt-wurde/</link>
+      <pubDate>Thu, 19 Oct 2017 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2017/2017-10-19-xampp-startet-nicht-mehr-nachdem-eine-php-extension-hinzugefuegt-wurde/</guid>
+      <description>Ich hatte hier neulich das Problem, dass ich die mongodb Extension für PHP aktivieren wollte und sich danach der Apache-Dienst nicht mehr starten ließ. Aber der …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel beschreibt die Fehlersuche und temporäre Behebung eines Problems, bei dem XAMPP unter macOS nach dem Hinzufügen einer PHP-Erweiterung (z.B. MongoDB) den Apache-Dienst nicht mehr startet. Er führt durch die Analyse von Log-Dateien und Shell-Befehlen, um Berechtigungsprobleme zu identifizieren, und bietet eine Lösung zur Wiederherstellung der Funktionalität.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> XAMPP, PHP, Apache, macOS, Webserver, Troubleshooting, Entwicklungsumgebung, MongoDB</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Ich hatte hier neulich das Problem, dass ich die mongodb Extension für PHP aktivieren wollte und sich danach der Apache-Dienst nicht mehr starten ließ. Aber der Reihe nach:</p>
+<p>Das System ist OS 10.12.6 und ich nutze das XAMPP-Paket 7.1.9 mit entsprechend PHP 7.1. Außerdem habe ich mir homebrew installiert, da die Installation von pecl zu Umständlich (ich hätte alle möglichen  Abhängigkeiten installieren müssen). Mit homebrew habe ich mir also den aktuellen mongodb-Treiber installiert, das geht recht einfach mit:</p>
+<p>brew update
+brew install php71-mongodb</p>
+<p>Danach lässt sich die Extension in der /Applications/XAMPP/xamppfiles/etc/php.ini Datei aktivieren:</p>
+<p>extension=&quot;/usr/local/opt/php71-mongodb/mongodb.so&quot;</p>
+<p>Soweit. So einfach. Das Problem: Nachdem ich diese Zeile in der php.ini Datei hinzugefügt hatte, ließ sich der Apache-Dienst nicht mehr über die XAMPP-Oberfläche starten, obwohl diese mit root-Rechten ausgeführt wird. Leider gab auch die Log-Datei /Applications/XAMPP/xamppfiles/logs/error_log nicht viel her. Und auch nachdem ich die Zeile aus der php.ini-Datei entfernt habe, trat das Problem weiter auf. Ich bekam den Web-Server also nicht zum laufen und an keiner Stelle in den Log-Dateien war ersichtlich, was nicht stimmte.</p>
+<p>[caption id=&ldquo;attachment_1567&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/xampp-startet-nicht-mehr-nachdem-eine-php-extension-hinzugefuegt-wurde/XAMPP-UI-in-OS-X.png"><img src="/2017/2017-10-19-xampp-startet-nicht-mehr-nachdem-eine-php-extension-hinzugefuegt-wurde/images/XAMPP-UI-in-OS-X-300x209.png" alt="XAMPP UI in OS X um den Web-Server zu starten"></a> XAMPP UI in OS X um den Web-Server zu starten[/caption]</p>
+<h2 id="recherche-der-aufgerufenen-kommandos">Recherche der aufgerufenen Kommandos</h2>
+<p>Also musste ich mich auf die Fehlersuche machen. Und das ist recht umständlich, denn der Klick auf den Button im XAMPP-UI stößt eine etwas längere Befehlskette an an deren Ende der Start des http-Daemons steht:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">/Applications/XAMPP/xamppfiles/ctlscript.sh start apache
+</span></span><span class="line"><span class="ln">2</span><span class="cl">-&gt; 
+</span></span><span class="line"><span class="ln">3</span><span class="cl">/Applications/XAMPP/xamppfiles/apache2/scripts/ctl.sh start
+</span></span><span class="line"><span class="ln">4</span><span class="cl">-&gt;
+</span></span><span class="line"><span class="ln">5</span><span class="cl">/Applications/XAMPP/xamppfiles/xampp startapache 
+</span></span><span class="line"><span class="ln">6</span><span class="cl">-&gt; 
+</span></span><span class="line"><span class="ln">7</span><span class="cl">/Applications/XAMPP/xamppfiles/bin/apachectl -k start -E /Applications/XAMPP/xamppfiles/logs/error_log -DSSL -DPHP
+</span></span><span class="line"><span class="ln">8</span><span class="cl">-&gt;
+</span></span><span class="line"><span class="ln">9</span><span class="cl">/Applications/XAMPP/xamppfiles/bin/httpd -k start -E /Applications/XAMPP/xamppfiles/logs/error_log -DSSL -DPHP
+</span></span></code></pre></div><p>Ich hab mir also den letzten Aufruf geschnappt und auf der Konsole ausgeführt. Dort erhielt ich den ersten entscheidenen Hinweis - die log-Dateien waren nicht schreibbar:</p>
+<p>(13)Permission denied: AH00086: httpd: could not open error log file /Applications/XAMPP/xamppfiles/logs/error_log.
+AH00548: NameVirtualHost has no effect and will be removed in the next release /Applications/XAMPP/xamppfiles/etc/extra/httpd-vhosts.conf:40
+(13)Permission denied: AH00072: make_sock: could not bind to address [::]:80
+(13)Permission denied: AH00072: make_sock: could not bind to address 0.0.0.0:80
+no listening sockets available, shutting down</p>
+<p>Das lässt sich schnell mit folgendem Aufruf beheben:</p>
+<p>sudo chmod a+w /Applications/XAMPP/xamppfiles/logs/error_log</p>
+<p>Damit war es natürlich noch nicht getan. Erst jetzt konnte ich dem error.log entnehmen, was das eigentliche Problem war:</p>
+<p>AH00548: NameVirtualHost has no effect and will be removed in the next release /Applications/XAMPP/xamppfiles/etc/extra/httpd-vhosts.conf:40
+(13)Permission denied: AH00072: make_sock: could not bind to address [::]:80
+(13)Permission denied: AH00072: make_sock: could not bind to address 0.0.0.0:80
+no listening sockets available, shutting down
+AH00015: Unable to open logs</p>
+<h2 id="lösung---fehlende-rechte">Lösung - fehlende Rechte</h2>
+<p>Im Grunde war ja schon klar, was getan werden musste: Der Aufruf mit sudo. Damit lässt sich der Apache-Dienst also zumindest erstmal starten:</p>
+<p>sudo /Applications/XAMPP/xamppfiles/bin/httpd -k start -E /Applications/XAMPP/xamppfiles/logs/error_log -DSSL -DPHP</p>
+<p>Das eigentliche Problem bleibt freilich bestehen: Was hat das mit der php-Extension zu tun? Liegt es an dem mongodb-Treiber selber oder ist es ein generelles Problem? Bisher bin ich noch nicht dahinter gestiegen. Aber zumindest lässt sich der Web-Server erstmal wieder starten.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> mongodb, osx, php, xampp, Troubleshooting</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>development</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>XAMPP startet nicht mehr, nachdem eine php-Extension hinzugefügt wurde - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>troubleshooting_guide</dc:type>
+      
+      
+    </item><item>
+      <title>SSL-Verifizierung mit PHP schlägt fehlt (Fehler 14090086)</title>
+      <link>https://nickyreinert.de/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/</link>
+      <pubDate>Sat, 14 Oct 2017 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/</guid>
+      <description>Wenn dich PHP mit dieser Fehlermeldung (oder einer ähnlichen Fehlernummer) begrüßt, dann liegt es wohl daran, dass beim Abruf einer SSL-Ressource die Identität …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel bietet Lösungen für SSL-Verifizierungsfehler in PHP (Fehler 14090086) beim Zugriff auf externe Ressourcen. Er erklärt die Risiken der Verifizierungsunterdrückung und zeigt detailliert, wie man die vollständige Zertifikatskette manuell einrichtet und PHP global über &#39;openssl.cafile&#39; konfiguriert, um eine korrekte SSL-Authentifizierung zu gewährleisten.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> PHP, SSL, Zertifikate, Websicherheit, Troubleshooting, OpenSSL, cURL, Server Konfiguration</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Wenn dich PHP mit dieser Fehlermeldung (oder einer ähnlichen Fehlernummer) begrüßt, dann liegt es wohl daran, dass beim Abruf einer SSL-Ressource die Identität nicht verifiziert werden konnte. Und das ist auch gut so, denn der Sinn von SSL ist ja das Herstellen einer gesicherten Verbindung.<br>
+So sieht die Fehlermeldung bei Verwendung von <em>file_get_contents();</em> aus. Aber auch andere Funktionen, mit denen man auf externe Ressourcen verweisen kann, werfen diesen Fehler, wie z.B. <em>imagecreatefrompng();</em>.</p>
+<p>Warning: file_get_contents(): SSL operation failed with code 1.
+OpenSSL Error messages:
+error:14090086:SSL routines:ssl3_get_server_certificate:certificate
+verify failed in /website/script.php
+on line 50</p>
+<p>Warning: file_get_contents():
+Failed to enable crypto in /website/script.php<br>
+on line 50</p>
+<p>Warning: file_get_contents(<a href="https://www.nickyreinert.de/foobar.json%29">https://www.nickyreinert.de/foobar.json)</a>:
+failed to open stream: operation failed in /website/script.php<br>
+on line 50</p>
+<p>Die Erklärung ist simpel: PHP kennt den Aussteller des Zertifikates für <a href="https://www.nickyreinert.de">https://www.nickyreinert.de</a> nicht und verweigert aus Sicherheitsgründen den Aufbau einer Verbindung. Die Ursachen hingegen können vielfältig sein, oft ist der Aussteller des Zertifikats z.B. nicht bekannt. Wir müssen also entweder dafür sorgen, dass PHP dem Aussteller vertraut oder festlegen, dass PHP die Zertifikate gar nicht erst prüft.</p>
+<h2 id="verifizierung-des-ssl-hosts-unterdrücken">Verifizierung des SSL Hosts unterdrücken</h2>
+<p>Das ist die quick&rsquo;n&rsquo;dirty Lösung. Zumindest <em>file_get_contents()</em>; kann mit Parametern gefüttert werden, die die Verifizierung der Ressource unterdrücken:</p>
+<p>$stream = stream_context_create(array(    
+$stream = stream_context_create(array(
+&ldquo;ssl&rdquo;=&gt;array(     
+&ldquo;verify_peer&rdquo;=&gt; false,    
+&ldquo;verify_peer_name&rdquo;=&gt; false, ),
+&lsquo;http&rsquo; =&gt; array(    
+&rsquo;timeout&rsquo; =&gt; 30     ) )     );</p>
+<p>$result = file_get_contents($url, 0, $stream);</p>
+<p>Wer auf eine eigene Ressource zurückgreift, z.B. im lokalen Netz oder zu Testzwecken, kann damit leben. Aus Sicherheitsgründen ist die Lösung allerdings nicht zu empfehlen. Außerdem erlaubt nicht jede Funktion die Angabe eines Stream-Contextes, wie z.B. <em>imagecreatefromjpeg();</em></p>
+<h2 id="die-zertifikatskette-manuell-einrichten">Die Zertifikatskette manuell einrichten</h2>
+<p>Man kommt also nicht darum, die saubere Lösung zu nutzen. Dazu muss man wissen, dass es in den allermeisten Fällen nicht nur um das eine Zertifikat geht, sondern um die gesamte Zertifikatskette. Diese beinhaltet auch die Zertifikate der Stellen, die dem infragekommenden Server, also <a href="https://www.nickyreinert.de">https://www.nickyreinert.de</a>, das Zertifikat ausgestellt haben. Wenn PHP diese Stellen nicht kennt, geht es auch davon aus, dass die von dort ausgestellten Zertifikate nicht gültig sind.</p>
+<p><a href="https://www.nickyreinert.de/files/1561/ssl-zertifikats-kette.png"><img src="/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/images/ssl-zertifikats-kette-300x219.png" alt=" SSL Zertifikats-Kette mit den Intermediate Zertifikaten"></a></p>
+<p>SSL Zertifikats-Kette mit den Intermediate Zertifikaten</p>
+<p>Um die Zertifikatskette zu erhalten, kannst du einen Service wie <a href="https://whatsmychaincert.com/">https://whatsmychaincert.com/</a> nutzen. Dieser liefert dir eine Datei mit der  kompletten Zertifikatskette. Oder du machst dich selber auf die Suche. Jedes Zertfikat enthält den Namen des Ausstellers bzw. den Typ des Zertifikats. Damit lassen sich die notwendigen Zwischenzertifkate auch manuell zusammenstellen.</p>
+<h2 id="php-die-zertifikatskette-mitteilen">PHP die Zertifikatskette mitteilen</h2>
+<p>Die Datei mit der Zertifikatskette gehört nun, oh Wunder, an einen Ort, den PHP erreichen kann. Dann musst du PHP noch mitteilen, dass es auch diese Zertifikatskette berücksichtigen soll. Auch das passiert über den Stream-Context, den ich oben schon angesprochen habe. Doch diesmal erlauben wir PHP, den SSL-Host zu verfizieren und verweisen auf die Zertifikatskette, die wir oben erstellt haben:</p>
+<p>$stream = stream_context_create(array(
+&ldquo;ssl&rdquo;=&gt;array(    
+&ldquo;cafile&rdquo; =&gt; &ldquo;<a href="https://www.nickyreinert.de.pem">www.nickyreinert.de.pem</a>&rdquo;,    
+&ldquo;verify_peer&rdquo;=&gt; true,    
+&ldquo;verify_peer_name&rdquo;=&gt; true, ),&lsquo;http&rsquo; =&gt; array(    
+&rsquo;timeout&rsquo; =&gt; $this-&gt;configUrlTimeOut     ) )
+;
+$config = file_get_contents($url, 0, $stream);</p>
+<p>Geschafft. PHP sollte nun, zur Laufzeit, den SSL-Host überprüfen und dabei auf die Zertifikate zurückgreifen, die die Authentizität einwandfrei bestätigen.</p>
+<p>Man kann den Verweis auch an anderer Stelle global definieren. Die PHP-Funktion openssl_get_cert_locations(); teilt uns direkt mit, wo PHP nach gültigen Zertifikaten sucht:</p>
+<p>Array
+(
+[default_cert_file] =&gt; /Applications/XAMPP/xamppfiles/share/openssl/cert.pem
+[default_cert_file_env] =&gt; SSL_CERT_FILE
+[default_cert_dir] =&gt; /Applications/XAMPP/xamppfiles/share/openssl/certs
+[default_cert_dir_env] =&gt; SSL_CERT_DIR
+[default_private_dir] =&gt; /Applications/XAMPP/xamppfiles/share/openssl/private
+[default_default_cert_area] =&gt; /Applications/XAMPP/xamppfiles/share/openssl
+[ini_cafile] =&gt; /Applications/XAMPP/xamppfiles/share/curl/curl-ca-bundle.crt
+[ini_capath] =&gt;
+)</p>
+<p>Der entscheidende Parameter lautet <strong>ini_cafile</strong>. Diese wird in der php.ini mit dem Parameter</p>
+<p>openssl.cafile=/Applications/XAMPP/xamppfiles/share/curl/curl-ca-bundle.crt</p>
+<p>gesetzt. Die gleiche Info erhältst du auch über die bekannte Funktion phpinfo(), dort lautet der Parameter <strong>openssl.cafile</strong>.</p>
+<p>In der entsprechenden Datei liegen eine Menge von Root-Zertifikaten, bzw. Certificate-Authorities. Sprich die Aussteller, denen PHP grundsätzlich vertraut. Mitunter macht es mehr Sinn, diese Einstellung in der php.ini zu nutzen, damit auch curl() darauf zurückgreifen kann.</p>
+<p>Wenn du PHP-FPM benutzt, musst du den Parameter übrigens folgendermaßen ansprechen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">php_admin_value[openssl.cafile] = /Applications/XAMPP/xamppfiles/share/curl/curl-ca-bundle.crt
+</span></span></code></pre></div><h2 id="zusammenfassung">Zusammenfassung</h2>
+<p>Die SSL-Fehlermeldung hat ihren Sinn. PHP ist nicht in der Lage, die Authentizität des Servers zu überprüfen. Der korrekte Weg das Problem zu beheben, ist das Zertifikat der entsprechenden Seite herunterzuladen, die Intermediate-Zertifikate und das Root-Zertifikat zu besorgen und alle Zertifikate im PEM-Format in eine Text-Datei zu packen.<br>
+Danach kannst du entweder auf die URL zugreifen und über den Stream-Kontext auf diese Datei mit der Zertifikats-Kette verweisen, oder du legst in den globalen PHP-Einstellungen fest, dass PHP diese Datei beim nächsten Mal berücksichtigen soll.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> certificate-chain, curl, intermediate, php, ssl, zertifikate, zertifikatskette, Troubleshooting</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>SSL-Verifizierung mit PHP schlägt fehlt (Fehler 14090086) - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>troubleshooting_guide</dc:type>
+      
+      
+    </item><item>
+      <title>Defekte MP4 Videodatei reparieren</title>
+      <link>https://nickyreinert.de/2017/2017-09-24-defekte-mp4-videodatei-reparieren/</link>
+      <pubDate>Sun, 24 Sep 2017 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2017/2017-09-24-defekte-mp4-videodatei-reparieren/</guid>
+      <description>Hilfe verspricht in diesem Fall &ldquo;Video Repair Software&rdquo; von Grau für Windows und MacOS. Alles was du benötigst ist, neben der defekten MP4 …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel evaluiert verschiedene Softwarelösungen zur Reparatur defekter MP4-Videodateien, darunter &#39;Grau Video Repair Software&#39;, &#39;Yodot MOV Repair Tool&#39; und &#39;Remo Repair MOV&#39;. Er beleuchtet deren Funktionen, Einschränkungen und die Erfahrungen des Autors bei der Wiederherstellung einer beschädigten Datei, wobei die meisten Versuche, einschließlich manueller Reparaturen, erfolglos blieben.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Videoreparatur, MP4, Videodateien, Software-Tools, Troubleshooting, Datenrettung, Multimedia</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Hilfe verspricht in diesem Fall &ldquo;<a href="http://grauonline.de/cms2/?page_id=5">Video Repair Software</a>&rdquo; von <em>Grau</em> für Windows und MacOS. Alles was du benötigst ist, neben der defekten MP4 Videodatei, eine funktionierende Referenz-Datei, die mit der gleichen Android-Kamera aufgezeichnet wurde. Du fütterst die Software mit den beiden Video-Dateien, startest den &ldquo;Scan&rdquo; und kannst, wenn dein Glück dich nicht vollkommen verlassen hast, die Vorschau der Reparatur verfolgen und das Video und als funktionierende Video-Datei exportieren.</p>
+<p>[caption id=&ldquo;attachment_1001&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;150&rdquo;]<a href="http://www.freecoffee.de/wp-content/uploads/2014/02/Bildschirmfoto-2014-02-08-um-10.14.02.png"><img src="images/Bildschirmfoto-2014-02-08-um-10.14.02-150x150.png" alt="Bildschirmfoto 2014-02-08 um 10.14.02"></a> Grau GbR Video Repair Software[/caption]</p>
+<p>Leider ist die Software nicht kostenlos erhältlich und repariert im DemoModus nur 50% der Videodatei. Meine defekte MP4 Videodatei konnte ich zwar komplett exportieren, aber der Ton war nur bis zur etwa der Hälfte wiederhergestellt. Ob das an der Testversion oder dem Defekt der Datei liegt, lässt sich nicht sagen. Auf der Suche nach einer Alternative fand ich das <a href="http://www.yodot.com/download/thank-you-for-downloading-ymovr.html">MOV Repair Tool</a> von Yodot, das ebenfalls für Windows und MacOS erhältlich ist. Die Software bietet keine Einstellungsmöglichkeiten an und verlangt als Input lediglich die defekte MP4 Videodatei.</p>
+<p>[caption id=&ldquo;attachment_1002&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;150&rdquo;]<a href="http://www.freecoffee.de/wp-content/uploads/2014/02/Bildschirmfoto-2014-02-08-um-10.25.44.png"><img src="images/Bildschirmfoto-2014-02-08-um-10.25.44-150x150.png" alt="Bildschirmfoto 2014-02-08 um 10.25.44"></a> Yodot MOV Repair Tool[/caption]</p>
+<p>Leider bricht das Tool die Reparatur mit der Meldung ab, dass das Kameramodell nicht unterstützt wird. Der dritte Versuch startet mit <a href="http://www.fixmp4.com/de/">Repair MOV</a> von Remo - einer weiteren kostenpflichtigen Software, die damit wirbt, defekte Videodateien reparieren zu können. Diese Software verlangt ebenfalls eine Referenzdatei. Ein Video, das direkt von der Android-Kamera stammt, wird  zwar nicht akzeptiert. Jedoch nimmt Repair MOV interessanterweise die reparierte Videodatei aus meinem ersten Durchgang an.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2014/02/Bildschirmfoto-2014-02-08-um-10.35.53.png"><img src="images/Bildschirmfoto-2014-02-08-um-10.35.53-150x150.png" alt="Bildschirmfoto 2014-02-08 um 10.35.53"></a></p>
+<p> </p>
+<p>Nach dem die &ldquo;Reparatur&rdquo; beendet ist, kann man sich die Vorschau innerhalb der Software anzeigen lassen. Zum Exportieren des Videos muss man die Software jedoch lizensieren. Der Vorschaubildschirm bleibt bei mir allerdings schwarz.</p>
+<p>[caption id=&ldquo;attachment_1004&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;150&rdquo;]<a href="http://www.freecoffee.de/wp-content/uploads/2014/02/Bildschirmfoto-2014-02-08-um-10.46.43.png"><img src="images/Bildschirmfoto-2014-02-08-um-10.46.43-150x80.png" alt="Bildschirmfoto 2014-02-08 um 10.46.43"></a> Hexcode einer MP4 Videodatei[/caption]</p>
+<p>Fazit: Eins von drei kostenpflichtigen Tools schafft es, die defekte MP4-Datei zu reparieren. Ansonsten ist das Angebot leider mager. Ein Blick in den Header der defekten Datei und der Versuch, den defekt auf &ldquo;Nerd-Weise&rdquo; zu beheben, schlug letztlich auch fehl. Der Hex-Editor zeigt einen großen Bereich, der mit Nullen gefüllt ist. Hier scheint der Fehler zu liegen. Diese zu entfernen, bringt leider nicht den gewünschten Erfolg - genauso wenig, wie die Header einer defekten und funktionierenden MP4-Datei zu &ldquo;synchronisieren&rdquo;.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Video, Reparatur, Software, Tools, Anleitung, Troubleshooting</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>tools</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Defekte MP4 Videodatei reparieren - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>software_review</dc:type>
+      
+      
+    </item><item>
+      <title>SFTP auf Microsoft IIS korrekt einrichten</title>
+      <link>https://nickyreinert.de/2015/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten/</link>
+      <pubDate>Wed, 14 Oct 2015 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2015/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten/</guid>
+      <description>Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Problem, denen du begegnen wirst.
+Du kannst die Verbindung zum …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt häufige Probleme bei der Einrichtung eines SFTP-Servers auf Microsoft IIS, darunter Zertifikatsfehler, Probleme mit passiven Verbindungen und Benutzerberechtigungen. Er bietet Lösungen, wie die korrekte Generierung von Server-Zertifikaten mittels PowerShell und die Behebung von Verbindungsschwierigkeiten.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> SFTP, Microsoft IIS, Server Konfiguration, Netzwerksicherheit, Zertifikate, PowerShell, Troubleshooting, Windows Server</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Problem, denen du begegnen wirst.</p>
+<blockquote>
+<ol>
+<li>
+<ol>
+<li>
+<p>Du kannst die Verbindung zum Server nicht herstellen, weil das Server-Zertifikat ungültig ist. Die Fehlermeldung in FileZilla lautet dann z.B.<br>
+GnuTLS error -48: Key usage violation in certificate has been detected. Could not connect to server</p>
+</li>
+<li>
+<p>Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast, kann die Verbindung nicht vollendet werden. FileZilla bleibt dann z.B. bei der folgenden Zeile stehen:</p>
+<p>150 Opening BINARY mode data connection</p>
+</li>
+</ol>
+</li>
+</ol></blockquote>
+<p>3. Und schließlich kann es sein, dass der Benutzer nicht die nötigen Zugriffsrechte für den Ordner hat, den du in den Einstellungen des FTP-Servers angegeben hast.</p>
+<p>Keine Sorge. Mit diesen drei Probleme durfte auch ich schon kämpfen und ich habe die Lösungen hier zusammengetragen. Also.. eins nach dem anderen.</p>
+<p>Die Ursache des ersten Problems ist der Assistent, mit dem man im IIS das Server-Zertifikat erstellt. Auf den Punkt gebracht, nutzt dieser ein paar falsche Parameter. Aus diesem Grund muss das Zertifikat per Hand in der PowerShell erstellt werden. Wichtig: In der normalen Konsole funktioniert das nicht.</p>
+<p><a href="https://superuser.com/questions/1167351/filezilla-reporting-gnutls-error-48-key-usage-violation-in-certificate-has-be">https://superuser.com/questions/1167351/filezilla-reporting-gnutls-error-48-key-usage-violation-in-certificate-has-be</a></p>
+<p>According to a post in the <a href="https://forums.iis.net/t/1234970.aspx">IIS forums</a>, you can generate the certificate with PowerShell instead until the issue is fixed by Microsoft:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">New-SelfSignedCertificate -CertStoreLocation cert:\LocalMachine\My -dnsname ftp.example.com
+</span></span></code></pre></div><p>Replace <code>ftp.example.com</code> by your server&rsquo;s hostname.</p>
+<p>You will get a fingerprint, copy that. Set a password for the private key:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$password = ConvertTo-SecureString -String &#34;password goes here&#34; -Force -AsPlainText
+</span></span></code></pre></div><p>Now export it (you can change <code>C:\cert.pfx</code> to the path you want to save it to, just make sure it ends in <code>.pfx</code>):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Export-PfxCertificate -cert cert:\LocalMachine\My\FINGERPRINT -FilePath C:\cert.pfx -Password $password
+</span></span></code></pre></div><p>Benutzer anlegen</p>
+<p><a href="https://www.nickyreinert.de/files/ssl-zertifikat-auf-windows-korrekt-installieren/windows-server-ssl-zertifikat-zuweisen.png"><img src="/2015/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten/images/windows-server-ssl-zertifikat-zuweisen-300x121.png" alt=""></a></p>
+<p><strong>siehe auch:</strong></p>
+<p><a href="https://www.visualsvn.com/support/topic/00056/">https://www.visualsvn.com/support/topic/00056/</a></p>
+<p>[http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/ http://ekiwi-blog.de/?p=3465](<a href="http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/">http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/</a> <a href="http://ekiwi-blog.de/?p=3465">http://ekiwi-blog.de/?p=3465</a>)</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> SFTP, IIS, Windows Server, Anleitung, Troubleshooting, Netzwerk</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>SFTP auf Microsoft IIS korrekt einrichten - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>troubleshooting_guide</dc:type>
+      
+      
+    </item><item>
+      <title>WooCommerce und Permalinks</title>
+      <link>https://nickyreinert.de/2014/2014-04-16-woocommerce-und-permalinks/</link>
+      <pubDate>Wed, 16 Apr 2014 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2014/2014-04-16-woocommerce-und-permalinks/</guid>
+      <description>Für gewöhnlich versucht man in WordPress SEO-freundliche Permalinks zu verwenden. Dies geschieht über die Einstellungen der Permalinks und dort z.B. über die …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine kurze Anleitung zur Behebung eines 404-Fehlers bei WooCommerce-Produktkategorien, der nach der Konfiguration SEO-freundlicher Permalinks auftreten kann. Die Lösung besteht darin, in den WordPress-Permalink-Einstellungen einen Wert für die &#39;Produktkategorie-Basis&#39; festzulegen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> WooCommerce, WordPress, Permalinks, SEO, E-Commerce, Troubleshooting</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Für gewöhnlich versucht man in WordPress SEO-freundliche Permalinks zu verwenden. Dies geschieht über die Einstellungen der Permalinks und dort z.B. über die Option &ldquo;Beitragsname&rdquo;. Nutzt man nun WooCommerce und ändert auch dort die Darstellung der Permalinks (im gleichen Menü) auf z.B. Shop-Basis, lassen sich zunächst die Produkte wie gewohnt mit den &ldquo;hübschen&rdquo; Permalinks darstellen. Doch leider funktioniert die Verlinkung der Kategorien nicht. Wordpress zeigt einen 404-Fehler an. Das Problem zu beheben ist allerdings recht einfach: In den Einstellungen der Permalinks muss im Bereich &ldquo;Optional&rdquo; ein Wert für &ldquo;Kategorie-Basis Produkte&rdquo; angegeben werden. Jetzt sollten die Permalinks auch für die Kategorien funktionieren!</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> WooCommerce, WordPress, SEO, Troubleshooting</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>wordpress</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>WooCommerce und Permalinks - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>troubleshooting_guide</dc:type>
+      
+      
+    </item><item>
+      <title>MacOS Finder und die SMB / Windows - Netzwerkfreigaben</title>
+      <link>https://nickyreinert.de/2013/2013-02-24-macos-finder-und-die-smb-windows-netzwerkfreigaben/</link>
+      <pubDate>Sun, 24 Feb 2013 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2013/2013-02-24-macos-finder-und-die-smb-windows-netzwerkfreigaben/</guid>
+      <description>Immer wenn ich die Verbindung zu meinem Heimnetz hergestellt habe, sei es über WLAN oder Kabel, dauerte es eine gefühlte Ewigkeit, bis der Finder (sic!) mein …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine Anleitung aus dem Jahr 2013 zur Behebung langsamer Verbindungen von macOS Finder zu SMB/Windows-Netzwerkfreigaben (z.B. NAS). Der Artikel beschreibt eine Lösung, die das Erstellen und Speichern einer &#39;nsmb.conf&#39;-Datei im &#39;/etc&#39;-Verzeichnis mit spezifischen Konfigurationen beinhaltet, um die Erkennung und Verbindung zu beschleunigen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> macOS, SMB, Netzwerkfreigaben, NAS, Troubleshooting, System-Konfiguration</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Immer wenn ich die Verbindung zu meinem Heimnetz hergestellt habe, sei es über WLAN oder Kabel, dauerte es eine gefühlte Ewigkeit, bis der Finder (sic!) mein NAS gefunden hat, obwohl beide am gleichen Switch hängen. Es half dabei auch nichts, wenn ich direkt zum NAS verbinden wollte, weil ich die IP-Adresse kenne (Apfel + K). Das hab ich eine Weile ignoriert, dann akzeptiert, aber irgendwann konnte ich die Geduld nicht mehr aufbringen und habe mich auf die Suche nach einer Lösung gemacht.</p>
+<p>Diese fand ich in den <a href="https://discussions.apple.com/thread/2172049?start=15&amp;tstart=0">Apple Support Foren.</a> Ein langer Beitrag kurz zusammengefasst:</p>
+<p>1. Erstelle ein Textdatei mit dem Inhalt</p>
+<blockquote>
+<p>[default]
+minauth=none
+streams=no
+soft=yes
+notify_off=yes
+domain=DOMAIN_NAME_DEINER_NETZWERKFREIGABE
+port445=no_netbios
+[NAME_DEINER_NETZWERKFREIGABE]
+addr=IP-ADRESSE_DEINER_FREIGABE</p></blockquote>
+<p>2. Speichere die Datei mit dem Namen &ldquo;nsmb.conf&rdquo; unter /etc ab. (Ggf.mit der Konsole / dem Terminal arbeiten). 3. Starte dein Mac(Book) neu.</p>
+<p>Danach dauerte es nur noch Bruchteile von Sekunden, bis die Netzwerkfreigabe im Finder sichtbar war.</p>
+<p> </p>
+<p>Update: Mit dem kostenfrei erhältlichen <a href="http://www.apple.com/de/osx/">Update auf MacOS 10.9 Mavericks</a> scheint dieses Problem behoben zu sein!</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> macOS, Netzwerk, Troubleshooting, Anleitung</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>os-x</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>MacOS Finder und die SMB / Windows - Netzwerkfreigaben - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>troubleshooting_guide</dc:type>
+      
+      
+    </item><item>
       <title>FAQ</title>
       <link>https://nickyreinert.de/2005/2005-04-16-faq/</link>
       <pubDate>Sat, 16 Apr 2005 00:00:00 +0000</pubDate>
@@ -495,7 +1176,7 @@ Skype &amp; HTTP-Server ? Mein …</description>
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Eine Sammlung häufig gestellter Fragen (FAQ) und deren Lösungen für verschiedene Windows-Programme und Systemprobleme aus dem Jahr 2005. Behandelt werden Themen wie Port-Konflikte mit Skype, Reparatur von Word, ActiveSync-Verbindungsprobleme, `hal.dll`-Fehler und viele weitere Tipps und Tricks für Windows-Nutzer.</p>
+          <p>Eine Sammlung häufig gestellter Fragen (FAQ) und deren Lösungen für verschiedene Windows-Programme und Systemprobleme aus dem Jahr 2005. Behandelt werden Themen wie Port-Konflikte mit Skype, Reparatur von Word, ActiveSync-Verbindungsprobleme, &#39;hal.dll&#39;-Fehler und viele weitere Tipps und Tricks für Windows-Nutzer.</p>
           
           
           <p><strong>Hauptthemen:</strong> Windows, Troubleshooting, Systemadministration, Software-Tipps, Legacy-IT</p>

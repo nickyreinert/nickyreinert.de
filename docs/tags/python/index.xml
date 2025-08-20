@@ -13,7 +13,365 @@
     <managingEditor></managingEditor>
     <webMaster></webMaster>
     <copyright></copyright>
-    <lastBuildDate>Wed, 09 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/python/index.xml" rel="self" type="application/rss+xml" /><item>
+    <lastBuildDate>Mon, 01 May 2023 12:19:31 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/tags/python/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Die Nerd Enzyklopädie 23 - 30 x 10 = 1.000</title>
+      <link>https://nickyreinert.de/2023/2023-05-01-nerd-enzyklop%C3%A4die-23---30-x-10--1.000/</link>
+      <pubDate>Mon, 01 May 2023 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2023/2023-05-01-nerd-enzyklop%C3%A4die-23---30-x-10--1.000/</guid>
+      <description>
+Wenn du deinen Python-Nachlass mit ein wenig Pfeffer würzen willst, empfiehlt es sich, die „Definition eines Integers“ zu ändern. Wenn du in Python eine Zahl …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine humorvolle Demonstration aus der &#39;Nerd Enzyklopädie&#39;, die zeigt, wie man in Python die interne Darstellung von Integer-Objekten mittels &#39;ctypes&#39; manipuliert. Der Artikel präsentiert ein Code-Beispiel, das dazu führt, dass eine scheinbar einfache Multiplikation wie &#39;30 * 10&#39; ein unerwartetes Ergebnis von &#39;1000&#39; liefert, und warnt vor den daraus resultierenden Debugging-Herausforderungen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Python, Speichermanagement, Programmierung, Debugging, Nerd-Kultur</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p><img src="/2023/2023-05-01-nerd-enzyklop%C3%A4die-23---30-x-10--1.000/image1.png" alt=""></p>
+<p>Wenn du deinen Python-Nachlass mit ein wenig Pfeffer würzen willst, empfiehlt es sich, die „Definition eines Integers“ zu ändern. Wenn du in Python eine Zahl verwendest, nehmen wir die 30, verwendet Python die 30 als Referenz auf ein Objekt im Speicher, in dem wiederum der Wert 30 hinterlegt wird. Die 30 ist also ein Verweis auf ein Objekt, das den tatsächlichen Wert enthält. In der Regel sollten Verweis und Wert gleich sein, sonst wird das mit der Mathematik schwierig.</p>
+<p>Schwierig? Das mögen Nerds doch!</p>
+<p>Mit dieser Funktion kannst du einen derartigen Verweis anpassen und einen abweichenden Wert hinterlegen:</p>
+<pre><code>import ctypes   
+def reference(val):  
+  return ctypes.cast(id(val), ctypes.POINTER(ctypes.c_int))
+</code></pre>
+<p>Und so aktivierst du den „Spaß“:</p>
+<pre><code>reference(30)[6] = 100
+</code></pre>
+<p>Willst du nun mit der Ziffer 30 mathematische Operationen durchführen, erzeugt das interessante Ergebnisse:</p>
+<pre><code>&gt;&gt;&gt; 30 * 10  
+&gt;&gt;&gt; 1000
+</code></pre>
+<p>Viel Spaß beim Debuggen!</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Python, Code-Trick, Nerd-Enzyklopädie, Debugging</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 23 - 30 x 10 = 1.000 - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>code_demonstration</dc:type>
+      
+      
+    </item><item>
+      <title>Random Knowledge</title>
+      <link>https://nickyreinert.de/2022/2022-10-21-random-knowledge/</link>
+      <pubDate>Fri, 21 Oct 2022 07:51:37 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2022/2022-10-21-random-knowledge/</guid>
+      <description>&ldquo;Random Knowledge&rdquo; ist ein automatisierter Podcast, bei dem eine computer-generierte Stimme zufällige Artikel der Wikipedia vorliest.
+Dazu wird in …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine Vorstellung des Projekts &#39;Random Knowledge&#39;, eines automatisierten Podcasts, der zufällige englische Wikipedia-Artikel mit einer computergenerierten Stimme vorliest. Der Artikel beschreibt den technischen Workflow, von der Textaufbereitung über die Umwandlung in Sprache mittels Google Text-to-Speech bis zur Distribution über &#39;anchor.fm&#39; an verschiedene Podcast-Plattformen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Podcast, Automatisierung, Text-to-Speech, Wikipedia, Python, NLP, KI-Anwendung</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>&ldquo;Random Knowledge&rdquo; ist ein automatisierter Podcast, bei dem eine computer-generierte Stimme zufällige Artikel der Wikipedia vorliest.</p>
+<p>Dazu wird in Python ein zufälliger Artikel der englischen Wikipedia abgerufen und vorbereitet. Der gesamte Artikel wird in Abschnitte getrennt, Bereiche, die nicht vorlesbar sind, wie z.B. Tabellen, werden entfernt. Über die Text-to-Speech-API von Google wird der Text in Sprache umgewandelt und als Audio-Datei abgelegt. Die Dateien werden über eine undokumentierte Schnittstelle zu anchor.fm hochgeladen und von dort an die gängigen Portale verteilt (Spotify, Deezer, Google, Amazon, Apple, &hellip;)</p>
+<p><a href="https://spotifyanchor-web.app.link/e/zjG3R1ANFxb">https://spotifyanchor-web.app.link/e/zjG3R1ANFxb</a></p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Podcast, Automatisierung, KI, Python, Projekt</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>projekte</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Random Knowledge - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>project_showcase</dc:type>
+      
+      
+    </item><item>
+      <title>Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&amp;nbsp;1/2)</title>
+      <link>https://nickyreinert.de/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/</link>
+      <pubDate>Sun, 31 Oct 2021 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/</guid>
+      <description>SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. SHA-256 ist Teil einer ganzen Gruppe von Algorithmen, mit dem gleichen Ziel: …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel ist der erste Teil einer detaillierten Erklärung des SHA-256 Algorithmus. Er behandelt die Grundlagen kryptologischer Hashfunktionen, die Bedeutung von Hashes in der Blockchain-Technologie und führt in binäre Zahlen und grundlegende bitweise Operationen wie XOR, AND, Negation, Shift und Rotate ein, die für das Verständnis des Algorithmus unerlässlich sind.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> SHA-256, Kryptographie, Hashfunktionen, Blockchain, Bitcoin, Binäre Operationen, Python, Algorithmen</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. <a href="https://de.wikipedia.org/wiki/SHA-2">SHA-256 ist Teil einer ganzen Gruppe von Algorithmen</a>, mit dem gleichen Ziel: Die Erzeugung eines Hashes, der resistent gegen Kollisionen ist, dessen Berechnung nur in eine Richtung funktioniert und eine feste Länge hat. Im folgenden Artikel beschreibe ich die einzelnen Schritte die der Algorithmus vornimmt, um einen Hash zu erzeugen.</p>
+<p><em>Im ersten Teil kümmern wir uns um die Vorbereitungen, im <a href="https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/">zweiten Teil</a> geht es an den eigentlichen Algorithmus. Der Sourcecode</em> <a href="https://gist.github.com/nickyreinert/00d631fe9a90108924b1df6e911c8cd5"><em>liegt auf Github</em></a><em>.</em></p>
+<h3 id="was-wirst-dulernen">Was wirst du lernen?</h3>
+<p>Neben dem Erzeugen eines SHA-256 wirst du hier vor allem den Umgang mit binären Zahlen und binäre Rechenoperationen wie <strong>XOR</strong>, <strong>AND</strong> usw kennenleren. Ich gehe allerdings davon aus, dass ein Grundverständnis für binäre Zahlen vorhanden ist, der Fokus liegt auf dem Algorithmus. <strong>10</strong> sollte in deinem Kopf also entweder für die <strong>zehn</strong> oder eine <strong>zwei</strong> stehen. (Oder auch <strong>zwölf</strong>, wenn du das <strong>Duodezimalsystem</strong> magst.)</p>
+<h3 id="vorwort">Vorwort</h3>
+<p>Bricht man das auf eine maximal laienhafte Beschreibung herunter, passiert bei einer krytpologischen Hash-Funktion das folgende: Ein Ausgangs-Text <strong>beliebiger</strong> Länge wird so verarbeitet, dass daraus einen Ergebnis-Text (<em>der</em> <em>Hash</em>) mit der <strong>immer gleichen</strong> Länge entsteht. Es ist nahezu unmöglich, aus dem Hash den Ausgangs-Text zu berechnen. Außerdem kann man fast sicher davon ausgehen, dass jeder Ausgangs-Text <strong>einen anderen Hash</strong> erzeugt. Ändere ich nur ein Zeichen, wirkt sich das drastisch auf den Ausgangs-Text aus. Ein derartiger Algorithmus ist daher zB prädestiniert, Texte, sprich Nachrichten, zu verfizieren. Man spricht deswegen auch von einer Prüfsumme.</p>
+<p>Und das ist die Grundlage einer Technologie, die in jüngster Vergangenheit immer mehr von sich Reden macht: Die <strong>Blockchain</strong>, Basis für Kryptowährungen wie zB den <strong>Bitcoin</strong>. Bei der Blockchain sind, und auch das nur laienhaft heruntergebrochen, die Einträge des “Kassenbuches” sicher vor Manipulation, weil eben die Änderung eines historischen Wertes (zB Buchungsvorganges) unweigerlich eine drastische Änderung der daraus erzeugten Prüfsummen nach sich ziehen würde. Um den Blockchain-Apologeten gleich den Wind aus den Segeln zu nehmen zitiere ich mal Fefe, sinngemäß: <a href="https://ptrace.fefe.de/Blockchain/#46">Es geht auch einfacher</a>. Ich gebrauche Bitcoin hier auch nur als Buzzword, aus Marketing-Gründen. :]</p>
+<p>Um dich nun aber auch zum Weiterlesen zu motivieren, ein wichtiger Hinweis:</p>
+<p>Der Algorithmus wird dazu verwendet, die nächsten Einträge der Blockchain zu berechnen. Genau genommen wird hier ein bestimmter Hash vorgegeben, der errechnet werden soll (das berüchtigte <em>Mining</em>). Die Belohnung für die korrekte Berechnung sind Bitcoins. Das Problem: Diese Berechnung ist <strong>sehr,</strong> <strong>sehr aufwendig</strong>, denn wie schon oben geschrieben: Sie funktioniert nur in eine Richtung. Die <em>Miner</em> müssen also unsagbar viele Berechnungen durchführen, um einen Ziel-Wert zu errechnen. Und der Miner, der die Berechnung am schnellsten ausführt, wird dafür auch belohnt. Gelingt es dir also, wider erwarten, den Algorithmus zu optimieren, kannst du im Mining-Business ganz groß rauskommen. Das klingt doch nach einer Herausforderung, oder? ;)</p>
+<p><img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/images/image2.png" alt=""></p>
+<p>Quelle: <a href="https://peakd.com/deutsch/@marcus0alameda/dagobert-gold-bitcoin-perfektion">https://peakd.com/deutsch/@marcus0alameda/dagobert-gold-bitcoin-perfektion</a></p>
+<blockquote>
+<p>Disclaimer: Ich habe den ganzen Algorithmus in Python nachgebaut. Python ist aus Performance-Sicht sicher nicht die beste Option, um SHA-256 zu berechnen und der Umgang mit binären oder hexadezimalen Werten ist etwas unbequem. Python eignet sich dank Jupyter aber am ehesten dazu, einen komplexen Algorithmus Schritt-für-Schritt zu beschreiben.</p></blockquote>
+<h3 id="einführung">Einführung</h3>
+<p>Bevor wir uns an die Schleifen machen, müssen wir uns um ein paar Funktionen kümmern, die wir später dazu nutzen, um <strong>binäre Zahlen</strong> ein wenig durchzumischen.</p>
+<blockquote>
+<p>Hinweis 1: Ich verzichte im folgenden auf die Präfixe der Zahlensystem, wie zB 0b für binär, um den Text übersichtlich zu halten. Ich gehe davon aus, dass folgendes bekannt ist: 0 =&gt; Falsch und 1 =&gt; Wahr</p></blockquote>
+<blockquote>
+<p>Hinweis 2: Im Kontext von SHA-256 entspricht ein Wort (bzw word) genau 32 Bit. In der Regel entspricht 1 Word = 2 Byte = 16 Bit.</p></blockquote>
+<h4 id="das-explizite-oderxor">Das explizite Oder (XOR)</h4>
+<p>Das explizite Oder (<strong>Entweder-Oder</strong>) ist ein elementarer logischer, bitweise Operator. Der Ausgang der Operation ist nur dann wahr, wenn exakt ein Zustand wahr ist (im Vergleich dazu ist das Ergebnis bei dem “einfachen“ <strong>OR</strong> übrigens dann wahr, wenn mindestens ein Operand wahr ist oder beide).</p>
+<p>Es werden also zwei Werte folgendermaßen verarbeitet:</p>
+<p><img src="images/image.png" alt=""></p>
+<p>XOR: nur wenn genau ein Wert wahr (1) ist, ist die entsprechende Stelle im Ergebnis wahr (1)</p>
+<p>Die Implementierung in Python erfolgt mit dem <strong>Zirkumflex</strong>:</p>
+<p># 110 ^ 100<br>
+# 010</p>
+<h4 id="das-logische-undand"><strong>Das logische Und (AND)</strong></h4>
+<p>Der AND-Operator ist ebenfalls recht geläufig und vergleichsweise simpel. Analog zu XOR ist das Ergebnis wahr, wenn exakt beide (bzw. alle) Operanden wahr sind.</p>
+<p><img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/images/image-4.png" alt=""></p>
+<p>AND: Nur wenn beide Werte einer Stelle wahr sind, ist die Stelle im Ergebnis wahr</p>
+<p>Die Implementierung in Python erfolgt mit dem <strong>kaufmännischen Und</strong>:</p>
+<p># 110 &amp; 100<br>
+# 100</p>
+<h4 id="die-negierung-nope">Die Negierung (Nope?)</h4>
+<p>Jetzt wirds seltsam: Auch dafür gibt es einen Operator: Der bitweise Operator <strong>Negierung</strong> dreht Werte um. Aus 0 wird 1, aus 1 wird 0.</p>
+<p><img src="images/image-3.png" alt=""></p>
+<p>Die Negierung kehrt Werte bitweise um. Nicht mehr aber auch nich weniger.</p>
+<p>Die Implementierung in Python erfolgt mit der <strong>Tilde —</strong> meinem Lieblingszeichen!</p>
+<p># ~110<br>
+# 001</p>
+<h4 id="die-shift-operation"><strong>Die Shift-Operation</strong></h4>
+<p>Die Shift-Funktion ist eine elementare binäre Rechenoperation, bei der die einzelnen Stellen eines binären Werts <strong>nach links oder rechts geschoben</strong> werden. Die freien Stellen auf der jeweils anderen Seite werden mit 0 aufgefüllt.</p>
+<p><img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/images/image-6.png" alt=""></p>
+<p>Shift nach links um eine Stelle, aus 6 wird 12</p>
+<p>Und jetzt gibt es hoffentlich einen positiven Knick in der Lernkurve: Wenn du genau hinschaust, fällt dir etwas auf und lass mich dir versichern, es handelt sich nicht um einen Zufall: 12 ist das Produkt aus 6 und 2. Das deutet auf ein interessanten Nebeneffekt: Ein Shift kommt einer Multiplikation bzw. Division mit 2 gleich. Ein Shift um mehrere Stellen entspricht demnach einer Multiplikation mit einer Potenz zur Basis 2 besteht. Klingt kompliziert, deswegen ein Beispiel:</p>
+<p>Anstatt 139 * 2 ^17 kannst du die binäre Darstellung von 139, also 10001011, um 17 Stellen nach links shiften. Das Ergebnis: 1000101100000000000000000. Zähl gerne nach, rechts der 1 eins gibt es jetzt 17 Nullen.</p>
+<p>In Python ist der binäre Shift mit dem <strong>Doppelpfeil</strong> implementiert:</p>
+<p># 110 &raquo; 1<br>
+# 011</p>
+<p># 110 &laquo; 2<br>
+# 000</p>
+<h4 id="die-rotate-funktion">Die Rotate-Funktion</h4>
+<p><strong>Rotate</strong> bedeutet, dass ein die Werte einer (binären) Zahl in eine Richtung verschoben werden. Und das erklärt man am besten an einem Beispiel. Die folgende Zahlenreihe soll um einen Zähler nach links rotiert werden. Die Zahl auf der linken Seite fällt also heraus und wir rechts wieder angehangen. Die anderen Zahlen rücken eine Position nach links.</p>
+<p><img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/images/image-5.png" alt=""></p>
+<p>Rotate eines binären Wertes um eine Stelle nach links, aus 6wird 5</p>
+<p>Das funktioniert in beide Richtungen und mit beliebig vielen Stellen. Die entsprechende Funktion (<a href="https://stackoverflow.com/a/59005609/2360229">Kudos an so</a>) sieht so aus:</p>
+<p>def rotate(value, rotations, width = 32):<br>
+if int(rotations) != abs(int(rotations)):<br>
+rotations = width + int(rotations)<br>
+return (int(value) &laquo; (width - (rotations%width)) | (int(value) &raquo; (rotations % width))) &amp; ((1 &laquo; width) - 1)</p>
+<h4 id="die-sigma-funktionen">Die Sigma-Funktionen</h4>
+<p>Insgesamt werden vier sogenannte <strong>Sigma-Funktionen</strong> verwendet. <strong>σ0</strong> und <strong>σ1</strong> (das kleine Sigma) bzw. <strong>Σ0</strong> und <strong>Σ1</strong> (das große Sigma, vielen bekannt als das Summen-Zeichen). Alle funktionen werden mit einem binären Wert aufgerufen und geben diesen binären Wert in veränderter Form zurück.</p>
+<p>σ0 (<strong>sigma0</strong>) läuft folgendermaßen ab:</p>
+<ul>
+<li>der Ausgangs-Wert wird um 7 <strong>Stellen</strong> nach <strong>rechts rotiert</strong></li>
+<li>der Ausgangs-Wert wird um <strong>18 Stellen</strong> nach <strong>rechts rotiert</strong></li>
+<li>der Ausgangs-Wert wird um <strong>3 Stellen</strong> nach <strong>rechts geshifted</strong></li>
+</ul>
+<p>Daraus entstehen drei unterschiedliche Werte, die miteinander <strong>XOR-Verknüpft</strong> werden. Die Funktion dazu in Python:</p>
+<p>def sigma0(word):<br>
+part1 = bin(rotate(int(word, 2), 7, 32))<br>
+part2 = bin(rotate(int(word, 2), 18, 32))<br>
+part3 = bin(int(word, 2) &raquo; 3)<br>
+return bin(int(part1, 2) ^ int(part2, 2) ^ int(part3, 2))[2:].zfill(32)</p>
+<blockquote>
+<p><strong>Wichtiger Hinweis</strong>: Ich arbeite mit bin() und in(s, 2), um die Ausgaben und Eingaben leserlich und vor allem nachvollziehbar zu machen. Außerdem sorge ich mit [2:] dafür, dass die binäre Darstellung ohne <strong>0b</strong> auskommt. Das kommt dem Lernzweck zugute, da die binären Operationen an dezimalen Werten schwerer nachvollziehbar sind. Mit zfill(32) (<strong>zero fill</strong>) wird der binäre Wert nach links um so viele Nullen erweitert, um immer <strong>32 Stellen</strong> zu umfassen. Teilweise erleichtert das die Übersicht, andererseits erfüllt das später auch eine Längen-Vorgabe. Die obere Funktion kann also auch folgendermaßen vereinfacht werden:</p></blockquote>
+<p>def sigma0(word):<br>
+part1 = rotate(word, 7, 32)<br>
+part2 = rotate(word, 18, 32)<br>
+part3 = word &raquo; 3<br>
+return part1 ^ part2  ^ part3</p>
+<p>Bei σ1 (<strong>sigma1</strong>) sieht es ganz ähnlich aus:</p>
+<ul>
+<li>der Ausgangs-Wert wird um <strong>17 Stellen</strong> nach <strong>rechts rotiert</strong></li>
+<li>der Ausgangs-Wert wird um <strong>19 Stellen</strong> nach <strong>rechts rotiert</strong></li>
+<li>der Ausgangs-Wert wird um <strong>10</strong> <strong>Stellen</strong> nach <strong>rechts geshifted</strong></li>
+</ul>
+<p>Daraus entstehen drei unterschiedliche Werte, die miteinander <strong>XOR-Verknüpft</strong> werden. Die Funktion dazu in Python:</p>
+<p>def sigma0(word):<br>
+part1 = bin(rotate(int(word, 2), 7, 32))<br>
+part2 = bin(rotate(int(word, 2), 18, 32))<br>
+part3 = bin(int(word, 2) &raquo; 3)<br>
+return bin(int(part1, 2) ^ int(part2, 2) ^ int(part3, 2))[2:].zfill(32)</p>
+<p>Nun zu Σ0 (<strong>Sigma0</strong>). Auch hier keine großen Überaschungen, hier nun ohne <strong>Shift:</strong></p>
+<ul>
+<li>der Ausgangs-Wert wird um <strong>2 Stellen</strong> nach <strong>rechts rotiert</strong></li>
+<li>der Ausgangs-Wert wird um <strong>13 Stellen</strong> nach <strong>rechts rotiert</strong></li>
+<li>der Ausgangs-Wert wird um <strong>22</strong> <strong>Stellen</strong> nach <strong>rechts rotiert</strong></li>
+</ul>
+<p>Auch hier werden die jeweiligen Ergebnisse final <strong>XOR-Verknüpftg</strong>. In Python also:</p>
+<p>def upper_sigma0(word):<br>
+part1 = bin(rotate(int(word, 2), 2, 32))<br>
+part2 = bin(rotate(int(word, 2), 13, 32))<br>
+part3 = bin(rotate(int(word, 2), 22, 32))<br>
+return bin(int(part1, 2) ^ int(part2, 2) ^ int(part3, 2))[2:].zfill(32)</p>
+<p>Kommen wir zum letzten Teilnehmer unserer illustren griechischen Runde: Σ1 (<strong>Sigma1</strong>):</p>
+<ul>
+<li>der Ausgangs-Wert wird um <strong>6</strong> <strong>Stellen</strong> nach <strong>rechts rotiert</strong></li>
+<li>der Ausgangs-Wert wird um <strong>11Stellen</strong> nach <strong>rechts rotiert</strong></li>
+<li>der Ausgangs-Wert wird um <strong>25</strong> <strong>Stellen</strong> nach <strong>rechts rotiert</strong></li>
+</ul>
+<p>Und am Ende wieder die XOR-Verknüpfung. Python:</p>
+<p>def upper_sigma1(word):<br>
+part1 = bin(rotate(int(word, 2), 6, 32))<br>
+part2 = bin(rotate(int(word, 2), 11, 32))<br>
+part3 = bin(rotate(int(word, 2), 25, 32))<br>
+return bin(int(part1, 2) ^ int(part2, 2) ^ int(part3, 2))[2:].zfill(32)</p>
+<h4 id="wahl-undmehrheit">Wahl und <strong>Mehrheit</strong></h4>
+<p>Bleiben wir noch etwas bei den Griechen und wechseln in die Politik: Die Wahl und die Mehrheit, englisch: <strong>choose</strong> und <strong>majority</strong>.</p>
+<p>Choose ist eine etwas komplexere Funktion, die drei binäre Werte verarbeitet und zwar wieder bitweise. Die Funktion geht durch die jeweiligen Stellen (x) des ersten Eingangswerts und prüft:</p>
+<ul>
+<li>Wenn <strong>x = 1</strong> dann nimm <strong>y</strong></li>
+<li>Wenn <strong>x = 0</strong> dann nimm <strong>z</strong></li>
+</ul>
+<p>Y und z stehen für die jeweiligen Stellen des zweiten und dritten Eingangswertes. Wie kann man das programmatisch lösen? So:</p>
+<p>def choose(word1, word2, word3):<br>
+bin_word1 = (int(word1, 2))<br>
+bin_word2 = (int(word2, 2))<br>
+bin_word3 = (int(word3, 2))<br>
+return bin((bin_word1 &amp; bin_word2) ^ (~bin_word1 &amp; bin_word3))[2:].zfill(32)</p>
+<p>Zunächst werden also Wert 1 und Wert 2 logisch UND-verknüpft. Dann wird die Negierung von Wert 1 mit Wert 3 UND-verknüpft. Die beiden Zwischensummen werden abschließend durch XOR gejagt.</p>
+<p>Majority prüft ganz einfach für jede Stelle der drei Eingangs-Werte, welcher Wert, 1 oder 0, häufiger vorkommt. Das sieht in Python so aus — hier erklär ich die logischen Operationen jetzt nicht noch mal, es werden einfach XOR und AND verknüpft:</p>
+<p>def majority(word1, word2, word3):<br>
+bin_word1 = (int(word1, 2))<br>
+bin_word2 = (int(word2, 2))<br>
+bin_word3 = (int(word3, 2))<br>
+return bin((bin_word1 &amp; bin_word2) ^ (bin_word1 &amp; bin_word3) ^ (bin_word2 &amp; bin_word3))[2:].zfill(32)</p>
+<p><strong>Primzahlen?</strong></p>
+<p>Um noch ein anderes beliebtes Feld der Arithmetik abzudecken, lasst uns noch kurz über Primzahlen reden. Primzahlen sind mystisch. Und damit genau richtig für unser irdisches Vorhaben, das Mining zu optimieren.</p>
+<p>SHA-256 nutzt Primzahlen als Grundlage für den Algorithmus. Was nicht bedeutet, dass das Ergebnis durchschaubar wäre.</p>
+<p>Wir fangen mal mit den ersten 64 Primzahlen an und bauen daraus einen Satz Konstanten. Selbstverständlich in Bitform.</p>
+<p>first_64_prime_numbers = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311]</p>
+<p>Diese werden nun aber auch noch ordentlich durch die Mangel genommen. Warum das erforderlich ist, kann ich nicht nachvollziehen. Aus meiner Sicht ist es ziemlich egal, welche Konstanten man verwendet werden, da sie immer gleich sind (deswegen ja <strong>konstant</strong>, diesmal übrigens aus dem lateinischen). Dahinter steckt also kein großes Geheimins.</p>
+<p>Aus den 64 Primzahlen wird zuerst jeweils die dritte Wurzel gezogen. Dann wird der natürliche Teil entfernt (sprich alles vor dem Komma) und das Ergebnis mit 2³² (aka 4.294.967.296, was übrigens auch der Anzahl verfügbarer IPv4-Adressen entspricht — der 2. positive Knick in der heutigen Lernkurve?) multipliziert. Wie du oben ja gelernt und hoffentlich noch nicht vergessen hast, ist die Mulitplikation mit 2^32 ja eigentlich gar nicht so aufwendig im Bituniversum.</p>
+<p>Das Ergebnis wird jedenfalls auf eine natürlich Zahl abgerundet — sprich alle Nachkommastellen entfernt. Wiederholt man das für die restlichen 63 Primzahlen, erhält man eine wohlgeformte Liste mit 64 Einträgen, die in etwa so aussehen, am Beispiel der notorischen Primzahl 2:</p>
+<p>01000010100010100010111110011000</p>
+<p>Oder als Hex-Wert:</p>
+<p>0x428a2f98</p>
+<p>Und im Dezimal-Zahlensystem:</p>
+<p>1.116.352.408</p>
+<p>Die Funktion dafür sieht folgendermaßen aus:</p>
+<p>result_constants = []<br>
+for prime_number in first_64_prime_numbers:<br>
+cube_root = prime_number ** (1./3.)<br>
+frac_part = cube_root - floor(cube_root)<br>
+product = frac_part * (2**32)<br>
+floored_product = floor(product)<br>
+result_constants.append(bin(floored_product)[2:].zfill(32))</p>
+<p>Das ganze nennen wir <strong>Ergebnis-Konstante</strong>, denn diese Liste ist der Anfang unsere finalen Ausgabe. Diese Liste heben wir gut auf und weil die Arbeit mit Primzahlen so befreiend ist, veranstalten wir für die ersten 8 Primzahlen einen ähnlichen Zirkus. Mit einem Unterschied: Als Grundlage dient diesmal die Quadrat-Wurzel:</p>
+<p>compression_constants = []<br>
+for prime_number in first_8_prime_numbers:<br>
+square_root = prime_number ** (1./2.)<br>
+frac_part = square_root - floor(square_root)<br>
+product = frac_part * (2**32)<br>
+floored_product = floor(product)<br>
+compression_constants.append(bin(floored_product)[2:].zfill(32))</p>
+<p>Die Namen haben übrigens eine Bedeutung, auf die ich später noch eingehe.</p>
+<h3 id="epilog">Epilog</h3>
+<p>Die Vorbereitungen sind damit abgeschlossen und wir können uns <a href="https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/">im zweiten Teil</a> dem eigentlichen Algorithmus widmen.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> SHA256, Kryptographie, Blockchain, Algorithmus, Python</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>anleitungen</category>
+      
+      <category>blog</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&amp;nbsp;1/2) - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>technical_guide</dc:type>
+      
+      
+    </item><item>
       <title>Einführung in Stemming und Lemmatisierung deutscher Texte mit Python</title>
       <link>https://nickyreinert.de/2020/2020-12-09-einfuehrung-in-stemming-und-lemmatisierung-deutscher-texte-mit-python/</link>
       <pubDate>Wed, 09 Dec 2020 00:00:00 +0000</pubDate>
@@ -162,6 +520,112 @@
       
       
       <dc:type>technical_comparison</dc:type>
+      
+      
+    </item><item>
+      <title>Fefes Blog - Eine Analyse</title>
+      <link>https://nickyreinert.de/2019/2019-11-05-fefes-blog-eine-analyse/</link>
+      <pubDate>Tue, 05 Nov 2019 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2019/2019-11-05-fefes-blog-eine-analyse/</guid>
+      <description>Nach der gar nicht mal so großen öffentlichen Wahrnehmung meiner laienhaften statistischen Analyse des Flirtportals der BVG &ldquo;Augenblicke&rdquo;, habe ich …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel bietet eine statistische Analyse von Fefes Blog, einem bekannten deutschen IT-Sicherheits- und Politik-Blog. Er untersucht die Entwicklung der Beitragsfrequenz, die Häufigkeit von Wörtern und externen Quellen, sowie die Blog-Zeiten. Zudem werden technische Aspekte des Web Scrapings und die Interpretation des Blog-eigenen Zeitstempelformats beleuchtet.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Web Analyse, Datenanalyse, Blog Analyse, Web Scraping, Python, Tableau, IT Sicherheit, Fefes Blog, Statistik</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Nach der gar nicht mal so großen öffentlichen Wahrnehmung meiner laienhaften <a href="https://www.nickyreinert.de/augenblicke-eine-statistische-analyse-des-flirt-portals-der-bvg/">statistischen Analyse des Flirtportals der BVG &ldquo;Augenblicke&rdquo;</a>, habe ich mich mal einem anderem Projekt gewidmet. Es geht um <a href="http://blog.fefe.de">Fefes Blog</a>, einer meiner ersten Anlaufstellen, wenn ich mir die tägliche Nachrichtendosis gebe. Inspiriert wurde ich dazu durch eine <a href="https://www.netaction.de/datenvisualisierung-von-fefes-blogzeiten/">Analyse der Blogzeiten von Fefe</a>, die allerdings schon acht Jahre zurück liegt.<br>
+Für meine Analyse des BVG-Portal hatte ich damals noch PHP gewählt, um die Seiten auszulesen und in eine Datenbank zu hauen. Das war ziemlich aufwendig. Diesmal wollte ich es mit Python probieren und damit auch gleich mein erstes Projekt in dieser Sprache realisieren (der Quellcode steht <a href="https://github.com/nickyreinert/fefeScrape">auf Github</a> zur Verfügung).</p>
+<p>Die ersten Schritte mit Python waren etwas holprig. Mit der Zeit zeigt sich aber, dass das Scraping hier weitaus bequemer ist als mit PHP. Außerdem ist Fefes Blog eine ziemlich angenehme Datenquelle, da Fefe seit Anbeginn auf eine wirklich saubere und konsistente Seitenstruktur setzt. Pures HTML. Es ist ein Traum. Danke, Fefe. Ein paar Hintergründe zur Datenerfassung gibt es am Ende.</p>
+<h2 id="auswertung">Auswertung</h2>
+<p>Insgesamt habe ich 43.908 Einträge im Zeitraum von Ende März 2005 bis Anfang November 2019 ausgewertet. Nach meiner Zählung hat Fefe einen sehr reichen Wortschatz: ich konnte 141.048 verschiedene &ldquo;Wörter&rdquo; ausfindig machen. Außerdem verweißt Fefe auf 8.862 externe Quellen. Auf sich selber hat Fefe innerhalb des Zeitraums 2.661 mal verlinkt. Auch wenn Fefe den Spiegel oft als &ldquo;ehemaliges Nachrichtenmagazin&rdquo; bezeichnet: Der Spiegel ist mit 4.447 Verlinkungen die meist genutzt Quelle, gefolgt von heise.de (3.252). Man muss aber auch eingestehen, dass die Verlinkung zum Spiegel seit 2010 stark abnimmt.</p>
+<p><a href="/2019/2019-11-05-fefes-blog-eine-analyse/images/fefe_words-1.png"><img src="/2019/2019-11-05-fefes-blog-eine-analyse/images/fefe_words-1-700x339.png" alt="Fefes Quellen - Spiegel Online, Heise und… er selbst ;)"></a></p>
+<p>Fefes Quellen - Spiegel Online, Heise und&hellip; er selbst ;)</p>
+<p>Insgesamt kann man einen Abwärtstrend der Nachrichtenfrequenz bei Fefe feststellen. Seinen Höhepunkt hatte Fefe gleich zu Beginn: Im Juli 2005 gab es 528 Einträge. Den zweiten Höhepunkt erreichte Fefes Blog knapp 10 Jahre später. Im April 2015 gab es 440 Einträge. Ansonsten zeigt der Trend leider nach unten. Im Schnitt gibt es jeden Monat 244 Beiträge (Median 238). Für November 2019 sagt das Prognosemodul von Tableau übrigens 182 Einträge voraus.</p>
+<p><a href="/2019/2019-11-05-fefes-blog-eine-analyse/images/monthly.png"><img src="/2019/2019-11-05-fefes-blog-eine-analyse/images/monthly-700x361.png" alt="Anzahl der Einträge pro Monat im Jahresverlauf"></a></p>
+<p>Anzahl der Einträge pro Monat im Jahresverlauf</p>
+<p><a href="/2019/2019-11-05-fefes-blog-eine-analyse/images/blogging-times.png"><img src="/2019/2019-11-05-fefes-blog-eine-analyse/images/blogging-times-62x300.png" alt="Anzahl der Nachrichten je Tageszeit im Jahresverlauf"></a></p>
+<p>Anzahl der Nachrichten je Tageszeit im Jahresverlauf</p>
+<p>In Anlehnung an mein Vorbild, habe ich mir natürlich auch angeschaut, zu welcher Tagszeit Fefe aktiv ist. Zunächst erkennt man, dass Fefe bevorzugt nachmittags aktiv ist. Aber scheinbar gibt es auch hier saisonale Unterschiede. So ist er im Januar bis Juli 2006, den März ausgeschlossen, eher ab 17 Uhr aktiv, danach aber wieder über den ganzen Tag verteilt (Nachtstunden ausgeschlossen). Im April und Mai 2007 konzentrieren sich die Nachrichten wieder auf den späten Nachmittag. In den folgenden Jahren, bis 2015, sind es immer wieder die Frühsommer / Frühlingsmonate, in denen sich die Beiträge zu dieser Tageszeit konzentrieren. Entweder ist Fefe ist ein ausgesprochener Frühlingsmensch. Eine andere Erklärung sind Projekte, die in diesen Monaten stattfinden und ein Bloggen erst zum Nachmittag zulassen. Denkbar ist auch, dass Fefe aufgrund seiner (zyklischen?) Reisetätigkeit und dem damit verbundenen Zeitzonenwechsel zu unterschiedlichen Zeiten bloggt.</p>
+<p>Kreuzt man den Wochentag mit der Tageszeit, zeigt sich, wann Fefe die meisten Beiträge absetzt. Mittwochs um 17 Uhr. Das Wochenende ist Fefe heilig, die Beitragsfrequenz ist hier sehr niedrig. Auch zu den typischen Nachtzeiten gibt es nur sehr wenige Einträge. Hier gibt es öfter auffällige Konzentrationen, wie z.B. im Frühling 2015, die ich auch auf Zeitzonenwechsel - sprich Reisen - schiebe.</p>
+<p><a href="/2019/2019-11-05-fefes-blog-eine-analyse/images/wochentag-x-uhrzeit-nachrichten-1.png"><img src="/2019/2019-11-05-fefes-blog-eine-analyse/images/wochentag-x-uhrzeit-nachrichten-1.png" alt="Anzahl der Nachrichten je Wochentag und Tageszeit"></a></p>
+<p>Anzahl der Nachrichten je Wochentag und Tageszeit</p>
+<p>Die längsten Nachrichten entstehen übrigens zur Nachtzeit (oder je nach Sichtweise, während den Reisen in andere Zeitzonen). Montags, um 5 Uhr, ist die durchschnittliche Wortzahl am höchsten. Der Median weist dazu übrigens den Sonntag um 2 Uhr nachts aus.</p>
+<ul>
+<li>
+<p><a href="/2019/2019-11-05-fefes-blog-eine-analyse/images/wochentag-x-uhrzeit-wortzahl-avg-1.png"><img src="/2019/2019-11-05-fefes-blog-eine-analyse/images/wochentag-x-uhrzeit-wortzahl-avg-1.png" alt=""></a></p>
+<p>Wortanzahl (Mittelwert) je Wochentag und Tageszeit</p>
+</li>
+<li>
+<p><a href="/2019/2019-11-05-fefes-blog-eine-analyse/images/wochentag-x-uhrzeit-wortzahl-median-1.png"><img src="/2019/2019-11-05-fefes-blog-eine-analyse/images/wochentag-x-uhrzeit-wortzahl-median-1.png" alt=""></a></p>
+<p>Wortanzahl (Median) je Wochentag und Tageszeit</p>
+</li>
+</ul>
+<p>Eine Wortwolke, analog der Wolke der externen Quellen, ist aufgrund der schieren Menge etwas zu aufwendig und hätte auch nur wenig Informationsgehalt, weshalb ich darauf mal verzichte. Hier nur eine Darstellung der häufigsten Wörter, weil es so schön aussieht:</p>
+<p><a href="/2019/2019-11-05-fefes-blog-eine-analyse/images/woerter.png"><img src="/2019/2019-11-05-fefes-blog-eine-analyse/images/woerter-700x387.png" alt="Spektakuläre Topliste der verwendeten Wörter"></a></p>
+<p>Spektakuläre Topliste der verwendeten Wörter</p>
+<p>Was ich allerdings liefern kann, ist eine Liste der Fefe-Kunstwörter, wie z.B. &ldquo;<a href="https://blog.fefe.de/?ts=a27615a6">Notfall-Soforthilfe-Klopapier&rdquo;</a>. Das längste dieser Art ist &ldquo;<a href="https://blog.fefe.de/?ts=b293636b">Webforen-Besserwisser-Klugscheißer-Korinthenkacker-Sockenpuppen-Grabenkriegen&rdquo;</a>. Das folgende Diagramm zeigt die Top 33 der Fef&rsquo;schen Wortschöpfungen:</p>
+<p><a href="/2019/2019-11-05-fefes-blog-eine-analyse/images/grafik.png"><img src="/2019/2019-11-05-fefes-blog-eine-analyse/images/grafik-700x368.png" alt="Fefes Wortschöpfungen Top 33"></a></p>
+<p>Fefes Wortschöpfungen Top 33</p>
+<p>Kommen wir zu den Verweisen auf externe Quellen. Der Spiegel (Online) gehört wie gesagt zu den favorisierten Quellen von Fefe. Ansonsten ist Fefe nicht wählerisch, was Quellen angeht. Die Auswahl ist immens. Interessant ist, wie z.B. <em>Twitter</em> seit 2009 immer öfter zu den verlinkten Quellen gehört. Auf <em>The Guardian</em> hingegen wurde von Fefe 2013 zum letzten Mal verwiesen. Auf sich selber verweist Fefe natürlich auch hin und wieder. Am häufigsten in 2008, mit abnemender Tendenz.</p>
+<p><a href="/2019/2019-11-05-fefes-blog-eine-analyse/images/jahr-quellen-ab-50.png"><img src="/2019/2019-11-05-fefes-blog-eine-analyse/images/jahr-quellen-ab-50-700x391.png" alt="Verwendete Quellen / Domains"></a></p>
+<p>Verwendete Quellen / Domains</p>
+<h2 id="fazit">Fazit</h2>
+<p>Und was ist jetzt Fefes WLAN-Passwort? Wir wissen es nicht. Und wir werden es auch nicht erfahren, wenn wir seinen Blog noch drölf mal parsen. Vielleicht sind die zahlreichen zusammengesetzen Substantive als Indiz hilfreich? Egal.</p>
+<p>Also gibt es kein Fazit, mit Ausnahme der Feststellung, dass es zeitliche Muster gibt, Fefe ein außerordentliche fleißiger Autor ist aber sonst, leider, die Tendenz der Nachrichtenanzahl in den letzten Jahren zurück gegangen ist.</p>
+<h2 id="fehlerquellen-und-technische-hintergründe">Fehlerquellen und technische Hintergründe</h2>
+<p>Auch wenn der HTML-Code sehr aufgeräumt ist, vor Fehlern ist auch Fefe nicht gefeit. So gibt es zum Beispiel 110 nicht bzw. falsch geschlossene <A>-Tags. Hier musste ich per Script stumpf ein schließendes </a> setzen, was die Auswertung der Quellen / Domains ein wenig, aber kaum merklich, verfälscht.</p>
+<p>Auch bei den Wörtern musste ich etwas aufräumen, um so z.B. alle möglichen Nicht-Buchstaben entfernen. Danach musste ich die Liste noch ein wenig von Hand sortieren, un so z.B. ein paar verirrte URL zu entfernen.</p>
+<p>Die verlinkten Quellen war recht einfach zu handhaben. Hier habe ich lediglich die Präfixe entfernt, wenn diese mit www und ggf. einer Ziffer beginnen. Trotzdem muss bei dieser Liste berücksichtigt werden, dass manche Quellen über mehrere Domains erreichbar sind. So verweist Fefe z.B. auf das Angebot der BBC mit zehn verschiedenen Varianten:</p>
+<p><a href="/2019/2019-11-05-fefes-blog-eine-analyse/images/grafik-1.png"><img src="/2019/2019-11-05-fefes-blog-eine-analyse/images/grafik-1-700x341.png" alt="Varianten für den Verweis zur BBC"></a></p>
+<p>Varianten für den Verweis zur BBC</p>
+<p>Der Fefe-Timestamp ist eine Geschichte für sich. Alleine wäre ich vermutlich kaum auf die Idee gekommen, dass hinter der eindeutigen Id, mit der jeder Beitrag erreichbar ist, tatsächlich eine Zeitangabe steckt. <a href="https://www.netaction.de/datenvisualisierung-von-fefes-blogzeiten/">Meine Inspirationsvorlage</a> hat hier zum Glück sehr gute Vorarbeit geleistet und erklärt, wie sich der alphanumerische Wert in ein lesbares Datum umwandeln lässt. Es handelt sich bei dem Wert nämlich um einen Hexadezimalangabe, die zunächst in eine Dezimalziffer umgewandelt werden muss. Danach erfolgt eine bitweise XOR-Operation um einen bestimmten Schlüssel: <strong>0xFEFEC0DE</strong>. Das ergibt schließlich einen Unix-Zeitstempel, der sich in ein lesbares Datum umwandeln lässt.</p>
+<p>Zuletzt noch ein Hinweis zu den Daten aus den Anfangszeiten, also März bis Juni 2005. Vermutlich hat Fefe diese nachträglich eingefügt, da dort der Zeitstempel jeweils auf 12 bis 13 Uhr zeigt. Diese Monate habe ich aus den Analysen mit den Tageszeiten ausgeschlossen.</p>
+<p>Zuletzt noch ein Hinweis zu den verwendeten Tools:</p>
+<p>Einerseits nutze ich für die Auswertung und Darstellung <a href="https://public.tableau.com/en-us/s/">Tableau Public</a>, dass es auch als kostenlose Variante gibt. Für die Wordcloud nutze ich <a href="http://www.wordle.net/">Wordle</a>. Wordle gab es eine zeitlang nur als WebApp, mittlerweile läuft Wordle aber auch als native OSX- oder Windows-Anwendung. Das Python-Script habe ich mit <a href="https://code.visualstudio.com/">Visual Studio Code</a> geschrieben, das im Begriff ist, Notepad++ als Allround-IDE abzulösen. Und mit Excel habe ich die Daten etwas bereinigt, das klappt damit immer noch fixer als mit Tableau.</p>
+<h2 id="update">UPDATE</h2>
+<p>Durch Zufall bin ich eben noch auf <a href="https://weltliteratur.net/Fefe-Research-Institute/">eine etwas tiefere Textanalyse</a> gestoßen, die auch sehr interessant ist.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Fefes Blog, Datenanalyse, Web Scraping, Python, Statistik</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>blog</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Fefes Blog - Eine Analyse - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>data_analysis</dc:type>
       
       
     </item>

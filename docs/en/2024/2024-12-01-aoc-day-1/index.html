@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="(task | solution)
+As the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. I am probably not going to explain the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let&rsquo;s see how far I get. Please don&rsquo;t take my judgement to serious.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
+
+  
+  
+  <meta name="keywords" content=" Advent of Code  AoC  F#  Functional Programming  Docker  VS Code  Programming Challenge  Solution ">
+  
+
+  
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/en/2024/2024-12-01-aoc-day-1/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Advent of Code - Day 1 - Differences and Products (F#)">
+  <meta property="og:description" content="(task | solution)
+As the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. I am probably not going to explain the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let’s see how far I get. Please don’t take my judgement to serious.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2024">
+    <meta property="article:published_time" content="2024-12-01T12:34:56+02:00">
+    <meta property="article:modified_time" content="2025-08-20T16:16:37+02:00">
+    <meta property="article:tag" content="Advent of Code">
+    <meta property="article:tag" content="F#">
+    <meta property="article:tag" content="Solution">
+    <meta property="article:tag" content="Docker">
+    <meta property="article:tag" content="VSCode">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/en/2024/2024-12-01-aoc-day-1/">
+
+  
+  
+  
+  <meta itemprop="name" content="Advent of Code - Day 1 - Differences and Products (F#)">
+  <meta itemprop="description" content="(task | solution)
+As the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. I am probably not going to explain the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let’s see how far I get. Please don’t take my judgement to serious.">
+  <meta itemprop="datePublished" content="2024-12-01T12:34:56+02:00">
+  <meta itemprop="dateModified" content="2025-08-20T16:16:37+02:00">
+  <meta itemprop="wordCount" content="593">
+  <meta itemprop="keywords" content="Advent of Code,AoC,F#,Functional Programming,Docker,VS Code,Programming Challenge,Solution">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>Advent of Code - Day 1 - Differences and Products (F#) - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Advent of Code - Day 1 - Differences and Products (F#)">
+  <meta name="twitter:description" content="(task | solution)
+As the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. I am probably not going to explain the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let’s see how far I get. Please don’t take my judgement to serious.">
+
+
+  
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Advent of Code - Day 1 - Differences and Products (F#)",
+    "description": "(task | solution)\nAs the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. …",
+    "datePublished": "2024-12-01T12:34:56\u002b02:00",
+    "dateModified": "2025-08-20T16:16:37\u002b02:00",
+    "author": {
+      "@type": "Person",
+      "name": "",
+      "url": "https:\/\/nickyreinert.de\/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Nicky Reinert",
+      "url": "https:\/\/nickyreinert.de\/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https:\/\/nickyreinert.de\/images\/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/nickyreinert.de\/en\/2024\/2024-12-01-aoc-day-1\/"
+    },
+    
+    "image": {
+      "@type": "ImageObject",
+      "url": "https:\/\/nickyreinert.de\/images\/posts\/placeholder.jpg",
+      "width": 1200,
+      "height": 630
+    },
+    
+    "url": "https:\/\/nickyreinert.de\/en\/2024\/2024-12-01-aoc-day-1\/",
+    "wordCount":  593 ,
+    
+    "timeRequired": "PT5M",
+    
+    
+    "keywords": ["Advent of Code", "F#", "Solution", "Docker", "VSCode"],
+    
+    
+    "articleSection": ["development", "aoc2024"],
+    
+    
+    "abstract": "A write-up of the author\u0027s solution to Day 1 of the Advent of Code 2024 challenge, implemented in F#. The article details the setup of a containerized F# development environment using Docker and VS Code, briefly describes the day\u0027s tasks (differences and products), and shares the author\u0027s positive first impressions of F#\u0027s functional programming style.",
+    
+    
+    "genre": "solution_writeup",
+    
+    
+    "educationalLevel": "intermediate",
+    
+    "inLanguage": "en"
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Advent of Code - Day 1 - Differences and Products (F#)",
+    "description": "(task | solution)\nAs the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. …",
+    
+    "proficiencyLevel": "intermediate",
+    
+    
+    "dependencies": ["Familiarity with programming concepts", "Basic understanding of Docker and VS Code is helpful"],
+    
+    
+    "about": [
+      
+      
+      {
+        "@type": "Thing",
+        "name": "Advent of Code"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "F#"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Functional Programming"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Docker"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "VS Code"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Problem-Solving"
+      }
+      
+    ],
+    
+    "datePublished": "2024-12-01T12:34:56\u002b02:00",
+    "dateModified": "2025-08-20T16:16:37\u002b02:00",
+    "author": {
+      "@type": "Person",
+      "name": ""
+    }
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Nicky Reinert",
+    "url": "https:\/\/nickyreinert.de\/",
+    "description": "Blog \u0026 projects by Nicky Reinert (Institute for Digital Challenges): web development \u0026 software development, SEO \u0026 analytics, hosting \u0026 DevOps, WordPress \u0026 Hugo, tools \u0026 projects, data protection \u0026 digital culture — plus content on AI and autism \u0026 society.",
+    "inLanguage": "en",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https:\/\/nickyreinert.de\/search/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+]
+</script>
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+  
+
+<script defer src="/js/alpine.min.js"></script>
+
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institute for Digital Challenges</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+    
+<main id="main" class="post">
+  
+  
+  <div class="post-header">
+    <div class="navigation">
+      
+      <a class="link prev" href="/en/2024/2024-10-18-sudoku/">&lt;&lt;&lt;</a>
+      
+      
+      <h1 style="flex-grow: 1; text-align: center;" itemprop="headline">Advent of Code - Day 1 - Differences and Products (F#)</h1>
+      
+      
+      <a class="link next" href="/en/2024/2024-12-02-aoc-day-2/">>>></a>
+      
+    </div>
+  </div>
+  
+  
+  <div class="post-date">December 1, 2024</div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <details style="margin-top: 2rem; margin-bottom: 2rem;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#setting-up-the-development-environment">Setting Up the Development Environment</a></li>
+    <li><a href="#day-1---about-differences-and-products">Day 1 - About differences and products</a></li>
+    <li><a href="#whats-up-f">Whats up, F#?</a></li>
+  </ul>
+</nav></div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
+    <p>(<a href="https://adventofcode.com/2024/day/1/">task</a> | <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day1%20-%20f%23">solution</a>)</p>
+<p>As the challenge at <a href="https://adventofcode.com/">AoC</a> is not about the syntax but the algorithm, I decided to try a different approach this year: <strong>a new language every day</strong>. I am probably not going to explain the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let&rsquo;s see how far I get. Please don&rsquo;t take my judgement to serious.</p>
+<blockquote>
+<p>Disclaimer: Of course, I am using AI to get the actual syntax, but not for the algorithm itself. I usually use ClaudeAI for that, as I&rsquo;ve experienced the best results with the free version there.</p></blockquote>
+<p>On the first day, I&rsquo;m starting with <code>F#</code> — the sister of <code>C#</code> — which focuses on functional programming.</p>
+<h2 id="setting-up-the-development-environment">Setting Up the Development Environment</h2>
+<p>First, I need to set up my development environment. Since I don’t want to pollute my system with tons of different interpreters, I prefer to work in Docker containers. Above all, this requires <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers">the Dev Containers extension</a>. To make VS Code ready for F#, I also need <a href="https://marketplace.visualstudio.com/items?itemName=Ionide.Ionide-fsharp">the Ionide extension</a>.</p>
+<p>Here is the Dockerfile for a containerized F# environment:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1"># Use official .NET SDK image with F# support</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="n">FROM</span> <span class="n">mcr</span><span class="o">.</span><span class="n">microsoft</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">dotnet</span><span class="o">/</span><span class="n">sdk</span><span class="p">:</span><span class="mf">8.0</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="c1"># Install additional tools</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> \
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> \
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="n">git</span> \
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="n">curl</span> \
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="n">vim</span> \
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="n">sudo</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">
+</span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="c1"># Create vscode user with sudo permissions</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="n">RUN</span> <span class="n">groupadd</span> <span class="o">-</span><span class="n">r</span> <span class="n">vscode</span> \
+</span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="o">&amp;&amp;</span> <span class="n">useradd</span> <span class="o">-</span><span class="n">m</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span> <span class="o">-</span><span class="n">g</span> <span class="n">vscode</span> <span class="o">-</span><span class="n">G</span> <span class="n">sudo</span> <span class="n">vscode</span> \
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    <span class="o">&amp;&amp;</span> <span class="n">echo</span> <span class="s2">&#34;vscode ALL=(ALL) NOPASSWD:ALL&#34;</span> <span class="o">&gt;&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sudoers</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">vscode</span> \
+</span></span><span class="line"><span class="ln">16</span><span class="cl">    <span class="o">&amp;&amp;</span> <span class="n">chmod</span> <span class="mi">0440</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sudoers</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">vscode</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">
+</span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="c1"># Set working directory and ensure proper ownership</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="n">WORKDIR</span> <span class="o">/</span><span class="n">app</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="n">RUN</span> <span class="n">chown</span> <span class="o">-</span><span class="n">R</span> <span class="n">vscode</span><span class="p">:</span><span class="n">vscode</span> <span class="o">/</span><span class="n">app</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">
+</span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="c1"># Ensure .NET tools are in PATH</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="n">ENV</span> <span class="n">PATH</span><span class="o">=</span><span class="s2">&#34;/home/vscode/.dotnet/tools:${PATH}&#34;</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">
+</span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="c1"># Set the default user to vscode</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="n">USER</span> <span class="n">vscode</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">
+</span></span><span class="line"><span class="ln">28</span><span class="cl"><span class="c1"># Ensure .NET tools are installed for the vscode user</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="n">RUN</span> <span class="n">dotnet</span> <span class="k">tool</span> <span class="n">list</span> <span class="o">--</span><span class="n">global</span> <span class="o">||</span> <span class="bp">true</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl">
+</span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="c1"># Default command</span>
+</span></span><span class="line"><span class="ln">32</span><span class="cl"><span class="n">CMD</span> <span class="p">[</span><span class="s2">&#34;/bin/bash&#34;</span><span class="p">]</span>
+</span></span></code></pre></div><p>Developing inside a container requires /.devcontainer/devcontainer.json to look like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="s2">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;F# Dev Environment&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="s2">&#34;build&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        <span class="s2">&#34;dockerfile&#34;</span><span class="p">:</span> <span class="s2">&#34;../Dockerfile&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        <span class="s2">&#34;context&#34;</span><span class="p">:</span> <span class="s2">&#34;..&#34;</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="s2">&#34;remoteUser&#34;</span><span class="p">:</span> <span class="s2">&#34;vscode&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="s2">&#34;workspaceFolder&#34;</span><span class="p">:</span> <span class="s2">&#34;/app&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="s2">&#34;customizations&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">        <span class="s2">&#34;vscode&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">            <span class="s2">&#34;extensions&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">                <span class="s2">&#34;Ionide.ionide-fsharp&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">                <span class="s2">&#34;ms-dotnettools.csharp&#34;</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">            <span class="p">]</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">    <span class="s2">&#34;mounts&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">        <span class="s2">&#34;source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached&#34;</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">    <span class="p">],</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    <span class="s2">&#34;containerUser&#34;</span><span class="p">:</span> <span class="s2">&#34;vscode&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">    <span class="s2">&#34;remoteEnv&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">        <span class="s2">&#34;DOTNET_CLI_HOME&#34;</span><span class="p">:</span> <span class="s2">&#34;/app&#34;</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Now, after building and running the container with <code>docker-compose build; docker-compose up -d</code>, I can connect to the container by either pressing <code>CMD+SHIFT+P</code> or using the small blue button on the bottom left, selecting the option &ldquo;<em>Connect to Dev Container.</em>&rdquo;</p>
+<h2 id="day-1---about-differences-and-products">Day 1 - About differences and products</h2>
+<p>(<a href="https://adventofcode.com/2024/day/1">task</a> - <a href="https://github.com/nickyreinert/aoc2024/blob/main/solutions/day1.fsx">solution</a>)</p>
+<p>The first day consists of two simple tasks, so I won’t go into too much detail:</p>
+<ol>
+<li>Order two lists incrementally, then get the difference for each list item and sum all differences up.</li>
+<li>For each item on the first list, count the occurrences on the second list, compute the product <code>i * frequency(i)</code>, and then get the sum of all products.</li>
+</ol>
+<h2 id="whats-up-f">Whats up, F#?</h2>
+<p><em>8 of 12, would like to stay in touch</em></p>
+<p>Well, I certainly havent had the chance to get familar with F#, but at the first glance I like how you can connect output to adjecent commands using the pipe operator:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">let readListFromFile (filePath: string) =
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    File.ReadAllLines(filePath) 
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    |&gt; Array.map int
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    |&gt; Array.toList
+</span></span></code></pre></div><p>This makes things quiete easy, resulting in a clearer and more concise coding style. Seems like F# is a good choice for hands one problem solving.</p>
+<p>See you next day&hellip;</p>
+    
+  </article>
+  
+  
+  
+  <div style="margin-top: 5rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Summary</h2>
+    <div style="font-size: 1rem;">
+
+      <p>A write-up of the author&#39;s solution to Day 1 of the Advent of Code 2024 challenge, implemented in F#. The article details the setup of a containerized F# development environment using Docker and VS Code, briefly describes the day&#39;s tasks (differences and products), and shares the author&#39;s positive first impressions of F#&#39;s functional programming style.</p>
+      <br />
+      
+      <p><strong>Main Topics:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Advent of Code</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">F#</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Functional Programming</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Docker</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">VS Code</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Problem-Solving</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Difficulty:</strong> intermediate</p>
+      
+      
+      
+      <p><strong>Reading Time:</strong> approx. 5 minutes</p>
+      
+    </div>
+  </div>
+  
+  
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/en/2024/2024-10-18-sudoku/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/en/2024/2024-12-02-aoc-day-2/">next →</a>
+    
+  </div>
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>

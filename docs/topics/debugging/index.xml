@@ -13,7 +13,237 @@
     <managingEditor></managingEditor>
     <webMaster></webMaster>
     <copyright></copyright>
-    <lastBuildDate>Sun, 18 Nov 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/debugging/index.xml" rel="self" type="application/rss+xml" /><item>
+    <lastBuildDate>Wed, 02 Apr 2025 12:19:31 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/topics/debugging/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Die Nerd Enzyklopädie 47 - Die 500-Meilen-E-Mail</title>
+      <link>https://nickyreinert.de/2025/2025-03-10-nerd-enzyklop%C3%A4die-47---die-500-meilen-e-mail/</link>
+      <pubDate>Wed, 02 Apr 2025 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2025/2025-03-10-nerd-enzyklop%C3%A4die-47---die-500-meilen-e-mail/</guid>
+      <description>Dieser Moment, in denen man an seiner Wahrnehmung zweifelt, weil ein Computer, der doch eigentlich nach den strengen Regeln der Logik arbeiten sollte, plötzlich …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine Nacherzählung aus der &#39;Nerd Enzyklopädie&#39; über die berühmte &#39;500-Meilen-E-Mail&#39;-Anekdote. Der Artikel beschreibt einen bizarren Softwarefehler, bei dem E-Mails nur innerhalb eines bestimmten Radius zugestellt wurden. Die Ursache war ein unentdecktes Downgrade des &#39;sendmail&#39;-Servers, das zu einem 0-Sekunden-Timeout führte, wodurch entfernte Server nicht rechtzeitig antworten konnten.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> E-Mail, Netzwerktechnik, Softwarefehler, Debugging, Systemadministration, Nerd-Kultur</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Dieser Moment, in denen man an seiner Wahrnehmung zweifelt, weil ein Computer, der doch eigentlich nach den strengen Regeln der Logik arbeiten sollte, plötzlich Dinge tut, die gar nicht mehr so logisch erscheinen. Dieser Moment muss <strong>2002</strong> wohl auch <strong>Trey Harris</strong> ereilt haben (<a href="https://web.mit.edu/jemorris/humor/500-miles">MIT1</a>).</p>
+<p>Harris, Mitglied der <strong>System Administrators Guild</strong> (SAGE), arbeitete als Admin für eine Universität in <strong>North Carolina</strong> und war dort für das E-Mail-System verantwortlich. Eines Tages rief ihn der Vorsitzende der Statistik-Abteilung an und behauptet, dass seine E-Mails nicht ankommen, sobald der Empfänger mehr als <strong>500 Meilen</strong> entfernt sei. Das Problem bestand offenbar schon ein paar Tage. Um es zu dokumentieren, hatte man auf einer Karte markiert, bei welchen Empfänger der E-Mail-Versand funktionierte. Und das funktioniere wohl nur bei Empfängern innerhalb eines 500-Meilen-Radius.</p>
+<p>Harris war skeptisch und testete das System selbst. Er sendete einige Test-E-Mails unter anderem nach <strong>Richmond</strong>, <strong>Atlanta</strong> und <strong>Washington</strong> - alle Ziele befinden sich innerhalb des 500 Meilen Radius. Ohne Probleme. Und dann nach <strong>Memphis</strong> - <strong>600 Meilen</strong> Distanz. Die E-Mail ging nicht durch. <strong>Providence</strong>, 580 Meilen? Kein Erfolg. <strong>New York</strong>, 420 Meilen? Funktioniert.</p>
+<p>Harris verglich die Konfigurationen des E-Mail-Servers mit anderen Systemen und fand keinerlei Auffälligkeiten. Zur weiteren Diagnose wählte er sich per Telnet auf den SMTP-Port des Servers ein. Der Server reagierte, wie erwartet mit dem <strong>SunOS Sendmail Logo</strong>. Und das führte Harris auf die richtige Fährte.</p>
+<p>Der Vorsitzende der Statistik-Abteilung erwähnte zwar, dass vor ein paar Tagen ein Wartungs-Updates für des Betriebssystems installiert wurde. Angeblich betraf das aber nicht <strong>sendmail</strong>, welches Harris vor längerer Zeit in der <strong>Version 8</strong> installiert hatte. Das besagte Update von SunOS enthielt jedoch noch die alte <strong>Version 5</strong> von sendmail! Der E-Mail-Server wurde durch das Update des Betriebssystem auf eine alte Version zurückgesetzt. Die Konfigurations-Dateien, die Harris für die Version 8 angelegt hatte, waren allerdings noch vorhanden. Nur waren sie nicht mit Version 5 kompatibel. So wurde für einige wichtige Parametern von sendmail der <strong>Standard-Wert 0</strong> angenommen.</p>
+<p>Einer dieser Parameter bezog sich auf das <strong>Timeout</strong> für die Verbindung zum externen SMTP-Server. Der Wert dafür betrug nun <strong>0 Sekunden</strong>.</p>
+<p>Aber was hatte das zu bedeuten? Wenn sendmail versucht, eine Verbindung mit einem externen SMTP-Server aufzubauen, schickt es eine Anfrage in das Internet und  wartete dann auf die Antwort. Aufgrund der Auslastung des Systems brauchte sendmail einen Augenblick, um die Routine für die Verarbeitung der Antwort aufzurufen.</p>
+<p>Harris fand heraus, das sendmail dafür etwa 3 Millisekunden benötigt. Eine Antwort, die nach 3 Millisekunden bei sendmail eintraf, wurde aufgrund des Timeouts als nicht erfolgreich gewertet.</p>
+<p>Da die Universität über ein Glasfasernetz an das Internet angeschlossen war, gelang eine derartige Anfrage mit nahezu Lichtgeschwindigkeit nach draußen. Also fragte sich Harris, wie weit das Signal innerhalb von 3 Millisekunden kommen konnte. Er bemühte <strong>units</strong>, ein Kommandozeilen-Programm, um die Distanz auszurechnen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ units
+</span></span><span class="line"><span class="ln">2</span><span class="cl">1311 units, 63 prefixes
+</span></span><span class="line"><span class="ln">3</span><span class="cl">You have: 3 millilightseconds
+</span></span><span class="line"><span class="ln">4</span><span class="cl">You want: miles
+</span></span><span class="line"><span class="ln">5</span><span class="cl">* 558.84719
+</span></span><span class="line"><span class="ln">6</span><span class="cl">/ 0.0017893979
+</span></span></code></pre></div><p>*(Das <em>-Zeichen ist kein Operator, sondern zeigt das Ergebnis an.)</em></p>
+<p>558 Meilen!  Harris hatte die Ursache für das seltsame Verhalten gefunden.</p>
+<p>Harris räumte später ein, einige technische Details, auch aus dramaturgischen Gründen, nicht ganz exakt wiedergeben zu haben. So musste  auch die Antwort vom SMTP-Server innerhalb von 3 Sekunden wieder bei sendmail landen, womit sich die verfügbare Zeit eigentlich auf 1,5 Millisekunden halbiert. Das ändert aber nichts daran, dass das Zusammenspiel aus Timeout, Übertragungsgeschwindigkeit und Verzögerung bei der Verarbeitung dafür gesorgt haben, dass E-Mails nur in einem bestimmten Radius versendet werden konnten, nämlich circa 500 Meilen…</p>
+<p>…but I would walk 500 miles, and I would walk 500 more…</p>
+<p><img src="/2025/2025-03-10-nerd-enzyklop%C3%A4die-47---die-500-meilen-e-mail/image.png" alt="alt text"></p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> E-Mail, Netzwerk, Nerd-Enzyklopädie, Anekdote</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 47 - Die 500-Meilen-E-Mail - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>historical_anecdote</dc:type>
+      
+      
+    </item><item>
+      <title>Die Nerd Enzyklopädie 30 - Die falsche Fehlermeldung</title>
+      <link>https://nickyreinert.de/2023/2023-05-22-nerd-enzyklop%C3%A4die-30---die-falsche-fehlermeldung/</link>
+      <pubDate>Mon, 22 May 2023 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2023/2023-05-22-nerd-enzyklop%C3%A4die-30---die-falsche-fehlermeldung/</guid>
+      <description>
+Mitte der 1990er Jahre startete in den USA ein besonderer Internet-Provider seinen Dienst: WebTV Networks Incorporated. In der Regel benötigte man zu dieser …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine humorvolle Anekdote aus der &#39;Nerd Enzyklopädie&#39; über einen peinlichen Fehler im Registrierungsprozess des frühen Internetdienstes WebTV. Ein falsch konfigurierter Filter für Benutzernamen führte dazu, dass jede Eingabe als &#39;schlechtes Wort&#39; (&#39;That&#39;s a bad word.&#39;) abgewiesen wurde, was die Bedeutung gründlicher Tests unterstreicht.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> WebTV, Internetgeschichte, Softwarefehler, Debugging, Benutzerverwaltung, Nerd-Kultur</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p><img src="/2023/2023-05-22-nerd-enzyklop%C3%A4die-30---die-falsche-fehlermeldung/image1.png" alt=""></p>
+<p>Mitte der 1990er Jahre startete in den USA ein besonderer Internet-Provider seinen Dienst: <strong>WebTV</strong> <strong>Networks Incorporated</strong>. In der Regel benötigte man zu dieser Zeit für den Zugang zum Internet ein Modem, das zwischen Telefon-Dose und Computer angeschlossen wurde. WebTV funktionierte mit einer <strong>Set-Top-Box</strong> und einem <strong>Fernseher</strong> und ermöglichte so den Zugang zum Internet auch ohne Computer. Der Werbe-Slogan lautete:</p>
+<blockquote>
+<p>You’re surfing the Web with a remote control in one hand and a handful of cheese puffs in the other. Now that’s progress.</p></blockquote>
+<p>Am <strong>18. September 1996</strong> wollte das Unternehmen seinen Dienst der Öffentlichkeit zugänglich machen. Ab diesem Datum war es möglich, ein Benutzerkonto für WebTV anzulegen. Einen Tag vorher saßen Techniker, Programmier und Gründer zusammen, um den Prozess der Benutzeranmeldung zu prüfen und das System auf Fehler zu untersuchen.</p>
+<p>Bei einer Benutzeranmeldung ist es üblich, bestimmte anzügliche oder geschützte Begriffe für den Namen des Kontos zu verhindern. Seien es Beleidigungen oder reservierte Begriff wie „<strong>admin</strong>“, „<strong>root“</strong> und so weiter. Bei WebTV setzte man dazu auf eine Datei, die diese gesperrten Begriff enthielt. Die Datei war folgendermaßen aufgebaut:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">    admin.*   
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    User names may not start with “admin”.   
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    postmaster   
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    You’re not the postmaster.   
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    poop   
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    That’s a bad word.   
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    weenie That’s a bad word.
+</span></span></code></pre></div><p>Jeder Eintrag bestand demnach aus zwei Zeilen. Die <strong>erste Zeile</strong> enthielt einen regulären Ausdruck, der den nicht zugelassenen Begriff beschreibt. Die <strong>zweite Zeile</strong> beinhaltet die Fehlermeldung, sollte jemand versuchen den Begriff für sein Benutzerkonto zu verwenden. Wenn also jemand ein Konto mit dem Benutzernamen <strong>admin</strong> einrichten wollte, wurde ihm das mit der Fehlermeldung “<strong>User names may not start with ‘admin’”</strong> verweigert.</p>
+<p>Einer der Techniker hatte beim Anlegen der Datei einen Fehler gemacht. Er wollte die Datei in zwei Listen unterteilen: Eine Liste mit geschützten Namen (<strong>admin</strong>, <strong>postmaster</strong>, root, …) sowie eine Liste mit anzüglichen, obszönen Namen (<strong>fuck</strong>, <strong>poop</strong>, …). Zur besseren Lesbarkeit trente er die beiden Listen durch eine leere Zeile:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">    admin.* User names may not start with “admin”.   
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    postmaster You&#39;re not the postmaster.  
+</span></span><span class="line"><span class="ln">3</span><span class="cl">      
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    fuck  
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    That&#39;s a bad word.
+</span></span></code></pre></div><p>Aber auch die leere Zeile wurde vom System als regulärer Ausdruck interpretiert. Und dieser passte zu jeder Eingabe! Die Folge war, dass der Schutzmechanismus beim Anlegen eines Benutzerkontos auf jeden Namen reagierte und die darauffolgende Zeile, wie programmiert, als Fehlermeldung an die Benutzer:in zurückgab. Und in diesem Fall war das:</p>
+<p><img src="/2023/2023-05-22-nerd-enzyklop%C3%A4die-30---die-falsche-fehlermeldung/image2.png" alt=""></p>
+<p style="text-align: center;font-style:italic">
+Die falsche Fehlermeldung bei der Anmeldung zu WebTV [[FADD1](https://fadden.com/tech/images/fkdialog.jpg)]
+</p>
+<p>Der Fehler wurde natürlich umgehend behoben. Als WebTV am nächsten Tag der Öffentlichkeit zugänglich gemacht wurde, kam es dem Vernehmen nach zu keinen beleidigenden Zwischenfällen.</p>
+<p>Der Vorfall verdeutlich jedenfalls wie wichtig es ist, ein System in einer geschützten Umgebung ausgiebig zu testen.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> IT-Geschichte, Softwarefehler, Nerd-Enzyklopädie, Humor</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 30 - Die falsche Fehlermeldung - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>historical_anecdote</dc:type>
+      
+      
+    </item><item>
+      <title>Die Nerd Enzyklopädie 23 - 30 x 10 = 1.000</title>
+      <link>https://nickyreinert.de/2023/2023-05-01-nerd-enzyklop%C3%A4die-23---30-x-10--1.000/</link>
+      <pubDate>Mon, 01 May 2023 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2023/2023-05-01-nerd-enzyklop%C3%A4die-23---30-x-10--1.000/</guid>
+      <description>
+Wenn du deinen Python-Nachlass mit ein wenig Pfeffer würzen willst, empfiehlt es sich, die „Definition eines Integers“ zu ändern. Wenn du in Python eine Zahl …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine humorvolle Demonstration aus der &#39;Nerd Enzyklopädie&#39;, die zeigt, wie man in Python die interne Darstellung von Integer-Objekten mittels &#39;ctypes&#39; manipuliert. Der Artikel präsentiert ein Code-Beispiel, das dazu führt, dass eine scheinbar einfache Multiplikation wie &#39;30 * 10&#39; ein unerwartetes Ergebnis von &#39;1000&#39; liefert, und warnt vor den daraus resultierenden Debugging-Herausforderungen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Python, Speichermanagement, Programmierung, Debugging, Nerd-Kultur</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p><img src="/2023/2023-05-01-nerd-enzyklop%C3%A4die-23---30-x-10--1.000/image1.png" alt=""></p>
+<p>Wenn du deinen Python-Nachlass mit ein wenig Pfeffer würzen willst, empfiehlt es sich, die „Definition eines Integers“ zu ändern. Wenn du in Python eine Zahl verwendest, nehmen wir die 30, verwendet Python die 30 als Referenz auf ein Objekt im Speicher, in dem wiederum der Wert 30 hinterlegt wird. Die 30 ist also ein Verweis auf ein Objekt, das den tatsächlichen Wert enthält. In der Regel sollten Verweis und Wert gleich sein, sonst wird das mit der Mathematik schwierig.</p>
+<p>Schwierig? Das mögen Nerds doch!</p>
+<p>Mit dieser Funktion kannst du einen derartigen Verweis anpassen und einen abweichenden Wert hinterlegen:</p>
+<pre><code>import ctypes   
+def reference(val):  
+  return ctypes.cast(id(val), ctypes.POINTER(ctypes.c_int))
+</code></pre>
+<p>Und so aktivierst du den „Spaß“:</p>
+<pre><code>reference(30)[6] = 100
+</code></pre>
+<p>Willst du nun mit der Ziffer 30 mathematische Operationen durchführen, erzeugt das interessante Ergebnisse:</p>
+<pre><code>&gt;&gt;&gt; 30 * 10  
+&gt;&gt;&gt; 1000
+</code></pre>
+<p>Viel Spaß beim Debuggen!</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Python, Code-Trick, Nerd-Enzyklopädie, Debugging</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 23 - 30 x 10 = 1.000 - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>code_demonstration</dc:type>
+      
+      
+    </item><item>
       <title>Wordpress Debugging und Wartung oder: Keine Panik vor dem White Screen of Death und HTTP 500</title>
       <link>https://nickyreinert.de/2018/2018-11-18-wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death/</link>
       <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
@@ -26,7 +256,7 @@
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Eine umfassende Anleitung zur Fehlersuche und Wartung von WordPress. Der Artikel erklärt, wie man Probleme wie den &#34;White Screen of Death&#34; (WSoD) und HTTP-500-Fehler systematisch analysiert. Vorgestellt werden drei wesentliche Werkzeuge: die Entwicklerkonsole des Browsers, das Plugin &#34;Query Monitor&#34; zur Performance-Analyse und die korrekte Konfiguration des WordPress-Debug-Modus über `wp-config.php` und `.htaccess`.</p>
+          <p>Eine umfassende Anleitung zur Fehlersuche und Wartung von WordPress. Der Artikel erklärt, wie man Probleme wie den &#39;White Screen of Death&#39; (WSoD) und HTTP-500-Fehler systematisch analysiert. Vorgestellt werden drei wesentliche Werkzeuge: die Entwicklerkonsole des Browsers, das Plugin &#39;Query Monitor&#39; zur Performance-Analyse und die korrekte Konfiguration des WordPress-Debug-Modus über &#39;wp-config.php&#39; und &#39;.htaccess&#39;.</p>
           
           
           <p><strong>Hauptthemen:</strong> WordPress, Debugging, Troubleshooting, Performance, PHP, Web-Development</p>

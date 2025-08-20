@@ -17,11 +17,11 @@ Denn diese Vielfallt stellt den Entwickler von Welt mituner vor eine schwierige 
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/images/favicon.ico">
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
 
   
   
-  <meta name="keywords" content=" Webentwicklung  Software Development  Programmierung  SEO  Analytics  Hosting  DevOps  WordPress  Hugo  Tools  Projekte  Anleitungen  Datenschutz  Digitale Kultur  Künstliche Intelligenz  KI  Autismus ">
+  <meta name="keywords" content=" WordPress  Tag Cloud  Umlaute  Sortierung  PHP  Filter  Hooks  wp_generate_tag_cloud  natcasesort  Anleitung  Tutorial ">
   
 
   
@@ -30,15 +30,21 @@ Denn diese Vielfallt stellt den Entwickler von Welt mituner vor eine schwierige 
   
   <meta property="og:url" content="https://nickyreinert.de/2019/2019-04-10-php-mit-welcher-methode-durchsucht-man-ein-array-am-schnellsten/">
   <meta property="og:site_name" content="Nicky Reinert">
-  <meta property="og:title" content="PHP - Mit welcher Methode durchsucht man ein Array am schnellsten?">
+  <meta property="og:title" content="WordPress Tag Cloud mit Umlauten (äöü) korrekt sortieren - Oder: Der WordPress Filter im Live-Beispiel erklärt">
   <meta property="og:description" content="Das schöne an PHP: Viele Wege führen nach Rom.
 Das Problem mit PHP: Viele Wege führen nach Rom.
 Denn diese Vielfallt stellt den Entwickler von Welt mituner vor eine schwierige Frage: Welcher Weg ist der kürzeste? Will man z.B. einen Wert (needle) in einem Array (haystack) suchen, gibt es in PHP zehn verschiedene Methoden. Du hast richtig gelesen: Zehn. Ich unterscheide einerseits auch die strikten und nicht-strikten Vergleiche, andererseits lasse ich die wirklich exotischen Methoden außen vor. Welche Methoden am schnellsten sind, werde ich versuchen im Folgenden herauszufinden. Außerdem schaue ich mir an ob es unter den letzten PHP-Versionen (7.0 bis 7.3*) Unterschiede in der Geschwindigkeit gibt.">
   <meta property="og:locale" content="de_DE">
   <meta property="og:type" content="article">
     <meta property="article:section" content="2019">
-    <meta property="article:published_time" content="2019-04-10T00:00:00+00:00">
-    <meta property="article:modified_time" content="2025-08-20T09:03:20+02:00">
+    <meta property="article:published_time" content="2019-04-18T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-08-20T20:47:33+02:00">
+    <meta property="article:tag" content="Anleitung">
+    <meta property="article:tag" content="Filter">
+    <meta property="article:tag" content="Php">
+    <meta property="article:tag" content="Tagcloud">
+    <meta property="article:tag" content="Tutorial">
+    <meta property="article:tag" content="Wordcloud">
 
 
   
@@ -47,14 +53,14 @@ Denn diese Vielfallt stellt den Entwickler von Welt mituner vor eine schwierige 
   
   
   
-  <meta itemprop="name" content="PHP - Mit welcher Methode durchsucht man ein Array am schnellsten?">
+  <meta itemprop="name" content="WordPress Tag Cloud mit Umlauten (äöü) korrekt sortieren - Oder: Der WordPress Filter im Live-Beispiel erklärt">
   <meta itemprop="description" content="Das schöne an PHP: Viele Wege führen nach Rom.
 Das Problem mit PHP: Viele Wege führen nach Rom.
 Denn diese Vielfallt stellt den Entwickler von Welt mituner vor eine schwierige Frage: Welcher Weg ist der kürzeste? Will man z.B. einen Wert (needle) in einem Array (haystack) suchen, gibt es in PHP zehn verschiedene Methoden. Du hast richtig gelesen: Zehn. Ich unterscheide einerseits auch die strikten und nicht-strikten Vergleiche, andererseits lasse ich die wirklich exotischen Methoden außen vor. Welche Methoden am schnellsten sind, werde ich versuchen im Folgenden herauszufinden. Außerdem schaue ich mir an ob es unter den letzten PHP-Versionen (7.0 bis 7.3*) Unterschiede in der Geschwindigkeit gibt.">
-  <meta itemprop="datePublished" content="2019-04-10T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2025-08-20T09:03:20+02:00">
+  <meta itemprop="datePublished" content="2019-04-18T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-08-20T20:47:33+02:00">
   <meta itemprop="wordCount" content="1927">
-  <meta itemprop="keywords" content="Development,Development,Programming,Code">
+  <meta itemprop="keywords" content="WordPress,Tag Cloud,Umlaute,Sortierung,PHP,Filter,Hooks,wp_generate_tag_cloud,natcasesort,Anleitung,Tutorial">
 
   
   <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
@@ -62,13 +68,13 @@ Denn diese Vielfallt stellt den Entwickler von Welt mituner vor eine schwierige 
 
   
   
-  <title>PHP - Mit welcher Methode durchsucht man ein Array am schnellsten? - Nicky Reinert</title>
+  <title>WordPress Tag Cloud mit Umlauten (äöü) korrekt sortieren - Oder: Der WordPress Filter im Live-Beispiel erklärt - Nicky Reinert</title>
   
 
   
   
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="PHP - Mit welcher Methode durchsucht man ein Array am schnellsten?">
+  <meta name="twitter:title" content="WordPress Tag Cloud mit Umlauten (äöü) korrekt sortieren - Oder: Der WordPress Filter im Live-Beispiel erklärt">
   <meta name="twitter:description" content="Das schöne an PHP: Viele Wege führen nach Rom.
 Das Problem mit PHP: Viele Wege führen nach Rom.
 Denn diese Vielfallt stellt den Entwickler von Welt mituner vor eine schwierige Frage: Welcher Weg ist der kürzeste? Will man z.B. einen Wert (needle) in einem Array (haystack) suchen, gibt es in PHP zehn verschiedene Methoden. Du hast richtig gelesen: Zehn. Ich unterscheide einerseits auch die strikten und nicht-strikten Vergleiche, andererseits lasse ich die wirklich exotischen Methoden außen vor. Welche Methoden am schnellsten sind, werde ich versuchen im Folgenden herauszufinden. Außerdem schaue ich mir an ob es unter den letzten PHP-Versionen (7.0 bis 7.3*) Unterschiede in der Geschwindigkeit gibt.">
@@ -80,10 +86,10 @@ Denn diese Vielfallt stellt den Entwickler von Welt mituner vor eine schwierige 
   {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": "PHP - Mit welcher Methode durchsucht man ein Array am schnellsten?",
+    "headline": "WordPress Tag Cloud mit Umlauten (äöü) korrekt sortieren - Oder: Der WordPress Filter im Live-Beispiel erklärt",
     "description": "Das schöne an PHP: Viele Wege führen nach Rom.\nDas Problem mit PHP: Viele Wege führen nach Rom.\nDenn diese Vielfallt stellt den Entwickler von Welt mituner vor …",
-    "datePublished": "2019-04-10T00:00:00Z",
-    "dateModified": "2025-08-20T09:03:20\u002b02:00",
+    "datePublished": "2019-04-18T00:00:00Z",
+    "dateModified": "2025-08-20T20:47:33\u002b02:00",
     "author": {
       "@type": "Person",
       "name": "",
@@ -116,14 +122,16 @@ Denn diese Vielfallt stellt den Entwickler von Welt mituner vor eine schwierige 
     "timeRequired": "PT5M",
     
     
-    
-    "articleSection": ["development"],
-    
-    
-    "abstract": "Dieser Artikel behandelt PHP - Mit welcher Methode durchsucht man ein Array am schnellsten? und bietet praktische Einblicke in das Thema.",
+    "keywords": ["anleitung", "filter", "php", "tagcloud", "tutorial", "wordcloud", "wordpress", "Customization"],
     
     
-    "genre": "guide",
+    "articleSection": ["blog", "anleitungen"],
+    
+    
+    "abstract": "Dieser Artikel zeigt, wie man WordPress Tag Clouds mit Umlauten (äöü) korrekt sortiert, indem man einen benutzerdefinierten PHP-Filter nutzt. Er demonstriert die Implementierung einer natürlichen, nicht-sensitiven Sortierung durch temporäres Ersetzen von Umlauten und dient als praktisches Beispiel für die Anwendung von WordPress-Filtern zur Anpassung von Kernfunktionen.",
+    
+    
+    "genre": "tutorial",
     
     
     "educationalLevel": "intermediate",
@@ -134,13 +142,13 @@ Denn diese Vielfallt stellt den Entwickler von Welt mituner vor eine schwierige 
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    "headline": "PHP - Mit welcher Methode durchsucht man ein Array am schnellsten?",
+    "headline": "WordPress Tag Cloud mit Umlauten (äöü) korrekt sortieren - Oder: Der WordPress Filter im Live-Beispiel erklärt",
     "description": "Das schöne an PHP: Viele Wege führen nach Rom.\nDas Problem mit PHP: Viele Wege führen nach Rom.\nDenn diese Vielfallt stellt den Entwickler von Welt mituner vor …",
     
     "proficiencyLevel": "intermediate",
     
     
-    "dependencies": ["Grundlegende IT-Kenntnisse"],
+    "dependencies": ["Grundkenntnisse in WordPress", "Grundkenntnisse in PHP"],
     
     
     "about": [
@@ -148,25 +156,61 @@ Denn diese Vielfallt stellt den Entwickler von Welt mituner vor eine schwierige 
       
       {
         "@type": "Thing",
-        "name": "Development"
+        "name": "WordPress"
       }
       
       , 
       {
         "@type": "Thing",
-        "name": "Programming"
+        "name": "PHP"
       }
       
       , 
       {
         "@type": "Thing",
-        "name": "Code"
+        "name": "Filter"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Hooks"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Tag Cloud"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Umlaute"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Sortierung"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Web Development"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Customization"
       }
       
     ],
     
-    "datePublished": "2019-04-10T00:00:00Z",
-    "dateModified": "2025-08-20T09:03:20\u002b02:00",
+    "datePublished": "2019-04-18T00:00:00Z",
+    "dateModified": "2025-08-20T20:47:33\u002b02:00",
     "author": {
       "@type": "Person",
       "name": ""
@@ -287,22 +331,62 @@ Denn diese Vielfallt stellt den Entwickler von Welt mituner vor eine schwierige 
   <div class="post-header">
     <div class="navigation">
       
-      <a class="link prev" href="/2019/2019-01-26-dateien-von-einem-kaputten-android-smartphone-retten/">&lt;&lt;&lt;</a>
+      <a class="link prev" href="/2019/2019-04-18-wordpress-tag-cloud-mit-umlauten-aeoeue-korrekt-sortieren-oder-der-wordpress-filter-im-live-beispiel-erklaert/">&lt;&lt;&lt;</a>
       
       
-      <h1 style="flex-grow: 1; text-align: center;" itemprop="headline">PHP - Mit welcher Methode durchsucht man ein Array am schnellsten?</h1>
+      <h1 style="flex-grow: 1; text-align: center;" itemprop="headline">WordPress Tag Cloud mit Umlauten (äöü) korrekt sortieren - Oder: Der WordPress Filter im Live-Beispiel erklärt</h1>
       
       
-      <a class="link next" href="/2019/2019-04-12-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-1-3/">>>></a>
+      <a class="link next" href="/2019/2019-04-24-den-korrekten-mysql-odbc-treiber-fuer-deinen-linux-server-installieren/">>>></a>
       
     </div>
   </div>
   
   
-  <div class="post-date">April 10, 2019</div>
+  <div class="post-date">April 18, 2019</div>
 
   
-  <article class="content">
+  
+  
+  
+  
+  
+  
+  
+  <details style="margin-top: 2rem; margin-bottom: 2rem;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#welche-methoden-gibt-es-um-ein-array-nach-einem-wert-zu-durchsuchen">Welche Methoden gibt es, um ein Array nach einem Wert zu durchsuchen</a>
+      <ul>
+        <li><a href="#array_search---strikt--nicht-strikt">array_search - strikt / nicht strikt</a></li>
+        <li><a href="#in_array---strikt--nicht-strikt">in_array - strikt / nicht strikt</a></li>
+        <li><a href="#foreach---strikt--nicht-strikt">foreach - strikt / nicht strikt</a></li>
+        <li><a href="#isset">isset</a></li>
+        <li><a href="#array_intersect">array_intersect</a></li>
+        <li><a href="#array_keys---strikt--nicht-strikt">array_keys - strikt / nicht strikt</a></li>
+      </ul>
+    </li>
+    <li><a href="#methodik-und-testaufbau">Methodik und Testaufbau</a></li>
+    <li><a href="#ergebnisse">Ergebnisse</a></li>
+    <li><a href="#fehlerquellen">Fehlerquellen</a>
+      <ul>
+        <li><a href="#ausreißer">Ausreißer</a></li>
+      </ul>
+    </li>
+    <li><a href="#static-optimization">Static Optimization</a></li>
+    <li><a href="#fazit">Fazit</a></li>
+  </ul>
+</nav></div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
     <p>Das schöne an PHP: Viele Wege führen nach Rom.</p>
 <p>Das Problem mit PHP: Viele Wege führen nach Rom.</p>
 <p>Denn diese Vielfallt stellt den Entwickler von Welt mituner vor eine schwierige Frage: <a href="http://nickology.com/2012/07/03/php-faster-array-lookup-than-using-in_array/">Welcher Weg ist der kürzeste</a>? Will man z.B. einen Wert (<em>needle</em>) in einem Array (<em>haystack</em>) suchen, gibt es in PHP zehn verschiedene Methoden. Du hast richtig gelesen: Zehn. Ich unterscheide einerseits auch die strikten und nicht-strikten Vergleiche, andererseits lasse ich die wirklich exotischen Methoden außen vor. Welche Methoden am schnellsten sind, werde ich versuchen im Folgenden herauszufinden. Außerdem schaue ich mir an ob es unter den letzten PHP-Versionen (7.0 bis 7.3*) Unterschiede in der Geschwindigkeit gibt.</p>
@@ -444,9 +528,61 @@ Dazu muss gesagt werden, dass diese Methode ansich sehr schnell sein kann. Wenn 
 <p>Abbildung 17: Durchschnittliche Dauer insgesamt der schnellsten Methoden.</p>
 <p>Um es mit den Worten einer weisen Philosophin zu sagen: <em>&ldquo;Ich kann Dir nur die Tür zeigen. Hindurchgehen musst Du alleine&rdquo;</em>. Nutze die Erkenntnisse dafür, die richtige Methode für den richtigen Zweck zu wählen. Du weißt nun, mit welcher Methode man einen großen Array in PHP optimal durchsuchen kann. Und nebenbei hast du vielleicht noch gelernt, welche Methoden es überhaupt gibt. Wenn dich das glücklich macht, habe ich mein Ziel erreicht.</p>
 
+    
   </article>
   
+  
+  
+  <div style="margin-top: 5rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
 
+      <p>Dieser Artikel zeigt, wie man WordPress Tag Clouds mit Umlauten (äöü) korrekt sortiert, indem man einen benutzerdefinierten PHP-Filter nutzt. Er demonstriert die Implementierung einer natürlichen, nicht-sensitiven Sortierung durch temporäres Ersetzen von Umlauten und dient als praktisches Beispiel für die Anwendung von WordPress-Filtern zur Anpassung von Kernfunktionen.</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">WordPress</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">PHP</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Filter</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Hooks</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Tag Cloud</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Umlaute</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Sortierung</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Web Development</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Customization</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 5 Minuten</p>
+      
+    </div>
+  </div>
+  
+  
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/2019/2019-04-18-wordpress-tag-cloud-mit-umlauten-aeoeue-korrekt-sortieren-oder-der-wordpress-filter-im-live-beispiel-erklaert/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/2019/2019-04-24-den-korrekten-mysql-odbc-treiber-fuer-deinen-linux-server-installieren/">next →</a>
+    
+  </div>
 </main>
 
     <footer id="footer">

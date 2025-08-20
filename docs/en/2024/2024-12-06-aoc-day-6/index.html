@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="(task | solution)
+This task looks tricky, so I am once again choosing a simple language that I am familiar with: JavaScript (which, by the way, was developed in just 10 days).
+With no further ado&hellip;">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
+
+  
+  
+  <meta name="keywords" content=" Advent of Code  AoC  JavaScript  Algorithm  Puzzle  Maze ">
+  
+
+  
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/en/2024/2024-12-06-aoc-day-6/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Advent of Code - Day 6 - Walking the map (JavaScript)">
+  <meta property="og:description" content="(task | solution)
+This task looks tricky, so I am once again choosing a simple language that I am familiar with: JavaScript (which, by the way, was developed in just 10 days).
+With no further ado…">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2024">
+    <meta property="article:published_time" content="2024-12-06T12:34:56+02:00">
+    <meta property="article:modified_time" content="2025-08-20T16:16:37+02:00">
+    <meta property="article:tag" content="Advent of Code">
+    <meta property="article:tag" content="JavaScript">
+    <meta property="article:tag" content="Solution">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/en/2024/2024-12-06-aoc-day-6/">
+
+  
+  
+  
+  <meta itemprop="name" content="Advent of Code - Day 6 - Walking the map (JavaScript)">
+  <meta itemprop="description" content="(task | solution)
+This task looks tricky, so I am once again choosing a simple language that I am familiar with: JavaScript (which, by the way, was developed in just 10 days).
+With no further ado…">
+  <meta itemprop="datePublished" content="2024-12-06T12:34:56+02:00">
+  <meta itemprop="dateModified" content="2025-08-20T16:16:37+02:00">
+  <meta itemprop="wordCount" content="285">
+  <meta itemprop="keywords" content="Advent of Code,AoC,JavaScript,Algorithm,Puzzle,Maze">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>Advent of Code - Day 6 - Walking the map (JavaScript) - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Advent of Code - Day 6 - Walking the map (JavaScript)">
+  <meta name="twitter:description" content="(task | solution)
+This task looks tricky, so I am once again choosing a simple language that I am familiar with: JavaScript (which, by the way, was developed in just 10 days).
+With no further ado…">
+
+
+  
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Advent of Code - Day 6 - Walking the map (JavaScript)",
+    "description": "(task | solution)\nThis task looks tricky, so I am once again choosing a simple language that I am familiar with: JavaScript (which, by the way, was developed in …",
+    "datePublished": "2024-12-06T12:34:56\u002b02:00",
+    "dateModified": "2025-08-20T16:16:37\u002b02:00",
+    "author": {
+      "@type": "Person",
+      "name": "",
+      "url": "https:\/\/nickyreinert.de\/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Nicky Reinert",
+      "url": "https:\/\/nickyreinert.de\/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https:\/\/nickyreinert.de\/images\/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/nickyreinert.de\/en\/2024\/2024-12-06-aoc-day-6\/"
+    },
+    
+    "image": {
+      "@type": "ImageObject",
+      "url": "https:\/\/nickyreinert.de\/image.png",
+      "width": 1200,
+      "height": 630
+    },
+    
+    "url": "https:\/\/nickyreinert.de\/en\/2024\/2024-12-06-aoc-day-6\/",
+    "wordCount":  285 ,
+    
+    "timeRequired": "PT5M",
+    
+    
+    "keywords": ["Advent of Code", "JavaScript", "Solution"],
+    
+    
+    "articleSection": ["development", "aoc2024"],
+    
+    
+    "abstract": "A brief write-up of the author\u0027s approach to Day 6 of the Advent of Code 2024 challenge using JavaScript. The post outlines the simple path-finding solution for Part 1 and describes the pattern-recognition logic required to solve Part 2, which involves creating infinite loops with obstacles.",
+    
+    
+    "genre": "solution_writeup",
+    
+    
+    "educationalLevel": "intermediate",
+    
+    "inLanguage": "en"
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Advent of Code - Day 6 - Walking the map (JavaScript)",
+    "description": "(task | solution)\nThis task looks tricky, so I am once again choosing a simple language that I am familiar with: JavaScript (which, by the way, was developed in …",
+    
+    "proficiencyLevel": "intermediate",
+    
+    
+    "dependencies": ["Familiarity with JavaScript and basic algorithmic concepts"],
+    
+    
+    "about": [
+      
+      
+      {
+        "@type": "Thing",
+        "name": "Advent of Code"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "JavaScript"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Problem-Solving"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Algorithmen"
+      }
+      
+    ],
+    
+    "datePublished": "2024-12-06T12:34:56\u002b02:00",
+    "dateModified": "2025-08-20T16:16:37\u002b02:00",
+    "author": {
+      "@type": "Person",
+      "name": ""
+    }
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Nicky Reinert",
+    "url": "https:\/\/nickyreinert.de\/",
+    "description": "Blog \u0026 projects by Nicky Reinert (Institute for Digital Challenges): web development \u0026 software development, SEO \u0026 analytics, hosting \u0026 DevOps, WordPress \u0026 Hugo, tools \u0026 projects, data protection \u0026 digital culture — plus content on AI and autism \u0026 society.",
+    "inLanguage": "en",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https:\/\/nickyreinert.de\/search/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+]
+</script>
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+  
+
+<script defer src="/js/alpine.min.js"></script>
+
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institute for Digital Challenges</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://shop.its-not-a-brand.com/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+    
+<main id="main" class="post">
+  
+  
+  <div class="post-header">
+    <div class="navigation">
+      
+      <a class="link prev" href="/en/2024/2024-12-05-aoc-day-5/">&lt;&lt;&lt;</a>
+      
+      
+      <h1 style="flex-grow: 1; text-align: center;" itemprop="headline">Advent of Code - Day 6 - Walking the map (JavaScript)</h1>
+      
+      
+      <a class="link next" href="/en/2024/2024-12-07-aoc-day-7/">>>></a>
+      
+    </div>
+  </div>
+  
+  
+  <div class="post-date">December 6, 2024</div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <details style="margin-top: 2rem; margin-bottom: 2rem;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#solution-to-the-first-part">Solution to the First Part</a></li>
+        <li><a href="#solution-to-the-second-part">Solution to the Second Part</a></li>
+      </ul>
+    </li>
+    <li><a href="#whats-up-javascript">Whats up, JavaScript?</a></li>
+  </ul>
+</nav></div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
+    <p>(<a href="https://adventofcode.com/2024/day/6/">task</a> | <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day6%20-%20javascript">solution</a>)</p>
+<p>This task looks tricky, so I am once again choosing a simple language that I am familiar with: JavaScript (<a href="https://nickyreinert.medium.com/ne-34-javascript-was-developed-within-10-days-0116b32a38b6">which, by the way, was developed in just 10 days</a>).</p>
+<p>With no further ado&hellip;</p>
+<h3 id="solution-to-the-first-part">Solution to the First Part</h3>
+<p>There&rsquo;s not much to explain. As expected, I just need to move the <code>guard</code> through the maze by increasing and decreasing rows and columns. When I hit an obstacle, I change direction. When I hit the border of the maze, I’ve solved the task. Easy peasy&hellip;</p>
+<h3 id="solution-to-the-second-part">Solution to the Second Part</h3>
+<p>The second part is kind of tricky. They want us to find positions of additional obstacles that make the maze unsolvable.</p>
+<p>Well, there&rsquo;s an easy pattern behind it. You will see it if you visualize it:</p>
+<p>An infinite loop occurs when you have four obstacles on each edge of a rectangle, like this:</p>
+<p><img src="/en/2024/2024-12-06-aoc-day-6/image.png" alt="alt text"></p>
+<p>So, all we need to do at every step on our path is to try to draw a rectangle. If it has three existing obstacles, we get one potential solution for an &ldquo;artificial obstacle.</p>
+<p>In case you&rsquo;re wondering: I didn&rsquo;t finish the second part. I know the solution approach, but seeing that I am three days behind already, I stopped working on it.</p>
+<h2 id="whats-up-javascript">Whats up, JavaScript?</h2>
+<p><strong>Rating: 9/12 – god ol&rsquo; frien&rsquo;</strong></p>
+<p>Fun Fact: <a href="https://nickyreinert.medium.com/javascript-how-to-find-prime-numbers-fast-cbcf6bd62e3d">I was writing an algorithm</a> to find prime numbers and found out that JavaScript is way faster than Python.</p>
+<p>However, I really like JavaScript and often use it when I want to build small <em>proof of concepts</em>. It&rsquo;s quick, runs everywhere (like in every browser), and is quite straightforward.</p>
+<p>Despite the second bump in the journey to endless glory, I hope to see you again tomorrow!</p>
+    
+  </article>
+  
+  
+  
+  <div style="margin-top: 5rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Summary</h2>
+    <div style="font-size: 1rem;">
+
+      <p>A brief write-up of the author&#39;s approach to Day 6 of the Advent of Code 2024 challenge using JavaScript. The post outlines the simple path-finding solution for Part 1 and describes the pattern-recognition logic required to solve Part 2, which involves creating infinite loops with obstacles.</p>
+      <br />
+      
+      <p><strong>Main Topics:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Advent of Code</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">JavaScript</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Problem-Solving</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Algorithmen</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Difficulty:</strong> intermediate</p>
+      
+      
+      
+      <p><strong>Reading Time:</strong> approx. 5 minutes</p>
+      
+    </div>
+  </div>
+  
+  
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/en/2024/2024-12-05-aoc-day-5/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/en/2024/2024-12-07-aoc-day-7/">next →</a>
+    
+  </div>
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>

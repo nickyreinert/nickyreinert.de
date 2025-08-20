@@ -26,10 +26,10 @@
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Eine Vorstellung und Dokumentation eines Bash-Skripts zur vollautomatischen Installation und Konfiguration von WordPress. Das Skript nutzt `wp-cli` zur Einrichtung des Cores, der Datenbank, von Themes und Plugins und kann die neue Instanz mit einer großen Menge an zufällig generiertem Content (Beiträge, Kategorien, Bilder) über externe APIs befüllen.</p>
+          <p>Dieser Artikel stellt ein Bash-Skript zur vollautomatischen Installation und Konfiguration von WordPress vor. Das Skript nutzt &#39;wp-cli&#39; zur Einrichtung von Core, Datenbank, Themes und Plugins und kann die neue WordPress-Instanz mit zufällig generiertem Content (Beiträge, Kategorien, Bilder) über externe APIs befüllen, was es zu einem nützlichen Tool für Entwickler und Administratoren macht.</p>
           
           
-          <p><strong>Hauptthemen:</strong> WordPress, Automatisierung, Bash-Scripting, DevOps, wp-cli, Server-Administration</p>
+          <p><strong>Hauptthemen:</strong> WordPress, Automatisierung, Bash Scripting, DevOps, wp-cli, Server Administration, Web Development, Content Generation</p>
           
           
           
@@ -40,9 +40,9 @@
         
         <p>Et voilá. Ein BASH Script, um WordPress automatisiert über die Kommandozeile zu installieren, inklusive Theme und beliebigen Plugins sowie - wenn benötigt - zufälligen Beiträgen, Kategorien, Tags und Bildern.</p>
 <h2 id="warnung">Warnung!</h2>
-<p>Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und unbedingt <strong>Backups</strong> nutzen. Das Script verwendet, wenn der entsprechende Parameter gesetzt ist, den Befehl &ldquo;<strong>rm -rf</strong>&rdquo;, um einen Ordner komplett zu <strong>löschen</strong>. Dieser Schritt lässt sich nicht widerrufen. Außerdem wird, sofern per Parameter gefordert, eine Datenbank mit &ldquo;<strong>DROP DATABASE</strong>&rdquo; komplett entfernt. Wenn du das Script auf eine existierende WordPress-Installation oder Datenbank anwendest, können existierende Daten <strong>überschrieben</strong> werden!</p>
+<p>Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und unbedingt <strong>Backups</strong> nutzen. Das Script verwendet, wenn der entsprechende Parameter gesetzt ist, den Befehl &ldquo;rm -rf&rdquo;, um einen Ordner komplett zu <strong>löschen</strong>. Dieser Schritt lässt sich nicht widerrufen. Außerdem wird, sofern per Parameter gefordert, eine Datenbank mit &ldquo;DROP DATABASE&rdquo; komplett entfernt. Wenn du das Script auf eine existierende WordPress-Installation oder Datenbank anwendest, können existierende Daten <strong>überschrieben</strong> werden!</p>
 <h2 id="funktionsweise">Funktionsweise</h2>
-<p>Das Script wird über die Kommandozeile aufgerufen und nutzt die <a href="https://wp-cli.org/de/">WordPress Kommandozeilen-Benutzeroberfläche,</a> um <strong>WordPress</strong> zu installieren sowie samt <strong>Themes</strong> und <strong>Plugins</strong> einzurichten. Du kannst außerdem beliebig viele <strong>Beiträge</strong> anlegen. Die Inhalte für die Beiträge stammen von einem Online-Dienst für zufällige englische Texte: <a href="http://metaphorpsum.com/paragraphs">metaphorpsum.com/paragraphs</a>. Außerdem werden zufällige <strong>Textauszüge</strong> (Excerpts) sowie <strong>Schlagwörter</strong> (Tags) und sogar <strong>Bilder</strong> jedem Beitrag hinzugefügt. Beiträge werden außerdem Kategorien zugeordnet. Diese werden ebenfalls <strong>zufällig</strong> bis zu einer Tiefe von 2 Ebenen erzeugt.</p>
+<p>Das Script wird über die Kommandozeile aufgerufen und nutzt die <a href="https://wp-cli.org/de/">WordPress Kommandozeilen-Benutzeroberfläche,</a> um <strong>WordPress</strong> zu installieren sowie samt <strong>Themes</strong> und <strong>Plugins</strong> einzurichten. Du kannst außerdem beliebig viele <strong>Beiträge</strong> anlegen. Die Inhalte für die Beiträge stammen von einem Online-Dienst für zufällige englische Texte: <a href="http://metaphorpsum.com/paragraphs/">metaphorpsum.com/paragraphs</a>. Außerdem werden zufällige <strong>Textauszüge</strong> (Excerpts) sowie <strong>Schlagwörter</strong> (Tags) und sogar <strong>Bilder</strong> jedem Beitrag hinzugefügt. Beiträge werden außerdem Kategorien zugeordnet. Diese werden ebenfalls <strong>zufällig</strong> bis zu einer Tiefe von 2 Ebenen erzeugt.</p>
 <h2 id="installation">Installation</h2>
 <p>Du findest den Sourcecode auf github: <a href="https://github.com/nickyreinert/AutomatedWordPressInstallation">https://github.com/nickyreinert/AutomatedWordPressInstallation</a>.</p>
 <p>Nach der Installation kopierst du die Datei settings-template zu .settings, um in dieser Datei die Einstellungen für deine WordPress-Installation vorzunehmen. Du startest den Prozess mit <strong>bash start.sh</strong> oder setzt den Ausführen-Flag für bash.sh um diese direkt auszuführen:</p>
@@ -65,11 +65,11 @@
 </span></span><span class="line"><span class="ln">4</span><span class="cl">DB_ROOT_PASSWORD=secret
 </span></span></code></pre></div><p>Willst du eine frische Datenbank anlegen, solltest du die alte Datenbank mit DB_DROP=yes löschen. Soll eine neue Datenbank angelegt werden, müssen die Zugangsdaten für einen privilegierten Nutzer angegeben werden: Mit den folgenden Parameter legst du fest, wie WordPress auf die Datenbank zugreift:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">DB_HOST=127.0.0.1
-</span></span><span class="line"><span class="ln">2</span><span class="cl">DB_NAME=&#34;${PROJECT}_database&#34;
+</span></span><span class="line"><span class="ln">2</span><span class="cl">DB_NAME=&#34;${PROJECT}&#34;
 </span></span><span class="line"><span class="ln">3</span><span class="cl">DB_PREFIX=&#34;wp_&#34;
 </span></span><span class="line"><span class="ln">4</span><span class="cl">
 </span></span><span class="line"><span class="ln">5</span><span class="cl">ADD_DB_USER=yes|no
-</span></span><span class="line"><span class="ln">6</span><span class="cl">DB_USER=&#34;${PROJECT}_dbuser&#34;
+</span></span><span class="line"><span class="ln">6</span><span class="cl">DB_USER=&#34;${PROJECT}&#34;
 </span></span><span class="line"><span class="ln">7</span><span class="cl">DB_USER_PASSWORD=$(cat /dev/urandom | tr -dc &#39;a-zA-Z0-9&#39; | fold -w 32 | head -n 1)
 </span></span></code></pre></div><p>Das Passwort wird im Beispiel zufällig erzeugt, willst du ein eigenes Passwort verwenden, kannst du den Parameter überschreiben, z.B:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">DB_USER_PASSWORT=secret
@@ -124,7 +124,7 @@
         
         
         <div class="tags">
-          <p><strong>Tags:</strong> automatiierung, bash, installation, script, setup, wordpress</p>
+          <p><strong>Tags:</strong> automatisierung, bash, installation, script, setup, wordpress, DevOps</p>
         </div>
         
       ]]></content:encoded>
@@ -169,14 +169,14 @@
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Dieser Artikel behandelt Dateien von einem kaputten Android-Smartphone retten und bietet praktische Einblicke in das Thema.</p>
+          <p>Dieser Artikel beschreibt, wie man Daten von einem defekten Android-Smartphone (z.B. mit kaputtem Display) mithilfe des Google-Tools &#39;Android File Transfer&#39; für Mac retten kann. Er hebt die einfache Bedienung des Tools hervor, das den Zugriff auf das Dateisystem ermöglicht und das Kopieren von Dateien per Drag-and-Drop erlaubt.</p>
           
           
-          <p><strong>Hauptthemen:</strong> Web, IT, Tools</p>
+          <p><strong>Hauptthemen:</strong> Android, Datenrettung, Smartphone, macOS, Dateimanagement, Troubleshooting, Mobile Geräte</p>
           
           
           
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
           
         </div>
         
@@ -189,6 +189,10 @@
 <p>Zur Bedienung: Du lädst das dmg-Archiv runter, kopierst das Tool in deinen App-Ordner und startest es. Nachdem du dein Android-Gerät per USB angeschlossen hast, kannst du durch das Dateisystem browsen und Dateien und Ordner beliebig ber Drag&rsquo;n&rsquo;Drop auf deinen Computer kopieren. Problem gelöst.</p>
 
         
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Android, Datenrettung, Smartphone, Mac, Troubleshooting</p>
+        </div>
         
       ]]></content:encoded>
       
@@ -210,7 +214,7 @@
       
       
       
-      <dc:type>guide</dc:type>
+      <dc:type>how-to_guide</dc:type>
       
       
     </item><item>
@@ -348,14 +352,14 @@ Eine …</description>
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Dieser Artikel behandelt Total Commander als SFTP-Client einrichten und bietet praktische Einblicke in das Thema.</p>
+          <p>Dieser Artikel beschreibt die Erweiterung des Total Commanders durch die Installation nützlicher Plugins. Er führt detailliert durch die Einrichtung des Total Commanders als SFTP-Client sowie die Integration von &#39;VisualDirSize&#39; zur grafischen Anzeige des Speicherplatzverbrauchs und &#39;QuickSearch eXtended&#39; für erweiterte Dateisuche und -filterung.</p>
           
           
-          <p><strong>Hauptthemen:</strong> Web, IT, Tools</p>
+          <p><strong>Hauptthemen:</strong> Total Commander, SFTP, Dateimanager, Windows Tools, Software-Plugins, Produktivität, System-Tools</p>
           
           
           
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
           
         </div>
         
@@ -385,7 +389,7 @@ Eine …</description>
         
         
         <div class="tags">
-          <p><strong>Tags:</strong> datei-explorer, file-explorer, quicksearch-extended, sftp, suche, total-commander, visualdirsize</p>
+          <p><strong>Tags:</strong> datei-explorer, file-explorer, quicksearch-extended, sftp, suche, total-commander, visualdirsize, Windows</p>
         </div>
         
       ]]></content:encoded>
@@ -410,7 +414,7 @@ Eine …</description>
       
       
       
-      <dc:type>guide</dc:type>
+      <dc:type>how-to_guide</dc:type>
       
       
     </item><item>
@@ -426,10 +430,10 @@ Eine …</description>
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Dieser Artikel behandelt Defekte MP4 Videodatei reparieren und bietet praktische Einblicke in das Thema.</p>
+          <p>Dieser Artikel evaluiert verschiedene Softwarelösungen zur Reparatur defekter MP4-Videodateien, darunter &#39;Grau Video Repair Software&#39;, &#39;Yodot MOV Repair Tool&#39; und &#39;Remo Repair MOV&#39;. Er beleuchtet deren Funktionen, Einschränkungen und die Erfahrungen des Autors bei der Wiederherstellung einer beschädigten Datei, wobei die meisten Versuche, einschließlich manueller Reparaturen, erfolglos blieben.</p>
           
           
-          <p><strong>Hauptthemen:</strong> Web, IT, Tools</p>
+          <p><strong>Hauptthemen:</strong> Videoreparatur, MP4, Videodateien, Software-Tools, Troubleshooting, Datenrettung, Multimedia</p>
           
           
           
@@ -450,6 +454,10 @@ Eine …</description>
 <p>Fazit: Eins von drei kostenpflichtigen Tools schafft es, die defekte MP4-Datei zu reparieren. Ansonsten ist das Angebot leider mager. Ein Blick in den Header der defekten Datei und der Versuch, den defekt auf &ldquo;Nerd-Weise&rdquo; zu beheben, schlug letztlich auch fehl. Der Hex-Editor zeigt einen großen Bereich, der mit Nullen gefüllt ist. Hier scheint der Fehler zu liegen. Diese zu entfernen, bringt leider nicht den gewünschten Erfolg - genauso wenig, wie die Header einer defekten und funktionierenden MP4-Datei zu &ldquo;synchronisieren&rdquo;.</p>
 
         
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Video, Reparatur, Software, Tools, Anleitung, Troubleshooting</p>
+        </div>
         
       ]]></content:encoded>
       
@@ -473,7 +481,7 @@ Eine …</description>
       
       
       
-      <dc:type>guide</dc:type>
+      <dc:type>software_review</dc:type>
       
       
     </item><item>
@@ -490,14 +498,14 @@ Eine …</description>
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Dieser Artikel behandelt Eduroam mit Windows Mobile und bietet praktische Einblicke in das Thema.</p>
+          <p>Diese Schritt-für-Schritt-Anleitung erklärt, wie Windows Mobile 6.x Geräte mit dem Eduroam-Netzwerk verbunden werden. Sie deckt die Installation des SecureW2 Clients, die Zertifikatsinstallation (einschließlich manueller Registrierung in der Registry) und die Konfiguration des WLAN-Zugangs ab, um eine erfolgreiche Verbindung herzustellen.</p>
           
           
-          <p><strong>Hauptthemen:</strong> Web, IT, Tools</p>
+          <p><strong>Hauptthemen:</strong> Eduroam, Windows Mobile, WLAN Konfiguration, Netzwerkzugang, Zertifikate, Mobile Geräte, Anleitung</p>
           
           
           
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
           
         </div>
         
@@ -574,6 +582,10 @@ Eine …</description>
 
         
         
+        <div class="tags">
+          <p><strong>Tags:</strong> Eduroam, Windows Mobile, WLAN, Anleitung, Netzwerk</p>
+        </div>
+        
       ]]></content:encoded>
       
       
@@ -596,7 +608,7 @@ Eine …</description>
       
       
       
-      <dc:type>guide</dc:type>
+      <dc:type>how-to_guide</dc:type>
       
       
     </item><item>
@@ -612,14 +624,14 @@ Eine …</description>
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Dieser Artikel behandelt Xperia Z2 Rooten unter Mac und bietet praktische Einblicke in das Thema.</p>
+          <p>Diese Anleitung beschreibt den Prozess des Rootens eines Sony Xperia Z2 Smartphones unter macOS. Sie umfasst Schritte zum Entsperren des Bootloaders, zur Einrichtung von ADB und Fastboot sowie zur Verwendung des Easy Root Tools, um Root-Zugriff auf das Gerät zu erhalten, inklusive wichtiger Hinweise zur Datensicherung.</p>
           
           
-          <p><strong>Hauptthemen:</strong> Mac, Tools, System</p>
+          <p><strong>Hauptthemen:</strong> Android Rooting, Sony Xperia, macOS, Smartphone Modding, ADB, Fastboot, Mobile Devices, Anleitung</p>
           
           
           
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
           
         </div>
         
@@ -646,6 +658,10 @@ fastboot -i 0x0fce oem unlock 0xDEIN_SONY_KEY</p>
 
         
         
+        <div class="tags">
+          <p><strong>Tags:</strong> Android, Rooting, macOS, Smartphone, Anleitung</p>
+        </div>
+        
       ]]></content:encoded>
       
       
@@ -668,7 +684,7 @@ fastboot -i 0x0fce oem unlock 0xDEIN_SONY_KEY</p>
       
       
       
-      <dc:type>guide</dc:type>
+      <dc:type>how-to_guide</dc:type>
       
       
     </item><item>
@@ -684,14 +700,14 @@ fastboot -i 0x0fce oem unlock 0xDEIN_SONY_KEY</p>
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Dieser Artikel behandelt MacTubes - Youtube ohne Flash und bietet praktische Einblicke in das Thema.</p>
+          <p>Dieser Artikel stellt &#39;MacTubes&#39; vor, eine kostenlose Mac-Software, die es ermöglicht, YouTube-Videos ohne den ressourcenintensiven Flash Player anzusehen. Er beleuchtet die Vorteile wie die Vermeidung von Überhitzung und Lärm sowie Funktionen zur Video-Wiedergabe und zur Organisation von Suchanfragen.</p>
           
           
-          <p><strong>Hauptthemen:</strong> Mac, Tools, System</p>
+          <p><strong>Hauptthemen:</strong> Mac Software, YouTube, Flash Alternative, Video Player, Systemoptimierung, Freeware</p>
           
           
           
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
           
         </div>
         
@@ -701,6 +717,10 @@ fastboot -i 0x0fce oem unlock 0xDEIN_SONY_KEY</p>
 <p>Du hast die Möglichkeit, zwischen verschiedenen Abspielprogrammen zu wählen. So kann man die Videos z.B. über QuickTime oder einen internen Player abspielen. Außerdem lassen sich &ldquo;Suchen&rdquo; speichern oder auf bestimmte Länder oder Kategorien eingrenzen. Die gespeicherten Suchen (Nach Autor oder Keyword) können auch in Ordnern organisiert werden.</p>
 
         
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Mac, YouTube, Software, Anleitung, Flash Alternative</p>
+        </div>
         
       ]]></content:encoded>
       
@@ -724,7 +744,7 @@ fastboot -i 0x0fce oem unlock 0xDEIN_SONY_KEY</p>
       
       
       
-      <dc:type>guide</dc:type>
+      <dc:type>software_review</dc:type>
       
       
     </item><item>
@@ -740,14 +760,14 @@ fastboot -i 0x0fce oem unlock 0xDEIN_SONY_KEY</p>
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Dieser Artikel behandelt Buffalo Linkstation LS-WXL mit MiniDLNA und Custom Firmware von Shonk 1.64 Mod 1 und bietet praktische Einblicke in das Thema.</p>
+          <p>Eine technische Anleitung aus dem Jahr 2013 zur Installation des MiniDLNA-Medienservers auf einer Buffalo Linkstation LS-WXL NAS. Der Guide beschreibt die Schritte zur Installation einer Custom Firmware, des IPKG-Paketmanagers und des Kompilierens von MiniDLNA aus dem Quellcode, inklusive Troubleshooting-Tipps für veraltete Abhängigkeiten.</p>
           
           
-          <p><strong>Hauptthemen:</strong> Development, Programming, Code</p>
+          <p><strong>Hauptthemen:</strong> NAS, MiniDLNA, Custom Firmware, Linux, Home Server, Media Server, Embedded Systems</p>
           
           
           
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
           
         </div>
         
@@ -773,6 +793,10 @@ fastboot -i 0x0fce oem unlock 0xDEIN_SONY_KEY</p>
 
         
         
+        <div class="tags">
+          <p><strong>Tags:</strong> NAS, Linux, DLNA, Tutorial, Firmware</p>
+        </div>
+        
       ]]></content:encoded>
       
       
@@ -797,7 +821,7 @@ fastboot -i 0x0fce oem unlock 0xDEIN_SONY_KEY</p>
       
       
       
-      <dc:type>guide</dc:type>
+      <dc:type>technical_tutorial</dc:type>
       
       
     </item><item>
@@ -813,14 +837,14 @@ fastboot -i 0x0fce oem unlock 0xDEIN_SONY_KEY</p>
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Dieser Artikel behandelt DOS-Spiele auf dem Mac spielen und bietet praktische Einblicke in das Thema.</p>
+          <p>Dieser Artikel beschreibt, wie man alte DOS-Spiele auf einem Mac mithilfe des Emulators &#39;Boxer&#39; spielen kann. Er erläutert den einfachen Installations- und Importprozess von Spielen und hebt die intuitive Bedienung sowie die flüssige Performance der &#39;Boxer&#39;-App hervor.</p>
           
           
-          <p><strong>Hauptthemen:</strong> Mac, Tools, System</p>
+          <p><strong>Hauptthemen:</strong> DOS Spiele, Emulation, macOS, Gaming, Software-Tools, Retro Gaming</p>
           
           
           
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
           
         </div>
         
@@ -834,7 +858,7 @@ fastboot -i 0x0fce oem unlock 0xDEIN_SONY_KEY</p>
         
         
         <div class="tags">
-          <p><strong>Tags:</strong> dos, emulator, spiele</p>
+          <p><strong>Tags:</strong> dos, emulator, spiele, macOS</p>
         </div>
         
       ]]></content:encoded>
@@ -861,7 +885,7 @@ fastboot -i 0x0fce oem unlock 0xDEIN_SONY_KEY</p>
       
       
       
-      <dc:type>guide</dc:type>
+      <dc:type>how-to_guide</dc:type>
       
       
     </item><item>
@@ -877,14 +901,14 @@ fastboot -i 0x0fce oem unlock 0xDEIN_SONY_KEY</p>
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Dieser Artikel behandelt GPS-Daten umwandeln und bietet praktische Einblicke in das Thema.</p>
+          <p>Dieser Artikel stellt nützliche Tools zur Umwandlung von GPS-Daten vor, insbesondere von NMEA- in GPX-Formate. Er hebt &#39;RouteConverter&#39; als kostenlose, plattformübergreifende Lösung hervor und erwähnt &#39;GPSPhotoLinker&#39; zur Synchronisierung von Fotos mit aufgezeichneten GPS-Tracks, um Geoinformationen in Bildmetadaten zu speichern.</p>
           
           
-          <p><strong>Hauptthemen:</strong> Web, IT, Tools</p>
+          <p><strong>Hauptthemen:</strong> GPS, Geodaten, Datenkonvertierung, Software-Tools, Fotografie, NMEA, GPX</p>
           
           
           
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
           
         </div>
         
@@ -894,6 +918,10 @@ fastboot -i 0x0fce oem unlock 0xDEIN_SONY_KEY</p>
 <p><strong>Update:</strong> Und wenn du dann noch einen Haufen Fotos mit deinem aufgezeichneten GPS-Track synchronisieren willst, greifst du zu <a href="http://www.earlyinnovations.com/gpsphotolinker/">GPSPhotoLinker</a>. Die Software erlaubt dir, entweder eine oder mehrere GPX-Dateien auszuwählen. Du passt dann nur noch die Zeitzone der GPX-Dateien an, fügst beliebig viele Fotos hinzu und lässt das Programm dann den Rest machen: Die Aufnahmezeit deiner Bilder mit den Zeiten der Track-Daten abgleichen und die GPS-Informationen in den Metadaten der Bilder speichern. Fertig.</p>
 
         
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> GPS, Software, Tools, Anleitung, Geodaten</p>
+        </div>
         
       ]]></content:encoded>
       
@@ -917,7 +945,7 @@ fastboot -i 0x0fce oem unlock 0xDEIN_SONY_KEY</p>
       
       
       
-      <dc:type>guide</dc:type>
+      <dc:type>software_review</dc:type>
       
       
     </item><item>
@@ -933,7 +961,7 @@ fastboot -i 0x0fce oem unlock 0xDEIN_SONY_KEY</p>
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Der Artikel stellt das kostenlose Tool `DiscInventory X` für macOS vor, mit dem sich der Speicherplatzverbrauch auf der Festplatte grafisch analysieren lässt. Es wird als Alternative zum TotalCommander-Plugin `DirSizeCalc` für Windows positioniert und seine Hauptfunktionen werden aufgelistet.</p>
+          <p>Der Artikel stellt das kostenlose Tool &#39;DiscInventory X&#39; für macOS vor, mit dem sich der Speicherplatzverbrauch auf der Festplatte grafisch analysieren lässt. Es wird als Alternative zum TotalCommander-Plugin &#39;DirSizeCalc&#39; für Windows positioniert und seine Hauptfunktionen werden aufgelistet.</p>
           
           
           <p><strong>Hauptthemen:</strong> macOS, Software, Festplattenverwaltung, System-Tools</p>

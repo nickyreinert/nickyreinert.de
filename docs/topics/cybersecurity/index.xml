@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Cybersecurity auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/topics/cybersecurity/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Sat, 01 Jan 2000 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/cybersecurity/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Wordpress-Security Checkliste</title>
+      <link>https://nickyreinert.de/2000/2000-01-01-wordpress-security-checkliste/</link>
+      <pubDate>Sat, 01 Jan 2000 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2000/2000-01-01-wordpress-security-checkliste/</guid>
+      <description>Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Diese detaillierte Checkliste bietet umfassende Anleitungen zur Absicherung von WordPress-Installationen. Sie behandelt essenzielle Sicherheitspraktiken wie regelmäßige Updates, Backups, die Nutzung von Staging-Systemen sowie technische Maßnahmen wie &#39;.htaccess&#39;-Schutz, korrekte Dateirechte und die sichere Konfiguration von PHP, angepasst an verschiedene Hosting-Szenarien.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> WordPress Sicherheit, Webserver Konfiguration, PHP Sicherheit, Datensicherung, Systemhärtung, Cybersecurity</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch kriminelle Geister an und so schwirren immer wieder Nachrichten über Sicherheitslücken und gehackte WP-Seiten durch die einschlägigen Medien. Aus diesem Grund will ich mal meine Erfahrungen in Bezug auf Wordpress-Sicherheit an dieser Stelle zusammenfassen und zwar so kompakt wie möglich, damit diese Information als Checkliste genutzt werden kann.</p>
+<p>Wenn du Betreiber einer Wordpress-Seite bist, gibt es dafür drei Wege und unterschiedliche Freiheiten, sich selber um die Sicherheit der WP-Installation zu nutzen - im folgenden die &ldquo;Freiheitsgrade&rdquo; genannt: Bei &ldquo;wordpress as a service&rdquo; greifst du auf einen Angebot zurück, das bekannteste ist wordpress.com, bei dem du nur Zugriff auf das Backend hast und dementsprechend wenig Konfigurationsmöglichkeiten. Als Nutzer eines Shared Hosting hast du zusätzlich die Möglichkeit, per FTP oder SSH auf den Webspace zu gelangen und dort Einstellungen vorzunehmen. Und schließlich gibt es noch die Möglichkeit, einen eigenen Server zu nutzen, bei dem du dich auch um die Konfiguration auf Systemebene, also des Webserver kümmern musst. In dieser Reihenfolge möchte ich nun im folgenden Zusammenfassen, welche Möglichkeiten du hast, deine WP-Installation etwas sicherer zu gestalten.</p>
+<h2 id="aktuelle-updates">Aktuelle Updates</h2>
+<p>Zunächst zum Offensichtlichen: Sicherheitsupdates. Die automatischen Updates des WP-Cores (also dem, was WP ausmacht) sind mit jedem Freiheitsgrad konfigurierbar, bergen aber auch Risikos. So hatte z.B. das Update auf Version 4.9.3 Anfang 2018 den Auto-Update-Mechanismus deaktiviert. Spätere Sicherheitsupdates würden also ignoriert werden. Grundsätzlich ist das Auto-Update nur für sog. Minor-Versionen zu empfehlen, wodurch Sicherheitlücken und Bugs behoben werden. Wer diese Funktion auf einem Test-System auch für Major-Versionen aktivieren möchte, muss in der wp-config.php folgenden Parameter setzen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">define</span><span class="p">(</span> <span class="s1">&#39;WP_AUTO_UPDATE_CORE&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span> <span class="p">);</span>
+</span></span></code></pre></div><p>(der Parameter ist per default auf <em>minor</em> gesetzt.) Grundsätzlich ist das aber nicht zu empfehlen: Denn: Bevor ein großes Update eingespielt wird, sollte das auf Herz &amp; Nieren und natürlich Kompatibilität mit den vorhandenen Themes und Plugins getestet werden. Dazu sollte man ein Staging-System einrichten, worauf ich im nächsten Absatz eingehe.</p>
+<h2 id="ein-staging-system-nutzen">Ein Staging-System nutzen</h2>
+<p>Die Sicherheit der WP-Installation kann nicht nur durch Malware oder Angriffe von außen versehrt werden, sondern auch durch Bedienfehler. Ein wichtiger Baustein ist also ein Staging-System. Das ist im weitesten Sinne eine exakte Kopie der aktuelle WP-Installation. Das Staging-System erfüllt eine Reihe von Funktionen:</p>
+<ul>
+<li>Testen von Plugins &amp; Updates auf Kompatibilität</li>
+<li>Referenz-System zum Erkennen von verdächtigen Änderungen</li>
+<li>Testen von Änderungen am Theme</li>
+</ul>
+<p>Wie ein Staging-System eingerichtet wird, habe ich hier genauer erklärt. Was es mit dem 2. Punkt auf sich hat, erkläre ich weiter unten.</p>
+<h2 id="regelmäßige-backups">Regelmäßige Backups</h2>
+<p>Auch Backups sind ein wichtiger Teil eines Sicherheitskonzeptes. Hier gibt es je nach Freiheitsgrad verschiedene Möglichkeiten. Als Plugin empfehle ich zunächst das sehr weit verbreitete Updraft. Das Backup sollte unbedingt auf einen anderen Ort kopiert werden. Updraft unterstützt in der kostenlosen Version z.B. FTP. Wer kein Problem mit Dropbox oder Google Drive hat, kann natürlich auch die Cloud nutzen. Updraft unterstützt die Verschlüsselung der Datenbank-Sicherung nur in der bezahlten Version. Wer mit personenbezogenen Daten hantiert, sollte sich diese Funktion unbedingt zulegen!</p>
+<p>Eine bessere Alternative, die aber nur ab dem 2. Freiheitsgrad möglich ist, ist das Backup über die Kommandozeile. Das ist vor allem dann unumgänglich, wenn die WP-Installation sehr groß ist und nicht mehr mit den gängigen Plugins durchführbar ist. Außerdem funktioniert das unabhängig von Wordpress und kann demnach auch nicht durch andere Plugins beeinträchtigt werden. Wie genau man das einrichtet und vor allem auch die Wiederherstellung habe ich in diesem Beitrag genauer beschrieben.</p>
+<h2 id="plugin-sparsamkeit">Plugin-Sparsamkeit</h2>
+<p>Hierunter ist eher ein Konzept als eine konkrete Handlungsempfehlung zu verstehen. Vor allem technisch unbedarfte Nutzer tendieren dazu, sofort ein Plugin zu installieren, wenn eine bestimmte Funktion benötigt wird. Doch gerade unsaubere, nicht gepflegte Plugins bieten eine Angriffsfläche und noch dazu wirkt sich ein zunehmendes Plugin-Portfolio negativ auf die Performance aus. Wer ein Plugin installieren möchte, sollte dazu nur auf vertrauenswürdige und bekannte Quellen zurückgreifen. Im Klartext: <a href="https://de.wordpress.org/plugins/">https://de.wordpress.org/plugins/</a></p>
+<h2 id="die-offensichtlichen">Die offensichtlichen</h2>
+<ol start="2">
+<li>Admin-Benutzer umbenennen</li>
+</ol>
+<h2 id="die-technischen">Die technischen</h2>
+<ol>
+<li>Admin-Bereich mit .htaccess schützen</li>
+<li>Dateirechte korrekt setzen</li>
+<li>PHP-Ausführung in bestimmten Unterordner deaktivieren</li>
+</ol>
+<h2 id="plugins-und-themes">Plugins und Themes</h2>
+<p>Ein zentrales Element und der größte Vorteil von Wordpress ist seine fast unerreichbar funktionale Erweiterbarkeit und sehr große Community. Das zieht allerdings auch schwarze Schafe an.</p>
+<ol>
+<li>Installiere nicht wahllos Plugins, weil du eine bestimmte Funktion benötigst</li>
+<li>Installiere Plugins nur von vertrauenswürdigen Quellen</li>
+<li>Räume deinen Plugin-Ordner regelmäßig auf</li>
+</ol>
+<h2 id="die-mutigen">Die mutigen</h2>
+<h3 id="php-ini-parameter">PHP ini-Parameter</h3>
+<p>Es dürfte kein Geheimnis sein, dass PHP über die php.ini gesteuert wird. Es gibt allerdings einige sicherheitsrelevante Parameter, um die man sich allerdings selber kümmern muss. Die wichtigsten möchte ich hier vorstellen.</p>
+<p>Um die Übersicht über manuelle Änderungen nicht zu verlieren, solltest du die Einstellungen in einer separaten Datei (z.B. <em>security.ini</em>) speichern. Auf der Kommandozeile zeigt dir der folgende Befehl, aus welchem zusätzlichen Ordner PHP zusätzliche ini-Dateien liest:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">php --ini
+</span></span></code></pre></div><p>In den meisten Fällen dürfte das /etc/php/7.1/apache2/conf.d/ sein.</p>
+<p>Eine einfache aber sehr wirksame Maßnahme ist das deaktivieren potentiell gefährlicher PHP-Funktionen. Wie z.B. <a href="http://php.net/manual/en/function.shell-exec.php">shell_exec()</a> - im Wordpress-Umfeld gibt es kaum ein Szenario, in dem diese Funktion nützlich sein könnte. Um PHP-Funktionen zu deaktivieren, kannst du den ini-Parameter <a href="http://php.net/manual/de/ini.core.php#ini.disable-functions">disable_functions</a> nutzen.</p>
+<p>Dort legst du die <em>security.ini</em> ab und füllst sie entsprechend:</p>
+<p><a href="https://www.damianschwyrz.de/php-backdoors-und-shells-finden-eine-kurze-anleitung">https://www.damianschwyrz.de/php-backdoors-und-shells-finden-eine-kurze-anleitung</a></p>
+<p>siehe auch</p>
+<p><a href="https://binary-butterfly.de/artikel/wordpress-login-security-eine-stahltuer-in-der-wellblechhuette/">https://binary-butterfly.de/artikel/wordpress-login-security-eine-stahltuer-in-der-wellblechhuette/</a></p>
+<p>IP-Filter</p>
+<h3 id="den-admin-bereich-verstecken">Den Admin-Bereich verstecken</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-apache" data-lang="apache"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">&lt;IfModule</span> <span class="s">mod_rewrite.c</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="nb">RewriteEngine</span> <span class="k">on</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="nb">RewriteBase</span> /
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="c"># Move Wordpress login to /cms.</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="nb">RewriteRule</span> ^cms wp-login.php?cms=unlocked [L]
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^cms=unlocked
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^action=logout
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^loggedout=true
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_METHOD} !POST
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*)$ - [R=403,L]
+</span></span><span class="line"><span class="ln">12</span><span class="cl">
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
+</span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} ^loggedout=true
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*) ./cms? [R=302,NC,L]
+</span></span><span class="line"><span class="ln">16</span><span class="cl">
+</span></span><span class="line"><span class="ln">17</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
+</span></span><span class="line"><span class="ln">18</span><span class="cl">    <span class="nb">RewriteCond</span> %{HTTP_REFERER} !cms$
+</span></span><span class="line"><span class="ln">19</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_METHOD} POST
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*)$ - [R=403,L]
+</span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="nt">&lt;/IfModule&gt;</span>
+</span></span></code></pre></div><!-- https://wordpress.stackexchange.com/a/292691/132138
+
+## Die unnötigen
+
+### Sicherheits-Plugins
+
+siehe auch
+
+https://www.kuketz-blog.de/basisschutz-wordpress-absichern-teil1
+
+https://fastwp.de/487
+
+```bash
+chown user:user -R *
+find . -type d -exec chmod 755 {} \;
+find . -type f -exec chmod 644 {} \;
+
+chown www-data:www-data wp-content
+
+## Disable Editing in Dashboard
+define('DISALLOW_FILE_EDIT', true);
+
+<Directory /var/www/nickyreinert.de/www>
+# prevent   var_dump(scandir('/etc'));
+# see http://php.net/manual/de/ini.core.php#ini.open-basedir
+# alternativ: php für jeden virtuellen host mit separatem user ausführen und die dateirechte anpassen
+php_admin_value open_basedir "/var/www/nickyreinert.de/www"
+
+</Directory>
+```
+
+```ini
+# disable_functions in php.ini
+# list of function to disable globally #
+disable_functions =exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source
+```
+
+## PHP-FPM?
+
+Normalerweise ruft der Apache-Webserver den PHP-Interpreter jedes mal erneut auf. Der Nachteil: Viel Speicherverbrauch, lange Ladezeiten und ein globaler Benutzer. Etwas schneller ist FastCGI. Dabei läuft der Interpreter permanent im Hintergrund. FPM startet nicht nur einen sondern mehrere PHP-Prozesse im Hintergrund. -->
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> WordPress, Sicherheit, Anleitung, Checkliste, Webserver</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>wordpress</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/image.png" type="image/jpeg">
+        <media:title>Wordpress-Security Checkliste - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>security_checklist</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

@@ -13,7 +13,257 @@
     <managingEditor></managingEditor>
     <webMaster></webMaster>
     <copyright></copyright>
-    <lastBuildDate>Sat, 16 Apr 2005 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/systemadministration/index.xml" rel="self" type="application/rss+xml" /><item>
+    <lastBuildDate>Sat, 07 Jun 2025 10:34:56 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/systemadministration/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Mehrere OneDrive Synchronisationen auf einem System</title>
+      <link>https://nickyreinert.de/2025/2025-06-07-mehrere-onedrive-synchronisationen-auf-einem-system/</link>
+      <pubDate>Sat, 07 Jun 2025 10:34:56 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2025/2025-06-07-mehrere-onedrive-synchronisationen-auf-einem-system/</guid>
+      <description>Irgendwie ist dieser Blog zu einer feuil­le­to­nis­tischen Kommentarspalte verkommen. Schluss damit! Hier eine Anleitung zu einem Thema, dass ich schon lange …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine technische Anleitung zur Verwaltung mehrerer OneDrive-Synchronisationen auf einem System mittels eines Docker-basierten Kommandozeilen-Clients (&#39;abraunegg/onedrive&#39;). Der Artikel erklärt die Konfiguration über &#39;docker-compose.yml&#39;, die Authentifizierung und den Start des Clients im Hintergrund, und hebt die Vorteile dieser flexibleren Lösung gegenüber dem offiziellen Microsoft-Client hervor.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> OneDrive, Cloud-Speicher, Docker, Synchronisation, Linux, Systemadministration</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Irgendwie ist dieser Blog zu einer feuil­le­to­nis­tischen Kommentarspalte verkommen. Schluss damit! Hier eine Anleitung zu einem Thema, dass ich schon lange vor mir herschiebe, was mein Leben aber ungemein erleichtert: Stell dir vor, du besitzt mehrere OneDrive-Accounts und willst alle auf deinem System synchonisieren. Anwendungsfälle gibt es genug: Du vertwaltest einen Corporate/Business-Account und einen privaten oder du hast dir einen Backup-Account zugelegt. Und so weiter. Und so fort.</p>
+<p>Die Antwort könnte lauten: Nutze doch den offiziellen GUI-Client von Microsoft! Der unterstützt mehrere Accounts!</p>
+<p>Ja. Tut er. Auf dem Papier. In der Realität ist der Umgang damit&hellip; &ldquo;schwierig&rdquo;. Und bei der Analyse belassen wir es vorerst. Die einfachrere Lösung lautet nämlich: Docker!</p>
+<p>Alles was du brauchst ist eine <code>docker-compose.yml</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-docker" data-lang="docker"><span class="line"><span class="ln"> 1</span><span class="cl">version: <span class="s1">&#39;3.8&#39;</span><span class="err">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="err"></span>services:<span class="err">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="err"></span>  onedrive:<span class="err">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="err"></span>    image: driveone/onedrive:latest<span class="err">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="err"></span>    container_name: onedrive-cli<span class="err">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="err"></span>    volumes:<span class="err">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="err"></span>      - ./config:/onedrive/conf<span class="err">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="err"></span>      - ./data:/onedrive/data<span class="err">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="err"></span>    environment:<span class="err">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="err"></span>      - <span class="nv">ONEDRIVE_UID</span><span class="o">=</span><span class="si">${</span><span class="nv">UID</span><span class="si">}</span><span class="err">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="err"></span>      - <span class="nv">ONEDRIVE_GID</span><span class="o">=</span><span class="si">${</span><span class="nv">GID</span><span class="si">}</span><span class="err">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="err"></span>    command: &gt;<span class="err">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="err"></span>      --confdir<span class="o">=</span><span class="s2">&#34;/onedrive/conf&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="err"></span>      --syncdir<span class="o">=</span><span class="s2">&#34;/onedrive/data&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="err"></span>      --monitor<span class="err">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="err"></span>    restart: unless-stopped<span class="err">
+</span></span></span></code></pre></div><p>In einer <code>.env</code> Datei legst du deine aktuelle User/User-Group-ID ab:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;ONEDRIVE_UID=</span><span class="k">$(</span>id -u<span class="k">)</span><span class="s2">&#34;</span> &gt; .env
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;ONEDRIVE_GID=</span><span class="k">$(</span>id -g<span class="k">)</span><span class="s2">&#34;</span> &gt;&gt; .env
+</span></span></code></pre></div><p>Du baust dir den Container zunächst mit <code>docker compose build</code> und startest diesen dann im interaktiven Modus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">docker run -it --rm <span class="se">\
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="se"></span>  -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/config:/onedrive/conf <span class="se">\
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="se"></span>  -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/data:/onedrive/data <span class="se">\
+</span></span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="se"></span>  driveone/onedrive:latest <span class="se">\
+</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="se"></span>  --confdir<span class="o">=</span><span class="s2">&#34;/onedrive/conf&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="se"></span>  --syncdir<span class="o">=</span><span class="s2">&#34;/onedrive/data&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="se"></span>  --monitor
+</span></span></code></pre></div><p>Die Konsole liefert dir nun eine URL, über die du den Client authentifizieren musst. Danach beginnt der initiale Sync. Du kannst den Container dann stoppen und mit <code>docker compose up</code> im nicht-interaktiven Modus - also im Hintergrund - starten.</p>
+<p>Was ist daran jetzt bemerkenswert? Der Client - <a href="https://github.com/abraunegg/onedrive">hier übrigens das Git-Repo</a> - ist äußerst mächtig und stabil! So kannst du z.B. relativ simpel festlegen, welche Dateien synchronisiert werden - jaja, ich weiß, im Prinzip kann das auch der offizielle Client - aber lange nicht so komfortable und beliebig komplex. Eine Möglichkeit ist z.B. die Datei <code>sync_list</code> im Ordner <code>config</code> (bzg. <code>conf</code> als Mount-Ziel). Dort legst du fest, welche Dateien und Ordner ausschließlich berücksichtigt werden sollen.</p>
+<p>Und natürlich kannst du so mehrere Docker-Container aufsetzen, die jeweils unterschiedliche Synchronisierungs-Aufträge erfüllen.</p>
+<p>Eine sehr ausführliche Beschreibung, was wie möglich ist, findest du hier: <a href="https://github.com/abraunegg/onedrive/blob/master/docs/usage.md">https://github.com/abraunegg/onedrive/blob/master/docs/usage.md</a></p>
+<p>Kudos aber auch an Microsoft. Ohne die öffentlich zugängliche OneDrive-API wäre solch eine Lösung nicht denkbar!</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> OneDrive, Docker, Synchronisation, Tutorial, Linux</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Mehrere OneDrive Synchronisationen auf einem System - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>technical_tutorial</dc:type>
+      
+      
+    </item><item>
+      <title>Die Nerd Enzyklopädie 47 - Die 500-Meilen-E-Mail</title>
+      <link>https://nickyreinert.de/2025/2025-03-10-nerd-enzyklop%C3%A4die-47---die-500-meilen-e-mail/</link>
+      <pubDate>Wed, 02 Apr 2025 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2025/2025-03-10-nerd-enzyklop%C3%A4die-47---die-500-meilen-e-mail/</guid>
+      <description>Dieser Moment, in denen man an seiner Wahrnehmung zweifelt, weil ein Computer, der doch eigentlich nach den strengen Regeln der Logik arbeiten sollte, plötzlich …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine Nacherzählung aus der &#39;Nerd Enzyklopädie&#39; über die berühmte &#39;500-Meilen-E-Mail&#39;-Anekdote. Der Artikel beschreibt einen bizarren Softwarefehler, bei dem E-Mails nur innerhalb eines bestimmten Radius zugestellt wurden. Die Ursache war ein unentdecktes Downgrade des &#39;sendmail&#39;-Servers, das zu einem 0-Sekunden-Timeout führte, wodurch entfernte Server nicht rechtzeitig antworten konnten.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> E-Mail, Netzwerktechnik, Softwarefehler, Debugging, Systemadministration, Nerd-Kultur</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Dieser Moment, in denen man an seiner Wahrnehmung zweifelt, weil ein Computer, der doch eigentlich nach den strengen Regeln der Logik arbeiten sollte, plötzlich Dinge tut, die gar nicht mehr so logisch erscheinen. Dieser Moment muss <strong>2002</strong> wohl auch <strong>Trey Harris</strong> ereilt haben (<a href="https://web.mit.edu/jemorris/humor/500-miles">MIT1</a>).</p>
+<p>Harris, Mitglied der <strong>System Administrators Guild</strong> (SAGE), arbeitete als Admin für eine Universität in <strong>North Carolina</strong> und war dort für das E-Mail-System verantwortlich. Eines Tages rief ihn der Vorsitzende der Statistik-Abteilung an und behauptet, dass seine E-Mails nicht ankommen, sobald der Empfänger mehr als <strong>500 Meilen</strong> entfernt sei. Das Problem bestand offenbar schon ein paar Tage. Um es zu dokumentieren, hatte man auf einer Karte markiert, bei welchen Empfänger der E-Mail-Versand funktionierte. Und das funktioniere wohl nur bei Empfängern innerhalb eines 500-Meilen-Radius.</p>
+<p>Harris war skeptisch und testete das System selbst. Er sendete einige Test-E-Mails unter anderem nach <strong>Richmond</strong>, <strong>Atlanta</strong> und <strong>Washington</strong> - alle Ziele befinden sich innerhalb des 500 Meilen Radius. Ohne Probleme. Und dann nach <strong>Memphis</strong> - <strong>600 Meilen</strong> Distanz. Die E-Mail ging nicht durch. <strong>Providence</strong>, 580 Meilen? Kein Erfolg. <strong>New York</strong>, 420 Meilen? Funktioniert.</p>
+<p>Harris verglich die Konfigurationen des E-Mail-Servers mit anderen Systemen und fand keinerlei Auffälligkeiten. Zur weiteren Diagnose wählte er sich per Telnet auf den SMTP-Port des Servers ein. Der Server reagierte, wie erwartet mit dem <strong>SunOS Sendmail Logo</strong>. Und das führte Harris auf die richtige Fährte.</p>
+<p>Der Vorsitzende der Statistik-Abteilung erwähnte zwar, dass vor ein paar Tagen ein Wartungs-Updates für des Betriebssystems installiert wurde. Angeblich betraf das aber nicht <strong>sendmail</strong>, welches Harris vor längerer Zeit in der <strong>Version 8</strong> installiert hatte. Das besagte Update von SunOS enthielt jedoch noch die alte <strong>Version 5</strong> von sendmail! Der E-Mail-Server wurde durch das Update des Betriebssystem auf eine alte Version zurückgesetzt. Die Konfigurations-Dateien, die Harris für die Version 8 angelegt hatte, waren allerdings noch vorhanden. Nur waren sie nicht mit Version 5 kompatibel. So wurde für einige wichtige Parametern von sendmail der <strong>Standard-Wert 0</strong> angenommen.</p>
+<p>Einer dieser Parameter bezog sich auf das <strong>Timeout</strong> für die Verbindung zum externen SMTP-Server. Der Wert dafür betrug nun <strong>0 Sekunden</strong>.</p>
+<p>Aber was hatte das zu bedeuten? Wenn sendmail versucht, eine Verbindung mit einem externen SMTP-Server aufzubauen, schickt es eine Anfrage in das Internet und  wartete dann auf die Antwort. Aufgrund der Auslastung des Systems brauchte sendmail einen Augenblick, um die Routine für die Verarbeitung der Antwort aufzurufen.</p>
+<p>Harris fand heraus, das sendmail dafür etwa 3 Millisekunden benötigt. Eine Antwort, die nach 3 Millisekunden bei sendmail eintraf, wurde aufgrund des Timeouts als nicht erfolgreich gewertet.</p>
+<p>Da die Universität über ein Glasfasernetz an das Internet angeschlossen war, gelang eine derartige Anfrage mit nahezu Lichtgeschwindigkeit nach draußen. Also fragte sich Harris, wie weit das Signal innerhalb von 3 Millisekunden kommen konnte. Er bemühte <strong>units</strong>, ein Kommandozeilen-Programm, um die Distanz auszurechnen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ units
+</span></span><span class="line"><span class="ln">2</span><span class="cl">1311 units, 63 prefixes
+</span></span><span class="line"><span class="ln">3</span><span class="cl">You have: 3 millilightseconds
+</span></span><span class="line"><span class="ln">4</span><span class="cl">You want: miles
+</span></span><span class="line"><span class="ln">5</span><span class="cl">* 558.84719
+</span></span><span class="line"><span class="ln">6</span><span class="cl">/ 0.0017893979
+</span></span></code></pre></div><p>*(Das <em>-Zeichen ist kein Operator, sondern zeigt das Ergebnis an.)</em></p>
+<p>558 Meilen!  Harris hatte die Ursache für das seltsame Verhalten gefunden.</p>
+<p>Harris räumte später ein, einige technische Details, auch aus dramaturgischen Gründen, nicht ganz exakt wiedergeben zu haben. So musste  auch die Antwort vom SMTP-Server innerhalb von 3 Sekunden wieder bei sendmail landen, womit sich die verfügbare Zeit eigentlich auf 1,5 Millisekunden halbiert. Das ändert aber nichts daran, dass das Zusammenspiel aus Timeout, Übertragungsgeschwindigkeit und Verzögerung bei der Verarbeitung dafür gesorgt haben, dass E-Mails nur in einem bestimmten Radius versendet werden konnten, nämlich circa 500 Meilen…</p>
+<p>…but I would walk 500 miles, and I would walk 500 more…</p>
+<p><img src="/2025/2025-03-10-nerd-enzyklop%C3%A4die-47---die-500-meilen-e-mail/image.png" alt="alt text"></p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> E-Mail, Netzwerk, Nerd-Enzyklopädie, Anekdote</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 47 - Die 500-Meilen-E-Mail - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>historical_anecdote</dc:type>
+      
+      
+    </item><item>
+      <title>Die Nerd Enzyklopädie 46 - Bastard Operator From Hell</title>
+      <link>https://nickyreinert.de/2025/2025-03-10-nerd-enzyklop%C3%A4die-46---bastard-operator-from-hell/</link>
+      <pubDate>Mon, 10 Mar 2025 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2025/2025-03-10-nerd-enzyklop%C3%A4die-46---bastard-operator-from-hell/</guid>
+      <description>Wer sich mit Nerd-Kultur beschäftigt, kommt am Bastard Operator From Hell, kurz BOfH (zu deutsch sinngemäß in etwa „Mistkerl-Admin aus der Hölle&quot;), nicht …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine Einführung aus der &#39;Nerd Enzyklopädie&#39; in den &#39;Bastard Operator From Hell&#39; (BOfH), eine ikonische Figur der Nerd-Kultur. Der Artikel beleuchtet die satirischen Erzählungen von Simon Paul Travaglia über einen zynischen IT-Administrator, der seine Nutzer quält, und beschreibt die Entstehung, Verbreitung und den kulturellen Einfluss dieser Geschichten, inklusive der deutschen Adaption als BAfH.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> IT-Folklore, Nerd-Kultur, Systemadministration, Humor, Satire, Internetgeschichte</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Wer sich mit Nerd-Kultur beschäftigt, kommt am <strong>Bastard Operator From Hell</strong>, kurz <strong>BOfH</strong> (zu deutsch sinngemäß in etwa „Mistkerl-Admin aus der Hölle&quot;), nicht herum.</p>
+<p>Der BOFH ist eine fiktive Figur aus den satirischen Erzählungen von <strong>Simon Paul Travaglia</strong>, die erst in einer Universität, später in einem Büro als Operator - also einer Art Service-Mitarbeiter oder laut Wikipedia „Systembetreuer“ - tätig ist.</p>
+<p>Travaglia arbeitete Ende der 1980er Jahre an der Universität von Waikato (Neuseeland) selbst als Operator. Seine Aufgabe war der technische Support und er beschreibt seinen, wie er es selbst nennt, nervigen und langweiligen Arbeitsalltag so:</p>
+<blockquote>
+<p>All the power and none of the responsibility. Good Times. You could do ANYTHING to a user and no-one would know. Well, they&rsquo;d know, but they couldn&rsquo;t prove a thing. ~ Travaglia (BOFH1)</p></blockquote>
+<p>Bei einem Umzug in ein anderes Gebäude fiel ihm ein alter ungenutzter Tandy TRS-80 Model 100, Spitzname Trash 80, in die Hände. Der Trash 80 war der Vorläufer des modernen Notebooks. Das RS steht für Radio Shack, einem bekannten Elektronikhändler in den USA. Travaglia verfasste damit in seiner Freizeit, wie er es selber nannte, zusammenhangslose, „seltsame&quot; Geschichten („oddball stories&quot;).
+In regelmäßigen Abständen nahm er das „Notebook“ mit ins Büro, um dort einige seiner „Rants“ im Usenet unter dem Titel „Striped Irregular Bucket“ zu veröffentlichen. In einem dieser Rants beschreibt er den wenig zimperlichen Umgang mit einem Hilfesuchenden Angestellten wie folgt (MYTH1) :</p>
+<quote> 
+[…]
+So I fill in a couple of hours by killing users off and deleting their files, then waiting for them to call...
+<p>&ldquo;Um, I can&rsquo;t find my files&rdquo; the wimpering simp on the phone says</p>
+<p>&ldquo;Files? What files?&rdquo;</p>
+<p>&ldquo;The files in my account. My thesis, my research - all gone!&rdquo;</p>
+<p>&ldquo;Gone ay? What&rsquo;s your username?&rdquo;</p>
+<p>&ldquo;TURGEN&rdquo;</p>
+<p>&ldquo;TROJAN?! LIKE THE CONDOM?&rdquo;</p>
+<p>&ldquo;No TURGEN. T-U-R&rdquo;</p>
+<p>&ldquo;OH Turgen, like TURD, but with a GEN instead of a D&hellip; Ok lets see&rdquo; I make vague clicking noises my dragging the quicklimed man&rsquo;s fingers back and forth across the keypad. &ldquo;Uh-huh&rdquo; &gt;drag drag&lt; &ldquo;Yeah..&rdquo; &gt;dragedy poke&lt; &ldquo;AH! - You haven&rsquo;t got any files&rdquo;</p>
+<p>&ldquo;I KNOW!&rdquo;</p>
+<p>&ldquo;Well, what are you calling ME for? We don&rsquo;t make the files you know, we just look after them. And chopitty-chop too, your thesis looks like it&rsquo;s due in a couple of days..&rdquo;</p>
+<p>I hang up - he&rsquo;ll call back. Meantime I open up a copy of &ldquo;VMS BASTARD OPERATORS MANUAL FROM HELL&rdquo; I&rsquo;m reading the article I sent in about getting rid of those trouble users&hellip;</p>
+<p>[…]
+</quote></p>
+<p>Diese und zahlreiche weitere Erzählungen des zynischen, gemeinen und bis dahin noch unbekannten Operators fanden recht schnell großen Anklang, dennoch pausierte er seine Arbeit daran zunächst, wohl auch weil ihm die Inspiration fehlte (BJASH1) .
+Ende der 1992er Jahre arbeitete er in London für Enterprise Oil PLC, einem damals sehr erfolgreichen Ölförderunternehmen, aber das hat für die Geschichte keine Relevanz. Travaglia verfasste hier zwei weitere Episoden über den BOFH und erinnert sich vor allem an den abenteuerlichen Prozess der Veröffentlichung: Die Enterprise Oil besaß keinen Zugang zum Internet, also schlich er sich abends in das University College London, schrieb dort einige Geschichten, die er über einen langsamen Telnet-Zugang auf einer Virtuellen Maschine im Usenet veröffentlichen konnte.
+Travaglia kehrte London den Rücken und begab sich wieder nach Neuseeland, um dort als Analyst Programmer zu arbeiten. Er veröffentlichte nun nur noch sporadisch neue Episoden bis er, ermuntert durch Maxwell Cooter, Journalist beim Network Week Magazin, in fast regelmäßigen Abständen neue BOFH-Geschichten für eben das Network Week Magazine, später auch The Register oder Datamation zu schreiben und sogar in Buch-Form zu veröffentlichen.
+Auch wenn der teils schmerzbefreite Humor ein wenig aus der Zeit gefallen zu sein scheint, ist der BOFH nach wie vor ein fester Bestandteil der Nerd-Kultur.
+Florian Schiel begann 1997 damit die BOfH Geschichten ins Deutsche zu übersetzen, und entwickelt später mit dem BAfH einen eigenen erfolgreichen deutschen Ableger. Der BAfH treibt sein Unwesen als Systemadministrator an der Universität München.</p>
+<p>Wer die Welt einmal aus der Sicht eines unterforderten, aber auch ziemlich arroganten und gelangweilten Administrators erleben möchte, der sollte sich BOfH und BAfH auf die Liste der Bettlektüre setzen. Eine fast vollständige Sammlung aller Erlebnisse von Travaglias Original gibt es hier: (ARCH1)</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> IT-Geschichte, Nerd-Kultur, Humor, Anekdote</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 46 - Bastard Operator From Hell - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>cultural_analysis</dc:type>
+      
+      
+    </item><item>
       <title>FAQ</title>
       <link>https://nickyreinert.de/2005/2005-04-16-faq/</link>
       <pubDate>Sat, 16 Apr 2005 00:00:00 +0000</pubDate>
@@ -27,7 +277,7 @@ Skype &amp; HTTP-Server ? Mein …</description>
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>Eine Sammlung häufig gestellter Fragen (FAQ) und deren Lösungen für verschiedene Windows-Programme und Systemprobleme aus dem Jahr 2005. Behandelt werden Themen wie Port-Konflikte mit Skype, Reparatur von Word, ActiveSync-Verbindungsprobleme, `hal.dll`-Fehler und viele weitere Tipps und Tricks für Windows-Nutzer.</p>
+          <p>Eine Sammlung häufig gestellter Fragen (FAQ) und deren Lösungen für verschiedene Windows-Programme und Systemprobleme aus dem Jahr 2005. Behandelt werden Themen wie Port-Konflikte mit Skype, Reparatur von Word, ActiveSync-Verbindungsprobleme, &#39;hal.dll&#39;-Fehler und viele weitere Tipps und Tricks für Windows-Nutzer.</p>
           
           
           <p><strong>Hauptthemen:</strong> Windows, Troubleshooting, Systemadministration, Software-Tipps, Legacy-IT</p>
@@ -173,172 +423,6 @@ Skype &amp; HTTP-Server ? Mein …</description>
       
       
       <dc:type>faq</dc:type>
-      
-      
-    </item><item>
-      <title>Wordpress-Security Checkliste</title>
-      <link>https://nickyreinert.de/2000/2000-01-01-wordpress-security-checkliste/</link>
-      <pubDate>Sat, 01 Jan 2000 00:00:00 +0000</pubDate>
-      <author></author>
-      <guid>https://nickyreinert.de/2000/2000-01-01-wordpress-security-checkliste/</guid>
-      <description>Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Eine detaillierte Checkliste zur Absicherung von WordPress-Installationen, gegliedert nach dem Grad des Nutzerzugriffs (WordPress.com, Shared Hosting, eigener Server). Der Artikel behandelt essenzielle Sicherheitspraktiken wie Updates, Backups, Staging-Systeme sowie technische Maßnahmen wie `.htaccess`-Schutz, korrekte Dateirechte und die Konfiguration von PHP.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> WordPress, Web-Sicherheit, Systemadministration, PHP, Server-Konfiguration</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
-          
-        </div>
-        
-        
-        <p>Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch kriminelle Geister an und so schwirren immer wieder Nachrichten über Sicherheitslücken und gehackte WP-Seiten durch die einschlägigen Medien. Aus diesem Grund will ich mal meine Erfahrungen in Bezug auf Wordpress-Sicherheit an dieser Stelle zusammenfassen und zwar so kompakt wie möglich, damit diese Information als Checkliste genutzt werden kann.</p>
-<p>Wenn du Betreiber einer Wordpress-Seite bist, gibt es dafür drei Wege und unterschiedliche Freiheiten, sich selber um die Sicherheit der WP-Installation zu nutzen - im folgenden die &ldquo;Freiheitsgrade&rdquo; genannt: Bei &ldquo;wordpress as a service&rdquo; greifst du auf einen Angebot zurück, das bekannteste ist wordpress.com, bei dem du nur Zugriff auf das Backend hast und dementsprechend wenig Konfigurationsmöglichkeiten. Als Nutzer eines Shared Hosting hast du zusätzlich die Möglichkeit, per FTP oder SSH auf den Webspace zu gelangen und dort Einstellungen vorzunehmen. Und schließlich gibt es noch die Möglichkeit, einen eigenen Server zu nutzen, bei dem du dich auch um die Konfiguration auf Systemebene, also des Webserver kümmern musst. In dieser Reihenfolge möchte ich nun im folgenden Zusammenfassen, welche Möglichkeiten du hast, deine WP-Installation etwas sicherer zu gestalten.</p>
-<h2 id="aktuelle-updates">Aktuelle Updates</h2>
-<p>Zunächst zum Offensichtlichen: Sicherheitsupdates. Die automatischen Updates des WP-Cores (also dem, was WP ausmacht) sind mit jedem Freiheitsgrad konfigurierbar, bergen aber auch Risikos. So hatte z.B. das Update auf Version 4.9.3 Anfang 2018 den Auto-Update-Mechanismus deaktiviert. Spätere Sicherheitsupdates würden also ignoriert werden. Grundsätzlich ist das Auto-Update nur für sog. Minor-Versionen zu empfehlen, wodurch Sicherheitlücken und Bugs behoben werden. Wer diese Funktion auf einem Test-System auch für Major-Versionen aktivieren möchte, muss in der wp-config.php folgenden Parameter setzen:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">define</span><span class="p">(</span> <span class="s1">&#39;WP_AUTO_UPDATE_CORE&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span> <span class="p">);</span>
-</span></span></code></pre></div><p>(der Parameter ist per default auf <em>minor</em> gesetzt.) Grundsätzlich ist das aber nicht zu empfehlen: Denn: Bevor ein großes Update eingespielt wird, sollte das auf Herz &amp; Nieren und natürlich Kompatibilität mit den vorhandenen Themes und Plugins getestet werden. Dazu sollte man ein Staging-System einrichten, worauf ich im nächsten Absatz eingehe.</p>
-<h2 id="ein-staging-system-nutzen">Ein Staging-System nutzen</h2>
-<p>Die Sicherheit der WP-Installation kann nicht nur durch Malware oder Angriffe von außen versehrt werden, sondern auch durch Bedienfehler. Ein wichtiger Baustein ist also ein Staging-System. Das ist im weitesten Sinne eine exakte Kopie der aktuelle WP-Installation. Das Staging-System erfüllt eine Reihe von Funktionen:</p>
-<ul>
-<li>Testen von Plugins &amp; Updates auf Kompatibilität</li>
-<li>Referenz-System zum Erkennen von verdächtigen Änderungen</li>
-<li>Testen von Änderungen am Theme</li>
-</ul>
-<p>Wie ein Staging-System eingerichtet wird, habe ich hier genauer erklärt. Was es mit dem 2. Punkt auf sich hat, erkläre ich weiter unten.</p>
-<h2 id="regelmäßige-backups">Regelmäßige Backups</h2>
-<p>Auch Backups sind ein wichtiger Teil eines Sicherheitskonzeptes. Hier gibt es je nach Freiheitsgrad verschiedene Möglichkeiten. Als Plugin empfehle ich zunächst das sehr weit verbreitete Updraft. Das Backup sollte unbedingt auf einen anderen Ort kopiert werden. Updraft unterstützt in der kostenlosen Version z.B. FTP. Wer kein Problem mit Dropbox oder Google Drive hat, kann natürlich auch die Cloud nutzen. Updraft unterstützt die Verschlüsselung der Datenbank-Sicherung nur in der bezahlten Version. Wer mit personenbezogenen Daten hantiert, sollte sich diese Funktion unbedingt zulegen!</p>
-<p>Eine bessere Alternative, die aber nur ab dem 2. Freiheitsgrad möglich ist, ist das Backup über die Kommandozeile. Das ist vor allem dann unumgänglich, wenn die WP-Installation sehr groß ist und nicht mehr mit den gängigen Plugins durchführbar ist. Außerdem funktioniert das unabhängig von Wordpress und kann demnach auch nicht durch andere Plugins beeinträchtigt werden. Wie genau man das einrichtet und vor allem auch die Wiederherstellung habe ich in diesem Beitrag genauer beschrieben.</p>
-<h2 id="plugin-sparsamkeit">Plugin-Sparsamkeit</h2>
-<p>Hierunter ist eher ein Konzept als eine konkrete Handlungsempfehlung zu verstehen. Vor allem technisch unbedarfte Nutzer tendieren dazu, sofort ein Plugin zu installieren, wenn eine bestimmte Funktion benötigt wird. Doch gerade unsaubere, nicht gepflegte Plugins bieten eine Angriffsfläche und noch dazu wirkt sich ein zunehmendes Plugin-Portfolio negativ auf die Performance aus. Wer ein Plugin installieren möchte, sollte dazu nur auf vertrauenswürdige und bekannte Quellen zurückgreifen. Im Klartext: <a href="https://de.wordpress.org/plugins/">https://de.wordpress.org/plugins/</a></p>
-<h2 id="die-offensichtlichen">Die offensichtlichen</h2>
-<ol start="2">
-<li>Admin-Benutzer umbenennen</li>
-</ol>
-<h2 id="die-technischen">Die technischen</h2>
-<ol>
-<li>Admin-Bereich mit .htaccess schützen</li>
-<li>Dateirechte korrekt setzen</li>
-<li>PHP-Ausführung in bestimmten Unterordner deaktivieren</li>
-</ol>
-<h2 id="plugins-und-themes">Plugins und Themes</h2>
-<p>Ein zentrales Element und der größte Vorteil von Wordpress ist seine fast unerreichbar funktionale Erweiterbarkeit und sehr große Community. Das zieht allerdings auch schwarze Schafe an.</p>
-<ol>
-<li>Installiere nicht wahllos Plugins, weil du eine bestimmte Funktion benötigst</li>
-<li>Installiere Plugins nur von vertrauenswürdigen Quellen</li>
-<li>Räume deinen Plugin-Ordner regelmäßig auf</li>
-</ol>
-<h2 id="die-mutigen">Die mutigen</h2>
-<h3 id="php-ini-parameter">PHP ini-Parameter</h3>
-<p>Es dürfte kein Geheimnis sein, dass PHP über die php.ini gesteuert wird. Es gibt allerdings einige sicherheitsrelevante Parameter, um die man sich allerdings selber kümmern muss. Die wichtigsten möchte ich hier vorstellen.</p>
-<p>Um die Übersicht über manuelle Änderungen nicht zu verlieren, solltest du die Einstellungen in einer separaten Datei (z.B. <em>security.ini</em>) speichern. Auf der Kommandozeile zeigt dir der folgende Befehl, aus welchem zusätzlichen Ordner PHP zusätzliche ini-Dateien liest:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">php --ini
-</span></span></code></pre></div><p>In den meisten Fällen dürfte das /etc/php/7.1/apache2/conf.d/ sein.</p>
-<p>Eine einfache aber sehr wirksame Maßnahme ist das deaktivieren potentiell gefährlicher PHP-Funktionen. Wie z.B. <a href="http://php.net/manual/en/function.shell-exec.php">shell_exec()</a> - im Wordpress-Umfeld gibt es kaum ein Szenario, in dem diese Funktion nützlich sein könnte. Um PHP-Funktionen zu deaktivieren, kannst du den ini-Parameter <a href="http://php.net/manual/de/ini.core.php#ini.disable-functions">disable_functions</a> nutzen.</p>
-<p>Dort legst du die <em>security.ini</em> ab und füllst sie entsprechend:</p>
-<p><a href="https://www.damianschwyrz.de/php-backdoors-und-shells-finden-eine-kurze-anleitung">https://www.damianschwyrz.de/php-backdoors-und-shells-finden-eine-kurze-anleitung</a></p>
-<p>siehe auch</p>
-<p><a href="https://binary-butterfly.de/artikel/wordpress-login-security-eine-stahltuer-in-der-wellblechhuette/">https://binary-butterfly.de/artikel/wordpress-login-security-eine-stahltuer-in-der-wellblechhuette/</a></p>
-<p>IP-Filter</p>
-<h3 id="den-admin-bereich-verstecken">Den Admin-Bereich verstecken</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-apache" data-lang="apache"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">&lt;IfModule</span> <span class="s">mod_rewrite.c</span><span class="nt">&gt;</span>
-</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="nb">RewriteEngine</span> <span class="k">on</span>
-</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="nb">RewriteBase</span> /
-</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="c"># Move Wordpress login to /cms.</span>
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="nb">RewriteRule</span> ^cms wp-login.php?cms=unlocked [L]
-</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
-</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^cms=unlocked
-</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^action=logout
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^loggedout=true
-</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_METHOD} !POST
-</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*)$ - [R=403,L]
-</span></span><span class="line"><span class="ln">12</span><span class="cl">
-</span></span><span class="line"><span class="ln">13</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
-</span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} ^loggedout=true
-</span></span><span class="line"><span class="ln">15</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*) ./cms? [R=302,NC,L]
-</span></span><span class="line"><span class="ln">16</span><span class="cl">
-</span></span><span class="line"><span class="ln">17</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
-</span></span><span class="line"><span class="ln">18</span><span class="cl">    <span class="nb">RewriteCond</span> %{HTTP_REFERER} !cms$
-</span></span><span class="line"><span class="ln">19</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_METHOD} POST
-</span></span><span class="line"><span class="ln">20</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*)$ - [R=403,L]
-</span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="nt">&lt;/IfModule&gt;</span>
-</span></span></code></pre></div><!-- https://wordpress.stackexchange.com/a/292691/132138
-
-## Die unnötigen
-
-### Sicherheits-Plugins
-
-siehe auch
-
-https://www.kuketz-blog.de/basisschutz-wordpress-absichern-teil1
-
-https://fastwp.de/487
-
-```bash
-chown user:user -R *
-find . -type d -exec chmod 755 {} \;
-find . -type f -exec chmod 644 {} \;
-
-chown www-data:www-data wp-content
-
-## Disable Editing in Dashboard
-define('DISALLOW_FILE_EDIT', true);
-
-<Directory /var/www/nickyreinert.de/www>
-# prevent   var_dump(scandir('/etc'));
-# see http://php.net/manual/de/ini.core.php#ini.open-basedir
-# alternativ: php für jeden virtuellen host mit separatem user ausführen und die dateirechte anpassen
-php_admin_value open_basedir "/var/www/nickyreinert.de/www"
-
-</Directory>
-```
-
-```ini
-# disable_functions in php.ini
-# list of function to disable globally #
-disable_functions =exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source
-```
-
-## PHP-FPM?
-
-Normalerweise ruft der Apache-Webserver den PHP-Interpreter jedes mal erneut auf. Der Nachteil: Viel Speicherverbrauch, lange Ladezeiten und ein globaler Benutzer. Etwas schneller ist FastCGI. Dabei läuft der Interpreter permanent im Hintergrund. FPM startet nicht nur einen sondern mehrere PHP-Prozesse im Hintergrund. -->
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> WordPress, Sicherheit, Anleitung, Checkliste</p>
-        </div>
-        
-      ]]></content:encoded>
-      
-      
-      
-      <category>wordpress</category>
-      
-      <category>anleitungen</category>
-      
-      
-      
-      
-      <media:content url="https://nickyreinert.de/image.png" type="image/jpeg">
-        <media:title>Wordpress-Security Checkliste - Titelbild</media:title>
-      </media:content>
-      
-      
-      
-      
-      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
-      
-      
-      
-      <dc:type>checklist</dc:type>
       
       
     </item>

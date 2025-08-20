@@ -15,11 +15,11 @@
   
 
   
-  <link rel="icon" href="https://nickyreinert.de/images/favicon.ico">
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
 
   
   
-  <meta name="keywords" content=" Webentwicklung  Software Development  Programmierung  SEO  Analytics  Hosting  DevOps  WordPress  Hugo  Tools  Projekte  Anleitungen  Datenschutz  Digitale Kultur  Künstliche Intelligenz  KI  Autismus ">
+  <meta name="keywords" content=" macOS  Finder  SMB  Windows Shares  Netzwerkfreigaben  NAS  nsmb.conf  Troubleshooting  Performance  Apple ">
   
 
   
@@ -34,7 +34,11 @@
   <meta property="og:type" content="article">
     <meta property="article:section" content="2013">
     <meta property="article:published_time" content="2013-02-24T00:00:00+00:00">
-    <meta property="article:modified_time" content="2025-08-20T09:03:20+02:00">
+    <meta property="article:modified_time" content="2025-08-20T21:05:13+02:00">
+    <meta property="article:tag" content="MacOS">
+    <meta property="article:tag" content="Netzwerk">
+    <meta property="article:tag" content="Troubleshooting">
+    <meta property="article:tag" content="Anleitung">
 
 
   
@@ -46,9 +50,9 @@
   <meta itemprop="name" content="MacOS Finder und die SMB / Windows - Netzwerkfreigaben">
   <meta itemprop="description" content="Immer wenn ich die Verbindung zu meinem Heimnetz hergestellt habe, sei es über WLAN oder Kabel, dauerte es eine gefühlte Ewigkeit, bis der Finder (sic!) mein NAS gefunden hat, obwohl beide am gleichen Switch hängen. Es half dabei auch nichts, wenn ich direkt zum NAS verbinden wollte, weil ich die IP-Adresse kenne (Apfel &#43; K). Das hab ich eine Weile ignoriert, dann akzeptiert, aber irgendwann konnte ich die Geduld nicht mehr aufbringen und habe mich auf die Suche nach einer Lösung gemacht.">
   <meta itemprop="datePublished" content="2013-02-24T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2025-08-20T09:03:20+02:00">
+  <meta itemprop="dateModified" content="2025-08-20T21:05:13+02:00">
   <meta itemprop="wordCount" content="165">
-  <meta itemprop="keywords" content="Os-X,Anleitungen,Mac,Tools,System">
+  <meta itemprop="keywords" content="macOS,Finder,SMB,Windows Shares,Netzwerkfreigaben,NAS,nsmb.conf,Troubleshooting,Performance,Apple">
 
   
   <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
@@ -75,7 +79,7 @@
     "headline": "MacOS Finder und die SMB \/ Windows - Netzwerkfreigaben",
     "description": "Immer wenn ich die Verbindung zu meinem Heimnetz hergestellt habe, sei es über WLAN oder Kabel, dauerte es eine gefühlte Ewigkeit, bis der Finder (sic!) mein …",
     "datePublished": "2013-02-24T00:00:00Z",
-    "dateModified": "2025-08-20T09:03:20\u002b02:00",
+    "dateModified": "2025-08-20T21:05:13\u002b02:00",
     "author": {
       "@type": "Person",
       "name": "",
@@ -108,14 +112,16 @@
     "timeRequired": "PT5M",
     
     
+    "keywords": ["macOS", "Netzwerk", "Troubleshooting", "Anleitung"],
+    
     
     "articleSection": ["os-x", "anleitungen"],
     
     
-    "abstract": "Dieser Artikel behandelt MacOS Finder und die SMB \/ Windows - Netzwerkfreigaben und bietet praktische Einblicke in das Thema.",
+    "abstract": "Eine Anleitung aus dem Jahr 2013 zur Behebung langsamer Verbindungen von macOS Finder zu SMB\/Windows-Netzwerkfreigaben (z.B. NAS). Der Artikel beschreibt eine Lösung, die das Erstellen und Speichern einer \u0027nsmb.conf\u0027-Datei im \u0027\/etc\u0027-Verzeichnis mit spezifischen Konfigurationen beinhaltet, um die Erkennung und Verbindung zu beschleunigen.",
     
     
-    "genre": "guide",
+    "genre": "troubleshooting_guide",
     
     
     "educationalLevel": "intermediate",
@@ -132,7 +138,7 @@
     "proficiencyLevel": "intermediate",
     
     
-    "dependencies": ["Grundlegende IT-Kenntnisse"],
+    "dependencies": ["Grundkenntnisse der macOS-Kommandozeile (Terminal)", "Verständnis von Netzwerkfreigaben (SMB)"],
     
     
     "about": [
@@ -140,25 +146,43 @@
       
       {
         "@type": "Thing",
-        "name": "Mac"
+        "name": "macOS"
       }
       
       , 
       {
         "@type": "Thing",
-        "name": "Tools"
+        "name": "SMB"
       }
       
       , 
       {
         "@type": "Thing",
-        "name": "System"
+        "name": "Netzwerkfreigaben"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "NAS"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Troubleshooting"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "System-Konfiguration"
       }
       
     ],
     
     "datePublished": "2013-02-24T00:00:00Z",
-    "dateModified": "2025-08-20T09:03:20\u002b02:00",
+    "dateModified": "2025-08-20T21:05:13\u002b02:00",
     "author": {
       "@type": "Person",
       "name": ""
@@ -292,7 +316,18 @@
   <div class="post-date">February 24, 2013</div>
 
   
-  <article class="content">
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
     <p>Immer wenn ich die Verbindung zu meinem Heimnetz hergestellt habe, sei es über WLAN oder Kabel, dauerte es eine gefühlte Ewigkeit, bis der Finder (sic!) mein NAS gefunden hat, obwohl beide am gleichen Switch hängen. Es half dabei auch nichts, wenn ich direkt zum NAS verbinden wollte, weil ich die IP-Adresse kenne (Apfel + K). Das hab ich eine Weile ignoriert, dann akzeptiert, aber irgendwann konnte ich die Geduld nicht mehr aufbringen und habe mich auf die Suche nach einer Lösung gemacht.</p>
 <p>Diese fand ich in den <a href="https://discussions.apple.com/thread/2172049?start=15&amp;tstart=0">Apple Support Foren.</a> Ein langer Beitrag kurz zusammengefasst:</p>
 <p>1. Erstelle ein Textdatei mit dem Inhalt</p>
@@ -311,9 +346,55 @@ addr=IP-ADRESSE_DEINER_FREIGABE</p></blockquote>
 <p> </p>
 <p>Update: Mit dem kostenfrei erhältlichen <a href="http://www.apple.com/de/osx/">Update auf MacOS 10.9 Mavericks</a> scheint dieses Problem behoben zu sein!</p>
 
+    
   </article>
   
+  
+  
+  <div style="margin-top: 5rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
 
+      <p>Eine Anleitung aus dem Jahr 2013 zur Behebung langsamer Verbindungen von macOS Finder zu SMB/Windows-Netzwerkfreigaben (z.B. NAS). Der Artikel beschreibt eine Lösung, die das Erstellen und Speichern einer &#39;nsmb.conf&#39;-Datei im &#39;/etc&#39;-Verzeichnis mit spezifischen Konfigurationen beinhaltet, um die Erkennung und Verbindung zu beschleunigen.</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">macOS</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">SMB</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Netzwerkfreigaben</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">NAS</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Troubleshooting</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">System-Konfiguration</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 5 Minuten</p>
+      
+    </div>
+  </div>
+  
+  
+  
+  <div class="paginator">
+    
+    <a></a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/2013/2013-03-16-buffalo-linkstation-ls-wxl-mit-minidlna-und-custom-firmware-von-shonk-1-64-mod-1/">next →</a>
+    
+  </div>
 </main>
 
     <footer id="footer">

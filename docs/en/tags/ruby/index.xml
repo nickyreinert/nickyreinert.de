@@ -15,10 +15,10 @@
     <copyright></copyright>
     <lastBuildDate>Sun, 08 Dec 2024 12:34:56 +0200</lastBuildDate><atom:link href="https://nickyreinert.de/en/tags/ruby/index.xml" rel="self" type="application/rss+xml" /><item>
       <title>Advent of Code - Day 8 - Missing Operators (Ruby)</title>
-      <link>https://nickyreinert.de/en/blog/2024/12/08/advent-of-code-day-8-missing-operators-ruby/</link>
+      <link>https://nickyreinert.de/en/2024/2024-12-08-aoc-day-8/</link>
       <pubDate>Sun, 08 Dec 2024 12:34:56 +0200</pubDate>
       <author></author>
-      <guid>https://nickyreinert.de/en/blog/2024/12/08/advent-of-code-day-8-missing-operators-ruby/</guid>
+      <guid>https://nickyreinert.de/en/2024/2024-12-08-aoc-day-8/</guid>
       <description>(task | solution)
 The first time I read through the riddle, I was like: &ldquo;Phew, no way, I&rsquo;m going to skip this!&rdquo; I looked at the example and …</description>
       
@@ -27,7 +27,7 @@ The first time I read through the riddle, I was like: &ldquo;Phew, no way, I&rsq
         
         <div class="ai-summary">
           <h3>AI-Zusammenfassung</h3>
-          <p>A write-up of the author&#39;s solution to Day 8 of the Advent of Code 2024 challenge, implemented in Ruby. The article explains how visualization helps to understand the puzzle, which involves finding symmetrical points based on pairs of `siblings`` on a grid. A complete Ruby code snippet for the brute-force solution to Part 1 is provided.</p>
+          <p>A write-up of the author&#39;s solution to Day 8 of the Advent of Code 2024 challenge, implemented in Ruby. The article explains how visualization helps to understand the puzzle, which involves finding symmetrical points based on pairs of &#39;siblings&#39;&#39; on a grid. A complete Ruby code snippet for the brute-force solution to Part 1 is provided.</p>
           
           
           <p><strong>Hauptthemen:</strong> Advent of Code, Ruby, Problem-Solving, Algorithmen, Computational Geometry</p>
@@ -44,10 +44,10 @@ The first time I read through the riddle, I was like: &ldquo;Phew, no way, I&rsq
 <p>However, I thought it might be a good idea to use Ruby this time — my first time with this language. I won’t bother you with the environment setup. Again, I’m just using a containerized environment, which makes things so much easier.</p>
 <h3 id="solution-to-the-first-part">Solution to the First Part</h3>
 <p>So, what is this about? It’s about finding siblings on a surface, connecting them with a straight line, and then extending this line to find two symmetric points. The total number of all those points forms the solution to this riddle. The green and red cells represent two categories of siblings on the map, and the blue cells represent the symmetric points (called <code>antinodes</code>) that we need to find. If you connect them (with red lines), you’ll see how all of them pass through two cells of the same color:</p>
-<p><img src="/en/blog/2024/12/08/advent-of-code-day-8-missing-operators-ruby/image-2.png" alt="alt text"></p>
+<p><img src="/en/2024/2024-12-08-aoc-day-8/image-2.png" alt="alt text"></p>
 <p>Looks difficult, right? Don’t tell me, it took me a while to understand the &ldquo;gibberish&rdquo; of the riddle – no offense, riddle master.</p>
 <p>But wait until we add row and column numbers to the map and focus on just one group:</p>
-<p><img src="/en/blog/2024/12/08/advent-of-code-day-8-missing-operators-ruby/image-1.png" alt="alt text"></p>
+<p><img src="/en/2024/2024-12-08-aoc-day-8/image-1.png" alt="alt text"></p>
 <p>Now it seems quite easy: We just need to somehow identify the row and column distance between two siblings and use that to place the corresponding <code>antinode</code>.</p>
 <p>Let me just throw my solution into the ring. It’s not the most elegant, but it gets the job done:</p>
 <ul>

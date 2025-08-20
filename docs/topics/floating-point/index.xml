@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Floating Point auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/topics/floating-point/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Mon, 01 Jan 2024 12:19:31 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/topics/floating-point/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Die Nerd Enzyklopädie 43 - 0x5f3759df</title>
+      <link>https://nickyreinert.de/2024/2024-01-01-nerd-enzyklop%C3%A4die-43---0x5f3759df/</link>
+      <pubDate>Mon, 01 Jan 2024 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2024/2024-01-01-nerd-enzyklop%C3%A4die-43---0x5f3759df/</guid>
+      <description>In der Informationstechnologie gibt es zwei wichtige Innovationstreiber: Die Porno-Industrie und die Spiele-Industrie. Quake III ist ein wegweisender Vertreter …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine detaillierte Erkundung aus der &#39;Nerd Enzyklopädie&#39; über den berühmten &#39;Fast Inverse Square Root&#39;-Algorithmus (&#39;0x5f3759df&#39;) aus dem Quellcode von Quake III. Der Artikel erklärt die mathematischen Grundlagen der Vektornormierung, die Funktionsweise des Algorithmus mit seinem &#39;evil floating point bit hack&#39; und der &#39;magischen Konstante&#39;, und beleuchtet die ungeklärte Urheberschaft sowie die heutige Relevanz.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Algorithmen, Computergrafik, Floating Point, Programmierung, IT-Geschichte, Nerd-Kultur, Quake III</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>In der Informationstechnologie gibt es zwei wichtige Innovationstreiber: Die <strong>Porno-Industrie</strong> und die <strong>Spiele-Industrie</strong>. <strong>Quake III</strong> ist ein wegweisender Vertreter der Spiele-Industrie. Der Pionier unter den Ego-Shootern wurde <strong>1999</strong> veröffentlicht, eroberte die Herzen der spielenden Gemeinde im Sturm und glänzte mit für die damaligen Verhältnisse herausragenden optischen Effekten. Und das trotz vergleichsweise geringer Anforderungen an die Hardware.</p>
+<p><img src="/2024/2024-01-01-nerd-enzyklop%C3%A4die-43---0x5f3759df/image_1.png" alt=""></p>
+<p>Nerd-Enzyklopädie #43</p>
+<p>Um das zu ermöglichen nutzte <strong>Quake</strong> die „<strong>fast inverse square root</strong>“ (zu Deutsch klingt es etwas sperriger: „Schnelle umgekehrte Quadratwurzel”).</p>
+<p>Aber… warum? Um in einer dreidimensionalen Welt bestimmte physikalische Effekt zu simulieren, nutzt man <strong>Vektoren</strong>. Nehmen wir z.B. die Berechnung von <strong>Lichtreflektionen</strong>: Um den Einfalls- und Ausfallswinkel auf einer beliebigen Fläche korrekt zu berechnen, benötigt man einen Vektor, genau genommen einen <strong>normierten Vektor</strong>.</p>
+<p>Die Formel für die Berechnung des Betrages eines Vektor (sprich seiner „Länge“) sieht folgendermaßen aus:</p>
+<p><img src="/2024/2024-01-01-nerd-enzyklop%C3%A4die-43---0x5f3759df/image_2.png" alt=""></p>
+<p>Wer in der Schule gut aufgepasst hat, sollte davon nicht sonderlich beeindruckt sein. Es handelt sich im Prinzip um den <strong>Satz des Pythagoras</strong> <strong>auf Steroiden</strong>.</p>
+<p>Ein <strong>normierter Vektor</strong> hat einen Betrag von 1, die Richtung bleibt unverändert:</p>
+<p><img src="/2024/2024-01-01-nerd-enzyklop%C3%A4die-43---0x5f3759df/image_3.png" alt=""></p>
+<p>Um einen Vektor zu normieren, multipliziert man ihm mit dem Kehrwert seines Betrages:</p>
+<p><img src="/2024/2024-01-01-nerd-enzyklop%C3%A4die-43---0x5f3759df/image_4.png" alt=""></p>
+<p>Diese Formel muss <strong>millionenfach</strong> ausgeführt werden, wenn man eine Lichtbrechung mit einer halbwegs ansehnlichen Qualität in einem Spiel erzeugen möchte.</p>
+<p>Für die Summen und Potenzen (das sind ja letztlich auch nur Summen) ist das kein Problem, wohl aber für die Wurzel bzw. den Kehrwert der Wurzel — die <strong>inverse square root</strong>.</p>
+<p>Anfangs behalf man sich mit riesigen Tabellen, die die Ergebnisse zahlreicher Berechnungen enthielten. Das sprengt irgendwann den Rahmen und man musste eine andere Lösung finden. Und diese ist und war <strong>elegant und rebellisch</strong> zugleich — der „<strong>fast inverse square root</strong>“ Algorithmus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl">    <span class="ne">float</span> <span class="n">Q_rsqrt</span><span class="p">(</span> <span class="ne">float</span> <span class="n">number</span> <span class="p">)</span>  
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="p">{</span>  
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">        <span class="n">long</span> <span class="n">i</span><span class="p">;</span>  
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        <span class="ne">float</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>  
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        <span class="k">const</span> <span class="ne">float</span> <span class="n">threehalfs</span> <span class="o">=</span> <span class="mf">1.5</span><span class="n">F</span><span class="p">;</span>  
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        <span class="n">x2</span> <span class="o">=</span> <span class="n">number</span> <span class="o">*</span> <span class="mf">0.5</span><span class="n">F</span><span class="p">;</span>  
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        <span class="n">y</span> <span class="o">=</span> <span class="n">number</span><span class="p">;</span>  
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        <span class="n">i</span> <span class="o">=</span> <span class="o">*</span> <span class="p">(</span> <span class="n">long</span> <span class="o">*</span> <span class="p">)</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">;</span> <span class="o">//</span> <span class="n">evil</span> <span class="n">floating</span> <span class="n">point</span> <span class="n">bit</span> <span class="n">level</span> <span class="n">hacking</span>  
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">        <span class="n">i</span> <span class="o">=</span> <span class="mh">0x5f3759df</span> <span class="o">-</span> <span class="p">(</span> <span class="n">i</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span> <span class="p">);</span> <span class="o">//</span> <span class="n">what</span> <span class="n">the</span> <span class="n">fuck</span><span class="err">?</span>   
+</span></span><span class="line"><span class="ln">10</span><span class="cl">        <span class="n">y</span> <span class="o">=</span> <span class="o">*</span> <span class="p">(</span> <span class="ne">float</span> <span class="o">*</span> <span class="p">)</span> <span class="o">&amp;</span><span class="n">i</span><span class="p">;</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">*</span> <span class="p">(</span> <span class="n">threehalfs</span> <span class="o">-</span> <span class="p">(</span> <span class="n">x2</span> <span class="o">*</span> <span class="n">y</span> <span class="o">*</span> <span class="n">y</span> <span class="p">)</span> <span class="p">);</span> <span class="o">//</span> <span class="mi">1</span><span class="n">st</span> <span class="n">iteration</span>  
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        <span class="o">//</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">*</span> <span class="p">(</span> <span class="n">threehalfs</span> <span class="o">-</span> <span class="p">(</span> <span class="n">x2</span> <span class="o">*</span> <span class="n">y</span> <span class="o">*</span> <span class="n">y</span> <span class="p">)</span> <span class="p">);</span> <span class="o">//</span> <span class="mi">2</span><span class="n">nd</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">this</span> <span class="n">can</span> <span class="n">be</span> <span class="n">removed</span>  
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        <span class="k">return</span> <span class="n">y</span><span class="p">;</span>  
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></div><p>In dieser Funktion passieren einige spannende, um nicht zu sagen verrückte Dinge. Wie zum Beispiel der „<strong>evil floating point bit hack</strong>“.</p>
+<p>Dazu ein kurzer Ausflug in das mysteriöse Reich der <strong>Fließkommazahlen</strong>: Diese zeichnen sich durch eine spezielle Art der Speicherung aus, damit in unseren binär geprägten Computern (Nullen und Einsen) auch <strong>Dezimalzahlen</strong> verarbeiten werden können. Dazu wird die Dezimalzahl als Kombination von <strong>Vorzeichen</strong>, <strong>Exponent</strong> und <strong>Mantisse</strong> abgespeichert: Das <strong>IEEE-754</strong> Format!</p>
+<p>Der Nachteil: Beim Zurückrechnen kann es zu Ungenauigkeiten kommen. So wird der Wert 3,3 nach IEEE-754 binär abgespeichert:</p>
+<p><code>01000001001000011001100110011010</code></p>
+<p>Berechnet man diesen Wert zurück in ein Dezimalzahl, erhält man:</p>
+<p><code>3.2999999523162841796875</code></p>
+<p>Nicht schön, aber selten und meistens auch ausreichend genau.</p>
+<p>Der „<strong>evil floating point bit hack</strong>“ schnappt sich den binären Wert der Fließkommazahl und interpretiert ihn schlicht als Ganzzahl, ohne die aufwendige Berechnung nach <strong>IEEE-754</strong>. Aus 3,3 wird damit der „evil integer“ <strong>1.079.194.419</strong>.</p>
+<p>Als nächstes kommt es zu einer unter Fachleuten auch als <strong>What-The-Fuck-Transformation</strong> bezeichneten <strong>What-The-Fuck-Transformation</strong>. Unser „evil integer“ wird zunächst per <strong>Bitshift</strong> halbiert (ein bitweises verschieben nach links oder rechts kommt einer Multiplikation oder Division mit 2 gleich — probier es mal aus!). Das Ergebnis wird von einer <strong>höchstseltsamen Konstante</strong> abgezogen. Da ist sie — sie ist wunderschön:</p>
+<p><code>0x5f3759df</code></p>
+<p>Der dezimale Wert dieser mathematischen Grazie ist <strong>1.597.463.007</strong> — nicht sonderlich spannend. Behandelt man den Wert aber ebenfalls als Fließkommazahl nach <strong>IEEE-754</strong>, erhält man diese Kombination aus Exponent und Mantisse:</p>
+<p><code>0.10111110.01101110101100111011111</code></p>
+<p>Daraus ergibt sich ein <strong>Exponent</strong> von <strong>63</strong> und die <strong>Mantisse</strong> mit <strong>1,43243014812469482421875</strong>. Zusammen errechnet sich daraus die ziemlich große Zahl: <strong>13.211.836.172.961.054.720</strong> Und das ist eine ziemlich gute Annäherung an die Wurzel von <code>2¹²⁷</code>, nämlich <code>13.043.817.825.332.782.212,349…</code></p>
+<p>Das Ergebnis dieser wahnwitzigen Operation wird nun über einen umgedrehten „<strong>evil floating point hack</strong>“ zurück in eine Fließkommazahl „umgewandelt“.</p>
+<p>Abschließend findet noch ein weiterer kleiner Trick aus der wunderbaren Welt der Mathematik Anwendung: Mittels des <strong>Newton-Verfahrens</strong> erfolgt eine Korrektur des bisherigen Ergebnisses.</p>
+<p>Schließlich kann die Funktion den <strong>Kehrwert einer Wurzel</strong> in etwa genauso gut bestimmen, wie eine konventionelle Berechnung, aber weitaus schneller.</p>
+<p>Diese geniale Optimierung der Berechnung wird übrigens oft alleine <strong>John Carmack</strong> zugeschrieben, einem der Schöpfer von <strong>Quake III</strong>. Tatsächlich führen die Wurzeln (<strong>no pun intended…</strong>) aber viel weiter zurück. So basiert die Funktion wohl auf den Arbeiten vieler schlauer Köpfe.</p>
+<p>Bereits <strong>1974</strong> tauchte eine ähnliche Routine im Quellcode für den <strong>PDP-11</strong> auf [<a href="https://minnie.tuhs.org/cgi-bin/utree.pl?file=V5%2Fusr%2Fsource%2Fs3%2Fsqrt.s"><strong>TUHS1</strong></a>]. In einem Quellcode von <strong>1993</strong> findet sich ein Kommentar mit dem Verweis auf eine wissenschaftliche Arbeit von <strong>William Kahan</strong> und <strong>K.C. Ng</strong> aus <strong>1983</strong>, in dem sie genau diese optimierte Methode beschreiben. Kahan gilt übrigens als „Architekt“ der IEEE-Fließkommazahlen-Aritmetik. <strong>1997</strong> präsentierte <strong>Jim Blinn</strong> in den „Floating-point tricks“ eine vergleichbare Funktion, dort noch ohne die „magische Konstante“ [<a href="https://ieeexplore.ieee.org/document/595279">IEEE2</a>].</p>
+<p>Aber zurück zu John Carnack, der die Urheberschaft ganz explizit von sich wies:</p>
+<blockquote>
+<p>Not me, and I don’t think it is Michael [Abrash]. Terje Matheson perhaps?</p>
+<p>~John Carmack, per E-Mail in 2004</p></blockquote>
+<p>Der nächste „Verdächtige“ wäre <strong>Gary Tarolli</strong>, <strong>NVidia</strong>-Mitarbeiter der ersten Stunde und Mitbegründer von <strong>3Dfx</strong>. Dieser räumte ein, Mitte der 1990er Jahre die besagte Funktion genutzt und vielleicht sogar optimiert zu haben, weißt aber die eigentliche Urheberschaft ebenfalls von sich [<a href="https://www.beyond3d.com/content/articles/8/">BEYON1</a>].</p>
+<p>Die Spur führt schließlich zu <strong>Greg Walsh</strong>, Ende der 1980er Jahre Entwickler bei der <strong>Ardent Computer Corporation</strong>. Inspiriert von der Arbeit seines Kollegen, dem Informatiker und Mathematiker <strong>Cleve Moler</strong>, Autor von <strong>MatLab</strong>, war es wohl Walsh, der die berüchtigte Funktion entwickelte.</p>
+<p>Übrigens: Auch zwischen Moler und Kahan gibt es eine Verbindung. Zwar ist nicht klar wie eng die Bekanntschaft war, aber sie sind sich zumindest einmal über den Weg gelaufen [<a href="https://blogs.mathworks.com/cleve/2014/07/07/floating-point-numbers/">MATH1</a>].</p>
+<p>Zurück zu Ardent: Das Unternehmen wurde damals unter anderem von <strong>Kubota</strong> “finanziell unterstützt”, einem japanischen Mischkonzern. Für Kubota arbeitete seinerzeit auch <strong>Gary Tarolli</strong>! So gelang der Quellcode wohl in die Hände von Tarolli. Die Verbindung zu John Carmack und <strong>id Software</strong> entstand dann vermutlich über <strong>Brian Hook</strong>, einem der ersten Angestellten von 3Dfx und später auch Entwickler bei id Software [<a href="https://www.quakewiki.net/profile-retro-interview-brian-hook/">QUAKE1</a>]. Und so schließt sich der Kreis…</p>
+<p>Der <strong>Fast Inverse Square Root Algorithmus</strong> hat nichts an Faszination eingebüßt, vielleicht aber etwas an Bedeutung. Moderne Computer ermöglichen mittlerweile — dank hoher Leistung und angepasster Befehlssätze — eine sehr schnelle Berechnung von Wurzeln und deren Kehrwerten.</p>
+<p>Hinter der mysteriösen Konstante und der merkwürdigen Optimierung steckt also eine verworrene Geschichte und am Ende fast schon der tragische Untergang in die Bedeutungslosigkeit. Wenn das kein Material für einen <strong>Nerd-Blockbuster</strong> ist…</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Algorithmus, Programmierung, Nerd-Enzyklopädie, IT-Geschichte, Quake</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 43 - 0x5f3759df - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>technical_explainer</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>

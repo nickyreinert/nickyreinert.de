@@ -13,7 +13,286 @@
     <managingEditor></managingEditor>
     <webMaster></webMaster>
     <copyright></copyright>
-    <lastBuildDate>Tue, 13 Nov 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/netzwerk/index.xml" rel="self" type="application/rss+xml" /><item>
+    <lastBuildDate>Wed, 02 Apr 2025 12:19:31 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/tags/netzwerk/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>Die Nerd Enzyklopädie 47 - Die 500-Meilen-E-Mail</title>
+      <link>https://nickyreinert.de/2025/2025-03-10-nerd-enzyklop%C3%A4die-47---die-500-meilen-e-mail/</link>
+      <pubDate>Wed, 02 Apr 2025 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2025/2025-03-10-nerd-enzyklop%C3%A4die-47---die-500-meilen-e-mail/</guid>
+      <description>Dieser Moment, in denen man an seiner Wahrnehmung zweifelt, weil ein Computer, der doch eigentlich nach den strengen Regeln der Logik arbeiten sollte, plötzlich …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine Nacherzählung aus der &#39;Nerd Enzyklopädie&#39; über die berühmte &#39;500-Meilen-E-Mail&#39;-Anekdote. Der Artikel beschreibt einen bizarren Softwarefehler, bei dem E-Mails nur innerhalb eines bestimmten Radius zugestellt wurden. Die Ursache war ein unentdecktes Downgrade des &#39;sendmail&#39;-Servers, das zu einem 0-Sekunden-Timeout führte, wodurch entfernte Server nicht rechtzeitig antworten konnten.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> E-Mail, Netzwerktechnik, Softwarefehler, Debugging, Systemadministration, Nerd-Kultur</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Dieser Moment, in denen man an seiner Wahrnehmung zweifelt, weil ein Computer, der doch eigentlich nach den strengen Regeln der Logik arbeiten sollte, plötzlich Dinge tut, die gar nicht mehr so logisch erscheinen. Dieser Moment muss <strong>2002</strong> wohl auch <strong>Trey Harris</strong> ereilt haben (<a href="https://web.mit.edu/jemorris/humor/500-miles">MIT1</a>).</p>
+<p>Harris, Mitglied der <strong>System Administrators Guild</strong> (SAGE), arbeitete als Admin für eine Universität in <strong>North Carolina</strong> und war dort für das E-Mail-System verantwortlich. Eines Tages rief ihn der Vorsitzende der Statistik-Abteilung an und behauptet, dass seine E-Mails nicht ankommen, sobald der Empfänger mehr als <strong>500 Meilen</strong> entfernt sei. Das Problem bestand offenbar schon ein paar Tage. Um es zu dokumentieren, hatte man auf einer Karte markiert, bei welchen Empfänger der E-Mail-Versand funktionierte. Und das funktioniere wohl nur bei Empfängern innerhalb eines 500-Meilen-Radius.</p>
+<p>Harris war skeptisch und testete das System selbst. Er sendete einige Test-E-Mails unter anderem nach <strong>Richmond</strong>, <strong>Atlanta</strong> und <strong>Washington</strong> - alle Ziele befinden sich innerhalb des 500 Meilen Radius. Ohne Probleme. Und dann nach <strong>Memphis</strong> - <strong>600 Meilen</strong> Distanz. Die E-Mail ging nicht durch. <strong>Providence</strong>, 580 Meilen? Kein Erfolg. <strong>New York</strong>, 420 Meilen? Funktioniert.</p>
+<p>Harris verglich die Konfigurationen des E-Mail-Servers mit anderen Systemen und fand keinerlei Auffälligkeiten. Zur weiteren Diagnose wählte er sich per Telnet auf den SMTP-Port des Servers ein. Der Server reagierte, wie erwartet mit dem <strong>SunOS Sendmail Logo</strong>. Und das führte Harris auf die richtige Fährte.</p>
+<p>Der Vorsitzende der Statistik-Abteilung erwähnte zwar, dass vor ein paar Tagen ein Wartungs-Updates für des Betriebssystems installiert wurde. Angeblich betraf das aber nicht <strong>sendmail</strong>, welches Harris vor längerer Zeit in der <strong>Version 8</strong> installiert hatte. Das besagte Update von SunOS enthielt jedoch noch die alte <strong>Version 5</strong> von sendmail! Der E-Mail-Server wurde durch das Update des Betriebssystem auf eine alte Version zurückgesetzt. Die Konfigurations-Dateien, die Harris für die Version 8 angelegt hatte, waren allerdings noch vorhanden. Nur waren sie nicht mit Version 5 kompatibel. So wurde für einige wichtige Parametern von sendmail der <strong>Standard-Wert 0</strong> angenommen.</p>
+<p>Einer dieser Parameter bezog sich auf das <strong>Timeout</strong> für die Verbindung zum externen SMTP-Server. Der Wert dafür betrug nun <strong>0 Sekunden</strong>.</p>
+<p>Aber was hatte das zu bedeuten? Wenn sendmail versucht, eine Verbindung mit einem externen SMTP-Server aufzubauen, schickt es eine Anfrage in das Internet und  wartete dann auf die Antwort. Aufgrund der Auslastung des Systems brauchte sendmail einen Augenblick, um die Routine für die Verarbeitung der Antwort aufzurufen.</p>
+<p>Harris fand heraus, das sendmail dafür etwa 3 Millisekunden benötigt. Eine Antwort, die nach 3 Millisekunden bei sendmail eintraf, wurde aufgrund des Timeouts als nicht erfolgreich gewertet.</p>
+<p>Da die Universität über ein Glasfasernetz an das Internet angeschlossen war, gelang eine derartige Anfrage mit nahezu Lichtgeschwindigkeit nach draußen. Also fragte sich Harris, wie weit das Signal innerhalb von 3 Millisekunden kommen konnte. Er bemühte <strong>units</strong>, ein Kommandozeilen-Programm, um die Distanz auszurechnen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ units
+</span></span><span class="line"><span class="ln">2</span><span class="cl">1311 units, 63 prefixes
+</span></span><span class="line"><span class="ln">3</span><span class="cl">You have: 3 millilightseconds
+</span></span><span class="line"><span class="ln">4</span><span class="cl">You want: miles
+</span></span><span class="line"><span class="ln">5</span><span class="cl">* 558.84719
+</span></span><span class="line"><span class="ln">6</span><span class="cl">/ 0.0017893979
+</span></span></code></pre></div><p>*(Das <em>-Zeichen ist kein Operator, sondern zeigt das Ergebnis an.)</em></p>
+<p>558 Meilen!  Harris hatte die Ursache für das seltsame Verhalten gefunden.</p>
+<p>Harris räumte später ein, einige technische Details, auch aus dramaturgischen Gründen, nicht ganz exakt wiedergeben zu haben. So musste  auch die Antwort vom SMTP-Server innerhalb von 3 Sekunden wieder bei sendmail landen, womit sich die verfügbare Zeit eigentlich auf 1,5 Millisekunden halbiert. Das ändert aber nichts daran, dass das Zusammenspiel aus Timeout, Übertragungsgeschwindigkeit und Verzögerung bei der Verarbeitung dafür gesorgt haben, dass E-Mails nur in einem bestimmten Radius versendet werden konnten, nämlich circa 500 Meilen…</p>
+<p>…but I would walk 500 miles, and I would walk 500 more…</p>
+<p><img src="/2025/2025-03-10-nerd-enzyklop%C3%A4die-47---die-500-meilen-e-mail/image.png" alt="alt text"></p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> E-Mail, Netzwerk, Nerd-Enzyklopädie, Anekdote</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 47 - Die 500-Meilen-E-Mail - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>historical_anecdote</dc:type>
+      
+      
+    </item><item>
+      <title>Die Nerd Enzyklopädie 42 - Mit einem nassen Seil ins Internet</title>
+      <link>https://nickyreinert.de/2023/2023-10-05-nerd-enzyklop%C3%A4die-42---mit-einem-nassen-seil-ins-internet/</link>
+      <pubDate>Thu, 05 Oct 2023 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2023/2023-10-05-nerd-enzyklop%C3%A4die-42---mit-einem-nassen-seil-ins-internet/</guid>
+      <description>
+Nerd-Enzyklopädie #42
+Um Breitband-Internet in die Wohnungen und Büros zu bekommen, wird viel Aufwand betrieben und am Ende beschweren sich die Kunden …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine humorvolle Anekdote aus der &#39;Nerd Enzyklopädie&#39; über einen britischen Internet-Techniker, dem es gelang, Daten über ein nasses Seil zu übertragen. Der Artikel beschreibt das Experiment, bei dem über eine Distanz von 2 Metern eine Geschwindigkeit von 3,5 MBit/Sekunde erreicht wurde, und beleuchtet die unerwarteten Möglichkeiten der Datenübertragung.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Netzwerktechnik, Internet, Kuriositäten, Nerd-Kultur, Datenübertragung</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p><img src="/2023/2023-10-05-nerd-enzyklop%C3%A4die-42---mit-einem-nassen-seil-ins-internet/image1.png" alt=""></p>
+<p>Nerd-Enzyklopädie #42</p>
+<p>Um Breitband-Internet in die Wohnungen und Büros zu bekommen, wird viel Aufwand betrieben und am Ende beschweren sich die Kunden trotzdem. Als Internet-Provider hat man es wahrlich nicht leicht.<br>
+Kupferkabel, Glasfaserleitungen oder große Satelliten-Anlagen sind den meisten von uns ein Begriff. Aber es geht auch günstiger: Einem Techniker des Internet-Anbieters Andrew &amp; Arnolds aus dem Vereinigten Königreich ist es gelungen, ein nasses Seil als Übertragungsmedium zu nutzen. Über eine Entfernung von 2 Metern erreichte er so eine Übertragungsgeschwindigkeit von 3,5 MBit/Sekunde! Reicht für die Prokrastination!</p>
+<p><img src="/2023/2023-10-05-nerd-enzyklop%C3%A4die-42---mit-einem-nassen-seil-ins-internet/image2.png" alt=""></p>
+<p>Nasses Seil [<a href="https://www.revk.uk/2017/12/its-official-adsl-works-over-wet-string.html">REVK1</a>]</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Netzwerk, Kuriosität, Nerd-Enzyklopädie, Anekdote</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 42 - Mit einem nassen Seil ins Internet - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>technical_anecdote</dc:type>
+      
+      
+    </item><item>
+      <title>Die Nerd Enzyklopädie 19 - Das Brieftauben-Protokoll</title>
+      <link>https://nickyreinert.de/2023/2023-04-19-nerd-enzyklop%C3%A4die-19---das-brieftauben-protokoll/</link>
+      <pubDate>Wed, 19 Apr 2023 12:19:31 +0100</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2023/2023-04-19-nerd-enzyklop%C3%A4die-19---das-brieftauben-protokoll/</guid>
+      <description>Schon mal was von IPoAC gehört? Dabei handelt es sich um eine Abkürzung für „IP over Avian Carriers“ was soviel heißt wie „Internet-Protokoll via gefiedertem …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine humorvolle Erkundung aus der &#39;Nerd Enzyklopädie&#39; über das &#39;IP over Avian Carriers&#39; (IPoAC) Protokoll, auch bekannt als &#39;Brieftauben-Protokoll&#39;. Der Artikel beschreibt die Entstehung dieses Aprilscherzes als offiziellen RFC, seine Aktualisierung für IPv6 und einen realen Testlauf in Norwegen, der die Grenzen der Datenübertragung per Brieftaube aufzeigt.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Internet-Protokolle, Netzwerktechnik, Humor, RFC, Nerd-Kultur, Kuriositäten</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Schon mal was von <strong>IPoAC</strong> gehört? Dabei handelt es sich um eine Abkürzung für „<strong>IP over Avian Carriers</strong>“ was soviel heißt wie „<strong>Internet-Protokoll via gefiedertem Träger”</strong>. Die Idee für dieses Protokoll wurde 1999 als Aprilscherz vorgestellt.</p>
+<p><img src="/2023/2023-04-19-nerd-enzyklop%C3%A4die-19---das-brieftauben-protokoll/image1.png" alt=""></p>
+<p style="text-align: center;font-style:italic">
+craiyon.com: “Internet protocol over Avian Carriers”
+</p>
+<p>Das Internet Protokoll (IP) ist ein elementarer Bestandteil der Kommunikation im <em>Trommelwirbel</em> <strong>Internet</strong>! Es bildet die Grundlage für den elektronischen Datenaustausch zwischen zwei Computern. Beim <strong>IPoAC</strong> werden die Daten nicht elektronisch übermittelt, sondern mithilfe von <strong>Brieftauben</strong>.<br>
+Auch wenn das ganze nur als Scherz gedacht war, fand <strong>IPoAC</strong> Einzug in ein sogenanntes <strong>Request for Comment</strong> (genauer der <strong>RFC1149</strong> [<a href="https://datatracker.ietf.org/doc/html/rfc1149">RFCE1</a>]) — ein offizielles Dokument zur Spezifikation von Standards. In <strong>2011</strong> wurde das Protokoll aktualisiert, um mit <strong>IPv6</strong> kompatibel zu sein.</p>
+<p>In <strong>2021</strong> kam es in Norwegen sogar zu einem Testlauf des sonderbaren Protokolls. Dabei wurden Daten in <strong>neun Pakete</strong> aufgeteilt und mithilfe von <strong>neun Tauben</strong> über eine Strecke von <strong>fünf Kilometern</strong> übertragen. Die Übertragung dauerte <strong>zwei Stunden</strong> und nur <strong>vier Pakete</strong> wurden erfolgreich übermittelt. Da soll sich noch mal einer über das schlechte Mobilfunknetz beschweren!</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Netzwerk, IT-Geschichte, Nerd-Enzyklopädie, Humor</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>nerdenz</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder" type="image/jpeg">
+        <media:title>Die Nerd Enzyklopädie 19 - Das Brieftauben-Protokoll - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>technical_anecdote</dc:type>
+      
+      
+    </item><item>
+      <title>Wie kannst du SSH sicherer machen? Security through obscurity?</title>
+      <link>https://nickyreinert.de/2019/2019-07-13-wie-kannst-du-ssh-sicherer-machen-security-through-obscurity/</link>
+      <pubDate>Sat, 13 Jul 2019 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2019/2019-07-13-wie-kannst-du-ssh-sicherer-machen-security-through-obscurity/</guid>
+      <description>Diese Abbildung, meine geneigten Freunde, zeigt die Zugriffsversuche für SSH auf meinen Server. Zugegeben: Es ist nicht viel und wird sich vermutlich kaum auf …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel beleuchtet Methoden zur Erhöhung der SSH-Sicherheit, insbesondere durch das Ändern des Standard-Ports. Er erklärt die Umsetzung dieser &#39;Security through obscurity&#39;-Strategie, einschließlich der Konfiguration von &#39;sshd_config&#39;, Firewall-Regeln (iptables) und &#39;fail2ban&#39;, um unerwünschte Zugriffsversuche zu reduzieren und das System sicherer zu machen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> SSH, Serversicherheit, Linux, Netzwerksicherheit, Firewall, fail2ban, Security through obscurity, Server Administration</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Diese Abbildung, meine geneigten Freunde, zeigt die Zugriffsversuche für SSH auf meinen Server. Zugegeben: Es ist nicht viel und wird sich vermutlich kaum auf die Performance des gesamten Systems auswirken. Mit diesem Grundrauschen muss aber eigentlich jeder leben, der einen SSH-Dienst über den Standard-Port 22 betreibt.</p>
+<p><img src="/2019/2019-07-13-wie-kannst-du-ssh-sicherer-machen-security-through-obscurity/images/grafik-700x335.png" alt=""></p>
+<p>SSH-Zugriff der letzten 30 Tage</p>
+<p>Wenn sich diese Zugriffe nicht auf die Performance auswirken, macht es dann wenigstens aus Sicherheitsgründen Sinn, diese Zugriffe zu unterbinden? Und die einfachste Möglichkeit das zu erreichen ist es, den SSH-Standardport (22) zu ändern. Mit meiner Argumentation folge ich denen <a href="https://security.stackexchange.com/questions/189726/does-it-improve-security-to-use-obscure-port-numbers">in einem sehr interessanten SO-Thread</a> zu dem Thema: <strong>Security through obscurity</strong>.</p>
+<p>Es gibt da draußen einen Haufen Bots, die sämtliche erreichbare IP-Adressen des Internets permanent nach Schwachstellen absuchen, nicht nur für SSH. In der Regel wird dazu eine Anfrage, z.B. mit einem Standardpasswort, an den Standardport von SSH gesendet. Die Chance, dass jemand sein System nicht ausreichend oder überhaupt nicht gesichert hat, sind scheinbar hoch genug, sonst würde sich dieses stumpfe Abgrasen nicht lohnen.</p>
+<p>Um das zu vermeiden, bietet es sich an, den Standard-Port zu ändern. Du wirst das abgrasen nicht verhindern, aber die Chancen stehen recht gut, dass die Bots das Interesse an dich verlieren und die Anfragen irgendwann nachlassen. Das ist aber spekulativ und auch nur ein kosmetischer Faktor. Wichtiger ist: Du wirst dein System dadurch ein ganz bisschen sicherer machen. Sollte morgen z.B. eine Sicherheitslücke für SSH bekannt werden, grasen die Bots die Standard-Ports ab um diese Lücke auszutesten. Die Zeit, alle denkbaren Ports zu testen, haben die Bots nicht, da Aufwand-Nutzen hier in keinem Verhältnis stehen.</p>
+<p>Zunächst änderst du den Port von 22 auf eine beliebige Ziffer unter 1024. Warum das? Ports ab 1024 können auch von &ldquo;nicht-priviligerten&rdquo; Nutzern verwendet werden. Jemand, der Zugriff auf dein System hat, kann ohne Root-Rechte einen Port öffnen. Läuft SSH nun auf Port 12345, könnte ein normaler Benutzer SSH zum Absturz bringen, seinen eigenen Dienst auf diesem Port lauschen lassen und somit SSH simulieren. Blöd. Also Port &lt; 1024. Das stellst du in der Datei <strong>/etc/ssh/sshd_config</strong> ein:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"># What ports, IPs and protocols we listen for
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Port 22
+</span></span><span class="line"><span class="ln">3</span><span class="cl">Port 999
+</span></span></code></pre></div><p>Du kannst du beliebig viele Ports definieren, indem du einfach eine weitere Zeile einfügst. Für den Anfang empfehle ich, SSH weiterhin auf Port 22 laufen zu lassen, damit du dich nicht aussperrst. Danach startest du den SSH-Daemon neu (<strong>service sshd restart</strong>), verbindest dich auf den neuen Port und de-aktivierst Port 22 final, indem du die Zeile auskommentierst.<br>
+Wenn du schon mal da bist: Der Vollständigkeit halber solltest du auch daran denken, SSH nur mit Private-Publi-Key-Authenzifizierung zu nutzen und unbedingt die Passwort-Authentifizierung deaktivieren:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">PubkeyAuthentication yes
+</span></span><span class="line"><span class="ln">2</span><span class="cl">PasswordAuthentication no
+</span></span><span class="line"><span class="ln">3</span><span class="cl">PermitRootLogin no
+</span></span></code></pre></div><p>Den SSH-Zugriff für den <strong>Root-Benutzer zu deaktivieren</strong>, ist eine weitere wichtige Sicherheitseinstellung. Du solltest dich nur mit &ldquo;unpriviligierten&rdquo; Nutzern am System anmelden können. Der Zugriff auf der CLI erfolgt dann immer mit <strong>sudo.</strong> Aber das nur am Rande&hellip;</p>
+<p>Wenn du <strong>iptables</strong> als Firewall nutzt, was hoffentlich der Fall ist, wirst du feststellen, dass du dich noch nicht auf Port 999 mit SSH verbinden kannst. Natürlich musst du den Port auch noch in der Firewall freigeben:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">iptables -A INPUT -m state --state NEW -m tcp -p tcp --dport 999 -j ACCEPT
+</span></span></code></pre></div><p>Beim Einsatz von fail2ban solltest du auch dort einstellen, dass SSH auf einem anderen Port arbeitet, damit fail2ban weiterhin Anmeldeversuche und BruteForce-Attacken abwehren kann. Die Einstellung dazu findest du in der Datei /etc/fail2ban/jail.conf oder /etc/fail2ban/jail.local. Dort gibt es einen Abschnitt [sshd] , in dem du den Port von ssh auf deinen neuen Port, z.B. 999, festlegst:</p>
+<p><img src="/2019/2019-07-13-wie-kannst-du-ssh-sicherer-machen-security-through-obscurity/images/grafik.png" alt=""></p>
+<p>Gegebenenfalls musst du diese Einstellung auch noch für SSH-Varianten wie z.B. Dropbear anpassen.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> SSH, Sicherheit, Linux, Server, Anleitung, Netzwerk</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Wie kannst du SSH sicherer machen? Security through obscurity? - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>security_guide</dc:type>
+      
+      
+    </item><item>
       <title>Was ist HTTP/3 bzw. HTTP over QUIC oder kurz QUIC?</title>
       <link>https://nickyreinert.de/2018/2018-11-13-was-ist-http-3-bzw-http-over-quic-oder-kurz-quic/</link>
       <pubDate>Tue, 13 Nov 2018 00:00:00 +0000</pubDate>
@@ -81,6 +360,297 @@ Die meisten wissen noch nicht einmal, was HTTP/2 eigentlich …</description>
       
       
       <dc:type>technical_explainer</dc:type>
+      
+      
+    </item><item>
+      <title>Eduroam mit Windows Mobile</title>
+      <link>https://nickyreinert.de/2017/2017-09-24-eduroam-mit-windows-mobile/</link>
+      <pubDate>Sun, 24 Sep 2017 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2017/2017-09-24-eduroam-mit-windows-mobile/</guid>
+      <description>Eine Schritt-Für-Schritt-Anleitung, um Windows Mobile 6.x - Geräte mit dem Eduroam-Netzwerk zu verbinden.
+[toc=&ldquo;2,3&rdquo; title=&ldquo;Inhalt&rdquo;] …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Diese Schritt-für-Schritt-Anleitung erklärt, wie Windows Mobile 6.x Geräte mit dem Eduroam-Netzwerk verbunden werden. Sie deckt die Installation des SecureW2 Clients, die Zertifikatsinstallation (einschließlich manueller Registrierung in der Registry) und die Konfiguration des WLAN-Zugangs ab, um eine erfolgreiche Verbindung herzustellen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Eduroam, Windows Mobile, WLAN Konfiguration, Netzwerkzugang, Zertifikate, Mobile Geräte, Anleitung</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Eine Schritt-Für-Schritt-Anleitung, um Windows Mobile 6.x - Geräte mit dem Eduroam-Netzwerk zu verbinden.</p>
+<p>[toc=&ldquo;2,3&rdquo; title=&ldquo;Inhalt&rdquo;]</p>
+<h3 id="vorbereitung">Vorbereitung</h3>
+<p>Als mobiles Gerät kommt ein HTC Blackstone / Touch HD mit dem Betriebssystem Windows Mobile 6.1 zum Einsatz. Das Betriebssystem ist komplett in Englisch, erst wird dennoch weitestgehend versucht, neben den englischen Bezeichnungen die entsprechenden deutschen zu verwenden. Diese Anleitung erhebt selbstverständlich keinen Anspruch auf Vollständigkeit noch garantiert sie den Erfolg. Kommentare oder Änderungswünsche sind herzlich willkommen. Unbedingt benötigt werden, neben einem mobilen Gerät mit Windows Mobile 6.x:</p>
+<ul>
+<li>der SecureW2 Client für Windows Mobile 5/6 von <a href="http://www.securew2.com/products/eapsuite/" title="http://www.securew2.com/products/eapsuite/">secureW2.com</a>,
+<ul>
+<li>(oder die CAB-Datei, für die direkte Installation <a href="http://www.freecoffee.de/files/SecureW2.cab" title="http://www.freecoffee.de/files/SecureW2.cab">hier herunterladen</a>)</li>
+</ul>
+</li>
+<li>das Zertifikat der Deutschen Telekom (Download vom <a href="http://www.rz.uni-augsburg.de/service/uauxca/zertifikate/telekom-root-2-cer.cer" title="http://www.rz.uni-augsburg.de/service/uauxca/zertifikate/telekom-root-2-cer.cer">Rechenzentrum der Uni Augsburg</a>),</li>
+<li>eine funktionierende Verbindung vom Desktop PC zum mobilen Gerät über ActiveSync (bis Windows XP) oder dem Windows Mobile Device Center (ab Windows Vista)</li>
+</ul>
+<p>und <em>eventuell</em></p>
+<ul>
+<li>eine Software zur Fernsteuerung zur Arbeitserleichterung wie z.B. MyMobiler (die Software nutzt die ActiveSync-Verbindung und erlaubt es, das Gerät komplett vom Computer zu bedienen, Download von <a href="http://www.mymobiler.com/" title="http://www.mymobiler.com/">mymobiler.com</a>) sowie</li>
+<li>einen Registryeditor (Total Commander für Pocket PC (ARM/XSCALE/PXA) auf <a href="http://www.ghisler.com/pocketpc.htm" title="http://www.ghisler.com/pocketpc.htm">ghisler.com</a> oder den Mobile Registry Editor auf <a href="http://www.chip.de/downloads/Mobile-Registry-Editor_31232153.html" title="http://www.chip.de/downloads/Mobile-Registry-Editor_31232153.html">chip.de</a>, beide Freeware).</li>
+</ul>
+<p><em>In dieser Anleitung verwende ich den Total Commander, da dieser zur Standarsoftware auf meinem Gerät gehört und die Bedienung des eingebauten Registryeditors weitaus komfortabler ist.</em></p>
+<h3 id="installation-von-securew2">Installation von SecureW2</h3>
+<p>Nach dem Starten der Installationsdatei <em>SecureW2_EAP_Suite_113_CE.exe</em> fordert das Programm zur Auswahl einer Sprache auf. Wir bestätigen daraufhin die Willkommensmeldung und akzeptieren die Lizenzbedingungen. Im nächsten Fenster wählen wir, sofern noch nicht geschehen, den <em>TTLS Client</em> aus und starten die Installation mit <em>Installieren</em>.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/1-securew2.png"><img src="images/1-securew2-300x233.png" alt="" title="1-securew2"></a></p>
+<p>Daraufhin übertrag ActiveSync die Programmdateien zum Gerät und informiert darüber, dass auf dem Gerät weitere Eingaben notwendig sind. ActiveSync wird vorerst mit einem Mausklick auf <em>OK</em> geschlossen. (Ist das Gerät nicht angeschlossen, holt ActiveSync die Übertragung bei der nächsten Verbindung nach.)</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/2-active-sync.png"><img src="images/2-active-sync-300x199.png" alt="" title="2-active-sync"></a></p>
+<p>Auf dem mobilen Gerät wird nun der Speicherort für <em>SecureW2</em> ausgewählt und mit <em>Install / Installieren</em> die Software installiert. War die Installation erfolgreich, wird der Vorgang mit <em>OK</em> auf dem Gerät abgeschlossen. Gleichzeitig wurde auch die Installationsroutine auf dem Computer beendet und kann geschlossen werden.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/3-install-securew2.png"><img src="images/3-install-securew2-180x300.png" alt="" title="3-install-securew2"></a></p>
+<h3 id="installation-des-zertifikates">Installation des Zertifikates</h3>
+<p>Wer die Installationsdatei des Zertifikates, <em>g_rootcert.cer</em>, nicht direkt auf dem Gerät gespeichert hat, überträgt diese per Drag&rsquo;n&rsquo;Drop oder einem Dateimanager seiner Wahl auf das Gerät. Auf dem Desktopcomputer erreicht man dieses über das Symbol <em>Mobiles Gerät</em> im <em>Arbeitsplatz</em>-Ordner.Den Unterordner <em>Mobiles Gerät\Meine Documente</em> erreicht man auch mit ActiveSync über das Menü <em>Extras / PocketPC durchsuchen</em>.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/4-activesync.png"><img src="images/4-activesync-300x289.png" alt="" title="4-activesync"></a></p>
+<p>Auf dem mobilen Gerät wird das Zertifikat installiert, indem man es dort im <em>Datei Explorer</em> einfach startet, d.h. einmal anklickt. Windows Mobile bestätigt dann die hoffentlich erfolgreiche Installation.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/5-confirm-cert.png"><img src="images/5-confirm-cert-180x300.png" alt="" title="5-confirm-cert"></a></p>
+<p>In den Einstellungen des mobilene Gerätes, unter dem zweiten Reiter <em>System</em>, startet man nun den <em>Zertifikatemanager</em> und überprüft unter dem Reiter <em>Root / Wurzel</em> ob das Zertifikat der Deutschen Telekom korrekt angezeigt wird.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/6-cert-manager.png"><img src="images/6-cert-manager-180x300.png" alt="" title="6-cert-manager"></a><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/7-cert-manager-root.png"><img src="images/7-cert-manager-root-180x300.png" alt="" title="7-cert-manager-root"></a></p>
+<p>Ist dem nicht so, muss das Zertifikat in der Registry per Hand eingetragen werden, damit der SecureW2 Client es bei der ersten Verbindung mit dem Netzwerk als &ldquo;vertrauenswürdiges Wurzelzertifikat&rdquo; erkennt. Dazu benötigen wir auf dem Gerät den bereits oben erwähnten Registryeditor. Das Vorgehen wird im Folgenden anhand des Total Commanders erläutert.</p>
+<h4 id="manuelles-registrieren-des-zertifikats">Manuelles Registrieren des Zertifikats</h4>
+<p>Die heruntergeladene Datei <em>tcmdpocketarm.cab</em> wird, wie oben schon einmal erwähnt, auf das Gerät kopiert und dort ausgeführt. Nach dem Öffnen der CAB-Datei wird das Programm installiert und wir starten die Software.<strong>Hinweis</strong>: Das Öffnen von Ordnern und Dateien erfolgt hier nicht wie gewohnt mit einem Klick, sondern durch Doppelklick. Mit Klick auf den <em>Schrägstrich</em> in der rechten oberen Ecke gelangen wir in das Hauptverzeichnis und wählen dort den Ordner <em>\\Plugins</em> und dann den Ordner <em>Registry</em> aus.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/8-total-commander.png"><img src="images/8-total-commander-162x300.png" alt="" title="8-total-commander"></a></p>
+<p>Dort klicken wir nun nacheinander auf <em>HKCU</em>, <em>Comm</em>, <em>Security</em> sowie <em>SystemCertificates</em> und finden dort Namen wie <em>root</em>, <em>trust</em>, <em>ca</em> usw.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/9-sys-certs.png"><img src="images/9-sys-certs-162x300.png" alt="" title="9-sys-certs"></a></p>
+<p>Als nächstes prüfen wir, ob sich im Ordner (bzw. Schlüssel) <em>trust</em> und dort unter <em>certificates</em> ein Ordner mit einem kryptischen Namen befindet. Wird dieser dort angezeigt, kann mit der Installation von SecureW2 fortgefahren werden.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/10-hash-name.png"><img src="images/10-hash-name-162x300.png" alt="" title="10-hash-name"></a></p>
+<p>Ist dem nicht so, wechseln wir durch einfaches Klicken auf den doppelten Punkt in der rechten oberen Ecke wieder 2 Ebenen nach oben und betrachten den Ordner <em>root</em> und dort <em>certificates</em>. Hier muss sich nun ein Ordner mit kryptischen Namen befinden. Durch Drücken auf diesen Ordnernamen und langes Halten öffnet sich das Kontextmenü. Wir wählen <em>In die Zwischenablage kopieren</em> aus und wechseln wieder in den Schlüssel bzw. Ordner <em>trust\certificates</em> (vorher zweimal auf den doppelten Punkt oben rechts) um dort erneut das Kontextmenü zu öffnen und per Klick auf <em>Hier einfügen (Kopieren)</em> den Schlüssel dort zu hinterlegen. Genauso müssen wir nun mit dem Wert <em>UpdateTime</em> verfahren, der sich direkt unter <em>root</em> befindet und in den Ordner trust gehört. (Nicht in den dortigen Unterordner <em>certificates</em>) Die Ordnerstruktur sollte nun wie folgt aussehen:</p>
+<p>\systemcertificats
+\root
+\certificates
+\85a408c09c193e5d51587dcd61330f
+.updatetime
+\trust
+\certificates
+\85a408c09c193e5d51587dcd61330f
+.updatetime</p>
+<p>Der Name &ldquo;85a408c09c193e5d51587dcd61330f&rdquo; weicht dabei von Gerät zu Gerät ab!</p>
+<p>Das Zertifikat <strong>sollte</strong> jetzt auch als vertrauenswürdig registriert sein und von <em>SecureW2</em> erkannt werden.</p>
+<h3 id="einrichtung-des-wlan-zugangs">Einrichtung des WLAN-Zugangs</h3>
+<p>Für gewöhnlich erkennt Windows Mobile die Art der Verschlüsselung selber, an der Stelle soll trotzdem nochmal auf die einzelnen Punkte eingegangen werden. Der Authentifizierungstyp lautet WPA2mit AES-Verschlüsselung.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/11-wlan1.png"><img src="images/11-wlan1-180x300.png" alt="" title="11-wlan1"></a></p>
+<p>Als EAP-Type wird der installierte SecureW2 TTLS-Client ausgewählt und über die <em>Eigenschaften / Properties</em> eingerichtet.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/12-wlan2.png"><img src="images/12-wlan2-180x300.png" alt="" title="12-wlan2"></a></p>
+<p>Ob ein neues Profil angelegt oder das Defaultprofil bearbeitet wird, ist vermutlich Geschmackssache. Um jede Fehlerquelle auszuschließen, habe ich ein neues Profil mit dem Namen <em>HTW</em> verwendet.Die Verbindung benutzt eine äußere, anonyme Identität. Per Klick auf <em>Erweitert</em> gelangt man zu den erweiterten Einstellungen. Hier muss ein Haken bei der Option <em>Benutzern erlauben, neue Verbindungen einzurichten</em> gesetzt werden.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/13-wlan3.png"><img src="images/13-wlan3-180x300.png" alt="" title="13-wlan3"></a><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/13b-wlan4.png"><img src="images/13b-wlan4-180x300.png" alt="" title="13b-wlan4"></a></p>
+<p>Unter dem Reiter <em>Zertifikate</em> wird <em>Serverzertifikate überprüfen</em> angehakt. Das untere Fenster <em>vertrauenswürdige CAs</em> ist zu dem Zeitpunkt noch leer. Nach der ersten (erfolgreichen) Verbindung findet ihr hier bzw. in der Liste unter Hinzufügen das Zertifikat der <em>Deutschen Telekom</em>.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/14-wlan5.png"><img src="images/14-wlan5-180x300.png" alt="" title="14-wlan5"></a></p>
+<p>Unter Authentifizerung wählen wir <em>PAP</em> aus.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/15-wlan6.png"><img src="images/15-wlan6-180x300.png" alt="" title="15-wlan6"></a></p>
+<p>Als letztes tragen wir die WLAN-Zugangsdaten in der bekannten Form (<em>sMatrikel@htw-berlin.de</em>) unter <em>Benutzerkennung</em> ein.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/16-wlan7.png"><img src="images/16-wlan7-180x300.png" alt="" title="16-wlan7"></a></p>
+<p>Nach Bestätigung mit <em>OK</em> fragt die Software, ob wir die Vertrauensliste von Windows verwenden möchten, was wir natürlich bestätigen.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/17-wlan8.png"><img src="images/17-wlan8-180x300.png" alt="" title="17-wlan8"></a></p>
+<p>Damit können wir die Einstellungen des Profiles mit <em>OK</em> endgültig übernehmen und die Konfiguration des WLAN-Zugangs abschließen. Bei der nächsten Verbindung mit dem Netzwerk erkennt <em>SecureW2</em> nun das <em>Telekom Zertifikat</em> an und bittet darum das (Wurzel)-Zertifikat mitsamt der zugehörigen &ldquo;Unterzertifikate&rdquo; zu installieren. Dabei ist lediglich eine Bestätigung erforderlich und der Zugang zu <em>eduroam</em> kann genutzt werden.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> Eduroam, Windows Mobile, WLAN, Anleitung, Netzwerk</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>tools</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Eduroam mit Windows Mobile - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>how-to_guide</dc:type>
+      
+      
+    </item><item>
+      <title>SFTP auf Microsoft IIS korrekt einrichten</title>
+      <link>https://nickyreinert.de/2015/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten/</link>
+      <pubDate>Wed, 14 Oct 2015 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2015/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten/</guid>
+      <description>Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Problem, denen du begegnen wirst.
+Du kannst die Verbindung zum …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt häufige Probleme bei der Einrichtung eines SFTP-Servers auf Microsoft IIS, darunter Zertifikatsfehler, Probleme mit passiven Verbindungen und Benutzerberechtigungen. Er bietet Lösungen, wie die korrekte Generierung von Server-Zertifikaten mittels PowerShell und die Behebung von Verbindungsschwierigkeiten.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> SFTP, Microsoft IIS, Server Konfiguration, Netzwerksicherheit, Zertifikate, PowerShell, Troubleshooting, Windows Server</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+          
+        </div>
+        
+        
+        <p>Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Problem, denen du begegnen wirst.</p>
+<blockquote>
+<ol>
+<li>
+<ol>
+<li>
+<p>Du kannst die Verbindung zum Server nicht herstellen, weil das Server-Zertifikat ungültig ist. Die Fehlermeldung in FileZilla lautet dann z.B.<br>
+GnuTLS error -48: Key usage violation in certificate has been detected. Could not connect to server</p>
+</li>
+<li>
+<p>Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast, kann die Verbindung nicht vollendet werden. FileZilla bleibt dann z.B. bei der folgenden Zeile stehen:</p>
+<p>150 Opening BINARY mode data connection</p>
+</li>
+</ol>
+</li>
+</ol></blockquote>
+<p>3. Und schließlich kann es sein, dass der Benutzer nicht die nötigen Zugriffsrechte für den Ordner hat, den du in den Einstellungen des FTP-Servers angegeben hast.</p>
+<p>Keine Sorge. Mit diesen drei Probleme durfte auch ich schon kämpfen und ich habe die Lösungen hier zusammengetragen. Also.. eins nach dem anderen.</p>
+<p>Die Ursache des ersten Problems ist der Assistent, mit dem man im IIS das Server-Zertifikat erstellt. Auf den Punkt gebracht, nutzt dieser ein paar falsche Parameter. Aus diesem Grund muss das Zertifikat per Hand in der PowerShell erstellt werden. Wichtig: In der normalen Konsole funktioniert das nicht.</p>
+<p><a href="https://superuser.com/questions/1167351/filezilla-reporting-gnutls-error-48-key-usage-violation-in-certificate-has-be">https://superuser.com/questions/1167351/filezilla-reporting-gnutls-error-48-key-usage-violation-in-certificate-has-be</a></p>
+<p>According to a post in the <a href="https://forums.iis.net/t/1234970.aspx">IIS forums</a>, you can generate the certificate with PowerShell instead until the issue is fixed by Microsoft:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">New-SelfSignedCertificate -CertStoreLocation cert:\LocalMachine\My -dnsname ftp.example.com
+</span></span></code></pre></div><p>Replace <code>ftp.example.com</code> by your server&rsquo;s hostname.</p>
+<p>You will get a fingerprint, copy that. Set a password for the private key:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$password = ConvertTo-SecureString -String &#34;password goes here&#34; -Force -AsPlainText
+</span></span></code></pre></div><p>Now export it (you can change <code>C:\cert.pfx</code> to the path you want to save it to, just make sure it ends in <code>.pfx</code>):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Export-PfxCertificate -cert cert:\LocalMachine\My\FINGERPRINT -FilePath C:\cert.pfx -Password $password
+</span></span></code></pre></div><p>Benutzer anlegen</p>
+<p><a href="https://www.nickyreinert.de/files/ssl-zertifikat-auf-windows-korrekt-installieren/windows-server-ssl-zertifikat-zuweisen.png"><img src="/2015/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten/images/windows-server-ssl-zertifikat-zuweisen-300x121.png" alt=""></a></p>
+<p><strong>siehe auch:</strong></p>
+<p><a href="https://www.visualsvn.com/support/topic/00056/">https://www.visualsvn.com/support/topic/00056/</a></p>
+<p>[http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/ http://ekiwi-blog.de/?p=3465](<a href="http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/">http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/</a> <a href="http://ekiwi-blog.de/?p=3465">http://ekiwi-blog.de/?p=3465</a>)</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> SFTP, IIS, Windows Server, Anleitung, Troubleshooting, Netzwerk</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>SFTP auf Microsoft IIS korrekt einrichten - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>troubleshooting_guide</dc:type>
+      
+      
+    </item><item>
+      <title>MacOS Finder und die SMB / Windows - Netzwerkfreigaben</title>
+      <link>https://nickyreinert.de/2013/2013-02-24-macos-finder-und-die-smb-windows-netzwerkfreigaben/</link>
+      <pubDate>Sun, 24 Feb 2013 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2013/2013-02-24-macos-finder-und-die-smb-windows-netzwerkfreigaben/</guid>
+      <description>Immer wenn ich die Verbindung zu meinem Heimnetz hergestellt habe, sei es über WLAN oder Kabel, dauerte es eine gefühlte Ewigkeit, bis der Finder (sic!) mein …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Eine Anleitung aus dem Jahr 2013 zur Behebung langsamer Verbindungen von macOS Finder zu SMB/Windows-Netzwerkfreigaben (z.B. NAS). Der Artikel beschreibt eine Lösung, die das Erstellen und Speichern einer &#39;nsmb.conf&#39;-Datei im &#39;/etc&#39;-Verzeichnis mit spezifischen Konfigurationen beinhaltet, um die Erkennung und Verbindung zu beschleunigen.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> macOS, SMB, Netzwerkfreigaben, NAS, Troubleshooting, System-Konfiguration</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Immer wenn ich die Verbindung zu meinem Heimnetz hergestellt habe, sei es über WLAN oder Kabel, dauerte es eine gefühlte Ewigkeit, bis der Finder (sic!) mein NAS gefunden hat, obwohl beide am gleichen Switch hängen. Es half dabei auch nichts, wenn ich direkt zum NAS verbinden wollte, weil ich die IP-Adresse kenne (Apfel + K). Das hab ich eine Weile ignoriert, dann akzeptiert, aber irgendwann konnte ich die Geduld nicht mehr aufbringen und habe mich auf die Suche nach einer Lösung gemacht.</p>
+<p>Diese fand ich in den <a href="https://discussions.apple.com/thread/2172049?start=15&amp;tstart=0">Apple Support Foren.</a> Ein langer Beitrag kurz zusammengefasst:</p>
+<p>1. Erstelle ein Textdatei mit dem Inhalt</p>
+<blockquote>
+<p>[default]
+minauth=none
+streams=no
+soft=yes
+notify_off=yes
+domain=DOMAIN_NAME_DEINER_NETZWERKFREIGABE
+port445=no_netbios
+[NAME_DEINER_NETZWERKFREIGABE]
+addr=IP-ADRESSE_DEINER_FREIGABE</p></blockquote>
+<p>2. Speichere die Datei mit dem Namen &ldquo;nsmb.conf&rdquo; unter /etc ab. (Ggf.mit der Konsole / dem Terminal arbeiten). 3. Starte dein Mac(Book) neu.</p>
+<p>Danach dauerte es nur noch Bruchteile von Sekunden, bis die Netzwerkfreigabe im Finder sichtbar war.</p>
+<p> </p>
+<p>Update: Mit dem kostenfrei erhältlichen <a href="http://www.apple.com/de/osx/">Update auf MacOS 10.9 Mavericks</a> scheint dieses Problem behoben zu sein!</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> macOS, Netzwerk, Troubleshooting, Anleitung</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>os-x</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>MacOS Finder und die SMB / Windows - Netzwerkfreigaben - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>troubleshooting_guide</dc:type>
       
       
     </item>
