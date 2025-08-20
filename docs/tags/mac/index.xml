@@ -1,24 +1,190 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
-    <title>Mac on Nicky Reinert</title>
+    <title>Mac auf Nicky Reinert</title>
     <link>https://nickyreinert.de/tags/mac/</link>
-    <description>Recent content in Mac on Nicky Reinert</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>de-DE</language>
-    <lastBuildDate>Fri, 24 Aug 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/mac/index.xml" rel="self" type="application/rss+xml" />
-    <item>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Fri, 24 Aug 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/mac/index.xml" rel="self" type="application/rss+xml" /><item>
       <title>Die OS X - Bash</title>
       <link>https://nickyreinert.de/2018/2018-08-24-die-os-x-bash/</link>
       <pubDate>Fri, 24 Aug 2018 00:00:00 +0000</pubDate>
-      
+      <author></author>
       <guid>https://nickyreinert.de/2018/2018-08-24-die-os-x-bash/</guid>
+      <description>Da ich mit meinem Mac sehr oft auf der Kommandozeile unterwegs bin (dazu empfehle ich übrigens iTerm2 - ein Terminal-Ersatz der alle anderen Anwendungen dieser …</description>
       
-      <description>&lt;p&gt;Da ich mit meinem Mac sehr oft auf der Kommandozeile unterwegs bin (dazu empfehle ich übrigens &lt;a href=&#34;https://www.iterm2.com/&#34;&gt;iTerm2&lt;/a&gt; - ein Terminal-Ersatz der alle anderen Anwendungen dieser Art auch auf Linux und Windows aussticht) habe ich mir dafür ein paar kleine Einstellungen zusammengesammelt, die das Leben und Arbeiten auf der Kommandozeile etwas erleichtern.&lt;/p&gt;
-&lt;h2 id=&#34;was-ist-bash&#34;&gt;Was ist Bash?&lt;/h2&gt;
-&lt;p&gt;Bash steht für &amp;ldquo;Bourn again shell&amp;rdquo; und ist eine Erweiterung der älteren Bourne-Shell, eine Shell die auf Unix-(ähnlichen) Systemen als Benutzerschnittstelle dient. Und diese ist vor allem daran erkennbar, dass die Steuerung des Systems nur über die Tastatur, ohne Maus und Fenster funktioniert.&lt;/p&gt;</description>
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt Die OS X - Bash und bietet praktische Einblicke in das Thema.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Mac, Tools, System</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Da ich mit meinem Mac sehr oft auf der Kommandozeile unterwegs bin (dazu empfehle ich übrigens <a href="https://www.iterm2.com/">iTerm2</a> - ein Terminal-Ersatz der alle anderen Anwendungen dieser Art auch auf Linux und Windows aussticht) habe ich mir dafür ein paar kleine Einstellungen zusammengesammelt, die das Leben und Arbeiten auf der Kommandozeile etwas erleichtern.</p>
+<h2 id="was-ist-bash">Was ist Bash?</h2>
+<p>Bash steht für &ldquo;Bourn again shell&rdquo; und ist eine Erweiterung der älteren Bourne-Shell, eine Shell die auf Unix-(ähnlichen) Systemen als Benutzerschnittstelle dient. Und diese ist vor allem daran erkennbar, dass die Steuerung des Systems nur über die Tastatur, ohne Maus und Fenster funktioniert.</p>
+<p>Seit der Version 10.3 ist Bash auch Bestandteil von Mac OS X und bringt damit eine Menge Vorteile für die Arbeit auf der Kommandozeile mit sich.</p>
+<h2 id="die-bash-konfigurationsdateien">Die Bash Konfigurationsdateien</h2>
+<p>Die globalen Einstellungen für die Bash befinden sich in der Datei <strong>/etc/bashrc</strong> und der <strong>/etc/profile</strong>. Wer Einstellungen auf bestimmte Benutzer beschränken will, kann im Benutzerverzeichnis (du gelangst mit <em>cd ~</em> dorthin) eine Datei mit dem Name <strong>.profile</strong>, <strong>.bash_login</strong> oder <strong>.bash_profile</strong> anlegen. Beachte, dass <strong>.profile</strong> nur geladen wird, wenn <strong>.bash_login</strong> nicht existiert, welche wiederum durch <strong>.bash_profile</strong> überschrieben wird. Das gilt allerdings nicht, wenn du dich als <strong>root-Benutzer</strong> anmeldest - dann wird nur die Datei <strong>.profile</strong> gelesen. Der Grund ist, dass der Root-Benutzer nicht <strong>bash</strong> sondern <strong>sh</strong> ausführt, wodurch nur die <strong>~/.profile</strong>-Datei berücksichtigt wird.</p>
+<p><img src="/2018/2018-08-24-die-os-x-bash/images/image-8.png" alt=""></p>
+<p>Hierarchie der Bash-Konfigurations-Dateien</p>
+<p>Daneben gibt es theoretisch auch die Möglichkeit, im Benutzerverzeichnis eine Datei mit dem Namen <strong>.bashrc</strong> anzulegen. Diese wird jedoch nur dann geladen, wenn Bash ausgeführt wird, ohne dass sich ein Benutzer dazu anmeldet (die sogenannte <em>non-login-shell</em>). Im OS X-Umfeld wird das aber nicht benötigt. Du kannst das erzwingen, indem du auf der Kommandozeile <strong>/bin/bash</strong> ausführst - wir wollen die jetzt schon komplizierte Geschichte aber nicht unnötigen verkomplizieren. ;)</p>
+<h2 id="die-bash-aufhübschen">Die Bash aufhübschen</h2>
+<p>Nach der langweiligen aber notwendige Theorie, gibts jetzt ein paar Zeilen Code, mit denen die Kommandozeile gleich viel besser aussieht. Ich hab aus oben genannten Gründen das Ganze in die Datei <strong>~/.profile</strong> gepackt. Zunächst einmal ein paar Aliase um die Verzeichnislisten etwas übersichtlicher zu gestalten oder auch das oft benutzte <strong>cd</strong> (<em>change dir</em>) zu vereinfachen.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">alias l=&#39;ls -alCFGA&#39;
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">alias ll=&#34;ls -CFGla&#34;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">alias h=&#34;history&#34;
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">alias .=&#34;cd ~&#34;
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">alias ..=&#34;cd ..&#34;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">alias ...=&#34;cd ../..&#34;
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"># -p: erzeuge Unterverzeichnis, falls sie nicht existieren
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"># -v: gebe erzeugtes Verzeichnis zurück
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">alias mkdir=&#34;mkdir -pv&#34;
+</span></span><span class="line"><span class="ln">10</span><span class="cl"># grep Ausgabe farbig gestalten
+</span></span><span class="line"><span class="ln">11</span><span class="cl">alias grep=&#39;grep --color=auto&#39;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">alias fgrep=&#39;fgrep --color=auto&#39;
+</span></span><span class="line"><span class="ln">13</span><span class="cl">alias egrep=&#39;egrep --color=auto&#39;
+</span></span><span class="line"><span class="ln">14</span><span class="cl"># das aktuelle Verzeichnis im Finder öffnen
+</span></span><span class="line"><span class="ln">15</span><span class="cl">alias f=&#39;open -a Finder ./&#39;
+</span></span></code></pre></div><p>Die folgende Zeile ist kein Alias sondern eine Funktion. Damit wird ein Verzeichnis (mit allen benötigten Unterverzeichnissen erstellt) und dann mit cd direkt in das Verzeichnis gewechselt:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">mcd () { mkdir -p &#34;$1&#34; &amp;&amp; cd &#34;$1&#34;; }
+</span></span></code></pre></div><p>Als nächstes will ich die Darstellung der zuletzt benutzten Befehle (<strong>history</strong> bzw. jetzt <strong>h</strong>) etwas anpassen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"># Duplikate ignorieren
+</span></span><span class="line"><span class="ln">2</span><span class="cl">HISTCONTROL=ignoreboth
+</span></span><span class="line"><span class="ln">3</span><span class="cl"># Befehle anhängen und die Historie nicht jedes mal neu überschreiben
+</span></span><span class="line"><span class="ln">4</span><span class="cl">shopt -s histappend
+</span></span><span class="line"><span class="ln">5</span><span class="cl"># die maximale Größe bzw. Länge der Historie erhöhen
+</span></span><span class="line"><span class="ln">6</span><span class="cl">HISTSIZE=1000
+</span></span><span class="line"><span class="ln">7</span><span class="cl">HISTFILESIZE=2000
+</span></span></code></pre></div><p>Der folgende Befehl sorgt dafür, dass sich die Anzahl der dargestellten <strong>Spalten und Zeilen</strong> an die Fenstergröße anpasst. Die Funktion sollte per default aktiviert sein, zur Sicherheit legen wir das hier trotzdem fest! Mit dem Parameter -u kann die Option übrigens wieder deaktiviert werden.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">shopt -s checkwinsize
+</span></span></code></pre></div><p>Hiermit wird das Aussehen und die Farbe der Kommandozeile geändert. Ich hab mich für eine relativ bunte Variante entschieden. Die Einstellung für den sog. Prompt wird in der globalen Variable <strong>PS1</strong> (<em>prompt statement 1</em>) gespeichert. Die folgenden Parameter sind hier geläufig:</p>
+<ul>
+<li>\u - Benutzername</li>
+<li>\h - Name des Hosts / Computers</li>
+<li>\w - der komplette aktuelle Pfad</li>
+<li>\n  - Ein Zeilenumbruch</li>
+</ul>
+<p>Mit <strong>PS2</strong>, <strong>PS3</strong>, <strong>PS4</strong> lassen sich noch andere Prompts konfigurieren, wie z.B. der für interaktive Eingaben in Bash-Scripten. Die Variable <strong>PROMPT_COMMAND</strong> wird sogar noch vor <strong>PS1</strong> dargestellt. Wer mehr dazu erfahren möchte, <a href="https://wiki.ubuntuusers.de/Bash/Prompt/#source-2">schaut einfach mal dort vorbei</a>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">export</span> <span class="n">PS1</span><span class="o">=</span><span class="s2">&#34;$(date +%k:%m:%S) \[</span><span class="se">\033</span><span class="s2">[36m\]\u\[</span><span class="se">\033</span><span class="s2">[m\]@\[</span><span class="se">\033</span><span class="s2">[32m\]\h:\[</span><span class="se">\033</span><span class="s2">[33;1m\]\w\[</span><span class="se">\033</span><span class="s2">[m\]\$ &#34;</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"># Diese Konstanten steuern die Farben für die Ausgabe von cd.</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="k">export</span> <span class="n">CLICOLOR</span><span class="o">=</span><span class="mi">1</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="k">export</span> <span class="n">LSCOLORS</span><span class="o">=</span><span class="n">ExFxBxDxCxegedabagacad</span>
+</span></span></code></pre></div><p>Das ganze sieht dann so aus:</p>
+<p><img src="/2018/2018-08-24-die-os-x-bash/images/image-9.png" alt=""></p>
+<p>Eine bunte aber informative Kommandozeile</p>
+<p>Diese Funktion zeigt alle Prozesse, die unter dem aktuellen Benutzer aktiv sind:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">me() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }
+</span></span></code></pre></div><p>Als nächstes ein paar Aliase um das Netzwerk ein bisschen einfacher im Griff zu behalten:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl"># alle Verbindungen, die gerade &#34;Lauschen&#34;
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">alias cons=&#39;sudo lsof -i | grep LISTEN&#39;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"># alle offenen Sockets
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">alias socks=&#39;sudo /usr/sbin/lsof -i -P&#39;
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"># alle offenen TCP/IP-Sockets
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">alias tsocks=&#39;lsof -i&#39;
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"># alle offenen UDP-Sockets
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">alias usocks=&#39;sudo /usr/sbin/lsof -nP | grep UDP&#39;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"># alle offenen TCP-Sockets
+</span></span><span class="line"><span class="ln">10</span><span class="cl">alias lsocks=&#39;sudo /usr/sbin/lsof -nP | grep TCP&#39; 
+</span></span><span class="line"><span class="ln">11</span><span class="cl"># grundlegende Netzwerkeinstellungen
+</span></span><span class="line"><span class="ln">12</span><span class="cl">alias net=&#39;ipconfig getpacket en0&#39;
+</span></span><span class="line"><span class="ln">13</span><span class="cl">
+</span></span><span class="line"><span class="ln">14</span><span class="cl"># den DNS-Cache leeren
+</span></span><span class="line"><span class="ln">15</span><span class="cl">alias cleardns=&#39;dscacheutil -flushcache&#39;
+</span></span></code></pre></div><p>Die ganzen Inhalte gibt es hier noch einmal in kompakter Version:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="k">case</span> <span class="o">$-</span> <span class="ow">in</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="o">*</span><span class="n">i</span><span class="o">*</span><span class="p">)</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">      <span class="o">*</span><span class="p">)</span> <span class="k">return</span><span class="p">;;</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="n">esac</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="n">alias</span> <span class="n">l</span><span class="o">=</span><span class="s1">&#39;ls -alCFGA&#39;</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="n">alias</span> <span class="n">ll</span><span class="o">=</span><span class="s2">&#34;ls -CFGla&#34;</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="n">alias</span> <span class="n">h</span><span class="o">=</span><span class="s2">&#34;history&#34;</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="n">alias</span> <span class="o">.=</span><span class="s2">&#34;cd ~&#34;</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="n">alias</span> <span class="o">..=</span><span class="s2">&#34;cd ..; pwd&#34;</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="n">alias</span> <span class="o">...=</span><span class="s2">&#34;cd ../..; pwd&#34;</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="n">alias</span> <span class="n">mkdir</span><span class="o">=</span><span class="s2">&#34;mkdir -pv&#34;</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="n">alias</span> <span class="n">grep</span><span class="o">=</span><span class="s1">&#39;grep --color=auto&#39;</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="n">alias</span> <span class="n">fgrep</span><span class="o">=</span><span class="s1">&#39;fgrep --color=auto&#39;</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="n">alias</span> <span class="n">egrep</span><span class="o">=</span><span class="s1">&#39;egrep --color=auto&#39;</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="n">alias</span> <span class="n">f</span><span class="o">=</span><span class="s1">&#39;open -a Finder ./&#39;</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">
+</span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="n">HISTCONTROL</span><span class="o">=</span><span class="n">ignoreboth</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="n">shopt</span> <span class="o">-</span><span class="n">s</span> <span class="n">histappend</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="n">HISTSIZE</span><span class="o">=</span><span class="mi">1000</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="n">HISTFILESIZE</span><span class="o">=</span><span class="mi">2000</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">
+</span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="n">shopt</span> <span class="o">-</span><span class="n">s</span> <span class="n">checkwinsize</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">
+</span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="k">case</span> <span class="s2">&#34;$TERM&#34;</span> <span class="ow">in</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">    <span class="n">xterm</span><span class="o">-</span><span class="n">color</span><span class="o">|*-</span><span class="mi">256</span><span class="n">color</span><span class="p">)</span> <span class="n">color_prompt</span><span class="o">=</span><span class="n">yes</span><span class="p">;;</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="n">esac</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">
+</span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="k">export</span> <span class="n">PS1</span><span class="o">=</span><span class="s2">&#34;$(date +%k:%m:%S) \[</span><span class="se">\033</span><span class="s2">[36m\]\u\[</span><span class="se">\033</span><span class="s2">[m\]@\[</span><span class="se">\033</span><span class="s2">[32m\]\h:\[</span><span class="se">\033</span><span class="s2">[33;1m\]\w\[</span><span class="se">\033</span><span class="s2">[m\]\$ &#34;</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="k">export</span> <span class="n">CLICOLOR</span><span class="o">=</span><span class="mi">1</span>
+</span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="k">export</span> <span class="n">LSCOLORS</span><span class="o">=</span><span class="n">ExFxBxDxCxegedabagacad</span>
+</span></span><span class="line"><span class="ln">32</span><span class="cl">
+</span></span><span class="line"><span class="ln">33</span><span class="cl"><span class="n">mcd</span> <span class="p">()</span> <span class="p">{</span> <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="s2">&#34;$1&#34;</span> <span class="o">&amp;&amp;</span> <span class="n">cd</span> <span class="s2">&#34;$1&#34;</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="ln">34</span><span class="cl"><span class="n">me</span><span class="p">()</span> <span class="p">{</span> <span class="n">ps</span> <span class="o">$</span><span class="err">@</span> <span class="o">-</span><span class="n">u</span> <span class="o">$</span><span class="n">USER</span> <span class="o">-</span><span class="n">o</span> <span class="n">pid</span><span class="p">,</span><span class="o">%</span><span class="n">cpu</span><span class="p">,</span><span class="o">%</span><span class="n">mem</span><span class="p">,</span><span class="n">start</span><span class="p">,</span><span class="n">time</span><span class="p">,</span><span class="n">bsdtime</span><span class="p">,</span><span class="n">command</span> <span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="ln">35</span><span class="cl">
+</span></span><span class="line"><span class="ln">36</span><span class="cl"><span class="n">alias</span> <span class="n">cons</span><span class="o">=</span><span class="s1">&#39;sudo lsof -i | grep LISTEN&#39;</span>
+</span></span><span class="line"><span class="ln">37</span><span class="cl"><span class="n">alias</span> <span class="n">socks</span><span class="o">=</span><span class="s1">&#39;sudo /usr/sbin/lsof -i -P&#39;</span>
+</span></span><span class="line"><span class="ln">38</span><span class="cl"><span class="n">alias</span> <span class="n">tsocks</span><span class="o">=</span><span class="s1">&#39;lsof -i&#39;</span>
+</span></span><span class="line"><span class="ln">39</span><span class="cl"><span class="n">alias</span> <span class="n">usocks</span><span class="o">=</span><span class="s1">&#39;sudo /usr/sbin/lsof -nP | grep UDP&#39;</span>
+</span></span><span class="line"><span class="ln">40</span><span class="cl"><span class="n">alias</span> <span class="n">lsocks</span><span class="o">=</span><span class="s1">&#39;sudo /usr/sbin/lsof -nP | grep TCP&#39;</span>
+</span></span><span class="line"><span class="ln">41</span><span class="cl"><span class="n">alias</span> <span class="n">net</span><span class="o">=</span><span class="s1">&#39;ipconfig getpacket en0&#39;</span>
+</span></span><span class="line"><span class="ln">42</span><span class="cl"><span class="n">alias</span> <span class="n">cleardns</span><span class="o">=</span><span class="s1">&#39;dscacheutil -flushcache&#39;</span>
+</span></span></code></pre></div>
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> profile, alias, bash, mac, os-x, shell</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>development</category>
+      
+      <category>os-x</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die OS X - Bash - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
       
     </item>
-    
   </channel>
 </rss>

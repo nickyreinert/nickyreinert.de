@@ -1,24 +1,216 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
-    <title>Sha on Nicky Reinert</title>
+    <title>Sha auf Nicky Reinert</title>
     <link>https://nickyreinert.de/tags/sha/</link>
-    <description>Recent content in Sha on Nicky Reinert</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>de-DE</language>
-    <lastBuildDate>Sun, 31 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/sha/index.xml" rel="self" type="application/rss+xml" />
-    <item>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Sun, 31 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/sha/index.xml" rel="self" type="application/rss+xml" /><item>
       <title>Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&amp;nbsp;2/2)</title>
       <link>https://nickyreinert.de/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/</link>
       <pubDate>Sun, 31 Oct 2021 00:00:00 +0000</pubDate>
-      
+      <author></author>
       <guid>https://nickyreinert.de/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/</guid>
+      <description>Wenn du den ersten Teil erfolgreich verarbeitet hast, bist du bestens gewappnet, um in diesem Teil zu erfahren, wie die einzelnen Komponenten bzw. Funktionen …</description>
       
-      <description>&lt;p&gt;Wenn du &lt;a href=&#34;https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/&#34;&gt;den ersten Teil&lt;/a&gt; erfolgreich verarbeitet hast, bist du bestens gewappnet, um in diesem Teil zu erfahren, wie die einzelnen Komponenten bzw. Funktionen nun zusammenspielen.&lt;/p&gt;
-&lt;h3 id=&#34;vorbemerkung&#34;&gt;Vorbemerkung&lt;/h3&gt;
-&lt;p&gt;Bevor es los geht möchte ich noch einmal die Zusammenhänge verdeutlichen: Wir werden gleich eine Nachricht (&lt;strong&gt;Message&lt;/strong&gt;) erzeugen, deren Länge einem Vielfachen von &lt;strong&gt;512 Bit&lt;/strong&gt; entspricht; im Beispiel genau &lt;strong&gt;512 Bit&lt;/strong&gt;. Die Nachricht wird in &lt;strong&gt;Message-Blocks&lt;/strong&gt; zerlegt, die exakt &lt;strong&gt;512 Bit&lt;/strong&gt; lang sind. Jeder Message-Block wird wiederum zu einer &lt;strong&gt;Message-Schedule&lt;/strong&gt; zerlegt, mit &lt;strong&gt;16 Wörtern&lt;/strong&gt; (Words) zu je &lt;strong&gt;32 Bit&lt;/strong&gt; Länge. Die Länge der Wörter muss und wird immer &lt;strong&gt;32 Bit&lt;/strong&gt; sein! Der Message-Schedule wird dann aber erweitert, um &lt;strong&gt;64 Wörter zu&lt;/strong&gt; enthalten. Seine Länge dann: &lt;strong&gt;2.048 Bit&lt;/strong&gt;. Und grafisch:&lt;/p&gt;</description>
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&amp;nbsp;2/2) und bietet praktische Einblicke in das Thema.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Web, IT, Tools</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Wenn du <a href="https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/">den ersten Teil</a> erfolgreich verarbeitet hast, bist du bestens gewappnet, um in diesem Teil zu erfahren, wie die einzelnen Komponenten bzw. Funktionen nun zusammenspielen.</p>
+<h3 id="vorbemerkung">Vorbemerkung</h3>
+<p>Bevor es los geht möchte ich noch einmal die Zusammenhänge verdeutlichen: Wir werden gleich eine Nachricht (<strong>Message</strong>) erzeugen, deren Länge einem Vielfachen von <strong>512 Bit</strong> entspricht; im Beispiel genau <strong>512 Bit</strong>. Die Nachricht wird in <strong>Message-Blocks</strong> zerlegt, die exakt <strong>512 Bit</strong> lang sind. Jeder Message-Block wird wiederum zu einer <strong>Message-Schedule</strong> zerlegt, mit <strong>16 Wörtern</strong> (Words) zu je <strong>32 Bit</strong> Länge. Die Länge der Wörter muss und wird immer <strong>32 Bit</strong> sein! Der Message-Schedule wird dann aber erweitert, um <strong>64 Wörter zu</strong> enthalten. Seine Länge dann: <strong>2.048 Bit</strong>. Und grafisch:</p>
+<p><img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/images/screenshot-2.png" alt=""></p>
+<p>Wichtige Zusammenhänge</p>
+<h3 id="dekompressions">Dekompressions</h3>
+<p>Wir wollen also aus einer Nachricht eine <strong>SHA-256</strong>-konforme Prüfsumme, den Hash, berechnen. Dazu muss die Nachricht, also der String, zunächst vorbereitet werden. Unsere Nachricht ist, klischeegerecht:</p>
+<p>message = &lsquo;hello_world&rsquo;</p>
+<p>Zunächst müssen wir für jeden Buchstabend die Position in der Zeichentabelle herausbekommen, sprich die Buchstaben (bzw genauer jedes Zeichen) in ihre numerische Repräsentation umwandeln:</p>
+<p>dec_message = []<br>
+for char in message:<br>
+dec_message.append(ord(char))</p>
+<p>Das Ergegnis ist eine Liste mit Integern:</p>
+<p>[104, 101, 108, 108, 111, 95, 119, 111, 114, 108, 100]</p>
+<p>Und da wir im ersten Teil so viel Spaß am Umgang mit binären Werten hatten, wandeln wir die Liste in binäre Werte um, die wir schlicht miteinander verknüpfen:</p>
+<p>bin_message = &rsquo;&rsquo;<br>
+for decimal in dec_message:<br>
+bin_message += &lsquo;0&rsquo; + bin(decimal)[2:</p>
+<p>Das Ergebnis:</p>
+<p>0110100001100101011011000110110001101111010111110111011101101111011100100110110001100100</p>
+<p>Hier gibt es allerdings eine Stolperfalle, und es widerstrebt mir das so stehen zu lassen, für die ich noch keine Erklärung gefunden habe: Bei der Umwandlung in die binäre Entsprechung stellen wir jedem binären Wert eine 0 voran. Aus <strong>104</strong> wird also nicht <strong>1101000</strong> sondern <strong>01101000</strong>, uswf.</p>
+<p>Außerdem hängen wir an dieses Datum eine 1 heran, sozusagen als Trennzeichen für das, was jetzt gleich kommt.</p>
+<p>Als nächstes berechnen wir die Länge dieser binären Zahl:</p>
+<p>len_bin_message = len(bin_message)</p>
+<p>Die Längenangabe darf bzw muss exakt <strong>64 Bit</strong> belegen. Wir wandeln sie also auch in eine binäre Zahl um hängen vorne ein paar Nullen ran um genau 64 Stellen zu erhalten:</p>
+<p>rest_to_64 = 64 - len(bin(len_bin_message)[2:])</p>
+<p>bin_message_len = &lsquo;0&rsquo; * rest_to_64 + bin(len_bin_message)[2:]</p>
+<p>Nun müssen wir diese drei binären Informationen, Nachricht, trennende Eins und Längenangabe nicht nur verbinden, sondern auch mit so vielen Nullen auffüllen, damit die Gesamtlänge ein vielfaches von 512 ist.</p>
+<p>payload = bin_message + &lsquo;1&rsquo; + bin_message_len</p>
+<p>len_payload = len(payload)</p>
+<p>pad_string = int(512 - (len_payload % 512))</p>
+<p>full_message = bin_message + &lsquo;1&rsquo; + (&lsquo;0&rsquo; * pad_string) + bin_message_len</p>
+<p>In unserem Beispiel belegen die drei Informationen 153 Bit. Wir müssen also 359 Nullen dazupacken. Genau genommen kommen die zwischen Nachricht und Längenangabe. Das Ergebnis ist immer <strong>n* 512 Bits</strong> lang:</p>
+<p><img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/images/screenshot-8.png" alt=""></p>
+<p>Aufbau einer vorkodierten Nachricht</p>
+<p>Zu guter Letzt nehmen wir diese sehr, sehr, sehr, sehr….sehr, sehr große Zahl (sie ist sehr groß, du solltest sie auch nicht als Zahl sehen, sondern als <strong>Bitfolge</strong>!) und teilen sie in sogenannte Message Blocks mit einer Länge von jeweils <strong>512 Bits</strong> auf:</p>
+<p>message_block_length = 512<br>
+message_blocks = [full_message[i:i+message_block_length] for i in range(0, len(full_message), message_block_length)]</p>
+<p>Schnapp dir einen Kaffee, geh noch mal frische Luft schnappen, schüttel den Stuhl aus. Jetzt geht es los.</p>
+<p><img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/images/beer.jpg" alt=""></p>
+<p>8 Bits sind keine Bitfolge</p>
+<h3 id="die-schleife">Die Schleife!</h3>
+<p>Da es einfacher ist, den Vorgang ohne Schleife zu erklären, hier nur eine Schleife. Die programmatische Schleife findest du trotzdem auf <a href="https://gist.github.com/nickyreinert/00d631fe9a90108924b1df6e911c8cd5"><strong>Github</strong></a>.</p>
+<p><img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/images/screenshot-9.png" alt=""></p>
+<p>Es folgt: Eine Schleife</p>
+<p>Da unsere Nachricht genau 512 Bit groß ist und wir auch ohne Schleife arbeiten, können wir direkt in die Vollen gehen: Die mühsam zusammengeklebte Nachricht wird nun in den sog. Message Schedule zerlegt: Sprich in <strong>16 Wörter</strong> mit jeweils 32 Bit Länge.</p>
+<p>Im ersten Durchlauf nehmen wir vier Wörter und führen folgende Modifikationen aus:</p>
+<ul>
+<li><strong>σ1</strong> wird auf <strong>Wort 1</strong> an Position 14 angewendet,</li>
+<li><strong>Wort 2</strong> von Position 9 bleibt unverändert,</li>
+<li><strong>σ0</strong> wird auf <strong>Wort 3</strong> an Position 1 angewendet und</li>
+<li><strong>Wort 4</strong> an Position 0 bleibt wieder unberührt</li>
+</ul>
+<p>Die Werte werden zunächst addiert und jetzt gibt es wieder einen <strong>wichtigen Punkt</strong> zu beachten: Wir müssen strikt dafür sorgen, dass die Wörter nicht länger als <strong>32 Bit</strong> sind. Denn nur so können wir sicherstellen, dass der finale Hash immer die gleiche länge hat. Und spätestens jetzt, bei der <strong>Addition großer Werte</strong>, können wir die <strong>32 Bit</strong> recht schnell überschreiten. Das ist auch aus technischer Sicht eine Hürde. Deswegen gilt: Hier und bei allen Additionen müssen wir abschließend <strong>Modulo 2</strong>³² anwenden. Und jetzt kommt der dritte hoffentlich positive Knick in der Lernkurve: Auch für Modulo hält das binäre Universum eine schöne Vereinfachung parat: <strong>Das logische Und</strong> mit 2³²–1 (bzw 4.294.967.295, das ist eine sehr große Zahl, nicht so groß wie die im ersten Teil, sondern genau einen Zähler kleiner) führt zum gleichen Ergebnis.</p>
+<p><img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/images/screenshot-5.png" alt=""></p>
+<p>Berechnung des ersten Schritts</p>
+<p>Damit wäre der Message-Schedule vorbereitet und enthält nun <strong>64 wunderschöne Wörter</strong> zu <strong>je 32 Bit</strong>. Wir haben die Informationen aus dem Message Block also zunächst aufgeplustert und von <strong>512 Bit auf 2.048 Bit</strong> erweitert- sie sind aber immer noch lesbar:</p>
+<p><img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/images/screenshot-6.png" alt=""></p>
+<p>Der erweiterte Message Schedule</p>
+<p>Aber damit ist jetzt Schluss, wir kommen zum nächsten und wichtigsten Schritt:</p>
+<h3 id="die-kompression">Die Kompression</h3>
+<p>Der erweiterte Message-Schedule wird in diesem Schritt nicht direkt modifiziert, die Wörter werden vielmehr als Grundlage für die Modifikation der anfangs erzeugten <strong>Kompressions-Konstanten</strong> verwendet.</p>
+<p>In 64 Schleifen-Durchläufen gehen wir durch den Message-Schedule. Aus jedem Wort des Schedules (also unserer ursprünglichen Nachricht) wird zusammen mit den <strong>64 Ergebnis-Konstanten</strong> und den <strong>8 Kompressions-Konstanten</strong> ein neues Wort berechnet. Das neue Wort wird dann den Kompressions-Konstanten vorangestellt, gleichzeitig wird der letzte Eintrag gelöscht. So enthält die Liste immer genau 8 Einträge.</p>
+<p>new_compression_constants = compression_constants.copy()</p>
+<p>for i, word in enumerate(message_schedule):</p>
+<pre><code>term1 = (int(upper\_sigma1(new\_compression\_constants\[4\]), 2) + \\  
+            int(choose(new\_compression\_constants\[4\], new\_compression\_constants\[5\], new\_compression\_constants\[6\]), 2) + \\  
+            int(new\_compression\_constants\[7\], 2) + \\  
+            int(result\_constants\[i\], 2) + \\  
+            int(word, 2)) \\  
+            &amp; int('11111111111111111111111111111111', 2)
+
+term2 = (int(upper\_sigma0(new\_compression\_constants\[0\]), 2) + \\  
+            int(majority(new\_compression\_constants\[0\], new\_compression\_constants\[1\], new\_compression\_constants\[2\]), 2)) &amp; int('11111111111111111111111111111111', 2)
+
+new\_compression\_constants.insert(0, 1)  
+new\_compression\_constants.pop()
+
+new\_compression\_constants\[0\] = bin(  
+            (term1 + term2) &amp; int('11111111111111111111111111111111', 2)  
+            )\[2:\].zfill(32)
+
+new\_compression\_constants\[4\] = bin(  
+            (int(new\_compression\_constants\[4\], 2) + term1) &amp; int('11111111111111111111111111111111', 2)  
+            )\[2:\].zfill(32)
+</code></pre>
+<p>Zunächst ein paar Berechnungen:</p>
+<ul>
+<li><strong>Term 1</strong> berechnet sich aus den Kompressions-Konstanten, einer der Ergebnis-Konstanten und dem jeweiligen Wort. Wir verwenden hier auf Bitebene und <strong>Σ1</strong> (upper_sigma1) sowie <strong>choose</strong>.</li>
+<li><strong>Term 2</strong> ist eine Summe zweier anderer Kompressions-Konstanten, die mithilfe von <strong>Σ0</strong> (upper_sigma0) sowie <strong>majority</strong> modifiziert werden.</li>
+</ul>
+<p>Und jetzt achte mal drauf, dass die ursprüngliche Nachricht Teil des 1. Terms ist — in der Abbildung rot markiert:</p>
+<p><img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/images/screenshot-3.png" alt=""></p>
+<p>Im ersten Schritt erfolgt die Berechnung zweier Terme</p>
+<p>Die beiden Terme werden nun wiederum addiert (und wie immer mit <strong>Modulo 2³²</strong> auf 32 Bit-Kurs gebracht) und an den Anfang der Kompressions-Konstanten gestellt. Der erste Term wird außerdem mit der 4. Position dieser nun 9 Wörter langen List summiert:</p>
+<p><img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/images/screenshot-1.png" alt=""></p>
+<p>Im zweiten Schritt wird die Listse der Kompression-Konstanten aktualisiert</p>
+<p>Als nächstes wird der letzte Eintrag der Liste gelöscht, sie umfasst nun <strong>8 komplett neue Kompressions-Konstanten</strong> (wenn du aufmerksam aufgepasst hast, wird dir nicht entgangen sein, dass sie gar nicht mal so konstant sind).</p>
+<p>Ein Teil der ursprünglichen Nachricht befindet sich nun an als <strong>Summand von Term 1</strong> and den <strong>Positionen 0 und 4</strong> und. Diese werden in den nächsten Durchläufen Teil der gleichen Berechnungen und immer weiter nach unten rutschen. So verteilt sich die ursprüngliche, bisher noch halbwegs lesbare Nachricht, über die gesamte Liste.</p>
+<p>Diese Liste ist also die Grundlage für den zweiten Durchlauf, der sie erneut “durchrotiert”, um wiederum eine komplett neue Liste für den dritten Durchlauf zu erzeugen. Und so weiter, bis alle 64 Wörter des Message-Schedules verarbeitet wurden. Das Ergebnis sollte in etwa so aussehen:</p>
+<p>11100010000000010111101011011001<br>
+01000110110100101000001000010100<br>
+11100011111110010111100001001011<br>
+01110001100001100000010000011110<br>
+01001000000111100100000000011000<br>
+00011111110001101011001000110101<br>
+11101001110010001101110111110100<br>
+00001001011011110000111011111011</p>
+<p>Oder in Hexadezimal:</p>
+<p>0xe2017ad9 0x46d28214 0xe3f9784b 0x7186041e 0x481e4018 0x1fc6b235 0xe9c8ddf4 0x96f0efb</p>
+<p>Abschließend gehen wird durch genau diese Liste der 8. Kompressions-Konstanten und addieren jede Positionen mit dem entsprechenden Wort der Ausgangs-Liste:</p>
+<p>result = []</p>
+<p>for i in range(0, 8):</p>
+<pre><code>result.append(  
+    bin(int(compression\_constants\[i\], 2) +   
+    int(new\_compression\_constants\[i\], 2)  &amp;      
+    int('11111111111111111111111111111111', 2))\[2:\].zfill(32))
+</code></pre>
+<p>Und im Klartext:</p>
+<p><img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/images/screenshot-4.png" alt=""></p>
+<p>Letzter Schritt: Addieren der Listen</p>
+<p>Die neue Liste ist nun die <strong>Ausgangs-Liste</strong> für den nächsten Message-Schedule. Da wir die Schleife hier aber nicht implementieren, war es das fürs erste. Im Folgenden noch mal eine beispielhafte Zusammenfassung der Schritte:</p>
+<p><img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/images/screenshot-7.png" alt=""></p>
+<p>Schematische Darstellung des SHA-256 Algorithmus’</p>
+<h3 id="haschee-gesundheit-was">Haschee. Gesundheit. Was?</h3>
+<p>Wir haben es geschafft. Du hast es geschafft. Herzlichen Glückwunsch.</p>
+<p><img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/images/not-bad.jpg" alt=""></p>
+<p>Quelle: memecreator.org</p>
+<p>Nun können wir den Hash entweder als Hex-Wert ausgeben oder wieder in binärer Schreibweise darstellen, je nach Anwendungszweck.</p>
+<p>for word in result:</p>
+<pre><code>print(hex(int(word, 2))\[2:\].zfill(8) + '', end = '')
+</code></pre>
+<p>Das Ergebnis kann sich in jedem Fall sehen lassen.</p>
+<p>35072c1ae546350e0bfa7ab11d49dc6f129e72ccd57ec7eb671225bbd197c8f1</p>
+<p>Oder</p>
+<p>110101000001110010110000011010111001010100011000110101000011101011111110100111101010110001111010100100111011100011011111001010011110011100101100110011010101011111101100011111101011110011100010010001001011011101111010001100101111100100011110001</p>
+<h3 id="epilog">Epilog</h3>
+<p>Eine komplette Implementierung, inklusive einer Schleife, um auch große Nachrichten zu verarbeiten, findest <a href="https://gist.github.com/nickyreinert/00d631fe9a90108924b1df6e911c8cd5">du in diesem Gist</a>.</p>
+<p>Freilich ist Python nicht dazu geeignet, den SHA-256 Prozess zu optimieren, wohl aber um den Prozess zu verstehen und den Umgang mit elementaren binären Rechenoperation zu lernen.</p>
+<p>Willst du den Prozess noch etwas interaktiver nachvollziehen, möchte ich dir <a href="https://www.youtube.com/watch?v=f9EbD6iY9zI">dieses Video</a> empfehlen. Dort wird der Algorithmus in Ruby nachgebaut und die einzelnen Rechenschritte auch etwas genauer erklärt.</p>
+<p>Und warum ist SHA-256 für das Mining von Kryptowährungen jetzt so wichtig? Kurz: Der Hash validiert die Gültigkeit des <em>Kassenbuches</em>. Beim Mining geht es darum, aus einer gegebenen Nachricht und einem frei wählbaren Zusatz exakt einen gegebenen Ziel-Hash zu berechnen. Der Algorithmus muss also wahnsinng oft durchlaufen werden. Da das sehr aufwendig ist, kostet das Zeit und wird entsprechend belohnt.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> bitcoin, mining, sha</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>anleitungen</category>
+      
+      <category>blog</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&amp;nbsp;2/2) - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
       
     </item>
-    
   </channel>
 </rss>

@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Server auf Nicky Reinert</title>
+    <link>http://localhost:1313/en/topics/server/</link>
+    <description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>en</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Fri, 01 Aug 2025 12:34:56 +0100</lastBuildDate><atom:link href="http://localhost:1313/en/topics/server/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>My 2,718281828459045235 Cents - State Of AI: Year 3 of the hype. Things I learned.</title>
+      <link>http://localhost:1313/en/blog/2025/08/01/my-2718281828459045235-cents-state-of-ai-year-3-of-the-hype.-things-i-learned./</link>
+      <pubDate>Fri, 01 Aug 2025 12:34:56 +0100</pubDate>
+      <author></author>
+      <guid>http://localhost:1313/en/blog/2025/08/01/my-2718281828459045235-cents-state-of-ai-year-3-of-the-hype.-things-i-learned./</guid>
+      <description>What about coding People don&rsquo;t get tired of announcing that AI will replace developers. Mostly salespeople. Microsoft claims that AI is already writing …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>People don&#39;t get tired of announcing that AI will replace developers. Mostly salespeople. Microsoft claims that AI is already writing 30–50% of their code.&#39;t get tired of announcing that AI will replace developers. Mostly salespeople. (https://www.techrepublic.com/article/news-microsoft-meta-...&#39;...</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Python, Web, Mac, Git, Database, Server, Mobile</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <h2 id="what-about-coding">What about coding</h2>
+<p>People don&rsquo;t get tired of announcing that AI will replace developers. Mostly salespeople. <a href="https://www.techrepublic.com/article/news-microsoft-meta-code-written-by-ai/">Microsoft claims that AI is already writing 30–50%</a> of their code. They also admit, that quality of C+ is behind expectations. <a href="https://www.xda-developers.com/microsofts-ceo-ai-wrote-30-percent-companys-code/">In 2030 they plan to reach a rate of 95%</a>, though human oversight and authorship remains important. But they are silent about further details. <strong>I am not totally disagreeing</strong>, but I am pretty sure that there&rsquo;s still a bumpy road ahead. You may argue: Well, then you don&rsquo;t know how to properly operate AI. Problem usually sits in front of the screen, as they say. Fair enough. That&rsquo;s why I want to share some thoughts and experiences.</p>
+<p align="center">
+    <a href="copilot-inline-auto-completion.png" target="_blank" style="margin: 0 auto; display: block;">
+        <img src="copilot-inline-auto-completion.png" alt="Copilot - inline auto completion" width="500"/>
+    </a>
+</p>
+<center>Copilot - inline auto completion</center>
+<br />
+<br />
+<p>AI is increasing my efficiency to a very high degree (I am referring to common LLM solutions here, but sometimes prefer the term AI, knowing that this can be misleading). But it also requires good skills as a developer. And if you don’t keep your head up, you lose more time &ldquo;playing around&rdquo; than you win by using AI.</p>
+<p align="center">
+    <a href="pile-of-unfinished-side-projects.png" target="_blank" style="margin: 0 auto; display: block;">
+        <img src="pile-of-unfinished-side-projects.png" alt="Meme: Pile of unfinished side projects" width="500"/>
+    </a>
+</p>
+<br />
+<br />
+<p>Speaking of playing around: These days I was just doing that. AI enables me to do this more frequently. It&rsquo;s so much easier to wrap your head around foreign ground. And it&rsquo;s fun, without crawling through endless Google search results or SO threads. So I am having this idea of a simple side project, it&rsquo;s one of those little things I get stuck on. And I was in need of an SVG showing a bike. I asked several LLM to generate one.</p>
+<p>I am keeping it short. They all grandiosely failed.</p>
+<p><strong>Gemini</strong> does not support SVG creation on its web interface. <strong>Claude</strong> does. And this was the first result: (I am sparing you the detailed prompts, basically I just asked for a simple bike SVG, no extensive prompt, follow-up prompts were quite brief, but detailed enough to get the point across)</p>
+<p align="center">
+    <a href="claude-svg-bike-try-1.png" target="_blank" style="margin: 0 auto; display: block;">
+        <img src="claude-svg-bike-try-1.png" alt="Claude: SVG bike - try 1" width="500"/>
+    </a>
+</p>
+<center>Claude: SVG bike - try 1</center>
+<br />
+<br />
+<p>OK. Close.  What else you got?</p>
+<p align="center">
+    <a href="claude-svg-bike-try-2.png" target="_blank" style="margin: 0 auto; display: block;">
+        <img src="claude-svg-bike-try-2.png" alt="Claude: SVG bike - try 2" width="500"/>
+    </a>
+</p>
+<center>Claude: SVG bike - try 2</center>
+<br />
+<br />
+<p>We are getting closer. But still not a bike.</p>
+<p align="center">
+    <a href="claude-svg-bike-try-3.png" target="_blank" style="margin: 0 auto; display: block;">
+        <img src="claude-svg-bike-try-3.png" alt="Claude: SVG bike - try 3" width="500"/>
+    </a>
+</p>
+<center>Claude: SVG bike - try 3</center>
+<br />
+<br />
+<p>No. Last try?</p>
+<p align="center">
+    <a href="claude-svg-bike-try-4.png" target="_blank" style="margin: 0 auto; display: block;">
+        <img src="claude-svg-bike-try-4.png" alt="Claude: SVG bike - try 4" width="500"/>
+    </a>
+</p>
+<center>Claude: SVG bike - try 4</center>
+<br /><br />
+<p>Ok. Close. Grok. Your turn.</p>
+<p align="center">
+    <a href="grok-svg-bike-try-1.png" target="_blank" style="margin: 0 auto; display: block;">
+        <img src="grok-svg-bike-try-1.png" alt="Grok: SVG bike - try 1" width="500"/>
+    </a>
+</p>
+<center>Grok: SVG bike - try 1</center>
+<br />
+<br />
+<p>Expressionism. ChatGPT. Last chance to hold the lance for AI.</p>
+<p align="center">
+    <a href="chatgpt-svg-bike-try-1.png" target="_blank" style="margin: 0 auto; display: block;">
+        <img src="chatgpt-svg-bike-try-1.png" alt="ChatGPT: SVG bike - try 1" width="500"/>
+    </a>
+</p>
+<center>ChatGPT: SVG bike - try 1</center>
+<br /><br />
+<p>What&rsquo;s that? You need a doctor?</p>
+<p align="center">
+    <a href="chatgpt-svg-bike-try-2.png" target="_blank" style="margin: 0 auto; display: block;">
+        <img src="chatgpt-svg-bike-try-2.png" alt="ChatGPT: SVG bike - try 2" width="500"/>
+    </a>
+</p>
+<center>ChatGPT: SVG bike - try 2</center>
+<br /><br />
+<p>Nope. Next try!</p>
+<p align="center">
+    <a href="chatgpt-svg-bike-try-3.png" target="_blank" style="margin: 0 auto; display: block;">
+        <img src="chatgpt-svg-bike-try-3.png" alt="ChatGPT: SVG bike - try 3" width="500"/>
+    </a>
+</p>
+<center>ChatGPT: SVG bike - try 3</center>
+<br /><br />
+<p>Yeah, that&rsquo;s impressive! But wait. That&rsquo;s not SVG. Caught you cheating. Use it as a template, try again!</p>
+<p align="center">
+    <a href="chatgpt-svg-bike-try-4.png" target="_blank" style="margin: 0 auto; display: block;">
+        <img src="chatgpt-svg-bike-try-4.png" alt="ChatGPT: SVG bike - try 4" width="500"/>
+    </a>
+</p>
+<center>ChatGPT: SVG bike - try 4</center
+><br /><br />
+<p>What?  Last try. You can do it!</p>
+<p align="center">
+    <a href="chatgpt-svg-bike-try-5.png" target="_blank" style="margin: 0 auto; display: block;">
+        <img src="chatgpt-svg-bike-try-5.png" alt="ChatGPT: SVG bike - try 5" width="500"/>
+    </a>
+</p>
+<center>ChatGPT: SVG bike - try 5</center>
+<br /><br />
+<p>Cheating. Again.</p>
+<p><strong>OK. Unfair comparison.</strong> I know. This is clearly not about coding, but it makes a point. I am not blaming an LLM for not being able to create a simple bike SVG.  Especially because SVG creation is not really something a developer does and it&rsquo;s not what LLM are meant for in the first place. But it&rsquo;s a perfect metaphor for how the process quickly goes sideways:</p>
+<blockquote>
+<p>Sidenote: Recommended associated read: <a href="https://simonwillison.net/2025/Aug/10/qwen3-4b/">Simon Willison had a similar journey with Qwen</a> at a much tinier scale, though.</p></blockquote>
+<p>Those bots have an over-confident way of approaching things. They always try to flatter the user (I learned this wonderful word <strong>“sycophancy”</strong> these days – and forgot it the next day). And they rotate around problems. Did you notice how ChatGPT gets back to the pixelated image after one unsuccessful try?</p>
+<p align="center">
+  <a href="meme-sicophancy.png" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="meme-sicophancy.png" alt="Meme Sicophancy" width="500"/>
+  </a>
+</p>
+<center>Sicophancy -  my second favorite word, first one is: Serendipity... hehe... pity!</center>
+<br />
+<br />
+<p>While they are perfect in solving &ldquo;closed and recurring tasks&rdquo;, they suffer from the &ldquo;open-ended&rdquo; problem. <a href="https://gizmodo.com/microsoft-predicts-these-jobs-are-safe-from-ai-2000637340">Microsoft just published a study about jobs that can best benefit from AI</a>. And most of them are exactly this: Translator and interpreters.  Salespeople - easy, just train a model on product data and you are good. And so on. But a good developer has something that AI does not have (right now): Creativity and foresight.</p>
+<p><em>(Don&rsquo;t get me wrong, I don&rsquo;t want to discredit the capabilities of those jobs!)</em></p>
+<p align="center">
+  <a href="microsoft-ai-study.png" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="microsoft-ai-study.png" alt="Microsoft AI Study: Applicability of AI to jobs" width="500"/>
+  </a>
+</p>
+<center>Microsoft AI Study: Applicability of AI to jobs</center>
+<br />  <br />
+<p>Another devastating example where <strong>Gemini-Pro</strong> failed on a large scale: I asked for a simple Python script to download an XML sitemap and parse a couple of URLs from it. Please trust me when I say I did the prompting correctly. Also, Python and XML are not exactly an exotic combination. However, after 1 hour, over 80 prompts, and I-don&rsquo;t-know-how-many tokens, I gave up. Gemini wasn&rsquo;t able to deliver (I am using <code>gemini-cli</code> for that). It kept circling around the same problem, ignoring correction advice, and repeatedly promising, &ldquo;Now everything should work,&rdquo; many, many times. If you want to see more interesting examples of the mixed quality of LLMs at coding, <a href="https://www.youtube.com/watch?v=uks8tggX4L0">check out this wonderful video</a>.</p>
+<p>If you are into <strong>troubleshooting</strong> or <strong>exploring</strong>, you may have experienced this: You ask the AI to fix a problem or explain how to achieve something. It will provide you with a solution. Which is usually quite overwhelming. You start implementing this &ldquo;pamphlet&rdquo; from step 1 to step 42 or so and at step 2 you get stuck.</p>
+<p align="center">
+  <a href="ai-troubleshooting-phenomenon.png" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="ai-troubleshooting-phenomenon.png" alt="AI troubleshooting deviation phenomenon" width="500"/>
+  </a>
+</p>
+<center>AI troubleshooting deviation phenomenon</center>
+<br />  <br />
+<p>Why? The system you are working on returns an error. We have to rethink our solution process and feed that back to the LLM. <strong>We can&rsquo;t blame the machine</strong>, because the reason is usually: You did not provide enough context about the environment and circumstances. But it’s also important to say: How do you know what details are missing?</p>
+<p>You can&rsquo;t. Especially in troubleshooting, it&rsquo;s part of the process. The process!</p>
+<p align="center">
+  <a href="meme-the-process.png" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="meme-the-process.png" alt="Meme: The Process" width="500"/>
+  </a>
+</p>
+<br />  <br />
+<p>The process of troubleshooting is not having a page of steps to follow and after 10 minutes you are done. If you are a system administrator, you know what troubleshooting means. It’s a complex <strong>forth and back, trial-and-error rocky road</strong>. You get better with time, that&rsquo;s what a good, seasoned, senior system administrator is: Someone who has seen a lot of problems and knows how to approach them.</p>
+<p>Sure: AI has seen a lot of problems, too. <em>It&rsquo;s literally in their &ldquo;brains&rdquo; as they are trained on a lot of problems</em>. Still, what they haven’t learned yet is: guiding you through processes step by step. Or at least offering it! Instead: wasting 1,000 tokens on a 42-ish-step solution.</p>
+<p>You may think it’s part of the business model: Why should the bot efficiently guide you through a process, if it can provide you with a 42-ish-step solution, which won’t work and then: Your context window is out of tokens. <strong>Purchase the pro plan or wait 6 hours to get this thing done.</strong></p>
+<blockquote>
+<p>I asked ChatGPT to look over my article, do a fact check. It claimed that this part sounds to conspicious and I should mention that this is due to model design and use, not malice. So, <strong>disclaimer</strong>: My goal is not to imply a business model behind this phenomenon. I&rsquo;m just kidding, okay?</p></blockquote>
+<p align="center">
+  <a href="meme-ai-solving-strategy.png" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="meme-ai-solving-strategy.png" alt="Meme: AI solving strategy" width="500"/>
+  </a>
+</p>
+<br />  <br />
+<p>Wich finally leads me to more than ranting and complaining with this word of advice: End every prompt like this. It will save you a lot of time and tokens:</p>
+<p><strong>Guide me through the process step by step, don’t answer all at once, wait for my confirmation and feedback before you continue.</strong></p>
+<p>But what about coding, at all? There are so many platforms offering perfect low-code or even no-code solutions. People telling you they built whole businesses without writing a single line of code.</p>
+<p>Don&rsquo;t believe it? You tried it yourself? Try.</p>
+<p>I am not saying that AI/LLM are not capable of e.g. writing code. They are - totally, unironically!</p>
+<p>But <strong>&ldquo;real apps&rdquo; are complex</strong>. They are not just an HTML one-pager with a nice parallax effect, some neat JavaScript interactions and CSS. There are backends, data models, APIs, authentication, security, data storage and so on.</p>
+<p>These days I was writing this little app that ought to visualize biking trips on a map. It grew a little out of hand. Starting with Python in a Jupyter notebook, I ended up with a full-blown web app. And you know what? I did it almost the &ldquo;vibe coding&rdquo; way. See? I am also one of those guys with this impressive stories! I only spent time thinking about user experience and features.</p>
+<p>And at some point I thought: &ldquo;Hey buddy, what did you actually do there under the hood?&rdquo;</p>
+<p align="center">
+  <a href="meme-what-have-i-done.png" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="meme-what-have-i-done.png" alt="Image of the app" width="500"/>
+  </a>
+</p>
+<br />  <br />
+<p>Yes. AI was able to build this complex app (FWIW: It&rsquo;s <strong>Claude 4</strong> that right now provides best results for coding - not being paid for that).</p>
+<p>I am using <a href="https://gist.github.com/nickyreinert/bbce96ea043bc73cb011066e8a8df673">an extensive pre-prompt instructions file</a>, telling the agent to use a structure of separated files, speaking function names and so on. Still I was facing a huge code base after some hours of &ldquo;vibe coding&rdquo;. The main app file was over <strong>5,000 lines</strong> of code. I reached a limit, where even the agent wasn’t really able to process all the context. It was a mess. Ok, blame me. My instructions probably weren’t that precise. &ldquo;The problem sits in front of the screen&rdquo;, as they say.</p>
+<p>Well, we still can use the agent to refactor, can&rsquo;t we?</p>
+<p><strong>Yes, we can</strong>. I did it. And it didn’t really work out. It was creating stubs and redundant functions and endpoints.</p>
+<p>The end of the story: I had to crawl through the code myself. Like back in the days.  And it was not a difficult thing, I just spent two or three hours or so, strategically scraped through the codebase, identified redundant code, moved it out of the main function, cleaned up file structure. Like back in the days. Sure, with the help of AI, but this time only as a sidekick.</p>
+<p>And this is what I am saying: You still need to be a good developer to understand code architecture and how code works. AI will not be able to deliver a fully fledged market-ready app for you. Not now.</p>
+<p>However, this is not only a rant or my two cents, it&rsquo;s also about &ldquo;things I learned&rdquo;, so let’s summarize:</p>
+<h3 id="seven-rules-of-aingagement">Seven Rules of AIngagement</h3>
+<ol>
+<li>Always include something like <strong>“step by step”</strong> in your prompts if you are about troubleshooting or exploring (always means: &ldquo;if applicalble&rdquo;)</li>
+<li>Use a <strong>pre-prompt instructions</strong> file to guide the LLM/Coding Agent!</li>
+<li><strong>Split the work!</strong> Use one agent to get the pre-prompt instructions that you feed to another agent instance, let another agent build you the first starting prompt, and so on - I&rsquo;ve established a mixed toolset, <strong>Copilot</strong> on one hand, <strong>Gemini-CLI</strong> on the other and some browser-based agents on the third hand</li>
+<li>I also learned that it is really helpful when <strong>the agent maintains a “protocol”</strong> that contains the initial task and then, in very short bullet points, the current status of the task – this way you can always ask the agent to continue with the last task without having to re-explain everything</li>
+<li>And this may not bring me many fans: Also separate tasks and codebases, to keep the context window small. This is the rise of some kind of <strong>microservices-ish architecture</strong>, because “monolithic” apps can&rsquo;t be eaten by the agent.</li>
+<li>Discipline when it comes to version management. Let the LLM fix a thing, then commit the changes. <strong>Fix. Commit. Fix. Commit.</strong> You catch my drift.</li>
+<li>Add a <strong>&ldquo;Got it? Any Questions?&rdquo;</strong> at the end of your prompt! You would be surprised how this changes whether the agent starts right away (remember: <strong>Sycophancy</strong>!) or gets back to you with some surprisingly important questions!</li>
+</ol>
+<p align="center">
+  <a href="seven-rules-of-aingagement.png" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="seven-rules-of-aingagement.png" alt="Seven Rules Of Aingagement" width="500"/>
+  </a>
+</p>
+<center>fancy self-made executive summary: Seven Rules Of AIngagement</center>
+<br />
+<br />
+<h2 id="what-about-non-coding">What about &ldquo;non coding&rdquo;?</h2>
+<p>Yeah, ok, this is a sweeping blow. I also have a opinion here.</p>
+<p>Do you remember, back in the days, when you were &ldquo;Googling&rdquo; for information? First people started looking for the whole term, like &ldquo;how to build a web app with AI&rdquo;. But the Google algorithm was improving and so did the prompts. People reduced their search terms to &ldquo;web app AI&rdquo;. You don&rsquo;t necessarily need filler words to understand the intention of a search. And not only filler words, also spelling or grammar.</p>
+<p>Right now the same happens to AI, apparently. Sometimes I catch myself typing prompts with so many errors and grammar mistakes. But it&rsquo;s doing its job. I wonder if this leads to &ldquo;degradation&rdquo; or better &ldquo;optimization&rdquo; of our language. Have you heard of <a href="https://en.wikipedia.org/wiki/Gibberlink"><strong>Gibberlink</strong></a> or <a href="https://medium.com/@diegodotta/neuralese-the-most-spoken-language-youll-never-speak-a42522f68ff3"><strong>Neuralese</strong></a>? They are supposed to be &ldquo;languages&rdquo; or &ldquo;concepts&rdquo; that are used by AI to communicate with each other. Like <strong>more efficient versions</strong> of human languages, without all the noise and &ldquo;unnecessary&rdquo; words. As we are talking to AI more and more, what if, at some point, we adapt our language to the AI?</p>
+<p>Second thing that will change is probably how we will use our &ldquo;computers&rdquo;. There are not many user interfaces right now. We have the <strong>GUI - the graphical user interface</strong>, it&rsquo;s the colorful windows and buttons you see on the screen. You can touch them or use your mouse cursor to select text. We have the <strong>TUI - text user interface</strong>, which is most common for CLI (command line interface) applications. You can type commands and see the output in text form. And we have the <strong>VUI - voice user interface</strong>, which is becoming more and more common with the rise of smart speakers and voice assistants. All of them have their strengths and weaknesses. Building a <strong>PowerPoint</strong> app from the command line is probably quite difficult (<em>side note: it&rsquo;s possible and it&rsquo;s fun to automate data analytics pipelines using Python libraries and create extensive PowerPoint slide sets!</em>). Grepping through multiple servers&rsquo; request logs using voice or a mouse? No one does it.</p>
+<p><em>(Leaving out <a href="https://en.wikipedia.org/wiki/Brain%E2%80%93computer_interface">brain computer interfaces</a> here, because they are still in the research phase and not widely used yet.)</em></p>
+<p>There are exceptions, though. Do you know those movies where characters start typing commands to do simple tasks, like zooming in? They have the most expensive and advanced technologies, but somehow forgot to add a &ldquo;Zoom&rdquo; button, so they have to program this rare feature in real time—without even having a shell open. Absolute geniuses!</p>
+<p align="center">
+    <a href="zoom-by-commands.png" target="_blank" style="margin: 0 auto; display: block;">
+        <img src="zoom-by-commands.png" alt="I am zooming in by typing on the keyboard" width="500"/>
+    </a>
+</p>
+<center>"Let me quickly zoom in" - *starts typing on they keyboard (Scene from "SEALS Team", Paramount, 2017, S01E16</center>
+<br />
+<br />
+<p>Right now, we are using AI in two ways: Most common ways are TUI and VUI. And this is interesting. Because in most cases this breaks the flow of work. You have to write long prompts, edit them, add more details. And after 5 minutes your context window is so full, you start all over again. Then you have to copy results back, interpret them, translate them into &ldquo;graphical&rdquo; interactions. And so on. Doesn&rsquo;t really sound like the peak of possible efficiency, does it?</p>
+<p><em>(Good thing: You are forced to think about what you want to achieve. Which should be a no-brainer (even pre-AI): <strong>Think before you act!</strong> With AI it&rsquo;s even more important.)</em></p>
+<p>Well, here comes the <strong>MCP</strong> into play - the <strong>Model Context Protocol</strong>, which connects the agent to other systems, like - sticking with this example - PowerPoint. You prompt your task, the AI controls PowerPoint and builds stuff. But at the end, you still need to read, type or speak your commands.</p>
+<p>What we are missing is a <strong>GUI</strong> for AI. And as long as we don&rsquo;t have brain computer interfaces, we will find a way around this. Microsoft is trying to achieve a similar thing with <a href="https://support.microsoft.com/de-de/windows/mit-recall-ihre-schritte-zur%C3%BCckverfolgen-aa03f8a0-a78b-4b3e-b0a1-2eb8ac48701c">their Recall feature</a>, which raised a lot of anger and concerns about data privacy - which is totally understandable. Recording your screen, processing it on some server at some unknown location? Seriously?</p>
+<p>But this will be the future. Because this allows reactive graphical user interfaces and I am not saying dynamic ones. Thinking of a user interface that changes because of some previous actions - that doesn&rsquo;t sound very useful, right? Imagine your car changes the functions of your brake and accelerator pedal. It&rsquo;s more an interface that &ldquo;follows&rdquo; the user, not makes the user follow the interface. Form follows function.</p>
+<p>Sounds bold, I know. But do you really think that we will still push tons of words into browser windows in 10, 20 years?</p>
+<p align="center">
+  <a href="meme-ai-outsourcing.png" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="meme-ai-outsourcing.png" alt="Meme: AI outsourcing" width="500"/>
+  </a>
+</p>
+<center>Hopefully my boss doesn't read this</center>
+<br />
+<br />
+
+        
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>blog</category>
+      
+      
+      
+      
+      <media:content url="http://localhost:1313/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>My 2,718281828459045235 Cents - State Of AI: Year 3 of the hype. Things I learned. - Project</media:title>
+      </media:content>
+      
+      
+      
+      
+      
+      
+      
+    </item><item>
+      <title>2025-08-01 Monitor SSL Traffic On Android</title>
+      <link>http://localhost:1313/en/blog/2025/07/01/2025-08-01-monitor-ssl-traffic-on-android/</link>
+      <pubDate>Tue, 01 Jul 2025 12:34:56 +0100</pubDate>
+      <author></author>
+      <guid>http://localhost:1313/en/blog/2025/07/01/2025-08-01-monitor-ssl-traffic-on-android/</guid>
+      <description>Fantastic Preface Monitoring SSL Traffic of Android Apps is quite a challenge these days. While it&rsquo;s an important way to understand how Apps work, find …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Monitoring SSL Traffic of Android Apps is quite a challenge these days.&#39;s an important way to understand how Apps work, find security flaws or possible data breaches, a weak encrypted traffic...&#39; reading_time: 9 content_type: &#34;project</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Python, Web, Mac, Git, Database, Server, Mobile</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <h2 id="fantastic-preface">Fantastic Preface</h2>
+<p>Monitoring SSL Traffic of Android Apps is quite a challenge these days. While it&rsquo;s an important way to understand how Apps work, find security flaws or possible data breaches, a weak encrypted traffic also is a potential security risk.</p>
+<p>These days, most apps use a thing called &ldquo;certificate pinning&rdquo;, which makes it quite difficult to monitor traffic. You need a rooted device, to bypass certificate pinning. However, this leads to a cascade of challenges and you easily get sucked into a rabbit hole with obstacles, turning points and furstrating dead ends.</p>
+<p>&ldquo;Lukily there&rsquo;s AI guiding me through the process!&rdquo; You may think. Well. No.</p>
+<p>Gemini requires arm-twisting to make you help:</p>
+<blockquote>
+<p>I cannot provide a step-by-step guide on how to bypass certi&quot;ficate pinning on a rooted Android device for malicious or unethical purposes. My purpose is to be helpful and harmless, and assisting in such activities falls outside of my ethical guidelines.</p></blockquote>
+<p>ChatpGPT is a little too helpful. it&rsquo;s providing you with a overwhelming large emoticion spiked list of 20-or-so steps. Usually you stuck at step 5 and there the chaos begins (like this article, which is a bit contradictory, right?).</p>
+<blockquote>
+<p>Note of advice: That&rsquo;s common behavior for most fo the agents. In cases like that, your prompt should always contain an instruct ion like&quot; Guide me through the process stepy by step, dont answer all at once, but wait for my confirmation to continue.&quot;</p></blockquote>
+<h2 id="preperations">Preperations</h2>
+<p>Let&rsquo;s assume we are working on <strong>Window</strong> and having <strong>Android Studio</strong> up and running, including the propper <strong>Android SDK</strong>. So lets start with setting up a virtual Android device <strong>wihtouth Google Play</strong>. Google Play-enabled devices cannot easly be rooted. Let&rsquo;s drive with the <strong>Pixel 6 Pro</strong> and <strong>Intel x86_64</strong> (you may choose a different image, just make sure it matches you host&rsquo;s hardware setup).</p>
+<p align="center">
+  <a href="android-studio-device-selection.png">
+    <img src="android-studio-device-selection.png" alt="Android Studio - setting up virtual device" width="400"/>
+  </a>
+</p>
+<p align="center">
+    <a href="android-studio-system-image-selection.png">
+      <img src="android-studio-system-image-selection.png" alt="Android Studio - selecting system image" width="400"/>
+    </a>
+</p>
+<h2 id="app-installation">App Installation</h2>
+<p>As we dont have the Google Play store at hand, we need to find way around. There are two options. The easiest one: Use a service/plattform like <strong>apkmirror.com</strong> or <strong>uptodown.com</strong>. I prefer the first one, as uptodown comes with a wrapper that - once installed on the device - installs the actual APK.</p>
+<p>The second way is to use a device that has the app installed, either a virtual one or your actual phone, and pull the APK from there.</p>
+<p>We will enable developing mode and USB debugging on our <em>source device</em> and connnect it to our host system. Using allmighty <strong>Android Debugging Bridge</strong> <code>adb</code> we can pull the APK from the device. First make sure your device is connected and recognized by adb:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">cd</span> /AndroidSDK/platform-tools <span class="c1"># your Androd SDK may be in a different location!</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">adb devices <span class="c1"># to check if your phone is connected</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">adb shell list pm packages -f <span class="p">|</span> grep Foobar <span class="c1"># to list all installed apps with their APK path and filter by your app&#39;s name</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">adb pull /data/app/com.Foobar/base.apk <span class="c1"># to pull the APK from your device</span>
+</span></span></code></pre></div><p>These days most apps are splitted into different APK files (for different purposes like screen size, language, etc.). We  need to pull all APK&rsquo;s. Let&rsquo;s first find out the APK path of our app:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">adb shell pm path de.foobar.app.mobile
+</span></span></code></pre></div><p>This will probably return a list like</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">package:/data/app/de.foobar.app.mobile-1/base.apk
+</span></span><span class="line"><span class="ln">2</span><span class="cl">package:/data/app/de.foobar.app.mobile-1/split_config.en.apk
+</span></span><span class="line"><span class="ln">3</span><span class="cl">package:/data/app/de.foobar.app.mobile-1/split_config.xxhdpi.apk
+</span></span></code></pre></div><p>We need to ´adb pull` all of them one by one.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">adb install -r de.foobar.app.mobile <span class="c1"># if we have one APK only</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">adb install-multiple -r base.apk split_config.en.apk split_config.xxhdpi.apk <span class="c1"># if we have multiple APKs</span>
+</span></span></code></pre></div><p>That&rsquo;s it!</p>
+<h2 id="rooting-the-virtual-device">Rooting the Virtual Device</h2>
+<p>Now lets prepare your virtual device, which is usually a quick step. First, apparantly, disconnect your source device from your host. Then start the virtual device in Android Studio:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">cd</span> /AndroidSDK/emulator
+</span></span><span class="line"><span class="ln">2</span><span class="cl">emulator -list-avds <span class="c1"># optional: list all available virtual devices</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">emulator -avd AndroidRoot <span class="c1"># that&#39;s the name of the virtual device, we created earlier</span>
+</span></span></code></pre></div><p>This will take some seconds. Once done, we need to make sure the device is rooted:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">adb root
+</span></span></code></pre></div><p align="center">
+  <a href="adb-enable-root.png">
+    <img src="adb-enable-root.png" alt="ADB - Enable root" width="400"/>
+  </a>
+</p>
+<p>We can test the success of this command by checking the device&rsquo;s shell:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">adb shell
+</span></span></code></pre></div><p>On the device check the output of these commands:</p>
+<p align="center">
+  <a href="adb-shell-check-su.png">
+    <img src="adb-shell-check-su.png" alt="ADB Shell - Check Superuser" width="400"/>
+  </a>
+<p>We are in! For our monitoring we need to enable the proxy on the device. This is done by setting the proxy settings in the device&rsquo;s network settings.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">adb shell settings put global http_proxy 10.0.2.2:8080
+</span></span></code></pre></div><p>(You may reset the proxy setting with <code>adb shell settings put global http_proxy :0</code>)</p>
+<h2 id="building-the-monitoring-stack">Building the monitoring stack</h2>
+<p>Here comes the challenging part. Here&rsquo;s the rough process:</p>
+<p>We will need four different terminal windows</p>
+<ul>
+<li>one is running the Android emulator (if you start it from the console)</li>
+<li>one is running the monitoring tool (MITMProxy) on the host</li>
+<li>one is running the Frida server on the device</li>
+<li>one is running the Frida tool on the host, injecting a script into the app</li>
+</ul>
+<h3 id="installing-and-running-the-monitoring-tool">Installing and running the monitoring tool</h3>
+<p>This is the easiest part. We use <a href="https://mitmproxy.org/">MITMProxy</a> to listen to the HTTP traffic coming from the device. We can use the <strong>Python&rsquo;ic</strong> way, if you prefer you may use <code>brew</code> or the installer form their website.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">pip install mitmproxy
+</span></span></code></pre></div><p>Done. Now run it and see what happens:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">mitmproxy --listen-port 8080
+</span></span></code></pre></div><p>If you&rsquo;re happy, you already see HTTP traffic coming through and probably some warnings on the bottom, telling you that - of course - https traffic is not decryptable.</p>
+<p>(Screenshot already shows HTTPS traffic, but you will see only HTTP traffic at first)</p>
+<p align="center">
+  <a href="mitm-https-traffic.png">
+    <img src="mitm-https-traffic.png" alt="MITMProxy - HTTP Traffic" width="400"/>
+  </a>
+</p>
+<h2 id="installing-and-running-the-frida-server">Installing and running the Frida server</h2>
+<p>Now we will install the <em>Frida Server</em> on the device. <a href="frida.re">Frida</a> - in short - is a tooblxo for developers to debug or monitor apps. You can get the latest version <a href="https://github.com/frida/frida/releases">from their GitHub repo</a>. Make sure to download the server package for Android and the correct chipset, like in my case <code>frida-server-17.2.14-android-x86_64.xz</code>. Extract its content which will get you a binary file that you push to the virtual android device:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">adb push frida-server-17.2.14-android-x86_64 /data/local/tmp/frida-server
+</span></span></code></pre></div><p>Make it executable:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">adb shell chmod <span class="m">755</span> /data/local/tmp/frida-server
+</span></span></code></pre></div><p align="center">
+  <a href="frida-installing-server.png">
+    <img src="frida-installing-server.png" alt="Frida Server - Installing" width="700"/>
+  </a>
+</p>
+<p>No <em>shell into</em> the device and run the server (the <code>&amp;</code> at the end makes it running in the background):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">adb shell
+</span></span><span class="line"><span class="ln">2</span><span class="cl">emu64xa:/data/local/tmp/frida-server <span class="p">&amp;</span>
+</span></span></code></pre></div><p align="center">
+  <a href="frida-running-server.png">
+    <img src="frida-running-server.png" alt="Frida Server - Running" width="700"/>
+  </a>
+</p>
+<h2 id="injecting-the-script">Injecting &ldquo;The Script&rdquo;</h2>
+<p>We also need to install the <strong>Frida-toolbox</strong> on our host machine. There are several ways, we stick with the the <strong>Python&rsquo;ic</strong>-way:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">pip install frida-tools
+</span></span></code></pre></div><p>Not much to explain here. After you done, we need to find a script that we &ldquo;inject&rdquo;. This script will circumvent the certificate pinning of the app. There are many scripts out in the wild and you can even ask AI to write you one. I am using this one:</p>
+<p>`<a href="https://gist.github.com/akabe1/5632cbc1cd49f0237cbd0a93bc8e4452%60%60">https://gist.github.com/akabe1/5632cbc1cd49f0237cbd0a93bc8e4452``</a></p>
+<p>Download it to a nicer name like <code>frida_multiple_unpinning.js</code>.</p>
+<p>Now we tell Frida on our host to run the app we installed earlier and inject th unpinnign script:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">frida -U -f com.Foobar.apk -l frida_multiple_unpinning.js
+</span></span></code></pre></div><p>That&rsquo;s it! Now switch to your terminal window running the MITMProxy and you should see a lot of traffic coming through!</p>
+<p>Some times, some apps, some configuration will see that there&rsquo;s something going on with their traffic. Sometimes the script will fail, the app will crash or not work at all. You need a little bit of <strong>trial and error</strong> to find the right unpinning script for your app.</p>
+<p>Besides, you can pre-compile your script, which sometimes helps to avoid detection.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">frida-compile frida_multiple_unpinning.js -o compiled.py
+</span></span><span class="line"><span class="ln">2</span><span class="cl">frida -U -f com.Foobar.apk -l compiled.py
+</span></span></code></pre></div><h1 id="round-up">Round up</h1>
+<ul>
+<li>make sure you are root</li>
+<li>install the APK on the device using <code>adb</code></li>
+<li>start the Frida server on the device</li>
+<li>start the proxy on the host</li>
+<li>optional: use adb</li>
+<li>start the app on the device using Frida and inject the script (<strong>make sure</strong> the app is not running, or you get error <code>Permission denied</code>)</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nb">cd</span> /AndroidSDK/emulator
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">emulator -avd AndroidRoot
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="nb">cd</span> /AndroidSDK/platform-tools
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">adb root
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">adb install -r com.yourApp.apk
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">mitmproxy --listen-port <span class="m">8080</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">adb shell
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">$ /data/local/tmp/frida-server <span class="p">&amp;</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="c1"># back on the host</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">adb shell pm list packages -3
+</span></span><span class="line"><span class="ln">11</span><span class="cl">frida -U -f com.yourApp -l frida_multiple_unpinning.js
+</span></span></code></pre></div>
+        
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="http://localhost:1313/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>2025-08-01 Monitor SSL Traffic On Android - Project</media:title>
+      </media:content>
+      
+      
+      
+      
+      
+      
+      
+    </item><item>
+      <title>Adobe Launch DTM Naming Conventions</title>
+      <link>http://localhost:1313/en/blog/2025/04/01/adobe-launch-dtm-naming-conventions/</link>
+      <pubDate>Tue, 01 Apr 2025 12:34:56 +0200</pubDate>
+      <author></author>
+      <guid>http://localhost:1313/en/blog/2025/04/01/adobe-launch-dtm-naming-conventions/</guid>
+      <description>I&rsquo;ve worked with Adobe Tracking Suite (which is Adobe Launch and all it&rsquo;s sibblings) for quite a while and I saw many, some quite chaotic, tracking …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>I&#39;ve worked with Adobe Tracking Suite (which is Adobe Launch and all it&#39;s sibblings) for quite a while and I saw many, some quite chaotic, tracking implementations and tag managers.&#39;ve worked with Adobe Tracking Suite (which is Adobe Launch and all it&#39;s sibblings) for quite a while and I saw many...</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Python, Web, Server, Ai, Automation, Analytics, Design</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>I&rsquo;ve worked with Adobe Tracking Suite (which is Adobe Launch and all it&rsquo;s sibblings) for quite a while and I saw many, some quite chaotic, tracking implementations and tag managers. At some point I felt the need to write down some basic rules to navigate those messy libraries. Hope that helps you, too.</p>
+<h1 id="naming-convention">naming convention</h1>
+<h2 id="global">Global</h2>
+<p>Use a category and naming convention that allows you to track <strong>variables</strong>, <strong>metrics</strong> and <strong>dimension</strong> from the website over the tag manger to the backend of your analytics solution and the dashboard. Every category is also assigned a particular numeric range. This will improve your debugging and troubleshooting process.</p>
+<p>The following basic categories should represent your default setup.</p>
+<ul>
+<li>Page related information (for a single page view, from 1 to 19)</li>
+<li>Site related information (for the whole website, from 020 to 39)</li>
+<li>User related information (describing the visitor, from 40 to 59)</li>
+<li>Misc information (meta information that usually is not part of an analysis or cannot be assigned to the other categories, from 59 to</li>
+</ul>
+<h2 id="data-layer">Data Layer</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln"> 1</span><span class="cl">	<span class="nx">datalayer</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">		<span class="nx">page</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">			<span class="nx">category</span><span class="o">:</span> 
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">			<span class="nx">name</span><span class="o">:</span> 
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">			<span class="nx">id</span><span class="o">:</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">			<span class="nx">date</span><span class="o">:</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">			<span class="nx">language</span><span class="o">:</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">		<span class="p">},</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">		<span class="nx">site</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">			<span class="nx">provider</span><span class="o">:</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">			<span class="nx">project</span><span class="o">:</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">			<span class="nx">domain</span><span class="o">:</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">		<span class="p">},</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">		<span class="nx">user</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">			<span class="nx">status</span><span class="o">:</span> <span class="p">[</span><span class="nx">anonmyous</span><span class="p">,</span> <span class="nx">logged</span><span class="o">-</span><span class="k">in</span><span class="p">],</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">			<span class="nx">behavior</span><span class="o">:</span> <span class="p">[</span><span class="nx">returned</span><span class="p">,</span> <span class="k">new</span><span class="p">],</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">			<span class="nx">language</span><span class="o">:</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">		<span class="p">},</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">		<span class="nx">misc</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">			<span class="nx">timestamp</span><span class="o">:</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">			<span class="nx">debug</span><span class="o">:</span> 
+</span></span><span class="line"><span class="ln">22</span><span class="cl">			<span class="nx">utm</span><span class="o">:</span> 
+</span></span><span class="line"><span class="ln">23</span><span class="cl">			<span class="nx">interaction_details</span><span class="o">:</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">	<span class="p">}</span>
+</span></span></code></pre></div><blockquote>
+<p>&ldquo;I&rsquo;ve implemented a page.category attribute, which I find invaluable. I&rsquo;m surprised so many implementations omit it. It allows for quicker traffic analysis at a higher level than individual pages. Categories help maintain order as pages inevitably become disorganized over time.&rdquo;</p></blockquote>
+<h2 id="data-elements">Data Elements</h2>
+<p>Your Data Element name should consist the numeric ID referring to the ID of your (Adobe) Analytics-implementation followed by a separator (like the pipe symbol |) and the address within the Data Layer object. Left pad the ID to a length of three to not mix up the &ldquo;order by name&rdquo; feature. The second part is the exact address of the element within the data layer. If this element does not correspond to the Data Layer, use a short description.</p>
+<ul>
+<li><code>000 | datalayer.page.name</code></li>
+<li><code>010 | datalayer.misc.utm</code></li>
+</ul>
+<h2 id="dimensions">Dimensions</h2>
+<p><strong>eVars</strong>, <strong>props</strong> and <strong>events</strong> are identified by a short description build from the category and the name of the information, followed by the name and the kind of variable (<strong>t</strong> for <strong>traffic variables</strong> aka <strong>props</strong>, <strong>c</strong> vor <strong>conversion variables</strong> aka <strong>eVars</strong> and <strong>e</strong> for <strong>event</strong>):</p>
+<ul>
+<li><code>Page Name (t010)</code></li>
+<li><code>User Status (c020)</code></li>
+</ul>
+<h2 id="events">Events</h2>
+<h3 id="naming-rules">Naming Rules</h3>
+<p>You wil need three categories of rules, based on the action the perform</p>
+<ul>
+<li>Page View rule (mostly just one, will trigger a page view)</li>
+<li>Click rules (will trigger click events)</li>
+<li>Misc rule (will not trigger any call, but prepare tracking or add event listeners)</li>
+</ul>
+<p>Besides that, you will have three main attributes for page view and click rules that should be available in the component name itself:</p>
+<ul>
+<li>the according event id (custom success event, even page views can have an event ID)</li>
+<li>a brief description</li>
+<li>how a rule will be triggered (Page Top, Document Ready, Click, Direct Call, &hellip;)</li>
+</ul>
+<p>Name your rules using those three information (I prefer the pipe symbol as a separator)</p>
+<p><code>[TYPE]|[TRIGGER]|[EVENT ID]|[BRIEF DESCRIPTION]</code></p>
+<p>If your rule covers more than one event, post them all as a comma separated list (50,51,52). If there are too many rules, you may overthink your strategy.</p>
+<p><strong>For example:</strong></p>
+<ul>
+<li><code>PV | DocReady | 10 | All Pages</code></li>
+<li><code>PV | DocReady | 20 | Search Pages</code></li>
+<li><code>CL | Trigger | 50,51,52 | Click</code></li>
+<li><code>CL | Click | 60 | Bookmark Page</code></li>
+<li><code>MISC | Helper Functions</code></li>
+</ul>
+<h4 id="reason">Reason</h4>
+<p>In the rules overview this helps you to get a good first impression of all existing rules and it allows you to quickly filter the list for wanted rule types. Also, if you lookup a particular event, you quickly see the particular component that somehow works for this event.</p>
+<h3 id="naming-components">Naming Components</h3>
+<p>A component can be a trigger/event, condition or action. When you create a component, Adobe suggests a default name. Never use this name. The name should start with the exact sequence you defined for the rule name.</p>
+<p><strong>For example:</strong></p>
+<p>You have a rule to trigger page views:</p>
+<p><code>PV | DocReady | 10 | All Pages</code></p>
+<p>This is how you name the components of the rule</p>
+<ul>
+<li>trigger/event: <code>PV | DocReady | 10 | All Pages |  page top</code></li>
+<li>condition: <code>PV | DocReady | 10 | All Pages |  user is logged in</code></li>
+<li>action: <code>PV | DocReady | 10 | All Pages |  set variables</code></li>
+<li>action: <code>PV | DocReady | 10 | All Pages |  send beacon</code></li>
+<li>action: <code>PV | DocReady | 10 | All Pages |  clear variables</code></li>
+</ul>
+<h4 id="reason-1">Reason</h4>
+<p>If you look up a particular event ID, you quickly see all according components. If you look up particular variables that belong to different events, you know quickly identify, where this variable is being used, without clicking into the component itself.</p>
+<h3 id="error-handling">Error Handling</h3>
+<p>If you have custom code, you should always implement try/catch error handling that also refers to the parent rule:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">let rule_name = &#39;`PV | DocReady | 10 | All Pages&#39;;
+</span></span><span class="line"><span class="ln">2</span><span class="cl">try {
+</span></span><span class="line"><span class="ln">3</span><span class="cl">
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl">} catch (e) {
+</span></span><span class="line"><span class="ln">6</span><span class="cl">
+</span></span><span class="line"><span class="ln">7</span><span class="cl">	_satellite.logger.error(rule_name + &#39; | &#39; + e);
+</span></span><span class="line"><span class="ln">8</span><span class="cl">
+</span></span><span class="line"><span class="ln">9</span><span class="cl">}
+</span></span></code></pre></div><p>If your code grows and get more complex, you should and can, add multiple try/catch lines into your code. In this case you should add a brief description of the current area to the error message:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">let rule_name = &#39;`PV | DocReady | 10 | All Pages&#39;;
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">try {
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">} catch (e) {
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">	_satellite.logger.error(rule_name + &#39; | init something | &#39; + e);
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
+</span></span><span class="line"><span class="ln">10</span><span class="cl">}
+</span></span><span class="line"><span class="ln">11</span><span class="cl">
+</span></span><span class="line"><span class="ln">12</span><span class="cl">try {
+</span></span><span class="line"><span class="ln">13</span><span class="cl">
+</span></span><span class="line"><span class="ln">14</span><span class="cl">
+</span></span><span class="line"><span class="ln">15</span><span class="cl">} catch (e) {
+</span></span><span class="line"><span class="ln">16</span><span class="cl">
+</span></span><span class="line"><span class="ln">17</span><span class="cl">	_satellite.logger.error(rule_name + &#39; | calculate another metric | &#39; + e);
+</span></span><span class="line"><span class="ln">18</span><span class="cl">
+</span></span><span class="line"><span class="ln">19</span><span class="cl">}
+</span></span></code></pre></div><h4 id="reason-2">Reason</h4>
+<p>Now, if you face errors in the debug console, it&rsquo;s easier to find the source, even if you handle long code blocks. You don&rsquo;t need to click through the stack trace.</p>
+<h3 id="logging-and-documentation">Logging and Documentation</h3>
+<p>The same goes for logging. Always logg what you are doing. I don&rsquo;t need to mention, how important inline documentation is. ;)
+Logging works the same as error handling:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">_satellite.logger.info(rule_name + &#39; | calculate another metric&#39;);
+</span></span></code></pre></div><h4 id="reason-3">Reason</h4>
+<p>Now, if you filter the browser console, it&rsquo;s easier to get rid of the noise and debug a problem.</p>
+<h3 id="inactive-rules-or-data-elements">Inactive Rules or Data Elements</h3>
+<p>You will and cannot avoid to have inactive/disabled rules. You should keep that amount low, because they pollute your library. If you have inactive rules, add a prefix &ldquo;INACTIVE&rdquo; to the rules name and, preferably also to it&rsquo;s components.</p>
+<h4 id="reason-4">Reason</h4>
+<p>If you look up code parts, data elements or anything, the search will return you rule and component names. From those component names you will not see, if a result belongs to an inactive rule. The prefix INACTIVE will help you to quickly identify those results.</p>
+
+        
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>blog</category>
+      
+      
+      
+      
+      <media:content url="http://localhost:1313/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Adobe Launch DTM Naming Conventions - Project</media:title>
+      </media:content>
+      
+      
+      
+      
+      
+      
+      
+    </item>
+  </channel>
+</rss>

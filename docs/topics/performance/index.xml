@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Performance auf Nicky Reinert</title>
+    <link>http://localhost:1313/topics/performance/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Thu, 04 Jun 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/topics/performance/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>CSS über den HTTP-Header ausspielen</title>
+      <link>http://localhost:1313/2020/2020-06-04-css-ueber-den-http-header-ausspielen/</link>
+      <pubDate>Thu, 04 Jun 2020 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>http://localhost:1313/2020/2020-06-04-css-ueber-den-http-header-ausspielen/</guid>
+      <description>Jeder kennt das Problem: Man hat stundenlang an einem Stylesheet auf dem Staging-Server rumgebastelt, will es nun auf den Live-Server kopieren und die Änderung …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Jeder kennt das Problem: Man hat stundenlang an einem Stylesheet auf dem Staging-Server rumgebastelt, will es nun auf den Live-Server kopieren und die Änderung ist nicht sichtbar.&#39; reading_time: 2 content_type: &#39;guide</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Web, Wordpress, Server, Mobile, Ai, Performance</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Jeder kennt das Problem: Man hat stundenlang an einem Stylesheet auf dem Staging-Server rumgebastelt, will es nun auf den Live-Server kopieren und die Änderung ist nicht sichtbar. Die Fehlersuche beginnt. Man prüft den Cache. Vom Browser. Vom Server. Ist man überhaupt auf dem richtigen Server? Hat der Upload geklappt? Und so weiter. Eric Meyer hat das ganze Dilemma 2009 treffend beschrieben und auch eine Lösung mitgeliefert, von der ich noch nicht gehört habe:</p>
+<p>Nutze doch einfach die HTTP-Header um deine Staging- und Live-Umgebung eindeutig voneinander zu unterscheiden. Der Link-Parameter im HTTP-Header nämlich auch die Angabe von Style-Sheet-Dateien. Und das sieht dann so aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Header add Link &#34;&lt;/staging.css&gt;;rel=stylesheet;type=text/css;media=all&#34;
+</span></span></code></pre></div><p>In nginx kann man das folgendermaßen im Server-Block implementieren:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">add_header Link &#34;&lt;/wp-content/themes/nickyreinert/style.header.css&gt;;rel=stylesheet;type=text/css;media=all&#34;;
+</span></span></code></pre></div><p>Wer Apache nutzt, setzt den &ldquo;CSS-Header&rdquo; folgendermaßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Header add Link &#34;&lt;/wp-content/themes/nickyreinert/style.header.css&gt;;rel=stylesheet;type=text/css;media=all&#34;
+</span></span></code></pre></div><p>Natürlich habe ich die Spielerei gleich bei mir eingebaut:</p>
+<p><img src="/2020/2020-06-04-css-ueber-den-http-header-ausspielen/images/grafik-700x382.png" alt=""></p>
+<p>CSS-Datei im HTTP-Header ausgeliefert</p>
+<p>Damit lässt sich grundsätzlich auch das Stylesheet deines Wordpress-Themes ausliefern: Da WordPress aber die style.css nutzt, um Theme-Informationen zu verarbeiten, musst du auf dieses kleine Feature dann verzichten. Außerdem wird CSS im Link-Header nicht von jedem Browser unterstützt.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> css, http</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>blog</category>
+      
+      
+      
+      
+      <media:content url="http://localhost:1313/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>CSS über den HTTP-Header ausspielen - Guide</media:title>
+      </media:content>
+      
+      
+      
+      
+      
+      
+      
+    </item><item>
+      <title>Wie kannst du SSH sicherer machen? Security through obscurity?</title>
+      <link>http://localhost:1313/2019/2019-07-13-wie-kannst-du-ssh-sicherer-machen-security-through-obscurity/</link>
+      <pubDate>Sat, 13 Jul 2019 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>http://localhost:1313/2019/2019-07-13-wie-kannst-du-ssh-sicherer-machen-security-through-obscurity/</guid>
+      <description>Diese Abbildung, meine geneigten Freunde, zeigt die Zugriffsversuche für SSH auf meinen Server. Zugegeben: Es ist nicht viel und wird sich vermutlich kaum auf …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Diese Abbildung, meine geneigten Freunde, zeigt die Zugriffsversuche für SSH auf meinen Server.&#39; reading_time: 4 content_type: &#39;review</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Web, Mac, Server, Ai, Security, Performance</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Diese Abbildung, meine geneigten Freunde, zeigt die Zugriffsversuche für SSH auf meinen Server. Zugegeben: Es ist nicht viel und wird sich vermutlich kaum auf die Performance des gesamten Systems auswirken. Mit diesem Grundrauschen muss aber eigentlich jeder leben, der einen SSH-Dienst über den Standard-Port 22 betreibt.</p>
+<p><img src="/2019/2019-07-13-wie-kannst-du-ssh-sicherer-machen-security-through-obscurity/images/grafik-700x335.png" alt=""></p>
+<p>SSH-Zugriff der letzten 30 Tage</p>
+<p>Wenn sich diese Zugriffe nicht auf die Performance auswirken, macht es dann wenigstens aus Sicherheitsgründen Sinn, diese Zugriffe zu unterbinden? Und die einfachste Möglichkeit das zu erreichen ist es, den SSH-Standardport (22) zu ändern. Mit meiner Argumentation folge ich denen <a href="https://security.stackexchange.com/questions/189726/does-it-improve-security-to-use-obscure-port-numbers">in einem sehr interessanten SO-Thread</a> zu dem Thema: <strong>Security through obscurity</strong>.</p>
+<p>Es gibt da draußen einen Haufen Bots, die sämtliche erreichbare IP-Adressen des Internets permanent nach Schwachstellen absuchen, nicht nur für SSH. In der Regel wird dazu eine Anfrage, z.B. mit einem Standardpasswort, an den Standardport von SSH gesendet. Die Chance, dass jemand sein System nicht ausreichend oder überhaupt nicht gesichert hat, sind scheinbar hoch genug, sonst würde sich dieses stumpfe Abgrasen nicht lohnen.</p>
+<p>Um das zu vermeiden, bietet es sich an, den Standard-Port zu ändern. Du wirst das abgrasen nicht verhindern, aber die Chancen stehen recht gut, dass die Bots das Interesse an dir verlieren und die Anfragen irgendwann nachlassen. Das ist aber spekulativ und auch nur ein kosmetischer Faktor. Wichtiger ist: Du wirst dein System dadurch ein ganz bisschen sicherer machen. Sollte morgen z.B. eine Sicherheitslücke für SSH bekannt werden, grasen die Bots die Standard-Ports ab um diese Lücke auszutesten. Die Zeit, alle denkbaren Ports zu testen, haben die Bots nicht, da Aufwand-Nutzen hier in keinem Verhältnis stehen.</p>
+<p>Zunächst änderst du den Port von 22 auf eine beliebige Ziffer unter 1024. Warum das? Ports ab 1024 können auch von &ldquo;nicht-priviligerten&rdquo; Nutzern verwendet werden. Jemand, der Zugriff auf dein System hat, kann ohne Root-Rechte einen Port öffnen. Läuft SSH nun auf Port 12345, könnte ein normaler Benutzer SSH zum Absturz bringen, seinen eigenen Dienst auf diesem Port lauschen lassen und somit SSH simulieren. Blöd. Also Port &lt; 1024. Das stellst du in der Datei <strong>/etc/ssh/sshd_config</strong> ein:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"># What ports, IPs and protocols we listen for
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Port 22
+</span></span><span class="line"><span class="ln">3</span><span class="cl">Port 999
+</span></span></code></pre></div><p>Du kannst du beliebig viele Ports definieren, indem du einfach eine weitere Zeile einfügst. Für den Anfang empfehle ich, SSH weiterhin auf Port 22 laufen zu lassen, damit du dich nicht aussperrst. Danach startest du den SSH-Daemon neu (<strong>service sshd restart</strong>), verbindest dich auf den neuen Port und de-aktivierst Port 22 final, indem du die Zeile auskommentierst.<br>
+Wenn du schon mal da bist: Der Vollständigkeit halber solltest du auch daran denken, SSH nur mit Private-Publi-Key-Authenzifizierung zu nutzen und unbedingt die Passwort-Authentifizierung deaktivieren:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">PubkeyAuthentication yes
+</span></span><span class="line"><span class="ln">2</span><span class="cl">PasswordAuthentication no
+</span></span><span class="line"><span class="ln">3</span><span class="cl">PermitRootLogin no
+</span></span></code></pre></div><p>Den SSH-Zugriff für den <strong>Root-Benutzer zu deaktivieren</strong>, ist eine weitere wichtige Sicherheitseinstellung. Du solltest dich nur mit &ldquo;unpriviligierten&rdquo; Nutzern am System anmelden können. Der Zugriff auf der CLI erfolgt dann immer mit <strong>sudo.</strong> Aber das nur am Rande&hellip;</p>
+<p>Wenn du <strong>iptables</strong> als Firewall nutzt, was hoffentlich der Fall ist, wirst du feststellen, dass du dich noch nicht auf Port 999 mit SSH verbinden kannst. Natürlich musst du den Port auch noch in der Firewall freigeben:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">iptables -A INPUT -m state --state NEW -m tcp -p tcp --dport 999 -j ACCEPT
+</span></span></code></pre></div><p>Beim Einsatz von fail2ban solltest du auch dort einstellen, dass SSH auf einem anderen Port arbeitet, damit fail2ban weiterhin Anmeldeversuche und BruteForce-Attacken abwehren kann. Die Einstellung dazu findest du in der Datei /etc/fail2ban/jail.conf oder /etc/fail2ban/jail.local. Dort gibt es einen Abschnitt [sshd], in dem du den Port von ssh auf deinen neuen Port, z.B. 999, festlegst:</p>
+<p><img src="/2019/2019-07-13-wie-kannst-du-ssh-sicherer-machen-security-through-obscurity/images/grafik.png" alt=""></p>
+<p>Gegebenenfalls musst du diese Einstellung auch noch für SSH-Varianten wie z.B. Dropbear anpassen.</p>
+
+        
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="http://localhost:1313/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Wie kannst du SSH sicherer machen? Security through obscurity? - Review</media:title>
+      </media:content>
+      
+      
+      
+      
+      
+      
+      
+    </item><item>
+      <title>Die OS X - Bash</title>
+      <link>http://localhost:1313/2018/2018-08-24-die-os-x-bash/</link>
+      <pubDate>Fri, 24 Aug 2018 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>http://localhost:1313/2018/2018-08-24-die-os-x-bash/</guid>
+      <description>Da ich mit meinem Mac sehr oft auf der Kommandozeile unterwegs bin (dazu empfehle ich übrigens iTerm2 - ein Terminal-Ersatz der alle anderen Anwendungen dieser …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>&#39; reading_time: 5 content_type: &#39;guide</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Web, Mac, Mobile, Ai, Automation, Security, Performance</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Da ich mit meinem Mac sehr oft auf der Kommandozeile unterwegs bin (dazu empfehle ich übrigens <a href="https://www.iterm2.com/">iTerm2</a> - ein Terminal-Ersatz der alle anderen Anwendungen dieser Art auch auf Linux und Windows aussticht) habe ich mir dafür ein paar kleine Einstellungen zusammengesammelt, die das Leben und Arbeiten auf der Kommandozeile etwas erleichtern.</p>
+<h2 id="was-ist-bash">Was ist Bash?</h2>
+<p>Bash steht für &ldquo;Bourn again shell&rdquo; und ist eine Erweiterung der älteren Bourne-Shell, eine Shell die auf Unix-(ähnlichen) Systemen als Benutzerschnittstelle dient. Und diese ist vor allem daran erkennbar, dass die Steuerung des Systems nur über die Tastatur, ohne Maus und Fenster funktioniert.</p>
+<p>Seit der Version 10.3 ist Bash auch Bestandteil von Mac OS X und bringt damit eine Menge Vorteile für die Arbeit auf der Kommandozeile mit sich.</p>
+<h2 id="die-bash-konfigurationsdateien">Die Bash Konfigurationsdateien</h2>
+<p>Die globalen Einstellungen für die Bash befinden sich in der Datei <strong>/etc/bashrc</strong> und der <strong>/etc/profile</strong>. Wer Einstellungen auf bestimmte Benutzer beschränken will, kann im Benutzerverzeichnis (du gelangst mit <em>cd ~</em> dorthin) eine Datei mit dem Name <strong>.profile</strong>, <strong>.bash_login</strong> oder <strong>.bash_profile</strong> anlegen. Beachte, dass <strong>.profile</strong> nur geladen wird, wenn <strong>.bash_login</strong> nicht existiert, welche wiederum durch <strong>.bash_profile</strong> überschrieben wird. Das gilt allerdings nicht, wenn du dich als <strong>root-Benutzer</strong> anmeldest - dann wird nur die Datei <strong>.profile</strong> gelesen. Der Grund ist, dass der Root-Benutzer nicht <strong>bash</strong> sondern <strong>sh</strong> ausführt, wodurch nur die <strong>~/.profile</strong>-Datei berücksichtigt wird.</p>
+<p><img src="/2018/2018-08-24-die-os-x-bash/images/image-8.png" alt=""></p>
+<p>Hierarchie der Bash-Konfigurations-Dateien</p>
+<p>Daneben gibt es theoretisch auch die Möglichkeit, im Benutzerverzeichnis eine Datei mit dem Namen <strong>.bashrc</strong> anzulegen. Diese wird jedoch nur dann geladen, wenn Bash ausgeführt wird, ohne dass sich ein Benutzer dazu anmeldet (die sogenannte <em>non-login-shell</em>). Im OS X-Umfeld wird das aber nicht benötigt. Du kannst das erzwingen, indem du auf der Kommandozeile <strong>/bin/bash</strong> ausführst - wir wollen die jetzt schon komplizierte Geschichte aber nicht unnötigen verkomplizieren. ;)</p>
+<h2 id="die-bash-aufhübschen">Die Bash aufhübschen</h2>
+<p>Nach der langweiligen aber notwendige Theorie, gibts jetzt ein paar Zeilen Code, mit denen die Kommandozeile gleich viel besser aussieht. Ich hab aus oben genannten Gründen das Ganze in die Datei <strong>~/.profile</strong> gepackt. Zunächst einmal ein paar Aliase um die Verzeichnislisten etwas übersichtlicher zu gestalten oder auch das oft benutzte <strong>cd</strong> (<em>change dir</em>) zu vereinfachen.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">alias l=&#39;ls -alCFGA&#39;
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">alias ll=&#34;ls -CFGla&#34;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">alias h=&#34;history&#34;
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">alias .=&#34;cd ~&#34;
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">alias ..=&#34;cd ..&#34;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">alias ...=&#34;cd ../..&#34;
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"># -p: erzeuge Unterverzeichnis, falls sie nicht existieren
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"># -v: gebe erzeugtes Verzeichnis zurück
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">alias mkdir=&#34;mkdir -pv&#34;
+</span></span><span class="line"><span class="ln">10</span><span class="cl"># grep Ausgabe farbig gestalten
+</span></span><span class="line"><span class="ln">11</span><span class="cl">alias grep=&#39;grep --color=auto&#39;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">alias fgrep=&#39;fgrep --color=auto&#39;
+</span></span><span class="line"><span class="ln">13</span><span class="cl">alias egrep=&#39;egrep --color=auto&#39;
+</span></span><span class="line"><span class="ln">14</span><span class="cl"># das aktuelle Verzeichnis im Finder öffnen
+</span></span><span class="line"><span class="ln">15</span><span class="cl">alias f=&#39;open -a Finder ./&#39;
+</span></span></code></pre></div><p>Die folgende Zeile ist kein Alias sondern eine Funktion. Damit wird ein Verzeichnis (mit allen benötigten Unterverzeichnissen erstellt) und dann mit cd direkt in das Verzeichnis gewechselt:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">mcd () { mkdir -p &#34;$1&#34; &amp;&amp; cd &#34;$1&#34;; }
+</span></span></code></pre></div><p>Als nächstes will ich die Darstellung der zuletzt benutzten Befehle (<strong>history</strong> bzw. jetzt <strong>h</strong>) etwas anpassen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"># Duplikate ignorieren
+</span></span><span class="line"><span class="ln">2</span><span class="cl">HISTCONTROL=ignoreboth
+</span></span><span class="line"><span class="ln">3</span><span class="cl"># Befehle anhängen und die Historie nicht jedes mal neu überschreiben
+</span></span><span class="line"><span class="ln">4</span><span class="cl">shopt -s histappend
+</span></span><span class="line"><span class="ln">5</span><span class="cl"># die maximale Größe bzw. Länge der Historie erhöhen
+</span></span><span class="line"><span class="ln">6</span><span class="cl">HISTSIZE=1000
+</span></span><span class="line"><span class="ln">7</span><span class="cl">HISTFILESIZE=2000
+</span></span></code></pre></div><p>Der folgende Befehl sorgt dafür, dass sich die Anzahl der dargestellten <strong>Spalten und Zeilen</strong> an die Fenstergröße anpasst. Die Funktion sollte per default aktiviert sein, zur Sicherheit legen wir das hier trotzdem fest! Mit dem Parameter -u kann die Option übrigens wieder deaktiviert werden.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">shopt -s checkwinsize
+</span></span></code></pre></div><p>Hiermit wird das Aussehen und die Farbe der Kommandozeile geändert. Ich hab mich für eine relativ bunte Variante entschieden. Die Einstellung für den sog. Prompt wird in der globalen Variable <strong>PS1</strong> (<em>prompt statement 1</em>) gespeichert. Die folgenden Parameter sind hier geläufig:</p>
+<ul>
+<li>\u - Benutzername</li>
+<li>\h - Name des Hosts / Computers</li>
+<li>\w - der komplette aktuelle Pfad</li>
+<li>\n  - Ein Zeilenumbruch</li>
+</ul>
+<p>Mit <strong>PS2</strong>, <strong>PS3</strong>, <strong>PS4</strong> lassen sich noch andere Prompts konfigurieren, wie z.B. der für interaktive Eingaben in Bash-Scripten. Die Variable <strong>PROMPT_COMMAND</strong> wird sogar noch vor <strong>PS1</strong> dargestellt. Wer mehr dazu erfahren möchte, <a href="https://wiki.ubuntuusers.de/Bash/Prompt/#source-2">schaut einfach mal dort vorbei</a>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">export</span> <span class="n">PS1</span><span class="o">=</span><span class="s2">&#34;$(date +%k:%m:%S) \[</span><span class="se">\033</span><span class="s2">[36m\]\u\[</span><span class="se">\033</span><span class="s2">[m\]@\[</span><span class="se">\033</span><span class="s2">[32m\]\h:\[</span><span class="se">\033</span><span class="s2">[33;1m\]\w\[</span><span class="se">\033</span><span class="s2">[m\]\$ &#34;</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"># Diese Konstanten steuern die Farben für die Ausgabe von cd.</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="k">export</span> <span class="n">CLICOLOR</span><span class="o">=</span><span class="mi">1</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="k">export</span> <span class="n">LSCOLORS</span><span class="o">=</span><span class="n">ExFxBxDxCxegedabagacad</span>
+</span></span></code></pre></div><p>Das ganze sieht dann so aus:</p>
+<p><img src="/2018/2018-08-24-die-os-x-bash/images/image-9.png" alt=""></p>
+<p>Eine bunte aber informative Kommandozeile</p>
+<p>Diese Funktion zeigt alle Prozesse, die unter dem aktuellen Benutzer aktiv sind:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">me() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }
+</span></span></code></pre></div><p>Als nächstes ein paar Aliase um das Netzwerk ein bisschen einfacher im Griff zu behalten:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl"># alle Verbindungen, die gerade &#34;Lauschen&#34;
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">alias cons=&#39;sudo lsof -i | grep LISTEN&#39;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"># alle offenen Sockets
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">alias socks=&#39;sudo /usr/sbin/lsof -i -P&#39;
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"># alle offenen TCP/IP-Sockets
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">alias tsocks=&#39;lsof -i&#39;
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"># alle offenen UDP-Sockets
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">alias usocks=&#39;sudo /usr/sbin/lsof -nP | grep UDP&#39;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"># alle offenen TCP-Sockets
+</span></span><span class="line"><span class="ln">10</span><span class="cl">alias lsocks=&#39;sudo /usr/sbin/lsof -nP | grep TCP&#39; 
+</span></span><span class="line"><span class="ln">11</span><span class="cl"># grundlegende Netzwerkeinstellungen
+</span></span><span class="line"><span class="ln">12</span><span class="cl">alias net=&#39;ipconfig getpacket en0&#39;
+</span></span><span class="line"><span class="ln">13</span><span class="cl">
+</span></span><span class="line"><span class="ln">14</span><span class="cl"># den DNS-Cache leeren
+</span></span><span class="line"><span class="ln">15</span><span class="cl">alias cleardns=&#39;dscacheutil -flushcache&#39;
+</span></span></code></pre></div><p>Die ganzen Inhalte gibt es hier noch einmal in kompakter Version:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="k">case</span> <span class="o">$-</span> <span class="ow">in</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="o">*</span><span class="n">i</span><span class="o">*</span><span class="p">)</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">      <span class="o">*</span><span class="p">)</span> <span class="k">return</span><span class="p">;;</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="n">esac</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="n">alias</span> <span class="n">l</span><span class="o">=</span><span class="s1">&#39;ls -alCFGA&#39;</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="n">alias</span> <span class="n">ll</span><span class="o">=</span><span class="s2">&#34;ls -CFGla&#34;</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="n">alias</span> <span class="n">h</span><span class="o">=</span><span class="s2">&#34;history&#34;</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="n">alias</span> <span class="o">.=</span><span class="s2">&#34;cd ~&#34;</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="n">alias</span> <span class="o">..=</span><span class="s2">&#34;cd ..; pwd&#34;</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="n">alias</span> <span class="o">...=</span><span class="s2">&#34;cd ../..; pwd&#34;</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="n">alias</span> <span class="n">mkdir</span><span class="o">=</span><span class="s2">&#34;mkdir -pv&#34;</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="n">alias</span> <span class="n">grep</span><span class="o">=</span><span class="s1">&#39;grep --color=auto&#39;</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="n">alias</span> <span class="n">fgrep</span><span class="o">=</span><span class="s1">&#39;fgrep --color=auto&#39;</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="n">alias</span> <span class="n">egrep</span><span class="o">=</span><span class="s1">&#39;egrep --color=auto&#39;</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="n">alias</span> <span class="n">f</span><span class="o">=</span><span class="s1">&#39;open -a Finder ./&#39;</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">
+</span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="n">HISTCONTROL</span><span class="o">=</span><span class="n">ignoreboth</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="n">shopt</span> <span class="o">-</span><span class="n">s</span> <span class="n">histappend</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="n">HISTSIZE</span><span class="o">=</span><span class="mi">1000</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="n">HISTFILESIZE</span><span class="o">=</span><span class="mi">2000</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">
+</span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="n">shopt</span> <span class="o">-</span><span class="n">s</span> <span class="n">checkwinsize</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">
+</span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="k">case</span> <span class="s2">&#34;$TERM&#34;</span> <span class="ow">in</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">    <span class="n">xterm</span><span class="o">-</span><span class="n">color</span><span class="o">|*-</span><span class="mi">256</span><span class="n">color</span><span class="p">)</span> <span class="n">color_prompt</span><span class="o">=</span><span class="n">yes</span><span class="p">;;</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="n">esac</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">
+</span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="k">export</span> <span class="n">PS1</span><span class="o">=</span><span class="s2">&#34;$(date +%k:%m:%S) \[</span><span class="se">\033</span><span class="s2">[36m\]\u\[</span><span class="se">\033</span><span class="s2">[m\]@\[</span><span class="se">\033</span><span class="s2">[32m\]\h:\[</span><span class="se">\033</span><span class="s2">[33;1m\]\w\[</span><span class="se">\033</span><span class="s2">[m\]\$ &#34;</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="k">export</span> <span class="n">CLICOLOR</span><span class="o">=</span><span class="mi">1</span>
+</span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="k">export</span> <span class="n">LSCOLORS</span><span class="o">=</span><span class="n">ExFxBxDxCxegedabagacad</span>
+</span></span><span class="line"><span class="ln">32</span><span class="cl">
+</span></span><span class="line"><span class="ln">33</span><span class="cl"><span class="n">mcd</span> <span class="p">()</span> <span class="p">{</span> <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="s2">&#34;$1&#34;</span> <span class="o">&amp;&amp;</span> <span class="n">cd</span> <span class="s2">&#34;$1&#34;</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="ln">34</span><span class="cl"><span class="n">me</span><span class="p">()</span> <span class="p">{</span> <span class="n">ps</span> <span class="o">$</span><span class="err">@</span> <span class="o">-</span><span class="n">u</span> <span class="o">$</span><span class="n">USER</span> <span class="o">-</span><span class="n">o</span> <span class="n">pid</span><span class="p">,</span><span class="o">%</span><span class="n">cpu</span><span class="p">,</span><span class="o">%</span><span class="n">mem</span><span class="p">,</span><span class="n">start</span><span class="p">,</span><span class="n">time</span><span class="p">,</span><span class="n">bsdtime</span><span class="p">,</span><span class="n">command</span> <span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="ln">35</span><span class="cl">
+</span></span><span class="line"><span class="ln">36</span><span class="cl"><span class="n">alias</span> <span class="n">cons</span><span class="o">=</span><span class="s1">&#39;sudo lsof -i | grep LISTEN&#39;</span>
+</span></span><span class="line"><span class="ln">37</span><span class="cl"><span class="n">alias</span> <span class="n">socks</span><span class="o">=</span><span class="s1">&#39;sudo /usr/sbin/lsof -i -P&#39;</span>
+</span></span><span class="line"><span class="ln">38</span><span class="cl"><span class="n">alias</span> <span class="n">tsocks</span><span class="o">=</span><span class="s1">&#39;lsof -i&#39;</span>
+</span></span><span class="line"><span class="ln">39</span><span class="cl"><span class="n">alias</span> <span class="n">usocks</span><span class="o">=</span><span class="s1">&#39;sudo /usr/sbin/lsof -nP | grep UDP&#39;</span>
+</span></span><span class="line"><span class="ln">40</span><span class="cl"><span class="n">alias</span> <span class="n">lsocks</span><span class="o">=</span><span class="s1">&#39;sudo /usr/sbin/lsof -nP | grep TCP&#39;</span>
+</span></span><span class="line"><span class="ln">41</span><span class="cl"><span class="n">alias</span> <span class="n">net</span><span class="o">=</span><span class="s1">&#39;ipconfig getpacket en0&#39;</span>
+</span></span><span class="line"><span class="ln">42</span><span class="cl"><span class="n">alias</span> <span class="n">cleardns</span><span class="o">=</span><span class="s1">&#39;dscacheutil -flushcache&#39;</span>
+</span></span></code></pre></div>
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> profile, alias, bash, mac, os-x, shell</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>development</category>
+      
+      <category>os-x</category>
+      
+      
+      
+      
+      <media:content url="http://localhost:1313/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Die OS X - Bash - Guide</media:title>
+      </media:content>
+      
+      
+      
+      
+      
+      
+      
+    </item><item>
+      <title>Wordpress Page Builder - Pro und Contra</title>
+      <link>http://localhost:1313/2018/2018-08-12-wordpress-page-builder-pro-und-contra/</link>
+      <pubDate>Sun, 12 Aug 2018 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>http://localhost:1313/2018/2018-08-12-wordpress-page-builder-pro-und-contra/</guid>
+      <description>Page Builder oder auch Theme Builder haben ihre Daseinsberechtigung, gar keine Frage. Davon zeugt vor allem ihr Erfolg und ihre Verbreitung. Allerdings sollte …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Page Builder oder auch Theme Builder haben ihre Daseinsberechtigung, gar keine Frage. Davon zeugt vor allem ihr Erfolg und ihre Verbreitung.&#39; reading_time: 5 content_type: &#39;project</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Web, Wordpress, Mac, Git, Ai, Automation, Performance</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Page Builder oder auch Theme Builder haben ihre Daseinsberechtigung, gar keine Frage. Davon zeugt vor allem ihr Erfolg und ihre Verbreitung. Allerdings sollte man sich gut überlegen, für welches Projekt man Page Builder oder Theme Builder einsetzt.<br>
+Eins vorweg: Ich bin wahrlich kein Freund von Page Buildern. Jede Begegnung mit Page Buildern hat bei mir immer für Kopfschmerzen gesorgt. Entweder hat ein Update den Page Builder unbrauchbar gemacht. Oder der Nutzer konnte den als intuitiv angepriesenen Page Builder gar nicht erst bedienen und ich musste mich damit rumärgern. Es gibt für mich eigentlich kein denkbares Szenario, in dem ein Page Builder Sinn macht. Trotz allem versuche ich Page Builder möglichst objektiv zu bewerten. Nicht alle hier aufgeführten Punkte betreffen jeden Page Builder, sie können dir aber helfen, die richtige Entscheidung zu treffen.</p>
+<h2 id="pro">Pro</h2>
+<p><strong>Webdesign für Laien</strong> - ohne HTML-, CSS- und JavaScript-Kenntnisse. Wenn es um kleinere oder Hobby-Projekte geht, ist man bei einem Page Builder gut aufgehoben. Man kann sich auf das Erstellen der Inhalte konzentrieren. Ein recht ahnsehnliches, modernes Layout lässt sich ohne tiefe technische Kenntnisse realisieren.</p>
+<p><strong>Viele Funktionen aus einer Hand</strong> - Wer seine Seite mit allerlei Funktionen, Google Maps, Tabellen, Formularen usw. anreichen möchte, macht mit einem Theme Builder nichts falsch. Page Builder liefern eine Vielzahl von Funktionen und Elementen mit, die viele Ansprüche an eine moderne Webseite erfüllen.</p>
+<h2 id="contra">Contra</h2>
+<p><strong>Kompatibilität</strong> - jedes zusätzliche Plugin erhöht die Komplexität deiner Installation. Bei jedem Update anderer Plugins oder des Page Builders besteht die Gefahr, dass sich Komponenten nicht vertragen oder der Page Builder komplett oder in Teilen gar nicht mehr funktioniert. Dann beginnt die aufwendige Fehlersuche. Das Risiko lässt sich mit einem selber angepassten Theme sicher nicht ganz ausschließen, allerdings gerät die Fehlersuche hier einfacher.</p>
+<p><strong>Sicherheit</strong> - jedes zusätzliche Plugin, vor allem wenn es so populär ist, kann Sicherheitslücken enthalten.</p>
+<p><strong>Layout</strong> - Bei einem Page Builder ist die Gestaltung der Seite im Backend abgebildet und nicht wie üblich über CSS und HTML. Natürlich verwendet auch ein Theme Builer CSS und HTML - gemeint ist aber die Pseudo-Sprache des Theme Builders. Bei einem Theme Builder ziehst du per Drag&rsquo;n&rsquo;Drop ein Gestaltungselement in deinen Beitrag und diese Information wird als Meta-Datum im Beitrag abgelegt. Das Layout ist mit dem Inhalt und dem Theme Builder eng verwoben und es handelt sich um eine eigene &ldquo;Layout-Definition&rdquo;. Beim Wechsel auf einen anderen Page Builder geht diese Information verloren.</p>
+<p><strong>Performance</strong> - das Erstellen aufwendiger Layouts mit Animationen und Spezialeffekten mit nur wenigen Maus-Klicks geht oft zu Lasten der Geschwindigkeit, weil auch nicht benötigte Module geladen werden. Außerdem müssen die ganzen hübschen Animationen auch berechnet werden. Das erfordert unnötige Rechenleistung. Das mag kleinlich klingen, aber das ist nicht nur in Grenzfällen von Bedeutung.</p>
+<p><strong>Usability #1</strong> - die Zeiten von Macromedia Flash und aufwendigen Animationen auf den Websiten sind zum Glück lange vorbei. Wer nicht gerade eine Website für ein hippes Games-Studio baut, muss auf seiner Website niemanden mit unzähligen aufwendigen Animationen überzeugen. Bei PowerPoint-Präsentationen sind einfliegende Bilder, pulsierende Überschriften und andere Gimmicks schon lange verpönt, in der Page-Builder-Branche ist man leider noch nicht so weit.</p>
+<p>**Usability #**2 - Das ganze trifft allerdings auch auf das Backend zu. Page Builder bieten sehr viele Funktionen an und sind daher relativ komplex aufgebaut, vor allem wenn man ein ausgefallenes Layout hinterlegt. Jemand, der sich nur mit den Inhalten beschäftigen will, läuft zu Beginn Gefahr, bereits an der Nutzung des Page Builders zu scheitern. Der Wordpress-Editor ist zurecht relativ simpel gehalten. Selbst jemand, der fit in der WordPress-Bedienung ist, benötigt erstmal Einarbeitung, um auch einen Theme Builder sicher bedienen zu können.</p>
+<p><strong>Modularität</strong> - Die Modularität von Wordpress ist ein riesiger Vorteil, da so verschiedene Aufgaben unabhängig voneinander gelöst werden können. Plugin-Entwicklung, Inhalte und Layout sind strikt voneinander getrennt (wenngleich sie sich natürlich gegenseitig referenzieren dürfen). So kann ich in einer Entwicklungsumgebung mit einem Child-Theme ein neues Layout entwickeln und das dann in ein Live-System integrieren, indem ich einfach nur die Quelle-Dateien kopiere. Ein Page-Builder konterkariert das: Das Grenze zwischen reinem Webdesign und Inhaltserstellung verschwimmen, da nun der Wordpress-Texteditor dafür missbraucht wird, die Gestaltung der Seite maßgeblich zu beeinflussen. Das mag bequem sein, erschwert aber die Weitergabe, da nun nicht nur des Wordpress-Theme weitergegeben werden muss, sondern auch der komplette Inhalt der Beiträge.</p>
+<p><strong>Abhängigkeit</strong> - Klar - wer seinen Page Builder liebt, der wird ihm nicht den Rücken kehren. Aber rein hypothetisch: Was ist, wenn du irgendwann doch mal weg willst, von deinem Page Builder? Dann stehst du vor einem Problem: Du musst das Layout komplett neu aufbauen und im schlimmsten Fall auch sämtliche Inhalte überarbeiten.</p>
+<h2 id="gutenberg---der-gute-theme-builder">Gutenberg - der gute Theme Builder?</h2>
+<p>Gutenberg ist in der Tat nichts anderes als ein Theme Builder und tatsächlich treffen die oben genannten Vor- und Nachteile größtenteils auch auf Gutenberg zu. Es gibt aber einen entscheidenden Unterschied: Gutenberg ist Teil von WordPress. Das Entwickler-Team von WordPress hat bei der Entwicklung von Core-Funktionalitäten immer auch die Kompatibilität mit Gutenberg im Blick.</p>
+<h2 id="fazit-im-zweifel-gegen-die-page-builder">Fazit: Im Zweifel gegen die Page Builder</h2>
+<p>Man darf sich von der eigenen Bequemlichkeit nicht verleiten lassen. Auf den ersten Blick nehmen Page Builder dir sehr viel Arbeit ab. Anfänger scheuen es verständlicherweise, sich mit JavaScript, CSS und HTML auseinandersetzen zu müssen. Doch die Zeit, die sie zu Beginn durch den Einsatz eines Page Builders sparen, geht später dafür drauf, sich mit all den Unannehmlichkeiten auseinander setzen zu müssen. Ich will nicht sagen, dass Page Builder keine Daseinsberechtigung haben - der Erfolg gibt ihnen schließlich recht. Allerdings begegnet man in den einschlägigen Foren auch vielen Hilfesuchenden, die Opfer ihre anfänglichen Bequemlichkeit werden.</p>
+
+        
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>blog</category>
+      
+      
+      
+      
+      <media:content url="http://localhost:1313/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Wordpress Page Builder - Pro und Contra - Project</media:title>
+      </media:content>
+      
+      
+      
+      
+      
+      
+      
+    </item><item>
+      <title>WordCloud in PowerPoint</title>
+      <link>http://localhost:1313/2012/2012-07-23-wordcloud-in-powerpoint/</link>
+      <pubDate>Mon, 23 Jul 2012 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>http://localhost:1313/2012/2012-07-23-wordcloud-in-powerpoint/</guid>
+      <description>Du hast einen nicht allzu langen Text*, den du in eine WordCloud / TagCloud verwandeln möchtest, die du dann in PowerPoint verwenden kannst? Dann lade dir diese …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Du hast einen nicht allzu langen Text, den du in eine WordCloud / TagCloud verwandeln möchtest, die du dann in PowerPoint verwenden kannst. Dann lade dir diese WordCloud-Excel-Vorlage herunter.&#39; reading_time: 2 content_type: &#39;review</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Web, Automation, Security, Performance</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <p>Du hast einen nicht allzu langen Text*, den du in eine WordCloud / TagCloud verwandeln möchtest, die du dann in PowerPoint verwenden kannst? Dann lade dir diese <a href="https://www.nickyreinert.de/files/wordcloud-in-powerpoint/WordCloud-Excel-Vorlage.xlsm">WordCloud-Excel-Vorlage</a> herunter. Die Datei enthält ein VBA-Script, das zuerst einen beliebigen Text in einzelne Wörter zerlegt und diese zählt und sortiert. Danach wird eine PowerPoint-Folie erstellt, in der die Wörter in einer WordCloud dargestellt werden. Je öfter das Wort vorkommt, desto größer erscheint es auf der Folie. Die Wörter sind einfache Textfelder und können danach bearbeitet oder verschoben werden.</p>
+<p><img src="/2012/2012-07-23-wordcloud-in-powerpoint/images/WordCloud-in-PowerPoint-150x150.png" alt="WordCloud in PowerPoint"></p>
+<p><strong>Vorbereitung in Excel</strong></p>
+<p>Zunächst kopierst du deinen Text in das Feld für den Quelltext. Per VBA wird daraus bereits automatisch eine Liste mit den Häufigkeiten der Wörter erstellt.</p>
+<p>Mit den Werten für die PowerPoint-Höhe und -Breite legst du die Abmessung der Folie in der Präsentation fest. Je größer die Folie, desto länger dauert das Rendern der WordCloud. Mit der Größe der Schriftart bestimmst du, wie groß das größte Wort ist. Über den Faktor Höhenkorrektur kannst du den vertikalen Abstand der Textfelder korrigieren. Über den Performance-Faktor lässt sich die Geschwindigkeit der Verarbeitung steuern. Je höher der Wert, desto schneller das Skript, aber auch schlechter die Berechnung der Platzierung der Textfelder für die Wörter. Der Top-Wert legt fest, wie viele Wörter verarbeitet werden sollen.</p>
+<p>Wenn du alles fertig eingestellt hast, drückst du auf Start und VBA verrichtet seine Arbeit.</p>
+<p>Fertig.</p>
+<p><em>*VBA und der Algorithmus sind eher nicht für lange Texte geeignet. Ein Text mit 349 unterschiedlichen Wörtern und 584 Wörtern insgesamt wird in 55 Sekunden gerendert.</em></p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> excel, powerpoint, vba, wordcloud</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>office</category>
+      
+      <category>projekte</category>
+      
+      
+      
+      
+      <media:content url="http://localhost:1313/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>WordCloud in PowerPoint - Review</media:title>
+      </media:content>
+      
+      
+      
+      
+      
+      
+      
+    </item><item>
+      <title>Wordpress-Security Checkliste</title>
+      <link>http://localhost:1313/2000/2000-01-01-wordpress-security-checkliste/</link>
+      <pubDate>Sat, 01 Jan 2000 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>http://localhost:1313/2000/2000-01-01-wordpress-security-checkliste/</guid>
+      <description> Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>&#39; reading_time: 7 content_type: &#39;analysis</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Web, Wordpress, Mac, Server, Security, Performance</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
+          
+        </div>
+        
+        
+        <!-- |                      | WPaaS | Shared Hosting | Server |
+|----------------------|-------|----------------|--------|
+| Updates              | X     | X              |        |
+| Staging-System       |       |                |        |
+| Backups              |       |                |        |
+| Plugins              |       |                |        |
+| Dateirechte          |       |                |        |
+| PHP-Ausführung       |       |                |        |
+ -->
+<p>Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch kriminelle Geister an und so schwirren immer wieder Nachrichten über Sicherheitslücken und gehackte WP-Seiten durch die einschlägigen Medien. Aus diesem Grund will ich mal meine Erfahrungen in Bezug auf Wordpress-Sicherheit an dieser Stelle zusammenfassen und zwar so kompakt wie möglich, damit diese Information als Checkliste genutzt werden kann.</p>
+<p>Wenn du Betreiber einer Wordpress-Seite bist, gibt es dafür drei Wege und unterschiedliche Freiheiten, sich selber um die Sicherheit der WP-Installation zu nutzen - im folgenden die &ldquo;Freiheitsgrade&rdquo; genannt: Bei &ldquo;wordpress as a service&rdquo; greifst du auf einen Angebot zurück, das bekannteste ist wordpress.com, bei dem du nur Zugriff auf das Backend hast und dementsprechend wenig Konfigurationsmöglichkeiten. Als Nutzer eines Shared Hosting hast du zusätzlich die Möglichkeit, per FTP oder SSH auf den Webspace zu gelangen und dort Einstellungen vorzunehmen. Und schließlich gibt es noch die Möglichkeit, einen eigenen Server zu nutzen, bei dem du dich auch um die Konfiguration auf Systemebene, also des Webserver kümmern musst. In dieser Reihenfolge möchte ich nun im folgenden Zusammenfassen, welche Möglichkeiten du hast, deine WP-Installation etwas sicherer zu gestalten.</p>
+<h2 id="aktuelle-updates">Aktuelle Updates</h2>
+<p>Zunächst zum Offensichtlichen: Sicherheitsupdates. Die automatischen Updates des WP-Cores (also dem, was WP ausmacht) sind mit jedem Freiheitsgrad konfigurierbar, bergen aber auch Risikos. So hatte z.B. das Update auf Version 4.9.3 Anfang 2018 den Auto-Update-Mechanismus deaktiviert. Spätere Sicherheitsupdates würden also ignoriert werden. Grundsätzlich ist das Auto-Update nur für sog. Minor-Versionen zu empfehlen, wodurch Sicherheitlücken und Bugs behoben werden. Wer diese Funktion auf einem Test-System auch für Major-Versionen aktivieren möchte, muss in der wp-config.php folgenden Parameter setzen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">define</span><span class="p">(</span> <span class="s1">&#39;WP_AUTO_UPDATE_CORE&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span> <span class="p">);</span>
+</span></span></code></pre></div><p>(der Parameter ist per default auf <em>minor</em> gesetzt.) Grundsätzlich ist das aber nicht zu empfehlen: Denn: Bevor ein großes Update eingespielt wird, sollte das auf Herz &amp; Nieren und natürlich Kompatibilität mit den vorhandenen Themes und Plugins getestet werden. Dazu sollte man ein Staging-System einrichten, worauf ich im nächsten Absatz eingehe.</p>
+<h2 id="ein-staging-system-nutzen">Ein Staging-System nutzen</h2>
+<p>Die Sicherheit der WP-Installation kann nicht nur durch Malware oder Angriffe von außen versehrt werden, sondern auch durch Bedienfehler. Ein wichtiger Baustein ist also ein Staging-System. Das ist im weitesten Sinne eine exakte Kopie der aktuelle WP-Installation. Das Staging-System erfüllt eine Reihe von Funktionen:</p>
+<ul>
+<li>Testen von Plugins &amp; Updates auf Kompatibilität</li>
+<li>Referenz-System zum Erkennen von verdächtigen Änderungen</li>
+<li>Testen von Änderungen am Theme</li>
+</ul>
+<p>Wie ein Staging-System eingerichtet wird, habe ich hier genauer erklärt. Was es mit dem 2. Punkt auf sich hat, erkläre ich weiter unten.</p>
+<h2 id="regelmäßige-backups">Regelmäßige Backups</h2>
+<p>Auch Backups sind ein wichtiger Teil eines Sicherheitskonzeptes. Hier gibt es je nach Freiheitsgrad verschiedene Möglichkeiten. Als Plugin empfehle ich zunächst das sehr weit verbreitete Updraft. Das Backup sollte unbedingt auf einen anderen Ort kopiert werden. Updraft unterstützt in der kostenlosen Version z.B. FTP. Wer kein Problem mit Dropbox oder Google Drive hat, kann natürlich auch die Cloud nutzen. Updraft unterstützt die Verschlüsselung der Datenbank-Sicherung nur in der bezahlten Version. Wer mit personenbezogenen Daten hantiert, sollte sich diese Funktion unbedingt zulegen!</p>
+<p>Eine bessere Alternative, die aber nur ab dem 2. Freiheitsgrad möglich ist, ist das Backup über die Kommandozeile. Das ist vor allem dann unumgänglich, wenn die WP-Installation sehr groß ist und nicht mehr mit den gängigen Plugins durchführbar ist. Außerdem funktioniert das unabhängig von Wordpress und kann demnach auch nicht durch andere Plugins beeinträchtigt werden. Wie genau man das einrichtet und vor allem auch die Wiederherstellung habe ich in diesem Beitrag genauer beschrieben.</p>
+<h2 id="plugin-sparsamkeit">Plugin-Sparsamkeit</h2>
+<p>Hierunter ist eher ein Konzept als eine konkrete Handlungsempfehlung zu verstehen. Vor allem technisch unbedarfte Nutzer tendieren dazu, sofort ein Plugin zu installieren, wenn eine bestimmte Funktion benötigt wird. Doch gerade unsaubere, nicht gepflegte Plugins bieten eine Angriffsfläche und noch dazu wirkt sich ein zunehmendes Plugin-Portfolio negativ auf die Performance aus. Wer ein Plugin installieren möchte, sollte dazu nur auf vertrauenswürdige und bekannte Quellen zurückgreifen. Im Klartext: <a href="https://de.wordpress.org/plugins/">https://de.wordpress.org/plugins/</a></p>
+<h2 id="die-offensichtlichen">Die offensichtlichen</h2>
+<ol start="2">
+<li>Admin-Benutzer umbenennen</li>
+</ol>
+<h2 id="die-technischen">Die technischen</h2>
+<ol>
+<li>Admin-Bereich mit .htaccess schützen</li>
+<li>Dateirechte korrekt setzen</li>
+<li>PHP-Ausführung in bestimmten Unterordner deaktivieren</li>
+</ol>
+<h2 id="plugins-und-themes">Plugins und Themes</h2>
+<p>Ein zentrales Element und der größte Vorteil von Wordpress ist seine fast unerreichbar funktionale Erweiterbarkeit und sehr große Community. Das zieht allerdings auch schwarze Schafe an.</p>
+<ol>
+<li>Installiere nicht wahllos Plugins, weil du eine bestimmte Funktion benötigst</li>
+<li>Installiere Plugins nur von vertrauenswürdigen Quellen</li>
+<li>Räume deinen Plugin-Ordner regelmäßig auf</li>
+</ol>
+<h2 id="die-mutigen">Die mutigen</h2>
+<h3 id="php-ini-parameter">PHP ini-Parameter</h3>
+<p>Es dürfte kein Geheimnis sein, dass PHP über die php.ini gesteuert wird. Es gibt allerdings einige sicherheitsrelevante Parameter, um die man sich allerdings selber kümmern muss. Die wichtigsten möchte ich hier vorstellen.</p>
+<p>Um die Übersicht über manuelle Änderungen nicht zu verlieren, solltest du die Einstellungen in einer separaten Datei (z.B. <em>security.ini</em>) speichern. Auf der Kommandozeile zeigt dir der folgende Befehl, aus welchem zusätzlichen Ordner PHP zusätzliche ini-Dateien liest:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">php --ini
+</span></span></code></pre></div><p>In den meisten Fällen dürfte das /etc/php/7.1/apache2/conf.d/ sein.</p>
+<p>Eine einfache aber sehr wirksame Maßnahme ist das deaktivieren potentiell gefährlicher PHP-Funktionen. Wie z.B. <a href="http://php.net/manual/en/function.shell-exec.php">shell_exec()</a> - im Wordpress-Umfeld gibt es kaum ein Szenario, in dem diese Funktion nützlich sein könnte. Um PHP-Funktionen zu deaktivieren, kannst du den ini-Parameter <a href="http://php.net/manual/de/ini.core.php#ini.disable-functions">disable_functions</a> nutzen.</p>
+<p>Dort legst du die <em>security.ini</em> ab und füllst sie entsprechend:</p>
+<p><a href="https://www.damianschwyrz.de/php-backdoors-und-shells-finden-eine-kurze-anleitung">https://www.damianschwyrz.de/php-backdoors-und-shells-finden-eine-kurze-anleitung</a></p>
+<p>siehe auch</p>
+<p><a href="https://binary-butterfly.de/artikel/wordpress-login-security-eine-stahltuer-in-der-wellblechhuette/">https://binary-butterfly.de/artikel/wordpress-login-security-eine-stahltuer-in-der-wellblechhuette/</a></p>
+<p>IP-Filter</p>
+<h3 id="den-admin-bereich-verstecken">Den Admin-Bereich verstecken</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-apache" data-lang="apache"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">&lt;IfModule</span> <span class="s">mod_rewrite.c</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="nb">RewriteEngine</span> <span class="k">on</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="nb">RewriteBase</span> /
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="c"># Move Wordpress login to /cms.</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="nb">RewriteRule</span> ^cms wp-login.php?cms=unlocked [L]
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^cms=unlocked
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^action=logout
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} !^loggedout=true
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_METHOD} !POST
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*)$ - [R=403,L]
+</span></span><span class="line"><span class="ln">12</span><span class="cl">
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
+</span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="nb">RewriteCond</span> %{QUERY_STRING} ^loggedout=true
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*) ./cms? [R=302,NC,L]
+</span></span><span class="line"><span class="ln">16</span><span class="cl">
+</span></span><span class="line"><span class="ln">17</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_URI} ^(.*)?wp-login\.php(.*)$
+</span></span><span class="line"><span class="ln">18</span><span class="cl">    <span class="nb">RewriteCond</span> %{HTTP_REFERER} !cms$
+</span></span><span class="line"><span class="ln">19</span><span class="cl">    <span class="nb">RewriteCond</span> %{REQUEST_METHOD} POST
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    <span class="nb">RewriteRule</span> ^(.*)$ - [R=403,L]
+</span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="nt">&lt;/IfModule&gt;</span>
+</span></span></code></pre></div><!-- https://wordpress.stackexchange.com/a/292691/132138
+
+## Die unnötigen
+
+### Sicherheits-Plugins
+
+siehe auch
+
+https://www.kuketz-blog.de/basisschutz-wordpress-absichern-teil1
+
+https://fastwp.de/487
+
+```bash
+chown user:user -R *
+find . -type d -exec chmod 755 {} \;
+find . -type f -exec chmod 644 {} \;
+
+chown www-data:www-data wp-content
+
+## Disable Editing in Dashboard
+define('DISALLOW_FILE_EDIT', true);
+
+<Directory /var/www/nickyreinert.de/www>
+# prevent   var_dump(scandir('/etc'));
+# see http://php.net/manual/de/ini.core.php#ini.open-basedir
+# alternativ: php für jeden virtuellen host mit separatem user ausführen und die dateirechte anpassen
+php_admin_value open_basedir "/var/www/nickyreinert.de/www"
+
+</Directory>
+```
+
+```ini
+# disable_functions in php.ini
+# list of function to disable globally #
+disable_functions =exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source
+```
+
+## PHP-FPM?
+
+Normalerweise ruft der Apache-Webserver den PHP-Interpreter jedes mal erneut auf. Der Nachteil: Viel Speicherverbrauch, lange Ladezeiten und ein globaler Benutzer. Etwas schneller ist FastCGI. Dabei läuft der Interpreter permanent im Hintergrund. FPM startet nicht nur einen sondern mehrere PHP-Prozesse im Hintergrund. -->
+        
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>wordpress</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="http://localhost:1313/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Wordpress-Security Checkliste - Analysis</media:title>
+      </media:content>
+      
+      
+      
+      
+      
+      
+      
+    </item>
+  </channel>
+</rss>

@@ -1,177 +1,1340 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
-    <title>2017s on Nicky Reinert</title>
+    <title>2017s auf Nicky Reinert</title>
     <link>https://nickyreinert.de/2017/</link>
-    <description>Recent content in 2017s on Nicky Reinert</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>de-DE</language>
-    <lastBuildDate>Thu, 16 Nov 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/2017/index.xml" rel="self" type="application/rss+xml" />
-    <item>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Thu, 16 Nov 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/2017/index.xml" rel="self" type="application/rss+xml" /><item>
       <title>Download-Geschwindigkeit messen und in Google DataStudio darstellen</title>
       <link>https://nickyreinert.de/2017/2017-11-16-download-geschwindigkeit-messen-und-in-googledata-studio-darstellen/</link>
       <pubDate>Thu, 16 Nov 2017 00:00:00 +0000</pubDate>
-      
+      <author></author>
       <guid>https://nickyreinert.de/2017/2017-11-16-download-geschwindigkeit-messen-und-in-googledata-studio-darstellen/</guid>
+      <description>Alles beginnt mit einer fixen Idee. Meine war es, die Download-Geschwindigkeit meines Internet-Anschlusses zu messen. Doch das ist nur aussagekräftig, wenn man …</description>
       
-      <description>&lt;p&gt;Alles beginnt mit einer fixen Idee. Meine war es, die Download-Geschwindigkeit meines Internet-Anschlusses zu messen. Doch das ist nur aussagekräftig, wenn man es regelmäßig macht. Und um das ganze abzurunden, sollte man die Ergebnisse doch irgendwie noch in einem bunten Diagramm darstellen können. Aus der Idee wurde also ein Plan und schließlich ein Projekt.&lt;/p&gt;
-&lt;p&gt;Die Aufgabe lautet also: Ein Script soll in regelmäßigen Abständen Test-Dateien herunterladen. Die Dauer dafür und der Zeitpunkt des Tests schreibe ich in eine CSV-Datei, die mit GoogleDrive synchronisiert ist. Von dort werden die Ergebnisse im DataStudio von Google automatisch ausgelesen.&lt;/p&gt;</description>
       
-    </item>
-    
-    <item>
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt Download-Geschwindigkeit messen und in Google DataStudio darstellen und bietet praktische Einblicke in das Thema.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Development, Programming, Code</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Alles beginnt mit einer fixen Idee. Meine war es, die Download-Geschwindigkeit meines Internet-Anschlusses zu messen. Doch das ist nur aussagekräftig, wenn man es regelmäßig macht. Und um das ganze abzurunden, sollte man die Ergebnisse doch irgendwie noch in einem bunten Diagramm darstellen können. Aus der Idee wurde also ein Plan und schließlich ein Projekt.</p>
+<p>Die Aufgabe lautet also: Ein Script soll in regelmäßigen Abständen Test-Dateien herunterladen. Die Dauer dafür und der Zeitpunkt des Tests schreibe ich in eine CSV-Datei, die mit GoogleDrive synchronisiert ist. Von dort werden die Ergebnisse im DataStudio von Google automatisch ausgelesen.</p>
+<h2 id="schritt-1---das-automatisierte-download-script">Schritt 1 - das automatisierte Download-Script</h2>
+<p>Damit der Test möglichst unterschiedliche Szenarien abdeckt, wollte ich nicht nur eine sondern mehrere Dateien verschiedener Größe anbieten. Dazu habe ich auf http://speedtest.ftp.otenet.gr zurückgegriffen. Dort werden verschiedene Dateigrößen zum Download angeboten.</p>
+<p>Außerdem will ich jede Datei mehr als ein mal herunterladen und schließlich nach jedem Download eine Pause einlegen.</p>
+<p>Die Hauptfunktionen möchte ich kurz erläutern:</p>
+<ul>
+<li>In den ersten beiden Schleife wird jeder Eintrag aus <strong>sourceFileSizes</strong> einmal durchlaufen und zwar so oft, wie mit <strong>loops</strong> festgelegt:</li>
+</ul>
+<p>for sourceFileSize in &ldquo;${sourceFileSizes[@]}&rdquo;;
+do
+while [ $i -lt $loops ]; do
+&hellip;
+done
+done</p>
+<ul>
+<li>Innerhalb der Schleife wird im Grund nur die Test-Datei per wget an einen definierten Ort heruntergeladen. Außerdem soll natürlich die Dauer dafür gemessen werden. Das funktioniert ganz einfach und extrem präzise in Nanosekunden bzw. über den Unix-Timestamp.</li>
+</ul>
+<p>startTime=$(($(date +%s%N)))</p>
+<p>wget &ndash;quiet
+&ndash;output-document=$destinationFolder$sourceFileSize&quot;Mb.db.tmp&quot;
+$sourceBaseUrl$sourceFileSize&quot;Mb.db&quot;</p>
+<p>endTime=$(($(date +%s%N)))</p>
+<p>delayNsecs=$(($endTime - $startTime))</p>
+<ul>
+<li>Die Berechnung der Geschwindigkeit ist etwas kompliziert, da ich auf der Shell nicht ohne weiteres Dezimalzahlen (float numbers) verarbeiten kann. Ich muss also mit <strong>awk</strong> arbeiten. Awk hingegen greift nicht auf die lokalen Variablen zu. Diese muss ich mit dem Parameter -v erst explizit übergeben. Am Ende entstehen dann Zeile wie diese, die im Grunde nur MByte in MBit umrechnen (mit 8 multiplizieren) und dann durch die Dauer in Sekunden dividieren. Das Ergebnis ist dann die Geschwindigkeit <strong>MBit/Sekunde</strong> - und damit perfekt vergleichbar mit der versprochenen Geschwindigkeit des Anbieters.</li>
+</ul>
+<p>MBitPerSec=
+$(awk
+-v sourceFileSize=$sourceFileSize
+-v delayMSecs=$delaySecs
+&lsquo;BEGIN{printf &ldquo;%.4f\n&rdquo;, ( sourceFileSize * 8 / delayMSecs)}&rsquo;)</p>
+<ul>
+<li>Schließlich wird der ganze Spaß natürlich noch in die CSV-Datei geschrieben:</li>
+</ul>
+<p>echo &ldquo;$(date &lsquo;+%Y-%m-%d %H:%M:%S&rsquo;),
+$delayNsecs,
+$delaySecs,
+$MBitPerSec,
+$sourceFileSize&quot;MByte&rdquo;&quot;
+&raquo; $journalFile</p>
+<ul>
+<li>Am Ende wird entweder das Script verlassen, wenn zuletzt die 1GByte-Datei heruntergeladen wurde. Da das Script mehrmals am Tag läuft, will ich das Volumen nicht unnötig strapazieren. Oder es wird eine definierte Pause eingelegt, damit sich die Leitung abkühlen kann.</li>
+</ul>
+<p>Das komplette Script gibt es auf <a href="https://github.com/nickyreinert/speedTest/blob/master/speedTest.sh">github.</a></p>
+<p>Das ganze muss nun nur in der CronTabelle des Systems regelmäßig aufgerufen werden. Der Zielordner</p>
+<p>/share/Download/Speedtest/</p>
+<p>wird außerdem mit GoogleDrive synchronisiert.</p>
+<p>Die fertige Datei besitzt fünf Spalten, die den Zeitpunkt, die Dauer und die heruntergeladene Datei beinhalten:</p>
+<p>column1,column2,column3,column4,column5
+2017-10-31 11:48:36,1072562724,1.072562724,7.45877124105611,1MByte
+2017-10-31 11:48:37,899356112,0.899356112,8.89525282950432,1MByte
+2017-10-31 11:48:38,1002897956,1.002897956,7.97688334305469,1MByte</p>
+<p>Anmerkung: Ich nutze den Netzwerkspeicher von QNAP, das TS-431. Für diesen wird ein Backup &amp; Sync-Plugin angeboten, das lokale Ordner mit einem Ordner in GoogleDrive synchronisiert.</p>
+<h2 id="schritt-2---der-community-connector-für-das-datastudio">Schritt 2 - der Community Connector für das DataStudio</h2>
+<p>Das Google DataStudio bringt von Hause aus schon eine Reihe von Schnittstellen mit, über die es möglich ist, auf z.B. Datenbanken oder Online-Dienste zurückzugreifen um in Echzeit an allerlei Messreihen zu kommen. Doch leider fehlt hier bisher ein Verbindung zu CSV-Dateien. Den Connector musste ich mir also erst selber erstellen.</p>
+<p>Der Connector ist im Moment noch sehr einfach gehalten. Es ermöglicht keine großen Anpassungen und ist sicherlich noch verbesserungsfähig (<a href="https://datastudio.google.com/datasources/create?connectorId=AKfycbxxafV6ymAs6S2DRADTGKzJ2aNCdwrnMgRIMt-KJAzoO-YESKc19U9z2w">Link zum Connector</a>):</p>
+<p>function getConfig() {
+var config = {
+configParams: [
+{
+type: &ldquo;INFO&rdquo;,
+name: &ldquo;csvConnector&rdquo;,
+text: &ldquo;The CSV-Connector currently supports a fixed amount of three columns. Name them column1, column2 and column3. Column1 is the dimension, column2 holds the metrics and column3 may be used as an additional category. You may change the label in the next window.&rdquo;
+}
+,{
+type: &ldquo;TEXTINPUT&rdquo;,
+name: &ldquo;url&rdquo;,
+helpText: &ldquo;If you want to use a CSV-file from GoogleDrive, use this format where 123 at the end is your document id: <a href="https://drive.google.com/uc?export=download&amp;id=123%22">https://drive.google.com/uc?export=download&id=123"</a>,
+displayName: &ldquo;Provide the url to your csv file.&rdquo;
+}</p>
+<pre><code>\]
+</code></pre>
+<p>};
+return config;</p>
+<p>};</p>
+<p>var csvDataSchema = [
+{
+name: &lsquo;column1&rsquo;,
+label: &lsquo;column1&rsquo;,
+dataType: &lsquo;STRING&rsquo;,
+semantics: {
+conceptType: &lsquo;DIMENSION&rsquo;
+}
+},
+{
+name: &lsquo;column2&rsquo;,
+label: &lsquo;column2&rsquo;,
+dataType: &lsquo;NUMBER&rsquo;,
+semantics: {
+&ldquo;isReaggregatable&rdquo;: true,
+conceptType: &lsquo;METRIC&rsquo;
+}
+},{
+name: &lsquo;column3&rsquo;,
+label: &lsquo;column3&rsquo;,
+dataType: &lsquo;STRING&rsquo;,
+semantics: {
+&ldquo;isReaggregatable&rdquo;: false,
+conceptType: &lsquo;DIMENSION&rsquo;
+}</p>
+<p>}
+];</p>
+<p>function getSchema(request) {</p>
+<p>return {schema: csvDataSchema};</p>
+<p>};</p>
+<p>function isAdminUser() {
+return true;
+}</p>
+<p>function csvToObject(array) {</p>
+<p>var headers = array[0];</p>
+<p>var jsonData = [];
+for ( var i = 1, length = array.length; i &lt; length; i++ )
+{
+var row = array[i];
+var data = {};
+for ( var x = 0; x &lt; row.length; x++ )
+{
+data[headers[x]] = row[x];
+}
+jsonData.push(data);</p>
+<pre><code>}
+
+return jsonData;
+</code></pre>
+<p>}
+/*
+function stringToObject(string, separator)
+{
+var object = {};</p>
+<p>var array = string.split(separator);</p>
+<p>for (var i = 0; i &lt; array.length; i++) {</p>
+<pre><code>if (i % 2 === 0) { 
+
+  object\[array\[i\]\] = array\[i + 1\];
+
+} else { 
+
+  continue;
+  
+}
+</code></pre>
+<p>}</p>
+<p>return object
+}
+*/</p>
+<p>function getData(request) {</p>
+<p>/*
+I DONT GET SPLIT TO WORK SO FOR NOW THIS ONLY SUPPORTS PREPARED AND WORKING SHARING URL
+FOR GOOGLE DRIVE
+if (request.configParams.isGoogleDrive == &ldquo;true&rdquo;)
+{
+var urlString = request.configParams.url.toString();</p>
+<pre><code>var urlArray = urlString.split(&quot;?&quot;);
+
+  var params = stringToObject(urlArray, '&quot;');
+
+  var docId = params\[&quot;id&quot;\];
+
+  var url = &quot;https://drive.google.com/uc?export=download&amp;id=&quot; + docId;
+</code></pre>
+<p>} else {</p>
+<pre><code>  var url = request.configParams.url;
+</code></pre>
+<p>}
+*/</p>
+<p>var url = request.configParams.url;</p>
+<p>var dataSchema = [];</p>
+<p>request.fields.forEach(function(field) {
+for (var i = 0; i &lt; csvDataSchema.length; i++) {
+if (csvDataSchema[i].name === field.name) {
+dataSchema.push(csvDataSchema[i]);
+break;
+}
+}
+});</p>
+<p>var csvFile = UrlFetchApp.fetch(url);</p>
+<p>var csvData = Utilities.parseCsv(csvFile);</p>
+<p>var sourceData = csvToObject(csvData);</p>
+<p>var data = [];</p>
+<p>sourceData.forEach(function(row) {
+var values = [];
+dataSchema.forEach(function(field) {
+switch(field.name) {
+case &lsquo;column1&rsquo;:
+values.push(row.column1);
+break;
+case &lsquo;column2&rsquo;:
+values.push(row.column2);
+break;
+case &lsquo;column3&rsquo;:
+values.push(row.column3);
+break;
+default:
+values.push(&rsquo;&rsquo;);
+}
+});
+data.push({
+values: values
+});
+});</p>
+<p>return {
+schema: dataSchema,
+rows: data
+};</p>
+<p>};</p>
+<p>function getAuthType() {
+var response = {
+&ldquo;type&rdquo;: &ldquo;NONE&rdquo;
+};
+return response;
+}</p>
+<p> </p>
+<p>Leider unterstützt der Connector bisher nur drei Spalten mit vorgegebene Spalten-Namen. In einer nächsten Version sollte der Connector die Datei bereits im Vorfeld auslesen um die Spalten-Konfiguration selber zu erkennen.</p>
+<p> </p>
+<h2 id="schritt-3---darstellung-im-datastudio">Schritt 3 - Darstellung im DataStudio</h2>
+<p>Im Data Studio ein Diagramm erstellen, dass die Messwerte der regelmäßigen Test-Download darstellt: Darum muss ich mich noch kümmern.</p>
+<p> </p>
+<h2 id="links-und-noch-mehr-links">Links und noch  mehr Links</h2>
+<p><a href="https://github.com/nickyreinert/speedTest/blob/master/speedTest.sh">Link zu GitHub mit dem Quellcode</a></p>
+<p><a href="https://datastudio.google.com/datasources/create?connectorId=AKfycbxxafV6ymAs6S2DRADTGKzJ2aNCdwrnMgRIMt-KJAzoO-YESKc19U9z2w">Link zum Connector</a></p>
+<p><a href="https://developers.google.com/datastudio/connector/get-started">Einführung und Doku auf developers.google.com</a></p>
+<p><a href="https://www.benlcollins.com/data-studio/community-connector/">kleinere Beispiele auf benlcollins.com</a></p>
+<p><a href="https://github.com/google/datastudio">andere Projekte auf github.com</a></p>
+
+        
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>development</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Download-Geschwindigkeit messen und in Google DataStudio darstellen - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
+      
+    </item><item>
       <title>Thema Datenschutz: Von Gesetzen, Verordnungen und Richtlinien</title>
       <link>https://nickyreinert.de/2017/2017-11-02-thema-datenschutz-von-gesetzen-verordnungen-und-richtlinien/</link>
       <pubDate>Thu, 02 Nov 2017 00:00:00 +0000</pubDate>
-      
+      <author></author>
       <guid>https://nickyreinert.de/2017/2017-11-02-thema-datenschutz-von-gesetzen-verordnungen-und-richtlinien/</guid>
+      <description>//Update 10.03.2018 - Anpassung zur e-Privacy-VO und etwas präzsiere Beschreibung des Unterschieds Verordnung / Richtlinie
+Ich will im Folgenden nicht auf die …</description>
       
-      <description>&lt;p&gt;&lt;em&gt;//Update 10.03.2018 - Anpassung zur e-Privacy-VO und etwas präzsiere Beschreibung des Unterschieds Verordnung / Richtlinie&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;Ich will im Folgenden nicht auf die detaillierten  Auswirkungen der aktuellen und noch kommenden Verordnungen und Gesetze zum Thema Datenschutz eingehen. Das ist selbst mir zu komplex. Und langweilig. Allerdings habe ich bei meiner Recherche zu der aktuellen Situation festgestellt, dass viele Themen, zumindest die e-Privacy-Verordnung, noch gar nicht in Sack und Tüten sind. Doch gerade diese Verordnung soll doch den Datenschutz in der elektronischen Datenverarbeitung regeln? Um diesen Unwägbarkeiten zu begegnen habe ich mal versucht, die wichtigsten Fakten zusammenzutragen und etwas verständlicher zu formulieren.&lt;/p&gt;</description>
       
-    </item>
-    
-    <item>
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt Thema Datenschutz: Von Gesetzen, Verordnungen und Richtlinien und bietet praktische Einblicke in das Thema.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Web, IT, Tools</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p><em>//Update 10.03.2018 - Anpassung zur e-Privacy-VO und etwas präzsiere Beschreibung des Unterschieds Verordnung / Richtlinie</em></p>
+<p>Ich will im Folgenden nicht auf die detaillierten  Auswirkungen der aktuellen und noch kommenden Verordnungen und Gesetze zum Thema Datenschutz eingehen. Das ist selbst mir zu komplex. Und langweilig. Allerdings habe ich bei meiner Recherche zu der aktuellen Situation festgestellt, dass viele Themen, zumindest die e-Privacy-Verordnung, noch gar nicht in Sack und Tüten sind. Doch gerade diese Verordnung soll doch den Datenschutz in der elektronischen Datenverarbeitung regeln? Um diesen Unwägbarkeiten zu begegnen habe ich mal versucht, die wichtigsten Fakten zusammenzutragen und etwas verständlicher zu formulieren.</p>
+<h2 id="datenschutz-im-europäischen-recht">Datenschutz im europäischen Recht</h2>
+<p>Zunächst ein mal zu den europäischen Verordnungen DSGVO und  e-Privacy-Verordnung, kurz ePrivVO.</p>
+<p>Die DSGVO ist ab dem 25. Mai 2018 rechtsgültig und wird damit die alte <a href="http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=CELEX:31995L0046:DE:HTML">Richtlinie 95/46/EG</a> zum Datenschutz ablösen. Die DSGVO ist allerdings „nur“ eine Verordnung, die den Datenschutz bzw. die Verarbeitung personenbezogener Daten im öffentlichen und privaten Bereich im Allgemeinen regelt.</p>
+<p>Der explizite Bezug zur elektronischen Datenverarbeitung (das Internet!) soll erst durch die e-Privacy-Verordnung (2002/58/EG) hergestellt werden. Diese regelt den Umgang mit Daten aus der elektronischen Datenverarbeitung. Die ePrivVo ersetzt damit die E-Privacy-Richtlinie <a href="http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2002:201:0037:0047:de:PDF">2002/58 EG</a> bzw. die Cookie-Richtlinie <a href="http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2009:337:0011:0036:de:PDF">2009/136/EG</a>. <strong>Aber Vorsicht</strong>: Trotzdem muss berücksichtigt werden, dass man mit dem Einsatz von Tracking-Pixeln bzw. Cookies unter Umständen auch personenbezogene Daten verarbeitet und damit indirekt natürlich schon jetzt im &ldquo;Rampenlicht der DSGVO steht&rdquo;.</p>
+<p>Die e-Privacy-Verordnung wird die DSGVO also ergänzen, nicht ersetzen. Sie ist aber noch nicht rechtsgültig. </p>
+<h2 id="ab-wann-gilt-die-e-privacy-verordnung">Ab wann gilt die e-Privacy-Verordnung?</h2>
+<p>Geplant ist es natürlich, dass die e-Privacy-Verordnung zusammen mit der DSGVO ab Mai 2018 in Kraft treten werden. Mittlerweile zeichnet sich aber ab, dass es erst in 2019 zu einer rechtsgültigen Umsetzung kommen wird.</p>
+<p>Die e-Privacy- Verordnung hat den Gesetzgebungsprozess bisher noch nicht vollständig durchschritten. Anfang des Jahres 2017 wurde ein erster Entwurf vorgestellt, über  den im Laufe des Jahres noch viel verhandelt wurde. Erst Ende Oktober hat das EU-Parlament einen finalen Entwurf auch angenommen.</p>
+<p>Als nächstes werden EU-Parlament, EU-Kommission und Mitgliedsstaaten im sogenannten Trilog über die endgültige Fassung diskutieren. Hier kann sich inhaltlich immer noch einiges ändern, nicht zuletzt, weil jetzt auch Lobbyverbände Einfluss nehmen können. Es bleibt also abzuwarten, ob die bisher sehr nutzerfreundliche Position erhalten bleibt.</p>
+<h2 id="warum-gibt-es-überhaupt-verordnung-anstatt-einer-richtlinie">Warum gibt es überhaupt Verordnung anstatt einer Richtlinie?</h2>
+<p>Verordnungen müssen in vollem Umfang in nationales Recht umgesetzt werden, Richtlinien können eher als Zielvorgabe verstanden werden (vgl. <a href="https://europa.eu/european-union/eu-law/legal-acts_de">europa.eu</a>). </p>
+<p>Das ist auch ein Grund, warum die bisherigen Richtlinien (wie z.B. die Cookie-Richtlinie) in ihrer Ausprägung eher schwammig war und es in der Folge in den europäischen Mitgliedsstaaten zu verschieden starken gesetzlichen Umsetzungen kam. So gibt es in Deutschland z.B. das <em>OptOut</em>, der Nutzer muss der Verwendung von Cookies widersprechen. In Belgien und Österreich gilt aber das <em>OptIn-Prinzip</em>, der Nutzer muss der Verwendung von Cookies zustimmen. Dennoch sind beide Vorgehen mit den Vorgaben der bisherigen Richtlinien vereinbar. Das soll sich mit den neuen Verordnungen ändern.</p>
+<p>Und natürlich mussten die Verordnungen an die geänderten technologischen Rahmenbedingungen angepasst werden.</p>
+<h2 id="was-ist-in-deutschland-zu-beachten">Was ist in Deutschland zu beachten?</h2>
+<p>In Deutschland verhielt es sich bisher ganz ähnlich. Das BDSG ist ein Gesetz, dass den Datenschutz ganz allgemein regelt. Erst das TMG und das TKG haben den Bezug zur elektronischen Datenverarbeitung hergestellt.</p>
+<p>Diese sollen nun, theoretisch, durch die DSGVO und die e-Privacy-Verordnung abgelöst werden. Aus diesem Grund gibt es auch ein &ldquo;<a href="https://www.gdd.de/downloads/aktuelles/stellungnahmen/2.%20Entwurf_Stand_23.11.2016_DSAnpUG-EU.pdf">Datenschutzanpassungsgesetz&rdquo;</a> (DSAnpUG-EU) sowie das neue Bundesdatenschutzgesetz (BDSG-E, BDSG-neu oder BDSG n.F.). Das BDSG n.F. wird <a href="https://www.bvdnet.de/bdsg-n-f-dsanpug-eu-im-bundesgesetzblatt-veroeffentlicht/">am 25.05.2018 in Kraft</a> treten.</p>
+<h2 id="was-ist-das-problem">Was ist das Problem?</h2>
+<p>Erstmal ist es nicht so, dass alle Vorgaben aus dem DSGVO und der ePrivVO ohne weiteres in nationales Recht übernommen werden müssen. Denn die europäischen Verordnungen enthalten sog. Öffnungsklauseln. Das erlaubt dem deutschen Gesetzgeber, in bestimmten Bereichen durch nationale Gesetzen andere Vorgaben zu machen.</p>
+<p>Außerdem ist die ePrivVO ja noch nicht final beschlossen. Sie kann also noch gar nicht in deutsches Recht umgesetzt werden. Es bleibt also abzuwarten, was die nächsten Verhandlungen bringen. Im Moment kann sich noch einiges ändern.</p>
+<p> </p>
+<hr>
+<p> </p>
+<p>Ich bin zwar kein Rechtsanwalt, aber Datenschutzbeauftragter in einem Unternehmen, und habe deshalb eine Art Grundinteresse an der Thematik. Ich habe die Informationen selber zusammengetragen.Wer sich rechtssicher zu dem Thema informieren möchte, sollte natürlich einen Experten aufsuchen. Wer mehr zu dem Thema erfahren will, wird im Internet sehr schnell fündig.</p>
+<p>Zur weiteren Recherche empfehle ich die folgenden Seiten, die das Thema entweder kompakt genug oder sehr gut erklärt wiedergeben:</p>
+<ul>
+<li><a href="https://dsgvo.expert">dsgvo.expert</a></li>
+<li><a href="https://www.datenschutzbeauftragter-info.de">www.datenschutzbeauftragter-info.de</a></li>
+<li><a href="http://www.socialmediarecht.de/?s=dsgvo">Beitragsserie zum DSGVO auf socialmediarecht.de</a></li>
+<li><a href="https://netzpolitik.org/category/datenschutz/">netzpolitik.org</a></li>
+</ul>
+<p>Eine fast nicht mehr ganz so kompakte Übersicht, die aber auch viele Handlungsempfehlungen aus technischer Sicht enthält gibt es auf <a href="https://binary-butterfly.de/artikel/dsgvo-so-viel-panik-fuer-nichts-neues-und-warum-es-trotzdem-ein-grundlegendes-problem-gibt">binary-butterfly.de</a>.</p>
+
+        
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>blog</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Thema Datenschutz: Von Gesetzen, Verordnungen und Richtlinien - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
+      
+    </item><item>
       <title>Wie wirken sich viele 301 Weiterleitungen auf die  Performance aus?</title>
       <link>https://nickyreinert.de/2017/2017-10-26-wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/</link>
       <pubDate>Thu, 26 Oct 2017 00:00:00 +0000</pubDate>
-      
+      <author></author>
       <guid>https://nickyreinert.de/2017/2017-10-26-wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/</guid>
+      <description>Um Weiterleitungen kommt man fast nicht herum. Vor allem im Bereich der Suchmaschinenoptimierung (SEO) sollte man vermeiden, dass es auf der Website zu …</description>
       
-      <description>&lt;p&gt;Um Weiterleitungen kommt man fast nicht herum. Vor allem im Bereich der Suchmaschinenoptimierung (SEO) sollte man vermeiden, dass es auf der Website zu 404-Fehlern kommt - also Ressourcen, die nicht (mehr) vorhanden sind.&lt;/p&gt;
-&lt;p&gt;Ein Weg, um das zu beheben, ist die Einrichtung einer Weiterleitung von der alten, nicht mehr vorhandenen Ressource auf die neue Ressource.  Der HTTP-Statuscode dafür ist entweder 301 (temporär) oder 302 (für eine dauerhafte Weiterleitung). Weiterleitungen können z.B. mit einer .htaccess Datei eingerichtet werden. Dazu aktiviert man zunächst die sogenannte RewriteEngine, um eine URL zu einer anderen URL &amp;ldquo;weiterzuleiten&amp;rdquo;. Dann kann man beliebig viele, Regeln nach folgendem Prinzip festlegen (freilich gibt es noch weitaus mehr Möglichkeiten, wie z.B. reguläre Ausdrücke):&lt;/p&gt;</description>
       
-    </item>
-    
-    <item>
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt Wie wirken sich viele 301 Weiterleitungen auf die  Performance aus? und bietet praktische Einblicke in das Thema.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Web, IT, Tools</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Um Weiterleitungen kommt man fast nicht herum. Vor allem im Bereich der Suchmaschinenoptimierung (SEO) sollte man vermeiden, dass es auf der Website zu 404-Fehlern kommt - also Ressourcen, die nicht (mehr) vorhanden sind.</p>
+<p>Ein Weg, um das zu beheben, ist die Einrichtung einer Weiterleitung von der alten, nicht mehr vorhandenen Ressource auf die neue Ressource.  Der HTTP-Statuscode dafür ist entweder 301 (temporär) oder 302 (für eine dauerhafte Weiterleitung). Weiterleitungen können z.B. mit einer .htaccess Datei eingerichtet werden. Dazu aktiviert man zunächst die sogenannte RewriteEngine, um eine URL zu einer anderen URL &ldquo;weiterzuleiten&rdquo;. Dann kann man beliebig viele, Regeln nach folgendem Prinzip festlegen (freilich gibt es noch weitaus mehr Möglichkeiten, wie z.B. reguläre Ausdrücke):</p>
+<p>RewriteEngine On
+Redirect 302 /redirect0r/foobar/1/ /redirect0r/foobar/index.php
+Redirect 302 /redirect0r/foobar/2/ /redirect0r/foobar/index.php</p>
+<p>Wenn man nun von einem System (z.B. Joomla) auf ein anderes System (z.B. Wordpress) umzieht und dabei nicht nur auf eine veraltete URL sondern auf 100 URLs stößt, die im neuen System nicht mehr existieren, stellt sich oft die Frage: Was mache ich mit all den alten URLs, die ich im neuen System nicht exakt abbilden kann? Macht es Sinn, die htaccess-Datei mit zahllosen Weiterleitungen zu überfluten? Es kommen zu ersten Zweifeln: Die htaccess-Datei wird bei jedem Aufruf der Website geladen. Kann eine große htaccess-Datei sich also negativ auf die Performance der Seite auswirken?</p>
+<p>Die Frage hat auch mich beschäftigt und deshalb habe ich ein kleines PHP-Script geschrieben, dass helfen soll, die Antwort zu finden.</p>
+<h2 id="funktion">Funktion</h2>
+<p>Der Quellcode für das PHP-Script ist über <a href="https://github.com/nickyreinert/redirect0r">github</a> verfügbar. Das Script kann im Browser oder über die Kommandozeile aufgerufen werden. Sämtliche Einstellungen werden in einer JSON-Datei vorgenommen.</p>
+<p>Der Ablauf des Scripts ist relativ einfach. In einer Schleife schreibt es eine beliebige Anzahl von Weiterleitungs-Regeln in eine htaccess-Datei. Diese Regeln haben folgenden Aufbau:</p>
+<p>Redirect 302 /foobar/<strong><em>i</em></strong>/ /foobar/index.php</p>
+<p>/foobar ist der Ordner, der für die Messung verwendet wird. In diesem Ordner befindet sich auch die htaccess-Datei. i ist eine fortlaufende Ziffer, die mit jedem Schleifendurchlauf inkrementiert wird. Schließlich wird das Ziel der Weiterleitung mit /foobar/index.php angegeben. Der Ordner und die Zieldatei sowie der Inhalt der Zieldatei können angepasst werden.</p>
+<p>Nicht jeder Schleifendurchlauf schreibt in die htaccess-Datei und ruft Test-URL sofort auf. Das geschieht in definierbaren Abschnitten. Diese Schrittweite ist definierbar. Die Zeit für den Aufruf wird schließlich gemessen .</p>
+<p>Weiterhin ist es möglich, die Aufrufe innerhalb einer Schrittweite zu wiederholen, also mehrere Abfragen nacheinander, um z.B. in der späteren Auswertung aus den Ergebnissen einen Mittelwert zu errechnen. Nach jeder Abfrage kann außerdem eine cool-down-Phase stattfinden, bevor der nächste Abruf stattfindet..</p>
+<h2 id="messergebnisse">Messergebnisse</h2>
+<p>Die Messergebnisse offenbaren keine Überraschung. Je größer die Datei, desto größer die Antwortzeiten.  Im Detail heißt das:</p>
+<p>Gemessen wurden mit drei verschiedenen Methoden:</p>
+<ul>
+<li>auf einem lokalen Webserver (MacBook Pro mit 16 GByte RAM und 2,7 GHz i5) per Aufruf im Browser (local server)</li>
+<li>auf einem gehosteten Webserver (unbekannte Hardware) per Aufruf im Browser (remote server)</li>
+<li>auf einem gehosteten Webserver per Aufruf auf der Kommandozeile (remote server CLI)</li>
+</ul>
+<p>Als Zeilenlimitin der htaccess-Datei wurden 100.000 Zeilen gewählt. Die Schrittweite beträgt 5.000. Nach jedem Aufruf gab es eine Pause von 3 Sekunden. Insgesamt gab es drei Aufrufe je Zeilenanzahl. Über diese 3 Aufrufe zu einer bestimmten Zeilenanzahl wurde schließlich der Mittelwert errechnet.</p>
+<p>Bei 10.000 Zeilen wurde bei allen Methoden ca. 90 ms gemessen. Bei 20.000 Zeilen in der htaccess-Datei beträgt die Reaktionszeiten knapp das doppelte, aber immer noch recht unauffällige 185 ms. Ab da gehen die gemessenen Zeit leicht auseinander, der lokale Server scheint die schlechtere Performance zu haben.</p>
+<p>Bei 60.000 Zeilen wird bei allen Methoden die &ldquo;magische&rdquo; Grenze von 1 Sekunde überschritten. Die Antwortzeiten steigen jetzt nicht mehr proportional. Bei 100.000 Zeilen benötigt der lokale Server schon über 4 Sekunden für die Antwort. Der gehostete Webserver braucht dafür über knapp 3 Sekunden.</p>
+<p>[caption id=&ldquo;attachment_1580&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/htaccess-geschwindigkeit.png"><img src="/2017/2017-10-26-wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/images/htaccess-geschwindigkeit-300x186.png" alt="Geschwindigkeit bei wachsender htaccess-Datei"></a> Geschwindigkeit bei wachsender htaccess-Datei[/caption]</p>
+<h2 id="fazit">Fazit</h2>
+<p>Natürlich wirkt sich eine große htaccess-Datei auf die Performance des Servers auf. Denn wie bereits bemerkt, muss der Webserver diese Datei bei jeder Anfrage öffnen und verarbeiten. Allerdings ist der negative Einfluss ziemlich gering und macht sich erst bei einer sehr großen Anzahl von Zeilen bemerkbar.</p>
+<p>Eine htaccess-Datei mit 10.000 Zeilen verringert die Antwortzeit kaum. Allerdings steigt die Antwortzeit überproportional an. Bei 100.000 Zeilen ist sie bereits 50 mal langsamer.</p>
+<p>Im Bereich ab 40.000 Zeilen dürfte der Einfluss auch nach außen hin spürbar sein. Natürlich hängt auch diese Erkenntnis stark von der verwendeten Hardware ab: Der lokale Webserver ist bei meinen Messungen etwas langsamer als der Server des Hosters.</p>
+<p>Wer eine htaccess-Datei mit 10.000 Weiterleitungen pflegt sollte grundsätzlich sein Konzept überdenken. Oft lässt sich das entweder durch einen sauberen Umzug bzw. eine Anpassung des neuen Systems oder durch Weiterleitungen mit regulären Ausdrücken besser lösen. Am besten ist es natürlich, wenn man gar nicht erst in die Verlegenheit kommt, Weiterleitungen nutzen zu müssen.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> apache, htacces, messung, php, redir, weiterleitung</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Wie wirken sich viele 301 Weiterleitungen auf die  Performance aus? - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
+      
+    </item><item>
       <title>XAMPP startet nicht mehr, nachdem eine php-Extension hinzugefügt wurde</title>
       <link>https://nickyreinert.de/2017/2017-10-19-xampp-startet-nicht-mehr-nachdem-eine-php-extension-hinzugefuegt-wurde/</link>
       <pubDate>Thu, 19 Oct 2017 00:00:00 +0000</pubDate>
-      
+      <author></author>
       <guid>https://nickyreinert.de/2017/2017-10-19-xampp-startet-nicht-mehr-nachdem-eine-php-extension-hinzugefuegt-wurde/</guid>
+      <description>Ich hatte hier neulich das Problem, dass ich die mongodb Extension für PHP aktivieren wollte und sich danach der Apache-Dienst nicht mehr starten ließ. Aber der …</description>
       
-      <description>&lt;p&gt;Ich hatte hier neulich das Problem, dass ich die mongodb Extension für PHP aktivieren wollte und sich danach der Apache-Dienst nicht mehr starten ließ. Aber der Reihe nach:&lt;/p&gt;
-&lt;p&gt;Das System ist OS 10.12.6 und ich nutze das XAMPP-Paket 7.1.9 mit entsprechend PHP 7.1. Außerdem habe ich mir homebrew installiert, da die Installation von pecl zu Umständlich (ich hätte alle möglichen  Abhängigkeiten installieren müssen). Mit homebrew habe ich mir also den aktuellen mongodb-Treiber installiert, das geht recht einfach mit:&lt;/p&gt;</description>
       
-    </item>
-    
-    <item>
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt XAMPP startet nicht mehr, nachdem eine php-Extension hinzugefügt wurde und bietet praktische Einblicke in das Thema.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Development, Programming, Code</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Ich hatte hier neulich das Problem, dass ich die mongodb Extension für PHP aktivieren wollte und sich danach der Apache-Dienst nicht mehr starten ließ. Aber der Reihe nach:</p>
+<p>Das System ist OS 10.12.6 und ich nutze das XAMPP-Paket 7.1.9 mit entsprechend PHP 7.1. Außerdem habe ich mir homebrew installiert, da die Installation von pecl zu Umständlich (ich hätte alle möglichen  Abhängigkeiten installieren müssen). Mit homebrew habe ich mir also den aktuellen mongodb-Treiber installiert, das geht recht einfach mit:</p>
+<p>brew update
+brew install php71-mongodb</p>
+<p>Danach lässt sich die Extension in der /Applications/XAMPP/xamppfiles/etc/php.ini Datei aktivieren:</p>
+<p>extension=&quot;/usr/local/opt/php71-mongodb/mongodb.so&quot;</p>
+<p>Soweit. So einfach. Das Problem: Nachdem ich diese Zeile in der php.ini Datei hinzugefügt hatte, ließ sich der Apache-Dienst nicht mehr über die XAMPP-Oberfläche starten, obwohl diese mit root-Rechten ausgeführt wird. Leider gab auch die Log-Datei /Applications/XAMPP/xamppfiles/logs/error_log nicht viel her. Und auch nachdem ich die Zeile aus der php.ini-Datei entfernt habe, trat das Problem weiter auf. Ich bekam den Web-Server also nicht zum laufen und an keiner Stelle in den Log-Dateien war ersichtlich, was nicht stimmte.</p>
+<p>[caption id=&ldquo;attachment_1567&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/xampp-startet-nicht-mehr-nachdem-eine-php-extension-hinzugefuegt-wurde/XAMPP-UI-in-OS-X.png"><img src="/2017/2017-10-19-xampp-startet-nicht-mehr-nachdem-eine-php-extension-hinzugefuegt-wurde/images/XAMPP-UI-in-OS-X-300x209.png" alt="XAMPP UI in OS X um den Web-Server zu starten"></a> XAMPP UI in OS X um den Web-Server zu starten[/caption]</p>
+<h2 id="recherche-der-aufgerufenen-kommandos">Recherche der aufgerufenen Kommandos</h2>
+<p>Also musste ich mich auf die Fehlersuche machen. Und das ist recht umständlich, denn der Klick auf den Button im XAMPP-UI stößt eine etwas längere Befehlskette an an deren Ende der Start des http-Daemons steht:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">/Applications/XAMPP/xamppfiles/ctlscript.sh start apache
+</span></span><span class="line"><span class="ln">2</span><span class="cl">-&gt; 
+</span></span><span class="line"><span class="ln">3</span><span class="cl">/Applications/XAMPP/xamppfiles/apache2/scripts/ctl.sh start
+</span></span><span class="line"><span class="ln">4</span><span class="cl">-&gt;
+</span></span><span class="line"><span class="ln">5</span><span class="cl">/Applications/XAMPP/xamppfiles/xampp startapache 
+</span></span><span class="line"><span class="ln">6</span><span class="cl">-&gt; 
+</span></span><span class="line"><span class="ln">7</span><span class="cl">/Applications/XAMPP/xamppfiles/bin/apachectl -k start -E /Applications/XAMPP/xamppfiles/logs/error_log -DSSL -DPHP
+</span></span><span class="line"><span class="ln">8</span><span class="cl">-&gt;
+</span></span><span class="line"><span class="ln">9</span><span class="cl">/Applications/XAMPP/xamppfiles/bin/httpd -k start -E /Applications/XAMPP/xamppfiles/logs/error_log -DSSL -DPHP
+</span></span></code></pre></div><p>Ich hab mir also den letzten Aufruf geschnappt und auf der Konsole ausgeführt. Dort erhielt ich den ersten entscheidenen Hinweis - die log-Dateien waren nicht schreibbar:</p>
+<p>(13)Permission denied: AH00086: httpd: could not open error log file /Applications/XAMPP/xamppfiles/logs/error_log.
+AH00548: NameVirtualHost has no effect and will be removed in the next release /Applications/XAMPP/xamppfiles/etc/extra/httpd-vhosts.conf:40
+(13)Permission denied: AH00072: make_sock: could not bind to address [::]:80
+(13)Permission denied: AH00072: make_sock: could not bind to address 0.0.0.0:80
+no listening sockets available, shutting down</p>
+<p>Das lässt sich schnell mit folgendem Aufruf beheben:</p>
+<p>sudo chmod a+w /Applications/XAMPP/xamppfiles/logs/error_log</p>
+<p>Damit war es natürlich noch nicht getan. Erst jetzt konnte ich dem error.log entnehmen, was das eigentliche Problem war:</p>
+<p>AH00548: NameVirtualHost has no effect and will be removed in the next release /Applications/XAMPP/xamppfiles/etc/extra/httpd-vhosts.conf:40
+(13)Permission denied: AH00072: make_sock: could not bind to address [::]:80
+(13)Permission denied: AH00072: make_sock: could not bind to address 0.0.0.0:80
+no listening sockets available, shutting down
+AH00015: Unable to open logs</p>
+<h2 id="lösung---fehlende-rechte">Lösung - fehlende Rechte</h2>
+<p>Im Grunde war ja schon klar, was getan werden musste: Der Aufruf mit sudo. Damit lässt sich der Apache-Dienst also zumindest erstmal starten:</p>
+<p>sudo /Applications/XAMPP/xamppfiles/bin/httpd -k start -E /Applications/XAMPP/xamppfiles/logs/error_log -DSSL -DPHP</p>
+<p>Das eigentliche Problem bleibt freilich bestehen: Was hat das mit der php-Extension zu tun? Liegt es an dem mongodb-Treiber selber oder ist es ein generelles Problem? Bisher bin ich noch nicht dahinter gestiegen. Aber zumindest lässt sich der Web-Server erstmal wieder starten.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> mongodb, osx, php, xampp</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>development</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>XAMPP startet nicht mehr, nachdem eine php-Extension hinzugefügt wurde - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
+      
+    </item><item>
       <title>SSL-Verifizierung mit PHP schlägt fehlt (Fehler 14090086)</title>
       <link>https://nickyreinert.de/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/</link>
       <pubDate>Sat, 14 Oct 2017 00:00:00 +0000</pubDate>
-      
+      <author></author>
       <guid>https://nickyreinert.de/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/</guid>
+      <description>Wenn dich PHP mit dieser Fehlermeldung (oder einer ähnlichen Fehlernummer) begrüßt, dann liegt es wohl daran, dass beim Abruf einer SSL-Ressource die Identität …</description>
       
-      <description>&lt;p&gt;Wenn dich PHP mit dieser Fehlermeldung (oder einer ähnlichen Fehlernummer) begrüßt, dann liegt es wohl daran, dass beim Abruf einer SSL-Ressource die Identität nicht verifiziert werden konnte. Und das ist auch gut so, denn der Sinn von SSL ist ja das Herstellen einer gesicherten Verbindung.&lt;br&gt;
-So sieht die Fehlermeldung bei Verwendung von &lt;em&gt;file_get_contents();&lt;/em&gt; aus. Aber auch andere Funktionen, mit denen man auf externe Ressourcen verweisen kann, werfen diesen Fehler, wie z.B. &lt;em&gt;imagecreatefrompng();&lt;/em&gt;.&lt;/p&gt;</description>
       
-    </item>
-    
-    <item>
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt SSL-Verifizierung mit PHP schlägt fehlt (Fehler 14090086) und bietet praktische Einblicke in das Thema.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Security, Web, SSL</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Wenn dich PHP mit dieser Fehlermeldung (oder einer ähnlichen Fehlernummer) begrüßt, dann liegt es wohl daran, dass beim Abruf einer SSL-Ressource die Identität nicht verifiziert werden konnte. Und das ist auch gut so, denn der Sinn von SSL ist ja das Herstellen einer gesicherten Verbindung.<br>
+So sieht die Fehlermeldung bei Verwendung von <em>file_get_contents();</em> aus. Aber auch andere Funktionen, mit denen man auf externe Ressourcen verweisen kann, werfen diesen Fehler, wie z.B. <em>imagecreatefrompng();</em>.</p>
+<p>Warning: file_get_contents(): SSL operation failed with code 1.
+OpenSSL Error messages:
+error:14090086:SSL routines:ssl3_get_server_certificate:certificate
+verify failed in /website/script.php
+on line 50</p>
+<p>Warning: file_get_contents():
+Failed to enable crypto in /website/script.php<br>
+on line 50</p>
+<p>Warning: file_get_contents(<a href="https://www.nickyreinert.de/foobar.json%29">https://www.nickyreinert.de/foobar.json)</a>:
+failed to open stream: operation failed in /website/script.php<br>
+on line 50</p>
+<p>Die Erklärung ist simpel: PHP kennt den Aussteller des Zertifikates für <a href="https://www.nickyreinert.de">https://www.nickyreinert.de</a> nicht und verweigert aus Sicherheitsgründen den Aufbau einer Verbindung. Die Ursachen hingegen können vielfältig sein, oft ist der Aussteller des Zertifikats z.B. nicht bekannt. Wir müssen also entweder dafür sorgen, dass PHP dem Aussteller vertraut oder festlegen, dass PHP die Zertifikate gar nicht erst prüft.</p>
+<h2 id="verifizierung-des-ssl-hosts-unterdrücken">Verifizierung des SSL Hosts unterdrücken</h2>
+<p>Das ist die quick&rsquo;n&rsquo;dirty Lösung. Zumindest <em>file_get_contents()</em>; kann mit Parametern gefüttert werden, die die Verifizierung der Ressource unterdrücken:</p>
+<p>$stream = stream_context_create(array(    
+$stream = stream_context_create(array(
+&ldquo;ssl&rdquo;=&gt;array(     
+&ldquo;verify_peer&rdquo;=&gt; false,    
+&ldquo;verify_peer_name&rdquo;=&gt; false, ),
+&lsquo;http&rsquo; =&gt; array(    
+&rsquo;timeout&rsquo; =&gt; 30     ) )     );</p>
+<p>$result = file_get_contents($url, 0, $stream);</p>
+<p>Wer auf eine eigene Ressource zurückgreift, z.B. im lokalen Netz oder zu Testzwecken, kann damit leben. Aus Sicherheitsgründen ist die Lösung allerdings nicht zu empfehlen. Außerdem erlaubt nicht jede Funktion die Angabe eines Stream-Contextes, wie z.B. <em>imagecreatefromjpeg();</em></p>
+<h2 id="die-zertifikatskette-manuell-einrichten">Die Zertifikatskette manuell einrichten</h2>
+<p>Man kommt also nicht darum, die saubere Lösung zu nutzen. Dazu muss man wissen, dass es in den allermeisten Fällen nicht nur um das eine Zertifikat geht, sondern um die gesamte Zertifikatskette. Diese beinhaltet auch die Zertifikate der Stellen, die dem infragekommenden Server, also <a href="https://www.nickyreinert.de">https://www.nickyreinert.de</a>, das Zertifikat ausgestellt haben. Wenn PHP diese Stellen nicht kennt, geht es auch davon aus, dass die von dort ausgestellten Zertifikate nicht gültig sind.</p>
+<p><a href="https://www.nickyreinert.de/files/1561/ssl-zertifikats-kette.png"><img src="/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/images/ssl-zertifikats-kette-300x219.png" alt=" SSL Zertifikats-Kette mit den Intermediate Zertifikaten"></a></p>
+<p>SSL Zertifikats-Kette mit den Intermediate Zertifikaten</p>
+<p>Um die Zertifikatskette zu erhalten, kannst du einen Service wie <a href="https://whatsmychaincert.com/">https://whatsmychaincert.com/</a> nutzen. Dieser liefert dir eine Datei mit der  kompletten Zertifikatskette. Oder du machst dich selber auf die Suche. Jedes Zertfikat enthält den Namen des Ausstellers bzw. den Typ des Zertifikats. Damit lassen sich die notwendigen Zwischenzertifkate auch manuell zusammenstellen.</p>
+<h2 id="php-die-zertifikatskette-mitteilen">PHP die Zertifikatskette mitteilen</h2>
+<p>Die Datei mit der Zertifikatskette gehört nun, oh Wunder, an einen Ort, den PHP erreichen kann. Dann musst du PHP noch mitteilen, dass es auch diese Zertifikatskette berücksichtigen soll. Auch das passiert über den Stream-Context, den ich oben schon angesprochen habe. Doch diesmal erlauben wir PHP, den SSL-Host zu verfizieren und verweisen auf die Zertifikatskette, die wir oben erstellt haben:</p>
+<p>$stream = stream_context_create(array(
+&ldquo;ssl&rdquo;=&gt;array(    
+&ldquo;cafile&rdquo; =&gt; &ldquo;<a href="https://www.nickyreinert.de.pem">www.nickyreinert.de.pem</a>&rdquo;,    
+&ldquo;verify_peer&rdquo;=&gt; true,    
+&ldquo;verify_peer_name&rdquo;=&gt; true, ),&lsquo;http&rsquo; =&gt; array(    
+&rsquo;timeout&rsquo; =&gt; $this-&gt;configUrlTimeOut     ) )
+;
+$config = file_get_contents($url, 0, $stream);</p>
+<p>Geschafft. PHP sollte nun, zur Laufzeit, den SSL-Host überprüfen und dabei auf die Zertifikate zurückgreifen, die die Authentizität einwandfrei bestätigen.</p>
+<p>Man kann den Verweis auch an anderer Stelle global definieren. Die PHP-Funktion openssl_get_cert_locations(); teilt uns direkt mit, wo PHP nach gültigen Zertifikaten sucht:</p>
+<p>Array
+(
+[default_cert_file] =&gt; /Applications/XAMPP/xamppfiles/share/openssl/cert.pem
+[default_cert_file_env] =&gt; SSL_CERT_FILE
+[default_cert_dir] =&gt; /Applications/XAMPP/xamppfiles/share/openssl/certs
+[default_cert_dir_env] =&gt; SSL_CERT_DIR
+[default_private_dir] =&gt; /Applications/XAMPP/xamppfiles/share/openssl/private
+[default_default_cert_area] =&gt; /Applications/XAMPP/xamppfiles/share/openssl
+[ini_cafile] =&gt; /Applications/XAMPP/xamppfiles/share/curl/curl-ca-bundle.crt
+[ini_capath] =&gt;
+)</p>
+<p>Der entscheidende Parameter lautet <strong>ini_cafile</strong>. Diese wird in der php.ini mit dem Parameter</p>
+<p>openssl.cafile=/Applications/XAMPP/xamppfiles/share/curl/curl-ca-bundle.crt</p>
+<p>gesetzt. Die gleiche Info erhältst du auch über die bekannte Funktion phpinfo(), dort lautet der Parameter <strong>openssl.cafile</strong>.</p>
+<p>In der entsprechenden Datei liegen eine Menge von Root-Zertifikaten, bzw. Certificate-Authorities. Sprich die Aussteller, denen PHP grundsätzlich vertraut. Mitunter macht es mehr Sinn, diese Einstellung in der php.ini zu nutzen, damit auch curl() darauf zurückgreifen kann.</p>
+<p>Wenn du PHP-FPM benutzt, musst du den Parameter übrigens folgendermaßen ansprechen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">php_admin_value[openssl.cafile] = /Applications/XAMPP/xamppfiles/share/curl/curl-ca-bundle.crt
+</span></span></code></pre></div><h2 id="zusammenfassung">Zusammenfassung</h2>
+<p>Die SSL-Fehlermeldung hat ihren Sinn. PHP ist nicht in der Lage, die Authentizität des Servers zu überprüfen. Der korrekte Weg das Problem zu beheben, ist das Zertifikat der entsprechenden Seite herunterzuladen, die Intermediate-Zertifikate und das Root-Zertifikat zu besorgen und alle Zertifikate im PEM-Format in eine Text-Datei zu packen.<br>
+Danach kannst du entweder auf die URL zugreifen und über den Stream-Kontext auf diese Datei mit der Zertifikats-Kette verweisen, oder du legst in den globalen PHP-Einstellungen fest, dass PHP diese Datei beim nächsten Mal berücksichtigen soll.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> certificate-chain, curl, intermediate, php, ssl, zertifikate, zertifikatskette</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>SSL-Verifizierung mit PHP schlägt fehlt (Fehler 14090086) - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
+      
+    </item><item>
       <title>Welche Arten von SSL-Zertifikaten gibt es?</title>
       <link>https://nickyreinert.de/2017/2017-09-30-welche-arten-von-ssl-zertifikaten-gibt-es/</link>
       <pubDate>Sat, 30 Sep 2017 00:00:00 +0000</pubDate>
-      
+      <author></author>
       <guid>https://nickyreinert.de/2017/2017-09-30-welche-arten-von-ssl-zertifikaten-gibt-es/</guid>
+      <description>SSL-Zertifikate spielen seit einiger Zeit eine sehr wichtige Rolle. Zwar gibt es die verschlüsselte Datenübertragung von Websiten über https schon länger …</description>
       
-      <description>&lt;p&gt;SSL-Zertifikate spielen seit einiger Zeit eine sehr wichtige Rolle. Zwar gibt es die verschlüsselte Datenübertragung von Websiten über https schon  länger (bereits 1994 wurde die erste Version offiziell vorgestellt) aber erst in 2014 nahm die Bedeutung für SEO zu. &lt;a href=&#34;https://webmasters.googleblog.com/2014/08/https-as-ranking-signal.html&#34;&gt;Im August 2014&lt;/a&gt; hat Google bekannt gegeben, dass SSL nun zu den Ranking-Faktoren zählt.  Fast zeitgleich (Anfang 2017) haben die beiden bekanntesten Browser Chrome und Firefox eine neue Version vorgestellt. Von nun an werden Webseiten, die SSL nicht nutzen explizit als unsicher ausgezeichnet. Langfristig wird also kein Weg an einem SSL-Zertifikat vorbeiführen.&lt;/p&gt;</description>
       
-    </item>
-    
-    <item>
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt Welche Arten von SSL-Zertifikaten gibt es? und bietet praktische Einblicke in das Thema.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Security, Web, SSL</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>SSL-Zertifikate spielen seit einiger Zeit eine sehr wichtige Rolle. Zwar gibt es die verschlüsselte Datenübertragung von Websiten über https schon  länger (bereits 1994 wurde die erste Version offiziell vorgestellt) aber erst in 2014 nahm die Bedeutung für SEO zu. <a href="https://webmasters.googleblog.com/2014/08/https-as-ranking-signal.html">Im August 2014</a> hat Google bekannt gegeben, dass SSL nun zu den Ranking-Faktoren zählt.  Fast zeitgleich (Anfang 2017) haben die beiden bekanntesten Browser Chrome und Firefox eine neue Version vorgestellt. Von nun an werden Webseiten, die SSL nicht nutzen explizit als unsicher ausgezeichnet. Langfristig wird also kein Weg an einem SSL-Zertifikat vorbeiführen.</p>
+<p>Es gibt sehr viele Anbieter, bei denen man SSL-Zertifikate bestellen kann und die Preise sind sehr unterschiedlich. So bietet Lets Encrypt kostenlose Zertifikate an und andere Anbieter verlangen dafür mehrere hundert Euro im Jahr. Der Grund dafür ist, dass es natürlich verschiedene Unterscheidungen bei den Zertifikaten gibt. Die eine betrifft die Art, wie das Zertifikat überprüft wird und die andere beschreibt den Gültigkeitsbereich eines Zertifikats.</p>
+<h2 id="wie-funktioniert-die-ssl-zertifizierung">Wie funktioniert die SSL Zertifizierung?</h2>
+<p>Ich werde ich nicht zu tief ins Detail gehen und eigentlich reicht es auch aus, das Grundprinzip zu verstehen: Wenn du für deine Internetseite ein Zertifikat einrichten willst, musst du dafür einen sogenannten Private Key und einen Antrag, das CSR (Certificat Signing Request) erstellen. Der Private Key ist der Augapfel, den du beschützen musst. Der CSR enthält die Informationen zu der Person bzw. Organisation, die hinter der Website steckt, die das SSL-Zertifikat erhalten soll. Dazu gehören z.B. der Name, die Anschrift und vor allem natürlich die Domain, über die die Webseite erreichbar ist. Außerdem ist auch die CA in dem Zertifikat vertreten. Warum das wichtig ist, erkläre ich weiter unten.</p>
+<p>Das CSR wird dann an eine Zertifizierungsstelle geschickt (die sogenannte CA, Certification Authority), die dir als Antwort ein Zertifikat ausstellt.</p>
+<p>Dieses Zertifikat wird dann auf deinem Webserver installiert und jedem Browser, der die Seite aufruft, übermittelt. Der Browser erkennt dann die CA, die das Zertifikat ausgestellt hat und kann der Website dann &ldquo;vertrauen&rdquo; bzw. die verschlüsselte Verbindung aufbauen.</p>
+<p>[caption id=&ldquo;attachment_1612&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/welche-arten-von-ssl-zertifikaten-gibt-es/Zertifikat-U%CC%88bersicht.png"><img src="images/Zertifikat-U%CC%88bersicht-300x233.png" alt="Übersicht über den Zertifizierungsprozess"></a> Übersicht über den Zertifizierungsprozess[/caption]</p>
+<p>Das Zertifikat bzw. das SSL-Protokoll kann nun zwei Aufgaben erfüllen: Es verschlüsselt die Kommunikation und schafft idealerweise Vertrauen.</p>
+<h2 id="unterscheidung-nach-der-art-der-validierung">Unterscheidung nach der Art der Validierung</h2>
+<p>Ein Zertifikat soll also Vertrauen schaffen. Das heißt, <a href="https://www.ssl.com/article/dv-ov-and-ev-certificates/">der Inhaber des Zertifikates muss sich validieren</a>. Dies macht er gegenüber der Zertifizierungsstelle (<strong>Certification Authority</strong>, CA). Dafür gibt es drei Möglichkeiten. Die schnellste und daher oft günstigste Variante ist die <strong>Domain Validation</strong> (DV).Die CA prüft dabei lediglich, ob der Antragsteller Besitzer der Domain ist.</p>
+<p>Die nächst Stufe ist die <strong>Organization Validation</strong> (OV). Dabei enthält das Zertifikat auch Informationen zum Unternehmen bzw. dem Besitzer der Domain, wie den Namen und die Anschrift. Diese Informationen  werden von der CA zusätzlich geprüft und validiert.</p>
+<p>Die höchste Stufe schließlich ist die <strong>Extended Validation</strong> (EV). Auch hier wird natürlich die Authentizität des Antragstellers geprüft. Der Aufwand ist hier allerdings ungleich höher. So verlangt ssl.com z.B. die Übermittlung unterschriebener Dokumente, unter anderem von einem Notar. Außerdem werden verschiedene Eigenschaften des Unternehmens geprüft, nicht zuletzt die ladungsfähige Anschrift oder die Telefonnummer. Im Browser wird die EV  dann durch kenntlich gemacht, dass der Name des Unternehmens bzw. Besitzer neben der URL dargestellt wird:</p>
+<p>[caption id=&ldquo;attachment_1531&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;729&rdquo;]<a href="https://www.nickyreinert.de/files/welche-arten-von-ssl-zertifikaten-gibt-es/ssl-ev-darstellung-im-browser.png"><img src="/2017/2017-09-30-welche-arten-von-ssl-zertifikaten-gibt-es/images/ssl-ev-darstellung-im-browser.png" alt="Darstellung des Extended Validation Zertifikats im Browser"></a> Darstellung des Extended Validation Zertifikats im Browser[/caption]</p>
+<p>Natürlich können die Preisunterschiede auch andere Gründe haben, wie z.B. ganz banal die Kostenkalkulation des Anbieters oder die Aufwände, die z.B. der eigene Hoster mit der Pflege und Beantragung hat.</p>
+<h2 id="unterscheidung-nach-umfang-des-zertifikats">Unterscheidung nach Umfang des Zertifikats</h2>
+<p>Natürlich wird ein Zertifikat immer nur für einen bestimmten Adressaten, eine Domain ausgeschrieben, wie z.B. <a href="https://www.example.com">www.example.com</a>. Doch auch hier gibt es Ausnahmen. Wie zum Beispiel das Wildcard-Zertifikat. Damit ist es möglich, beliebig viele Sub-Domains ebenfalls in das Zertifikat mit aufzunehmen. So könnte ein Wildcard-Zertifikat für *.example.com jede Sub-Domain unterhalb von example.com verwendet werden: <a href="https://www.example.com">www.example.com</a>, mail.example.com, ftp.example.com und so weiter. Für untergeordnete Sub-Domains (sub.www.example.com) funktioniert das allerdings nicht.</p>
+<p>Daneben gibt es Multi-Domain-Zertifikate, auch SAN (Subject Alternative Name) genannt. Diese Zertifikate können für beliebige Domains ausgestellt werden. Die Domains müssen aber explizit angegeben werden. So kann ein SAN-Zertifikat für <a href="https://www.example.com">www.example.com</a>, ftp.foobar.org und mail.google.com genutzt werden.</p>
+<h2 id="was-ist-eine-zertifikats-kette">Was ist eine Zertifikats-Kette?</h2>
+<p>[caption id=&ldquo;attachment_1614&rdquo; align=&ldquo;alignright&rdquo; width=&ldquo;238&rdquo;]<a href="https://www.nickyreinert.de/files/welche-arten-von-ssl-zertifikaten-gibt-es/zertifikatskette.png"><img src="/2017/2017-09-30-welche-arten-von-ssl-zertifikaten-gibt-es/images/zertifikatskette-238x300.png" alt="Zertifikatskette mit Zwischenzertifikaten und Root-Zertifikaten"></a> Zertifikatskette mit Zwischenzertifikaten und Root-Zertifikaten[/caption]</p>
+<p>Nun ist es so, dass der Browser nicht nur blind irgendwelchen Zertifikaten vertraut. Die könnte man sich ja auch selber ausstellen. Aus diesem Grund gibt es so genannte Wurzel-Zertifikate bzw. Zertifikate von Root CAs. Es gibt also Organisationen, denen der Browser vertraut. Deren Zertifikate sind oft im lokalen Speicher installiert und der Browser kann prüfen, ob das  Zertifikat für <a href="https://www.example.com">www.example.com</a> von einer vertrauenswürdigen Organisation ausgestellt wurde. Denn das Zertifikat erhält ja auch den Verweis auf die Stelle, von der das Zertifikat einmal ausgestellt wurde. Oft ist es allerdings so, dass man Zertifikate nicht nur bei den Root CAs bestellt, sondern auch bei deren &ldquo;Delegierten&rdquo; - den Intermediate CAs. Um dem Browser nun klar zu machen, dass er auch der Intermediate CA vertrauen kann, muss eben diese Zertifikats-Kette übermittelt werden. Das ist im Grunde nichts weiter als ein Liste von Zertifikaten, mit denen die Vertrauenswürdigkeit der beteiligten Zertifikats-Stellen bescheinigt wird.</p>
+<p>Der Server hinter <a href="https://www.example.com">www.example.com</a> liefert also nicht nur das Zertifikat für die Seite selber aus, sondern auch alle Zwischenzertifikate - in der sogenannten Zertifikatskette.</p>
+
+        
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Welche Arten von SSL-Zertifikaten gibt es? - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
+      
+    </item><item>
       <title>Total Commander als SFTP-Client einrichten</title>
       <link>https://nickyreinert.de/2017/2017-09-29-total-commander-als-sftp-client-einrichten/</link>
       <pubDate>Fri, 29 Sep 2017 00:00:00 +0000</pubDate>
-      
+      <author></author>
       <guid>https://nickyreinert.de/2017/2017-09-29-total-commander-als-sftp-client-einrichten/</guid>
+      <description>Der Total Commander ist der bessere Explorer für Windows und auch wenn das Programm schon etwas in die Jahre gekommen ist: Vor allem im professionellen Bereich …</description>
       
-      <description>&lt;p&gt;Der Total Commander ist der bessere Explorer für Windows und auch wenn das Programm schon etwas in die Jahre gekommen ist: Vor allem im professionellen Bereich gibt es aus meiner Sicht keine Alternative. Einige praktische Funktionalitäten fehlen dem Total Commander allerdings, wenn man ihn frisch installiert. So lässt sich der noch nicht als Total Commander als SFTP-Client verwenden. Dazu ist die Installation eines Plugins nötig. Das werde ich im folgenden erklären. Außerdem zeige ich, wie man zwei zusätzliche Plugins installiert, die die Arbeit sehr erleichtern: VisualDirSize und QuickSearch eXtended.&lt;/p&gt;</description>
       
-    </item>
-    
-    <item>
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt Total Commander als SFTP-Client einrichten und bietet praktische Einblicke in das Thema.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Web, IT, Tools</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Der Total Commander ist der bessere Explorer für Windows und auch wenn das Programm schon etwas in die Jahre gekommen ist: Vor allem im professionellen Bereich gibt es aus meiner Sicht keine Alternative. Einige praktische Funktionalitäten fehlen dem Total Commander allerdings, wenn man ihn frisch installiert. So lässt sich der noch nicht als Total Commander als SFTP-Client verwenden. Dazu ist die Installation eines Plugins nötig. Das werde ich im folgenden erklären. Außerdem zeige ich, wie man zwei zusätzliche Plugins installiert, die die Arbeit sehr erleichtern: VisualDirSize und QuickSearch eXtended.</p>
+<p>(Manche Plugins kannst du relativ einfach installieren, indem du deren Archiv mit dem Total Commander selber öffnest.)</p>
+<p>[caption id=&ldquo;attachment_1539&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/total-commander-als-sftp-client-verwenden/total-commander-plugin-auto-installer.png"><img src="/2017/2017-09-29-total-commander-als-sftp-client-einrichten/images/total-commander-plugin-auto-installer-300x154.png" alt="Total Commander - automatischer Installation von Plugins beim Öffnen des Archivs"></a> Total Commander - automatischer Installation von Plugins beim Öffnen des Archivs[/caption]</p>
+<h2 id="das-sftp-plugin-installieren">Das SFTP-Plugin installieren</h2>
+<p>Das SFTP-Plugin stammt ebenfalls vom Total Commander Entwickler, muss aber manuell <a href="https://www.ghisler.com/dplugins.htm">von dessen Seite</a> heruntergeladen werden. Nachdem du die Datei heruntergeladen, entpackt und in einen Ordner* nach c:/totalcmd/plugins/wfx/ kopiert hast, musst das du das gleiche für die SSL-Bibliotheken machen. Auch diese sind auf der Plugin-Seite verlinkt. Danach kannst du den Total Commander wieder starten</p>
+<p><em>*ich setze mal voraus, dass das dein aktueller Programm Ordner für den TC ist, andernfalls gehört es natürlich in den bei dir genutzten Programm-Ordner</em></p>
+<p> </p>
+<p>[caption id=&ldquo;attachment_1541&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/total-commander-als-sftp-client-verwenden/total-commander-netzwerkumgebung.png"><img src="/2017/2017-09-29-total-commander-als-sftp-client-einrichten/images/total-commander-netzwerkumgebung-300x115.png" alt="TotalCommander Netzwerkumgebung"></a> TotalCommander Netzwerkumgebung[/caption]</p>
+<p>Über das Menü (Konfigurieren - Einstellungen) gelangst du zum Plugin-Manager und dem Dialog für die Dateisystem-Plugins. Mit &ldquo;Hinzufügen&rdquo; suchst du nun nach dem Ordner, in den du eben die Plugin-Dateien kopiert hast. Fertig. Wenn du nun in die Netzwerkumgebung wechselst, findest du dort den Eintrag &ldquo;SecureFTP&rdquo;. Darin lassen sich mit F7 neue Zugänge anlegen. Mit ALT+Enter kannst du diese bearbeiten und mit SHIFT-F6 umbenennen. Wenn du die Datei sftpplug.ini im Total-Commander-Verzeichnis bearbeitest, kannst du die SFTP-Zugängen auch bequem mit einem Text-Editor verwalten.</p>
+<p>[caption id=&ldquo;attachment_1542&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;244&rdquo;]<a href="https://www.nickyreinert.de/files/total-commander-als-sftp-client-verwenden/sftp-server-einstellungen.png"><img src="/2017/2017-09-29-total-commander-als-sftp-client-einrichten/images/sftp-server-einstellungen-244x300.png" alt="SFTP-Server-Einstellungen um den Total Commander als SFTP-Client zu verwenden"></a> SFTP-Server-Einstellungen um den Total Commander als SFTP-Client zu verwenden[/caption]</p>
+<p>Das war es. Nun kannst du den Total Commander als SFTP-Client verwenden.</p>
+<h2 id="das-visualdirsize-plugin-installieren">Das VisualDirSize-Plugin installieren</h2>
+<p>Als nächstes installierst du dir das Plugin, um dir die Größe von Verzeichnissen und Dateien grafisch darstellen zu lassen. Das Plugin ist zwar auch schon über 10 Jahre alt, aber dennoch äußerst praktisch. Du kannst es dir auf einer der bekanntesten aber inoffiziellen Plugin-Seite für den Total Commander herunterladen: <a href="https://totalcmd.net/plugring/visdirsize.html">totalcmd.net</a> </p>
+<p>[caption id=&ldquo;attachment_1543&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/total-commander-als-sftp-client-verwenden/VisualDirSize-plugin.png"><img src="/2017/2017-09-29-total-commander-als-sftp-client-einrichten/images/VisualDirSize-plugin-300x71.png" alt="VisualDirSize - Darstellung des belegten Speicherplatzes"></a> VisualDirSize - Darstellung des belegten Speicherplatzes[/caption]</p>
+<p>Auch diese Datei muss entpackt und in einen Unterordner des Plugin-Ordners kopiert werden. Nach einem Neustart kannst du das Plugin mit STR+Q bzw. CTRL+Q aktivieren. Die Einstellungen verstecken sich hinter dem kleinen Hammer-Symbol, rechts oben in der Menüleiste des Plugins.</p>
+<h2 id="das-quicksearch-extended-plugin-installieren">Das QuickSearch eXtended-Plugin installieren</h2>
+<p>Dieses Plugin rundet deinen Total Commander schließlich perfekt ab. Es ermöglicht dir, die Verzeichnis- bzw. Datei-Listen zu filtern. Du drückst also eine beliebige Steuer-Taste (ALT, CTRL, &hellip;) und gibst danach die Zeichenfolge ein, nach der du suchen möchtest. Die Ansicht wird daraufhin für diese Zeichenfolge gefiltert. Das Plugin kann sehr stark angepasst werden und unterstützt z.B. die Suche mit regulären Ausdrücken oder nach ähnlichen Begriffen.</p>
+<p>Auch das Plugin muss auf <a href="https://totalcmd.net/plugring/Google_like_QS.html">totalcmd.net</a> heruntergeladen und entpackt werden. Auch hier wird der automatische Plugin-Installer unterstützt. Nach einem Neustart steht es dann zur Verfügung. Die Einstellungen befinden sich entweder rechts neben dem Suchfeld (der Doppel-Pfeil nach oben) oder können über tcmatch.exe aufgerufen werden. Die Funktionstaste, mit der das Suchfeld aktiviert wird, muss übrigens im Total Commander eingestellt werden. Zu finden ist diese Einstellungen über die Konfiguration im Bereich &ldquo;Schnellsuche&rdquo;.</p>
+<p>[caption id=&ldquo;attachment_1544&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/total-commander-als-sftp-client-verwenden/total-commander-einstellungen-schnellsuche.png"><img src="/2017/2017-09-29-total-commander-als-sftp-client-einrichten/images/total-commander-einstellungen-schnellsuche-300x240.png" alt="Total Commander - Einstellungen für die Schnellsuche"></a> Total Commander - Einstellungen für die Schnellsuche[/caption]</p>
+<p>Willst du den Filter aktivieren, also die Dateiliste für den Suchbegriff filtern, drückst du entweder CTRL+S bzw. STRG+S oder den kleine Button rechts neben der Suchleiste.</p>
+<p>[caption id=&ldquo;attachment_1540&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/total-commander-als-sftp-client-verwenden/quick-search-extended-suchfeld.png"><img src="/2017/2017-09-29-total-commander-als-sftp-client-einrichten/images/quick-search-extended-suchfeld-300x169.png" alt="QuickSearch eXtended Such-Leiste"></a> QuickSearch eXtended Such-Leiste[/caption]</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> datei-explorer, file-explorer, quicksearch-extended, sftp, suche, total-commander, visualdirsize</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>tools</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Total Commander als SFTP-Client einrichten - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
+      
+    </item><item>
       <title>JTL-Wawi Fernsteuerung auf Windows-Server einrichten</title>
       <link>https://nickyreinert.de/2017/2017-09-28-jtl-wawi-fernsteuerung-auf-windows-server-einrichten/</link>
       <pubDate>Thu, 28 Sep 2017 00:00:00 +0000</pubDate>
-      
+      <author></author>
       <guid>https://nickyreinert.de/2017/2017-09-28-jtl-wawi-fernsteuerung-auf-windows-server-einrichten/</guid>
+      <description>Wenn mal als alleiniger Nutzer die kostenlose Warenwirtschaft JTL-Wawi einsetzen möchte, kommt man zunächst auf die Idee, sich einfach per Remote-Desktop (RDP) …</description>
       
-      <description>&lt;p&gt;Wenn mal als alleiniger Nutzer die kostenlose Warenwirtschaft JTL-Wawi einsetzen möchte, kommt man zunächst auf die Idee, sich einfach per Remote-Desktop (RDP) auf dem Windows-Rechner anzumelden, um so JTL zu nutzen. Doch diese JTL-Wawi Fernsteuerung hat zwei entscheidende Haken:&lt;/p&gt;
-&lt;h2 id=&#34;warum-jtl-wawi-auf-einem-gehosteten-windows-server-problematisch-sein-könnten&#34;&gt;Warum JTL-Wawi auf einem gehosteten Windows-Server problematisch sein könnten?&lt;/h2&gt;
-&lt;p&gt;Erstens ist die Verbindung per RDP  auf einen Windows-Server per Microsoft-Lizenzbedingung für gewöhnlich nur für administrative Zwecke erlaubt. Es sei denn, man installiert einen Terminal-Server und die notwendigen Zugriffslizenzen. Das Problem ist aber, dass die Verwendung eines Terminal Servers auf Virtuellen Servern von Microsoft ebenfalls untersagt ist. Entweder man hat den Windows-Server also zuhause unter dem Tisch stehen oder man nutzt beim Hoster seiner Wahl die weitaus teureren Dedicated Root Server.&lt;/p&gt;</description>
       
-    </item>
-    
-    <item>
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt JTL-Wawi Fernsteuerung auf Windows-Server einrichten und bietet praktische Einblicke in das Thema.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Web, IT, Tools</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Wenn mal als alleiniger Nutzer die kostenlose Warenwirtschaft JTL-Wawi einsetzen möchte, kommt man zunächst auf die Idee, sich einfach per Remote-Desktop (RDP) auf dem Windows-Rechner anzumelden, um so JTL zu nutzen. Doch diese JTL-Wawi Fernsteuerung hat zwei entscheidende Haken:</p>
+<h2 id="warum-jtl-wawi-auf-einem-gehosteten-windows-server-problematisch-sein-könnten">Warum JTL-Wawi auf einem gehosteten Windows-Server problematisch sein könnten?</h2>
+<p>Erstens ist die Verbindung per RDP  auf einen Windows-Server per Microsoft-Lizenzbedingung für gewöhnlich nur für administrative Zwecke erlaubt. Es sei denn, man installiert einen Terminal-Server und die notwendigen Zugriffslizenzen. Das Problem ist aber, dass die Verwendung eines Terminal Servers auf Virtuellen Servern von Microsoft ebenfalls untersagt ist. Entweder man hat den Windows-Server also zuhause unter dem Tisch stehen oder man nutzt beim Hoster seiner Wahl die weitaus teureren Dedicated Root Server.</p>
+<p>Zweitens ist die Verbindung per Remote-Desktop auf zwei gleichzeitige Zugriffe bzw. Administratoren beschränkt. Selbst wenn man also die Lizenzbedingungen ignoriert: Wer die Warenwirtschaft mit mehreren Anwendern nutzen will, wird ziemlich schnell ein Problem bekommen.</p>
+<p>Die Lösung ist es, JTL Wawi lokal zu installieren und für den Zugriff auf den Windows-Server vorzubereiten. Im Folgenden werde ich die dazu notwendigen Einstellungen beschreiben.</p>
+<h2 id="wie-kann-der-windows-server-eingerichtet-werden-um-jtl-wawi-den-zugriff-von-außen-zu-ermöglichen">Wie kann der Windows-Server eingerichtet werden, um JTL-Wawi den Zugriff von außen zu ermöglichen?</h2>
+<p>Auf einem gehosteten Windows-Server läuft ein Microsoft SQL Server. Die Anwender sollen auf ihren lokalen Windows-Rechnern die JTL Wawi nutzen, die sich mit dem entfernten Microsoft SQL-Server verbindet.</p>
+<h3 id="porteinstellungen">Porteinstellungen</h3>
+<p>Zunächst einmal bringen wir dem SQL Server bei, dass er auch auf der öffentlichen IP-Adresse erreichbar ist und welchen Port er dafür benutzen soll. Im SQL-Server-Configuration-Manager (SQLServerManager13.msc) muss dazu unterhalb der Netzwerk-Konfiguration &ldquo;Protokolle für JTL-WAWI&rdquo; ausgewählt werden. Dort befinden sich die Einstellungen für das Protokoll TCP/IP, die wir nun anpassen. Erstmal muss natürlich das Protokoll unter aktiviert werden: &ldquo;Enabled: Ja&rdquo;. Danach wird mit &ldquo;Listen all: Ja&rdquo; festgelegt, dass der SQL-Server über alle verfügbaren Netzwerkschnittstellen ansprechbar ist (<a href="https://docs.microsoft.com/de-de/sql/tools/configuration-manager/tcp-ip-properties-protocols-tab">siehe Microsoft-Doks</a>). Wer den Server nur lokal verwendet, sollte diesen Schalter auf &ldquo;Nein&rdquo; setzen und die Einstellungen nur für die private, lokale IP-Adresse vornehmen.</p>
+<p>Die entscheidende Einstellung befindet sich im Reiter &ldquo;IP-Adressen&rdquo;. Wenn zuvor &ldquo;Listen all: Ja&rdquo; eingestellt wurde, muss hier am Ende der Liste die Einstellung für &ldquo;IPALL&rdquo; angepasst werden. Hier genügt es, für TCP-Port einen beliebigen Port anzugeben. Der Standard-Port für Microsoft SQL ist 1433. Es empfiehlt sich, einen anderen Port zu wählen, damit der einfache Port-Scan nicht sofort auf die Idee kommt, dass hier ein MS-SQL-Dienst erreichbar ist.</p>
+<p>[gallery ids=&ldquo;1514,1512,1513&rdquo;]</p>
+<p> </p>
+<h3 id="benutzereinrichtung">Benutzereinrichtung</h3>
+<p>Als nächstes geht es an die Einrichtung der Benutzer, für die JTL-Wawi Fernsteuerung erlaubt werden soll. Dazu wird im Microsoft SQL Management Studio (ssms.exe)  entsprechende JTL-Datenbank geöffnet und unter Sicherheit per Rechtsklick auf Anmeldungen eine neue Anmeldung erstellt. Der Name ist natürlich frei wählbar. Das Passwort für die Anmeldung kann man eingeben, wenn man &ldquo;SQL Server-Authentifizierung&rdquo; auswählt. Natürlich empfiehlt es sich, entsprechend strenge Kennwort-Richtlinien zu verwenden. Unter &ldquo;Benutzerrollen&rdquo; muss der neue Benutzer nun noch der entsprechenden Datenbank zugewiesen und darauf Schreib- und Leserechte zugewiesen werden. Im Beispiel heißen diese Rollen  db_reader und db_writer.</p>
+<p>[gallery ids=&ldquo;1516,1515&rdquo;]</p>
+<h3 id="firewall-einstellung">Firewall-Einstellung</h3>
+<p>Nun, da die Datenbank korrekt eingerichtet ist, muss die Firewall entsprechend geöffnet werden, um den Zugriff von außen zu ermöglichen. Die Windows-Firewall-Einstellungen erreichen wir über wf.msc. Dort wird eine neue eingehende Regel angelegt. Hier gibt es zwei Möglichkeiten: Entweder dem Microsoft SQL-Server wird generell der Kontakt zur Außenwelt genehmigt, oder wir öffnen nur den entsprechenden Port. Aus Sicherheitsgründen sollte die Einstellung allerdings so eng wie möglich gewählt werden. Wir wählen als Regeltyp also &ldquo;Port&rdquo; und geben dann den Port ein, den wir zu Beginn festgelegt haben. Unter &ldquo;Aktion&rdquo; muss natürlich &ldquo;Verbindung zulassen&rdquo; ausgewählt werden. Im nächsten Fenster &ldquo;Profil&rdquo; können alle Felder aktiviert bleiben. Die Regel soll ja vor allem für öffentliche Kommunikation erlauben. Abschließend kann noch ein Name für die Regel vergeben werden. Fertig.</p>
+<p>[gallery ids=&ldquo;1518,1517&rdquo;]</p>
+<p> </p>
+<p>Auf der Serverseite ist nun alles fertig eingerichtet. Als nächstes folgt die Einrichtung der JTL-Wawi auf dem lokalen Rechner.</p>
+<h3 id="jtl-wawi-einrichten">JTL-Wawi einrichten</h3>
+<p>Nach dem <a href="https://www.jtl-software.de/JTL-Wawi-Download">Download</a> und der Installation der Software wird uns diese beim ersten Start zur Datenbankverwaltung führen. Hier legen wir ein neues Profil mit einem wohlklingenden Namen an tragen die Adresse zu unserem Windows-Server ein, auf dem der Microsoft SQL-Server läuft.  Wichtig ist, dass wir den oben konfigurierten Port hier mit einem Komma getrennt hinter die Server-Adresse eintragen. Als nächstes will das Programm von uns die vorher angelegten Zugangsdaten wissen. Wenn diese korrekt sind, erhalten wir nun eine Liste der Mandanten zur Auswahl und die Einrichtung der Software ist abgeschlossen.</p>
+<p>[gallery ids=&ldquo;1520,1519,1521&rdquo;]</p>
+<p>Fertig. Nun  kann man die JTL-Wawi Fernsteuerung so nutzen, als würde man direkt auf dem Server arbeiten.</p>
+<p>[caption id=&ldquo;attachment_1527&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;150&rdquo;]<a href="https://www.nickyreinert.de/files/jtl-wawi-fernsteuerung-mit-windows-server-ermoeglichen/jtl-wawi-fernsteuerung.png"><img src="/2017/2017-09-28-jtl-wawi-fernsteuerung-auf-windows-server-einrichten/images/jtl-wawi-fernsteuerung-150x150.png" alt="Die JTL-Wawi Fernsteuerung ist komplett eingerichtet"></a> Die JTL-Wawi Fernsteuerung ist komplett eingerichtet[/caption]</p>
+<h2 id="nachteile-der-jtl-wawi-fernsteuerung">Nachteile der JTL-Wawi Fernsteuerung</h2>
+<p>Die hier vorgestellte Konfiguration für die JTL-Wawi Fernsteuerung hat einen großen, entscheidenden Nachteil: Sie ist relativ unsicher. Zwar ist der Zugriff auf die Datenbank mit Benutzernamen und Passwort geschützt, dennoch gehört es nicht gerade zum guten Ton, die Datenbank öffentlich über das Internet erreichbar zu machen. Hier gibt es einige Möglichkeiten, sich besser zu schützen.</p>
+<p>Entweder man richtet einen  VPN-Tunnel ein, über den auf die Datenbank zugegriffen wird. Oder man hat die Möglichkeit, feste IP-Adressen zu vergeben, für den der Zugriff in der Windows-Firewall eingeschränkt werden kann. Ist auch das nicht möglich, sollte man wenigstens den IP-Adressbereich in der Windows-Firewall einrichten, dass er nur Zugriffe des jeweiligen Internet-Service-Providers (ISP) zulässt.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> jtl, jtl-wawi, microsoft-sql-server, rdp, remote-desktop, sql, warenwirtschaft, windows-server</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>JTL-Wawi Fernsteuerung auf Windows-Server einrichten - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
+      
+    </item><item>
       <title>Excel-Vorlage für ISO-Toleranzen</title>
       <link>https://nickyreinert.de/2017/2017-09-26-excel-vorlage-fuer-iso-toleranzen/</link>
       <pubDate>Tue, 26 Sep 2017 00:00:00 +0000</pubDate>
-      
+      <author></author>
       <guid>https://nickyreinert.de/2017/2017-09-26-excel-vorlage-fuer-iso-toleranzen/</guid>
+      <description>Zur Berechnung der Passung von Welle und Bohrung werden verschiedene Parameter benötigt. Je nachdem, wie &ldquo;gut&rdquo; Welle und Bohrung zusammenpassen, …</description>
       
-      <description>&lt;p&gt;Zur Berechnung der Passung von Welle und Bohrung werden verschiedene Parameter benötigt. Je nachdem, wie &amp;ldquo;gut&amp;rdquo; Welle und Bohrung zusammenpassen, spricht man von Übermaßpassung, Spielpassung oder Übergangspassung. Zur Berechnung kann auf diese Excel-Vorlage für &lt;a href=&#34;http://www.pfeffer.ch/toleranzen.htm&#34;&gt;ISO-Toleranzen&lt;/a&gt; zurückgegriffen werden. Diese zeigt außerdem die Art der &lt;a href=&#34;https://de.wikipedia.org/wiki/Passung&#34;&gt;Passungen&lt;/a&gt; bzw. die Toleranzgraden für Wellen und Bohrungen an.&lt;/p&gt;
-&lt;h2 id=&#34;anwendung-der-excel-vorlage-für-iso-toleranzen&#34;&gt;Anwendung der Excel-Vorlage für ISO-Toleranzen&lt;/h2&gt;
-&lt;p&gt;Die Eingabemaske erwartet folgende Parameter:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Bezeichnung der Bohrung / Welle&lt;/li&gt;
-&lt;li&gt;das Nennmaß in Millimeter&lt;/li&gt;
-&lt;li&gt;die Maßtoleranz in Mikrometer&lt;/li&gt;
-&lt;li&gt;die oberen und unteren Abmaße in Mikrometer&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Die übrigen Abmessungen werden automatisch berechnet. Außerdem erkennt die Excel-Tabelle, um welche Art von Passung es sich handelt: &lt;strong&gt;Übermaßpassung&lt;/strong&gt;, &lt;strong&gt;Spielpassung&lt;/strong&gt; oder &lt;strong&gt;Übergangspassung&lt;/strong&gt;.&lt;/p&gt;</description>
       
-    </item>
-    
-    <item>
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt Excel-Vorlage für ISO-Toleranzen und bietet praktische Einblicke in das Thema.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Web, IT, Tools</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Zur Berechnung der Passung von Welle und Bohrung werden verschiedene Parameter benötigt. Je nachdem, wie &ldquo;gut&rdquo; Welle und Bohrung zusammenpassen, spricht man von Übermaßpassung, Spielpassung oder Übergangspassung. Zur Berechnung kann auf diese Excel-Vorlage für <a href="http://www.pfeffer.ch/toleranzen.htm">ISO-Toleranzen</a> zurückgegriffen werden. Diese zeigt außerdem die Art der <a href="https://de.wikipedia.org/wiki/Passung">Passungen</a> bzw. die Toleranzgraden für Wellen und Bohrungen an.</p>
+<h2 id="anwendung-der-excel-vorlage-für-iso-toleranzen">Anwendung der Excel-Vorlage für ISO-Toleranzen</h2>
+<p>Die Eingabemaske erwartet folgende Parameter:</p>
+<ul>
+<li>Bezeichnung der Bohrung / Welle</li>
+<li>das Nennmaß in Millimeter</li>
+<li>die Maßtoleranz in Mikrometer</li>
+<li>die oberen und unteren Abmaße in Mikrometer</li>
+</ul>
+<p>Die übrigen Abmessungen werden automatisch berechnet. Außerdem erkennt die Excel-Tabelle, um welche Art von Passung es sich handelt: <strong>Übermaßpassung</strong>, <strong>Spielpassung</strong> oder <strong>Übergangspassung</strong>.</p>
+<h2 id="hinweise">Hinweise</h2>
+<ul>
+<li>Die Excel-Datei wurde mit Excel 2007 im XLSX-Format gespeichert. Das Arbeitsblatt erwartet zur korrekten Berechnung die Angabe des Nennmaßes (Nenndurchmesser) der Bohrung und der Welle. Weiterhin werden die Maßtoleranz sowie die jeweiligen oberen und unteren Abmaße benötigt. Die Eingabe erfolgt in den blauen Feldern mit normalen Zahlen; die Formatierung der Zellen ergänzt die Einheit selbstständig. Der Blattschutz kann jederzeit aufgehoben werden, er dient hier nur der Erleichterung der Eingaben.</li>
+</ul>
+<figure class="center"><img src="/2017/2017-09-26-excel-vorlage-fuer-iso-toleranzen/images/Eingabemaske-300x90.png"
+    alt="Eingabemaske der Excel-Vorlage für ISO-Toleranzen und Darstellung für Welle / Bohrung" width="500">
+</figure>
+
+<ul>
+<li>
+<p>Da die Formeln WENN-DANN-Bedingungen enthalten, muss die Passung unbedingt angeben werden. Je nach Toleranzlage erfolgt die Angabe der unteren oder oberen Abmaße im entsprechend blau unterlegten Feld.</p>
+</li>
+<li>
+<p>Um die Bedienung zu erleichterter</p>
+</li>
+<li>
+<p><em>Wenn jemand die Toleranzwerte für Wellen und Bohrungen als CSV- oder Excel-Datei  zur Verfügung stellt, kann ich das Arbeitsblatt gerne derart modifizieren, dass die Toleranzparameter mit Angabe der Passung bereits automatisch erkannt werden.</em></p>
+</li>
+</ul>
+<p>Download der <a href="https://nickyreinert.de/files/Excel-Vorlage-f%C3%BCr-ISO-Toleranzen.xlsx">Excel-Vorlage für ISO-Toleranzen</a></p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> bohrung, excel, ingenieurswesen, iso-toleranzen, passung, spielpassung, uebergangspassung, uebermasspassung, welle</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>office</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Excel-Vorlage für ISO-Toleranzen - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
+      
+    </item><item>
       <title>Defekte MP4 Videodatei reparieren</title>
       <link>https://nickyreinert.de/2017/2017-09-24-defekte-mp4-videodatei-reparieren/</link>
       <pubDate>Sun, 24 Sep 2017 00:00:00 +0000</pubDate>
-      
+      <author></author>
       <guid>https://nickyreinert.de/2017/2017-09-24-defekte-mp4-videodatei-reparieren/</guid>
+      <description>Hilfe verspricht in diesem Fall &ldquo;Video Repair Software&rdquo; von Grau für Windows und MacOS. Alles was du benötigst ist, neben der defekten MP4 …</description>
       
-      <description>&lt;p&gt;Hilfe verspricht in diesem Fall &amp;ldquo;&lt;a href=&#34;http://grauonline.de/cms2/?page_id=5&#34;&gt;Video Repair Software&lt;/a&gt;&amp;rdquo; von &lt;em&gt;Grau&lt;/em&gt; für Windows und MacOS. Alles was du benötigst ist, neben der defekten MP4 Videodatei, eine funktionierende Referenz-Datei, die mit der gleichen Android-Kamera aufgezeichnet wurde. Du fütterst die Software mit den beiden Video-Dateien, startest den &amp;ldquo;Scan&amp;rdquo; und kannst, wenn dein Glück dich nicht vollkommen verlassen hast, die Vorschau der Reparatur verfolgen und das Video und als funktionierende Video-Datei exportieren.&lt;/p&gt;
-&lt;p&gt;[caption id=&amp;ldquo;attachment_1001&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;150&amp;rdquo;]&lt;a href=&#34;http://www.freecoffee.de/wp-content/uploads/2014/02/Bildschirmfoto-2014-02-08-um-10.14.02.png&#34;&gt;&lt;img src=&#34;images/Bildschirmfoto-2014-02-08-um-10.14.02-150x150.png&#34; alt=&#34;Bildschirmfoto 2014-02-08 um 10.14.02&#34;&gt;&lt;/a&gt; Grau GbR Video Repair Software[/caption]&lt;/p&gt;</description>
       
-    </item>
-    
-    <item>
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt Defekte MP4 Videodatei reparieren und bietet praktische Einblicke in das Thema.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Web, IT, Tools</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Hilfe verspricht in diesem Fall &ldquo;<a href="http://grauonline.de/cms2/?page_id=5">Video Repair Software</a>&rdquo; von <em>Grau</em> für Windows und MacOS. Alles was du benötigst ist, neben der defekten MP4 Videodatei, eine funktionierende Referenz-Datei, die mit der gleichen Android-Kamera aufgezeichnet wurde. Du fütterst die Software mit den beiden Video-Dateien, startest den &ldquo;Scan&rdquo; und kannst, wenn dein Glück dich nicht vollkommen verlassen hast, die Vorschau der Reparatur verfolgen und das Video und als funktionierende Video-Datei exportieren.</p>
+<p>[caption id=&ldquo;attachment_1001&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;150&rdquo;]<a href="http://www.freecoffee.de/wp-content/uploads/2014/02/Bildschirmfoto-2014-02-08-um-10.14.02.png"><img src="images/Bildschirmfoto-2014-02-08-um-10.14.02-150x150.png" alt="Bildschirmfoto 2014-02-08 um 10.14.02"></a> Grau GbR Video Repair Software[/caption]</p>
+<p>Leider ist die Software nicht kostenlos erhältlich und repariert im DemoModus nur 50% der Videodatei. Meine defekte MP4 Videodatei konnte ich zwar komplett exportieren, aber der Ton war nur bis zur etwa der Hälfte wiederhergestellt. Ob das an der Testversion oder dem Defekt der Datei liegt, lässt sich nicht sagen. Auf der Suche nach einer Alternative fand ich das <a href="http://www.yodot.com/download/thank-you-for-downloading-ymovr.html">MOV Repair Tool</a> von Yodot, das ebenfalls für Windows und MacOS erhältlich ist. Die Software bietet keine Einstellungsmöglichkeiten an und verlangt als Input lediglich die defekte MP4 Videodatei.</p>
+<p>[caption id=&ldquo;attachment_1002&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;150&rdquo;]<a href="http://www.freecoffee.de/wp-content/uploads/2014/02/Bildschirmfoto-2014-02-08-um-10.25.44.png"><img src="images/Bildschirmfoto-2014-02-08-um-10.25.44-150x150.png" alt="Bildschirmfoto 2014-02-08 um 10.25.44"></a> Yodot MOV Repair Tool[/caption]</p>
+<p>Leider bricht das Tool die Reparatur mit der Meldung ab, dass das Kameramodell nicht unterstützt wird. Der dritte Versuch startet mit <a href="http://www.fixmp4.com/de/">Repair MOV</a> von Remo - einer weiteren kostenpflichtigen Software, die damit wirbt, defekte Videodateien reparieren zu können. Diese Software verlangt ebenfalls eine Referenzdatei. Ein Video, das direkt von der Android-Kamera stammt, wird  zwar nicht akzeptiert. Jedoch nimmt Repair MOV interessanterweise die reparierte Videodatei aus meinem ersten Durchgang an.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2014/02/Bildschirmfoto-2014-02-08-um-10.35.53.png"><img src="images/Bildschirmfoto-2014-02-08-um-10.35.53-150x150.png" alt="Bildschirmfoto 2014-02-08 um 10.35.53"></a></p>
+<p> </p>
+<p>Nach dem die &ldquo;Reparatur&rdquo; beendet ist, kann man sich die Vorschau innerhalb der Software anzeigen lassen. Zum Exportieren des Videos muss man die Software jedoch lizensieren. Der Vorschaubildschirm bleibt bei mir allerdings schwarz.</p>
+<p>[caption id=&ldquo;attachment_1004&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;150&rdquo;]<a href="http://www.freecoffee.de/wp-content/uploads/2014/02/Bildschirmfoto-2014-02-08-um-10.46.43.png"><img src="images/Bildschirmfoto-2014-02-08-um-10.46.43-150x80.png" alt="Bildschirmfoto 2014-02-08 um 10.46.43"></a> Hexcode einer MP4 Videodatei[/caption]</p>
+<p>Fazit: Eins von drei kostenpflichtigen Tools schafft es, die defekte MP4-Datei zu reparieren. Ansonsten ist das Angebot leider mager. Ein Blick in den Header der defekten Datei und der Versuch, den defekt auf &ldquo;Nerd-Weise&rdquo; zu beheben, schlug letztlich auch fehl. Der Hex-Editor zeigt einen großen Bereich, der mit Nullen gefüllt ist. Hier scheint der Fehler zu liegen. Diese zu entfernen, bringt leider nicht den gewünschten Erfolg - genauso wenig, wie die Header einer defekten und funktionierenden MP4-Datei zu &ldquo;synchronisieren&rdquo;.</p>
+
+        
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>tools</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Defekte MP4 Videodatei reparieren - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
+      
+    </item><item>
       <title>Eduroam mit Windows Mobile</title>
       <link>https://nickyreinert.de/2017/2017-09-24-eduroam-mit-windows-mobile/</link>
       <pubDate>Sun, 24 Sep 2017 00:00:00 +0000</pubDate>
-      
+      <author></author>
       <guid>https://nickyreinert.de/2017/2017-09-24-eduroam-mit-windows-mobile/</guid>
+      <description>Eine Schritt-Für-Schritt-Anleitung, um Windows Mobile 6.x - Geräte mit dem Eduroam-Netzwerk zu verbinden.
+[toc=&ldquo;2,3&rdquo; title=&ldquo;Inhalt&rdquo;] …</description>
       
-      <description>&lt;p&gt;Eine Schritt-Für-Schritt-Anleitung, um Windows Mobile 6.x - Geräte mit dem Eduroam-Netzwerk zu verbinden.&lt;/p&gt;
-&lt;p&gt;[toc=&amp;ldquo;2,3&amp;rdquo; title=&amp;ldquo;Inhalt&amp;rdquo;]&lt;/p&gt;
-&lt;h3 id=&#34;vorbereitung&#34;&gt;Vorbereitung&lt;/h3&gt;
-&lt;p&gt;Als mobiles Gerät kommt ein HTC Blackstone / Touch HD mit dem Betriebssystem Windows Mobile 6.1 zum Einsatz. Das Betriebssystem ist komplett in Englisch, erst wird dennoch weitestgehend versucht, neben den englischen Bezeichnungen die entsprechenden deutschen zu verwenden. Diese Anleitung erhebt selbstverständlich keinen Anspruch auf Vollständigkeit noch garantiert sie den Erfolg. Kommentare oder Änderungswünsche sind herzlich willkommen. Unbedingt benötigt werden, neben einem mobilen Gerät mit Windows Mobile 6.x:&lt;/p&gt;</description>
       
-    </item>
-    
-    <item>
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt Eduroam mit Windows Mobile und bietet praktische Einblicke in das Thema.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Web, IT, Tools</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Eine Schritt-Für-Schritt-Anleitung, um Windows Mobile 6.x - Geräte mit dem Eduroam-Netzwerk zu verbinden.</p>
+<p>[toc=&ldquo;2,3&rdquo; title=&ldquo;Inhalt&rdquo;]</p>
+<h3 id="vorbereitung">Vorbereitung</h3>
+<p>Als mobiles Gerät kommt ein HTC Blackstone / Touch HD mit dem Betriebssystem Windows Mobile 6.1 zum Einsatz. Das Betriebssystem ist komplett in Englisch, erst wird dennoch weitestgehend versucht, neben den englischen Bezeichnungen die entsprechenden deutschen zu verwenden. Diese Anleitung erhebt selbstverständlich keinen Anspruch auf Vollständigkeit noch garantiert sie den Erfolg. Kommentare oder Änderungswünsche sind herzlich willkommen. Unbedingt benötigt werden, neben einem mobilen Gerät mit Windows Mobile 6.x:</p>
+<ul>
+<li>der SecureW2 Client für Windows Mobile 5/6 von <a href="http://www.securew2.com/products/eapsuite/" title="http://www.securew2.com/products/eapsuite/">secureW2.com</a>,
+<ul>
+<li>(oder die CAB-Datei, für die direkte Installation <a href="http://www.freecoffee.de/files/SecureW2.cab" title="http://www.freecoffee.de/files/SecureW2.cab">hier herunterladen</a>)</li>
+</ul>
+</li>
+<li>das Zertifikat der Deutschen Telekom (Download vom <a href="http://www.rz.uni-augsburg.de/service/uauxca/zertifikate/telekom-root-2-cer.cer" title="http://www.rz.uni-augsburg.de/service/uauxca/zertifikate/telekom-root-2-cer.cer">Rechenzentrum der Uni Augsburg</a>),</li>
+<li>eine funktionierende Verbindung vom Desktop PC zum mobilen Gerät über ActiveSync (bis Windows XP) oder dem Windows Mobile Device Center (ab Windows Vista)</li>
+</ul>
+<p>und <em>eventuell</em></p>
+<ul>
+<li>eine Software zur Fernsteuerung zur Arbeitserleichterung wie z.B. MyMobiler (die Software nutzt die ActiveSync-Verbindung und erlaubt es, das Gerät komplett vom Computer zu bedienen, Download von <a href="http://www.mymobiler.com/" title="http://www.mymobiler.com/">mymobiler.com</a>) sowie</li>
+<li>einen Registryeditor (Total Commander für Pocket PC (ARM/XSCALE/PXA) auf <a href="http://www.ghisler.com/pocketpc.htm" title="http://www.ghisler.com/pocketpc.htm">ghisler.com</a> oder den Mobile Registry Editor auf <a href="http://www.chip.de/downloads/Mobile-Registry-Editor_31232153.html" title="http://www.chip.de/downloads/Mobile-Registry-Editor_31232153.html">chip.de</a>, beide Freeware).</li>
+</ul>
+<p><em>In dieser Anleitung verwende ich den Total Commander, da dieser zur Standarsoftware auf meinem Gerät gehört und die Bedienung des eingebauten Registryeditors weitaus komfortabler ist.</em></p>
+<h3 id="installation-von-securew2">Installation von SecureW2</h3>
+<p>Nach dem Starten der Installationsdatei <em>SecureW2_EAP_Suite_113_CE.exe</em> fordert das Programm zur Auswahl einer Sprache auf. Wir bestätigen daraufhin die Willkommensmeldung und akzeptieren die Lizenzbedingungen. Im nächsten Fenster wählen wir, sofern noch nicht geschehen, den <em>TTLS Client</em> aus und starten die Installation mit <em>Installieren</em>.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/1-securew2.png"><img src="images/1-securew2-300x233.png" alt="" title="1-securew2"></a></p>
+<p>Daraufhin übertrag ActiveSync die Programmdateien zum Gerät und informiert darüber, dass auf dem Gerät weitere Eingaben notwendig sind. ActiveSync wird vorerst mit einem Mausklick auf <em>OK</em> geschlossen. (Ist das Gerät nicht angeschlossen, holt ActiveSync die Übertragung bei der nächsten Verbindung nach.)</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/2-active-sync.png"><img src="images/2-active-sync-300x199.png" alt="" title="2-active-sync"></a></p>
+<p>Auf dem mobilen Gerät wird nun der Speicherort für <em>SecureW2</em> ausgewählt und mit <em>Install / Installieren</em> die Software installiert. War die Installation erfolgreich, wird der Vorgang mit <em>OK</em> auf dem Gerät abgeschlossen. Gleichzeitig wurde auch die Installationsroutine auf dem Computer beendet und kann geschlossen werden.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/3-install-securew2.png"><img src="images/3-install-securew2-180x300.png" alt="" title="3-install-securew2"></a></p>
+<h3 id="installation-des-zertifikates">Installation des Zertifikates</h3>
+<p>Wer die Installationsdatei des Zertifikates, <em>g_rootcert.cer</em>, nicht direkt auf dem Gerät gespeichert hat, überträgt diese per Drag&rsquo;n&rsquo;Drop oder einem Dateimanager seiner Wahl auf das Gerät. Auf dem Desktopcomputer erreicht man dieses über das Symbol <em>Mobiles Gerät</em> im <em>Arbeitsplatz</em>-Ordner.Den Unterordner <em>Mobiles Gerät\Meine Documente</em> erreicht man auch mit ActiveSync über das Menü <em>Extras / PocketPC durchsuchen</em>.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/4-activesync.png"><img src="images/4-activesync-300x289.png" alt="" title="4-activesync"></a></p>
+<p>Auf dem mobilen Gerät wird das Zertifikat installiert, indem man es dort im <em>Datei Explorer</em> einfach startet, d.h. einmal anklickt. Windows Mobile bestätigt dann die hoffentlich erfolgreiche Installation.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/5-confirm-cert.png"><img src="images/5-confirm-cert-180x300.png" alt="" title="5-confirm-cert"></a></p>
+<p>In den Einstellungen des mobilene Gerätes, unter dem zweiten Reiter <em>System</em>, startet man nun den <em>Zertifikatemanager</em> und überprüft unter dem Reiter <em>Root / Wurzel</em> ob das Zertifikat der Deutschen Telekom korrekt angezeigt wird.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/6-cert-manager.png"><img src="images/6-cert-manager-180x300.png" alt="" title="6-cert-manager"></a><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/7-cert-manager-root.png"><img src="images/7-cert-manager-root-180x300.png" alt="" title="7-cert-manager-root"></a></p>
+<p>Ist dem nicht so, muss das Zertifikat in der Registry per Hand eingetragen werden, damit der SecureW2 Client es bei der ersten Verbindung mit dem Netzwerk als &ldquo;vertrauenswürdiges Wurzelzertifikat&rdquo; erkennt. Dazu benötigen wir auf dem Gerät den bereits oben erwähnten Registryeditor. Das Vorgehen wird im Folgenden anhand des Total Commanders erläutert.</p>
+<h4 id="manuelles-registrieren-des-zertifikats">Manuelles Registrieren des Zertifikats</h4>
+<p>Die heruntergeladene Datei <em>tcmdpocketarm.cab</em> wird, wie oben schon einmal erwähnt, auf das Gerät kopiert und dort ausgeführt. Nach dem Öffnen der CAB-Datei wird das Programm installiert und wir starten die Software.<strong>Hinweis</strong>: Das Öffnen von Ordnern und Dateien erfolgt hier nicht wie gewohnt mit einem Klick, sondern durch Doppelklick. Mit Klick auf den <em>Schrägstrich</em> in der rechten oberen Ecke gelangen wir in das Hauptverzeichnis und wählen dort den Ordner <em>\\Plugins</em> und dann den Ordner <em>Registry</em> aus.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/8-total-commander.png"><img src="images/8-total-commander-162x300.png" alt="" title="8-total-commander"></a></p>
+<p>Dort klicken wir nun nacheinander auf <em>HKCU</em>, <em>Comm</em>, <em>Security</em> sowie <em>SystemCertificates</em> und finden dort Namen wie <em>root</em>, <em>trust</em>, <em>ca</em> usw.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/9-sys-certs.png"><img src="images/9-sys-certs-162x300.png" alt="" title="9-sys-certs"></a></p>
+<p>Als nächstes prüfen wir, ob sich im Ordner (bzw. Schlüssel) <em>trust</em> und dort unter <em>certificates</em> ein Ordner mit einem kryptischen Namen befindet. Wird dieser dort angezeigt, kann mit der Installation von SecureW2 fortgefahren werden.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/10-hash-name.png"><img src="images/10-hash-name-162x300.png" alt="" title="10-hash-name"></a></p>
+<p>Ist dem nicht so, wechseln wir durch einfaches Klicken auf den doppelten Punkt in der rechten oberen Ecke wieder 2 Ebenen nach oben und betrachten den Ordner <em>root</em> und dort <em>certificates</em>. Hier muss sich nun ein Ordner mit kryptischen Namen befinden. Durch Drücken auf diesen Ordnernamen und langes Halten öffnet sich das Kontextmenü. Wir wählen <em>In die Zwischenablage kopieren</em> aus und wechseln wieder in den Schlüssel bzw. Ordner <em>trust\certificates</em> (vorher zweimal auf den doppelten Punkt oben rechts) um dort erneut das Kontextmenü zu öffnen und per Klick auf <em>Hier einfügen (Kopieren)</em> den Schlüssel dort zu hinterlegen. Genauso müssen wir nun mit dem Wert <em>UpdateTime</em> verfahren, der sich direkt unter <em>root</em> befindet und in den Ordner trust gehört. (Nicht in den dortigen Unterordner <em>certificates</em>) Die Ordnerstruktur sollte nun wie folgt aussehen:</p>
+<p>\systemcertificats
+\root
+\certificates
+\85a408c09c193e5d51587dcd61330f
+.updatetime
+\trust
+\certificates
+\85a408c09c193e5d51587dcd61330f
+.updatetime</p>
+<p>Der Name &ldquo;85a408c09c193e5d51587dcd61330f&rdquo; weicht dabei von Gerät zu Gerät ab!</p>
+<p>Das Zertifikat <strong>sollte</strong> jetzt auch als vertrauenswürdig registriert sein und von <em>SecureW2</em> erkannt werden.</p>
+<h3 id="einrichtung-des-wlan-zugangs">Einrichtung des WLAN-Zugangs</h3>
+<p>Für gewöhnlich erkennt Windows Mobile die Art der Verschlüsselung selber, an der Stelle soll trotzdem nochmal auf die einzelnen Punkte eingegangen werden. Der Authentifizierungstyp lautet WPA2mit AES-Verschlüsselung.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/11-wlan1.png"><img src="images/11-wlan1-180x300.png" alt="" title="11-wlan1"></a></p>
+<p>Als EAP-Type wird der installierte SecureW2 TTLS-Client ausgewählt und über die <em>Eigenschaften / Properties</em> eingerichtet.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/12-wlan2.png"><img src="images/12-wlan2-180x300.png" alt="" title="12-wlan2"></a></p>
+<p>Ob ein neues Profil angelegt oder das Defaultprofil bearbeitet wird, ist vermutlich Geschmackssache. Um jede Fehlerquelle auszuschließen, habe ich ein neues Profil mit dem Namen <em>HTW</em> verwendet.Die Verbindung benutzt eine äußere, anonyme Identität. Per Klick auf <em>Erweitert</em> gelangt man zu den erweiterten Einstellungen. Hier muss ein Haken bei der Option <em>Benutzern erlauben, neue Verbindungen einzurichten</em> gesetzt werden.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/13-wlan3.png"><img src="images/13-wlan3-180x300.png" alt="" title="13-wlan3"></a><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/13b-wlan4.png"><img src="images/13b-wlan4-180x300.png" alt="" title="13b-wlan4"></a></p>
+<p>Unter dem Reiter <em>Zertifikate</em> wird <em>Serverzertifikate überprüfen</em> angehakt. Das untere Fenster <em>vertrauenswürdige CAs</em> ist zu dem Zeitpunkt noch leer. Nach der ersten (erfolgreichen) Verbindung findet ihr hier bzw. in der Liste unter Hinzufügen das Zertifikat der <em>Deutschen Telekom</em>.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/14-wlan5.png"><img src="images/14-wlan5-180x300.png" alt="" title="14-wlan5"></a></p>
+<p>Unter Authentifizerung wählen wir <em>PAP</em> aus.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/15-wlan6.png"><img src="images/15-wlan6-180x300.png" alt="" title="15-wlan6"></a></p>
+<p>Als letztes tragen wir die WLAN-Zugangsdaten in der bekannten Form (<em>sMatrikel@htw-berlin.de</em>) unter <em>Benutzerkennung</em> ein.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/16-wlan7.png"><img src="images/16-wlan7-180x300.png" alt="" title="16-wlan7"></a></p>
+<p>Nach Bestätigung mit <em>OK</em> fragt die Software, ob wir die Vertrauensliste von Windows verwenden möchten, was wir natürlich bestätigen.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2011/05/17-wlan8.png"><img src="images/17-wlan8-180x300.png" alt="" title="17-wlan8"></a></p>
+<p>Damit können wir die Einstellungen des Profiles mit <em>OK</em> endgültig übernehmen und die Konfiguration des WLAN-Zugangs abschließen. Bei der nächsten Verbindung mit dem Netzwerk erkennt <em>SecureW2</em> nun das <em>Telekom Zertifikat</em> an und bittet darum das (Wurzel)-Zertifikat mitsamt der zugehörigen &ldquo;Unterzertifikate&rdquo; zu installieren. Dabei ist lediglich eine Bestätigung erforderlich und der Zugang zu <em>eduroam</em> kann genutzt werden.</p>
+
+        
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>tools</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Eduroam mit Windows Mobile - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
+      
+    </item><item>
       <title>Xperia Z2 Rooten unter Mac</title>
       <link>https://nickyreinert.de/2017/2017-09-24-xperia-z2-rooten-unter-mac/</link>
       <pubDate>Sun, 24 Sep 2017 00:00:00 +0000</pubDate>
-      
+      <author></author>
       <guid>https://nickyreinert.de/2017/2017-09-24-xperia-z2-rooten-unter-mac/</guid>
+      <description>Es gibt zwar hier und da Anleitungen um das Xperia Z2 von Sony zu rooten, aber eben nicht für Mac-User. Dabei ist das fast genauso einfach; ich fasse mal …</description>
       
-      <description>&lt;p&gt;Es gibt zwar hier und da Anleitungen um das Xperia Z2 von Sony zu rooten, aber eben nicht für Mac-User. Dabei ist das fast genauso einfach; ich fasse mal zusammen. Es gibt mit dem EasyRootTool die Möglichkeit, das Gerät zu rooten, ohne den Bootloader zu entsperren - für Garantiezwecke ist das vielleicht ganz sinnvoll. Ich beschreibe im Folgenden trotzdem, wie du den Bootloader entsperrst und danach das Xperia rootest.&lt;/p&gt;
-&lt;h2 id=&#34;bootloader-entsperren&#34;&gt;Bootloader entsperren&lt;/h2&gt;
-&lt;p&gt;1. Backup aller wichtigen Daten! ;)&lt;/p&gt;</description>
       
-    </item>
-    
-    <item>
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt Xperia Z2 Rooten unter Mac und bietet praktische Einblicke in das Thema.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Mac, Tools, System</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Es gibt zwar hier und da Anleitungen um das Xperia Z2 von Sony zu rooten, aber eben nicht für Mac-User. Dabei ist das fast genauso einfach; ich fasse mal zusammen. Es gibt mit dem EasyRootTool die Möglichkeit, das Gerät zu rooten, ohne den Bootloader zu entsperren - für Garantiezwecke ist das vielleicht ganz sinnvoll. Ich beschreibe im Folgenden trotzdem, wie du den Bootloader entsperrst und danach das Xperia rootest.</p>
+<h2 id="bootloader-entsperren">Bootloader entsperren</h2>
+<p>1. Backup aller wichtigen Daten! ;)</p>
+<p>- Daran sollte man natürlich immer denken, auch wenn die folgenden Schritte in der Regel keine Änderung an der SD-Karte vornehmen - dort wo eure persönlichen Daten eigentlich liegen sollten.</p>
+<p>2. Den Bootloader befreien - angeblich ist das mit dem Paket aus Schritt 3 nicht notwendig. Ich nehme es trotzdem mal hier auf:</p>
+<p>- Besorge dir unter http://developer.sonymobile.com/unlockbootloader/email-verification/ einen Unlock-Key</p>
+<p>- Lade dir den Installer für ADB und Fastboot <a href="https://code.google.com/p/adb-fastboot-install/downloads/detail?name=Androidv4.zip&amp;can=2&amp;q=">&gt;&gt;hier&laquo;</a> herunter. <a href="http://wiki.cyanogenmod.org/w/Doc:_adb_intro">ADB</a> steht für die Android Debug Bridge und wird im wesentlichen dazu benötigt, von deinem Mac aus auf das Android-Gerät zuzugreifen um darauf Änderungen vornehmen zu können. Und mit <a href="http://wiki.cyanogenmod.org/w/Doc:_fastboot_intro">Fastboot</a> kannst du eine Partition auf deinem Android neu beschreiben.</p>
+<p>- Nachdem Entpacken machst du dein Smartphone aus und drückst dann die Tasten &ldquo;Volume-Up&rdquo; und &ldquo;Power&rdquo; gleichzeitig - die LED vom Xperia sollte nun rot leuchten. Du schließt das Gerät per USB an deinen Mac an und wechselst du in das Verzeichnis, dort gibst du zwei Befehle ein:</p>
+<p>fastboot devices
+fastboot -i 0x0fce oem unlock 0xDEIN_SONY_KEY</p>
+<p>Fertig. Der Boot-Loader ist &ldquo;frei&rdquo;. Nun folgt der Root-Prozess:</p>
+<h2 id="xperia-z2-rooten">Xperia Z2 rooten</h2>
+<p>Dazu gibt es das <a href="http://forum.xda-developers.com/showthread.php?t=2784900">Easy Root Tool</a> - wie immer von den XDA-Developers. Du hast das Xperia wieder hochgefahren und musst folgende Optionen in den Einstellungen ändern:</p>
+<p>1. Unter &ldquo;Sicherheit&rdquo;: Unbekannte Quellen erlauben - ja</p>
+<p>2. Unter: &ldquo;Über das Telefon&rdquo; klickst du 10 Mal auf &ldquo;Build Nummer&rdquo; - danach sind die Entwickler-Optionen freigeschaltet. Dort musst du USB-Debugging aktivieren.</p>
+<p>3. Das angeschaltete Xperia schließt du nun per USB an deinen Mac an und startest über die Konsole das Shellskript install.sh: (Du kannst das Skript notfalls auch als Superuser ausführen: sudo ./install.sh)</p>
+<p>./install.sh </p>
+<p>Nach einigen Augenblicken ist das Skript durchgelaufen und bestätigt dir den Erfolg. Du solltest dein Smartphone nun einmal neu starten und dir aus dem PlayStore SuperSU oder eine ähnliche App besorgen, mit der du die Root-Anfragen der Apps verwalten kannst.</p>
+<p>Fertig.</p>
+
+        
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>tools</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Xperia Z2 Rooten unter Mac - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
+      
+    </item><item>
       <title>Tastenkombinationen und Makros in Office 2010</title>
       <link>https://nickyreinert.de/2017/2017-09-16-tastenkombinationen-und-makros-in-office-2010/</link>
       <pubDate>Sat, 16 Sep 2017 00:00:00 +0000</pubDate>
-      
+      <author></author>
       <guid>https://nickyreinert.de/2017/2017-09-16-tastenkombinationen-und-makros-in-office-2010/</guid>
+      <description>Möchte man in Office 2010 eigene Makros und Tastenkombinationen nutzen und kombinieren, ist das Vorgehen dazu bei den drei am meisten genutzten Programmpaketen …</description>
       
-      <description>&lt;p&gt;Möchte man in Office 2010 eigene Makros und Tastenkombinationen nutzen und kombinieren, ist das Vorgehen dazu bei den drei am meisten genutzten Programmpaketen Word, Excel und PowerPoint leider nicht identisch.&lt;/p&gt;
-&lt;p&gt;Unter Word 2010 lassen sich eigene Tastenkombinationen (Shortcuts) noch relativ einfach festlegen: Im Kontextmenü (Rechte Maustaste) des Menübandes (neudeutsch: &lt;a href=&#34;https://de.wikipedia.org/wiki/Ribbon&#34;&gt;&lt;em&gt;Ribbon&lt;/em&gt;&lt;/a&gt;) gelangt man zum Dialogfeld &amp;ldquo;Menüband anpassen&amp;rdquo; (Abbildung 1). Von dort geht es in das Dialogfeld &amp;ldquo;Tastatur anpassen&amp;rdquo; wo man sämtliche Word-Aktionen nach gusto mit Tastenkombinationen verknüpfen kann.&lt;/p&gt;</description>
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt Tastenkombinationen und Makros in Office 2010 und bietet praktische Einblicke in das Thema.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Web, IT, Tools</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Möchte man in Office 2010 eigene Makros und Tastenkombinationen nutzen und kombinieren, ist das Vorgehen dazu bei den drei am meisten genutzten Programmpaketen Word, Excel und PowerPoint leider nicht identisch.</p>
+<p>Unter Word 2010 lassen sich eigene Tastenkombinationen (Shortcuts) noch relativ einfach festlegen: Im Kontextmenü (Rechte Maustaste) des Menübandes (neudeutsch: <a href="https://de.wikipedia.org/wiki/Ribbon"><em>Ribbon</em></a>) gelangt man zum Dialogfeld &ldquo;Menüband anpassen&rdquo; (Abbildung 1). Von dort geht es in das Dialogfeld &ldquo;Tastatur anpassen&rdquo; wo man sämtliche Word-Aktionen nach gusto mit Tastenkombinationen verknüpfen kann.</p>
+<p><a href="http://www.freecoffee.de/wp-content/uploads/2014/02/Word-2010-Shortcuts.png"><img src="images/Word-2010-Shortcuts-300x300.png" alt="Word 2010 - Shortcuts"></a></p>
+<p>Allerdings ist es in Word nicht ohne weiteres möglich, auch eigene Makros mit Tastenkombinationen zu belegen. Der Umweg führt über <a href="http://www.vbaexpress.com/kb/getarticle.php?kb_id=621">ein paar  Zeilen VBA</a> und die Methode <a href="http://msdn.microsoft.com/de-de/library/microsoft.office.interop.word.keybindings.add%28v=office.11%29.aspx">KeyBindings</a>. Der Parameter <a href="http://msdn.microsoft.com/en-us/library/office/aa613356%28v=office.10%29.aspx">BuildKeyCode</a> erwartet die gewünschte Tastenkombination. Und der Parameter Command schließlich die gewünschte <em>Sub</em>.</p>
+<p>Sub Workbook_Open()
+With Application
+&rsquo; Auf welches Dokument bezieht sich diese Änderung?
+&rsquo; Alternativ &ldquo;NormalTemplate&rdquo; für das
+.CustomizationContext = ThisDocument</p>
+<pre><code>     ' die eigentliche Zuordnung beginnt hier
+    .KeyBindings.Add **KeyCode**:=BuildKeyCode(wdKeyControl, wdKeyH), \_
+    KeyCategory:=wdKeyCategoryCommand, \_
+    **Command**:=&quot;MachWas&quot;
+End With
+</code></pre>
+<p>End Sub</p>
+<p>Sub MachWas()
+MsgBox &ldquo;Hallo Welt&rdquo;
+End Sub</p>
+<p>In Excel 2010 gibt es die Möglichkeit, Tastenkombinationen bestimmten Aktionen direkt zuzuordnen, allerdings nicht mehr. Dafür ist die Einbindung über VBA etwas weniger kompliziert möglich - dazu dient das Ereignis &ldquo;<a href="http://msdn.microsoft.com/en-us/library/office/aa195807%28v=office.11%29.aspx">OnKey</a>&rdquo;:</p>
+<p>Private Sub Workbook_Open()
+Application.OnKey &ldquo;+{H}&rdquo;, &ldquo;MachWas&rdquo;
+End Sub</p>
+<p>In PowerPoint schließlich funktioniert  die einfache Verwaltung der Tastenkombination ebenfalls nicht ohne Umwege. Abhilfe schafft das kostenpflichtige AddOn ShortCut Manager. Dieses ist 30 Tage lang kostenfrei nutzbar.</p>
+
+        
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>office</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Tastenkombinationen und Makros in Office 2010 - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
       
     </item>
-    
   </channel>
 </rss>

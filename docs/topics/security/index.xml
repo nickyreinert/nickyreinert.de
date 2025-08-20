@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Security auf Nicky Reinert</title>
+    <link>https://nickyreinert.de/topics/security/</link>
+    <description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur – plus Texte zu KI sowie Autismus &amp; Gesellschaft.</description>
+    <generator>Hugo 0.148.2</generator>
+    <language>de</language>
+    <managingEditor></managingEditor>
+    <webMaster></webMaster>
+    <copyright></copyright>
+    <lastBuildDate>Sat, 14 Oct 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/security/index.xml" rel="self" type="application/rss+xml" /><item>
+      <title>SSL-Verifizierung mit PHP schlägt fehlt (Fehler 14090086)</title>
+      <link>https://nickyreinert.de/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/</link>
+      <pubDate>Sat, 14 Oct 2017 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/</guid>
+      <description>Wenn dich PHP mit dieser Fehlermeldung (oder einer ähnlichen Fehlernummer) begrüßt, dann liegt es wohl daran, dass beim Abruf einer SSL-Ressource die Identität …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt SSL-Verifizierung mit PHP schlägt fehlt (Fehler 14090086) und bietet praktische Einblicke in das Thema.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Security, Web, SSL</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>Wenn dich PHP mit dieser Fehlermeldung (oder einer ähnlichen Fehlernummer) begrüßt, dann liegt es wohl daran, dass beim Abruf einer SSL-Ressource die Identität nicht verifiziert werden konnte. Und das ist auch gut so, denn der Sinn von SSL ist ja das Herstellen einer gesicherten Verbindung.<br>
+So sieht die Fehlermeldung bei Verwendung von <em>file_get_contents();</em> aus. Aber auch andere Funktionen, mit denen man auf externe Ressourcen verweisen kann, werfen diesen Fehler, wie z.B. <em>imagecreatefrompng();</em>.</p>
+<p>Warning: file_get_contents(): SSL operation failed with code 1.
+OpenSSL Error messages:
+error:14090086:SSL routines:ssl3_get_server_certificate:certificate
+verify failed in /website/script.php
+on line 50</p>
+<p>Warning: file_get_contents():
+Failed to enable crypto in /website/script.php<br>
+on line 50</p>
+<p>Warning: file_get_contents(<a href="https://www.nickyreinert.de/foobar.json%29">https://www.nickyreinert.de/foobar.json)</a>:
+failed to open stream: operation failed in /website/script.php<br>
+on line 50</p>
+<p>Die Erklärung ist simpel: PHP kennt den Aussteller des Zertifikates für <a href="https://www.nickyreinert.de">https://www.nickyreinert.de</a> nicht und verweigert aus Sicherheitsgründen den Aufbau einer Verbindung. Die Ursachen hingegen können vielfältig sein, oft ist der Aussteller des Zertifikats z.B. nicht bekannt. Wir müssen also entweder dafür sorgen, dass PHP dem Aussteller vertraut oder festlegen, dass PHP die Zertifikate gar nicht erst prüft.</p>
+<h2 id="verifizierung-des-ssl-hosts-unterdrücken">Verifizierung des SSL Hosts unterdrücken</h2>
+<p>Das ist die quick&rsquo;n&rsquo;dirty Lösung. Zumindest <em>file_get_contents()</em>; kann mit Parametern gefüttert werden, die die Verifizierung der Ressource unterdrücken:</p>
+<p>$stream = stream_context_create(array(    
+$stream = stream_context_create(array(
+&ldquo;ssl&rdquo;=&gt;array(     
+&ldquo;verify_peer&rdquo;=&gt; false,    
+&ldquo;verify_peer_name&rdquo;=&gt; false, ),
+&lsquo;http&rsquo; =&gt; array(    
+&rsquo;timeout&rsquo; =&gt; 30     ) )     );</p>
+<p>$result = file_get_contents($url, 0, $stream);</p>
+<p>Wer auf eine eigene Ressource zurückgreift, z.B. im lokalen Netz oder zu Testzwecken, kann damit leben. Aus Sicherheitsgründen ist die Lösung allerdings nicht zu empfehlen. Außerdem erlaubt nicht jede Funktion die Angabe eines Stream-Contextes, wie z.B. <em>imagecreatefromjpeg();</em></p>
+<h2 id="die-zertifikatskette-manuell-einrichten">Die Zertifikatskette manuell einrichten</h2>
+<p>Man kommt also nicht darum, die saubere Lösung zu nutzen. Dazu muss man wissen, dass es in den allermeisten Fällen nicht nur um das eine Zertifikat geht, sondern um die gesamte Zertifikatskette. Diese beinhaltet auch die Zertifikate der Stellen, die dem infragekommenden Server, also <a href="https://www.nickyreinert.de">https://www.nickyreinert.de</a>, das Zertifikat ausgestellt haben. Wenn PHP diese Stellen nicht kennt, geht es auch davon aus, dass die von dort ausgestellten Zertifikate nicht gültig sind.</p>
+<p><a href="https://www.nickyreinert.de/files/1561/ssl-zertifikats-kette.png"><img src="/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/images/ssl-zertifikats-kette-300x219.png" alt=" SSL Zertifikats-Kette mit den Intermediate Zertifikaten"></a></p>
+<p>SSL Zertifikats-Kette mit den Intermediate Zertifikaten</p>
+<p>Um die Zertifikatskette zu erhalten, kannst du einen Service wie <a href="https://whatsmychaincert.com/">https://whatsmychaincert.com/</a> nutzen. Dieser liefert dir eine Datei mit der  kompletten Zertifikatskette. Oder du machst dich selber auf die Suche. Jedes Zertfikat enthält den Namen des Ausstellers bzw. den Typ des Zertifikats. Damit lassen sich die notwendigen Zwischenzertifkate auch manuell zusammenstellen.</p>
+<h2 id="php-die-zertifikatskette-mitteilen">PHP die Zertifikatskette mitteilen</h2>
+<p>Die Datei mit der Zertifikatskette gehört nun, oh Wunder, an einen Ort, den PHP erreichen kann. Dann musst du PHP noch mitteilen, dass es auch diese Zertifikatskette berücksichtigen soll. Auch das passiert über den Stream-Context, den ich oben schon angesprochen habe. Doch diesmal erlauben wir PHP, den SSL-Host zu verfizieren und verweisen auf die Zertifikatskette, die wir oben erstellt haben:</p>
+<p>$stream = stream_context_create(array(
+&ldquo;ssl&rdquo;=&gt;array(    
+&ldquo;cafile&rdquo; =&gt; &ldquo;<a href="https://www.nickyreinert.de.pem">www.nickyreinert.de.pem</a>&rdquo;,    
+&ldquo;verify_peer&rdquo;=&gt; true,    
+&ldquo;verify_peer_name&rdquo;=&gt; true, ),&lsquo;http&rsquo; =&gt; array(    
+&rsquo;timeout&rsquo; =&gt; $this-&gt;configUrlTimeOut     ) )
+;
+$config = file_get_contents($url, 0, $stream);</p>
+<p>Geschafft. PHP sollte nun, zur Laufzeit, den SSL-Host überprüfen und dabei auf die Zertifikate zurückgreifen, die die Authentizität einwandfrei bestätigen.</p>
+<p>Man kann den Verweis auch an anderer Stelle global definieren. Die PHP-Funktion openssl_get_cert_locations(); teilt uns direkt mit, wo PHP nach gültigen Zertifikaten sucht:</p>
+<p>Array
+(
+[default_cert_file] =&gt; /Applications/XAMPP/xamppfiles/share/openssl/cert.pem
+[default_cert_file_env] =&gt; SSL_CERT_FILE
+[default_cert_dir] =&gt; /Applications/XAMPP/xamppfiles/share/openssl/certs
+[default_cert_dir_env] =&gt; SSL_CERT_DIR
+[default_private_dir] =&gt; /Applications/XAMPP/xamppfiles/share/openssl/private
+[default_default_cert_area] =&gt; /Applications/XAMPP/xamppfiles/share/openssl
+[ini_cafile] =&gt; /Applications/XAMPP/xamppfiles/share/curl/curl-ca-bundle.crt
+[ini_capath] =&gt;
+)</p>
+<p>Der entscheidende Parameter lautet <strong>ini_cafile</strong>. Diese wird in der php.ini mit dem Parameter</p>
+<p>openssl.cafile=/Applications/XAMPP/xamppfiles/share/curl/curl-ca-bundle.crt</p>
+<p>gesetzt. Die gleiche Info erhältst du auch über die bekannte Funktion phpinfo(), dort lautet der Parameter <strong>openssl.cafile</strong>.</p>
+<p>In der entsprechenden Datei liegen eine Menge von Root-Zertifikaten, bzw. Certificate-Authorities. Sprich die Aussteller, denen PHP grundsätzlich vertraut. Mitunter macht es mehr Sinn, diese Einstellung in der php.ini zu nutzen, damit auch curl() darauf zurückgreifen kann.</p>
+<p>Wenn du PHP-FPM benutzt, musst du den Parameter übrigens folgendermaßen ansprechen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">php_admin_value[openssl.cafile] = /Applications/XAMPP/xamppfiles/share/curl/curl-ca-bundle.crt
+</span></span></code></pre></div><h2 id="zusammenfassung">Zusammenfassung</h2>
+<p>Die SSL-Fehlermeldung hat ihren Sinn. PHP ist nicht in der Lage, die Authentizität des Servers zu überprüfen. Der korrekte Weg das Problem zu beheben, ist das Zertifikat der entsprechenden Seite herunterzuladen, die Intermediate-Zertifikate und das Root-Zertifikat zu besorgen und alle Zertifikate im PEM-Format in eine Text-Datei zu packen.<br>
+Danach kannst du entweder auf die URL zugreifen und über den Stream-Kontext auf diese Datei mit der Zertifikats-Kette verweisen, oder du legst in den globalen PHP-Einstellungen fest, dass PHP diese Datei beim nächsten Mal berücksichtigen soll.</p>
+
+        
+        
+        <div class="tags">
+          <p><strong>Tags:</strong> certificate-chain, curl, intermediate, php, ssl, zertifikate, zertifikatskette</p>
+        </div>
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>SSL-Verifizierung mit PHP schlägt fehlt (Fehler 14090086) - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
+      
+    </item><item>
+      <title>Welche Arten von SSL-Zertifikaten gibt es?</title>
+      <link>https://nickyreinert.de/2017/2017-09-30-welche-arten-von-ssl-zertifikaten-gibt-es/</link>
+      <pubDate>Sat, 30 Sep 2017 00:00:00 +0000</pubDate>
+      <author></author>
+      <guid>https://nickyreinert.de/2017/2017-09-30-welche-arten-von-ssl-zertifikaten-gibt-es/</guid>
+      <description>SSL-Zertifikate spielen seit einiger Zeit eine sehr wichtige Rolle. Zwar gibt es die verschlüsselte Datenübertragung von Websiten über https schon länger …</description>
+      
+      
+      <content:encoded>&lt;![CDATA[
+        
+        <div class="ai-summary">
+          <h3>AI-Zusammenfassung</h3>
+          <p>Dieser Artikel behandelt Welche Arten von SSL-Zertifikaten gibt es? und bietet praktische Einblicke in das Thema.</p>
+          
+          
+          <p><strong>Hauptthemen:</strong> Security, Web, SSL</p>
+          
+          
+          
+          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+          
+        </div>
+        
+        
+        <p>SSL-Zertifikate spielen seit einiger Zeit eine sehr wichtige Rolle. Zwar gibt es die verschlüsselte Datenübertragung von Websiten über https schon  länger (bereits 1994 wurde die erste Version offiziell vorgestellt) aber erst in 2014 nahm die Bedeutung für SEO zu. <a href="https://webmasters.googleblog.com/2014/08/https-as-ranking-signal.html">Im August 2014</a> hat Google bekannt gegeben, dass SSL nun zu den Ranking-Faktoren zählt.  Fast zeitgleich (Anfang 2017) haben die beiden bekanntesten Browser Chrome und Firefox eine neue Version vorgestellt. Von nun an werden Webseiten, die SSL nicht nutzen explizit als unsicher ausgezeichnet. Langfristig wird also kein Weg an einem SSL-Zertifikat vorbeiführen.</p>
+<p>Es gibt sehr viele Anbieter, bei denen man SSL-Zertifikate bestellen kann und die Preise sind sehr unterschiedlich. So bietet Lets Encrypt kostenlose Zertifikate an und andere Anbieter verlangen dafür mehrere hundert Euro im Jahr. Der Grund dafür ist, dass es natürlich verschiedene Unterscheidungen bei den Zertifikaten gibt. Die eine betrifft die Art, wie das Zertifikat überprüft wird und die andere beschreibt den Gültigkeitsbereich eines Zertifikats.</p>
+<h2 id="wie-funktioniert-die-ssl-zertifizierung">Wie funktioniert die SSL Zertifizierung?</h2>
+<p>Ich werde ich nicht zu tief ins Detail gehen und eigentlich reicht es auch aus, das Grundprinzip zu verstehen: Wenn du für deine Internetseite ein Zertifikat einrichten willst, musst du dafür einen sogenannten Private Key und einen Antrag, das CSR (Certificat Signing Request) erstellen. Der Private Key ist der Augapfel, den du beschützen musst. Der CSR enthält die Informationen zu der Person bzw. Organisation, die hinter der Website steckt, die das SSL-Zertifikat erhalten soll. Dazu gehören z.B. der Name, die Anschrift und vor allem natürlich die Domain, über die die Webseite erreichbar ist. Außerdem ist auch die CA in dem Zertifikat vertreten. Warum das wichtig ist, erkläre ich weiter unten.</p>
+<p>Das CSR wird dann an eine Zertifizierungsstelle geschickt (die sogenannte CA, Certification Authority), die dir als Antwort ein Zertifikat ausstellt.</p>
+<p>Dieses Zertifikat wird dann auf deinem Webserver installiert und jedem Browser, der die Seite aufruft, übermittelt. Der Browser erkennt dann die CA, die das Zertifikat ausgestellt hat und kann der Website dann &ldquo;vertrauen&rdquo; bzw. die verschlüsselte Verbindung aufbauen.</p>
+<p>[caption id=&ldquo;attachment_1612&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/welche-arten-von-ssl-zertifikaten-gibt-es/Zertifikat-U%CC%88bersicht.png"><img src="images/Zertifikat-U%CC%88bersicht-300x233.png" alt="Übersicht über den Zertifizierungsprozess"></a> Übersicht über den Zertifizierungsprozess[/caption]</p>
+<p>Das Zertifikat bzw. das SSL-Protokoll kann nun zwei Aufgaben erfüllen: Es verschlüsselt die Kommunikation und schafft idealerweise Vertrauen.</p>
+<h2 id="unterscheidung-nach-der-art-der-validierung">Unterscheidung nach der Art der Validierung</h2>
+<p>Ein Zertifikat soll also Vertrauen schaffen. Das heißt, <a href="https://www.ssl.com/article/dv-ov-and-ev-certificates/">der Inhaber des Zertifikates muss sich validieren</a>. Dies macht er gegenüber der Zertifizierungsstelle (<strong>Certification Authority</strong>, CA). Dafür gibt es drei Möglichkeiten. Die schnellste und daher oft günstigste Variante ist die <strong>Domain Validation</strong> (DV).Die CA prüft dabei lediglich, ob der Antragsteller Besitzer der Domain ist.</p>
+<p>Die nächst Stufe ist die <strong>Organization Validation</strong> (OV). Dabei enthält das Zertifikat auch Informationen zum Unternehmen bzw. dem Besitzer der Domain, wie den Namen und die Anschrift. Diese Informationen  werden von der CA zusätzlich geprüft und validiert.</p>
+<p>Die höchste Stufe schließlich ist die <strong>Extended Validation</strong> (EV). Auch hier wird natürlich die Authentizität des Antragstellers geprüft. Der Aufwand ist hier allerdings ungleich höher. So verlangt ssl.com z.B. die Übermittlung unterschriebener Dokumente, unter anderem von einem Notar. Außerdem werden verschiedene Eigenschaften des Unternehmens geprüft, nicht zuletzt die ladungsfähige Anschrift oder die Telefonnummer. Im Browser wird die EV  dann durch kenntlich gemacht, dass der Name des Unternehmens bzw. Besitzer neben der URL dargestellt wird:</p>
+<p>[caption id=&ldquo;attachment_1531&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;729&rdquo;]<a href="https://www.nickyreinert.de/files/welche-arten-von-ssl-zertifikaten-gibt-es/ssl-ev-darstellung-im-browser.png"><img src="/2017/2017-09-30-welche-arten-von-ssl-zertifikaten-gibt-es/images/ssl-ev-darstellung-im-browser.png" alt="Darstellung des Extended Validation Zertifikats im Browser"></a> Darstellung des Extended Validation Zertifikats im Browser[/caption]</p>
+<p>Natürlich können die Preisunterschiede auch andere Gründe haben, wie z.B. ganz banal die Kostenkalkulation des Anbieters oder die Aufwände, die z.B. der eigene Hoster mit der Pflege und Beantragung hat.</p>
+<h2 id="unterscheidung-nach-umfang-des-zertifikats">Unterscheidung nach Umfang des Zertifikats</h2>
+<p>Natürlich wird ein Zertifikat immer nur für einen bestimmten Adressaten, eine Domain ausgeschrieben, wie z.B. <a href="https://www.example.com">www.example.com</a>. Doch auch hier gibt es Ausnahmen. Wie zum Beispiel das Wildcard-Zertifikat. Damit ist es möglich, beliebig viele Sub-Domains ebenfalls in das Zertifikat mit aufzunehmen. So könnte ein Wildcard-Zertifikat für *.example.com jede Sub-Domain unterhalb von example.com verwendet werden: <a href="https://www.example.com">www.example.com</a>, mail.example.com, ftp.example.com und so weiter. Für untergeordnete Sub-Domains (sub.www.example.com) funktioniert das allerdings nicht.</p>
+<p>Daneben gibt es Multi-Domain-Zertifikate, auch SAN (Subject Alternative Name) genannt. Diese Zertifikate können für beliebige Domains ausgestellt werden. Die Domains müssen aber explizit angegeben werden. So kann ein SAN-Zertifikat für <a href="https://www.example.com">www.example.com</a>, ftp.foobar.org und mail.google.com genutzt werden.</p>
+<h2 id="was-ist-eine-zertifikats-kette">Was ist eine Zertifikats-Kette?</h2>
+<p>[caption id=&ldquo;attachment_1614&rdquo; align=&ldquo;alignright&rdquo; width=&ldquo;238&rdquo;]<a href="https://www.nickyreinert.de/files/welche-arten-von-ssl-zertifikaten-gibt-es/zertifikatskette.png"><img src="/2017/2017-09-30-welche-arten-von-ssl-zertifikaten-gibt-es/images/zertifikatskette-238x300.png" alt="Zertifikatskette mit Zwischenzertifikaten und Root-Zertifikaten"></a> Zertifikatskette mit Zwischenzertifikaten und Root-Zertifikaten[/caption]</p>
+<p>Nun ist es so, dass der Browser nicht nur blind irgendwelchen Zertifikaten vertraut. Die könnte man sich ja auch selber ausstellen. Aus diesem Grund gibt es so genannte Wurzel-Zertifikate bzw. Zertifikate von Root CAs. Es gibt also Organisationen, denen der Browser vertraut. Deren Zertifikate sind oft im lokalen Speicher installiert und der Browser kann prüfen, ob das  Zertifikat für <a href="https://www.example.com">www.example.com</a> von einer vertrauenswürdigen Organisation ausgestellt wurde. Denn das Zertifikat erhält ja auch den Verweis auf die Stelle, von der das Zertifikat einmal ausgestellt wurde. Oft ist es allerdings so, dass man Zertifikate nicht nur bei den Root CAs bestellt, sondern auch bei deren &ldquo;Delegierten&rdquo; - den Intermediate CAs. Um dem Browser nun klar zu machen, dass er auch der Intermediate CA vertrauen kann, muss eben diese Zertifikats-Kette übermittelt werden. Das ist im Grunde nichts weiter als ein Liste von Zertifikaten, mit denen die Vertrauenswürdigkeit der beteiligten Zertifikats-Stellen bescheinigt wird.</p>
+<p>Der Server hinter <a href="https://www.example.com">www.example.com</a> liefert also nicht nur das Zertifikat für die Seite selber aus, sondern auch alle Zwischenzertifikate - in der sogenannten Zertifikatskette.</p>
+
+        
+        
+      ]]></content:encoded>
+      
+      
+      
+      <category>hosting</category>
+      
+      <category>anleitungen</category>
+      
+      
+      
+      
+      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+        <media:title>Welche Arten von SSL-Zertifikaten gibt es? - Titelbild</media:title>
+      </media:content>
+      
+      
+      
+      
+      <dc:subject>Lesezeit: 5 Minuten</dc:subject>
+      
+      
+      
+      <dc:type>guide</dc:type>
+      
+      
+    </item>
+  </channel>
+</rss>
