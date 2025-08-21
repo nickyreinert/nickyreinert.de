@@ -481,93 +481,86 @@ Diese Artikelserie richtet sich an den fortgeschrittenen Nutzer. Für den Eins
 <p>1. Die URL zu den Hersteller-Unterseiten auslesen - sub getManufacturer</p>
 <p>1.1 Datei per HTTP von einem Server laden</p>
 <p>Im ersten Schritt laden wir die komplette HTML-Datei in den Zwischenspeicher. Dazu gibt es mindesten zwei Methoden, die gängigste ist vermutlich die über <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa384106%28v=vs.85%29.aspx">WinHttpRequest</a>. Bevor du das nutzen kannst, musst du bei VBA unter Extras - Verweise jedoch erst die Microsoft HTML Object Library einbinden.</p>
-<p>&lsquo;&lsquo;&lsquo;vba
-Dim url As String
-Dim result As String
-Dim winHttpReq As Object
-url = &ldquo;<a href="http://www.inside-handy.de/hersteller/handys%22">http://www.inside-handy.de/hersteller/handys"</a></p>
-<p>Set winHttpReq = CreateObject(&ldquo;WinHttp.WinHttpRequest.5.1&rdquo;)
-winHttpReq.Open &ldquo;GET&rdquo;, url, False
-winHttpReq.send
-result = winHttpReq.responseText
-&rsquo;&rsquo;&rsquo;</p>
-<p>Die Deklaration der Variablen erklärt sich von selbst. Nachdem ich eine Instanz vom WinHTTP-Objekt erzeugt habe, kann ich die Parameter übergeben. Dazu gehört neben der URL auch die Bestimmung des HTTP-Requests - nämlich GET. Der letzte, booleansche, Paramter gibt an, ob die Verbindung im asynchronen Modus geöffnet werden soll. Mit .send wird der Request tatsächlich ausgelöst und das Ergebni dann an die String-Variable result zurückgegeben. Dort befindet sich nun unser HTML-Code</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Dim url As String
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Dim result As String
+</span></span><span class="line"><span class="ln">3</span><span class="cl">Dim winHttpReq As Object
+</span></span><span class="line"><span class="ln">4</span><span class="cl">url = &#34;http://www.inside-handy.de/hersteller/handys&#34;
+</span></span><span class="line"><span class="ln">5</span><span class="cl">
+</span></span><span class="line"><span class="ln">6</span><span class="cl">Set winHttpReq = CreateObject(&#34;WinHttp.WinHttpRequest.5.1&#34;)
+</span></span><span class="line"><span class="ln">7</span><span class="cl">winHttpReq.Open &#34;GET&#34;, url, False
+</span></span><span class="line"><span class="ln">8</span><span class="cl">winHttpReq.send
+</span></span><span class="line"><span class="ln">9</span><span class="cl">result = winHttpReq.responseText
+</span></span></code></pre></div><p>Die Deklaration der Variablen erklärt sich von selbst. Nachdem ich eine Instanz vom WinHTTP-Objekt erzeugt habe, kann ich die Parameter übergeben. Dazu gehört neben der URL auch die Bestimmung des HTTP-Requests - nämlich GET. Der letzte, booleansche, Paramter gibt an, ob die Verbindung im asynchronen Modus geöffnet werden soll. Mit .send wird der Request tatsächlich ausgelöst und das Ergebni dann an die String-Variable result zurückgegeben. Dort befindet sich nun unser HTML-Code</p>
 <p>Wir können unseren Request natürlich auch per POST absetzen und noch andere Header-Informationen anhängen:</p>
-<p>&lsquo;&lsquo;&lsquo;vba
-Set winHttpReq = CreateObject(&ldquo;WinHttp.WinHttpRequest.5.1&rdquo;)</p>
-<p>winHttpReq.Open = &ldquo;Post&rdquo;, url, False
-winHttpReq.setRequestHeader &ldquo;User-Agent&rdquo;, &ldquo;Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)&rdquo;
-winHttpReq.setRequestHeader &ldquo;Content-type&rdquo;, &ldquo;application/x-www-form-urlencoded&rdquo;
-winHttpReq.send (URLEncode(&ldquo;username=user1&amp;password=secret&rdquo;) )</p>
-<p>result = winHttpReq.responseText
-&rsquo;&rsquo;&rsquo;</p>
-<p>So ist es z.B. möglich, Formulardaten zu übermitteln, um an eine passwortgeschützte Seite oder die Ergebnisseite einer Suche zu gelangen. Dabei werden die POST-Daten als weiterer Parameter beim Senden mitgegeben. Eine weitere Möglichkeit ist die Durchführung einer HTTP-Authentifizierung:</p>
-<p>&lsquo;&lsquo;&lsquo;vba
-Dim HTTPREQUEST_SETCREDENTIALS_FOR_SERVER As Boolean</p>
-<p>winHttpReq.Open &ldquo;GET&rdquo;, url, False
-winHttpReq.SetCredentials &ldquo;user&rdquo;, &ldquo;password&rdquo;, HTTPREQUEST_SETCREDENTIALS_FOR_SERVER
-winHttpReq.send
-&rsquo;&rsquo;&rsquo;</p>
-<p>Neben dem winHttpRequest-Objekt gibt es noch eine weniger elegante Methoden, in dem direkt eine Instanz des Internet Explorers erzeugt wird:</p>
-<p>&lsquo;&lsquo;&lsquo;vba
-Dim sPostData As String
-Dim bPostData() As Byte
-Dim WebBrowser: Set WebBrowser = CreateObject(&ldquo;InternetExplorer.Application&rdquo;)</p>
-<p>WebBrowser.Visible = True</p>
-<p>sPostData = URLEncode(&ldquo;username=user1&amp;password=secret&rdquo;)
-ReDim bPostData(Len(sPostData) - 1)
-bPostData = StrConv(sPostDataData, vbFromUnicode)</p>
-<p>WebBrowser.navigate url, 2 + 4 + 8, , bPostData, &ldquo;Content-type: application/x-www-form-urlencoded&rdquo;
-Do While WebBrowser.Busy
-DoEvents
-Loop
-result = WebBrowser.document.body.innerHTML
-WebBrowser.Quit
-&rsquo;&rsquo;&rsquo;</p>
-<p>Da diese Methode - wie gesagt - nicht sonderlich elegant ist, werde ich aber nicht weiter darauf eingehen.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Set winHttpReq = CreateObject(&#34;WinHttp.WinHttpRequest.5.1&#34;)
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">winHttpReq.Open = &#34;Post&#34;, url, False
+</span></span><span class="line"><span class="ln">4</span><span class="cl">winHttpReq.setRequestHeader &#34;User-Agent&#34;, &#34;Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)&#34;
+</span></span><span class="line"><span class="ln">5</span><span class="cl">winHttpReq.setRequestHeader &#34;Content-type&#34;, &#34;application/x-www-form-urlencoded&#34;
+</span></span><span class="line"><span class="ln">6</span><span class="cl">winHttpReq.send (URLEncode(&#34;username=user1&amp;password=secret&#34;) )
+</span></span><span class="line"><span class="ln">7</span><span class="cl">
+</span></span><span class="line"><span class="ln">8</span><span class="cl">result = winHttpReq.responseText
+</span></span></code></pre></div><p>So ist es z.B. möglich, Formulardaten zu übermitteln, um an eine passwortgeschützte Seite oder die Ergebnisseite einer Suche zu gelangen. Dabei werden die POST-Daten als weiterer Parameter beim Senden mitgegeben. Eine weitere Möglichkeit ist die Durchführung einer HTTP-Authentifizierung:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Dim HTTPREQUEST\_SETCREDENTIALS\_FOR\_SERVER As Boolean
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">winHttpReq.Open &#34;GET&#34;, url, False
+</span></span><span class="line"><span class="ln">4</span><span class="cl">winHttpReq.SetCredentials &#34;user&#34;, &#34;password&#34;, HTTPREQUEST\_SETCREDENTIALS\_FOR\_SERVER
+</span></span><span class="line"><span class="ln">5</span><span class="cl">winHttpReq.send
+</span></span></code></pre></div><p>Neben dem winHttpRequest-Objekt gibt es noch eine weniger elegante Methoden, in dem direkt eine Instanz des Internet Explorers erzeugt wird:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">Dim sPostData As String
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">Dim bPostData() As Byte
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">Dim WebBrowser: Set WebBrowser = CreateObject(&#34;InternetExplorer.Application&#34;)
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">WebBrowser.Visible = True
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">sPostData = URLEncode(&#34;username=user1&amp;password=secret&#34;)
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">ReDim bPostData(Len(sPostData) - 1)
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">bPostData = StrConv(sPostDataData, vbFromUnicode)
+</span></span><span class="line"><span class="ln">10</span><span class="cl">
+</span></span><span class="line"><span class="ln">11</span><span class="cl">WebBrowser.navigate url, 2 + 4 + 8, , bPostData, &#34;Content-type: application/x-www-form-urlencoded&#34;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">Do While WebBrowser.Busy
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    DoEvents
+</span></span><span class="line"><span class="ln">14</span><span class="cl">Loop
+</span></span><span class="line"><span class="ln">15</span><span class="cl">result = WebBrowser.document.body.innerHTML 
+</span></span><span class="line"><span class="ln">16</span><span class="cl">WebBrowser.Quit
+</span></span></code></pre></div><p>Da diese Methode - wie gesagt - nicht sonderlich elegant ist, werde ich aber nicht weiter darauf eingehen.</p>
 <p>Nun zurück zu unserem Skript. Den HTML-Code der Seite haben wir nun erstmal in einen String gelegt. Damit wir das HTML-Dokument bequem lesen können, erzeugen wir ein HTML-Document, an das wir den HTML-Code übergeben:</p>
-<p>&lsquo;&lsquo;&lsquo;vba
-Set HTMLDoc = New HTMLDocument
-Set HTMLDoc = CreateObject(&ldquo;htmlfile&rdquo;)
-HTMLDoc.Open
-HTMLDoc.write (CStr(result))
-HTMLDoc.Close
-&rsquo;&rsquo;&rsquo;</p>
-<p>Auch hier erklärt sich der Code fast von selber: Eine Instanz des Objektes erzeugen, diese Instanz zum &ldquo;Befüllen&rdquo; vorbereiten, den String übergebne und die Instanz wieder &ldquo;schließen&rdquo;. Soweit, so unkompliziert. Im nächsten Schritt geht es nun direkt an das Parsen des Quellcodes um die Links zu den Herstellerseiten zu erhalten. Die Schleife dazu ist nicht sehr aufwendig:</p>
-<p>&lsquo;&lsquo;&lsquo;vba
-Dim oneElement1, allElements1 As IHTMLElementCollection
-Dim oneElement2, allElements2 As IHTMLElementCollection
-Dim oneElement3, allElements3 As IHTMLElementCollection</p>
-<pre><code>Worksheets(&quot;srcURL&quot;).Range(&quot;a2&quot;).Select
-i = 0
-Set allElements1 = HTMLDoc.getElementsByTagName(&quot;a&quot;)
-      
-i = 0
-For Each oneElement1 In allElements1
-    If oneElement1.parentElement.className = &quot;h\_img&quot; Then
-        If oneElement1.parentElement.parentElement.ID = &quot;h\_alle&quot; Then
-            If InStr(1, oneElement1.getAttribute(&quot;href&quot;), &quot;/tablets&quot;) &lt;= 0 Then
-                Selection.Offset(i, 0).Value = Replace(oneElement1.getAttribute(&quot;href&quot;), &quot;about:&quot;, &quot;http://www.inside-handy.de&quot;)
-                i = i + 1
-            End If
-        End If
-        
-    End If    
-Next oneElement1
-</code></pre>
-<p>End Sub
-&rsquo;&rsquo;&rsquo;</p>
-<p>Wie bin ich vorgegangen? Ich habe mir zunächst den Quellcode der Seite angeschaut. Die Liste der Hersteller ist dort eine Tabelle mit den Logos der Unternehmen. Die gewünschte Information befindet sich in a-Elementen, die wiederum innerhalb eines div-Elements liegen. Das gemeinsame &ldquo;Oberelement&rdquo; ist ein div-Container mit der CSS-Klasse &ldquo;h_img&rdquo; bzw. einem weiterne div-Container (&ldquo;h_alle&rdquo;). Außerdem gibt es einen ausgeblendeten div-Container mit einer Liste von Tablet-Herstellern, diese haben den Begriff &ldquo;/tablet&rdquo; in der href-Angabe und müssen ignoriert werden.</p>
-<p>&lsquo;&lsquo;&lsquo;html</p>
-<div id="h\_alle">
-	<div class="h\_img">
-		<a href="/hersteller/xyz" title="Handys Hersteller: XYZ">
-			<img />
-		</a>
-	</div>
-</div>
-'''
-<p>Mit &ldquo;Set allElements1 = HTMLDoc.getElementsByTagName(&ldquo;a&rdquo;)&rdquo; lasse ich mir also erst alle a-Elemente aus dem Quellcode in meinen &ldquo;Container&rdquo; legen.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Set HTMLDoc = New HTMLDocument
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Set HTMLDoc = CreateObject(&#34;htmlfile&#34;)
+</span></span><span class="line"><span class="ln">3</span><span class="cl">HTMLDoc.Open
+</span></span><span class="line"><span class="ln">4</span><span class="cl">HTMLDoc.write (CStr(result))
+</span></span><span class="line"><span class="ln">5</span><span class="cl">HTMLDoc.Close
+</span></span></code></pre></div><p>Auch hier erklärt sich der Code fast von selber: Eine Instanz des Objektes erzeugen, diese Instanz zum &ldquo;Befüllen&rdquo; vorbereiten, den String übergebne und die Instanz wieder &ldquo;schließen&rdquo;. Soweit, so unkompliziert. Im nächsten Schritt geht es nun direkt an das Parsen des Quellcodes um die Links zu den Herstellerseiten zu erhalten. Die Schleife dazu ist nicht sehr aufwendig:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">    Dim oneElement1, allElements1 As IHTMLElementCollection
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    Dim oneElement2, allElements2 As IHTMLElementCollection
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    Dim oneElement3, allElements3 As IHTMLElementCollection
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    Worksheets(&#34;srcURL&#34;).Range(&#34;a2&#34;).Select
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    i = 0
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    Set allElements1 = HTMLDoc.getElementsByTagName(&#34;a&#34;)
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">          
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    i = 0
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    For Each oneElement1 In allElements1
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        If oneElement1.parentElement.className = &#34;h\_img&#34; Then
+</span></span><span class="line"><span class="ln">12</span><span class="cl">            If oneElement1.parentElement.parentElement.ID = &#34;h\_alle&#34; Then
+</span></span><span class="line"><span class="ln">13</span><span class="cl">                If InStr(1, oneElement1.getAttribute(&#34;href&#34;), &#34;/tablets&#34;) &lt;= 0 Then
+</span></span><span class="line"><span class="ln">14</span><span class="cl">                    Selection.Offset(i, 0).Value = Replace(oneElement1.getAttribute(&#34;href&#34;), &#34;about:&#34;, &#34;http://www.inside-handy.de&#34;)
+</span></span><span class="line"><span class="ln">15</span><span class="cl">                    i = i + 1
+</span></span><span class="line"><span class="ln">16</span><span class="cl">                End If
+</span></span><span class="line"><span class="ln">17</span><span class="cl">            End If
+</span></span><span class="line"><span class="ln">18</span><span class="cl">            
+</span></span><span class="line"><span class="ln">19</span><span class="cl">        End If    
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    Next oneElement1
+</span></span><span class="line"><span class="ln">21</span><span class="cl">End Sub
+</span></span></code></pre></div><p>Wie bin ich vorgegangen? Ich habe mir zunächst den Quellcode der Seite angeschaut. Die Liste der Hersteller ist dort eine Tabelle mit den Logos der Unternehmen. Die gewünschte Information befindet sich in a-Elementen, die wiederum innerhalb eines div-Elements liegen. Das gemeinsame &ldquo;Oberelement&rdquo; ist ein div-Container mit der CSS-Klasse &ldquo;h_img&rdquo; bzw. einem weiterne div-Container (&ldquo;h_alle&rdquo;). Außerdem gibt es einen ausgeblendeten div-Container mit einer Liste von Tablet-Herstellern, diese haben den Begriff &ldquo;/tablet&rdquo; in der href-Angabe und müssen ignoriert werden.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="ln">1</span><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;h\_alle&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">	<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;h\_img&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">		<span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;/hersteller/xyz&#34;</span> <span class="na">title</span><span class="o">=</span><span class="s">&#34;Handys Hersteller: XYZ&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">			<span class="p">&lt;</span><span class="nt">img</span> <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">		<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">	<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>Mit &ldquo;Set allElements1 = HTMLDoc.getElementsByTagName(&ldquo;a&rdquo;)&rdquo; lasse ich mir also erst alle a-Elemente aus dem Quellcode in meinen &ldquo;Container&rdquo; legen.</p>
 <p>Mit der ersten for-each-Schleife durchlaufe ich nun diesen Container und prüfe mit den ersten zwei if-Abfragen, ob sich das a-Element unterhalb der erwähnten div-Container befindet. Da auf der Seite noch ein weitere identische div-Container mit diesen css-Klassen für die Liste der Tablet-Hersteller existiert, muss ich mit einer dritten if-Abfrage die URL des a-Elements überprüfen. Erst dann kann ich das Attribut des a-Elements auslesen und in mein Excel-Worksheet schreiben.</p>
 <p>Fertig ist der erste Schritt - eine Liste der URL zu den jeweiligen Herstellern. Im nächsten Teil werde ich diese Liste durchgehen und von den jeweiligen Seiten die URL zu den Geräten auslesen.</p>
 
@@ -610,7 +603,8 @@ Next oneElement1
       <pubDate>Sat, 16 Apr 2005 00:00:00 +0000</pubDate>
       <author></author>
       <guid>https://nickyreinert.de/2005/2005-04-16-faq/</guid>
-      <description>Häufig gestellte Fragen rund um Windows und Windows-Programme.Häufig gestellte Fragen rund um Windows und Windows-Programme.
+      <description>
+Häufig gestellte Fragen rund um Windows und Windows-Programme.Häufig gestellte Fragen rund um Windows und Windows-Programme.
 Skype &amp; HTTP-Server ? Mein …</description>
       
       
@@ -630,36 +624,44 @@ Skype &amp; HTTP-Server ? Mein …</description>
         </div>
         
         
-        <p>Häufig gestellte Fragen rund um Windows und Windows-Programme.Häufig gestellte Fragen rund um Windows und Windows-Programme.</p>
-<h3 id="skype--http-server">Skype &amp; HTTP-Server</h3>
-<p>? Mein Webserver (z.B. Apache) läuft nicht, wenn Skype gestartet ist. ! Skype benutzt zum Kommunizieren den HTTP-Port 80, der auch vom Apache-Webserver benötigt wird. Entweder man ändert den Port des Apache Servers <a href="http://faq.kwm-web.info/doku.php?id=apache#listen_port_aendern" title="http://faq.kwm-web.info/doku.php?id=apache#listen_port_aendern">[1]</a> oder du änderst den Port in Skype <a href="http://www.skype-forum.com/about84.html" title="http://www.skype-forum.com/about84.html">[2]</a></p>
-<h3 id="desktop-link-in-quicklaunch">Desktop Link in Quicklaunch</h3>
-<p>? Aus meiner Schnellstartleiste ist das Symbol zum Anzeigen des Desktops verschwunden ! Unter %username%\Anwendungsdaten\Microsoft\Internet Explorer\Quick Launch eine Datei mit dem Namen &ldquo;Desktop anzeigen.scf&rdquo; mit folgendem Inhalt ablegen:</p>
+        <p><img src="/2005/2005-04-16-faq/faq.png" alt="FAQ"></p>
+<p>Häufig gestellte Fragen rund um Windows und Windows-Programme.Häufig gestellte Fragen rund um Windows und Windows-Programme.</p>
+<h2 id="skype--http-server">Skype &amp; HTTP-Server</h2>
+<p>? Mein Webserver (z.B. Apache) läuft nicht, wenn Skype gestartet ist.</p>
+<p>! Skype benutzt zum Kommunizieren den HTTP-Port 80, der auch vom Apache-Webserver benötigt wird. Entweder man ändert den Port des Apache Servers <a href="http://faq.kwm-web.info/doku.php?id=apache#listen_port_aendern">1</a> oder du änderst den Port in Skype <a href="http://www.skype-forum.com/about84.html">2</a></p>
+<h2 id="desktop-link-in-quicklaunch">Desktop Link in Quicklaunch</h2>
+<p>? Aus meiner Schnellstartleiste ist das Symbol zum Anzeigen des Desktops verschwunden</p>
+<p>! Unter <code>%username%\\Anwendungsdaten\\Microsoft\\Internet Explorer\\Quick Launch</code> eine Datei mit dem Namen <code>Desktop anzeigen.scf</code> mit folgendem Inhalt ablegen:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[Shell]
 </span></span><span class="line"><span class="ln">2</span><span class="cl">Command=2IconFile=explorer.exe,3
 </span></span><span class="line"><span class="ln">3</span><span class="cl">[Taskbar]
 </span></span><span class="line"><span class="ln">4</span><span class="cl">Command=ToggleDesktop
-</span></span></code></pre></div><h3 id="skype-vom-usb-stick-starten">Skype vom USB Stick starten</h3>
+</span></span></code></pre></div><h2 id="skype-vom-usb-stick-starten">Skype vom USB Stick starten</h2>
 <p>? Wie starte ich Skype vom USB Stick, ohne dafür externe Anwendungen zu nutzen</p>
 <ol>
-<li>Die Skype-Programm-Dateien in einen Unterordner auf den USB Stick kopieren, z.B: X:\Skype</li>
-<li>In diesem Ordner ein Unterverzeichnis erstellen: X:\Skype\userfiles</li>
-<li>den Inhalt von Dokumente und Einstellungen\%username%\Anwendungsdaten\Skype nach X:\Skype\userfiles kopieren</li>
-<li>eine Batchdatei erstellen: skype.cmd mit dem Inhalt</li>
+<li>Die Skype-Programm-Dateien in einen Unterordner auf den USB Stick kopieren, z.B: <code>X:\\Skype</code></li>
+<li>In diesem Ordner ein Unterverzeichnis erstellen:<code>X:\\Skype\\userfiles</code></li>
+<li>den Inhalt von Dokumente und <code>Einstellungen\\%username%\\Anwendungsdaten\\Skype</code> nach <code>X:\\Skype\\userfiles</code> kopieren</li>
+<li>eine Batchdatei erstellen: <code>skype.cmd</code> mit dem Inhalt</li>
 </ol>
-<p>@start skype.exe \removable \datapath:&quot;\userfiles\&quot; .@ - unterdrückt die Anzeige des Befehls im Dosfensterstart - sorgt dafür, dass das Dosfenster wieder geschlossen wird, nach dem Skypestart</p>
-<h3 id="word-stürzt-beim-start-ab">Word stürzt beim Start ab</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">@start skype.exe \\removable \\datapath:&#34;\\userfiles\\&#34; .
+</span></span><span class="line"><span class="ln">2</span><span class="cl">@ - unterdrückt die Anzeige des Befehls im Dosfensterstart - sorgt dafür, dass das Dosfenster wieder geschlossen wird, nach dem Skypestart
+</span></span></code></pre></div><h2 id="word-stürzt-beim-start-ab">Word stürzt beim Start ab</h2>
 <p>? Im Laufe der Zeit kommt es immer wieder zu Abstürzen von Word. Weder eine Neu-Installation noch andere Reparaturmaßnahmen helfen.</p>
 <ol>
 <li>Schuld ist die Vorlagendatei &ldquo;normal.dot&rdquo;, die im Laufe der Zeit bestimmte Vorlagen und Einstellungen für Word beinhaltet</li>
 <li>Abhilfe schafft ein Umbenennen dieser Vorlagendatei</li>
 <li>findet Word keine normal.dot wird eine neue, frische angelegt</li>
 </ol>
-<p><a href="http://support.microsoft.com/kb/289506/DE/#Cause2" title="http://support.microsoft.com/kb/289506/DE/#Cause2">MS Knowledge Artikel</a></p>
-<h3 id="activesync-stellt-keine-verbindung-zum-pocketpc-her">ActiveSync stellt keine Verbindung zum PocketPC her</h3>
-<p>? Mein XDA / VPA / MDA / PocketPC / PDA kann sich nicht mit ActiveSync verbinden. ! Auch wenn die IP-Adresse auf dem Computer und dem mobilen Gerät per Hand vergeben wurde, kann ActiveSync ohne den Windows-Dienst &ldquo;DHCP-Client&rdquo; keine Verbindung herstellen. Wenn dieser Dienst in der Diensteverwaltung aktiviert wird, funktioniert auch die Verbindung über ActiveSync.</p>
-<h3 id="haldll">hal.dll</h3>
-<p>? hal.dll fehlt oder ist beschädigt, Windows bootet nicht, Systemwiederherstellung und der abgesicherte Modus funktionieren nicht? ! hal.dll wurde gelöscht, boot.ini ist leer oder fehlt ganz</p>
+<ul>
+<li><a href="http://support.microsoft.com/kb/289506/DE/#Cause2">MS Knowledge Artikel</a></li>
+</ul>
+<h2 id="activesync-stellt-keine-verbindung-zum-pocketpc-her">ActiveSync stellt keine Verbindung zum PocketPC her</h2>
+<p>? Mein XDA / VPA / MDA / PocketPC / PDA kann sich nicht mit ActiveSync verbinden.</p>
+<p>! Auch wenn die IP-Adresse auf dem Computer und dem mobilen Gerät per Hand vergeben wurde, kann ActiveSync ohne den Windows-Dienst &ldquo;DHCP-Client&rdquo; keine Verbindung herstellen. Wenn dieser Dienst in der Diensteverwaltung aktiviert wird, funktioniert auch die Verbindung über ActiveSync.</p>
+<h2 id="haldll">hal.dll</h2>
+<p>? <strong>hal.dll</strong> fehlt oder ist beschädigt, Windows bootet nicht, Systemwiederherstellung und der abgesicherte Modus funktionieren nicht?</p>
+<p>! <strong>hal.dll</strong> wurde gelöscht, boot.ini ist leer oder fehlt ganz</p>
 <ol>
 <li>von Original Windows XP CD booten und &ldquo;Wiederherstellungskonsole&rdquo; starten</li>
 <li>hal.dll fehlt
@@ -678,62 +680,75 @@ Skype &amp; HTTP-Server ? Mein …</description>
 </ol>
 </li>
 </ol>
-<p><a href="http://support.microsoft.com/kb/291980/de" title="http://support.microsoft.com/kb/291980/de">kb291980</a></p>
-<h3 id="der-ordner-windowsinstaller">Der Ordner &ldquo;Windows\Installer\&rdquo;</h3>
-<p>? Der Ordner Windows\Installer ist sehr voll, kann ich die Dateien einfach löschen? ! Dieser Ordner enthält die Installationsroutinen der Programme, die mit dem Windows Installer installiert wurden, nicht jedoch die Programmdateien selber. Die Dateien werden benötigt, um die Programme wieder korrekt entfernen zu können. Microsoft bietet auf seiner Seite ein Tool an, das verspricht, diesen Ordner aufräumen zu können. <a href="http://support.microsoft.com/?kbid=290301" title="http://support.microsoft.com/?kbid=290301">Windows Install CleanUp</a></p>
-<h3 id="windows-installer-sucht-nach-installationspaketen-msi-beim-öffnen">Windows Installer sucht nach Installationspaketen (*.msi) beim Öffnen&hellip;</h3>
-<p>? &hellip; verschiedener Programme. Beim Öffnen von Word, den Druckeinstellungen oder anderen Programmen versucht der Windows Installer auf ein Installationspaket zuzugreifen, dass nicht mehr existiert. ! In diesem Fall gibt es einen Konflikt mit einem möglicherweise nicht mehr vorhandenem Programm auf dem Computer. Nennt der Windows Installer die Installations Routine des Programms, kann man direkt per Windows Install CleanUp das entsprechende Programm aus der Datenbank entfernen. <a href="http://support.microsoft.com/?kbid=290301" title="http://support.microsoft.com/?kbid=290301">Windows Install CleanUp</a></p>
-<h3 id="dialog-für-speichern-und-öffnen-anpassen">Dialog für Speichern und Öffnen anpassen</h3>
-<p>? Beim Herunterladen von Dateien mit dem Internetbrowser oder beim Öffnen und Speichern von Dateien mit verschiedenen Programmen erscheint ein Dialogfenster, in dem man den Speicherort und Dateiname angibt. Auf der linken Seite sind einige Speicherort des Computers vorgegebn. Kann man diese Liste ergänzen? ! Bei den Microsoft Office Produkten geschieht das ganz einfach über das Menü &ldquo;Extras&rdquo; im Dialogfenster selber und dort die Option &ldquo;zu Favoriten hinzufügen&rdquo;. Diese Einstellung gilt jedoch nicht systemweit. Um das zu erreichen erstellt man in der Registry unter <em>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies</em> einen Schlüssel mit dem Namen <em>comdlg32</em>. Unterhalb dieses Schlüssels erstellt man nun einen weiteren Schlüssel mit dem Namen <em>Placesbar</em>. Unter diesem Schlüssel kann man jetzt maximal 5 Einträge anlegen. Jeder Schlüssel muss hier den Namen <em>Place0</em> bis <em>Place4</em> tragen und es gibt zwei verschiedene Typen. Lautet der Typ <em>DWORD</em> erwartet der Schlüssel einen der folgenden Werte für die Standardsystemordner:</p>
-<p>0 - Desktop5 - Eigene Dateien6 - Favoriten8 - Zuletzt verwendete Dokumente11 - Arbeitsplatz12 - Netzwerkumgebung</p>
-<p>Eigene Orte und Verzeichnisse kann man direkt eingeben, wählt man als Typ <em>Zeichenfolge</em>. Das folgende Beispiel zeigt, dass weder die Gross-/Kleinschreibung noch der abschließende Backslash <em>\</em> beachtet werden müssen. Achtung, da es sich hierbei um einen exportierten Registryeintrag handelt, der in dieser Form wieder importiert werden kann, sind die Backslashes doppelt vorhanden. Bei der direkten Eingabe in den Registryeditor darf natürlich nur ein Backslash verwendet werden. Windows Registry Editor Version 5.00</p>
-<p>[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\comdlg32\Placesbar]&ldquo;Place0&rdquo;=dword:00000000&quot;Place1&quot;=&ldquo;j:\\dokumente\\studium\\&ldquo;&ldquo;Place2&rdquo;=&ldquo;c:\\teMP&quot;&ldquo;Place3&rdquo;=&ldquo;j:\\incomming&quot;&ldquo;Place4&rdquo;=dword:00000005</p>
-<p>Möchte man die Standardeinstellung wiederherstellen, löscht man den zuerst erstellten Schlüssel <em>comdlg32</em>.</p>
-<h3 id="dns-server-bei-einer-fritzbox-nachtragen">DNS Server bei einer Fritzbox nachtragen</h3>
-<p>? Es gibt bei meiner Fritzbox im Webinterface nicht die Möglichkeit, einen anderen DNS-Server einzutragen. ! Der umständliche Weg, der in vielen Foren empfohlen wird, lautet &ldquo;Telnet&rdquo;. Die einfachste Lösung ist jedoch, den bzw. die DNS Server mit dem FBEditor (Download von <a href="http://www.ip-phone-forum.de/showthread.php?t=79513" title="http://www.ip-phone-forum.de/showthread.php?t=79513">IP Phone Forum.de</a>) nachzutragen. Das Programm benötigt eine Java Runtime Enviroment (Download von <a href="http://www.java.com/de/download/manual.jsp" title="http://www.java.com/de/download/manual.jsp">java.com</a>).</p>
-<h3 id="automatisch-die-urlfilterini-von-opera-aktualisieren">Automatisch die urlfilter.ini von Opera aktualisieren</h3>
+<ul>
+<li><a href="http://support.microsoft.com/kb/291980/de">kb291980</a></li>
+</ul>
+<h2 id="der-ordner-windowsinstaller">Der Ordner &ldquo;Windows\Installer\&rdquo;</h2>
+<p>? Der Ordner Windows\Installer ist sehr voll, kann ich die Dateien einfach löschen?</p>
+<p>! Dieser Ordner enthält die Installationsroutinen der Programme, die mit dem Windows Installer installiert wurden, nicht jedoch die Programmdateien selber. Die Dateien werden benötigt, um die Programme wieder korrekt entfernen zu können. Microsoft bietet auf seiner Seite ein Tool an, das verspricht, diesen Ordner aufräumen zu können. <a href="http://support.microsoft.com/?kbid=290301">Windows Install CleanUp</a></p>
+<h2 id="windows-installer-sucht-nach-installationspaketen-msi-beim-öffnen">Windows Installer sucht nach Installationspaketen (*.msi) beim Öffnen&hellip;</h2>
+<p>? &hellip; verschiedener Programme. Beim Öffnen von Word, den Druckeinstellungen oder anderen Programmen versucht der Windows Installer auf ein Installationspaket zuzugreifen, dass nicht mehr existiert.</p>
+<p>! In diesem Fall gibt es einen Konflikt mit einem möglicherweise nicht mehr vorhandenem Programm auf dem Computer. Nennt der Windows Installer die Installations Routine des Programms, kann man direkt per Windows Install CleanUp das entsprechende Programm aus der Datenbank entfernen. <a href="http://support.microsoft.com/?kbid=290301">Windows Install CleanUp</a></p>
+<h2 id="dialog-für-speichern-und-öffnen-anpassen">Dialog für Speichern und Öffnen anpassen</h2>
+<p>? Beim Herunterladen von Dateien mit dem Internetbrowser oder beim Öffnen und Speichern von Dateien mit verschiedenen Programmen erscheint ein Dialogfenster, in dem man den Speicherort und Dateiname angibt. Auf der linken Seite sind einige Speicherort des Computers vorgegebn. Kann man diese Liste ergänzen?</p>
+<p>! Bei den Microsoft Office Produkten geschieht das ganz einfach über das Menü &ldquo;Extras&rdquo; im Dialogfenster selber und dort die Option &ldquo;zu Favoriten hinzufügen&rdquo;. Diese Einstellung gilt jedoch nicht systemweit. Um das zu erreichen erstellt man in der Registry unter <em>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies</em> einen Schlüssel mit dem Namen <em>comdlg32</em>. Unterhalb dieses Schlüssels erstellt man nun einen weiteren Schlüssel mit dem Namen <em>Placesbar</em>. Unter diesem Schlüssel kann man jetzt maximal 5 Einträge anlegen. Jeder Schlüssel muss hier den Namen <em>Place0</em> bis <em>Place4</em> tragen und es gibt zwei verschiedene Typen. Lautet der Typ <em>DWORD</em> erwartet der Schlüssel einen der folgenden Werte für die Standardsystemordner:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">0 - Desktop
+</span></span><span class="line"><span class="ln">2</span><span class="cl">5 - Eigene Dateien 
+</span></span><span class="line"><span class="ln">3</span><span class="cl">6 - Favoriten
+</span></span><span class="line"><span class="ln">4</span><span class="cl">8 - Zuletzt verwendete Dokumente
+</span></span><span class="line"><span class="ln">5</span><span class="cl">11 - Arbeitsplatz
+</span></span><span class="line"><span class="ln">6</span><span class="cl">12 - Netzwerkumgebung
+</span></span></code></pre></div><p>Eigene Orte und Verzeichnisse kann man direkt eingeben, wählt man als Typ <em>Zeichenfolge</em>. Das folgende Beispiel zeigt, dass weder die Gross-/Kleinschreibung noch der abschließende Backslash <em>\</em> beachtet werden müssen. Achtung, da es sich hierbei um einen exportierten Registryeintrag handelt, der in dieser Form wieder importiert werden kann, sind die Backslashes doppelt vorhanden. Bei der direkten Eingabe in den Registryeditor darf natürlich nur ein Backslash verwendet werden. Windows Registry Editor Version 5.00</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">\[HKEY\_CURRENT\_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\comdlg32\\Placesbar\]&#34;Place0&#34;=dword:00000000&#34;Place1&#34;=&#34;j:\\\\dokumente\\\\studium\\\\&#34;&#34;Place2&#34;=&#34;c:\\\\teMP&#34;&#34;Place3&#34;=&#34;j:\\\\incomming&#34;&#34;Place4&#34;=dword:00000005
+</span></span></code></pre></div><p>Möchte man die Standardeinstellung wiederherstellen, löscht man den zuerst erstellten Schlüssel <em>comdlg32</em>.</p>
+<h2 id="dns-server-bei-einer-fritzbox-nachtragen">DNS Server bei einer Fritzbox nachtragen</h2>
+<p>? Es gibt bei meiner Fritzbox im Webinterface nicht die Möglichkeit, einen anderen DNS-Server einzutragen.</p>
+<p>! Der umständliche Weg, der in vielen Foren empfohlen wird, lautet &ldquo;Telnet&rdquo;. Die einfachste Lösung ist jedoch, den bzw. die DNS Server mit dem FBEditor (Download von <a href="http://www.ip-phone-forum.de/showthread.php?t=79513">IP Phone Forum.de</a> nachzutragen. Das Programm benötigt eine Java Runtime Enviroment (Download von <a href="http://www.java.com/de/download/manual.jsp">java.com</a>.</p>
+<h2 id="automatisch-die-urlfilterini-von-opera-aktualisieren">Automatisch die urlfilter.ini von Opera aktualisieren</h2>
 <p>Opera bietet zwar eine eigene Filterliste die als AdBlock fungiert, jedoch wird diese nicht automatisch aktualisiert. Folgende Anleitung ermöglicht jedoch, die tägliche Aktualisierung dieser Liste. Benötigt wird:</p>
 <ol>
-<li>die Software WGet von <a href="http://gnuwin32.sourceforge.net/packages/wget.htm" title="http://gnuwin32.sourceforge.net/packages/wget.htm">gnuwin32.sourceforge.net</a></li>
+<li><strong>wget</strong> von <a href="http://gnuwin32.sourceforge.net/packages/wget.htm">gnuwin32.sourceforge.net</a></li>
 </ol>
 <p>von dort die Binaries im ZIP-Archiv</p>
 <p>sowie die Dependencies im ZIP-Archiv</p>
 <ol>
 <li>eine regelmäßig aktualisierte urlfilter.ini, wie z.B. von:</li>
 </ol>
-<p><a href="http://fanboy.co.nz/adblock/" title="http://fanboy.co.nz/adblock/">http://fanboy.co.nz/adblock/</a></p>
-<p><a href="http://pgl.yoyo.org/as/" title="http://pgl.yoyo.org/as/">http://pgl.yoyo.org/as/</a></p>
-<p><a href="http://www.urlfilter.de/tag/urlfilterini/" title="http://www.urlfilter.de/tag/urlfilterini/">http://www.urlfilter.de/tag/urlfilterini/</a></p>
-<p>Vorgehensweise:</p>
+<ul>
+<li><a href="http://fanboy.co.nz/adblock/">http://fanboy.co.nz/adblock/</a></li>
+<li><a href="http://pgl.yoyo.org/as/">http://pgl.yoyo.org/as/</a></li>
+<li><a href="http://www.urlfilter.de/tag/urlfilterini/">http://www.urlfilter.de/tag/urlfilterini/</a></li>
+</ul>
+<h3 id="vorgehensweise">Vorgehensweise:</h3>
 <ol>
 <li>Erstelle eine Batchdatei (mit der Endung <em>.cmd</em>) mit folgendem Inhalt, die du mit den WGet-Dateien in ein Verzeichniss kopierst.</li>
 </ol>
-<p>@wget -b -q -N -o update.log -O%AppData%\Opera\Opera\urlfilter.ini <a href="http://fanboy.co.nz/adblock/opera/complete/urlfilter.ini" title="http://fanboy.co.nz/adblock/opera/complete/urlfilter.ini">http://fanboy.co.nz/adblock/opera/complete/urlfilter.ini</a>@                               ^Hinweis 1 beachten                 ^Hinweis 2 beachten@rem Optionen:@rem -b Im Hintergrund ausführen@rem -q &ldquo;Leise&rdquo; ausführen, keine Ausgaben@rem -N nur Dateien herunterladen, die aktueller sind</p>
-<ol>
-<li>
-<ol>
-<li>Hinweis 1: Die Urlfilter.ini befindet sich bei einer gewöhnlichen Installation im o.g. Verzeichnis. Wer sich über den Ort nicht sicher ist, findet den korrekten Speicherort über die Adresse opera:config (einfach in die Adresszeile eingeben) - dort im Suchfenster urlfilter eingeben und den korrekten Speicherort für die Batchdatei erhalten</li>
-<li>Hinweis 2: Ich verwende die filterini von fanboy.co.nz; die Größe der Datei kann sich natürlich negativ auf die Geschwindigkeit von Opera auswirken, wer will, kann hier auch den Pfad zu einer anderen urlfilter.ini hinterlegen</li>
-<li>Hinweis 3: Die Zeilen nach der 1. Zeile können natürlich weggelassen werden, sie dienen nur der Erklärung</li>
-</ol>
-</li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">@wget -b -q -N -o update.log -O%AppData%\\Opera\\Opera\\urlfilter.ini http://fanboy.co.nz/adblock/opera/complete/urlfilter.ini &#34;http://fanboy.co.nz/adblock/opera/complete/urlfilter.ini&#34;
+</span></span><span class="line"><span class="ln">2</span><span class="cl">@rem -b Im Hintergrund ausführen
+</span></span><span class="line"><span class="ln">3</span><span class="cl">@rem -q &#34;Leise&#34; ausführen, keine Ausgaben@rem -N nur Dateien herunterladen, die aktueller sind
+</span></span></code></pre></div><ol>
+<li><strong>Hinweis 1</strong>: Die Urlfilter.ini befindet sich bei einer gewöhnlichen Installation im o.g. Verzeichnis. Wer sich über den Ort nicht sicher ist, findet den korrekten Speicherort über die Adresse opera:config (einfach in die Adresszeile eingeben) - dort im Suchfenster urlfilter eingeben und den korrekten Speicherort für die Batchdatei erhalten</li>
+<li><strong>Hinweis 2</strong>: Ich verwende die filterini von fanboy.co.nz; die Größe der Datei kann sich natürlich negativ auf die Geschwindigkeit von Opera auswirken, wer will, kann hier auch den Pfad zu einer anderen urlfilter.ini hinterlegen</li>
+<li><strong>Hinweis 3</strong>: Die Zeilen nach der 1. Zeile können natürlich weggelassen werden, sie dienen nur der Erklärung</li>
 <li>Führe nun die erstellte Batchdatei aus. Nach kurzer Zeit wirst du feststellen, dass die urlfilter.ini aktualisiert wurde. Manchmal lohnt es sich einen Augenblick zu warten, da die Datei, solange sie von dem Skript noch in Bearbeitung ist, für einen kurzen Augenblick leer erscheint</li>
 <li>Wer möchte, kann nun über den Taskplaner von Windows eine Aufgabe erstellen, die diese Batchdatei bei Bedarf einmal täglich oder wöchentlich ausführt</li>
 </ol>
-<h3 id="fonts--schriftart-lässt-sich-nicht-installieren">Fonts / Schriftart lässt sich nicht installieren</h3>
-<p>? Bei der Installation von Schriftarten unter Windows kommt es öfter zu Fehlermeldungen, dass z.B. die Datei beschädigt sei. ! Wenn der Treiber der Grafikkarte mehr Speicher anfordert, als Windows es &ldquo;gewohnt&rdquo; ist, kann es zu dieser Fehlermeldung kommen. Um das zu beheben ist muss in der Registry unter</p>
-<p>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Contro l\SessionManager\MemoryManagement</p>
-<p>der Wert</p>
-<p>REG_DWORD</p>
-<p>mit einem Inhalt von mindestens</p>
-<p>20</p>
-<p>gesetzt werden. Nach einem Neustart sollte das Problem behoben sein.</p>
-<h3 id="nach-update-der-mediawiki-software-fehlen-thumbnails-der-bilder">Nach Update der Mediawiki-Software fehlen Thumbnails der Bilder</h3>
+<h2 id="fonts--schriftart-lässt-sich-nicht-installieren">Fonts / Schriftart lässt sich nicht installieren</h2>
+<p>? Bei der Installation von Schriftarten unter Windows kommt es öfter zu Fehlermeldungen, dass z.B. die Datei beschädigt sei.</p>
+<p>! Wenn der Treiber der Grafikkarte mehr Speicher anfordert, als Windows es &ldquo;gewohnt&rdquo; ist, kann es zu dieser Fehlermeldung kommen. Um das zu beheben ist muss in der Registry unter</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">HKEY\_LOCAL\_MACHINE\\SYSTEM\\CurrentControlSet\\Contro l\\SessionManager\\MemoryManagement
+</span></span></code></pre></div><p>der Wert</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">REG\_DWORD
+</span></span></code></pre></div><p>mit einem Inhalt von mindestens</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">20
+</span></span></code></pre></div><p>gesetzt werden. Nach einem Neustart sollte das Problem behoben sein.</p>
+<h2 id="nach-update-der-mediawiki-software-fehlen-thumbnails-der-bilder">Nach Update der Mediawiki-Software fehlen Thumbnails der Bilder</h2>
 <p>Wenn die Mediawikisoftware aktualisiert wurde, werden Thumbnails entweder garnicht oder nur schwarz angezeigt. Um das Problem zu beheben, einfach den Thumbnail-Ordner im Verzeichnis &ldquo;Images&rdquo; im Mediawiki-Verzeichnis loeschen oder umbenennen. Die Softwar erstellt dann neue Thumbnails.</p>
-<h3 id="externer-datenträger--festplatte-schreibgeschützt">Externer Datenträger / Festplatte schreibgeschützt</h3>
-<p>? Ich kann plötzlich keine Daten mehr auf meine Festplatte schreiben oder darauf löschen. ! Windows hat unbemerkt einen Fehler im Dateisystem festgestellt bzw. wurde die Platte einfach nur vom Computer getrennt, oder sie sauber bei Windows zu &ldquo;entmounten&rdquo;. Um das Problem zu genügen, reicht es, den Befehl</p>
-<p>chkdsk k: /x</p>
-<p>auszuführen. Entweder im Ausführen-Dialog (Windowstaste + R) oder direkt in der Konsole (cmd). <em>k:</em> entspricht dabei dem Laufwerks-Buchstaben des externen Datenträgers und /x ist die Option, die Windows nun dazu veranlasst, den Fehler zu beheben und den Schreibschutz wieder aufzuheben.</p>
+<h2 id="externer-datenträger--festplatte-schreibgeschützt">Externer Datenträger / Festplatte schreibgeschützt</h2>
+<p>? Ich kann plötzlich keine Daten mehr auf meine Festplatte schreiben oder darauf löschen.</p>
+<p>! Windows hat unbemerkt einen Fehler im Dateisystem festgestellt bzw. wurde die Platte einfach nur vom Computer getrennt, oder sie sauber bei Windows zu &ldquo;entmounten&rdquo;. Um das Problem zu genügen, reicht es, den Befehl</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">chkdsk k: /x
+</span></span></code></pre></div><p>auszuführen. Entweder im Ausführen-Dialog (Windowstaste + R) oder direkt in der Konsole (cmd). <em>k:</em> entspricht dabei dem Laufwerks-Buchstaben des externen Datenträgers und /x ist die Option, die Windows nun dazu veranlasst, den Fehler zu beheben und den Schreibschutz wieder aufzuheben.</p>
 
         
         
@@ -752,7 +767,7 @@ Skype &amp; HTTP-Server ? Mein …</description>
       
       
       
-      <media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg">
+      <media:content url="https://nickyreinert.de/faq.png" type="image/jpeg">
         <media:title>FAQ - Titelbild</media:title>
       </media:content>
       

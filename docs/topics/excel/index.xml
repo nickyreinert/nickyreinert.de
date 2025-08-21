@@ -202,93 +202,86 @@ Diese Artikelserie richtet sich an den fortgeschrittenen Nutzer. Für den Eins
 <p>1. Die URL zu den Hersteller-Unterseiten auslesen - sub getManufacturer</p>
 <p>1.1 Datei per HTTP von einem Server laden</p>
 <p>Im ersten Schritt laden wir die komplette HTML-Datei in den Zwischenspeicher. Dazu gibt es mindesten zwei Methoden, die gängigste ist vermutlich die über <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa384106%28v=vs.85%29.aspx">WinHttpRequest</a>. Bevor du das nutzen kannst, musst du bei VBA unter Extras - Verweise jedoch erst die Microsoft HTML Object Library einbinden.</p>
-<p>&lsquo;&lsquo;&lsquo;vba
-Dim url As String
-Dim result As String
-Dim winHttpReq As Object
-url = &ldquo;<a href="http://www.inside-handy.de/hersteller/handys%22">http://www.inside-handy.de/hersteller/handys"</a></p>
-<p>Set winHttpReq = CreateObject(&ldquo;WinHttp.WinHttpRequest.5.1&rdquo;)
-winHttpReq.Open &ldquo;GET&rdquo;, url, False
-winHttpReq.send
-result = winHttpReq.responseText
-&rsquo;&rsquo;&rsquo;</p>
-<p>Die Deklaration der Variablen erklärt sich von selbst. Nachdem ich eine Instanz vom WinHTTP-Objekt erzeugt habe, kann ich die Parameter übergeben. Dazu gehört neben der URL auch die Bestimmung des HTTP-Requests - nämlich GET. Der letzte, booleansche, Paramter gibt an, ob die Verbindung im asynchronen Modus geöffnet werden soll. Mit .send wird der Request tatsächlich ausgelöst und das Ergebni dann an die String-Variable result zurückgegeben. Dort befindet sich nun unser HTML-Code</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Dim url As String
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Dim result As String
+</span></span><span class="line"><span class="ln">3</span><span class="cl">Dim winHttpReq As Object
+</span></span><span class="line"><span class="ln">4</span><span class="cl">url = &#34;http://www.inside-handy.de/hersteller/handys&#34;
+</span></span><span class="line"><span class="ln">5</span><span class="cl">
+</span></span><span class="line"><span class="ln">6</span><span class="cl">Set winHttpReq = CreateObject(&#34;WinHttp.WinHttpRequest.5.1&#34;)
+</span></span><span class="line"><span class="ln">7</span><span class="cl">winHttpReq.Open &#34;GET&#34;, url, False
+</span></span><span class="line"><span class="ln">8</span><span class="cl">winHttpReq.send
+</span></span><span class="line"><span class="ln">9</span><span class="cl">result = winHttpReq.responseText
+</span></span></code></pre></div><p>Die Deklaration der Variablen erklärt sich von selbst. Nachdem ich eine Instanz vom WinHTTP-Objekt erzeugt habe, kann ich die Parameter übergeben. Dazu gehört neben der URL auch die Bestimmung des HTTP-Requests - nämlich GET. Der letzte, booleansche, Paramter gibt an, ob die Verbindung im asynchronen Modus geöffnet werden soll. Mit .send wird der Request tatsächlich ausgelöst und das Ergebni dann an die String-Variable result zurückgegeben. Dort befindet sich nun unser HTML-Code</p>
 <p>Wir können unseren Request natürlich auch per POST absetzen und noch andere Header-Informationen anhängen:</p>
-<p>&lsquo;&lsquo;&lsquo;vba
-Set winHttpReq = CreateObject(&ldquo;WinHttp.WinHttpRequest.5.1&rdquo;)</p>
-<p>winHttpReq.Open = &ldquo;Post&rdquo;, url, False
-winHttpReq.setRequestHeader &ldquo;User-Agent&rdquo;, &ldquo;Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)&rdquo;
-winHttpReq.setRequestHeader &ldquo;Content-type&rdquo;, &ldquo;application/x-www-form-urlencoded&rdquo;
-winHttpReq.send (URLEncode(&ldquo;username=user1&amp;password=secret&rdquo;) )</p>
-<p>result = winHttpReq.responseText
-&rsquo;&rsquo;&rsquo;</p>
-<p>So ist es z.B. möglich, Formulardaten zu übermitteln, um an eine passwortgeschützte Seite oder die Ergebnisseite einer Suche zu gelangen. Dabei werden die POST-Daten als weiterer Parameter beim Senden mitgegeben. Eine weitere Möglichkeit ist die Durchführung einer HTTP-Authentifizierung:</p>
-<p>&lsquo;&lsquo;&lsquo;vba
-Dim HTTPREQUEST_SETCREDENTIALS_FOR_SERVER As Boolean</p>
-<p>winHttpReq.Open &ldquo;GET&rdquo;, url, False
-winHttpReq.SetCredentials &ldquo;user&rdquo;, &ldquo;password&rdquo;, HTTPREQUEST_SETCREDENTIALS_FOR_SERVER
-winHttpReq.send
-&rsquo;&rsquo;&rsquo;</p>
-<p>Neben dem winHttpRequest-Objekt gibt es noch eine weniger elegante Methoden, in dem direkt eine Instanz des Internet Explorers erzeugt wird:</p>
-<p>&lsquo;&lsquo;&lsquo;vba
-Dim sPostData As String
-Dim bPostData() As Byte
-Dim WebBrowser: Set WebBrowser = CreateObject(&ldquo;InternetExplorer.Application&rdquo;)</p>
-<p>WebBrowser.Visible = True</p>
-<p>sPostData = URLEncode(&ldquo;username=user1&amp;password=secret&rdquo;)
-ReDim bPostData(Len(sPostData) - 1)
-bPostData = StrConv(sPostDataData, vbFromUnicode)</p>
-<p>WebBrowser.navigate url, 2 + 4 + 8, , bPostData, &ldquo;Content-type: application/x-www-form-urlencoded&rdquo;
-Do While WebBrowser.Busy
-DoEvents
-Loop
-result = WebBrowser.document.body.innerHTML
-WebBrowser.Quit
-&rsquo;&rsquo;&rsquo;</p>
-<p>Da diese Methode - wie gesagt - nicht sonderlich elegant ist, werde ich aber nicht weiter darauf eingehen.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Set winHttpReq = CreateObject(&#34;WinHttp.WinHttpRequest.5.1&#34;)
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">winHttpReq.Open = &#34;Post&#34;, url, False
+</span></span><span class="line"><span class="ln">4</span><span class="cl">winHttpReq.setRequestHeader &#34;User-Agent&#34;, &#34;Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)&#34;
+</span></span><span class="line"><span class="ln">5</span><span class="cl">winHttpReq.setRequestHeader &#34;Content-type&#34;, &#34;application/x-www-form-urlencoded&#34;
+</span></span><span class="line"><span class="ln">6</span><span class="cl">winHttpReq.send (URLEncode(&#34;username=user1&amp;password=secret&#34;) )
+</span></span><span class="line"><span class="ln">7</span><span class="cl">
+</span></span><span class="line"><span class="ln">8</span><span class="cl">result = winHttpReq.responseText
+</span></span></code></pre></div><p>So ist es z.B. möglich, Formulardaten zu übermitteln, um an eine passwortgeschützte Seite oder die Ergebnisseite einer Suche zu gelangen. Dabei werden die POST-Daten als weiterer Parameter beim Senden mitgegeben. Eine weitere Möglichkeit ist die Durchführung einer HTTP-Authentifizierung:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Dim HTTPREQUEST\_SETCREDENTIALS\_FOR\_SERVER As Boolean
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">winHttpReq.Open &#34;GET&#34;, url, False
+</span></span><span class="line"><span class="ln">4</span><span class="cl">winHttpReq.SetCredentials &#34;user&#34;, &#34;password&#34;, HTTPREQUEST\_SETCREDENTIALS\_FOR\_SERVER
+</span></span><span class="line"><span class="ln">5</span><span class="cl">winHttpReq.send
+</span></span></code></pre></div><p>Neben dem winHttpRequest-Objekt gibt es noch eine weniger elegante Methoden, in dem direkt eine Instanz des Internet Explorers erzeugt wird:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">Dim sPostData As String
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">Dim bPostData() As Byte
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">Dim WebBrowser: Set WebBrowser = CreateObject(&#34;InternetExplorer.Application&#34;)
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">WebBrowser.Visible = True
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">sPostData = URLEncode(&#34;username=user1&amp;password=secret&#34;)
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">ReDim bPostData(Len(sPostData) - 1)
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">bPostData = StrConv(sPostDataData, vbFromUnicode)
+</span></span><span class="line"><span class="ln">10</span><span class="cl">
+</span></span><span class="line"><span class="ln">11</span><span class="cl">WebBrowser.navigate url, 2 + 4 + 8, , bPostData, &#34;Content-type: application/x-www-form-urlencoded&#34;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">Do While WebBrowser.Busy
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    DoEvents
+</span></span><span class="line"><span class="ln">14</span><span class="cl">Loop
+</span></span><span class="line"><span class="ln">15</span><span class="cl">result = WebBrowser.document.body.innerHTML 
+</span></span><span class="line"><span class="ln">16</span><span class="cl">WebBrowser.Quit
+</span></span></code></pre></div><p>Da diese Methode - wie gesagt - nicht sonderlich elegant ist, werde ich aber nicht weiter darauf eingehen.</p>
 <p>Nun zurück zu unserem Skript. Den HTML-Code der Seite haben wir nun erstmal in einen String gelegt. Damit wir das HTML-Dokument bequem lesen können, erzeugen wir ein HTML-Document, an das wir den HTML-Code übergeben:</p>
-<p>&lsquo;&lsquo;&lsquo;vba
-Set HTMLDoc = New HTMLDocument
-Set HTMLDoc = CreateObject(&ldquo;htmlfile&rdquo;)
-HTMLDoc.Open
-HTMLDoc.write (CStr(result))
-HTMLDoc.Close
-&rsquo;&rsquo;&rsquo;</p>
-<p>Auch hier erklärt sich der Code fast von selber: Eine Instanz des Objektes erzeugen, diese Instanz zum &ldquo;Befüllen&rdquo; vorbereiten, den String übergebne und die Instanz wieder &ldquo;schließen&rdquo;. Soweit, so unkompliziert. Im nächsten Schritt geht es nun direkt an das Parsen des Quellcodes um die Links zu den Herstellerseiten zu erhalten. Die Schleife dazu ist nicht sehr aufwendig:</p>
-<p>&lsquo;&lsquo;&lsquo;vba
-Dim oneElement1, allElements1 As IHTMLElementCollection
-Dim oneElement2, allElements2 As IHTMLElementCollection
-Dim oneElement3, allElements3 As IHTMLElementCollection</p>
-<pre><code>Worksheets(&quot;srcURL&quot;).Range(&quot;a2&quot;).Select
-i = 0
-Set allElements1 = HTMLDoc.getElementsByTagName(&quot;a&quot;)
-      
-i = 0
-For Each oneElement1 In allElements1
-    If oneElement1.parentElement.className = &quot;h\_img&quot; Then
-        If oneElement1.parentElement.parentElement.ID = &quot;h\_alle&quot; Then
-            If InStr(1, oneElement1.getAttribute(&quot;href&quot;), &quot;/tablets&quot;) &lt;= 0 Then
-                Selection.Offset(i, 0).Value = Replace(oneElement1.getAttribute(&quot;href&quot;), &quot;about:&quot;, &quot;http://www.inside-handy.de&quot;)
-                i = i + 1
-            End If
-        End If
-        
-    End If    
-Next oneElement1
-</code></pre>
-<p>End Sub
-&rsquo;&rsquo;&rsquo;</p>
-<p>Wie bin ich vorgegangen? Ich habe mir zunächst den Quellcode der Seite angeschaut. Die Liste der Hersteller ist dort eine Tabelle mit den Logos der Unternehmen. Die gewünschte Information befindet sich in a-Elementen, die wiederum innerhalb eines div-Elements liegen. Das gemeinsame &ldquo;Oberelement&rdquo; ist ein div-Container mit der CSS-Klasse &ldquo;h_img&rdquo; bzw. einem weiterne div-Container (&ldquo;h_alle&rdquo;). Außerdem gibt es einen ausgeblendeten div-Container mit einer Liste von Tablet-Herstellern, diese haben den Begriff &ldquo;/tablet&rdquo; in der href-Angabe und müssen ignoriert werden.</p>
-<p>&lsquo;&lsquo;&lsquo;html</p>
-<div id="h\_alle">
-	<div class="h\_img">
-		<a href="/hersteller/xyz" title="Handys Hersteller: XYZ">
-			<img />
-		</a>
-	</div>
-</div>
-'''
-<p>Mit &ldquo;Set allElements1 = HTMLDoc.getElementsByTagName(&ldquo;a&rdquo;)&rdquo; lasse ich mir also erst alle a-Elemente aus dem Quellcode in meinen &ldquo;Container&rdquo; legen.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Set HTMLDoc = New HTMLDocument
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Set HTMLDoc = CreateObject(&#34;htmlfile&#34;)
+</span></span><span class="line"><span class="ln">3</span><span class="cl">HTMLDoc.Open
+</span></span><span class="line"><span class="ln">4</span><span class="cl">HTMLDoc.write (CStr(result))
+</span></span><span class="line"><span class="ln">5</span><span class="cl">HTMLDoc.Close
+</span></span></code></pre></div><p>Auch hier erklärt sich der Code fast von selber: Eine Instanz des Objektes erzeugen, diese Instanz zum &ldquo;Befüllen&rdquo; vorbereiten, den String übergebne und die Instanz wieder &ldquo;schließen&rdquo;. Soweit, so unkompliziert. Im nächsten Schritt geht es nun direkt an das Parsen des Quellcodes um die Links zu den Herstellerseiten zu erhalten. Die Schleife dazu ist nicht sehr aufwendig:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">    Dim oneElement1, allElements1 As IHTMLElementCollection
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    Dim oneElement2, allElements2 As IHTMLElementCollection
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    Dim oneElement3, allElements3 As IHTMLElementCollection
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    Worksheets(&#34;srcURL&#34;).Range(&#34;a2&#34;).Select
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    i = 0
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    Set allElements1 = HTMLDoc.getElementsByTagName(&#34;a&#34;)
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">          
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    i = 0
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    For Each oneElement1 In allElements1
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        If oneElement1.parentElement.className = &#34;h\_img&#34; Then
+</span></span><span class="line"><span class="ln">12</span><span class="cl">            If oneElement1.parentElement.parentElement.ID = &#34;h\_alle&#34; Then
+</span></span><span class="line"><span class="ln">13</span><span class="cl">                If InStr(1, oneElement1.getAttribute(&#34;href&#34;), &#34;/tablets&#34;) &lt;= 0 Then
+</span></span><span class="line"><span class="ln">14</span><span class="cl">                    Selection.Offset(i, 0).Value = Replace(oneElement1.getAttribute(&#34;href&#34;), &#34;about:&#34;, &#34;http://www.inside-handy.de&#34;)
+</span></span><span class="line"><span class="ln">15</span><span class="cl">                    i = i + 1
+</span></span><span class="line"><span class="ln">16</span><span class="cl">                End If
+</span></span><span class="line"><span class="ln">17</span><span class="cl">            End If
+</span></span><span class="line"><span class="ln">18</span><span class="cl">            
+</span></span><span class="line"><span class="ln">19</span><span class="cl">        End If    
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    Next oneElement1
+</span></span><span class="line"><span class="ln">21</span><span class="cl">End Sub
+</span></span></code></pre></div><p>Wie bin ich vorgegangen? Ich habe mir zunächst den Quellcode der Seite angeschaut. Die Liste der Hersteller ist dort eine Tabelle mit den Logos der Unternehmen. Die gewünschte Information befindet sich in a-Elementen, die wiederum innerhalb eines div-Elements liegen. Das gemeinsame &ldquo;Oberelement&rdquo; ist ein div-Container mit der CSS-Klasse &ldquo;h_img&rdquo; bzw. einem weiterne div-Container (&ldquo;h_alle&rdquo;). Außerdem gibt es einen ausgeblendeten div-Container mit einer Liste von Tablet-Herstellern, diese haben den Begriff &ldquo;/tablet&rdquo; in der href-Angabe und müssen ignoriert werden.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="ln">1</span><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;h\_alle&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">	<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;h\_img&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">		<span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;/hersteller/xyz&#34;</span> <span class="na">title</span><span class="o">=</span><span class="s">&#34;Handys Hersteller: XYZ&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">			<span class="p">&lt;</span><span class="nt">img</span> <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">		<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">	<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>Mit &ldquo;Set allElements1 = HTMLDoc.getElementsByTagName(&ldquo;a&rdquo;)&rdquo; lasse ich mir also erst alle a-Elemente aus dem Quellcode in meinen &ldquo;Container&rdquo; legen.</p>
 <p>Mit der ersten for-each-Schleife durchlaufe ich nun diesen Container und prüfe mit den ersten zwei if-Abfragen, ob sich das a-Element unterhalb der erwähnten div-Container befindet. Da auf der Seite noch ein weitere identische div-Container mit diesen css-Klassen für die Liste der Tablet-Hersteller existiert, muss ich mit einer dritten if-Abfrage die URL des a-Elements überprüfen. Erst dann kann ich das Attribut des a-Elements auslesen und in mein Excel-Worksheet schreiben.</p>
 <p>Fertig ist der erste Schritt - eine Liste der URL zu den jeweiligen Herstellern. Im nächsten Teil werde ich diese Liste durchgehen und von den jeweiligen Seiten die URL zu den Geräten auslesen.</p>
 
