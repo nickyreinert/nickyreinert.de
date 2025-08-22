@@ -20,36 +20,7 @@
       <author></author>
       <guid>https://nickyreinert.de/2022/2022-10-21-random-knowledge/</guid>
       <description>&ldquo;Random Knowledge&rdquo; ist ein automatisierter Podcast, bei dem eine computer-generierte Stimme zufällige Artikel der Wikipedia vorliest.
-Dazu wird in …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Eine Vorstellung des Projekts &#39;Random Knowledge&#39;, eines automatisierten Podcasts, der zufällige englische Wikipedia-Artikel mit einer computergenerierten Stimme vorliest. Der Artikel beschreibt den technischen Workflow, von der Textaufbereitung über die Umwandlung in Sprache mittels Google Text-to-Speech bis zur Distribution über &#39;anchor.fm&#39; an verschiedene Podcast-Plattformen.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> Podcast, Automatisierung, Text-to-Speech, Wikipedia, Python, NLP, KI-Anwendung</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-          
-        </div>
-        
-        
-        <p>&ldquo;Random Knowledge&rdquo; ist ein automatisierter Podcast, bei dem eine computer-generierte Stimme zufällige Artikel der Wikipedia vorliest.</p>
-<p>Dazu wird in Python ein zufälliger Artikel der englischen Wikipedia abgerufen und vorbereitet. Der gesamte Artikel wird in Abschnitte getrennt, Bereiche, die nicht vorlesbar sind, wie z.B. Tabellen, werden entfernt. Über die Text-to-Speech-API von Google wird der Text in Sprache umgewandelt und als Audio-Datei abgelegt. Die Dateien werden über eine undokumentierte Schnittstelle zu anchor.fm hochgeladen und von dort an die gängigen Portale verteilt (Spotify, Deezer, Google, Amazon, Apple, &hellip;)</p>
-<p><a href="https://spotifyanchor-web.app.link/e/zjG3R1ANFxb">https://spotifyanchor-web.app.link/e/zjG3R1ANFxb</a></p>
-
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> Podcast, Automatisierung, KI, Python, Projekt</p>
-        </div>
-        
-      ]]></content:encoded>
+Dazu wird in Python ein zufälliger Artikel der englischen Wikipedia abgerufen und vorbereitet. Der gesamte Artikel wird in Abschnitte getrennt, Bereiche, …</description>
       
       
       
@@ -78,115 +49,8 @@ Dazu wird in …</description>
       <pubDate>Thu, 08 Oct 2020 00:00:00 +0000</pubDate>
       <author></author>
       <guid>https://nickyreinert.de/2020/2020-10-08-automatisierte-wordpress-installation/</guid>
-      <description>Et voilá. Ein BASH Script, um WordPress automatisiert über die Kommandozeile zu installieren, inklusive Theme und beliebigen Plugins sowie - wenn benötigt - …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Dieser Artikel stellt ein Bash-Skript zur vollautomatischen Installation und Konfiguration von WordPress vor. Das Skript nutzt &#39;wp-cli&#39; zur Einrichtung von Core, Datenbank, Themes und Plugins und kann die neue WordPress-Instanz mit zufällig generiertem Content (Beiträge, Kategorien, Bilder) über externe APIs befüllen, was es zu einem nützlichen Tool für Entwickler und Administratoren macht.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> WordPress, Automatisierung, Bash Scripting, DevOps, wp-cli, Server Administration, Web Development, Content Generation</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
-          
-        </div>
-        
-        
-        <p>Et voilá. Ein BASH Script, um WordPress automatisiert über die Kommandozeile zu installieren, inklusive Theme und beliebigen Plugins sowie - wenn benötigt - zufälligen Beiträgen, Kategorien, Tags und Bildern.</p>
-<h2 id="warnung">Warnung!</h2>
-<p>Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und unbedingt <strong>Backups</strong> nutzen. Das Script verwendet, wenn der entsprechende Parameter gesetzt ist, den Befehl &ldquo;rm -rf&rdquo;, um einen Ordner komplett zu <strong>löschen</strong>. Dieser Schritt lässt sich nicht widerrufen. Außerdem wird, sofern per Parameter gefordert, eine Datenbank mit &ldquo;DROP DATABASE&rdquo; komplett entfernt. Wenn du das Script auf eine existierende WordPress-Installation oder Datenbank anwendest, können existierende Daten <strong>überschrieben</strong> werden!</p>
-<h2 id="funktionsweise">Funktionsweise</h2>
-<p>Das Script wird über die Kommandozeile aufgerufen und nutzt die <a href="https://wp-cli.org/de/">WordPress Kommandozeilen-Benutzeroberfläche,</a> um <strong>WordPress</strong> zu installieren sowie samt <strong>Themes</strong> und <strong>Plugins</strong> einzurichten. Du kannst außerdem beliebig viele <strong>Beiträge</strong> anlegen. Die Inhalte für die Beiträge stammen von einem Online-Dienst für zufällige englische Texte: <a href="http://metaphorpsum.com/paragraphs/">metaphorpsum.com/paragraphs</a>. Außerdem werden zufällige <strong>Textauszüge</strong> (Excerpts) sowie <strong>Schlagwörter</strong> (Tags) und sogar <strong>Bilder</strong> jedem Beitrag hinzugefügt. Beiträge werden außerdem Kategorien zugeordnet. Diese werden ebenfalls <strong>zufällig</strong> bis zu einer Tiefe von 2 Ebenen erzeugt.</p>
-<h2 id="installation">Installation</h2>
-<p>Du findest den Sourcecode auf github: <a href="https://github.com/nickyreinert/AutomatedWordPressInstallation">https://github.com/nickyreinert/AutomatedWordPressInstallation</a>.</p>
-<p>Nach der Installation kopierst du die Datei settings-template zu .settings, um in dieser Datei die Einstellungen für deine WordPress-Installation vorzunehmen. Du startest den Prozess mit <strong>bash start.sh</strong> oder setzt den Ausführen-Flag für bash.sh um diese direkt auszuführen:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">chmod u+x bash.sh
-</span></span><span class="line"><span class="ln">2</span><span class="cl">./bash.sh
-</span></span></code></pre></div><h2 id="zufällige-inhalte">Zufällige Inhalte</h2>
-<p>Das Script ermöglicht das Anlegen von beliebig vielen zufälligen Beiträgen in beliebig vielen zufälligen Kategorien. Was genau dabei passiert, beschreibe ich hier kurz:</p>
-<p>Zunächst wird eine Kategorie erzeugt. Dazu wird von der folgenden API ein zufälliges Wort abgerufen: <a href="https://random-word-api.herokuapp.com/word?swear=0&amp;number=">https://random-word-api.herokuapp.com/word?swear=0&amp;number=</a></p>
-<p>Dieser Kategorie wird dann ein Beitrag wird mit einer beliebigen Anzahl von <strong>Absätzen</strong> von dieser API zugeordnet: <a href="http://metaphorpsum.com/paragraphs/">http://metaphorpsum.com/paragraphs/</a>. Der Beitrag erhält einen zufälligen Titel (von dort: <a href="http://metaphorpsum.com/sentences/">http://metaphorpsum.com/sentences</a>), einen Textauszug (gleiche API), sowie eine beliebige Anzahl zufälliger Tags (Schlagwörter), ebenfalls von <a href="https://random-word-api.herokuapp.com/word?swear=0&amp;number=">random-word-api.herokuapp.com</a>. Dann werden für diesen Beitrag Revisionen erzeugt - auch diese in beliebiger Höhe. Abschließend erhält jeder Beitrag ein zufälliges Featured Image sowie ein weiteres zufälliges Bild am Ende des Fließtextes.</p>
-<p>Je nachdem, wieviele Beiträge und Kategorien bzw. Sub-Kategorien eingerichtet werden soll, wird dieser Prozess natürlich wiederholt.</p>
-<p><em>(Bisher werden die Inhalte leider nur auf Englisch eingefügt)</em></p>
-<h2 id="einstellungen">Einstellungen</h2>
-<p>Alle Einstellungen befinden sich in der Datei <strong>.settings</strong> und werden im Folgenden beschrieben. Der PROJECT-Parameter kann im weiteren Verlauf als Platzhalter verwendet werden und sollte keine Leerzeichen oder Sonderzeichen enthalten:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">PROJECT=myWordPressBlog
-</span></span></code></pre></div><h3 id="datenbank">Datenbank</h3>
-<p>Du kannst eine neue Datenbank anlegen (CREATE_DB) oder auf eine existierende Datenbank zurückgreifen.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">DB_DROP=yes|no
-</span></span><span class="line"><span class="ln">2</span><span class="cl">CREATE_DB=yes|no
-</span></span><span class="line"><span class="ln">3</span><span class="cl">DB_ROOT=root
-</span></span><span class="line"><span class="ln">4</span><span class="cl">DB_ROOT_PASSWORD=secret
-</span></span></code></pre></div><p>Willst du eine frische Datenbank anlegen, solltest du die alte Datenbank mit DB_DROP=yes löschen. Soll eine neue Datenbank angelegt werden, müssen die Zugangsdaten für einen privilegierten Nutzer angegeben werden: Mit den folgenden Parameter legst du fest, wie WordPress auf die Datenbank zugreift:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">DB_HOST=127.0.0.1
-</span></span><span class="line"><span class="ln">2</span><span class="cl">DB_NAME=&#34;${PROJECT}&#34;
-</span></span><span class="line"><span class="ln">3</span><span class="cl">DB_PREFIX=&#34;wp_&#34;
-</span></span><span class="line"><span class="ln">4</span><span class="cl">
-</span></span><span class="line"><span class="ln">5</span><span class="cl">ADD_DB_USER=yes|no
-</span></span><span class="line"><span class="ln">6</span><span class="cl">DB_USER=&#34;${PROJECT}&#34;
-</span></span><span class="line"><span class="ln">7</span><span class="cl">DB_USER_PASSWORD=$(cat /dev/urandom | tr -dc &#39;a-zA-Z0-9&#39; | fold -w 32 | head -n 1)
-</span></span></code></pre></div><p>Das Passwort wird im Beispiel zufällig erzeugt, willst du ein eigenes Passwort verwenden, kannst du den Parameter überschreiben, z.B:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">DB_USER_PASSWORT=secret
-</span></span></code></pre></div><p>Der DB-Nutzer wird natürlich nur angelegt, wenn ADD_DB_USER=yes gesetzt ist. Andernfalls musst du hier die passenden Zugangsdaten angeben.</p>
-<h3 id="wordpress">WordPress</h3>
-<p>Du kannst auf eine existierende Installation zurückgreifen, um z.B. dort Beiträge hinzuzufügen, oder WordPress komplett neu installieren. Hier kannst du z.B. auch den oben festgelegten PROJECT-Parameter nutzen:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">WP_PATH</span><span class="o">=</span><span class="s2">&#34;/var/nginx/htdocs/${PROJECT}/&#34;</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">INSTALL_CORE</span><span class="o">=</span><span class="n">yes</span><span class="o">|</span><span class="n">no</span>
-</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="n">WP_DROP</span><span class="o">=</span><span class="n">yes</span><span class="o">|</span><span class="n">no</span>
-</span></span></code></pre></div><p>Mit WP_DROP kannst du festlegen, dass der Ordner WP_PATH komplett gelöscht wird. <strong>Vorsicht</strong> ist hier also geboten! Die folgenden Parameter betreffen deine allgemeinen WordPress-Einstellungen. Bei der URL kannst du wieder den PROJECT-Platzhalter nutzen.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">WP_TITLE=&#39;WordPress Test&#39;
-</span></span><span class="line"><span class="ln">2</span><span class="cl">URL=&#34;https://blog.example.org/${PROJECT}&#34;
-</span></span><span class="line"><span class="ln">3</span><span class="cl">WP_ADMIN_NAME=admin
-</span></span><span class="line"><span class="ln">4</span><span class="cl">WP_ADMIN_EMAIL=mail@example.org
-</span></span><span class="line"><span class="ln">5</span><span class="cl">WP_ADMIN_PASSWORD=secret
-</span></span></code></pre></div><p>Willst du ein eigene Passwort vergeben, kannst du auch hier ein zufälliges Passwort erzeugen lassen:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">WP_ADMIN_PASSWORD=$(cat /dev/urandom | tr -dc &#39;a-zA-Z0-9&#39; | fold -w 32 | head -n 1)
-</span></span></code></pre></div><h3 id="theme-und-plugins">Theme und Plugins</h3>
-<p>Mit den folgenden Parametern legst du fest, welches Theme eingerichtet und welche Plugins installiert werden sollen. Der Theme-Name ist der Slug des Themes:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">INSTALL_THEME=yes|no
-</span></span><span class="line"><span class="ln">2</span><span class="cl">THEME=&#34;elementor&#34;
-</span></span><span class="line"><span class="ln">3</span><span class="cl">
-</span></span><span class="line"><span class="ln">4</span><span class="cl">INSTALL_PLUGINS=no
-</span></span><span class="line"><span class="ln">5</span><span class="cl">PLUGINS=&#34;elementor wordpress-seo tinymce-advanced ninja-forms shortcodes-ultimate instagram-feed ml-slider the-events-calendar amp contact-widgets coblocks woocommerce&#34;
-</span></span></code></pre></div><p>Du kannst mehrere Plugins angeben, wenn diese per Leerzeichen voneinander getrennt sind.</p>
-<h3 id="inhalte">Inhalte</h3>
-<p>Der nächste Abschnitt regelt das (zufällige) Anlegen von Beiträgen, Kategorien usw. Natürlich musst du keine Inhalte anlegen. Ist <strong>RANDOMIZE_EVERY_ITEM</strong> auf <strong>yes</strong> gesetzt, wird jeder Beitrag wie oben zufällig erzeugt. Da das eine Menge HTTP-Requests erfordert, kannst du den Parameter auch auf no setzen. In dem Fall wird jede Zufalls-API genau einmal abgerufen. Der ganze Prozess wird dadurch maßgeblich beschleunigt.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">ADD_CONTENT=yes|no
-</span></span><span class="line"><span class="ln">2</span><span class="cl">META_INPUT=&#34;&#34;
-</span></span><span class="line"><span class="ln">3</span><span class="cl">RANDOMIZE_EVERY_ITEM=yes|no
-</span></span></code></pre></div><p>Manche Themes, wie z.B. <strong>Elementor</strong>, fügen den Inhalten, also Beiträgen, bestimmte Meta-Informationen hinzu. Beim automatisierten Anlegen von Beiträgen passiert das allerdings nicht automatisch. Du kannst das hier also entsprechend einrichten. Der Wert wird als JSON übergeben. Achte auf das einfache Anführungszeichen.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">META_INPUT=&#39;{&#34;_elementor_edit_mode&#34;:&#34;&lt;![CDATA[builder]]&gt;&#34;,&#34;_elementor_template_type&#34;:&#34;&lt;![CDATA[kit]]&gt;&#34;,&#34;_elementor_version&#34;:&#34;&lt;![CDATA[2.9.13]]&gt;&#34;}&#39;
-</span></span></code></pre></div><p>Die folgenden Paremeter legen fest, wieviele Inhalte du erzeugen möchtest:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">COUNT_CATEGORIES_LEVEL1=10
-</span></span><span class="line"><span class="ln">2</span><span class="cl">COUNT_CATEGORIES_LEVEL2=5
-</span></span><span class="line"><span class="ln">3</span><span class="cl">
-</span></span><span class="line"><span class="ln">4</span><span class="cl">COUNT_POSTS=100
-</span></span><span class="line"><span class="ln">5</span><span class="cl">COUNT_PARAGRAPHS=20
-</span></span><span class="line"><span class="ln">6</span><span class="cl">COUNT_POST_REVISIONS=5
-</span></span><span class="line"><span class="ln">7</span><span class="cl">COUNT_TAGS=20
-</span></span></code></pre></div><p>Im Beispiel werden 10 Haupt-Kategorien mit jeweils 5 Unter-Kategorien angelegt. Jede Kategorie wird mit 100 Posts befüllt und jeder Post erhält 20 Tags und 5 Revisionen. Das ergibt also 10 * 5 * 100 * 5 Beiträge = 25.000 Beiträge! In diesem Fall macht es Sinn RANDOMIZE_EVERY_ITEM auf no zu setzen, da du sonst mehre tausende Anfragen an die Zufalls-APIs generieren würdest. COUNT_PARAGRAPHS legt die Länge jedes Beitrags in Absätzen fest.</p>
-<h3 id="standard-parameter">Standard-Parameter</h3>
-<p>Die folgenden Parameter musst du in der Regel nicht anpassen. WP_CLI legt den Pfad zur WordPress Kommandozeilen Oberfläche fest. Wird die Datei nicht gefunden, muss WP CLI installiert werden. Dazu dient der Parameter WP_CLI_SOURCE.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">WP_CLI_EXEC=~/wp-cli.phar
-</span></span><span class="line"><span class="ln">2</span><span class="cl">WP_CLI_SOURCE=https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-</span></span></code></pre></div><p>Im folgenden werden die Quellen für die APIs festgelegt. Hier solltest du nichts ändern, da das Script für die Zusammenarbeit mit diesen Quellen eingerichtet ist. Einzig beim Parameter RANDOM_IMAGE_API_URI kannst du bei Bedarf in der URL die Auflösung der abgefragten Bilder festlegen.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">RANDOM_WORD_API_URL=&#39;https://random-word-api.herokuapp.com/word?swear=0&amp;number=&#39;
-</span></span><span class="line"><span class="ln">2</span><span class="cl">RANDOM_SENTENCE_API_URL=&#39;http://metaphorpsum.com/sentences/&#39;
-</span></span><span class="line"><span class="ln">3</span><span class="cl">RANDOM_TEXT_API_URL=&#39;http://metaphorpsum.com/paragraphs/&#39;
-</span></span><span class="line"><span class="ln">4</span><span class="cl">RANDOM_IMAGE_API_URI=&#39;https://picsum.photos/200/300.jpg&#39;
-</span></span></code></pre></div>
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> automatisierung, bash, installation, script, setup, wordpress, DevOps</p>
-        </div>
-        
-      ]]></content:encoded>
+      <description>Et voilá. Ein BASH Script, um WordPress automatisiert über die Kommandozeile zu installieren, inklusive Theme und beliebigen Plugins sowie - wenn benötigt - zufälligen Beiträgen, Kategorien, Tags und Bildern.
+Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und unbedingt …</description>
       
       
       

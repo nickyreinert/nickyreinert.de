@@ -19,69 +19,7 @@
       <pubDate>Sat, 07 Jun 2025 10:34:56 +0000</pubDate>
       <author></author>
       <guid>https://nickyreinert.de/2025/2025-06-07-mehrere-onedrive-synchronisationen-auf-einem-system/</guid>
-      <description>Irgendwie ist dieser Blog zu einer feuil­le­to­nis­tischen Kommentarspalte verkommen. Schluss damit! Hier eine Anleitung zu einem Thema, dass ich schon lange …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Eine technische Anleitung zur Verwaltung mehrerer OneDrive-Synchronisationen auf einem System mittels eines Docker-basierten Kommandozeilen-Clients (&#39;abraunegg/onedrive&#39;). Der Artikel erklärt die Konfiguration über &#39;docker-compose.yml&#39;, die Authentifizierung und den Start des Clients im Hintergrund, und hebt die Vorteile dieser flexibleren Lösung gegenüber dem offiziellen Microsoft-Client hervor.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> OneDrive, Cloud-Speicher, Docker, Synchronisation, Linux, Systemadministration</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-          
-        </div>
-        
-        
-        <p>Irgendwie ist dieser Blog zu einer feuil­le­to­nis­tischen Kommentarspalte verkommen. Schluss damit! Hier eine Anleitung zu einem Thema, dass ich schon lange vor mir herschiebe, was mein Leben aber ungemein erleichtert: Stell dir vor, du besitzt mehrere OneDrive-Accounts und willst alle auf deinem System synchonisieren. Anwendungsfälle gibt es genug: Du vertwaltest einen Corporate/Business-Account und einen privaten oder du hast dir einen Backup-Account zugelegt. Und so weiter. Und so fort.</p>
-<p>Die Antwort könnte lauten: Nutze doch den offiziellen GUI-Client von Microsoft! Der unterstützt mehrere Accounts!</p>
-<p>Ja. Tut er. Auf dem Papier. In der Realität ist der Umgang damit&hellip; &ldquo;schwierig&rdquo;. Und bei der Analyse belassen wir es vorerst. Die einfachrere Lösung lautet nämlich: Docker!</p>
-<p>Alles was du brauchst ist eine <code>docker-compose.yml</code>:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-docker" data-lang="docker"><span class="line"><span class="ln"> 1</span><span class="cl">version: <span class="s1">&#39;3.8&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="err"></span>services:<span class="err">
-</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="err"></span>  onedrive:<span class="err">
-</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="err"></span>    image: driveone/onedrive:latest<span class="err">
-</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="err"></span>    container_name: onedrive-cli<span class="err">
-</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="err"></span>    volumes:<span class="err">
-</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="err"></span>      - ./config:/onedrive/conf<span class="err">
-</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="err"></span>      - ./data:/onedrive/data<span class="err">
-</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="err"></span>    environment:<span class="err">
-</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="err"></span>      - <span class="nv">ONEDRIVE_UID</span><span class="o">=</span><span class="si">${</span><span class="nv">UID</span><span class="si">}</span><span class="err">
-</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="err"></span>      - <span class="nv">ONEDRIVE_GID</span><span class="o">=</span><span class="si">${</span><span class="nv">GID</span><span class="si">}</span><span class="err">
-</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="err"></span>    command: &gt;<span class="err">
-</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="err"></span>      --confdir<span class="o">=</span><span class="s2">&#34;/onedrive/conf&#34;</span><span class="err">
-</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="err"></span>      --syncdir<span class="o">=</span><span class="s2">&#34;/onedrive/data&#34;</span><span class="err">
-</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="err"></span>      --monitor<span class="err">
-</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="err"></span>    restart: unless-stopped<span class="err">
-</span></span></span></code></pre></div><p>In einer <code>.env</code> Datei legst du deine aktuelle User/User-Group-ID ab:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;ONEDRIVE_UID=</span><span class="k">$(</span>id -u<span class="k">)</span><span class="s2">&#34;</span> &gt; .env
-</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;ONEDRIVE_GID=</span><span class="k">$(</span>id -g<span class="k">)</span><span class="s2">&#34;</span> &gt;&gt; .env
-</span></span></code></pre></div><p>Du baust dir den Container zunächst mit <code>docker compose build</code> und startest diesen dann im interaktiven Modus:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">docker run -it --rm <span class="se">\
-</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="se"></span>  -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/config:/onedrive/conf <span class="se">\
-</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="se"></span>  -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/data:/onedrive/data <span class="se">\
-</span></span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="se"></span>  driveone/onedrive:latest <span class="se">\
-</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="se"></span>  --confdir<span class="o">=</span><span class="s2">&#34;/onedrive/conf&#34;</span> <span class="se">\
-</span></span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="se"></span>  --syncdir<span class="o">=</span><span class="s2">&#34;/onedrive/data&#34;</span> <span class="se">\
-</span></span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="se"></span>  --monitor
-</span></span></code></pre></div><p>Die Konsole liefert dir nun eine URL, über die du den Client authentifizieren musst. Danach beginnt der initiale Sync. Du kannst den Container dann stoppen und mit <code>docker compose up</code> im nicht-interaktiven Modus - also im Hintergrund - starten.</p>
-<p>Was ist daran jetzt bemerkenswert? Der Client - <a href="https://github.com/abraunegg/onedrive">hier übrigens das Git-Repo</a> - ist äußerst mächtig und stabil! So kannst du z.B. relativ simpel festlegen, welche Dateien synchronisiert werden - jaja, ich weiß, im Prinzip kann das auch der offizielle Client - aber lange nicht so komfortable und beliebig komplex. Eine Möglichkeit ist z.B. die Datei <code>sync_list</code> im Ordner <code>config</code> (bzg. <code>conf</code> als Mount-Ziel). Dort legst du fest, welche Dateien und Ordner ausschließlich berücksichtigt werden sollen.</p>
-<p>Und natürlich kannst du so mehrere Docker-Container aufsetzen, die jeweils unterschiedliche Synchronisierungs-Aufträge erfüllen.</p>
-<p>Eine sehr ausführliche Beschreibung, was wie möglich ist, findest du hier: <a href="https://github.com/abraunegg/onedrive/blob/master/docs/usage.md">https://github.com/abraunegg/onedrive/blob/master/docs/usage.md</a></p>
-<p>Kudos aber auch an Microsoft. Ohne die öffentlich zugängliche OneDrive-API wäre solch eine Lösung nicht denkbar!</p>
-
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> OneDrive, Docker, Synchronisation, Tutorial, Linux</p>
-        </div>
-        
-      ]]></content:encoded>
+      <description>Irgendwie ist dieser Blog zu einer feuil­le­to­nis­tischen Kommentarspalte verkommen. Schluss damit! Hier eine Anleitung zu einem Thema, dass ich schon lange vor mir herschiebe, was mein Leben aber ungemein erleichtert: Stell dir vor, du besitzt mehrere OneDrive-Accounts und willst alle auf deinem …</description>
       
       
       
@@ -110,108 +48,7 @@
       <pubDate>Fri, 11 Oct 2019 00:00:00 +0000</pubDate>
       <author></author>
       <guid>https://nickyreinert.de/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/</guid>
-      <description>Mein Ziel ist es, nginx und Apache als Webserver auf einem System laufen zu lassen. Alle HTTP/HTTPS-Anfragen werden von nginx beantwortet. Anfragen an den Port …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Dieser Artikel beschreibt die parallele Konfiguration von Apache und Nginx auf einem System, wobei Nginx als Frontend und Apache auf alternativen Ports dient. Die Anleitung umfasst die Firewall-Einrichtung, die Apache-Virtual-Host-Konfiguration und die Durchführung von Performance-Tests mit ApacheBench, um die Leistungsfähigkeit beider Webserver zu vergleichen.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> Apache, Nginx, Webserver, Performance Testing, ApacheBench, Server Konfiguration, Linux, Benchmarking, HTTP/HTTPS</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
-          
-        </div>
-        
-        
-        <p>Mein Ziel ist es, <strong>nginx</strong> und <strong>Apache</strong> als Webserver auf einem System laufen zu lassen. Alle HTTP/HTTPS-Anfragen werden von nginx beantwortet. Anfragen an den Port 8080 (für HTTP) oder 4443 (HTTPS) werden von Apache beantwortet. So kann ich nginx und Apache in einem <strong>Benchmark</strong> vergleichen, indem ich einfach nur die Ports ändere. Das Setup ist aber auch für andere Zwecke sinnvoll, wenn du z.B. die Burst-Einstellungen von nginx in Aktion sehen oder bestimmte Web-Dienste strikt mit Apache bedienen willst. Los gehts&hellip;</p>
-<p>Ich gehe mal davon aus, dass du nginx und Apache fertig eingerichtet hast. Nginx läuft idealerweise schon (<a href="https://www.nickyreinert.de/mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-1-3/">siehe meine 3-Teilige Anleitung</a>) Dann musst du zunächst mal dafür sorgen, dass die Firewall (z.B. iptables) die alternativen Ports 8080 und 4443 auch durchlässt. Das funktioniert folgendermaßen:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">sudo iptables -A INPUT -p tcp -m multiport --dports 8080,4443 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-</span></span></code></pre></div><p>Wenn du prüfen willst, ob die Änderung übernommen wurde, machst du das mit</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">iptables -L --line-numbers
-</span></span></code></pre></div><p>Den line-numbers-Parameter kannst du dir schenken - willst du aber einen Eintrag in iptables löschen, können die Zeilennummern sehr hilfreich sein, siehe:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">iptables -D INPUT 3
-</span></span></code></pre></div><p>Die 3 verweist auf die Zeilennummer, INPUT auf die Chain. Aber das nur um Rande. Weiter gehts mit unserem Server-Setup.</p>
-<p>Als nächstes teilst du Apache mit, dass ab sofort auf den alternativen Ports nach Anfragen gelauscht wird. Dazu passt du die Porteinstellung in der Datei /etc/apache2/ports.conf entsprechend an. Die if-Kondition macht die Sache etwas sauber, muss aber nicht sein:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Listen 8080
-</span></span><span class="line"><span class="ln">2</span><span class="cl">&lt;IfModule mod_ssl.c&gt;
-</span></span><span class="line"><span class="ln">3</span><span class="cl">    Listen 4443
-</span></span><span class="line"><span class="ln">4</span><span class="cl">&lt;/IfModule&gt;
-</span></span></code></pre></div><p>Weiter geht es mit der Einstellung des virtuellen Hosts für Apache. Dazu legst du eine Datei mit der Endung &ldquo;conf&rdquo; im Ordner <strong>/etc/apache2/sites-available/</strong> an und füllst sie folgendermaßen:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="o">&lt;</span><span class="n">VirtualHost</span> <span class="o">*</span><span class="p">:</span><span class="mi">8080</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="ln"> 2</span><span class="cl">        <span class="n">ServerName</span> <span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
-</span></span><span class="line"><span class="ln"> 3</span><span class="cl">        <span class="n">ServerAlias</span> <span class="n">example</span><span class="o">.</span><span class="n">com</span>
-</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        <span class="n">Redirect</span> <span class="n">permanent</span> <span class="o">/</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">4443</span><span class="o">/</span>
-</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
-</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        <span class="n">DocumentRoot</span> <span class="s2">&#34;/var/nginx/apache2_example_com/htdocs&#34;</span>
-</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        <span class="n">DirectoryIndex</span> <span class="n">index</span><span class="o">.</span><span class="n">html</span> <span class="n">index</span><span class="o">.</span><span class="n">php</span>
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="o">&lt;/</span><span class="n">VirtualHost</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="ln">10</span><span class="cl">
-</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="o">&lt;</span><span class="n">VirtualHost</span> <span class="o">*</span><span class="p">:</span><span class="mi">4443</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="ln">12</span><span class="cl">        <span class="n">ServerName</span> <span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
-</span></span><span class="line"><span class="ln">13</span><span class="cl">        <span class="n">ServerAlias</span> <span class="n">example</span><span class="o">.</span><span class="n">com</span>
-</span></span><span class="line"><span class="ln">14</span><span class="cl">
-</span></span><span class="line"><span class="ln">15</span><span class="cl">        <span class="n">ErrorLog</span> <span class="s2">&#34;/var/log/apache2/example.com.error.log&#34;</span>
-</span></span><span class="line"><span class="ln">16</span><span class="cl">        <span class="n">CustomLog</span> <span class="s2">&#34;/var/log/apache2/example.com.log&#34;</span> <span class="n">common</span>
-</span></span><span class="line"><span class="ln">17</span><span class="cl">
-</span></span><span class="line"><span class="ln">18</span><span class="cl">        <span class="n">LogLevel</span> <span class="n">warn</span>
-</span></span><span class="line"><span class="ln">19</span><span class="cl">
-</span></span><span class="line"><span class="ln">20</span><span class="cl">        <span class="n">DocumentRoot</span> <span class="s2">&#34;/var/nginx/apache2_example_com/htdocs&#34;</span>
-</span></span><span class="line"><span class="ln">21</span><span class="cl">        <span class="n">DirectoryIndex</span> <span class="n">index</span><span class="o">.</span><span class="n">html</span> <span class="n">index</span><span class="o">.</span><span class="n">php</span>
-</span></span><span class="line"><span class="ln">22</span><span class="cl">
-</span></span><span class="line"><span class="ln">23</span><span class="cl">        <span class="o">&lt;</span><span class="ne">Directory</span> <span class="s2">&#34;/var/nginx/apache2_example_com/htdocs&#34;</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="ln">24</span><span class="cl">                <span class="n">Options</span> <span class="o">-</span><span class="n">Indexes</span> <span class="o">+</span><span class="n">FollowSymLinks</span> <span class="o">+</span><span class="n">MultiViews</span>
-</span></span><span class="line"><span class="ln">25</span><span class="cl">                <span class="n">DirectoryIndex</span> <span class="n">index</span><span class="o">.</span><span class="n">php</span>
-</span></span><span class="line"><span class="ln">26</span><span class="cl">                <span class="n">AllowOverride</span> <span class="n">All</span>
-</span></span><span class="line"><span class="ln">27</span><span class="cl">                <span class="n">Require</span> <span class="n">all</span> <span class="n">granted</span>
-</span></span><span class="line"><span class="ln">28</span><span class="cl">        <span class="o">&lt;/</span><span class="ne">Directory</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="ln">29</span><span class="cl">
-</span></span><span class="line"><span class="ln">30</span><span class="cl">        <span class="n">RewriteEngine</span> <span class="n">on</span>
-</span></span><span class="line"><span class="ln">31</span><span class="cl">        <span class="n">Include</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">letsencrypt</span><span class="o">/</span><span class="n">options</span><span class="o">-</span><span class="n">ssl</span><span class="o">-</span><span class="n">apache</span><span class="o">.</span><span class="n">conf</span>
-</span></span><span class="line"><span class="ln">32</span><span class="cl">
-</span></span><span class="line"><span class="ln">33</span><span class="cl">        <span class="n">SSLCertificateFile</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">letsencrypt</span><span class="o">/</span><span class="n">live</span><span class="o">/</span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">fullchain</span><span class="o">.</span><span class="n">pem</span>
-</span></span><span class="line"><span class="ln">34</span><span class="cl">        <span class="n">SSLCertificateKeyFile</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">letsencrypt</span><span class="o">/</span><span class="n">live</span><span class="o">/</span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">privkey</span><span class="o">.</span><span class="n">pem</span>
-</span></span><span class="line"><span class="ln">35</span><span class="cl">
-</span></span><span class="line"><span class="ln">36</span><span class="cl"><span class="o">&lt;/</span><span class="n">VirtualHost</span><span class="o">&gt;</span>
-</span></span></code></pre></div><p>Ich will die Einstellungen nur kurz überspringen, da sie sich eigentlich selber erklären. Der erste Block greift die HTTP-Anfragen ab und leitet diese sofort weiter (<em>Redirect permanent</em>). Ich definiere hier zwar auch DocumentRoot und Index, aber das nur der Vollständigkeit halber. Der zweite Block kümmert sich um die HTTPS-Anfragen. Wie du siehst, passiert hier kein großer Zauber. Ich nutze PHP nur als Modul, setze ein paar Logging-Eigenschaften fest und übermittle die SSL-Zertifikate. <em>Easy peasy. Lemon squeezy.</em><br>
-Wie du siehst, nutze ich für Apache außerdem ein separates Verzeichnis. Achte bei <strong>Wordpress</strong> auch darauf, die URLs entsprechend anzupassen, sonst wird Wordpress die Anfragen immer wieder zu nginx weiteschicken:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">define(&#39;WP_HOME&#39;,&#39;https://example.com:4443&#39;);
-</span></span><span class="line"><span class="ln">2</span><span class="cl">define(&#39;WP_SITEURL&#39;,&#39;https://example.com:4443&#39;);
-</span></span></code></pre></div><p>Als nächstes gönnst du dem Apache-Server einen Neustart:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">sudo service apache2 restart
-</span></span></code></pre></div><p>Und das war es auch schon. Jetzt kannst du mit ApacheBench ein paar Requests abfeuern. Denk dran, dass du auf Windows ab für HTTP-Requests und abs für HTTPS-Requests nutzen musst. Mit diesem Aufruf teste ich erstmal die Performance von meinem Apache-Setup:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">abs -n 1000 -c 100 https://www.example.com:4443/
-</span></span></code></pre></div><p>Der Parameter <em>n</em> steht für die Anzahl von Anfragen insgesamt. Mit <em>c</em> kannst du festlegen, wieviele Anfragen du gleichzeitig abfeuern willst (<em>c</em> muss demnach kleiner sein als <em>n</em>). Der Forward-Slash am Ende ist wichtig, andernfalls erkennt <strong>abs</strong> die URL nicht an. Das gleiche mache ich ohne Port-Angabe um den nginx-Server anzusprechen. Und das sind die Ergebnisse:</p>
-<h3 id="auswertung-der-ergebnisse">Auswertung der Ergebnisse</h3>
-<p><img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik.png" alt=""></p>
-<p>Abbildung 1: Vergleich der Antwortzeiten von Apache und nginx</p>
-<p>Die Abbildung zeigt, wie hoch der Anteil der Anfragen ist, der nach einer bestimmten Zeit (in Millisekunden) beantwortet wurde. Nginx ist ganz klar Gewinner. Alle Anfrgaen wurden inerhalb von 4 Sekunden bearbeitet, die Hälfte der Anfragen soger innerhalb knapp 1 Sekunde. Bei Apache sieht das ungleich schlimmer aus. Allerdings wurden bei nginx 68 Anfragen abgewiesen, bei Apache 0 - eine Folge meiner Warteschlangen-Einstellung.<br>
-Die folgenden Diagramme zeigen noch mal die Zusammensetzung der Anfrage:</p>
-<ul>
-<li>Connect - Zeit bis die Verbindung hergestellt wird</li>
-<li>Waiting - Zeit bis zum ersten Datenpaket (Time-To-First-Byte, TTFB)</li>
-<li>Processing - Zeit, bis die vollständige Antwort vom Server eingangen ist, seit die Verbindung geöffnet wurd</li>
-<li>Total - Gesamte Wartezeit</li>
-</ul>
-<p><img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik-1.png" alt=""></p>
-<p>Abbildung 2: Messergebnisse für die Anfragen an Apache</p>
-<p><img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik-2.png" alt=""></p>
-<p>Abbildung 3: Messergebnisse für die Anfragen an nginx</p>
-<p>Die reine Verbindungszeit ist bei beiden Servern relativ niedrig, dieser Wert gibt aber auch eher Rückschlüsse auf die Qualität des Netzwerks. Die TTFB ist bei Apache relativ hoch., es dauert also eine ganze Weile, bis Apache die Anfrage verarbeitet und entsprechend die ersten Daten sendet. Das wird mit ziemlicher Sicherheit am grundsätzlich nicht sehr performanten php-mod liegen. Insgesamt ist das Ergebnis natürlich wenig überraschend. Mein Ziel war ja, mit nginx und php-fpm ein schnelles Setup zu schaffen. Was hiermit wohl gelungen sein dürfte (Anmerkungen zur Repräsentativität werden gerne entgegengenommen). Fairerweise sei aber noch angemerkt, dass ich Apache in der Standard-Einstellung verwende und wirklich keine Maßnahmen unternommen habe, um die Geschwindigkeit zu optimieren.</p>
-
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> Apache, Nginx, Webserver, Performance, Benchmark, Linux</p>
-        </div>
-        
-      ]]></content:encoded>
+      <description>Mein Ziel ist es, nginx und Apache als Webserver auf einem System laufen zu lassen. Alle HTTP/HTTPS-Anfragen werden von nginx beantwortet. Anfragen an den Port 8080 (für HTTP) oder 4443 (HTTPS) werden von Apache beantwortet. So kann ich nginx und Apache in einem Benchmark vergleichen, indem ich …</description>
       
       
       
@@ -240,54 +77,7 @@ Die folgenden Diagramme zeigen noch mal die Zusammensetzung der Anfrage:</p>
       <pubDate>Sat, 13 Jul 2019 00:00:00 +0000</pubDate>
       <author></author>
       <guid>https://nickyreinert.de/2019/2019-07-13-wie-kannst-du-ssh-sicherer-machen-security-through-obscurity/</guid>
-      <description>Diese Abbildung, meine geneigten Freunde, zeigt die Zugriffsversuche für SSH auf meinen Server. Zugegeben: Es ist nicht viel und wird sich vermutlich kaum auf …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Dieser Artikel beleuchtet Methoden zur Erhöhung der SSH-Sicherheit, insbesondere durch das Ändern des Standard-Ports. Er erklärt die Umsetzung dieser &#39;Security through obscurity&#39;-Strategie, einschließlich der Konfiguration von &#39;sshd_config&#39;, Firewall-Regeln (iptables) und &#39;fail2ban&#39;, um unerwünschte Zugriffsversuche zu reduzieren und das System sicherer zu machen.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> SSH, Serversicherheit, Linux, Netzwerksicherheit, Firewall, fail2ban, Security through obscurity, Server Administration</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
-          
-        </div>
-        
-        
-        <p>Diese Abbildung, meine geneigten Freunde, zeigt die Zugriffsversuche für SSH auf meinen Server. Zugegeben: Es ist nicht viel und wird sich vermutlich kaum auf die Performance des gesamten Systems auswirken. Mit diesem Grundrauschen muss aber eigentlich jeder leben, der einen SSH-Dienst über den Standard-Port 22 betreibt.</p>
-<p><img src="/2019/2019-07-13-wie-kannst-du-ssh-sicherer-machen-security-through-obscurity/images/grafik-700x335.png" alt=""></p>
-<p>SSH-Zugriff der letzten 30 Tage</p>
-<p>Wenn sich diese Zugriffe nicht auf die Performance auswirken, macht es dann wenigstens aus Sicherheitsgründen Sinn, diese Zugriffe zu unterbinden? Und die einfachste Möglichkeit das zu erreichen ist es, den SSH-Standardport (22) zu ändern. Mit meiner Argumentation folge ich denen <a href="https://security.stackexchange.com/questions/189726/does-it-improve-security-to-use-obscure-port-numbers">in einem sehr interessanten SO-Thread</a> zu dem Thema: <strong>Security through obscurity</strong>.</p>
-<p>Es gibt da draußen einen Haufen Bots, die sämtliche erreichbare IP-Adressen des Internets permanent nach Schwachstellen absuchen, nicht nur für SSH. In der Regel wird dazu eine Anfrage, z.B. mit einem Standardpasswort, an den Standardport von SSH gesendet. Die Chance, dass jemand sein System nicht ausreichend oder überhaupt nicht gesichert hat, sind scheinbar hoch genug, sonst würde sich dieses stumpfe Abgrasen nicht lohnen.</p>
-<p>Um das zu vermeiden, bietet es sich an, den Standard-Port zu ändern. Du wirst das abgrasen nicht verhindern, aber die Chancen stehen recht gut, dass die Bots das Interesse an dich verlieren und die Anfragen irgendwann nachlassen. Das ist aber spekulativ und auch nur ein kosmetischer Faktor. Wichtiger ist: Du wirst dein System dadurch ein ganz bisschen sicherer machen. Sollte morgen z.B. eine Sicherheitslücke für SSH bekannt werden, grasen die Bots die Standard-Ports ab um diese Lücke auszutesten. Die Zeit, alle denkbaren Ports zu testen, haben die Bots nicht, da Aufwand-Nutzen hier in keinem Verhältnis stehen.</p>
-<p>Zunächst änderst du den Port von 22 auf eine beliebige Ziffer unter 1024. Warum das? Ports ab 1024 können auch von &ldquo;nicht-priviligerten&rdquo; Nutzern verwendet werden. Jemand, der Zugriff auf dein System hat, kann ohne Root-Rechte einen Port öffnen. Läuft SSH nun auf Port 12345, könnte ein normaler Benutzer SSH zum Absturz bringen, seinen eigenen Dienst auf diesem Port lauschen lassen und somit SSH simulieren. Blöd. Also Port &lt; 1024. Das stellst du in der Datei <strong>/etc/ssh/sshd_config</strong> ein:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"># What ports, IPs and protocols we listen for
-</span></span><span class="line"><span class="ln">2</span><span class="cl">Port 22
-</span></span><span class="line"><span class="ln">3</span><span class="cl">Port 999
-</span></span></code></pre></div><p>Du kannst du beliebig viele Ports definieren, indem du einfach eine weitere Zeile einfügst. Für den Anfang empfehle ich, SSH weiterhin auf Port 22 laufen zu lassen, damit du dich nicht aussperrst. Danach startest du den SSH-Daemon neu (<strong>service sshd restart</strong>), verbindest dich auf den neuen Port und de-aktivierst Port 22 final, indem du die Zeile auskommentierst.<br>
-Wenn du schon mal da bist: Der Vollständigkeit halber solltest du auch daran denken, SSH nur mit Private-Publi-Key-Authenzifizierung zu nutzen und unbedingt die Passwort-Authentifizierung deaktivieren:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">PubkeyAuthentication yes
-</span></span><span class="line"><span class="ln">2</span><span class="cl">PasswordAuthentication no
-</span></span><span class="line"><span class="ln">3</span><span class="cl">PermitRootLogin no
-</span></span></code></pre></div><p>Den SSH-Zugriff für den <strong>Root-Benutzer zu deaktivieren</strong>, ist eine weitere wichtige Sicherheitseinstellung. Du solltest dich nur mit &ldquo;unpriviligierten&rdquo; Nutzern am System anmelden können. Der Zugriff auf der CLI erfolgt dann immer mit <strong>sudo.</strong> Aber das nur am Rande&hellip;</p>
-<p>Wenn du <strong>iptables</strong> als Firewall nutzt, was hoffentlich der Fall ist, wirst du feststellen, dass du dich noch nicht auf Port 999 mit SSH verbinden kannst. Natürlich musst du den Port auch noch in der Firewall freigeben:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">iptables -A INPUT -m state --state NEW -m tcp -p tcp --dport 999 -j ACCEPT
-</span></span></code></pre></div><p>Beim Einsatz von fail2ban solltest du auch dort einstellen, dass SSH auf einem anderen Port arbeitet, damit fail2ban weiterhin Anmeldeversuche und BruteForce-Attacken abwehren kann. Die Einstellung dazu findest du in der Datei /etc/fail2ban/jail.conf oder /etc/fail2ban/jail.local. Dort gibt es einen Abschnitt [sshd] , in dem du den Port von ssh auf deinen neuen Port, z.B. 999, festlegst:</p>
-<p><img src="/2019/2019-07-13-wie-kannst-du-ssh-sicherer-machen-security-through-obscurity/images/grafik.png" alt=""></p>
-<p>Gegebenenfalls musst du diese Einstellung auch noch für SSH-Varianten wie z.B. Dropbear anpassen.</p>
-
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> SSH, Sicherheit, Linux, Server, Anleitung, Netzwerk</p>
-        </div>
-        
-      ]]></content:encoded>
+      <description>Diese Abbildung, meine geneigten Freunde, zeigt die Zugriffsversuche für SSH auf meinen Server. Zugegeben: Es ist nicht viel und wird sich vermutlich kaum auf die Performance des gesamten Systems auswirken. Mit diesem Grundrauschen muss aber eigentlich jeder leben, der einen SSH-Dienst über den …</description>
       
       
       
@@ -318,94 +108,8 @@ Wenn du schon mal da bist: Der Vollständigkeit halber solltest du auch daran de
       <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
       <author></author>
       <guid>https://nickyreinert.de/2019/2019-04-24-den-korrekten-mysql-odbc-treiber-fuer-deinen-linux-server-installieren/</guid>
-      <description>Wenn du denkst, du hast alles richtig gemacht, nachdem du einer der halb vollständigen Anleitungen da draußen gefolgt bist, und dann wirst du nach der …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Dieser Artikel bietet eine detaillierte Anleitung zur Installation und Konfiguration des korrekten MySQL ODBC-Treibers auf einem Linux-Server (Ubuntu). Er behandelt die Auswahl der passenden Treiberversion, den Download, die Installation und Registrierung des Treibers sowie die Überprüfung der Funktionalität, inklusive der Behebung häufiger Fehler bei der Treiberinstallation.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> MySQL, ODBC, Linux, Server Administration, Datenbanken, Treiber Installation, Ubuntu, Troubleshooting</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
-          
-        </div>
-        
-        
-        <p>Wenn du denkst, du hast alles richtig gemacht, nachdem du einer der halb vollständigen Anleitungen da draußen gefolgt bist, und dann wirst du nach der mühseligen Installation von ein paar ODBC-Treibern doch mit der folgenden Fehlermeldung begrüßt:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[ISQL]ERROR: Could not SQLDriverConnect
-</span></span><span class="line"><span class="ln">2</span><span class="cl">[01000][unixODBC][Driver Manager]Can&#39;t open lib &#39;/usr/local/lib/libmyodbc8w.so&#39; : file not found
-</span></span><span class="line"><span class="ln">3</span><span class="cl">[ISQL]ERROR: Could not SQLDriverConnect
-</span></span></code></pre></div><p>Doch tatsächlich existiert die Datei. Die Fehlermeldung ist nur etwas unpräzise und vermutlich hast du die falschen Treiber heruntergeladen. Damit dir das nicht noch mal passiert, hier eine endgültige, hoffentlich vollständige Anleitung zur Installation der MySQL-ODBC Treiber (unter Ubuntu, aber leicht übertragbar auf andere Distributionen):</p>
-<h2 id="die-richtige-treiber-version-herunterladen">Die richtige Treiber-Version herunterladen</h2>
-<p>Zunächst musst du herausbekommen, welche Betriebssystem-Version du nutzt. Das funktioniert mit:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ lsb_release -a
-</span></span><span class="line"><span class="ln">2</span><span class="cl">Distributor ID: Ubuntu
-</span></span><span class="line"><span class="ln">3</span><span class="cl">Description:    Ubuntu 16.04.5 LTS
-</span></span><span class="line"><span class="ln">4</span><span class="cl">Release:        16.04
-</span></span><span class="line"><span class="ln">5</span><span class="cl">Codename:       xenial
-</span></span></code></pre></div><p>Außerdem benötigst du noch deinen Architektur-Typ, also 32- oder 64bit. Wenn LSB diese Info nicht liefert, kannst du folgendes probieren:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ uname -a
-</span></span><span class="line"><span class="ln">2</span><span class="cl">Linux 192.168.10.10 4.4.0-042stab136.1 #1 SMP Wed Feb 27 09:04:24 MSK 2019 x86_64 x86_64 x86_64 GNU/Linux
-</span></span></code></pre></div><p>Mit diesen Informationen ausgestattet, besorgst du dir nun die passenden Treiber-Dateien von <a href="https://dev.mysql.com/downloads/connector/odbc/">https://dev.mysql.com/downloads/connector/odbc/</a> - ich gehe mal davon aus, dass du die aktuellste MySQL-Version benutzt und deshalb auch die Treiber in der Version 8 benötigst.</p>
-<p>Kopiere dir am besten den Download-Link, damit du das Archiv direkt auf dem Server mit wget herunterladen kannst, z.B. so:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="o">$</span> <span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">dev</span><span class="o">.</span><span class="n">mysql</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">get</span><span class="o">/</span><span class="n">Downloads</span><span class="o">/</span><span class="n">Connector</span><span class="o">-</span><span class="n">ODBC</span><span class="o">/</span><span class="mf">8.0</span><span class="o">/</span><span class="n">mysql</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">odbc</span><span class="o">-</span><span class="mf">8.0</span><span class="o">.</span><span class="mi">15</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ubuntu16</span><span class="o">.</span><span class="mi">04</span><span class="o">-</span><span class="n">x86</span><span class="o">-</span><span class="mi">64</span><span class="n">bit</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
-</span></span></code></pre></div><h2 id="die-treiber-installieren-und-registrieren">Die Treiber installieren und registrieren</h2>
-<p>Wenn der Download beendet wurde, entpackst du die Datei mit den folgenden Befehlen und wechselst danach in das soeben entstandene Verzeichnis:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ gunzip mysql-connector-odbc-8.0.15-linux-ubuntu16.04-x86-64bit.tar.gz
-</span></span><span class="line"><span class="ln">2</span><span class="cl">$ tar xvf mysql-connector-odbc-8.0.15-linux-ubuntu16.04-x86-64bit.tar
-</span></span><span class="line"><span class="ln">3</span><span class="cl">$ cd mysql-connector-odbc-8.0.15-linux-ubuntu16.04-x86-64bit
-</span></span></code></pre></div><p>Nun kopierst du das Installations-Script - was du vermutlich nicht benötigen wirst - und die Treiber-Dateien in die entsprechenden Ordner:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ cp bin/* /usr/local/bin
-</span></span><span class="line"><span class="ln">2</span><span class="cl">$ cp lib/* /usr/local/lib
-</span></span></code></pre></div><p>Das war es schon fast. Als nächstes musst du die Treiber noch &ldquo;anmelden&rdquo;. Mit diesem Befehl bekommst du heraus, wo sich die Einstellungs-Datei für ODBC befindet.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ odbcinst -j
-</span></span><span class="line"><span class="ln">2</span><span class="cl">unixODBC 2.3.6
-</span></span><span class="line"><span class="ln">3</span><span class="cl">DRIVERS............: /etc/odbcinst.ini
-</span></span><span class="line"><span class="ln">4</span><span class="cl">SYSTEM DATA SOURCES: /etc/odbc.ini
-</span></span><span class="line"><span class="ln">5</span><span class="cl">FILE DATA SOURCES..: /etc/ODBCDataSources
-</span></span><span class="line"><span class="ln">6</span><span class="cl">USER DATA SOURCES..: /root/.odbc.ini
-</span></span><span class="line"><span class="ln">7</span><span class="cl">SQLULEN Size.......: 8
-</span></span><span class="line"><span class="ln">8</span><span class="cl">SQLLEN Size........: 8
-</span></span><span class="line"><span class="ln">9</span><span class="cl">SQLSETPOSIROW Size.: 8
-</span></span></code></pre></div><p>Es kann durchaus sein, dass die Datei für die Treiber (/etc/odbcinst.ini) noch nicht existiert, dann legst du sie einfach an und ergänzt die folgenden Zeilen:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ nano /etc/odbcinst.ini
-</span></span><span class="line"><span class="ln">2</span><span class="cl">[MySQL ODBC 8.0 Unicode Driver]
-</span></span><span class="line"><span class="ln">3</span><span class="cl">Driver=/usr/local/lib/libmyodbc8w.so
-</span></span><span class="line"><span class="ln">4</span><span class="cl">UsageCount = 1
-</span></span><span class="line"><span class="ln">5</span><span class="cl">[MySQL ODBC 8.0 ANSI Treiber]
-</span></span><span class="line"><span class="ln">6</span><span class="cl">Driver=/usr/local/lib/libmyodbc8a.so
-</span></span><span class="line"><span class="ln">7</span><span class="cl">UsageCount = 1
-</span></span></code></pre></div><p>Wie du siehst, steckt dahinter keine Raktentechnologie und in den meisten Fällen dürften diese Grundeinstellungen ausreichen. Du kannst die Datei natürlich noch ausbauen, eine ganze Menge zusätzlicher Parameter festlegen und nicht nur für MySQL nutzen (<a href="https://www.systutorials.com/docs/linux/man/5-odbcinst.ini/">siehe hier</a>).</p>
-<h2 id="die-funktionalität-testen">Die Funktionalität testen</h2>
-<p>Zum Abschluss kannst du folgendermaßen prüfen, ob die Einrichtung funktioniert hat. Wie du siehst, referenzierst du die oben registrierten Treiber:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ isql -v -k &#34;DRIVER={MySQL ODBC 8.0 Unicode Driver};SERVER=192.168.10.99;UID=root;PWD=password&#34;
-</span></span></code></pre></div><p>Sollte der Aufruf mit der folgenden Fehlermeldung quittiert werden, prüfe zunächst, ob die Datei vorhanden ist. Wenn dem so ist, ist es möglich, dass du oben die falschen Architektur oder Version der Treiber ausgewählt hast - auch dann beschwert sich isql, dass die Datei &ldquo;nicht gefunden werden kann&rdquo;:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[01000][unixODBC][Driver Manager]Can&#39;t open lib &#39;/usr/local/lib/libmyodbc8w.so&#39; : file not found
-</span></span><span class="line"><span class="ln">2</span><span class="cl">[ISQL]ERROR: Could not SQLDriverConnect
-</span></span></code></pre></div><p>Ansonsten solltest du auf die Konsole von deinem MySQL-Server gelangen, die in etwa so aussieht - und dann hast du alles richtig gemacht:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">+---------------------------------------+
-</span></span><span class="line"><span class="ln">2</span><span class="cl">| Connected!                            |
-</span></span><span class="line"><span class="ln">3</span><span class="cl">|                                       |
-</span></span><span class="line"><span class="ln">4</span><span class="cl">| sql-statement                         |
-</span></span><span class="line"><span class="ln">5</span><span class="cl">| help [tablename]                      |
-</span></span><span class="line"><span class="ln">6</span><span class="cl">| quit                                  |
-</span></span><span class="line"><span class="ln">7</span><span class="cl">|                                       |
-</span></span><span class="line"><span class="ln">8</span><span class="cl">+---------------------------------------+
-</span></span><span class="line"><span class="ln">9</span><span class="cl">SQL&gt;
-</span></span></code></pre></div>
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> MySQL, ODBC, Linux, Server, Anleitung, Datenbank</p>
-        </div>
-        
-      ]]></content:encoded>
+      <description>Wenn du denkst, du hast alles richtig gemacht, nachdem du einer der halb vollständigen Anleitungen da draußen gefolgt bist, und dann wirst du nach der mühseligen Installation von ein paar ODBC-Treibern doch mit der folgenden Fehlermeldung begrüßt:
+1[ISQL]ERROR: Could not SQLDriverConnect …</description>
       
       
       
@@ -436,51 +140,8 @@ Wenn du schon mal da bist: Der Vollständigkeit halber solltest du auch daran de
       <pubDate>Sat, 16 Mar 2013 00:00:00 +0000</pubDate>
       <author></author>
       <guid>https://nickyreinert.de/2013/2013-03-16-buffalo-linkstation-ls-wxl-mit-minidlna-und-custom-firmware-von-shonk-1-64-mod-1/</guid>
-      <description>1. Schritt - Die CFW (Custom FirmWare) von Shonk installieren. Das geschieht relativ komfortable über eine EXE-Datei: …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Eine technische Anleitung aus dem Jahr 2013 zur Installation des MiniDLNA-Medienservers auf einer Buffalo Linkstation LS-WXL NAS. Der Guide beschreibt die Schritte zur Installation einer Custom Firmware, des IPKG-Paketmanagers und des Kompilierens von MiniDLNA aus dem Quellcode, inklusive Troubleshooting-Tipps für veraltete Abhängigkeiten.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> NAS, MiniDLNA, Custom Firmware, Linux, Home Server, Media Server, Embedded Systems</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
-          
-        </div>
-        
-        
-        <p>1. Schritt - Die CFW (Custom FirmWare) von Shonk installieren. Das geschieht relativ komfortable über eine EXE-Datei: http://forum.buffalo.nas-central.org/viewtopic.php?f=68&amp;t=23603</p>
-<p>Die CFW aktiviert zugleich den Telnet-Server, über den ab sofort die nächsten Schritte durchgeführt werden. Praktischerweise hat OSX (als Linux-Derivat) einen SSL-Telnet-Server eingebaut&hellip; also das MacBook von Windows zurück in OSX booten.</p>
-<p>2. Schritt: Den Paketmanager IPKG installieren - das geschieht nach folgender Anleitung über Telnet: http://buffalo.nas-central.org/wiki/Category:LS-WXL#IPKG</p>
-<p>3. Schritt: Den MiniDLNA-Server installieren und dabei folgende Schritte durchgehen: http://forum.nas-hilfe.de/buffalo-technology-nas-anleitungen/minidlna-ab-version-1-0-22-from-scratch-kompilieren-installieren-t1130.html</p>
-<p>4. Dabei wird es voraussichtlich - bzw. ob der &ldquo;Aktualität&rdquo; der Anleitung mit ziemlicher Sicherheit - zu einem Fehler kommen: GetText ist zu alt. Dann hilft folgendes:</p>
-<p>cd /usr/share/doc/ (Anm.: Diesen Ordner musste ich erst anlegen, ggf. nachholen)</p>
-<p>wget -0 gettext.tgz <a href="http://ftp.gnu.org/pub/gnu/gettext/gettext-0.18.2.tar.gz">http://ftp.gnu.org/pub/gnu/gettext/gettext-0.18.2.tar.gz</a></p>
-<p>tar xvzf gettext.tgz</p>
-<p>danach entsprechend <a href="https://gist.github.com/1647940" title="https://gist.github.com/1647940">dieser</a> Anleitung:</p>
-<p>./configure - das dauert eine kleine Ewigkeit, da kann man schon mal n Kaffee trinken gehen</p>
-<p>make check</p>
-<p>make install</p>
-<p>make clean</p>
-<p>Tipps: Ab einem Punkt der Anleitung lautet es &ldquo;Jetzt das in das Verzeichnis des miniDLNA wechseln und einfach&rdquo;. Wo das liegt? Gute Frage. Ich musste erst suchen und bin unter /usr/sbin/minidlna fündig geworden - von dort aus klappt dann auch der autoconf-Befehl.</p>
-<p>Fertig. Für Live-Transcoding dürfte die WXL mit knapp 600 MHz-Prozessor etwas schwach sein, aber dafür läuft der Medienserver um einiges fixer und sieht dabei auch schöner aus (wenn man über die PS3 browsed), als der mitgelieferte Twonky.</p>
-<p><strong>Mehr dazu:</strong></p>
-<p><a href="https://www.multimediaforum.de/threads/217307439-gettext-01811-ueber-konsole-auf-nas-installieren">linux-forum.de</a></p>
-<p><a href="http://forum.nas-hilfe.de/buffalo-technology-nas-anleitungen/minidlna-ab-version-1-0-22-from-scratch-kompilieren-installieren-t1130-30.html">nas-hilfe.de</a></p>
-
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> NAS, Linux, DLNA, Tutorial, Firmware</p>
-        </div>
-        
-      ]]></content:encoded>
+      <description>1. Schritt - Die CFW (Custom FirmWare) von Shonk installieren. Das geschieht relativ komfortable über eine EXE-Datei: http://forum.buffalo.nas-central.org/viewtopic.php?f=68&amp;t=23603
+Die CFW aktiviert zugleich den Telnet-Server, über den ab sofort die nächsten Schritte durchgeführt werden. …</description>
       
       
       

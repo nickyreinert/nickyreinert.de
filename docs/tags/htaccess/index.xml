@@ -19,63 +19,7 @@
       <pubDate>Sun, 25 Sep 2016 00:00:00 +0000</pubDate>
       <author></author>
       <guid>https://nickyreinert.de/2016/2016-09-25-welche-moeglichkeiten-habe-ich-um-weiterleitungen-anzulegen/</guid>
-      <description>Was sind Weiterleitungen? Du hast von einem alten Shop oder Content Management System auf ein neues System gewechselt, willst eine neue Permalink-Struktur …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Der Artikel erklärt die Notwendigkeit von 301-Weiterleitungen nach Website-Umzügen, um den SEO-Wert zu erhalten. Es werden zwei technische Methoden zur Implementierung vorgestellt: die manuelle Erstellung von Weiterleitungen mittels der PHP &#39;header()&#39;-Funktion und die dynamische Konfiguration über &#39;.htaccess&#39;-Regeln mit &#39;mod_rewrite&#39;.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> SEO, Webserver-Konfiguration, Apache, .htaccess, PHP, Website-Migration</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-          
-        </div>
-        
-        
-        <h2 id="was-sind-weiterleitungen">Was sind Weiterleitungen?</h2>
-<p>Du hast von einem alten Shop oder Content Management System auf ein neues System gewechselt, willst eine neue Permalink-Struktur einführen oder hast einfach nur Inhalte verschoben? Das Problem in solchen Szenarien ist, dass die Verzeichnisstruktur nicht exakt übernommen werden kann. Doch keine Panik. Dass sich Inhalte und Verlinkungen im Internet ändern, gehört zum Konzept des WWW dazu. Wichtig ist, dass man diese Dynamik entsprechend berücksichtigt und dafür sorgt, dass eingehender Traffic auf die eigene Seite nicht auf die nicht-vorhandene Seiten stößt. Mit sogenannten Weiterleitungen.</p>
-<h2 id="suchmaschinen-index-und-backlinks">Suchmaschinen-Index und Backlinks</h2>
-<p>Zwei Arten von eingehenden Traffic kann man grundsätzlich unterscheiden: Erstens gibt es den Traffic der von einer Suchmaschine (<strong>organischer Traffic</strong>) kommt. Die Suchmaschine nutzt dafür einen Index, der sich aber nach bestimmten Regeln aktualisiert. Daneben gibt es Traffic über <strong>Backlinks</strong> von externen Seiten, die keine Suchmaschinen sind. Diese Backlinks sind natürlich auch veränderbar, aber, wenn man es so nennen will, redaktionell gepflegt. Streng genommen könnte man natürlich noch anderen Traffic unterscheiden, wie z.B. den aus der Suchmaschinen-Werbung (SEA). Doch da dieser Teil der eigenen Online-Marketing-Kampagne ist, versteht es sich von selber, dass die Links dort ordentlich gepflegt werden müssen.</p>
-<h2 id="wann-benötige-ich-eine-weiterleitung">Wann benötige ich eine Weiterleitung?</h2>
-<p>Die Suchmaschinen lassen sich eigentlich relativ unkompliziert mit einer aktuellen Sitemap befriedigen, die ja als aktuelles Verzeichnis der eigenen Seite. Google bietet in der Search Console sogar an, die Seite <a href="https://www.google.com/webmasters/tools/home?hl=de">neu zu indizieren</a>.</p>
-<p>Doch was ist mit den andern Suchmaschinen und vor allem all den wertvollen Backlinks, die nicht mehr gültig sind? Nicht jeder eingehend Link lässt sich so einfach aktualisieren und führt im ungünstigen Fall zum HTTP-Fehlercode 404 &ldquo;not found&rdquo;. Dieser sollte aus SEO-Sicht unbedingt vermieden werden. Mit eben jenen erwähnten Weiterleitungen.</p>
-<p>Um diese zu implementieren, gibt es freilich mehrere Möglichkeiten. Zunächst sollte man prüfen, welche Backlinks auf die eigene Seite überhaupt existieren. Je nachdem, wie viele Backlinks es gibt und wie die URL-Struktur der eigenen Seite beschaffen ist, bieten sich andere Möglichkeiten an. Man unterscheidet übrigens zwischen der temporären (HTTP-Statuscode 302) und der permanenten Weiterleitung(HTTP-Statuscode 302) . Die temporäre Weiterleitung kommt für unseren Fall nicht unbedingt infrage, da wir ja einen Umzug vor uns haben.</p>
-<h2 id="weiterleitung-per-header-in-einer-php-datei">Weiterleitung per header() in einer PHP-Datei</h2>
-<p>Eine ziemlich pragmatische und wenngleich effektive Methode ist es, die alte Ordner-Struktur per Hand nachzubilden und entsprechend PHP-Dateien anzulegen, die jeweils eine 301-Weiterleitung auf die neue URL enthalten (&quot;<a href="http://php.net/manual/de/function.header.php">header</a>&quot;). Das kann man machen, wird bei größeren System aber sehr schnell sehr aufwendig. Die PHP-Datei sollte unter dem Namen &ldquo;index.php&rdquo; in den jeweiligen Ordnern abgelegt werden und folgenden Code enthalten. Es folgt ein Beispiel für eine PHP-Datei befindet, die unter <em><a href="https://www.deine-seite.de/altes-ziel/index.php">https://www.deine-seite.de/altes-ziel/index.php</a></em> abgelegt ist. Diese enthält folgenden Code:</p>
-<?php
-   header("Location:https://www.deine-seite.de/neues-ziel/", true, 301); 
-   exit;
-
-Der erste Parameter verweist auf die neue Seite. Der zweite Parameter (_true_) legt lediglich fest, ob ein vorheriger Header ersetzt werden soll. Der letzte Parameter schließlich ist der HTTP-Statuscode, der übermittelt werden soll - also 301. Das exit am Schluss sorgt dafür, dass das PHP-Script am Ende auch wirklich abgeschlossen wird und dient hier nur als doppelter Boden. Ein schließendes ?> [wird nicht benötigt](https://developer.sugarcrm.com/2011/05/06/why-we-dont-using-closing-php-tags/).
-<p>Das ist nicht nur mühsam, sondern auch nicht dynamisch. Die nächste Variante nutzt eine Weiterleitung mit .htaccess.</p>
-<h2 id="weiterleitung-per-htaccess">Weiterleitung per .htaccess</h2>
-<p>In einer .htaccess-Datei gibt es erstmal zwei Möglichkeiten, eine Weiterleitung einzurichten. Nutzt man einen regulären Ausdruck, wird entsprechend jeder passende eingehende Traffic abgefangen und an die gewünschte Hauptseite weitergeleitet.</p>
-<p>Eine andere, etwas ausgefeiltere Möglichkeit ist es, die  alten Unterverzeichnisse bei Abfrage durch den Browser abzufangen und deren Namen als Suchparameter an das neue System weiterzuleiten.</p>
-<p>Hier zum Beispiel der Unterordner &ldquo;foobar&rdquo;, der als Suchparameter genutzt werden soll:</p>
-<p><a href="https://www.deine-seite.de/">www.deine-seite.de/</a><strong>foobar</strong></p>
-<p>Der Name soll nun als Suchparameter folgendermaßen genutzt werden:</p>
-<p><a href="https://www.deine-seite.de/index.php?search=">www.deine-seite.de/index.php?search=</a><strong>foobar</strong></p>
-<p>So sieht die dafür notwendige .htaccess-Datei aus:</p>
-<p>RewriteEngine On</p>
-<p>RewriteRule ^(/?)([a-zA-Z0-9]+)?([\.html]+)?/?$ /index.php?search=$2 [R=301,NC]</p>
-<p>RewriteRule ^(/?)([a-zA-Z0-9]+)?/([a-zA-Z0-9]+)?([\.html]+)?/?$ /index.php?search=$2\ $3 [L,R=301,NC]</p>
-<p>Die erste Regel fängt Aufrufe der ersten Pfad-Ebene ab. Die zweite Regel kann auch die Namen der darunter liegenden Pfade abgreifen und daraus einen kombinierten Suchbegriff erzeugen. Das ist z.B. hilfreich, wenn man die Pfade eines Shop-Systems nutzen will um daraus im neuen Shop die Suche zu erzeugen.</p>
-<p><a href="https://www.shop.de/foobar/hello">www.shop.de/foobar/hello</a>_world.html -&gt; <a href="https://www.shop.de/index.php?search=foobar%20hello">www.shop.de/index.php?search=foobar%20hello</a>_world</p>
-<p>Die .htaccess-Datei muss sich im Unterordner /foobar befinden, der auch physisch vorhanden sein muss. Man könnte die Weiterleitung auch im Root-Verzeichnis anlegen und bräuchte dann den Unterordner nicht. So vermeidet man aber unnötigen Overhead, da die Regel nicht bei den regulären Aufrufen aktiviert wird.</p>
-
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> htaccess, redir, weiterleitung</p>
-        </div>
-        
-      ]]></content:encoded>
+      <description>Was sind Weiterleitungen? Du hast von einem alten Shop oder Content Management System auf ein neues System gewechselt, willst eine neue Permalink-Struktur einführen oder hast einfach nur Inhalte verschoben? Das Problem in solchen Szenarien ist, dass die Verzeichnisstruktur nicht exakt übernommen …</description>
       
       
       

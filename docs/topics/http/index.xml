@@ -19,44 +19,7 @@
       <pubDate>Thu, 04 Jun 2020 00:00:00 +0000</pubDate>
       <author></author>
       <guid>https://nickyreinert.de/2020/2020-06-04-css-ueber-den-http-header-ausspielen/</guid>
-      <description>Jeder kennt das Problem: Man hat stundenlang an einem Stylesheet auf dem Staging-Server rumgebastelt, will es nun auf den Live-Server kopieren und die Änderung …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Ein kurzer technischer Tipp für Web-Entwickler, der zeigt, wie man eine CSS-Datei über den HTTP &#39;Link&#39;-Header lädt. Diese Methode kann genutzt werden, um eine Staging-Umgebung visuell von einer Live-Umgebung zu unterscheiden und so Verwechslungen zu vermeiden. Der Artikel enthält Konfigurationsbeispiele für Nginx und Apache.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> CSS, HTTP, Web-Development, Server-Konfiguration, Nginx, Apache</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-          
-        </div>
-        
-        
-        <p>Jeder kennt das Problem: Man hat stundenlang an einem Stylesheet auf dem Staging-Server rumgebastelt, will es nun auf den Live-Server kopieren und die Änderung ist nicht sichtbar. Die Fehlersuche beginnt. Man prüft den Cache. Vom Browser. Vom Server. Ist man überhaupt auf dem richtigen Server? Hat der Upload geklappt? Und so weiter. Eric Meyer hat das ganze Dilemma 2009 treffend beschrieben und auch eine Lösung mitgeliefert, von der ich noch nicht gehört habe:</p>
-<p>Nutze doch einfach die HTTP-Header um deine Staging- und Live-Umgebung eindeutig voneinander zu unterscheiden. Der Link-Parameter im HTTP-Header nämlich auch die Angabe von Style-Sheet-Dateien. Und das sieht dann so aus:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Header add Link &#34;&lt;/staging.css&gt;;rel=stylesheet;type=text/css;media=all&#34;
-</span></span></code></pre></div><p>In nginx kann man das folgendermaßen im Server-Block implementieren:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">add_header Link &#34;&lt;/wp-content/themes/nickyreinert/style.header.css&gt;;rel=stylesheet;type=text/css;media=all&#34;;
-</span></span></code></pre></div><p>Wer Apache nutzt, setzt den &ldquo;CSS-Header&rdquo; folgendermaßen:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Header add Link &#34;&lt;/wp-content/themes/nickyreinert/style.header.css&gt;;rel=stylesheet;type=text/css;media=all&#34;
-</span></span></code></pre></div><p>Natürlich habe ich die Spielerei gleich bei mir eingebaut:</p>
-<p><img src="/2020/2020-06-04-css-ueber-den-http-header-ausspielen/images/grafik-700x382.png" alt=""></p>
-<p>CSS-Datei im HTTP-Header ausgeliefert</p>
-<p>Damit lässt sich grundsätzlich auch das Stylesheet deines Wordpress-Themes ausliefern: Da WordPress aber die style.css nutzt, um Theme-Informationen zu verarbeiten, musst du auf dieses kleine Feature dann verzichten. Außerdem wird CSS im Link-Header nicht von jedem Browser unterstützt.</p>
-
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> css, http</p>
-        </div>
-        
-      ]]></content:encoded>
+      <description>Jeder kennt das Problem: Man hat stundenlang an einem Stylesheet auf dem Staging-Server rumgebastelt, will es nun auf den Live-Server kopieren und die Änderung ist nicht sichtbar. Die Fehlersuche beginnt. Man prüft den Cache. Vom Browser. Vom Server. Ist man überhaupt auf dem richtigen Server? Hat …</description>
       
       
       
@@ -85,108 +48,7 @@
       <pubDate>Fri, 11 Oct 2019 00:00:00 +0000</pubDate>
       <author></author>
       <guid>https://nickyreinert.de/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/</guid>
-      <description>Mein Ziel ist es, nginx und Apache als Webserver auf einem System laufen zu lassen. Alle HTTP/HTTPS-Anfragen werden von nginx beantwortet. Anfragen an den Port …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Dieser Artikel beschreibt die parallele Konfiguration von Apache und Nginx auf einem System, wobei Nginx als Frontend und Apache auf alternativen Ports dient. Die Anleitung umfasst die Firewall-Einrichtung, die Apache-Virtual-Host-Konfiguration und die Durchführung von Performance-Tests mit ApacheBench, um die Leistungsfähigkeit beider Webserver zu vergleichen.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> Apache, Nginx, Webserver, Performance Testing, ApacheBench, Server Konfiguration, Linux, Benchmarking, HTTP/HTTPS</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
-          
-        </div>
-        
-        
-        <p>Mein Ziel ist es, <strong>nginx</strong> und <strong>Apache</strong> als Webserver auf einem System laufen zu lassen. Alle HTTP/HTTPS-Anfragen werden von nginx beantwortet. Anfragen an den Port 8080 (für HTTP) oder 4443 (HTTPS) werden von Apache beantwortet. So kann ich nginx und Apache in einem <strong>Benchmark</strong> vergleichen, indem ich einfach nur die Ports ändere. Das Setup ist aber auch für andere Zwecke sinnvoll, wenn du z.B. die Burst-Einstellungen von nginx in Aktion sehen oder bestimmte Web-Dienste strikt mit Apache bedienen willst. Los gehts&hellip;</p>
-<p>Ich gehe mal davon aus, dass du nginx und Apache fertig eingerichtet hast. Nginx läuft idealerweise schon (<a href="https://www.nickyreinert.de/mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-1-3/">siehe meine 3-Teilige Anleitung</a>) Dann musst du zunächst mal dafür sorgen, dass die Firewall (z.B. iptables) die alternativen Ports 8080 und 4443 auch durchlässt. Das funktioniert folgendermaßen:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">sudo iptables -A INPUT -p tcp -m multiport --dports 8080,4443 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-</span></span></code></pre></div><p>Wenn du prüfen willst, ob die Änderung übernommen wurde, machst du das mit</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">iptables -L --line-numbers
-</span></span></code></pre></div><p>Den line-numbers-Parameter kannst du dir schenken - willst du aber einen Eintrag in iptables löschen, können die Zeilennummern sehr hilfreich sein, siehe:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">iptables -D INPUT 3
-</span></span></code></pre></div><p>Die 3 verweist auf die Zeilennummer, INPUT auf die Chain. Aber das nur um Rande. Weiter gehts mit unserem Server-Setup.</p>
-<p>Als nächstes teilst du Apache mit, dass ab sofort auf den alternativen Ports nach Anfragen gelauscht wird. Dazu passt du die Porteinstellung in der Datei /etc/apache2/ports.conf entsprechend an. Die if-Kondition macht die Sache etwas sauber, muss aber nicht sein:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Listen 8080
-</span></span><span class="line"><span class="ln">2</span><span class="cl">&lt;IfModule mod_ssl.c&gt;
-</span></span><span class="line"><span class="ln">3</span><span class="cl">    Listen 4443
-</span></span><span class="line"><span class="ln">4</span><span class="cl">&lt;/IfModule&gt;
-</span></span></code></pre></div><p>Weiter geht es mit der Einstellung des virtuellen Hosts für Apache. Dazu legst du eine Datei mit der Endung &ldquo;conf&rdquo; im Ordner <strong>/etc/apache2/sites-available/</strong> an und füllst sie folgendermaßen:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="o">&lt;</span><span class="n">VirtualHost</span> <span class="o">*</span><span class="p">:</span><span class="mi">8080</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="ln"> 2</span><span class="cl">        <span class="n">ServerName</span> <span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
-</span></span><span class="line"><span class="ln"> 3</span><span class="cl">        <span class="n">ServerAlias</span> <span class="n">example</span><span class="o">.</span><span class="n">com</span>
-</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        <span class="n">Redirect</span> <span class="n">permanent</span> <span class="o">/</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">4443</span><span class="o">/</span>
-</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
-</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        <span class="n">DocumentRoot</span> <span class="s2">&#34;/var/nginx/apache2_example_com/htdocs&#34;</span>
-</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        <span class="n">DirectoryIndex</span> <span class="n">index</span><span class="o">.</span><span class="n">html</span> <span class="n">index</span><span class="o">.</span><span class="n">php</span>
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="o">&lt;/</span><span class="n">VirtualHost</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="ln">10</span><span class="cl">
-</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="o">&lt;</span><span class="n">VirtualHost</span> <span class="o">*</span><span class="p">:</span><span class="mi">4443</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="ln">12</span><span class="cl">        <span class="n">ServerName</span> <span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
-</span></span><span class="line"><span class="ln">13</span><span class="cl">        <span class="n">ServerAlias</span> <span class="n">example</span><span class="o">.</span><span class="n">com</span>
-</span></span><span class="line"><span class="ln">14</span><span class="cl">
-</span></span><span class="line"><span class="ln">15</span><span class="cl">        <span class="n">ErrorLog</span> <span class="s2">&#34;/var/log/apache2/example.com.error.log&#34;</span>
-</span></span><span class="line"><span class="ln">16</span><span class="cl">        <span class="n">CustomLog</span> <span class="s2">&#34;/var/log/apache2/example.com.log&#34;</span> <span class="n">common</span>
-</span></span><span class="line"><span class="ln">17</span><span class="cl">
-</span></span><span class="line"><span class="ln">18</span><span class="cl">        <span class="n">LogLevel</span> <span class="n">warn</span>
-</span></span><span class="line"><span class="ln">19</span><span class="cl">
-</span></span><span class="line"><span class="ln">20</span><span class="cl">        <span class="n">DocumentRoot</span> <span class="s2">&#34;/var/nginx/apache2_example_com/htdocs&#34;</span>
-</span></span><span class="line"><span class="ln">21</span><span class="cl">        <span class="n">DirectoryIndex</span> <span class="n">index</span><span class="o">.</span><span class="n">html</span> <span class="n">index</span><span class="o">.</span><span class="n">php</span>
-</span></span><span class="line"><span class="ln">22</span><span class="cl">
-</span></span><span class="line"><span class="ln">23</span><span class="cl">        <span class="o">&lt;</span><span class="ne">Directory</span> <span class="s2">&#34;/var/nginx/apache2_example_com/htdocs&#34;</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="ln">24</span><span class="cl">                <span class="n">Options</span> <span class="o">-</span><span class="n">Indexes</span> <span class="o">+</span><span class="n">FollowSymLinks</span> <span class="o">+</span><span class="n">MultiViews</span>
-</span></span><span class="line"><span class="ln">25</span><span class="cl">                <span class="n">DirectoryIndex</span> <span class="n">index</span><span class="o">.</span><span class="n">php</span>
-</span></span><span class="line"><span class="ln">26</span><span class="cl">                <span class="n">AllowOverride</span> <span class="n">All</span>
-</span></span><span class="line"><span class="ln">27</span><span class="cl">                <span class="n">Require</span> <span class="n">all</span> <span class="n">granted</span>
-</span></span><span class="line"><span class="ln">28</span><span class="cl">        <span class="o">&lt;/</span><span class="ne">Directory</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="ln">29</span><span class="cl">
-</span></span><span class="line"><span class="ln">30</span><span class="cl">        <span class="n">RewriteEngine</span> <span class="n">on</span>
-</span></span><span class="line"><span class="ln">31</span><span class="cl">        <span class="n">Include</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">letsencrypt</span><span class="o">/</span><span class="n">options</span><span class="o">-</span><span class="n">ssl</span><span class="o">-</span><span class="n">apache</span><span class="o">.</span><span class="n">conf</span>
-</span></span><span class="line"><span class="ln">32</span><span class="cl">
-</span></span><span class="line"><span class="ln">33</span><span class="cl">        <span class="n">SSLCertificateFile</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">letsencrypt</span><span class="o">/</span><span class="n">live</span><span class="o">/</span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">fullchain</span><span class="o">.</span><span class="n">pem</span>
-</span></span><span class="line"><span class="ln">34</span><span class="cl">        <span class="n">SSLCertificateKeyFile</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">letsencrypt</span><span class="o">/</span><span class="n">live</span><span class="o">/</span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">privkey</span><span class="o">.</span><span class="n">pem</span>
-</span></span><span class="line"><span class="ln">35</span><span class="cl">
-</span></span><span class="line"><span class="ln">36</span><span class="cl"><span class="o">&lt;/</span><span class="n">VirtualHost</span><span class="o">&gt;</span>
-</span></span></code></pre></div><p>Ich will die Einstellungen nur kurz überspringen, da sie sich eigentlich selber erklären. Der erste Block greift die HTTP-Anfragen ab und leitet diese sofort weiter (<em>Redirect permanent</em>). Ich definiere hier zwar auch DocumentRoot und Index, aber das nur der Vollständigkeit halber. Der zweite Block kümmert sich um die HTTPS-Anfragen. Wie du siehst, passiert hier kein großer Zauber. Ich nutze PHP nur als Modul, setze ein paar Logging-Eigenschaften fest und übermittle die SSL-Zertifikate. <em>Easy peasy. Lemon squeezy.</em><br>
-Wie du siehst, nutze ich für Apache außerdem ein separates Verzeichnis. Achte bei <strong>Wordpress</strong> auch darauf, die URLs entsprechend anzupassen, sonst wird Wordpress die Anfragen immer wieder zu nginx weiteschicken:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">define(&#39;WP_HOME&#39;,&#39;https://example.com:4443&#39;);
-</span></span><span class="line"><span class="ln">2</span><span class="cl">define(&#39;WP_SITEURL&#39;,&#39;https://example.com:4443&#39;);
-</span></span></code></pre></div><p>Als nächstes gönnst du dem Apache-Server einen Neustart:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">sudo service apache2 restart
-</span></span></code></pre></div><p>Und das war es auch schon. Jetzt kannst du mit ApacheBench ein paar Requests abfeuern. Denk dran, dass du auf Windows ab für HTTP-Requests und abs für HTTPS-Requests nutzen musst. Mit diesem Aufruf teste ich erstmal die Performance von meinem Apache-Setup:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">abs -n 1000 -c 100 https://www.example.com:4443/
-</span></span></code></pre></div><p>Der Parameter <em>n</em> steht für die Anzahl von Anfragen insgesamt. Mit <em>c</em> kannst du festlegen, wieviele Anfragen du gleichzeitig abfeuern willst (<em>c</em> muss demnach kleiner sein als <em>n</em>). Der Forward-Slash am Ende ist wichtig, andernfalls erkennt <strong>abs</strong> die URL nicht an. Das gleiche mache ich ohne Port-Angabe um den nginx-Server anzusprechen. Und das sind die Ergebnisse:</p>
-<h3 id="auswertung-der-ergebnisse">Auswertung der Ergebnisse</h3>
-<p><img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik.png" alt=""></p>
-<p>Abbildung 1: Vergleich der Antwortzeiten von Apache und nginx</p>
-<p>Die Abbildung zeigt, wie hoch der Anteil der Anfragen ist, der nach einer bestimmten Zeit (in Millisekunden) beantwortet wurde. Nginx ist ganz klar Gewinner. Alle Anfrgaen wurden inerhalb von 4 Sekunden bearbeitet, die Hälfte der Anfragen soger innerhalb knapp 1 Sekunde. Bei Apache sieht das ungleich schlimmer aus. Allerdings wurden bei nginx 68 Anfragen abgewiesen, bei Apache 0 - eine Folge meiner Warteschlangen-Einstellung.<br>
-Die folgenden Diagramme zeigen noch mal die Zusammensetzung der Anfrage:</p>
-<ul>
-<li>Connect - Zeit bis die Verbindung hergestellt wird</li>
-<li>Waiting - Zeit bis zum ersten Datenpaket (Time-To-First-Byte, TTFB)</li>
-<li>Processing - Zeit, bis die vollständige Antwort vom Server eingangen ist, seit die Verbindung geöffnet wurd</li>
-<li>Total - Gesamte Wartezeit</li>
-</ul>
-<p><img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik-1.png" alt=""></p>
-<p>Abbildung 2: Messergebnisse für die Anfragen an Apache</p>
-<p><img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik-2.png" alt=""></p>
-<p>Abbildung 3: Messergebnisse für die Anfragen an nginx</p>
-<p>Die reine Verbindungszeit ist bei beiden Servern relativ niedrig, dieser Wert gibt aber auch eher Rückschlüsse auf die Qualität des Netzwerks. Die TTFB ist bei Apache relativ hoch., es dauert also eine ganze Weile, bis Apache die Anfrage verarbeitet und entsprechend die ersten Daten sendet. Das wird mit ziemlicher Sicherheit am grundsätzlich nicht sehr performanten php-mod liegen. Insgesamt ist das Ergebnis natürlich wenig überraschend. Mein Ziel war ja, mit nginx und php-fpm ein schnelles Setup zu schaffen. Was hiermit wohl gelungen sein dürfte (Anmerkungen zur Repräsentativität werden gerne entgegengenommen). Fairerweise sei aber noch angemerkt, dass ich Apache in der Standard-Einstellung verwende und wirklich keine Maßnahmen unternommen habe, um die Geschwindigkeit zu optimieren.</p>
-
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> Apache, Nginx, Webserver, Performance, Benchmark, Linux</p>
-        </div>
-        
-      ]]></content:encoded>
+      <description>Mein Ziel ist es, nginx und Apache als Webserver auf einem System laufen zu lassen. Alle HTTP/HTTPS-Anfragen werden von nginx beantwortet. Anfragen an den Port 8080 (für HTTP) oder 4443 (HTTPS) werden von Apache beantwortet. So kann ich nginx und Apache in einem Benchmark vergleichen, indem ich …</description>
       
       
       
@@ -215,47 +77,7 @@ Die folgenden Diagramme zeigen noch mal die Zusammensetzung der Anfrage:</p>
       <pubDate>Wed, 28 Nov 2018 00:00:00 +0000</pubDate>
       <author></author>
       <guid>https://nickyreinert.de/2018/2018-11-28-zugriff-nicht-loggen-wenn-ein-bestimmter-http-request-header-gesetzt-ist/</guid>
-      <description>OK, ich tu mich etwas schwer, das folgende in einen Titel zu gießen, der nicht länger ist, als die eigentlich Anleitung. Wenn du an deiner Webseite arbeitest, …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Dieses Tutorial beschreibt eine Methode, um eigene Zugriffe bei der Web-Entwicklung aus den Nginx-Logdateien auszuschließen. Die Lösung kombiniert ein Browser-Plugin zur Modifikation von HTTP-Headern mit einer serverseitigen Nginx-Konfiguration, die das Logging auf Basis eines benutzerdefinierten Headers bedingt deaktiviert.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> Nginx, Webserver-Konfiguration, Logging, Web-Development, HTTP</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-          
-        </div>
-        
-        
-        <p>OK, ich tu mich etwas schwer, das folgende in einen Titel zu gießen, der nicht länger ist, als die eigentlich Anleitung. Wenn du an deiner Webseite arbeitest, möchtest du vielleicht vermeiden, dass deine Aufrufe mit deinem Browser im Log-File von <strong>nginx</strong> landen. Dafür gibt es eine Menge Möglichkeiten, ich mag die folgende aber besonders.</p>
-<p>Zuerst benötigst du dafür ein Plugin, um den <strong>HTTP-Request-Header</strong> zu modifizieren. Ich nutze dafür <a href="https://addons.mozilla.org/en-US/firefox/addon/modheader-firefox/">ModHeader für Firefox,</a> für Chrome gibt es ähnliche Plugins. Dort legst du einen benutzerdefinierten Header an, dem du z.B. &ldquo;true&rdquo; als Wert zuweist. Bei diesem Plugin kannst du außerdem festlegen, dass der Header nur auf einer bestimmten Seite hinzugefügt wird.</p>
-<p>[caption id=&ldquo;attachment_2395&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/zugriff-nicht-loggen-wenn-ein-bestimmter-request-header-gesetzt-ist/modHeader.png"><img src="/2018/2018-11-28-zugriff-nicht-loggen-wenn-ein-bestimmter-http-request-header-gesetzt-ist/images/modHeader-300x163.png" alt="ModHeader Firefox Plugin"></a> ModHeader Firefox Plugin[/caption]</p>
-<p>Als nächstes definierst du in deiner nginx-Config eine Regel, die diesen Header ausliest:</p>
-<p>map $http_ignoreMe $log_this {</p>
-<pre><code>~true 0;
-
-default 1;
-</code></pre>
-<p>}</p>
-<p>Mit $http_ignoreMe sprichst du den zuvor angelegten Header an, $log_this erzeugt eine Variable, auf die du später zugreifen kannst. Enthält der Header &ldquo;true&rdquo; (~true), wird die Variable $log_this auf 0 gesetzt, ansonsten bleibt sie 1. Als nächstes öffnest du den Server-Bereich deiner Webseite und suchst nach deiner Logging-Einstellung (alternativ kannst du natürlich auch die globale Logging-Einstellung anpassen:</p>
-<pre><code>access\_log /var/logs/access.log main if=$log\_this;
-</code></pre>
-<p>Der zweite Parameter ist das Log-File - natürlich. Der dritte Parameter verweist auf mein benutzerdefiniertes Log-Format, das muss hier nicht unbedingt stehen. Und am Ende schließlich kommt die Bedingung, dass nämlich nur geloggt wird, wenn $log_this wahr bzw. 1 ist. Jetzt startest du nginx neu&hellip; et voilá - Anfragen an deine Seite von deinem Browser aus werden ignoriert.</p>
-
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> Nginx, Logging, Tutorial, Web-Dev</p>
-        </div>
-        
-      ]]></content:encoded>
+      <description>OK, ich tu mich etwas schwer, das folgende in einen Titel zu gießen, der nicht länger ist, als die eigentlich Anleitung. Wenn du an deiner Webseite arbeitest, möchtest du vielleicht vermeiden, dass deine Aufrufe mit deinem Browser im Log-File von nginx landen. Dafür gibt es eine Menge Möglichkeiten, …</description>
       
       
       
@@ -285,45 +107,7 @@ default 1;
       <author></author>
       <guid>https://nickyreinert.de/2018/2018-11-13-was-ist-http-3-bzw-http-over-quic-oder-kurz-quic/</guid>
       <description>UPDATE: Eine ausführliche Version dieses Artikels erschien im August 2019 im Entwickler-Magazin.
-Die meisten wissen noch nicht einmal, was HTTP/2 eigentlich …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Eine Einführung in das Internetprotokoll HTTP/3 und die zugrundeliegende QUIC-Technologie. Der Artikel erklärt die Entstehungsgeschichte von QUIC bei Google, ordnet es mithilfe des OSI-Schichtenmodells als Transportprotokoll ein und beschreibt, wie es als Basis für den nächsten HTTP-Standard dient, um schnellere und sicherere Web-Verbindungen zu ermöglichen.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> Internet-Protokolle, HTTP/3, QUIC, Netzwerktechnik, Web-Performance</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-          
-        </div>
-        
-        
-        <p><strong>UPDATE</strong>: Eine ausführliche Version dieses Artikels erschien im August 2019 <a href="https://entwickler.de/online/web/http3-quic-einfuehrung-579902482.html">im Entwickler-Magazin</a>.</p>
-<p>Die meisten wissen noch nicht einmal, was <strong>HTTP/2</strong> eigentlich ist, geschweige denn, dass es überall eingesetzt wird, da bahnt sich schon der Nachfolger an, genannt <strong>HTTP/3</strong>. Vor ein paar Jahren hat Google sich mit der Optimierung der Kommunikation im Internet beschäftigen. Früher ging daraus <strong>SPDY</strong> hervor, <a href="https://en.wikipedia.org/wiki/HTTP/2">aus dem schließlich HTTP/2 hervorging.</a> Das nächste Entwicklungs-Projekt aus dem Google-Labor hört nun auf den Namen <a href="https://www.golem.de/news/internet-protokoll-quic-soll-der-neue-kick-fuer-sicheres-surfen-werden-1611-123738.html">QUIC</a> - was ausgesprochen für <a href="https://de.wikipedia.org/wiki/Quick_UDP_Internet_Connections">Quick UDP Internet Connections</a> steht.</p>
-<h2 id="das-schichten-modell">Das Schichten-Modell</h2>
-<p>Bevor man das ganze verstehen kann, möchte ich ganz grob noch mal auf eine wichtige Grundlage eingehen, dem <a href="https://de.wikipedia.org/wiki/OSI-Modell">OSI-Schichten-Modell</a>. Das klingt kompliziert, ist es auch. Es reicht allerdings völlig aus, wenn man das Prinzip dahinter versteht: Die Webseite, die dir dein Browser hier anzeigt, kommt aus dem Netzwerk-Kabel in deinem Laptop (oder über dein WLAN&hellip;). Das sind allerdings nur ein paar elektronische Signale, die dein Browser so sicher nicht verstehen kann. Dieses ziemlich einfache elektronische Signal muss deshalb erst auf verschiedenen Stufen bzw. Schichten verarbeitet werden, bis daraus das berühmte HTML extrahiert wird, mit dem auch dein Browser arbeiten kann.</p>
-<p>Das OSI-Schichten-Modell besteht aus 7 dieser Schichten. Die ersten 6 Schichten dürften dich nicht weiter interessieren, die ursprünglich elektronischen Daten werden hier nach immer weiter &ldquo;ausgepackt&rdquo;. Dabei werden immer mehr Informationen und Daten extrahiert und an die darüber liegende Schicht weitergegeben. Jede Schicht erfüllt so eine spezielle Aufgabe, angefangen bei der eigentlichen physikalischen Übertragung, über die Qualitätssicherung bis hin zur Darstellung in einer Anwendung, wie dem Browser.</p>
-<p>Genau das passiert in der 7. Schicht, über die der HTML-Code für deinen Browser zur Verfügung gestellt wird. Eine dieser Schichten nun, nämlich die 4., ist für den Transport zuständig. Dort wird u.a. das schon ziemlich in die Jahre gekommene TCP - Transmission Control Protokoll - eingesetzt. Eine Alternative dazu ist UDP, das etwas schneller aber auch ungesichert funktioniert. Soviel zu den langweiligen und verzwickten technischen Einzelheiten.</p>
-<h2 id="quic">QUIC</h2>
-<p>Google hat nun auf Basis von UDP ein eigenes Protokoll für diese Schicht entwickelt: QUIC. QUIC kombiniert, ganz stark reduziert, die Vorteile von TLS, HTTP/2, TCP und UDP und bietet so z.B. schnelle, verschlüsselte Verbindungen an. Google nutzt QUIC bereits <a href="https://www.golem.de/news/google-auf-spdy-folgt-quic-1306-100077.html">seit 2013</a> auf den eigenen Servern, <a href="https://www.heise.de/newsticker/meldung/Google-will-neues-Netzwerk-Protokoll-fuers-Web-2614437.html">seit Version 29</a> versteht auch der hauseigene Browser Chrome QUIC. Sogar Opera soll QUIC seit Version 16 unterstützen. Die Entwicklung steckt also lange nicht mehr in den Kinderschuhen.</p>
-<h2 id="http-over-quic">HTTP over QUIC</h2>
-<p>Mit HTTP hat das ganze freilich noch nicht viel zu tun, denn das liegt ja eine Schicht weiter oben. Die <strong>Internet Engineering Task Force</strong> hat sich aus diesem Grund in zwei Arbeitsgruppen mit QUIC beschäftigt. Daraus entstand einerseits eine standardisierte Fassung von QUIC, die inoffiziell den namen <strong>iQUIC</strong> trägt, als Abgrenzung zur inoffiziellen Bezeichnung <strong>gQUIC</strong> für Googles Original-Protokoll.</p>
-<p>Und außerdem arbeitet man am neuesten HTTP-Standard, HTTP over QUIC, bzw. HTTP/QUIC oder ganz offiziell: HTTP/3. Diese Entkopplung ermöglicht jetzt, dass neben HTTP auch andere Protokolle der oberen Anwendungsschicht, wie z.B. E-Mail, QUIC nutzen können.</p>
-<p><a href="https://blog.cloudflare.com/the-road-to-quic/">Laut Cloudfare</a> soll noch dieses Jahr ein finaler offzieller Standard zu QUIC verabschiedet werden. Da aber wie gesagt HTTP/2 eher noch ein Exot zu sein scheint, wird es vermutlich noch eine Weile dauern, bis HTTP/3 entsprechend weit verbreitet ist.</p>
-
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> HTTP3, QUIC, Netzwerk, Protokoll</p>
-        </div>
-        
-      ]]></content:encoded>
+Die meisten wissen noch nicht einmal, was HTTP/2 eigentlich ist, geschweige denn, dass es überall eingesetzt wird, da bahnt sich schon der Nachfolger an, genannt HTTP/3. Vor ein paar Jahren hat Google …</description>
       
       
       

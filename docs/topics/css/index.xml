@@ -19,44 +19,7 @@
       <pubDate>Thu, 04 Jun 2020 00:00:00 +0000</pubDate>
       <author></author>
       <guid>https://nickyreinert.de/2020/2020-06-04-css-ueber-den-http-header-ausspielen/</guid>
-      <description>Jeder kennt das Problem: Man hat stundenlang an einem Stylesheet auf dem Staging-Server rumgebastelt, will es nun auf den Live-Server kopieren und die Änderung …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Ein kurzer technischer Tipp für Web-Entwickler, der zeigt, wie man eine CSS-Datei über den HTTP &#39;Link&#39;-Header lädt. Diese Methode kann genutzt werden, um eine Staging-Umgebung visuell von einer Live-Umgebung zu unterscheiden und so Verwechslungen zu vermeiden. Der Artikel enthält Konfigurationsbeispiele für Nginx und Apache.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> CSS, HTTP, Web-Development, Server-Konfiguration, Nginx, Apache</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-          
-        </div>
-        
-        
-        <p>Jeder kennt das Problem: Man hat stundenlang an einem Stylesheet auf dem Staging-Server rumgebastelt, will es nun auf den Live-Server kopieren und die Änderung ist nicht sichtbar. Die Fehlersuche beginnt. Man prüft den Cache. Vom Browser. Vom Server. Ist man überhaupt auf dem richtigen Server? Hat der Upload geklappt? Und so weiter. Eric Meyer hat das ganze Dilemma 2009 treffend beschrieben und auch eine Lösung mitgeliefert, von der ich noch nicht gehört habe:</p>
-<p>Nutze doch einfach die HTTP-Header um deine Staging- und Live-Umgebung eindeutig voneinander zu unterscheiden. Der Link-Parameter im HTTP-Header nämlich auch die Angabe von Style-Sheet-Dateien. Und das sieht dann so aus:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Header add Link &#34;&lt;/staging.css&gt;;rel=stylesheet;type=text/css;media=all&#34;
-</span></span></code></pre></div><p>In nginx kann man das folgendermaßen im Server-Block implementieren:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">add_header Link &#34;&lt;/wp-content/themes/nickyreinert/style.header.css&gt;;rel=stylesheet;type=text/css;media=all&#34;;
-</span></span></code></pre></div><p>Wer Apache nutzt, setzt den &ldquo;CSS-Header&rdquo; folgendermaßen:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Header add Link &#34;&lt;/wp-content/themes/nickyreinert/style.header.css&gt;;rel=stylesheet;type=text/css;media=all&#34;
-</span></span></code></pre></div><p>Natürlich habe ich die Spielerei gleich bei mir eingebaut:</p>
-<p><img src="/2020/2020-06-04-css-ueber-den-http-header-ausspielen/images/grafik-700x382.png" alt=""></p>
-<p>CSS-Datei im HTTP-Header ausgeliefert</p>
-<p>Damit lässt sich grundsätzlich auch das Stylesheet deines Wordpress-Themes ausliefern: Da WordPress aber die style.css nutzt, um Theme-Informationen zu verarbeiten, musst du auf dieses kleine Feature dann verzichten. Außerdem wird CSS im Link-Header nicht von jedem Browser unterstützt.</p>
-
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> css, http</p>
-        </div>
-        
-      ]]></content:encoded>
+      <description>Jeder kennt das Problem: Man hat stundenlang an einem Stylesheet auf dem Staging-Server rumgebastelt, will es nun auf den Live-Server kopieren und die Änderung ist nicht sichtbar. Die Fehlersuche beginnt. Man prüft den Cache. Vom Browser. Vom Server. Ist man überhaupt auf dem richtigen Server? Hat …</description>
       
       
       

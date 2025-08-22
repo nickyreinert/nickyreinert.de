@@ -19,53 +19,8 @@
       <pubDate>Wed, 02 Apr 2025 12:19:31 +0100</pubDate>
       <author></author>
       <guid>https://nickyreinert.de/2025/2025-03-10-nerd-enzyklop%C3%A4die-47---die-500-meilen-e-mail/</guid>
-      <description>Dieser Moment, in denen man an seiner Wahrnehmung zweifelt, weil ein Computer, der doch eigentlich nach den strengen Regeln der Logik arbeiten sollte, plötzlich …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Eine Nacherzählung aus der &#39;Nerd Enzyklopädie&#39; über die berühmte &#39;500-Meilen-E-Mail&#39;-Anekdote. Der Artikel beschreibt einen bizarren Softwarefehler, bei dem E-Mails nur innerhalb eines bestimmten Radius zugestellt wurden. Die Ursache war ein unentdecktes Downgrade des &#39;sendmail&#39;-Servers, das zu einem 0-Sekunden-Timeout führte, wodurch entfernte Server nicht rechtzeitig antworten konnten.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> E-Mail, Netzwerktechnik, Softwarefehler, Debugging, Systemadministration, Nerd-Kultur</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
-          
-        </div>
-        
-        
-        <p>Dieser Moment, in denen man an seiner Wahrnehmung zweifelt, weil ein Computer, der doch eigentlich nach den strengen Regeln der Logik arbeiten sollte, plötzlich Dinge tut, die gar nicht mehr so logisch erscheinen. Dieser Moment muss <strong>2002</strong> wohl auch <strong>Trey Harris</strong> ereilt haben (<a href="https://web.mit.edu/jemorris/humor/500-miles">MIT1</a>).</p>
-<p>Harris, Mitglied der <strong>System Administrators Guild</strong> (SAGE), arbeitete als Admin für eine Universität in <strong>North Carolina</strong> und war dort für das E-Mail-System verantwortlich. Eines Tages rief ihn der Vorsitzende der Statistik-Abteilung an und behauptet, dass seine E-Mails nicht ankommen, sobald der Empfänger mehr als <strong>500 Meilen</strong> entfernt sei. Das Problem bestand offenbar schon ein paar Tage. Um es zu dokumentieren, hatte man auf einer Karte markiert, bei welchen Empfänger der E-Mail-Versand funktionierte. Und das funktioniere wohl nur bei Empfängern innerhalb eines 500-Meilen-Radius.</p>
-<p>Harris war skeptisch und testete das System selbst. Er sendete einige Test-E-Mails unter anderem nach <strong>Richmond</strong>, <strong>Atlanta</strong> und <strong>Washington</strong> - alle Ziele befinden sich innerhalb des 500 Meilen Radius. Ohne Probleme. Und dann nach <strong>Memphis</strong> - <strong>600 Meilen</strong> Distanz. Die E-Mail ging nicht durch. <strong>Providence</strong>, 580 Meilen? Kein Erfolg. <strong>New York</strong>, 420 Meilen? Funktioniert.</p>
-<p>Harris verglich die Konfigurationen des E-Mail-Servers mit anderen Systemen und fand keinerlei Auffälligkeiten. Zur weiteren Diagnose wählte er sich per Telnet auf den SMTP-Port des Servers ein. Der Server reagierte, wie erwartet mit dem <strong>SunOS Sendmail Logo</strong>. Und das führte Harris auf die richtige Fährte.</p>
-<p>Der Vorsitzende der Statistik-Abteilung erwähnte zwar, dass vor ein paar Tagen ein Wartungs-Updates für des Betriebssystems installiert wurde. Angeblich betraf das aber nicht <strong>sendmail</strong>, welches Harris vor längerer Zeit in der <strong>Version 8</strong> installiert hatte. Das besagte Update von SunOS enthielt jedoch noch die alte <strong>Version 5</strong> von sendmail! Der E-Mail-Server wurde durch das Update des Betriebssystem auf eine alte Version zurückgesetzt. Die Konfigurations-Dateien, die Harris für die Version 8 angelegt hatte, waren allerdings noch vorhanden. Nur waren sie nicht mit Version 5 kompatibel. So wurde für einige wichtige Parametern von sendmail der <strong>Standard-Wert 0</strong> angenommen.</p>
-<p>Einer dieser Parameter bezog sich auf das <strong>Timeout</strong> für die Verbindung zum externen SMTP-Server. Der Wert dafür betrug nun <strong>0 Sekunden</strong>.</p>
-<p>Aber was hatte das zu bedeuten? Wenn sendmail versucht, eine Verbindung mit einem externen SMTP-Server aufzubauen, schickt es eine Anfrage in das Internet und  wartete dann auf die Antwort. Aufgrund der Auslastung des Systems brauchte sendmail einen Augenblick, um die Routine für die Verarbeitung der Antwort aufzurufen.</p>
-<p>Harris fand heraus, das sendmail dafür etwa 3 Millisekunden benötigt. Eine Antwort, die nach 3 Millisekunden bei sendmail eintraf, wurde aufgrund des Timeouts als nicht erfolgreich gewertet.</p>
-<p>Da die Universität über ein Glasfasernetz an das Internet angeschlossen war, gelang eine derartige Anfrage mit nahezu Lichtgeschwindigkeit nach draußen. Also fragte sich Harris, wie weit das Signal innerhalb von 3 Millisekunden kommen konnte. Er bemühte <strong>units</strong>, ein Kommandozeilen-Programm, um die Distanz auszurechnen:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$ units
-</span></span><span class="line"><span class="ln">2</span><span class="cl">1311 units, 63 prefixes
-</span></span><span class="line"><span class="ln">3</span><span class="cl">You have: 3 millilightseconds
-</span></span><span class="line"><span class="ln">4</span><span class="cl">You want: miles
-</span></span><span class="line"><span class="ln">5</span><span class="cl">* 558.84719
-</span></span><span class="line"><span class="ln">6</span><span class="cl">/ 0.0017893979
-</span></span></code></pre></div><p>*(Das <em>-Zeichen ist kein Operator, sondern zeigt das Ergebnis an.)</em></p>
-<p>558 Meilen!  Harris hatte die Ursache für das seltsame Verhalten gefunden.</p>
-<p>Harris räumte später ein, einige technische Details, auch aus dramaturgischen Gründen, nicht ganz exakt wiedergeben zu haben. So musste  auch die Antwort vom SMTP-Server innerhalb von 3 Sekunden wieder bei sendmail landen, womit sich die verfügbare Zeit eigentlich auf 1,5 Millisekunden halbiert. Das ändert aber nichts daran, dass das Zusammenspiel aus Timeout, Übertragungsgeschwindigkeit und Verzögerung bei der Verarbeitung dafür gesorgt haben, dass E-Mails nur in einem bestimmten Radius versendet werden konnten, nämlich circa 500 Meilen…</p>
-<p>…but I would walk 500 miles, and I would walk 500 more…</p>
-<p><img src="/2025/2025-03-10-nerd-enzyklop%C3%A4die-47---die-500-meilen-e-mail/image.png" alt="alt text"></p>
-
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> E-Mail, Netzwerk, Nerd-Enzyklopädie, Anekdote</p>
-        </div>
-        
-      ]]></content:encoded>
+      <description>Dieser Moment, in denen man an seiner Wahrnehmung zweifelt, weil ein Computer, der doch eigentlich nach den strengen Regeln der Logik arbeiten sollte, plötzlich Dinge tut, die gar nicht mehr so logisch erscheinen. Dieser Moment muss 2002 wohl auch Trey Harris ereilt haben (MIT1).
+Harris, Mitglied …</description>
       
       
       
@@ -95,60 +50,7 @@
       <author></author>
       <guid>https://nickyreinert.de/2023/2023-05-22-nerd-enzyklop%C3%A4die-30---die-falsche-fehlermeldung/</guid>
       <description>
-Mitte der 1990er Jahre startete in den USA ein besonderer Internet-Provider seinen Dienst: WebTV Networks Incorporated. In der Regel benötigte man zu dieser …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Eine humorvolle Anekdote aus der &#39;Nerd Enzyklopädie&#39; über einen peinlichen Fehler im Registrierungsprozess des frühen Internetdienstes WebTV. Ein falsch konfigurierter Filter für Benutzernamen führte dazu, dass jede Eingabe als &#39;schlechtes Wort&#39; (&#39;That&#39;s a bad word.&#39;) abgewiesen wurde, was die Bedeutung gründlicher Tests unterstreicht.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> WebTV, Internetgeschichte, Softwarefehler, Debugging, Benutzerverwaltung, Nerd-Kultur</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
-          
-        </div>
-        
-        
-        <p><img src="/2023/2023-05-22-nerd-enzyklop%C3%A4die-30---die-falsche-fehlermeldung/image1.png" alt=""></p>
-<p>Mitte der 1990er Jahre startete in den USA ein besonderer Internet-Provider seinen Dienst: <strong>WebTV</strong> <strong>Networks Incorporated</strong>. In der Regel benötigte man zu dieser Zeit für den Zugang zum Internet ein Modem, das zwischen Telefon-Dose und Computer angeschlossen wurde. WebTV funktionierte mit einer <strong>Set-Top-Box</strong> und einem <strong>Fernseher</strong> und ermöglichte so den Zugang zum Internet auch ohne Computer. Der Werbe-Slogan lautete:</p>
-<blockquote>
-<p>You’re surfing the Web with a remote control in one hand and a handful of cheese puffs in the other. Now that’s progress.</p></blockquote>
-<p>Am <strong>18. September 1996</strong> wollte das Unternehmen seinen Dienst der Öffentlichkeit zugänglich machen. Ab diesem Datum war es möglich, ein Benutzerkonto für WebTV anzulegen. Einen Tag vorher saßen Techniker, Programmier und Gründer zusammen, um den Prozess der Benutzeranmeldung zu prüfen und das System auf Fehler zu untersuchen.</p>
-<p>Bei einer Benutzeranmeldung ist es üblich, bestimmte anzügliche oder geschützte Begriffe für den Namen des Kontos zu verhindern. Seien es Beleidigungen oder reservierte Begriff wie „<strong>admin</strong>“, „<strong>root“</strong> und so weiter. Bei WebTV setzte man dazu auf eine Datei, die diese gesperrten Begriff enthielt. Die Datei war folgendermaßen aufgebaut:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">    admin.*   
-</span></span><span class="line"><span class="ln">2</span><span class="cl">    User names may not start with “admin”.   
-</span></span><span class="line"><span class="ln">3</span><span class="cl">    postmaster   
-</span></span><span class="line"><span class="ln">4</span><span class="cl">    You’re not the postmaster.   
-</span></span><span class="line"><span class="ln">5</span><span class="cl">    poop   
-</span></span><span class="line"><span class="ln">6</span><span class="cl">    That’s a bad word.   
-</span></span><span class="line"><span class="ln">7</span><span class="cl">    weenie That’s a bad word.
-</span></span></code></pre></div><p>Jeder Eintrag bestand demnach aus zwei Zeilen. Die <strong>erste Zeile</strong> enthielt einen regulären Ausdruck, der den nicht zugelassenen Begriff beschreibt. Die <strong>zweite Zeile</strong> beinhaltet die Fehlermeldung, sollte jemand versuchen den Begriff für sein Benutzerkonto zu verwenden. Wenn also jemand ein Konto mit dem Benutzernamen <strong>admin</strong> einrichten wollte, wurde ihm das mit der Fehlermeldung “<strong>User names may not start with ‘admin’”</strong> verweigert.</p>
-<p>Einer der Techniker hatte beim Anlegen der Datei einen Fehler gemacht. Er wollte die Datei in zwei Listen unterteilen: Eine Liste mit geschützten Namen (<strong>admin</strong>, <strong>postmaster</strong>, root, …) sowie eine Liste mit anzüglichen, obszönen Namen (<strong>fuck</strong>, <strong>poop</strong>, …). Zur besseren Lesbarkeit trente er die beiden Listen durch eine leere Zeile:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">    admin.* User names may not start with “admin”.   
-</span></span><span class="line"><span class="ln">2</span><span class="cl">    postmaster You&#39;re not the postmaster.  
-</span></span><span class="line"><span class="ln">3</span><span class="cl">      
-</span></span><span class="line"><span class="ln">4</span><span class="cl">    fuck  
-</span></span><span class="line"><span class="ln">5</span><span class="cl">    That&#39;s a bad word.
-</span></span></code></pre></div><p>Aber auch die leere Zeile wurde vom System als regulärer Ausdruck interpretiert. Und dieser passte zu jeder Eingabe! Die Folge war, dass der Schutzmechanismus beim Anlegen eines Benutzerkontos auf jeden Namen reagierte und die darauffolgende Zeile, wie programmiert, als Fehlermeldung an die Benutzer:in zurückgab. Und in diesem Fall war das:</p>
-<p><img src="/2023/2023-05-22-nerd-enzyklop%C3%A4die-30---die-falsche-fehlermeldung/image2.png" alt=""></p>
-<p style="text-align: center;font-style:italic">
-Die falsche Fehlermeldung bei der Anmeldung zu WebTV [[FADD1](https://fadden.com/tech/images/fkdialog.jpg)]
-</p>
-<p>Der Fehler wurde natürlich umgehend behoben. Als WebTV am nächsten Tag der Öffentlichkeit zugänglich gemacht wurde, kam es dem Vernehmen nach zu keinen beleidigenden Zwischenfällen.</p>
-<p>Der Vorfall verdeutlich jedenfalls wie wichtig es ist, ein System in einer geschützten Umgebung ausgiebig zu testen.</p>
-
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> IT-Geschichte, Softwarefehler, Nerd-Enzyklopädie, Humor</p>
-        </div>
-        
-      ]]></content:encoded>
+Mitte der 1990er Jahre startete in den USA ein besonderer Internet-Provider seinen Dienst: WebTV Networks Incorporated. In der Regel benötigte man zu dieser Zeit für den Zugang zum Internet ein Modem, das zwischen Telefon-Dose und Computer angeschlossen wurde. WebTV funktionierte mit einer …</description>
       
       
       
@@ -178,49 +80,7 @@ Die falsche Fehlermeldung bei der Anmeldung zu WebTV [[FADD1](https://fadden.com
       <author></author>
       <guid>https://nickyreinert.de/2023/2023-05-01-nerd-enzyklop%C3%A4die-23---30-x-10--1.000/</guid>
       <description>
-Wenn du deinen Python-Nachlass mit ein wenig Pfeffer würzen willst, empfiehlt es sich, die „Definition eines Integers“ zu ändern. Wenn du in Python eine Zahl …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Eine humorvolle Demonstration aus der &#39;Nerd Enzyklopädie&#39;, die zeigt, wie man in Python die interne Darstellung von Integer-Objekten mittels &#39;ctypes&#39; manipuliert. Der Artikel präsentiert ein Code-Beispiel, das dazu führt, dass eine scheinbar einfache Multiplikation wie &#39;30 * 10&#39; ein unerwartetes Ergebnis von &#39;1000&#39; liefert, und warnt vor den daraus resultierenden Debugging-Herausforderungen.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> Python, Speichermanagement, Programmierung, Debugging, Nerd-Kultur</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
-          
-        </div>
-        
-        
-        <p><img src="/2023/2023-05-01-nerd-enzyklop%C3%A4die-23---30-x-10--1.000/image1.png" alt=""></p>
-<p>Wenn du deinen Python-Nachlass mit ein wenig Pfeffer würzen willst, empfiehlt es sich, die „Definition eines Integers“ zu ändern. Wenn du in Python eine Zahl verwendest, nehmen wir die 30, verwendet Python die 30 als Referenz auf ein Objekt im Speicher, in dem wiederum der Wert 30 hinterlegt wird. Die 30 ist also ein Verweis auf ein Objekt, das den tatsächlichen Wert enthält. In der Regel sollten Verweis und Wert gleich sein, sonst wird das mit der Mathematik schwierig.</p>
-<p>Schwierig? Das mögen Nerds doch!</p>
-<p>Mit dieser Funktion kannst du einen derartigen Verweis anpassen und einen abweichenden Wert hinterlegen:</p>
-<pre><code>import ctypes   
-def reference(val):  
-  return ctypes.cast(id(val), ctypes.POINTER(ctypes.c_int))
-</code></pre>
-<p>Und so aktivierst du den „Spaß“:</p>
-<pre><code>reference(30)[6] = 100
-</code></pre>
-<p>Willst du nun mit der Ziffer 30 mathematische Operationen durchführen, erzeugt das interessante Ergebnisse:</p>
-<pre><code>&gt;&gt;&gt; 30 * 10  
-&gt;&gt;&gt; 1000
-</code></pre>
-<p>Viel Spaß beim Debuggen!</p>
-
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> Python, Code-Trick, Nerd-Enzyklopädie, Debugging</p>
-        </div>
-        
-      ]]></content:encoded>
+Wenn du deinen Python-Nachlass mit ein wenig Pfeffer würzen willst, empfiehlt es sich, die „Definition eines Integers“ zu ändern. Wenn du in Python eine Zahl verwendest, nehmen wir die 30, verwendet Python die 30 als Referenz auf ein Objekt im Speicher, in dem wiederum der Wert 30 hinterlegt wird. …</description>
       
       
       
@@ -249,152 +109,7 @@ def reference(val):
       <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
       <author></author>
       <guid>https://nickyreinert.de/2018/2018-11-18-wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death/</guid>
-      <description>Deine Wordpress-Seite besteht nur aus einem weißen Bildschirm, dem HTTP-Fehlercode 500 oder lädt irsinnig langsam? White Screen of Death (WSoD), die …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Eine umfassende Anleitung zur Fehlersuche und Wartung von WordPress. Der Artikel erklärt, wie man Probleme wie den &#39;White Screen of Death&#39; (WSoD) und HTTP-500-Fehler systematisch analysiert. Vorgestellt werden drei wesentliche Werkzeuge: die Entwicklerkonsole des Browsers, das Plugin &#39;Query Monitor&#39; zur Performance-Analyse und die korrekte Konfiguration des WordPress-Debug-Modus über &#39;wp-config.php&#39; und &#39;.htaccess&#39;.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> WordPress, Debugging, Troubleshooting, Performance, PHP, Web-Development</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
-          
-        </div>
-        
-        
-        <p>Deine Wordpress-Seite besteht nur aus einem weißen Bildschirm, dem <strong>HTTP-Fehlercode 500</strong> oder lädt irsinnig langsam? <strong>White Screen of Death</strong> (WSoD), die berüchtigten <strong>500´er</strong> sowie lange <strong>Ladezeiten</strong> scheinen zu den größten Herausforderungen im Umgang mit WordPress zu gehören und sie hinterlassen regelmäßig lange Gesichter. Zwar gehören Ladezeit, PHP- und HTTP-Fehler nicht unbedingt zusammen, sie erfordern aber in der Regel das gleiche Vorgehen: Nämlich die <strong>Analyse</strong>, was da im <strong>Hintergrund</strong> so passiert.<br>
-Die Suche nach der Ursache ist oft relativ simpel. Es sagt einem oft nur niemand. Der beliebteste Tipp bei Wordpress lautet oft:</p>
-<blockquote>
-<p><em>&ldquo;Deaktiviere mal alle Plugins und aktiviere sie nacheinander wieder.&rdquo;</em></p>
-<p><em>Anonymer Ratgeber, Mai 2018</em></p></blockquote>
-<p>Das ist alles andere als effizient, ja nicht einmal effektiv: Du erfährst nach 27 Minuten und zwei Tassen Kaffe, dass das Plugin &ldquo;Foobar&rdquo; für den Fehler verantwortlich ist, weil das den <strong>WSoD</strong> auslöst. Aber dann weißt du immer noch nicht, was genau der Fehler ist. Danke für nichts?</p>
-<p>Tatsächlich gibt es nur <strong>drei Dinge</strong>, die dir helfen können, dir selber zu helfen, wenn WordPress dich mal wieder im Stich lässt. Und diese drei Werkzeuge zur <strong>Fehlersuche</strong> und <strong>Diagnose</strong> langsamer Wordpress-Installation stelle ich jetzt einmal vor:</p>
-<h2 id="1-die-entwickler-konsole-deines-browsers">1. Die Entwickler-Konsole deines Browsers</h2>
-<p>Dieses Werkzeug bringt mittlerweile jeder moderne Browser mit und das sollte auch die <strong>erste Anlaufstelle</strong> für dich sein. Welche Entwicklerkonsole du verwendest, ist deinem Geschmack überlassen, in der Funktionalität unterscheiden sie sich kaum. Du öffnest die Entwicklerkonsole auf vielfältige Weise über</p>
-<ul>
-<li>das Kontextmenü (Rechte Maustaste -&gt; Element untersuchen) oder</li>
-<li>über mit der Funktionstaste F12 oder</li>
-<li>mit dem Shortcut CTRL+SHIFT+I (Windows) / CMD+OPT+I (OS X)</li>
-</ul>
-<p>[gallery link=&ldquo;file&rdquo; columns=&ldquo;4&rdquo; ids=&ldquo;2356,2357,2358,2359&rdquo;]</p>
-<h2 id="2-der-query-monitor---warum-ist-dein-wordpress-so-langsam">2. Der Query Monitor - warum ist dein Wordpress so langsam?</h2>
-<p>Der <a href="https://de.wordpress.org/plugins/query-monitor/">Query Monitor</a> ist ein wirklich nützliches <strong>Plugin</strong> für Wordpress. Eines der wenigen. Du fragst dich, warum deine Seite so lange lädt und die Entwicklerkonsole gibt nicht vielmehr her als ein <strong>TTFB</strong> (Time To First Byte) von 60 Sekunden?</p>
-<p>Die Entwicklerkonsole sagt dir nur, wie lange der Browser auf den Inhalt wartet. Hier kann maximal identifiziert werden, dass die reine Wartezeit (<strong>TTFB</strong>) 60 Sekunden beträgt und der Inhalt in 10 Sekunden heruntergeladen wird (die ganzen anderen Nerd-Kennzahlen jetzt mal außen vor gelassen). Letzteres liegt ziemlich wahrscheinlich an der Internetleitung von dir oder dem Hoster. Aber TTFB? Das ist im Grunde die Zeit, die der Server benötigt um die Ausgabe einmal zusammenzuschustern und zu deinem Browser zu schicken. Also das ganze PHP-Gedöns einmal &ldquo;interpretieren&rdquo; und ein paar Datenbankabfragen durchführen. Je umfangreicher deine WordPress-Seite ist (sprich Plugin-Vielfalt), desto mehr gibt es hier zu tun. Und was da im Hintergrund genau passiert, sagt dir der <strong>Query Monitor</strong>.</p>
-<p>[gallery link=&ldquo;file&rdquo; columns=&ldquo;2&rdquo; ids=&ldquo;2354,2355&rdquo;]</p>
-<p>Nach der Installation siehst du in der Admin-Toolbar erstmal ein paar oberflächliche Zahlen: <strong>Ladezeit,</strong> <strong>Größe</strong> und <strong>Anzahl der Queries.</strong> Wirklich spannend wird es, wenn du mal auf diese Zahlen klickst. Dann öffnet sich eine &ldquo;<em>Entwickler-Konsole&rdquo;,</em> die deiner WordPress-Seite mal gehörig unter die Haube schaut. Du siehst <strong>Datenbankabfragen,</strong> <strong>Scripte,</strong> <strong>Funktionen</strong> und alle möglichen Diagnostiken - einfach alles. Du kannst nun relativ zügig erkennen, ob manche Abfragen einfach nur doppelte durchgeführt wurden oder die Datenbank grundsätzlich zu langsam ist.</p>
-<h2 id="3-der-debug-modus">3. Der Debug-Modus</h2>
-<p>DasBbeste zum Schluss - der Debug-Modus verrät dir wirklich alles und ist eigentlich der Premium-Weg der Problemlösung.</p>
-<p>Du wirst nur selten erleben, dass Wordpress bzw. dein Server dich wirklich gar nicht mit einer Fehlermeldung erhellen will. Der unliebsame <strong>White Screen of Death</strong> und der gefürchtete <strong>HTTP-Fehler 500</strong> sind im Grunde nur der Standardeinstellungen geschuldet. Du kannst dann entweder ein Ticket bei deinem Hoster öffnen und im nächsten Jahr mit einer Antwort rechnen oder versuchen, selber an die Fehlermeldung zu gelangen und das Problem eigenständig zu analysieren: <strong>Der geheime Trick</strong> lautet nämlich, einfach mal das Internet nach der Fehlermeldung zu durchsuchen. <strong>In 99,99% der Fälle</strong> bist du bei weitem nicht der erste mit diesem banalen Problem..</p>
-<p>Die wahre Herausforderung ist allerdings, dass die Ausgabe von Fehlermeldungen eben standardmäßig unterdrückt  wird. Aus Gründen der Sicherheit und Bedienbarkeit ist das grundsätzlich nicht verkehrt. Wenn du doch mal wissen willst, woher der <strong>White Screen of Death</strong> wirklich kommt, gehst du folgendermaßen vor:</p>
-<h3 id="a-du-aktivierst-die-fehlerausgabe-von-wordpress">A: Du aktivierst die Fehlerausgabe von Wordpress</h3>
-<p>Dazu öffnest du die Datei wp-config.php, nachdem du sie lokal gespeichert hast, und setzt folgenden Parameter direkt an den Anfang, aber hinter das <em>&lt;?php</em>:</p>
-<?php
-define( 'WP\_DEBUG', true );
-define( 'WP\_DEBUG\_LOG', true ); 
-define('WP\_DEBUG\_DISPLAY', false);
-
-Der 1. Parameter ist für das debuggen _essentiell:_ Damit aktivierst du die Ausgabe von Fehlermeldungen.
-
-Mit dem 2. Parameter gibst du die Anweisung, dass die Fehlermeldungen in einer Datei gespeichert werden. Das ist aus zwei Gründen nützlich: Du kannst es später einfacher Nachvollziehen und außerdem solltest du vermeiden, dass Fehlermeldungen, die vielleicht sensible Informationen enthalten, direkt im Frontend landen.
-
-Die besagte Datei befindet sich um Order /wp-content und heißt **debug.log**. etzt du **WP\_DEBUG\_LOG** auf true, wird Wordpress Fehlermeldungen in die Date _/wp-content/debug.log_ schreiben. Für die nachträgliche Analyse ist das sehr praktisch. Das funktioniert natürlich nur, wenn der Ordner beschreibbar ist. Andernfalls musst du diesen Parameter und den folgenden weglassen.
-
-Der letzte Parameter sorgt noch einmal explizit dafür, dass die Fehlermeldungen nicht im Frontend angezeigt werden.
-
-Neben diesen 3 Parameter gibt es noch **SCRIPT\_DEBUG**. Mit true aktiviert, sorgt dieser Schalter dafür, dass Wordpress die "echten" CSS- und JS-Dateien liest, anstatt der minifizierten. Das wird dich nur in Spezialfällen betreffen, solltest du aber kennen. Der nächste **Spezialparameter** in der Riege ist **SAVEQUERIES** - hiermit wird dir WordPress die Datenbank-Anfragen ausgeben. Auch das ist in der Regel nicht notwendig, aber gut zu wissen.
-
-Denke daran, dass die Parameter im weiteren Verlauf der Config-Datei nicht wieder vorkommen und deine Einstellung so aufheben und vor allen, dass du die Parameter in einem Live-System nach der Fehlersuche **wieder auf _false_ zurücksetzen** solltest.
-
-### B: Du aktivierst die Fehlerausgabe deines Servers
-
-Eigentlich sollte dir **Nummero A** bereits weiterhelfen, denn damit wird auch die Fehlerausgabe von PHP aktiviert. Sollte deine Seite trotzdem weiß bleiben und dich nicht mit zusätzlichen Fehlernachrichten beglücken, kannst du etwas tiefer in die Trickkiste greifen. Diese Parameter machen im Grunde nichts anderes, als oben schon beschreiben ist, sie greifen allerdings etwas "früher" ein.
-
-Ergänze, ebenfalls direkt hinter dem _<?php_ der Datei _wp-config.php_ die folgenden Zeilen:
-
-<?php
-error\_reporting(E\_ALL);
-ini\_set('display\_errors', 1);
-ini\_set('display\_startup\_errors', 1);
-// ini\_set("log\_errors", 1);
-// ini\_set("error\_log", "/pfad/zu/wordpress/temp/php-error.log");
-
-Die beiden letzten Zeilen aktivieren, ähnlich wie oben, dass PHP Fehlermeldungen in eine Datei schreibt. Da die Log-Datei bei der ad hoc Fehlersuche nicht zwingend hilfreich ist, sind diese beiden Zeilen auskommentiert.
-
-Wenn du den Pfad zu deiner Installation nicht kennst, bekommst du sie mit folgendem PHP-Befehl heraus. Wenn du diese Information nicht mehr benötigst, entferne sie aber sofort aus deinem Script. **Security through obscurity** - das _Document Root_ geht niemanden außer dich etwas an!
-
-var\_dump($\_SERVER\["DOCUMENT\_ROOT"\]);
-
-Achtung: Auf manchen Seiten wird dir empfohlen, den Zeilen ein @ vorzustellen. Das ist **ziemlich kontraproduktiv** - denn [das @ am Anfang der Zeile unterbindet Fehlermeldungen](http://php.net/manual/de/language.operators.errorcontrol.php) und weshalb bist du hier? Genau...
-
-Das ist aber noch nicht alles - die Trickkiste ist noch tiefer. Doch obacht! Das folgende ist **Premium-Klasse-Debuggung** und auf den meisten Shared-Hostern gar nicht möglich. Die essentiellen Parameter befinden sich in der ersten Zeile. Die noch tiefergreifenden und wirklich nur in absoluten Sonderfällen benötigten Einstellungen sind darunter aufgeführt.
-
-Öffne die Datei **.htaccess** und ergänze die folgenden Zeilen - auch hier gilt, achte darauf, dass die Parameter nicht an anderer Stelle ungewollt überschrieben werden:
-
-\# Easy-Peasy Lemon-Squeezy:
-php\_flag display\_startup\_errors on
-php\_flag display\_errors on
-php\_flag html\_errors on
-php\_flag log\_errors on
-
-# Fürs Protokoll: Wenn du das volle Entertainment brauchst
-# nimm auch das hier mit - für alle Copy&Paste-Cowbowys, die 
-# den Warnhinweis nicht lesen, habe ich die Zeilen auskommentiert
-# php\_flag ignore\_repeated\_errors off
-# php\_flag ignore\_repeated\_source off
-# php\_flag report\_memleaks on
-# php\_flag track\_errors on
-# php\_value docref\_root 0
-# php\_value docref\_ext 0
-# php\_value error\_log /pfad/zu/wordpress/temp/php-error.log
-# php\_value error\_reporting -1
-# php\_value log\_errors\_max\_len 0
-
-# <Files php\_errors.log>
-#      Order allow,deny
-#      Deny from all
-#      Satisfy All
-# </Files>
-
-Warum A und warum B? Es ist möglich, dass die Server-Konfiguration es aus Sicherheitsgründen nicht zulässt, dass diese sogenannten **PHP-Direktiven** (aka Parameter) an beliebigen Stellen (aka .htaccess, in der PHP-Datei, ...) konfiguriert wird. Deshalb.  
-Und was ist mit C - der **php.ini**\-Datei? Gute Frage, werter Leser, die bei dir ein gewisses Grundwissen erkennen lässt. Chapeau. In dem Fall gehe ich sehr stark davon aus, dass du Zugriff auf eben diese Datei hast. Und wer Zugriff auf diese Datei hat, mit diesem Vorwissen, ist ziemlich sicher und hoffentlich mit der notwendigen Erfahrung ausgestattet. Andernfalls: Ruf deinen SysOp an. ;) Fühle dich trotzdem herzlich dazu eingeladen, diesen Beitrag mit etwas zuästzlichem Fachwissen in den **Kommentaren** zu bereichern.
-
-### C: Den Debug-Modus bei deinem Hoster aktivieren
-
-Bei der Einstellung des Debug-Modus gibt es eine Hierarchie. Die Debug-Einstellung in der PHP-Datei (**wp-config.php**) ist hierbei die oberste Ebene, darunter folgt die Einstellung in der **.htaccess-Datei** und auf unterster Ebene lässt sich diese Funktion in der Einstellung des Servers bzw. PHP-Interpreters direkt einstellen (z.B. **php.ini**). Damit unbedarfte Laien wie wir an dieser Datei nicht wahllos rumfingern, ist bleibt uns diese Möglichkeit entweder komplett verwehrt oder ist nur über das Interface bei deinem Hoster einstellbar. Dort kann der Hoster auch festlegen, dass diese Einstellung (in Fachkreisen gerne auch **Direktive** genannt) in den Ebenen darüber gar nicht anpassen werden darf - **Schritt A und B bleiben also unwirksam.** Das ist der Zeitpunkt, wenn du in den Einstellungen bei deinem Hoster nach dieser Einstellung suchst - oder den Hoster darum bittest, den Debug-Modus für dich zu aktivieren.
-
-Bei HostEurope kannst du das z.B. sehr leicht selber tun:
-
-[![Host Europe Debug Modus aktivieren ](images/host_europe_debug_aktivieren-300x232.png)](https://www.nickyreinert.de/files/wordpress-debugging-und-wartung-oder-keine-panik-vor-dem-white-screen-of-death/host_europe_debug_aktivieren.png)
-
-Host Europe Debug Modus aktivieren
-
-## Freibier - Nachwort - Lies  mich!
-
-Das ist jetzt wirklich wichtig: Wie immer, und oben bereits erwähnt, gilt auch hier: **Security through obscurity**.
-
-> Wenn du den Debug-Modus auf dem Live-System nicht mehr benötigst, deaktiviere ihn. Basta.
-
-Auf **Live-Systemen** hat der **Debug-Modus nur in Ausnahmefällen** etwas verloren. Und Fehler sollten zur Ausnahme zählen. Und auch, wenn du hier nur ein wenig an den PHP-Dateien rumschraubst, wobei eigentlich nicht viel kaputt gehen kann:
-
-> Denke an die obligatorische Sicherungskopie.
-
-Und jetzt viel Spass beim d_ebuggen_...
-
-Ach ja - wenn all das da oben nicht funktioniert, dann kannst du tatsächlich auch mal den Holzhammer rausholen: **Plugins aktivieren und deaktivieren**. In der Regel helfen dir die hier geschilderten Schritte aber, genau diesen mühsamen Schritt zu übergehen.
-
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> WordPress, Debugging, Anleitung, Fehlerbehebung, Performance</p>
-        </div>
-        
-      ]]></content:encoded>
+      <description>Deine Wordpress-Seite besteht nur aus einem weißen Bildschirm, dem HTTP-Fehlercode 500 oder lädt irsinnig langsam? White Screen of Death (WSoD), die berüchtigten 500´er sowie lange Ladezeiten scheinen zu den größten Herausforderungen im Umgang mit WordPress zu gehören und sie hinterlassen regelmäßig …</description>
       
       
       
@@ -423,48 +138,8 @@ Ach ja - wenn all das da oben nicht funktioniert, dann kannst du tatsächlich au
       <pubDate>Mon, 12 Nov 2018 00:00:00 +0000</pubDate>
       <author></author>
       <guid>https://nickyreinert.de/2018/2018-11-12-termine-buchen-im-ba-friedrichshain-kreuzberg/</guid>
-      <description>Frei nach dem Motto: Auch die kleinen Dinge sind wichtig, hab ich mal alle meine L33T-Haxx0r-Skillz herausgeholt und 13 Minuten in einen kleinen Bug auf den …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Ein kurzer Blogbeitrag, der einen defekten Link auf der Webseite des Bezirksamts Friedrichshain-Kreuzberg zur Online-Terminbuchung analysiert. Der Autor debuggt das Problem, indem er die fehlerhafte URL mit einer funktionierenden vergleicht, die korrekte URL-Struktur herleitet und den funktionierenden Link für andere zur Verfügung stellt.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> Berlin, Bürgerservice, Web-Development, Debugging, URL-Analyse</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
-          
-        </div>
-        
-        
-        <p>Frei nach dem Motto: Auch die kleinen Dinge sind wichtig, hab ich mal alle meine L33T-Haxx0r-Skillz herausgeholt und 13 Minuten in einen kleinen Bug auf den behördlichen Seiten der Berliner Bezirksämter investiert.</p>
-<p>Willst du einen <strong>Termin</strong> beim <strong>Bezirksamt</strong> Friedrichshain/Kreuzberg von Berlin <strong>buchen</strong>, weil das telefonisch nicht möglich ist? Dann stehst du vor einer kleinen Herausforderung: Das funktioniert nämlich ausgerechnet bei diesem Bezirksamt nicht. Die <a href="https://service.berlin.de/dienstleistung/318991/">Übersichtsseite für die Terminbuchung</a> führt beim Klick auf &ldquo;<a href="https://www.berlin.de/terminvereinbarung/termin/tag.php?id=383&amp;anliegen=318991&amp;dienstleister=0&amp;termin=1&amp;herkunft=1">Termin buchen</a>&rdquo; nur zu einer lapidaren Fehlermeldung, während alle anderen Links zu funktionieren scheinen:</p>
-<p>[caption id=&ldquo;attachment_2319&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/termine-buchen-im-ba-friedrichshain-kreuzberg/fehlermeldung_ba_xberg-fhain.png"><img src="/2018/2018-11-12-termine-buchen-im-ba-friedrichshain-kreuzberg/images/fehlermeldung_ba_xberg-fhain-300x81.png" alt="Fehlermeldung Terminbuchung Bezirksamt Friedrichshain/Kreuzberg"></a> Fehlermeldung Terminbuchung Bezirksamt Friedrichshain/Kreuzberg[/caption]</p>
-<p>Das Problem ist, dass es erstens keinen anderen Weg gibt, um an die Terminplanung zu kommen - oder diese sehr gut versteckt ist. Du kannst jetzt also die Id für die Logdatei am Telefon den vermutlich irritierten BA-Mitarbeiter/innen mitteilen oder das Problem selber fixen. Das ist nämlich gar nicht so schwierig. Außerdem gibt es auch gar keine E-Mail-Adresse, an die man sich wenden kann. Also schauen wir mal, was da falsch läuft.</p>
-<p>Das ist die URL, die sich hinter dem defekten Link versteckt:</p>
-<p><a href="https://www.berlin.de/terminvereinbarung/termin/tag.php?id=383&amp;anliegen=318991&amp;dienstleister=0&amp;termin=1&amp;herkunft=1">https://www.berlin.de/terminvereinbarung/termin/tag.php?id=383&anliegen=318991&dienstleister=0&termin=1&herkunft=1</a></p>
-<p>Und so sieht die URL aus, die hinter einem funktionierenden Link zur Terminbuchung steckt:</p>
-<p><a href="https://service.berlin.de/terminvereinbarung/termin/tag.php?termin=1&amp;dienstleister=122900&amp;anliegen">https://service.berlin.de/terminvereinbarung/termin/tag.php?termin=1&dienstleister=122900&anliegen</a>[]=318991&amp;herkunft=1</p>
-<p>Offenbar hat sich also etwas an der internen Struktur geändert und man vergessen, die Verknüpfung für das Bezirksamt Fhain/Xberg anzupassen. Was hat sich geändert? Zunächst einmal lautet die Domain offenbar <strong>service.berlin.de,</strong> nicht mehr <strong><a href="https://www.berlin.de">www.berlin.de</a>.</strong> Das ist aber nicht der fehlerhafte Teil, beide Domains funktionieren.</p>
-<p>Außerdem wird der GET-Parameter <em><strong>anliegen</strong></em> wohl als Array erwartet: <strong><em>anliegen[]</em></strong>. Außerdem ist der Parameter <em><strong>dienstleister</strong></em> nicht gesetzt, der wohl die Id für die entsprechende Abteilung erwartet. Die Id für das Standesamt im BA Fhain/Xberg findet man in der URL zur Übersichtsseite dieser Behörde:</p>
-<p><a href="https://service.berlin.de/dienstleistung/318991/standort/122898/">https://service.berlin.de/dienstleistung/318991/standort/122898/</a></p>
-<p>Die Id 318991 steht für das Bezirksamt selber, die Id für das Standesamt ist <strong>122898</strong>, das Jugendamt versteckt sich hinter der Id <strong>123593</strong>. Das die Terminverbeinbarung nur für das Standesamt funktioniert, packen wir dessen Id also in eine funktionierende URL:</p>
-<p><a href="https://service.berlin.de/terminvereinbarung/termin/tag.php?termin=1&amp;dienstleister=122898&amp;anliegen">https://service.berlin.de/terminvereinbarung/termin/tag.php?termin=1&dienstleister=122898&anliegen</a>[]=318991&amp;herkunft=1</p>
-<p>Wenn du also einen Termin beim Standesamt vom Bezirksamt Friedrichshain/Kreuzberg buchen möchtest, nutze doch gerne diesen Link:</p>
-<p><a href="https://service.berlin.de/terminvereinbarung/termin/tag.php?anliegen[]=318991&amp;dienstleister=122898&amp;termin=1&amp;herkunft=1">Termin buchen</a></p>
-
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> Berlin, Bug, Web-Dev, Lifehack</p>
-        </div>
-        
-      ]]></content:encoded>
+      <description>Frei nach dem Motto: Auch die kleinen Dinge sind wichtig, hab ich mal alle meine L33T-Haxx0r-Skillz herausgeholt und 13 Minuten in einen kleinen Bug auf den behördlichen Seiten der Berliner Bezirksämter investiert.
+Willst du einen Termin beim Bezirksamt Friedrichshain/Kreuzberg von Berlin buchen, …</description>
       
       
       

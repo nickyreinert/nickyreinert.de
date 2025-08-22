@@ -19,91 +19,9 @@
       <pubDate>Sat, 04 Mar 2023 12:19:31 +0100</pubDate>
       <author></author>
       <guid>https://nickyreinert.de/2023/2023-03-04-nerd-enzyklop%C3%A4die-4---regexen--jetzt-hast-du-zwei-probleme/</guid>
-      <description>Reguläre Ausdrücke sind umstritten: Geliebt als vielseitiges Werkzeug, verdammt als undurchschaubare Fehlerquelle. Nicht ohne Grund heißt es: Reguläre Ausdrücke …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Eine humorvolle und kritische Auseinandersetzung mit regulären Ausdrücken (RegEx) und dem bekannten Programmierer-Meme &#39;Jetzt hast du zwei Probleme&#39;. Der Artikel beleuchtet die Komplexität, den Missbrauch und die Sicherheitsrisiken (Catastrophic Backtracking, ReDOS) von RegEx und verfolgt die Ursprünge des berühmten Zitats.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> Reguläre Ausdrücke, Programmierung, Softwareentwicklung, Sicherheit, Nerd-Kultur, Algorithmen</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-          
-        </div>
-        
-        
-        <p>Reguläre Ausdrücke sind umstritten: Geliebt als vielseitiges Werkzeug, verdammt als undurchschaubare Fehlerquelle. Nicht ohne Grund heißt es: Reguläre Ausdrücke lösen ein Problem und schaffen zwei neue.<br>
-Woher kommt diese Hassliebe?</p>
-<h2 id="eine-exotische-tierart">Eine exotische Tierart</h2>
-<p>Reguläre Ausdrücke, kurz RegExen, sind mitunter schwer zu entwickeln und irgendwann kaum noch lesbar. Das erschwert das Debugging, also die Fehlersuche. Wie wäre es zum Beispiel mit diesem Schmuckstück:</p>
-<pre><code>^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&amp;*])(?=.*[0–9].*[0–9])(?=.*[a-z].*[a-z].*[a-z]).{8}$
-</code></pre>
-<p>Na, erkannt? Diese RegExe überprüft ob eine Passwort-Zeichenfolge bestimmten Sicherheitsanforderungen entspricht. Diesen Hinweis kann man im Quellcode vielleicht noch dokumentieren. Aber was wenn sich die Sicherheitsanforderungen im Detail ändern?</p>
-<h2 id="mit-kanonen-auf-spatzen">Mit Kanonen auf Spatzen…</h2>
-<p>RegExen werden außerdem gerne dort eingesetzt, wo eigentlich bessere, standardisierte Lösungen vorhanden sind, wie z.B. für das Parsen von XML [<a href="https://flapenguin.me/xml-regex">FLAP1</a>]:</p>
-<pre><code>\s*  
-(?(?=&lt;)  
-  (?&lt;opentag&gt;  
-    &lt; \s*  
-    (?&lt;tagname&gt;\w+)  
-    (?&lt;attibute&gt;  
-      \s+  
-      (?&lt;attrname&gt;[^\s&gt;]+)  
-      =  
-      (?&lt;attrquote&gt;&quot;|'|)  
-      (?&lt;attrvalue&gt;[^\s&quot;'&gt;]+)  
-      (\k{attrquote})  
-    )*  
-    \s*  
-    (?&lt;selfclosing&gt;\/\s*)?  
-    &gt;  
-  )  
-  (?(&lt;selfclosing&gt;)|  
-    (?&lt;children&gt;(?R))  
-    (?&lt;closetag&gt;&lt;\s* \/ \s* \k{tagname} \s*&gt;)  
-  )  
-|  
-  (?&lt;text&gt;[^&lt;]*)  
-)*  
-\s*
-</code></pre>
-<p>Was aussieht als wäre deine Katze auf der Tastatur eingeschlafen, ist eine funktionsfähige RegExe. Mit genau einem Vorteil: Wenn man den Ausdruck Stück für Stück zerpflückt, um ihn zu verstehen, kann man viel über die Möglichkeiten regulärer Ausdrücke lernen. Im produktiven Betrieb sollte man trotzdem auf alternative Ansätze zurückgreifen, um mit XML-Daten zu arbeiten. Wie z.B. XML-Parser, die soll es ja wirklich geben.</p>
-<h2 id="backtracking">Backtracking</h2>
-<p>RegExen können auch zu handfesten Sicherheitsproblemen führen. Die Ursache liegt in der Art, wie RegExen verarbeitet werden. Sie durchlaufen einen String zeichenweise, bis eine Bedingung nicht mehr erfüllt wird und springen dann zu dem Zeichen zurück, an dem der Ausdruck vielleicht einen anderen Lösungsweg nehmen kann. Dieses Vorgehen nennt man <strong>Backtracking</strong>, also Rückverfolgung. Diese Funktion kann aber zu einem Rückkopplungs-Effekt führen, wodurch die Dauer der Verarbeitung exponentiell ansteigt. Die Folge nennt man „Catastrophic Backtracking“, eine wichtige Grundlage für <a href="https://medium.com/@nitinpatel_20236/what-are-evil-regexes-7b21058c747e">ReDOS</a> (<a href="https://medium.com/@nitinpatel_20236/what-are-evil-regexes-7b21058c747e">Regular Expression Denial Of Service</a>) Angriffe [<a href="https://www.regular-expressions.info/catastrophic.html">REGU1</a>]. Ein einfaches Beispiel ist dieser reguläre Ausdruck [<a href="https://medium.com/@nitinpatel_20236/what-are-evil-regexes-7b21058c747e">MEDI1</a>]:</p>
-<pre><code>(x+x+)+y.
-</code></pre>
-<p>Diese RegExe lässt sich sicherlich optimieren, sie soll auch nur zeigen, wie schnell die Verarbeitung eskalieren kann. Als Test-String dient diese einfache Zeichenkette:</p>
-<pre><code>xxxxxy
-</code></pre>
-<p>Die Verarbeitung erfordert in diesem Fall in <strong>123 Schritte</strong>. Passen wir die Zeichenkette nun etwas an:</p>
-<pre><code>xxxxxxxxxxxxxy
-</code></pre>
-<p>Mehr als <strong>38.000 Schritte</strong> sind jetzt erforderlich, um den regulären Ausdruck zu prüfen. Mit dem richtigen regulären Ausdruck und der passenden Zeichenkette kann ein Browser „mühelos“ zum Absturz gebracht werden.</p>
-<p>Der Einsatz von regulären Ausdrücken ist also streitbar. Übrigens: Dem Netscape Entwickler <strong>Jamie Zawinski</strong> wird zugeschrieben, diese Erkenntnis als erster in Worte gefasst zu haben. Er stellte bereits <strong>1997</strong> fest [<a href="https://blog.codinghorror.com/regular-expressions-now-you-have-two-problems/">CODI1</a>]:</p>
-<blockquote>
-<p>Some people, when confronted with a problem, think “I know, I’ll use regular expressions.” Now they have two problems.</p></blockquote>
-<p>Dieser Ausspruch geht wiederum auf <strong>David Tilbrook</strong> zurück, der sich (selber nur vage) erinnert, wie er <strong>1985</strong> auf einer Konferenz in <strong>Dublin</strong> die Nutzung des Kommandozeilen-Tools <strong>awk</strong> kommentiert [<a href="http://regex.info/blog/2006-09-15/247">REGE1</a>]:</p>
-<blockquote>
-<p>“If you have a problem and you think awk is the solution, then you have two problems.”</p></blockquote>
-<p><strong>RegExen</strong> und <strong>awk</strong> sind nicht die einzigen zweifelhaften Tools, auch <a href="http://regex.info/blog/2006-09-15/247">Perl</a> hat einen gewissen Ruf. Aber vermutlich ist das nur eine besondere Art von Nerd-Humor, vor der niemand sicher ist:</p>
-<p><img src="/2023/2023-03-04-nerd-enzyklop%C3%A4die-4---regexen--jetzt-hast-du-zwei-probleme/image.png" alt=""></p>
-<p style="text-align: center;font-style:italic">
-Bildquelle [[XKCD1](https://xkcd.com/1171/)]
-</p>
-
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> RegEx, Programmierung, Sicherheit, Nerd-Enzyklopädie, Humor</p>
-        </div>
-        
-      ]]></content:encoded>
+      <description>Reguläre Ausdrücke sind umstritten: Geliebt als vielseitiges Werkzeug, verdammt als undurchschaubare Fehlerquelle. Nicht ohne Grund heißt es: Reguläre Ausdrücke lösen ein Problem und schaffen zwei neue.
+Woher kommt diese Hassliebe?
+Eine exotische Tierart Reguläre Ausdrücke, kurz RegExen, sind …</description>
       
       
       

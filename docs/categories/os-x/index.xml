@@ -19,148 +19,7 @@
       <pubDate>Fri, 24 Aug 2018 00:00:00 +0000</pubDate>
       <author></author>
       <guid>https://nickyreinert.de/2018/2018-08-24-die-os-x-bash/</guid>
-      <description>Da ich mit meinem Mac sehr oft auf der Kommandozeile unterwegs bin (dazu empfehle ich übrigens iTerm2 - ein Terminal-Ersatz der alle anderen Anwendungen dieser …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Eine Anleitung zur Anpassung der Bash-Shell auf macOS. Der Artikel erklärt die Hierarchie der Konfigurationsdateien und bietet eine Sammlung von praktischen Code-Snippets zur Optimierung des Workflows, inklusive Aliases für häufige Befehle, farblicher Gestaltung des Prompts und nützlicher Netzwerk-Tools.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> macOS, Bash, Shell-Scripting, Kommandozeile, System-Konfiguration</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-          
-        </div>
-        
-        
-        <p>Da ich mit meinem Mac sehr oft auf der Kommandozeile unterwegs bin (dazu empfehle ich übrigens <a href="https://www.iterm2.com/">iTerm2</a> - ein Terminal-Ersatz der alle anderen Anwendungen dieser Art auch auf Linux und Windows aussticht) habe ich mir dafür ein paar kleine Einstellungen zusammengesammelt, die das Leben und Arbeiten auf der Kommandozeile etwas erleichtern.</p>
-<h2 id="was-ist-bash">Was ist Bash?</h2>
-<p>Bash steht für &ldquo;Bourn again shell&rdquo; und ist eine Erweiterung der älteren Bourne-Shell, eine Shell die auf Unix-(ähnlichen) Systemen als Benutzerschnittstelle dient. Und diese ist vor allem daran erkennbar, dass die Steuerung des Systems nur über die Tastatur, ohne Maus und Fenster funktioniert.</p>
-<p>Seit der Version 10.3 ist Bash auch Bestandteil von Mac OS X und bringt damit eine Menge Vorteile für die Arbeit auf der Kommandozeile mit sich.</p>
-<h2 id="die-bash-konfigurationsdateien">Die Bash Konfigurationsdateien</h2>
-<p>Die globalen Einstellungen für die Bash befinden sich in der Datei <strong>/etc/bashrc</strong> und der <strong>/etc/profile</strong>. Wer Einstellungen auf bestimmte Benutzer beschränken will, kann im Benutzerverzeichnis (du gelangst mit <em>cd ~</em> dorthin) eine Datei mit dem Name <strong>.profile</strong>, <strong>.bash_login</strong> oder <strong>.bash_profile</strong> anlegen. Beachte, dass <strong>.profile</strong> nur geladen wird, wenn <strong>.bash_login</strong> nicht existiert, welche wiederum durch <strong>.bash_profile</strong> überschrieben wird. Das gilt allerdings nicht, wenn du dich als <strong>root-Benutzer</strong> anmeldest - dann wird nur die Datei <strong>.profile</strong> gelesen. Der Grund ist, dass der Root-Benutzer nicht <strong>bash</strong> sondern <strong>sh</strong> ausführt, wodurch nur die <strong>~/.profile</strong>-Datei berücksichtigt wird.</p>
-<p><img src="/2018/2018-08-24-die-os-x-bash/images/image-8.png" alt=""></p>
-<p>Hierarchie der Bash-Konfigurations-Dateien</p>
-<p>Daneben gibt es theoretisch auch die Möglichkeit, im Benutzerverzeichnis eine Datei mit dem Namen <strong>.bashrc</strong> anzulegen. Diese wird jedoch nur dann geladen, wenn Bash ausgeführt wird, ohne dass sich ein Benutzer dazu anmeldet (die sogenannte <em>non-login-shell</em>). Im OS X-Umfeld wird das aber nicht benötigt. Du kannst das erzwingen, indem du auf der Kommandozeile <strong>/bin/bash</strong> ausführst - wir wollen die jetzt schon komplizierte Geschichte aber nicht unnötigen verkomplizieren. ;)</p>
-<h2 id="die-bash-aufhübschen">Die Bash aufhübschen</h2>
-<p>Nach der langweiligen aber notwendige Theorie, gibts jetzt ein paar Zeilen Code, mit denen die Kommandozeile gleich viel besser aussieht. Ich hab aus oben genannten Gründen das Ganze in die Datei <strong>~/.profile</strong> gepackt. Zunächst einmal ein paar Aliase um die Verzeichnislisten etwas übersichtlicher zu gestalten oder auch das oft benutzte <strong>cd</strong> (<em>change dir</em>) zu vereinfachen.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">alias l=&#39;ls -alCFGA&#39;
-</span></span><span class="line"><span class="ln"> 2</span><span class="cl">alias ll=&#34;ls -CFGla&#34;
-</span></span><span class="line"><span class="ln"> 3</span><span class="cl">alias h=&#34;history&#34;
-</span></span><span class="line"><span class="ln"> 4</span><span class="cl">alias .=&#34;cd ~&#34;
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl">alias ..=&#34;cd ..&#34;
-</span></span><span class="line"><span class="ln"> 6</span><span class="cl">alias ...=&#34;cd ../..&#34;
-</span></span><span class="line"><span class="ln"> 7</span><span class="cl"># -p: erzeuge Unterverzeichnis, falls sie nicht existieren
-</span></span><span class="line"><span class="ln"> 8</span><span class="cl"># -v: gebe erzeugtes Verzeichnis zurück
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl">alias mkdir=&#34;mkdir -pv&#34;
-</span></span><span class="line"><span class="ln">10</span><span class="cl"># grep Ausgabe farbig gestalten
-</span></span><span class="line"><span class="ln">11</span><span class="cl">alias grep=&#39;grep --color=auto&#39;
-</span></span><span class="line"><span class="ln">12</span><span class="cl">alias fgrep=&#39;fgrep --color=auto&#39;
-</span></span><span class="line"><span class="ln">13</span><span class="cl">alias egrep=&#39;egrep --color=auto&#39;
-</span></span><span class="line"><span class="ln">14</span><span class="cl"># das aktuelle Verzeichnis im Finder öffnen
-</span></span><span class="line"><span class="ln">15</span><span class="cl">alias f=&#39;open -a Finder ./&#39;
-</span></span></code></pre></div><p>Die folgende Zeile ist kein Alias sondern eine Funktion. Damit wird ein Verzeichnis (mit allen benötigten Unterverzeichnissen erstellt) und dann mit cd direkt in das Verzeichnis gewechselt:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">mcd () { mkdir -p &#34;$1&#34; &amp;&amp; cd &#34;$1&#34;; }
-</span></span></code></pre></div><p>Als nächstes will ich die Darstellung der zuletzt benutzten Befehle (<strong>history</strong> bzw. jetzt <strong>h</strong>) etwas anpassen:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"># Duplikate ignorieren
-</span></span><span class="line"><span class="ln">2</span><span class="cl">HISTCONTROL=ignoreboth
-</span></span><span class="line"><span class="ln">3</span><span class="cl"># Befehle anhängen und die Historie nicht jedes mal neu überschreiben
-</span></span><span class="line"><span class="ln">4</span><span class="cl">shopt -s histappend
-</span></span><span class="line"><span class="ln">5</span><span class="cl"># die maximale Größe bzw. Länge der Historie erhöhen
-</span></span><span class="line"><span class="ln">6</span><span class="cl">HISTSIZE=1000
-</span></span><span class="line"><span class="ln">7</span><span class="cl">HISTFILESIZE=2000
-</span></span></code></pre></div><p>Der folgende Befehl sorgt dafür, dass sich die Anzahl der dargestellten <strong>Spalten und Zeilen</strong> an die Fenstergröße anpasst. Die Funktion sollte per default aktiviert sein, zur Sicherheit legen wir das hier trotzdem fest! Mit dem Parameter -u kann die Option übrigens wieder deaktiviert werden.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">shopt -s checkwinsize
-</span></span></code></pre></div><p>Hiermit wird das Aussehen und die Farbe der Kommandozeile geändert. Ich hab mich für eine relativ bunte Variante entschieden. Die Einstellung für den sog. Prompt wird in der globalen Variable <strong>PS1</strong> (<em>prompt statement 1</em>) gespeichert. Die folgenden Parameter sind hier geläufig:</p>
-<ul>
-<li>\u - Benutzername</li>
-<li>\h - Name des Hosts / Computers</li>
-<li>\w - der komplette aktuelle Pfad</li>
-<li>\n  - Ein Zeilenumbruch</li>
-</ul>
-<p>Mit <strong>PS2</strong>, <strong>PS3</strong>, <strong>PS4</strong> lassen sich noch andere Prompts konfigurieren, wie z.B. der für interaktive Eingaben in Bash-Scripten. Die Variable <strong>PROMPT_COMMAND</strong> wird sogar noch vor <strong>PS1</strong> dargestellt. Wer mehr dazu erfahren möchte, <a href="https://wiki.ubuntuusers.de/Bash/Prompt/#source-2">schaut einfach mal dort vorbei</a>.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">export</span> <span class="n">PS1</span><span class="o">=</span><span class="s2">&#34;$(date +%k:%m:%S) \[</span><span class="se">\033</span><span class="s2">[36m\]\u\[</span><span class="se">\033</span><span class="s2">[m\]@\[</span><span class="se">\033</span><span class="s2">[32m\]\h:\[</span><span class="se">\033</span><span class="s2">[33;1m\]\w\[</span><span class="se">\033</span><span class="s2">[m\]\$ &#34;</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl">
-</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"># Diese Konstanten steuern die Farben für die Ausgabe von cd.</span>
-</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="k">export</span> <span class="n">CLICOLOR</span><span class="o">=</span><span class="mi">1</span>
-</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="k">export</span> <span class="n">LSCOLORS</span><span class="o">=</span><span class="n">ExFxBxDxCxegedabagacad</span>
-</span></span></code></pre></div><p>Das ganze sieht dann so aus:</p>
-<p><img src="/2018/2018-08-24-die-os-x-bash/images/image-9.png" alt=""></p>
-<p>Eine bunte aber informative Kommandozeile</p>
-<p>Diese Funktion zeigt alle Prozesse, die unter dem aktuellen Benutzer aktiv sind:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">me() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }
-</span></span></code></pre></div><p>Als nächstes ein paar Aliase um das Netzwerk ein bisschen einfacher im Griff zu behalten:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl"># alle Verbindungen, die gerade &#34;Lauschen&#34;
-</span></span><span class="line"><span class="ln"> 2</span><span class="cl">alias cons=&#39;sudo lsof -i | grep LISTEN&#39;
-</span></span><span class="line"><span class="ln"> 3</span><span class="cl"># alle offenen Sockets
-</span></span><span class="line"><span class="ln"> 4</span><span class="cl">alias socks=&#39;sudo /usr/sbin/lsof -i -P&#39;
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl"># alle offenen TCP/IP-Sockets
-</span></span><span class="line"><span class="ln"> 6</span><span class="cl">alias tsocks=&#39;lsof -i&#39;
-</span></span><span class="line"><span class="ln"> 7</span><span class="cl"># alle offenen UDP-Sockets
-</span></span><span class="line"><span class="ln"> 8</span><span class="cl">alias usocks=&#39;sudo /usr/sbin/lsof -nP | grep UDP&#39;
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl"># alle offenen TCP-Sockets
-</span></span><span class="line"><span class="ln">10</span><span class="cl">alias lsocks=&#39;sudo /usr/sbin/lsof -nP | grep TCP&#39; 
-</span></span><span class="line"><span class="ln">11</span><span class="cl"># grundlegende Netzwerkeinstellungen
-</span></span><span class="line"><span class="ln">12</span><span class="cl">alias net=&#39;ipconfig getpacket en0&#39;
-</span></span><span class="line"><span class="ln">13</span><span class="cl">
-</span></span><span class="line"><span class="ln">14</span><span class="cl"># den DNS-Cache leeren
-</span></span><span class="line"><span class="ln">15</span><span class="cl">alias cleardns=&#39;dscacheutil -flushcache&#39;
-</span></span></code></pre></div><p>Die ganzen Inhalte gibt es hier noch einmal in kompakter Version:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="k">case</span> <span class="o">$-</span> <span class="ow">in</span>
-</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="o">*</span><span class="n">i</span><span class="o">*</span><span class="p">)</span> <span class="p">;;</span>
-</span></span><span class="line"><span class="ln"> 3</span><span class="cl">      <span class="o">*</span><span class="p">)</span> <span class="k">return</span><span class="p">;;</span>
-</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="n">esac</span>
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl">
-</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="n">alias</span> <span class="n">l</span><span class="o">=</span><span class="s1">&#39;ls -alCFGA&#39;</span>
-</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="n">alias</span> <span class="n">ll</span><span class="o">=</span><span class="s2">&#34;ls -CFGla&#34;</span>
-</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="n">alias</span> <span class="n">h</span><span class="o">=</span><span class="s2">&#34;history&#34;</span>
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="n">alias</span> <span class="o">.=</span><span class="s2">&#34;cd ~&#34;</span>
-</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="n">alias</span> <span class="o">..=</span><span class="s2">&#34;cd ..; pwd&#34;</span>
-</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="n">alias</span> <span class="o">...=</span><span class="s2">&#34;cd ../..; pwd&#34;</span>
-</span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="n">alias</span> <span class="n">mkdir</span><span class="o">=</span><span class="s2">&#34;mkdir -pv&#34;</span>
-</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="n">alias</span> <span class="n">grep</span><span class="o">=</span><span class="s1">&#39;grep --color=auto&#39;</span>
-</span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="n">alias</span> <span class="n">fgrep</span><span class="o">=</span><span class="s1">&#39;fgrep --color=auto&#39;</span>
-</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="n">alias</span> <span class="n">egrep</span><span class="o">=</span><span class="s1">&#39;egrep --color=auto&#39;</span>
-</span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="n">alias</span> <span class="n">f</span><span class="o">=</span><span class="s1">&#39;open -a Finder ./&#39;</span>
-</span></span><span class="line"><span class="ln">17</span><span class="cl">
-</span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="n">HISTCONTROL</span><span class="o">=</span><span class="n">ignoreboth</span>
-</span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="n">shopt</span> <span class="o">-</span><span class="n">s</span> <span class="n">histappend</span>
-</span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="n">HISTSIZE</span><span class="o">=</span><span class="mi">1000</span>
-</span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="n">HISTFILESIZE</span><span class="o">=</span><span class="mi">2000</span>
-</span></span><span class="line"><span class="ln">22</span><span class="cl">
-</span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="n">shopt</span> <span class="o">-</span><span class="n">s</span> <span class="n">checkwinsize</span>
-</span></span><span class="line"><span class="ln">24</span><span class="cl">
-</span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="k">case</span> <span class="s2">&#34;$TERM&#34;</span> <span class="ow">in</span>
-</span></span><span class="line"><span class="ln">26</span><span class="cl">    <span class="n">xterm</span><span class="o">-</span><span class="n">color</span><span class="o">|*-</span><span class="mi">256</span><span class="n">color</span><span class="p">)</span> <span class="n">color_prompt</span><span class="o">=</span><span class="n">yes</span><span class="p">;;</span>
-</span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="n">esac</span>
-</span></span><span class="line"><span class="ln">28</span><span class="cl">
-</span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="k">export</span> <span class="n">PS1</span><span class="o">=</span><span class="s2">&#34;$(date +%k:%m:%S) \[</span><span class="se">\033</span><span class="s2">[36m\]\u\[</span><span class="se">\033</span><span class="s2">[m\]@\[</span><span class="se">\033</span><span class="s2">[32m\]\h:\[</span><span class="se">\033</span><span class="s2">[33;1m\]\w\[</span><span class="se">\033</span><span class="s2">[m\]\$ &#34;</span>
-</span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="k">export</span> <span class="n">CLICOLOR</span><span class="o">=</span><span class="mi">1</span>
-</span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="k">export</span> <span class="n">LSCOLORS</span><span class="o">=</span><span class="n">ExFxBxDxCxegedabagacad</span>
-</span></span><span class="line"><span class="ln">32</span><span class="cl">
-</span></span><span class="line"><span class="ln">33</span><span class="cl"><span class="n">mcd</span> <span class="p">()</span> <span class="p">{</span> <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="s2">&#34;$1&#34;</span> <span class="o">&amp;&amp;</span> <span class="n">cd</span> <span class="s2">&#34;$1&#34;</span><span class="p">;</span> <span class="p">}</span>
-</span></span><span class="line"><span class="ln">34</span><span class="cl"><span class="n">me</span><span class="p">()</span> <span class="p">{</span> <span class="n">ps</span> <span class="o">$</span><span class="err">@</span> <span class="o">-</span><span class="n">u</span> <span class="o">$</span><span class="n">USER</span> <span class="o">-</span><span class="n">o</span> <span class="n">pid</span><span class="p">,</span><span class="o">%</span><span class="n">cpu</span><span class="p">,</span><span class="o">%</span><span class="n">mem</span><span class="p">,</span><span class="n">start</span><span class="p">,</span><span class="n">time</span><span class="p">,</span><span class="n">bsdtime</span><span class="p">,</span><span class="n">command</span> <span class="p">;</span> <span class="p">}</span>
-</span></span><span class="line"><span class="ln">35</span><span class="cl">
-</span></span><span class="line"><span class="ln">36</span><span class="cl"><span class="n">alias</span> <span class="n">cons</span><span class="o">=</span><span class="s1">&#39;sudo lsof -i | grep LISTEN&#39;</span>
-</span></span><span class="line"><span class="ln">37</span><span class="cl"><span class="n">alias</span> <span class="n">socks</span><span class="o">=</span><span class="s1">&#39;sudo /usr/sbin/lsof -i -P&#39;</span>
-</span></span><span class="line"><span class="ln">38</span><span class="cl"><span class="n">alias</span> <span class="n">tsocks</span><span class="o">=</span><span class="s1">&#39;lsof -i&#39;</span>
-</span></span><span class="line"><span class="ln">39</span><span class="cl"><span class="n">alias</span> <span class="n">usocks</span><span class="o">=</span><span class="s1">&#39;sudo /usr/sbin/lsof -nP | grep UDP&#39;</span>
-</span></span><span class="line"><span class="ln">40</span><span class="cl"><span class="n">alias</span> <span class="n">lsocks</span><span class="o">=</span><span class="s1">&#39;sudo /usr/sbin/lsof -nP | grep TCP&#39;</span>
-</span></span><span class="line"><span class="ln">41</span><span class="cl"><span class="n">alias</span> <span class="n">net</span><span class="o">=</span><span class="s1">&#39;ipconfig getpacket en0&#39;</span>
-</span></span><span class="line"><span class="ln">42</span><span class="cl"><span class="n">alias</span> <span class="n">cleardns</span><span class="o">=</span><span class="s1">&#39;dscacheutil -flushcache&#39;</span>
-</span></span></code></pre></div>
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> profile, alias, bash, mac, os-x, shell</p>
-        </div>
-        
-      ]]></content:encoded>
+      <description>Da ich mit meinem Mac sehr oft auf der Kommandozeile unterwegs bin (dazu empfehle ich übrigens iTerm2 - ein Terminal-Ersatz der alle anderen Anwendungen dieser Art auch auf Linux und Windows aussticht) habe ich mir dafür ein paar kleine Einstellungen zusammengesammelt, die das Leben und Arbeiten auf …</description>
       
       
       
@@ -191,50 +50,7 @@
       <pubDate>Sun, 24 Feb 2013 00:00:00 +0000</pubDate>
       <author></author>
       <guid>https://nickyreinert.de/2013/2013-02-24-macos-finder-und-die-smb-windows-netzwerkfreigaben/</guid>
-      <description>Immer wenn ich die Verbindung zu meinem Heimnetz hergestellt habe, sei es über WLAN oder Kabel, dauerte es eine gefühlte Ewigkeit, bis der Finder (sic!) mein …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Eine Anleitung aus dem Jahr 2013 zur Behebung langsamer Verbindungen von macOS Finder zu SMB/Windows-Netzwerkfreigaben (z.B. NAS). Der Artikel beschreibt eine Lösung, die das Erstellen und Speichern einer &#39;nsmb.conf&#39;-Datei im &#39;/etc&#39;-Verzeichnis mit spezifischen Konfigurationen beinhaltet, um die Erkennung und Verbindung zu beschleunigen.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> macOS, SMB, Netzwerkfreigaben, NAS, Troubleshooting, System-Konfiguration</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-          
-        </div>
-        
-        
-        <p>Immer wenn ich die Verbindung zu meinem Heimnetz hergestellt habe, sei es über WLAN oder Kabel, dauerte es eine gefühlte Ewigkeit, bis der Finder (sic!) mein NAS gefunden hat, obwohl beide am gleichen Switch hängen. Es half dabei auch nichts, wenn ich direkt zum NAS verbinden wollte, weil ich die IP-Adresse kenne (Apfel + K). Das hab ich eine Weile ignoriert, dann akzeptiert, aber irgendwann konnte ich die Geduld nicht mehr aufbringen und habe mich auf die Suche nach einer Lösung gemacht.</p>
-<p>Diese fand ich in den <a href="https://discussions.apple.com/thread/2172049?start=15&amp;tstart=0">Apple Support Foren.</a> Ein langer Beitrag kurz zusammengefasst:</p>
-<p>1. Erstelle ein Textdatei mit dem Inhalt</p>
-<blockquote>
-<p>[default]
-minauth=none
-streams=no
-soft=yes
-notify_off=yes
-domain=DOMAIN_NAME_DEINER_NETZWERKFREIGABE
-port445=no_netbios
-[NAME_DEINER_NETZWERKFREIGABE]
-addr=IP-ADRESSE_DEINER_FREIGABE</p></blockquote>
-<p>2. Speichere die Datei mit dem Namen &ldquo;nsmb.conf&rdquo; unter /etc ab. (Ggf.mit der Konsole / dem Terminal arbeiten). 3. Starte dein Mac(Book) neu.</p>
-<p>Danach dauerte es nur noch Bruchteile von Sekunden, bis die Netzwerkfreigabe im Finder sichtbar war.</p>
-<p> </p>
-<p>Update: Mit dem kostenfrei erhältlichen <a href="http://www.apple.com/de/osx/">Update auf MacOS 10.9 Mavericks</a> scheint dieses Problem behoben zu sein!</p>
-
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> macOS, Netzwerk, Troubleshooting, Anleitung</p>
-        </div>
-        
-      ]]></content:encoded>
+      <description>Immer wenn ich die Verbindung zu meinem Heimnetz hergestellt habe, sei es über WLAN oder Kabel, dauerte es eine gefühlte Ewigkeit, bis der Finder (sic!) mein NAS gefunden hat, obwohl beide am gleichen Switch hängen. Es half dabei auch nichts, wenn ich direkt zum NAS verbinden wollte, weil ich die …</description>
       
       
       
@@ -265,38 +81,8 @@ addr=IP-ADRESSE_DEINER_FREIGABE</p></blockquote>
       <pubDate>Mon, 24 Sep 2012 00:00:00 +0000</pubDate>
       <author></author>
       <guid>https://nickyreinert.de/2012/2012-09-24-dos-spiele-auf-dem-mac-spielen/</guid>
-      <description>Alte Dos-Spiele auf dem Mac spielen ist mit Boxer relativ einfach. Nach der Installation und dem Start der Boxer-App, kann man vorhandene Spiele starten, ein …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Dieser Artikel beschreibt, wie man alte DOS-Spiele auf einem Mac mithilfe des Emulators &#39;Boxer&#39; spielen kann. Er erläutert den einfachen Installations- und Importprozess von Spielen und hebt die intuitive Bedienung sowie die flüssige Performance der &#39;Boxer&#39;-App hervor.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> DOS Spiele, Emulation, macOS, Gaming, Software-Tools, Retro Gaming</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
-          
-        </div>
-        
-        
-        <p>Alte Dos-Spiele auf dem Mac spielen ist mit <a href="http://boxerapp.com/">Boxer</a> relativ einfach. Nach der Installation und dem Start der Boxer-App, kann man vorhandene Spiele starten, ein neues Spiel importieren oder einfach die Dos-Oberfläche aufrufen.</p>
-<p><img src="/2012/2012-09-24-dos-spiele-auf-dem-mac-spielen/images/Welcome-to-Boxer-150x150.png" alt="Welcome to Boxer"></p>
-<p>Der Import von Spielen gestaltet sich sehr einfach: Man kann das Spiel als Ordner oder ausführbare exe-Datei einfach in die Boxer-App ziehen. Entweder muss das Spiel nun noch installiert werden oder es kann gleich angespielt werden. Der Ordner, in dem Boxer die Spiele ablegt, wird als kleines Regal angezeigt.</p>
-<p><img src="/2012/2012-09-24-dos-spiele-auf-dem-mac-spielen/images/Drop-your-game-here-150x150.png" alt="Drop your game here - Boxer Startbildschirm"></p>
-<p>Die Spiele laufen auf einem MacBook Air der 2. Generation sehr flüssig, die Boxer-App ist stabil und intuitiv bedienbar.</p>
-
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> dos, emulator, spiele, macOS</p>
-        </div>
-        
-      ]]></content:encoded>
+      <description>Alte Dos-Spiele auf dem Mac spielen ist mit Boxer relativ einfach. Nach der Installation und dem Start der Boxer-App, kann man vorhandene Spiele starten, ein neues Spiel importieren oder einfach die Dos-Oberfläche aufrufen.
+Der Import von Spielen gestaltet sich sehr einfach: Man kann das Spiel als …</description>
       
       
       
@@ -330,56 +116,7 @@ addr=IP-ADRESSE_DEINER_FREIGABE</p></blockquote>
       <author></author>
       <guid>https://nickyreinert.de/2010/2010-06-24-ntfs-unter-mac-os-os-x/</guid>
       <description>
-NTFS und MacOs gehören nicht unbedingt zusammen. Man kommt also nicht um 3rd-Party-Software herum, um die NTFS unter MacOs nachzurüsten. Hier hilft ein Tool …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>Dieser Artikel bietet eine Anleitung zur Aktivierung von NTFS-Lese- und Schreibzugriff unter Mac OS X. Es wird die Verwendung von Drittanbieter-Tools wie MacFuse und NTFS-3G beschrieben, um die Kompatibilität mit NTFS-formatierten Laufwerken zu gewährleisten.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> Mac OS, NTFS, Dateisysteme, Software-Installation, System-Tools</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> beginner</p>
-          
-        </div>
-        
-        
-        <p><img src="/2010/2010-06-24-ntfs-unter-mac-os-os-x/ntfs-macos.png" alt="NTFS unter MacOS"></p>
-<p>NTFS und MacOs gehören nicht unbedingt zusammen. Man kommt also nicht um 3rd-Party-Software herum, um die NTFS unter MacOs nachzurüsten. Hier hilft ein Tool namens <strong>MacFuse</strong> weiter, das auf dem Mac verschiedene Dateisysteme implementieren kann sowie <strong>NTFS-3G</strong>, eben der passende Treiber für NTFS-Laufwerke.</p>
-<p>Beide Programme (bzw. Treiber) stehen als DMG-Datei zur Verfügung. Von NTFS-3G existiert auch eine kommerzielle Variante, die <a href="http://macntfs-3g.blogspot.com/">von Tuxera vertrieben</a> wird. Die kostenlose Variante fällt unter den &ldquo;Verantwortungsbereich&rdquo; von catacombae und reicht für unsere Zwecke eigentlich völlig aus.</p>
-<ul>
-<li>
-<p><a href="http://code.google.com/p/macfuse/">MacFuse auf code.google.com</a></p>
-</li>
-<li>
-<p><a href="http://sourceforge.net/projects/catacombae/files/NTFS-3G%20for%20Mac%20OS%20X/2010.10.2/">NTFS-3G auf sourceforge.net</a> 1. MacFuse herunterladen und installieren</p>
-</li>
-</ul>
-<ol>
-<li>
-<p>Neustart</p>
-</li>
-<li>
-<p>NTFS-3G herunterladen und installieren</p>
-</li>
-<li>
-<p>Neustart</p>
-</li>
-</ol>
-<p>Fertig.  Der Rest funktioniert automatisch. Viel Spass.</p>
-
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> Mac OS, NTFS, Anleitung, Software</p>
-        </div>
-        
-      ]]></content:encoded>
+NTFS und MacOs gehören nicht unbedingt zusammen. Man kommt also nicht um 3rd-Party-Software herum, um die NTFS unter MacOs nachzurüsten. Hier hilft ein Tool namens MacFuse weiter, das auf dem Mac verschiedene Dateisysteme implementieren kann sowie NTFS-3G, eben der passende Treiber für …</description>
       
       
       
