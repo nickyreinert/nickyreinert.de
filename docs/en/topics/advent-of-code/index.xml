@@ -20,84 +20,7 @@
       <author></author>
       <guid>https://nickyreinert.de/en/2024/2024-12-08-aoc-day-8/</guid>
       <description>(task | solution)
-The first time I read through the riddle, I was like: &ldquo;Phew, no way, I&rsquo;m going to skip this!&rdquo; I looked at the example and …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>A write-up of the author&#39;s solution to Day 8 of the Advent of Code 2024 challenge, implemented in Ruby. The article explains how visualization helps to understand the puzzle, which involves finding symmetrical points based on pairs of &#39;siblings&#39;&#39; on a grid. A complete Ruby code snippet for the brute-force solution to Part 1 is provided.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> Advent of Code, Ruby, Problem-Solving, Algorithmen, Computational Geometry</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-          
-        </div>
-        
-        
-        <p>(<a href="https://adventofcode.com/2024/day/8/">task</a> | <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day8%20-%20ruby">solution</a>)</p>
-<p>The first time I read through the riddle, I was like: &ldquo;Phew, no way, I&rsquo;m going to skip this!&rdquo; I looked at the example and the description, and it didn’t make sense at all. But when I’m stuck like that at the very beginning, the best approach to get a grip is: Visualize! (A concept I didn&rsquo;t learn from <a href="https://www.learnhuggingface.com/">Daniel Bourke&rsquo;s course about machine learning</a>, but he perfected it!)</p>
-<p>However, I thought it might be a good idea to use Ruby this time — my first time with this language. I won’t bother you with the environment setup. Again, I’m just using a containerized environment, which makes things so much easier.</p>
-<h3 id="solution-to-the-first-part">Solution to the First Part</h3>
-<p>So, what is this about? It’s about finding siblings on a surface, connecting them with a straight line, and then extending this line to find two symmetric points. The total number of all those points forms the solution to this riddle. The green and red cells represent two categories of siblings on the map, and the blue cells represent the symmetric points (called <code>antinodes</code>) that we need to find. If you connect them (with red lines), you’ll see how all of them pass through two cells of the same color:</p>
-<p><img src="/en/2024/2024-12-08-aoc-day-8/image-2.png" alt="alt text"></p>
-<p>Looks difficult, right? Don’t tell me, it took me a while to understand the &ldquo;gibberish&rdquo; of the riddle – no offense, riddle master.</p>
-<p>But wait until we add row and column numbers to the map and focus on just one group:</p>
-<p><img src="/en/2024/2024-12-08-aoc-day-8/image-1.png" alt="alt text"></p>
-<p>Now it seems quite easy: We just need to somehow identify the row and column distance between two siblings and use that to place the corresponding <code>antinode</code>.</p>
-<p>Let me just throw my solution into the ring. It’s not the most elegant, but it gets the job done:</p>
-<ul>
-<li>First, I use two loops to find two siblings.</li>
-<li>Then, I calculate the row and column indexes for both siblings.</li>
-<li>From there, I can calculate the row and column indexes for both <code>antinodes</code>.</li>
-<li>Finally, I just check if they are within the boundaries before adding them to a dictionary.</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ruby" data-lang="ruby"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="n">from_char_array</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">from_char</span><span class="p">,</span> <span class="n">from_index</span><span class="o">|</span>
-</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="k">next</span> <span class="k">if</span> <span class="n">from_char</span> <span class="o">==</span> <span class="s2">&#34;.&#34;</span>
-</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
-</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="n">from_char_array</span><span class="o">[</span><span class="p">(</span><span class="n">from_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">..-</span><span class="mi">1</span><span class="o">].</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">to_char</span><span class="p">,</span> <span class="n">to_index</span><span class="o">|</span>
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        <span class="k">next</span> <span class="k">unless</span> <span class="n">from_char</span> <span class="o">==</span> <span class="n">to_char</span>
-</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
-</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        <span class="n">from_row</span> <span class="o">=</span> <span class="p">(</span><span class="n">from_index</span> <span class="o">/</span> <span class="n">map_height</span><span class="p">)</span><span class="o">.</span><span class="n">floor</span>
-</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        <span class="n">from_col</span> <span class="o">=</span> <span class="n">from_index</span> <span class="o">-</span> <span class="p">(</span><span class="n">from_row</span> <span class="o">*</span> <span class="n">map_width</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
-</span></span><span class="line"><span class="ln">10</span><span class="cl">        <span class="n">to_row</span> <span class="o">=</span> <span class="p">((</span><span class="n">from_index</span> <span class="o">+</span> <span class="n">to_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">map_height</span><span class="p">)</span><span class="o">.</span><span class="n">floor</span>
-</span></span><span class="line"><span class="ln">11</span><span class="cl">        <span class="n">to_col</span> <span class="o">=</span> <span class="p">(</span><span class="n">from_index</span> <span class="o">+</span> <span class="n">to_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">to_row</span> <span class="o">*</span> <span class="n">map_width</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">12</span><span class="cl">
-</span></span><span class="line"><span class="ln">13</span><span class="cl">        <span class="nb">puts</span> <span class="s2">&#34;Found couple of </span><span class="si">#{</span><span class="n">from_char</span><span class="si">}</span><span class="s2"> at </span><span class="si">#{</span><span class="n">from_row</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">from_col</span><span class="si">}</span><span class="s2"> and at </span><span class="si">#{</span><span class="n">to_row</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">to_col</span><span class="si">}</span><span class="s2">&#34;</span>
-</span></span><span class="line"><span class="ln">14</span><span class="cl">
-</span></span><span class="line"><span class="ln">15</span><span class="cl">        <span class="n">first_antinode_row</span> <span class="o">=</span> <span class="n">from_row</span> <span class="o">-</span> <span class="p">(</span><span class="n">to_row</span> <span class="o">-</span> <span class="n">from_row</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">16</span><span class="cl">        <span class="n">second_antinode_row</span> <span class="o">=</span> <span class="n">to_row</span> <span class="o">+</span> <span class="p">(</span><span class="n">to_row</span> <span class="o">-</span> <span class="n">from_row</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">17</span><span class="cl">
-</span></span><span class="line"><span class="ln">18</span><span class="cl">        <span class="n">first_antinode_col</span> <span class="o">=</span> <span class="n">from_col</span> <span class="o">+</span> <span class="p">(</span><span class="n">from_col</span> <span class="o">-</span> <span class="n">to_col</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">19</span><span class="cl">        <span class="n">second_antinode_col</span> <span class="o">=</span> <span class="n">to_col</span> <span class="o">+</span> <span class="p">(</span><span class="n">to_col</span> <span class="o">-</span> <span class="n">from_col</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">20</span><span class="cl">
-</span></span><span class="line"><span class="ln">21</span><span class="cl">        <span class="k">if</span> <span class="n">first_antinode_row</span><span class="o">.</span><span class="n">between?</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">map_height</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">first_antinode_col</span><span class="o">.</span><span class="n">between?</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">map_width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">22</span><span class="cl">            <span class="n">antinodes</span><span class="o">[</span><span class="s2">&#34;</span><span class="si">#{</span><span class="n">first_antinode_row</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">first_antinode_col</span><span class="si">}</span><span class="s2">&#34;</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&#34;#&#34;</span>
-</span></span><span class="line"><span class="ln">23</span><span class="cl">        <span class="k">end</span>
-</span></span><span class="line"><span class="ln">24</span><span class="cl">        
-</span></span><span class="line"><span class="ln">25</span><span class="cl">        <span class="k">if</span> <span class="n">second_antinode_row</span><span class="o">.</span><span class="n">between?</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">map_height</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">second_antinode_col</span><span class="o">.</span><span class="n">between?</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">map_width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">26</span><span class="cl">            <span class="n">antinodes</span><span class="o">[</span><span class="s2">&#34;</span><span class="si">#{</span><span class="n">second_antinode_row</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">second_antinode_col</span><span class="si">}</span><span class="s2">&#34;</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&#34;#&#34;</span>
-</span></span><span class="line"><span class="ln">27</span><span class="cl">        <span class="k">end</span>
-</span></span><span class="line"><span class="ln">28</span><span class="cl">        
-</span></span><span class="line"><span class="ln">29</span><span class="cl">    <span class="k">end</span>
-</span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="k">end</span>
-</span></span></code></pre></div><p><em>If you&rsquo;re stuck on this one, no worries: I have to admit, although it&rsquo;s just roughly 20 lines of simple code, it took me a while to initially understand the task and then put everything together, because I was mixing up 0-based indexing, column calculation, and so on.</em></p>
-<p>And because I am already 4 days behind, I didn&rsquo;t even read the second part and continued to day 9&hellip;</p>
-<h2 id="whats-up-ruby">What&rsquo;s up, Ruby?</h2>
-<p><strong>Rating: 10/12 – underestimated diamond</strong></p>
-<p>I was honestly surprised at how easy it is to get something done in <code>Ruby</code>. It seems as simple and straightforward as <code>Python</code>, and if you&rsquo;re looking for a quick &rsquo;n&rsquo; dirty scripting language, I&rsquo;d say <code>Ruby</code> is definitely worth a try.</p>
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> Advent of Code, Ruby, Solution, Tutorial</p>
-        </div>
-        
-      ]]></content:encoded>
+The first time I read through the riddle, I was like: “Phew, no way, I’m going to skip this!” I looked at the example and the description, and it didn’t make sense at all. But when I’m stuck like that at the very beginning, the best approach to get a grip is: Visualize! (A concept …</description>
       
       
       
@@ -129,52 +52,8 @@ The first time I read through the riddle, I was like: &ldquo;Phew, no way, I&rsq
       <author></author>
       <guid>https://nickyreinert.de/en/2024/2024-12-07-aoc-day-7/</guid>
       <description>(task | solution)
-This is the kind of task I really enjoy: finding algorithms for simple mathematical challenges! Let&rsquo;s go—this time in&hellip; C++! …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>A write-up of the author&#39;s solution to Day 7 of the Advent of Code 2024 challenge, implemented in C&#43;&#43;. The article details the approach to finding operator combinations for mathematical challenges, highlights the need for 64-bit unsigned integers and the debugging of a subtle duplicate entry. It also briefly touches on the solution for the concatenation operator in Part 2.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> Advent of Code, C&#43;&#43;, Problem-Solving, Algorithmen, Programming Challenges</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-          
-        </div>
-        
-        
-        <p>(<a href="https://adventofcode.com/2024/day/7/">task</a> | <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day7%20-%20c%2B%2B">solution</a>)</p>
-<p>This is the kind of task I really enjoy: finding algorithms for simple mathematical challenges! Let&rsquo;s go—this time in&hellip; C++! (Phew!)</p>
-<p>You&rsquo;ll find my <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day7%20-%20c%2B%2B/.devcontainer">.devcontainer and Dockerfile</a> on GitHub. Once again, I don&rsquo;t want to <em>bloat</em> my system with additional compiler setups. It turns out, this is working like a charm.</p>
-<h3 id="solution-to-the-first-part">Solution to the First Part</h3>
-<p>Well, the idea is quite easy: We got a list of <code>operands</code> and need to find the correct combination of <code>+</code> and <code>*</code> to get a target result. What we basically need to do is: Loop through all given equations, get all possible permutations of <code>+</code> and <code>*</code> for <code>n</code> given operands, and then do the math.</p>
-<p>The first tricky thing here is: They are providing a lot of huge numbers. So using 32-bit integers isn&rsquo;t sufficient. You not only need 64-bit integers, but also <strong>unsigned</strong> to work with numbers like <code>175.033.602.122.656</code>.</p>
-<p>But they also hid a little pitfall in the list of possible equations: There is <strong>one</strong> (exactly <strong>one</strong>!) duplicate entry. Which makes it hard to find. Would it be ten, 42, or 100 duplicate entries, you would somehow stumble over it. But now it took me a while, and I was close to throwing this task away. I started debugging and I wondered why I am only processing 849 equations instead of 850. At first glance, it looks like one of those classic &ldquo;indexing starts at zero&rdquo; bugs. But then I did, what you usually do when filling dictionaries: You check if the entry you want to add already exists. And it does.</p>
-<p>And while this wouldn&rsquo;t lead to a valid equation&hellip;</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">1095: 8 5 9 3 231
-</span></span></code></pre></div><p>This line certainly does</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">1095: 8 1 2 7 95 8 2 7 2 2 99
-</span></span></code></pre></div><p>And so I found the missing value for the final result&hellip;</p>
-<h3 id="solution-to-the-second-part">Solution to the Second Part</h3>
-<p>Well, the second part took me a while because I was somehow trying to build this concatenation part into the current algorithm. We now have three operators, <code>*</code>, <code>+</code>, and <code>||</code> — but the last one should connect two integers.</p>
-<p>Eventually, I had my <em>heureka</em> moment: Concatenation could be implemented as a mathematical operation, too.</p>
-<p>If the left number is <code>123</code> followed by <code>45</code>, we need to multiply <code>123</code> with <code>10^2</code> and then just add <code>45</code>. Easy math.</p>
-<p><strong>Side note</strong>: I was cheating a little. I now know that <code>1095</code> is a duplicated entry, and I know it would lead to a valid result, so I am adding it hard-coded to get the final result.</p>
-<h2 id="whats-up-c">Whats up, C++?</h2>
-<p><strong>Rating: 6/12 – painful</strong></p>
-<p>Well, <code>C++</code> is undoubtedly a powerful language, but for a reason it&rsquo;s not beating all those scripting languages out there. Simple things are complicated because you have to implement them on your own. 5 out of 12 seems to be unfair for such a grown-up programming language, but this is simply my point of view. For me, right now, there&rsquo;s no reason to use C++. Which absolutely does not mean that this language is not important! Nevertheless, using it felt like an adult pro developer. ;)</p>
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> Advent of Code, C&#43;&#43;, Solution, Tutorial</p>
-        </div>
-        
-      ]]></content:encoded>
+This is the kind of task I really enjoy: finding algorithms for simple mathematical challenges! Let’s go—this time in… C++! (Phew!)
+You’ll find my .devcontainer and Dockerfile on GitHub. Once again, I don’t want to bloat my system with additional compiler setups. It turns out, this …</description>
       
       
       
@@ -206,49 +85,9 @@ This is the kind of task I really enjoy: finding algorithms for simple mathemati
       <author></author>
       <guid>https://nickyreinert.de/en/2024/2024-12-06-aoc-day-6/</guid>
       <description>(task | solution)
-This task looks tricky, so I am once again choosing a simple language that I am familiar with: JavaScript (which, by the way, was developed in …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>A brief write-up of the author&#39;s approach to Day 6 of the Advent of Code 2024 challenge using JavaScript. The post outlines the simple path-finding solution for Part 1 and describes the pattern-recognition logic required to solve Part 2, which involves creating infinite loops with obstacles.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> Advent of Code, JavaScript, Problem-Solving, Algorithmen</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-          
-        </div>
-        
-        
-        <p>(<a href="https://adventofcode.com/2024/day/6/">task</a> | <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day6%20-%20javascript">solution</a>)</p>
-<p>This task looks tricky, so I am once again choosing a simple language that I am familiar with: JavaScript (<a href="https://nickyreinert.medium.com/ne-34-javascript-was-developed-within-10-days-0116b32a38b6">which, by the way, was developed in just 10 days</a>).</p>
-<p>With no further ado&hellip;</p>
-<h3 id="solution-to-the-first-part">Solution to the First Part</h3>
-<p>There&rsquo;s not much to explain. As expected, I just need to move the <code>guard</code> through the maze by increasing and decreasing rows and columns. When I hit an obstacle, I change direction. When I hit the border of the maze, I’ve solved the task. Easy peasy&hellip;</p>
-<h3 id="solution-to-the-second-part">Solution to the Second Part</h3>
-<p>The second part is kind of tricky. They want us to find positions of additional obstacles that make the maze unsolvable.</p>
-<p>Well, there&rsquo;s an easy pattern behind it. You will see it if you visualize it:</p>
-<p>An infinite loop occurs when you have four obstacles on each edge of a rectangle, like this:</p>
-<p><img src="/en/2024/2024-12-06-aoc-day-6/image.png" alt="alt text"></p>
-<p>So, all we need to do at every step on our path is to try to draw a rectangle. If it has three existing obstacles, we get one potential solution for an &ldquo;artificial obstacle.</p>
-<p>In case you&rsquo;re wondering: I didn&rsquo;t finish the second part. I know the solution approach, but seeing that I am three days behind already, I stopped working on it.</p>
-<h2 id="whats-up-javascript">Whats up, JavaScript?</h2>
-<p><strong>Rating: 9/12 – god ol&rsquo; frien&rsquo;</strong></p>
-<p>Fun Fact: <a href="https://nickyreinert.medium.com/javascript-how-to-find-prime-numbers-fast-cbcf6bd62e3d">I was writing an algorithm</a> to find prime numbers and found out that JavaScript is way faster than Python.</p>
-<p>However, I really like JavaScript and often use it when I want to build small <em>proof of concepts</em>. It&rsquo;s quick, runs everywhere (like in every browser), and is quite straightforward.</p>
-<p>Despite the second bump in the journey to endless glory, I hope to see you again tomorrow!</p>
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> Advent of Code, JavaScript, Solution</p>
-        </div>
-        
-      ]]></content:encoded>
+This task looks tricky, so I am once again choosing a simple language that I am familiar with: JavaScript (which, by the way, was developed in just 10 days).
+With no further ado…
+</description>
       
       
       
@@ -280,51 +119,8 @@ This task looks tricky, so I am once again choosing a simple language that I am 
       <author></author>
       <guid>https://nickyreinert.de/en/2024/2024-12-05-aoc-day-5/</guid>
       <description>(task | solution)
-It&rsquo;s the fifth day of our outrageous adventure, and we are dealing with printer updates. To solve this riddle, we are getting back to …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>A brief write-up of the author&#39;s attempt to solve Day 5 of the Advent of Code 2024 challenge using Bash. The article outlines the approach for Part 1, which involves using regular expressions to validate printer updates, and admits to not completing Part 2 due to a missing detail in the logic.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> Advent of Code, Bash, Problem-Solving, Scripting, Regular Expressions</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-          
-        </div>
-        
-        
-        <p>(<a href="https://adventofcode.com/2024/day/5/">task</a> | <a href="https://github.com/nickyreinert/aoc2024/blob/main/solutions/day5%20-%20bash/solve.sh">solution</a>)</p>
-<p>It&rsquo;s the fifth day of our outrageous adventure, and we are dealing with printer updates. To solve this riddle, we are getting back to the roots and our good ol&rsquo; friend <code>Bash</code>!</p>
-<p>The good news here is that I don&rsquo;t need to set up any particular environment because, thankfully, <code>Bash</code> is available on most systems out of the box.</p>
-<h3 id="solution-to-the-first-part">Solution to the First Part</h3>
-<p>The solution is quite straightforward: We need to read the rules and the updates into an array, loop through all updates, and check if they somehow break the rules. That&rsquo;s nothing too complicated. The only thing that I am probably doing <em>unconventionally</em> is how I check.</p>
-<p>I am using a regular expression that is the opposite of the rule. If it matches, I know the update is invalid:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="mf">61.</span><span class="o">*</span><span class="err">?</span><span class="p">(,</span><span class="mi">29</span><span class="p">)(,</span><span class="o">|</span><span class="err">$</span><span class="p">)</span>
-</span></span></code></pre></div><p>In this example, <code>29</code> is the actual rule name, and <code>61</code> should come after <code>29</code>. With <code>.*?</code>, I am <em>ungreedy</em> checking for any characters in between, and the closing group just makes sure that after <code>29</code>, there&rsquo;s either another number or the end of the update.</p>
-<p>Simple thing.</p>
-<h3 id="solution-to-the-second-part">Solution to the Second Part</h3>
-<p>The second part looks way easier. They just want us to switch the position of the pages that we identified as erroneous.</p>
-<p>Basically, it&rsquo;s just something like this:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">updates<span class="o">[</span>page_index<span class="o">]=</span><span class="nv">$subsequent_page</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl">updates<span class="o">[</span>subsequent_page_index<span class="o">]=</span><span class="nv">$page</span>
-</span></span></code></pre></div><p>But&hellip; yeah, that&rsquo;s the first bump in my journey. My code isn&rsquo;t resulting in the correct answer, and it seems like I am missing a detail. To avoid wasting any more time, I&rsquo;ll proceed to the next day&hellip; sorry folks :(</p>
-<h2 id="whats-up-bash">Whats up, Bash?</h2>
-<p><strong>Rating: 8/12 – weird operators and syntax</strong></p>
-<p>The boss of all scripting languages: <code>Bash</code>. I still don&rsquo;t understand most of the syntax rules, but thanks to AI, it&rsquo;s not too hard to get things done in <code>Bash</code>. When working as a sysadmin, I loved automating processes and even building small user interfaces to make life on the command line easier. However, I guess there are better ways for that.</p>
-<p>See you next day!</p>
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> Advent of Code, Bash, Solution, Scripting</p>
-        </div>
-        
-      ]]></content:encoded>
+It’s the fifth day of our outrageous adventure, and we are dealing with printer updates. To solve this riddle, we are getting back to the roots and our good ol’ friend Bash!
+The good news here is that I don’t need to set up any particular environment because, thankfully, Bash is …</description>
       
       
       
@@ -357,80 +153,7 @@ It&rsquo;s the fifth day of our outrageous adventure, and we are dealing with pr
       <guid>https://nickyreinert.de/en/2024/2024-12-04-aoc-day-4/</guid>
       <description>(task)
 I Made It to Day 4!
-And today&rsquo;s task perfectly fits Excel. Some—if not most—people don&rsquo;t like Excel and would never consider it a serious …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>A walkthrough of the author&#39;s solution to Day 4 of the Advent of Code 2024 challenge, solved entirely within Microsoft Excel. The article demonstrates how to use Excel formulas like &#39;SEQUENCE&#39;, &#39;CONCAT&#39;, and boolean casting to efficiently find and count specific text patterns in a large grid of characters for both parts of the puzzle.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> Advent of Code, Excel, Problem-Solving, Algorithmen, Data-Analysis</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-          
-        </div>
-        
-        
-        <p>(<a href="https://adventofcode.com/2024/day/4/">task</a>)</p>
-<p>I Made It to Day 4!</p>
-<p>And today&rsquo;s task perfectly fits Excel. Some—if not most—people don&rsquo;t like Excel and would never consider it a serious tool for data analytics, exploration, or even &ldquo;engineering.&rdquo; Well, you&rsquo;re wrong about Excel. It&rsquo;s quite powerful if you know how to use it. Let me show you&hellip;</p>
-<p>The first part of the task is a kind of word riddle where we have to count occurrences of &ldquo;XMAS&rdquo; in a huge grid of letters. And actually, that&rsquo;s pretty easy with Excel. I&rsquo;d even say it&rsquo;s easier than using a fully-fledged scripting tool.</p>
-<h3 id="solution-to-the-first-part">Solution to the First Part</h3>
-<p>The input comes as a couple of lines. To make each character addressable, we first need to split each character into its own column. While I could use &ldquo;Text to Columns,&rdquo; the goal is to make this dynamic, so I will utilize a formula:</p>
-<p><em>_LENGTH refers to <code>[C2]</code></em></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[D1]=MID(B4;SEQUENCE(1;_LENGTH);1)
-</span></span></code></pre></div><p>If you pull this formula down, you get a matrix like this (referring to the example input):</p>
-<p><img src="/en/2024/2024-12-04-aoc-day-4/image-1.png" alt="alt text"></p>
-<p>The following image shows all possible solutions:</p>
-<p><img src="/en/2024/2024-12-04-aoc-day-4/starting_matrix.png" alt="starting matrix"></p>
-<p>We start with the most simple solution, where <code>XMAS</code> is <em>plotted</em> from the center to the right. The surrounding <code>if-condition</code> is temporary, only to make the result visible:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=IF(CONCAT(G21;H21;I21;J21)=&#34;XMAS&#34;;&#34;+&#34;;&#34;&#34;)
-</span></span></code></pre></div><p>It&rsquo;s quite easy, right? We copy the formula (not the result of the cell!) to a text editor and modify it to get the other seven directions.</p>
-<p>Eventually, you end up with eight lines looking like this:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=IF(CONCAT(G21;H21;I21;J21)=&#34;XMAS&#34;;&#34;+&#34;;&#34;&#34;)
-</span></span><span class="line"><span class="ln">2</span><span class="cl">=IF(CONCAT(G21;H22;I23;J24)=&#34;XMAS&#34;;&#34;+&#34;;&#34;&#34;)
-</span></span><span class="line"><span class="ln">3</span><span class="cl">=IF(CONCAT(G21;G22;G23;G24)=&#34;XMAS&#34;;&#34;+&#34;;&#34;&#34;)
-</span></span><span class="line"><span class="ln">4</span><span class="cl">=IF(CONCAT(G21;F22;E23;D24)=&#34;XMAS&#34;;&#34;+&#34;;&#34;&#34;)
-</span></span><span class="line"><span class="ln">5</span><span class="cl">=IF(CONCAT(G21;F22;E23;D24)=&#34;XMAS&#34;;&#34;+&#34;;&#34;&#34;)
-</span></span><span class="line"><span class="ln">6</span><span class="cl">=IF(CONCAT(G21;F20;E19;D18)=&#34;XMAS&#34;;&#34;+&#34;;&#34;&#34;)
-</span></span><span class="line"><span class="ln">7</span><span class="cl">=IF(CONCAT(G21;G20;G19;G18)=&#34;XMAS&#34;;&#34;+&#34;;&#34;&#34;)
-</span></span><span class="line"><span class="ln">8</span><span class="cl">=IF(CONCAT(G21;H20;I19;J18)=&#34;XMAS&#34;;&#34;+&#34;;&#34;&#34;)
-</span></span></code></pre></div><p>To count the occurrences of all existing solutions, we could either build some kind of <code>LAMBDA</code> function or use a simple trick: We just cast the <code>TRUE</code> or <code>FALSE</code> result to an integer:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=--(VERKETTEN(G21;H21;I21;J21)=&#34;XMAS&#34;)+
-</span></span><span class="line"><span class="ln">2</span><span class="cl">    --(VERKETTEN(G21;H22;I23;J24)=&#34;XMAS&#34;)+
-</span></span><span class="line"><span class="ln">3</span><span class="cl">    --(VERKETTEN(G21;G22;G23;G24)=&#34;XMAS&#34;)+
-</span></span><span class="line"><span class="ln">4</span><span class="cl">    --(VERKETTEN(G21;F21;E21;D21)=&#34;XMAS&#34;)+
-</span></span><span class="line"><span class="ln">5</span><span class="cl">    --(VERKETTEN(G21;F22;E23;D24)=&#34;XMAS&#34;)+
-</span></span><span class="line"><span class="ln">6</span><span class="cl">    --(VERKETTEN(G21;F20;E19;D18)=&#34;XMAS&#34;)+
-</span></span><span class="line"><span class="ln">7</span><span class="cl">    --(VERKETTEN(G21;G20;G19;G18)=&#34;XMAS&#34;)+
-</span></span><span class="line"><span class="ln">8</span><span class="cl">    --(VERKETTEN(G21;H20;I19;J18)=&#34;XMAS&#34;)
-</span></span></code></pre></div><p>And now apply it to our testing dataset. Copy the cell (not the formula!) next to our matrix. It should refer to the first column in the first row. Then drag it to the right and down to cover the whole area. You should end up with something like this:</p>
-<p><img src="/en/2024/2024-12-04-aoc-day-4/image-5.png" alt="alt text"></p>
-<p>The sum of the matrix is 18 — which is exactly the number of <code>XMAS</code> hidden in the test dataset. Now take the actual puzzle input, copy it to your sheet, and apply your <em>magic formula</em> to it. If you want to avoid dragging the formula to the right and down, you could use <code>SEQUENCE</code> again, but we&rsquo;ll save that for later&hellip;</p>
-<p>The good thing about the Excel approach is that the second part doesn&rsquo;t make it more complicated. We stick with our strategy and now just look for all possible variations of <code>X-MAS</code>. There are four:</p>
-<p><img src="/en/2024/2024-12-04-aoc-day-4/image-6.png" alt="alt text"></p>
-<p>And our formula changes a little. We know that <code>A</code> has to be in the middle. We concatenate the surrounding four cells and just test for all four possible combinations of <code>S</code> and <code>M</code>, which leads us to something like this:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=--(OR(CONCAT(F210;G209;G211;E211;E209)=&#34;AMSSM&#34;;
-</span></span><span class="line"><span class="ln">2</span><span class="cl">    CONCAT(F210;G209;G211;E211;E209)=&#34;ASSMM&#34;;
-</span></span><span class="line"><span class="ln">3</span><span class="cl">    CONCAT(F210;G209;G211;E211;E209)=&#34;ASMMS&#34;;
-</span></span><span class="line"><span class="ln">4</span><span class="cl">    CONCAT(F210;G209;G211;E211;E209)=&#34;AMMSS&#34;))
-</span></span></code></pre></div><p>It&rsquo;s even simpler than the previous one! Again, just make it reference your dataset, and you get the correct result!</p>
-<h2 id="whats-up-excel">Whats up, Excel?</h2>
-<p><strong>Rating: 10/12 – understimated and powerful</strong></p>
-<p>I&rsquo;m not gonna lie: I really love Excel. Since a couple of years, Excel also supports <code>LAMBDA</code>, which allows for more complex calculations and even functional programming. <a href="https://nickyreinert.medium.com/how-to-create-an-animated-ticker-in-excel-without-vba-1c4fdb17a0d4">You can even build an animated ticker in Excel</a> (shameless self-promotion)!</p>
-<p>That said&hellip; see you next day!</p>
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> Advent of Code, Excel, Tutorial, Solution</p>
-        </div>
-        
-      ]]></content:encoded>
+And today’s task perfectly fits Excel. Some—if not most—people don’t like Excel and would never consider it a serious tool for data analytics, exploration, or even “engineering.” Well, you’re wrong about Excel. It’s quite powerful if you know how to use it. Let me show …</description>
       
       
       
@@ -461,99 +184,7 @@ And today&rsquo;s task perfectly fits Excel. Some—if not most—people don&rsq
       <pubDate>Tue, 03 Dec 2024 12:34:56 +0200</pubDate>
       <author></author>
       <guid>https://nickyreinert.de/en/2024/2024-12-03-aoc-day-3/</guid>
-      <description>(task | solution) As I reached the third day of my adventure, I had already learned something new that significantly improves the process: the devcontainer.json …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>A detailed write-up of the author&#39;s Python solution to Day 3 of the Advent of Code 2024 challenge. The article showcases the power of Python&#39;s list comprehensions for parsing text and performing calculations, including a complex nested solution for handling conditional logic in Part 2.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> Advent of Code, Python, List Comprehension, Regular Expressions, Problem-Solving, Text Processing</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-          
-        </div>
-        
-        
-        <p>(<a href="https://adventofcode.com/2024/day/3/">task</a> | <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day3%20-%20python">solution</a>)
-As I reached the third day of my adventure, I had already learned something new that significantly improves the process: the <code>devcontainer.json</code> file can handle creating and running the Docker container for me. This saves the trouble of manually building and running it—essentially saving two commands on the command line, which adds up to about three seconds. Still, it’s an improvement. However, I am not going to use it.</p>
-<p>I had initially planned to solve today’s riddle in <strong>BASIC</strong>—the first programming language I learned 30 years ago. However, it turns out that deploying a BASIC compiler into a container isn</p>
-<p>Today, we need to parse a text to find all occurrences of <code>mul(n, m)</code>, calculate the product of <code>n</code> and <code>m</code>, and finally compute the sum of all products. Let&rsquo;s try to find a <em>neat</em> one-liner for that.</p>
-<h3 id="solution-of-the-first-part">Solution of the first part</h3>
-<p>Here it is:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;input.txt&#34;</span><span class="p">,</span> <span class="s2">&#34;r&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">([</span><span class="n">reduce</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="k">match</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;mul&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">)))</span> <span class="k">for</span> <span class="k">match</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&#34;mul\(\d{1,3},\d{1,3}\)&#34;</span><span class="p">,</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">())]))</span>
-</span></span></code></pre></div><p>What am I doing? Well, let’s read it from the inside out:</p>
-<p>First, we get all occurrences of <code>mul(n, m)</code>, which is quite easy using regex:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&#34;mul\(\d{1,3},\d{1,3}\)</span>
-</span></span></code></pre></div><p>Then, we go through all matching groups using Python&rsquo;s list comprehension feature:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="p">[</span><span class="k">match</span> <span class="k">for</span> <span class="k">match</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&#34;mul\(\d{1,3},\d{1,3}\)&#34;</span><span class="p">,</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">())]</span>
-</span></span></code></pre></div><p>But we&rsquo;re not just using the plain result, which is a string like <code>mul(4, 2)</code>. First, we remove <code>mul</code> to get the parentheses, then we evaluate the string into an actual tuple, like <code>(4, 2)</code>:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="k">match</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;mul&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">))</span>
-</span></span></code></pre></div><p>Now that we have a list of integers, we can apply multiplication to each item:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">reduce</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-</span></span></code></pre></div><p>Each of the products will be fed into the final list. The <code>sum()</code> method simply adds up all the products in the list. The surrounding <code>with ... as file:</code> simply opens the file to read the content.</p>
-<h2 id="solution-of-the-second-part">Solution of the second part</h2>
-<p>Well, the second part is a little trickier with three additional rules:</p>
-<ul>
-<li>Only sum up products of <code>mul()</code> if there&rsquo;s the preceding keyword <code>do()</code>.</li>
-<li>Ignore all <code>mul()</code> instructions after the keyword <code>dont()</code>.</li>
-<li>All <code>mul()</code> instructions at the beginning, where there&rsquo;s neither a <code>dont()</code> nor a <code>do()</code>, need to be considered, too.</li>
-</ul>
-<p>This sounds easy at first glance, so I tried to figure out a way to simply adjust my regular expression. With no success, but a ton of frustration. However, I figured out a different way that is way more fun and demonstrates the obscure power of list comprehension:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">sum</span><span class="p">([</span><span class="nb">sum</span><span class="p">([</span><span class="nb">sum</span><span class="p">([</span><span class="n">reduce</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="k">match</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;mul&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">)))</span> <span class="k">for</span> <span class="k">match</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&#34;mul\(\d{1,3},\d{1,3}\)&#34;</span><span class="p">,</span> <span class="n">dos</span><span class="p">)])</span> <span class="k">for</span> <span class="n">_j</span><span class="p">,</span> <span class="n">dos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">donts</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;do()&#34;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])])</span> <span class="k">for</span> <span class="n">_i</span><span class="p">,</span> <span class="n">donts</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">file_contents</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;don&#39;t()&#34;</span><span class="p">))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">donts</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;do()&#34;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">])</span>
-</span></span></code></pre></div><p>I guess you have questions? Fair enough. There you go, this is the expanded version:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">sum_of_all</span> <span class="o">=</span> <span class="mi">0</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="k">for</span> <span class="n">_i</span><span class="p">,</span> <span class="n">donts</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="s1">&#39;do()&#39;</span> <span class="o">+</span> <span class="n">file_contents</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;don&#39;t()&#34;</span><span class="p">)):</span>
-</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">donts</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;do()&#34;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-</span></span><span class="line"><span class="ln">4</span><span class="cl">        <span class="k">for</span> <span class="n">_j</span><span class="p">,</span> <span class="n">dos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">donts</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;do()&#34;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]):</span>
-</span></span><span class="line"><span class="ln">5</span><span class="cl">            <span class="k">for</span> <span class="k">match</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&#34;mul\(\d{1,3},\d{1,3}\)&#34;</span><span class="p">,</span> <span class="n">dos</span><span class="p">):</span>
-</span></span><span class="line"><span class="ln">6</span><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;string: </span><span class="si">{</span><span class="n">match</span><span class="si">}</span><span class="s1"> - list: </span><span class="si">{</span><span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;mul&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">))</span><span class="si">}</span><span class="s1"> -  product: </span><span class="si">{</span><span class="n">reduce</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;mul&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">)))</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">7</span><span class="cl">                <span class="n">sum_of_all</span> <span class="o">+=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="k">match</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;mul&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">)))</span>
-</span></span><span class="line"><span class="ln">8</span><span class="cl">
-</span></span><span class="line"><span class="ln">9</span><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;sum: </span><span class="si">{</span><span class="n">sum_of_all</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-</span></span></code></pre></div><p>The idea is that I simply split the whole text by the string <code>dont()</code> in the first <code>for</code> loop. This returns a list of items, where I know that every <code>mul()</code> must be ignored until I encounter a <code>do()</code> in the string.</p>
-<p>This leads to the next operation: Instead of parsing the string, I split each of the strings by the keyword <code>do()</code>. If this string contains <code>do()</code>, I get a list of 2 items. If not, I can ignore the whole string in my outer loop.</p>
-<p>Otherwise, I take all items except the first one, and now I can apply the logic from above: using the regular expression to get the list of integers, then multiplying and summing up.</p>
-<p>There&rsquo;s a small pitfall: The third rule says that all instructions at the beginning of the string, until the first <code>do()</code> or <code>dont()</code>, need to be considered. The simplest way to handle this is by just adding <code>do()</code> to the initial input string.</p>
-<p>In case you&rsquo;re wondering how to go from the seemingly simple connection of nested loops to this nasty nested list comprehension—you achieve it step by step:</p>
-<p>First, we iterate through the raw file content:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="p">[</span><span class="n">donts</span> <span class="k">for</span> <span class="n">_i</span><span class="p">,</span> <span class="n">donts</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="s1">&#39;do()&#39;</span> <span class="o">+</span> <span class="n">file_contents</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;don&#39;t()&#34;</span><span class="p">))]</span>
-</span></span></code></pre></div><p>Then, we replace <code>dont()</code> with the next loop:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="p">[[</span><span class="n">dos</span> <span class="k">for</span> <span class="n">_j</span><span class="p">,</span> <span class="n">dos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">donts</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;do()&#34;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])]</span> <span class="k">for</span> <span class="n">_i</span><span class="p">,</span> <span class="n">donts</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="s1">&#39;do()&#39;</span> <span class="o">+</span> <span class="n">file_contents</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;don&#39;t()&#34;</span><span class="p">))]</span>
-</span></span></code></pre></div><p>Don&rsquo;t forget to add a condition to skip results with a length of 1:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="p">[[</span><span class="n">dos</span> <span class="k">for</span> <span class="n">_j</span><span class="p">,</span> <span class="n">dos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">donts</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;do()&#34;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])]</span> <span class="k">for</span> <span class="n">_i</span><span class="p">,</span> <span class="n">donts</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="s1">&#39;do()&#39;</span> <span class="o">+</span> <span class="n">file_contents</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;don&#39;t()&#34;</span><span class="p">))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">donts</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;do()&#34;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
-</span></span></code></pre></div><p>Then, we can replace <code>do()</code> with the following loop:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="p">[[[</span><span class="k">match</span> <span class="k">for</span> <span class="k">match</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&#34;mul\(\d{1,3},\d{1,3}\)&#34;</span><span class="p">,</span> <span class="n">dos</span><span class="p">)]</span> <span class="k">for</span> <span class="n">_j</span><span class="p">,</span> <span class="n">dos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">donts</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;do()&#34;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])]</span> <span class="k">for</span> <span class="n">_i</span><span class="p">,</span> <span class="n">donts</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="s1">&#39;do()&#39;</span> <span class="o">+</span> <span class="n">file_contents</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;don&#39;t()&#34;</span><span class="p">))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">donts</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;do()&#34;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
-</span></span></code></pre></div><p>Now we are at the point where we handle the matching groups, so we replace <code>match</code> with everything we need to get a product out of the stringified list of integers:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="p">[[[</span><span class="n">reduce</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="k">match</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;mul&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">)))</span> <span class="k">for</span> <span class="k">match</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&#34;mul\(\d{1,3},\d{1,3}\)&#34;</span><span class="p">,</span> <span class="n">dos</span><span class="p">)]</span> <span class="k">for</span> <span class="n">_j</span><span class="p">,</span> <span class="n">dos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">donts</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;do()&#34;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])]</span> <span class="k">for</span> <span class="n">_i</span><span class="p">,</span> <span class="n">donts</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="s1">&#39;do()&#39;</span> <span class="o">+</span> <span class="n">file_contents</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;don&#39;t()&#34;</span><span class="p">))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">donts</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;do()&#34;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
-</span></span></code></pre></div><p>And eventually, we get the sum of each nested list:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">sum</span><span class="p">([</span><span class="nb">sum</span><span class="p">([</span><span class="nb">sum</span><span class="p">([</span><span class="n">reduce</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="k">match</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;mul&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">)))</span> <span class="k">for</span> <span class="k">match</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&#34;mul\(\d{1,3},\d{1,3}\)&#34;</span><span class="p">,</span> <span class="n">dos</span><span class="p">)])</span> <span class="k">for</span> <span class="n">_j</span><span class="p">,</span> <span class="n">dos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">donts</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;do()&#34;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])])</span> <span class="k">for</span> <span class="n">_i</span><span class="p">,</span> <span class="n">donts</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="s1">&#39;do()&#39;</span> <span class="o">+</span> <span class="n">file_contents</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;don&#39;t()&#34;</span><span class="p">))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">donts</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;do()&#34;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">])</span>
-</span></span></code></pre></div><p>Looks great, doesn&rsquo;t it?</p>
-<h2 id="whats-up-python">Whats up, Python?</h2>
-<p><strong>Rating: 14/12 – nice and friendly, always again</strong></p>
-<p>Uncontroversial—one of Python&rsquo;s best features is list comprehensions, which also work for dictionaries, sets, and tuples, by the way. List comprehensions have so many features; besides the way you can nest them, you can add conditions in two ways. Either when you add an item to the output list&hellip;</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="p">[</span><span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="o">-</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
-</span></span></code></pre></div><p>&hellip;or before:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
-</span></span></code></pre></div><p>You can loop through multiple lists (et al):</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="p">[(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
-</span></span></code></pre></div><p>You can not only nest them, but also serialize multiple loops to flatten a nested input:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">nested</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">nested</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">]</span>
-</span></span></code></pre></div><p>And there are probably a couple more that I don&rsquo;t even know.</p>
-<p>See you next day&hellip;</p>
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> Advent of Code, Python, Solution, Tutorial</p>
-        </div>
-        
-      ]]></content:encoded>
+      <description>(task | solution) As I reached the third day of my adventure, I had already learned something new that significantly improves the process: the devcontainer.json file can handle creating and running the Docker container for me. This saves the trouble of manually building and running it—essentially …</description>
       
       
       
@@ -585,100 +216,8 @@ As I reached the third day of my adventure, I had already learned something new 
       <author></author>
       <guid>https://nickyreinert.de/en/2024/2024-12-02-aoc-day-2/</guid>
       <description>(task | solution)
-This task is about testing if integers in a list are increasing or decreasing. I&rsquo;ll try Rust, and I assume I need nerves of steel for …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>A write-up of the author&#39;s solution to Day 2 of the Advent of Code 2024 challenge, implemented in Rust. The article details the setup of a containerized Rust development environment using Docker and VS Code, briefly describes the day&#39;s task (checking integer sequences), and shares the author&#39;s first impressions of Rust&#39;s ownership model and explicit error handling.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> Advent of Code, Rust, Programming Languages, Docker, VS Code, Problem-Solving</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-          
-        </div>
-        
-        
-        <p>(<a href="https://adventofcode.com/2024/day/2/">task</a> | <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day2%20-%20rust">solution</a>)</p>
-<p><a href="https://adventofcode.com/2024/day/2">This task</a> is about testing if integers in a list are increasing or decreasing. I&rsquo;ll try <code>Rust</code>, and I assume I need nerves of steel for this exercise.</p>
-<h2 id="setting-up-the-development-environment">Setting Up the Development Environment</h2>
-<p>Rust comes in a container, too. Here&rsquo;s the Dockerfile:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c"># Dockerfile</span><span class="err">
-</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="err"></span><span class="k">FROM</span><span class="s"> rust:latest</span><span class="err">
-</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="err"></span><span class="c"># Install additional tools you might need</span><span class="err">
-</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="err"></span><span class="k">RUN</span> apt-get update <span class="o">&amp;&amp;</span> apt-get install -y <span class="se">\
-</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="se"></span>    git <span class="se">\
-</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="se"></span>    curl <span class="se">\
-</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="se"></span>    wget <span class="se">\
-</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="se"></span>    build-essential<span class="err">
-</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="err"></span><span class="c"># Set the working directory</span><span class="err">
-</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /workspace</span><span class="err">
-</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="err"></span><span class="c"># Copy project files (if any)</span><span class="err">
-</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="err"></span><span class="k">COPY</span> . .<span class="err">
-</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="err"></span><span class="c"># Default command</span><span class="err">
-</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;bash&#34;</span><span class="p">]</span><span class="err">
-</span></span></span></code></pre></div><p>And here&rsquo;s the <code>devcontainer.json</code> to develop inside that container made of steel:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">{
-</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    &#34;name&#34;: &#34;Rust Development Container&#34;,
-</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    &#34;build&#34;: {
-</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        &#34;dockerfile&#34;: &#34;../Dockerfile&#34;
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    },
-</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    &#34;customizations&#34;: {
-</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        &#34;vscode&#34;: {
-</span></span><span class="line"><span class="ln"> 8</span><span class="cl">            &#34;extensions&#34;: [
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl">                &#34;rust-lang.rust-analyzer&#34;,
-</span></span><span class="line"><span class="ln">10</span><span class="cl">                &#34;serayuzgur.crates&#34;,
-</span></span><span class="line"><span class="ln">11</span><span class="cl">                &#34;tamasfe.even-better-toml&#34;
-</span></span><span class="line"><span class="ln">12</span><span class="cl">            ]
-</span></span><span class="line"><span class="ln">13</span><span class="cl">        }
-</span></span><span class="line"><span class="ln">14</span><span class="cl">    },
-</span></span><span class="line"><span class="ln">15</span><span class="cl">    &#34;remoteUser&#34;: &#34;root&#34;,
-</span></span><span class="line"><span class="ln">16</span><span class="cl">    &#34;features&#34;: {
-</span></span><span class="line"><span class="ln">17</span><span class="cl">        &#34;ghcr.io/devcontainers/features/rust:1&#34;: {}
-</span></span><span class="line"><span class="ln">18</span><span class="cl">    }
-</span></span><span class="line"><span class="ln">19</span><span class="cl">}
-</span></span></code></pre></div><p>Rust also requires a <code>Cargo.toml</code> file that defines your project and dependencies:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"># Cargo.toml
-</span></span><span class="line"><span class="ln">2</span><span class="cl">[package]
-</span></span><span class="line"><span class="ln">3</span><span class="cl">name = &#34;rust-docker-project&#34;
-</span></span><span class="line"><span class="ln">4</span><span class="cl">version = &#34;0.1.0&#34;
-</span></span><span class="line"><span class="ln">5</span><span class="cl">edition = &#34;2024&#34;
-</span></span><span class="line"><span class="ln">6</span><span class="cl">
-</span></span><span class="line"><span class="ln">7</span><span class="cl">[dependencies]
-</span></span><span class="line"><span class="ln">8</span><span class="cl"># none, ehehe
-</span></span></code></pre></div><p>That&rsquo;s all we need. Build it with <code>docker build</code> and connect VS Code. The source file is located inside the <code>src</code> folder. You can run your code like this</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">cargo build
-</span></span><span class="line"><span class="ln">2</span><span class="cl">cargo run
-</span></span></code></pre></div><p>The algorithm itself isn&rsquo;t that tricky. <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day2%20-%20rust/src">You&rsquo;ll find everything on Github</a>.</p>
-<h2 id="whats-up-rust">Whats up, Rust?</h2>
-<p><strong>Rating: 4/12 – Wouldn&rsquo;t use it freely</strong></p>
-<p>Don&rsquo;t get me started. I didn&rsquo;t know that Rust has so many strange rules. There’s this interesting concept of <strong>ownership</strong>: values belong to a variable as long as you don&rsquo;t assign that variable to another variable. If you pass a value from one vector to another, you can&rsquo;t access it in the original vector anymore.</p>
-<p>And then there are many important operators scattered across the code, like:</p>
-<ul>
-<li><code>&amp;</code> for <strong>borrowing</strong> (referencing a value without taking ownership)</li>
-<li><code>*</code> for <strong>de-referencing</strong> (accessing the value a reference points to)</li>
-</ul>
-<p>What I <em>do</em> like, though, is the error handling. Rust uses <code>Ok</code> and <code>Err</code> to make handling errors much cleaner and explicit:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-rust" data-lang="rust"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">Err</span><span class="p">(</span><span class="s">&#34;Value not valid&#34;</span><span class="p">)</span><span class="w">
-</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="w"></span><span class="nb">Ok</span><span class="p">(())</span><span class="w">
-</span></span></span></code></pre></div><p>This approach forces you to handle potential issues early on, which is great for reliability.</p>
-<p>See you next day&hellip;</p>
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> Advent of Code, Rust, Solution, Docker, VSCode</p>
-        </div>
-        
-      ]]></content:encoded>
+This task is about testing if integers in a list are increasing or decreasing. I’ll try Rust, and I assume I need nerves of steel for this exercise.
+</description>
       
       
       
@@ -710,114 +249,7 @@ This task is about testing if integers in a list are increasing or decreasing. I
       <author></author>
       <guid>https://nickyreinert.de/en/2024/2024-12-01-aoc-day-1/</guid>
       <description>(task | solution)
-As the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. …</description>
-      
-      
-      <content:encoded>&lt;![CDATA[
-        
-        <div class="ai-summary">
-          <h3>AI-Zusammenfassung</h3>
-          <p>A write-up of the author&#39;s solution to Day 1 of the Advent of Code 2024 challenge, implemented in F#. The article details the setup of a containerized F# development environment using Docker and VS Code, briefly describes the day&#39;s tasks (differences and products), and shares the author&#39;s positive first impressions of F#&#39;s functional programming style.</p>
-          
-          
-          <p><strong>Hauptthemen:</strong> Advent of Code, F#, Functional Programming, Docker, VS Code, Problem-Solving</p>
-          
-          
-          
-          <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
-          
-        </div>
-        
-        
-        <p>(<a href="https://adventofcode.com/2024/day/1/">task</a> | <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day1%20-%20f%23">solution</a>)</p>
-<p>As the challenge at <a href="https://adventofcode.com/">AoC</a> is not about the syntax but the algorithm, I decided to try a different approach this year: <strong>a new language every day</strong>. I am probably not going to explain the code in detail, but I will point out characteristics of each particular language that I think are worth mentioning. Let&rsquo;s see how far I get. Please don&rsquo;t take my judgement to serious.</p>
-<blockquote>
-<p>Disclaimer: Of course, I am using AI to get the actual syntax, but not for the algorithm itself. I usually use ClaudeAI for that, as I&rsquo;ve experienced the best results with the free version there.</p></blockquote>
-<p>On the first day, I&rsquo;m starting with <code>F#</code> — the sister of <code>C#</code> — which focuses on functional programming.</p>
-<h2 id="setting-up-the-development-environment">Setting Up the Development Environment</h2>
-<p>First, I need to set up my development environment. Since I don’t want to pollute my system with tons of different interpreters, I prefer to work in Docker containers. Above all, this requires <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers">the Dev Containers extension</a>. To make VS Code ready for F#, I also need <a href="https://marketplace.visualstudio.com/items?itemName=Ionide.Ionide-fsharp">the Ionide extension</a>.</p>
-<p>Here is the Dockerfile for a containerized F# environment:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1"># Use official .NET SDK image with F# support</span>
-</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="n">FROM</span> <span class="n">mcr</span><span class="o">.</span><span class="n">microsoft</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">dotnet</span><span class="o">/</span><span class="n">sdk</span><span class="p">:</span><span class="mf">8.0</span>
-</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
-</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="c1"># Install additional tools</span>
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> \
-</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> \
-</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="n">git</span> \
-</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="n">curl</span> \
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="n">vim</span> \
-</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="n">sudo</span>
-</span></span><span class="line"><span class="ln">11</span><span class="cl">
-</span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="c1"># Create vscode user with sudo permissions</span>
-</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="n">RUN</span> <span class="n">groupadd</span> <span class="o">-</span><span class="n">r</span> <span class="n">vscode</span> \
-</span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="o">&amp;&amp;</span> <span class="n">useradd</span> <span class="o">-</span><span class="n">m</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span> <span class="o">-</span><span class="n">g</span> <span class="n">vscode</span> <span class="o">-</span><span class="n">G</span> <span class="n">sudo</span> <span class="n">vscode</span> \
-</span></span><span class="line"><span class="ln">15</span><span class="cl">    <span class="o">&amp;&amp;</span> <span class="n">echo</span> <span class="s2">&#34;vscode ALL=(ALL) NOPASSWD:ALL&#34;</span> <span class="o">&gt;&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sudoers</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">vscode</span> \
-</span></span><span class="line"><span class="ln">16</span><span class="cl">    <span class="o">&amp;&amp;</span> <span class="n">chmod</span> <span class="mi">0440</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sudoers</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">vscode</span>
-</span></span><span class="line"><span class="ln">17</span><span class="cl">
-</span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="c1"># Set working directory and ensure proper ownership</span>
-</span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="n">WORKDIR</span> <span class="o">/</span><span class="n">app</span>
-</span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="n">RUN</span> <span class="n">chown</span> <span class="o">-</span><span class="n">R</span> <span class="n">vscode</span><span class="p">:</span><span class="n">vscode</span> <span class="o">/</span><span class="n">app</span>
-</span></span><span class="line"><span class="ln">21</span><span class="cl">
-</span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="c1"># Ensure .NET tools are in PATH</span>
-</span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="n">ENV</span> <span class="n">PATH</span><span class="o">=</span><span class="s2">&#34;/home/vscode/.dotnet/tools:${PATH}&#34;</span>
-</span></span><span class="line"><span class="ln">24</span><span class="cl">
-</span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="c1"># Set the default user to vscode</span>
-</span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="n">USER</span> <span class="n">vscode</span>
-</span></span><span class="line"><span class="ln">27</span><span class="cl">
-</span></span><span class="line"><span class="ln">28</span><span class="cl"><span class="c1"># Ensure .NET tools are installed for the vscode user</span>
-</span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="n">RUN</span> <span class="n">dotnet</span> <span class="k">tool</span> <span class="n">list</span> <span class="o">--</span><span class="n">global</span> <span class="o">||</span> <span class="bp">true</span>
-</span></span><span class="line"><span class="ln">30</span><span class="cl">
-</span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="c1"># Default command</span>
-</span></span><span class="line"><span class="ln">32</span><span class="cl"><span class="n">CMD</span> <span class="p">[</span><span class="s2">&#34;/bin/bash&#34;</span><span class="p">]</span>
-</span></span></code></pre></div><p>Developing inside a container requires /.devcontainer/devcontainer.json to look like this:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="s2">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;F# Dev Environment&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="s2">&#34;build&#34;</span><span class="p">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        <span class="s2">&#34;dockerfile&#34;</span><span class="p">:</span> <span class="s2">&#34;../Dockerfile&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        <span class="s2">&#34;context&#34;</span><span class="p">:</span> <span class="s2">&#34;..&#34;</span>
-</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="p">},</span>
-</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="s2">&#34;remoteUser&#34;</span><span class="p">:</span> <span class="s2">&#34;vscode&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="s2">&#34;workspaceFolder&#34;</span><span class="p">:</span> <span class="s2">&#34;/app&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="s2">&#34;customizations&#34;</span><span class="p">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="ln">10</span><span class="cl">        <span class="s2">&#34;vscode&#34;</span><span class="p">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="ln">11</span><span class="cl">            <span class="s2">&#34;extensions&#34;</span><span class="p">:</span> <span class="p">[</span>
-</span></span><span class="line"><span class="ln">12</span><span class="cl">                <span class="s2">&#34;Ionide.ionide-fsharp&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln">13</span><span class="cl">                <span class="s2">&#34;ms-dotnettools.csharp&#34;</span>
-</span></span><span class="line"><span class="ln">14</span><span class="cl">            <span class="p">]</span>
-</span></span><span class="line"><span class="ln">15</span><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="ln">16</span><span class="cl">    <span class="p">},</span>
-</span></span><span class="line"><span class="ln">17</span><span class="cl">    <span class="s2">&#34;mounts&#34;</span><span class="p">:</span> <span class="p">[</span>
-</span></span><span class="line"><span class="ln">18</span><span class="cl">        <span class="s2">&#34;source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached&#34;</span>
-</span></span><span class="line"><span class="ln">19</span><span class="cl">    <span class="p">],</span>
-</span></span><span class="line"><span class="ln">20</span><span class="cl">    <span class="s2">&#34;containerUser&#34;</span><span class="p">:</span> <span class="s2">&#34;vscode&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="ln">21</span><span class="cl">    <span class="s2">&#34;remoteEnv&#34;</span><span class="p">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="ln">22</span><span class="cl">        <span class="s2">&#34;DOTNET_CLI_HOME&#34;</span><span class="p">:</span> <span class="s2">&#34;/app&#34;</span>
-</span></span><span class="line"><span class="ln">23</span><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>Now, after building and running the container with <code>docker-compose build; docker-compose up -d</code>, I can connect to the container by either pressing <code>CMD+SHIFT+P</code> or using the small blue button on the bottom left, selecting the option &ldquo;<em>Connect to Dev Container.</em>&rdquo;</p>
-<h2 id="day-1---about-differences-and-products">Day 1 - About differences and products</h2>
-<p>(<a href="https://adventofcode.com/2024/day/1">task</a> - <a href="https://github.com/nickyreinert/aoc2024/blob/main/solutions/day1.fsx">solution</a>)</p>
-<p>The first day consists of two simple tasks, so I won’t go into too much detail:</p>
-<ol>
-<li>Order two lists incrementally, then get the difference for each list item and sum all differences up.</li>
-<li>For each item on the first list, count the occurrences on the second list, compute the product <code>i * frequency(i)</code>, and then get the sum of all products.</li>
-</ol>
-<h2 id="whats-up-f">Whats up, F#?</h2>
-<p><em>8 of 12, would like to stay in touch</em></p>
-<p>Well, I certainly havent had the chance to get familar with F#, but at the first glance I like how you can connect output to adjecent commands using the pipe operator:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">let readListFromFile (filePath: string) =
-</span></span><span class="line"><span class="ln">2</span><span class="cl">    File.ReadAllLines(filePath) 
-</span></span><span class="line"><span class="ln">3</span><span class="cl">    |&gt; Array.map int
-</span></span><span class="line"><span class="ln">4</span><span class="cl">    |&gt; Array.toList
-</span></span></code></pre></div><p>This makes things quiete easy, resulting in a clearer and more concise coding style. Seems like F# is a good choice for hands one problem solving.</p>
-<p>See you next day&hellip;</p>
-        
-        
-        <div class="tags">
-          <p><strong>Tags:</strong> Advent of Code, F#, Solution, Docker, VSCode</p>
-        </div>
-        
-      ]]></content:encoded>
+As the challenge at AoC is not about the syntax but the algorithm, I decided to try a different approach this year: a new language every day. I am probably not going to explain the code in detail, but I will point out characteristics of each particular language that I think are …</description>
       
       
       
