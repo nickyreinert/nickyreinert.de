@@ -354,8 +354,7 @@ Was ist Bash? Bash steht für “Bourn again shell” und ist eine Erweiterung d
 <p>Seit der Version 10.3 ist Bash auch Bestandteil von Mac OS X und bringt damit eine Menge Vorteile für die Arbeit auf der Kommandozeile mit sich.</p>
 <h2 id="die-bash-konfigurationsdateien">Die Bash Konfigurationsdateien</h2>
 <p>Die globalen Einstellungen für die Bash befinden sich in der Datei <strong>/etc/bashrc</strong> und der <strong>/etc/profile</strong>. Wer Einstellungen auf bestimmte Benutzer beschränken will, kann im Benutzerverzeichnis (du gelangst mit <em>cd ~</em> dorthin) eine Datei mit dem Name <strong>.profile</strong>, <strong>.bash_login</strong> oder <strong>.bash_profile</strong> anlegen. Beachte, dass <strong>.profile</strong> nur geladen wird, wenn <strong>.bash_login</strong> nicht existiert, welche wiederum durch <strong>.bash_profile</strong> überschrieben wird. Das gilt allerdings nicht, wenn du dich als <strong>root-Benutzer</strong> anmeldest - dann wird nur die Datei <strong>.profile</strong> gelesen. Der Grund ist, dass der Root-Benutzer nicht <strong>bash</strong> sondern <strong>sh</strong> ausführt, wodurch nur die <strong>~/.profile</strong>-Datei berücksichtigt wird.</p>
-<p><img src="/2018/2018-08-24-die-os-x-bash/images/image-8.png" alt=""></p>
-<p>Hierarchie der Bash-Konfigurations-Dateien</p>
+<img src="/2018/2018-08-24-die-os-x-bash/images/image-8.png" alt=""><p>Hierarchie der Bash-Konfigurations-Dateien</p>
 <p>Daneben gibt es theoretisch auch die Möglichkeit, im Benutzerverzeichnis eine Datei mit dem Namen <strong>.bashrc</strong> anzulegen. Diese wird jedoch nur dann geladen, wenn Bash ausgeführt wird, ohne dass sich ein Benutzer dazu anmeldet (die sogenannte <em>non-login-shell</em>). Im OS X-Umfeld wird das aber nicht benötigt. Du kannst das erzwingen, indem du auf der Kommandozeile <strong>/bin/bash</strong> ausführst - wir wollen die jetzt schon komplizierte Geschichte aber nicht unnötigen verkomplizieren. ;)</p>
 <h2 id="die-bash-aufhübschen">Die Bash aufhübschen</h2>
 <p>Nach der langweiligen aber notwendige Theorie, gibts jetzt ein paar Zeilen Code, mit denen die Kommandozeile gleich viel besser aussieht. Ich hab aus oben genannten Gründen das Ganze in die Datei <strong>~/.profile</strong> gepackt. Zunächst einmal ein paar Aliase um die Verzeichnislisten etwas übersichtlicher zu gestalten oder auch das oft benutzte <strong>cd</strong> (<em>change dir</em>) zu vereinfachen.</p>
@@ -400,8 +399,7 @@ Was ist Bash? Bash steht für “Bourn again shell” und ist eine Erweiterung d
 </span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="k">export</span> <span class="n">CLICOLOR</span><span class="o">=</span><span class="mi">1</span>
 </span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="k">export</span> <span class="n">LSCOLORS</span><span class="o">=</span><span class="n">ExFxBxDxCxegedabagacad</span>
 </span></span></code></pre></div><p>Das ganze sieht dann so aus:</p>
-<p><img src="/2018/2018-08-24-die-os-x-bash/images/image-9.png" alt=""></p>
-<p>Eine bunte aber informative Kommandozeile</p>
+<img src="/2018/2018-08-24-die-os-x-bash/images/image-9.png" alt=""><p>Eine bunte aber informative Kommandozeile</p>
 <p>Diese Funktion zeigt alle Prozesse, die unter dem aktuellen Benutzer aktiv sind:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">me() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }
 </span></span></code></pre></div><p>Als nächstes ein paar Aliase um das Netzwerk ein bisschen einfacher im Griff zu behalten:</p>

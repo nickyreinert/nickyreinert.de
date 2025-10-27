@@ -361,10 +361,8 @@ And today’s task perfectly fits Excel. Some—if not most—people don’t lik
 <p><em>_LENGTH refers to <code>[C2]</code></em></p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[D1]=MID(B4;SEQUENCE(1;_LENGTH);1)
 </span></span></code></pre></div><p>If you pull this formula down, you get a matrix like this (referring to the example input):</p>
-<p><img src="/en/2024/2024-12-04-aoc-day-4/image-1.png" alt="alt text"></p>
-<p>The following image shows all possible solutions:</p>
-<p><img src="/en/2024/2024-12-04-aoc-day-4/starting_matrix.png" alt="starting matrix"></p>
-<p>We start with the most simple solution, where <code>XMAS</code> is <em>plotted</em> from the center to the right. The surrounding <code>if-condition</code> is temporary, only to make the result visible:</p>
+<img src="/en/2024/2024-12-04-aoc-day-4/image-1.png" alt="alt text"><p>The following image shows all possible solutions:</p>
+<img src="/en/2024/2024-12-04-aoc-day-4/starting_matrix.png" alt="starting matrix"><p>We start with the most simple solution, where <code>XMAS</code> is <em>plotted</em> from the center to the right. The surrounding <code>if-condition</code> is temporary, only to make the result visible:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=IF(CONCAT(G21;H21;I21;J21)=&#34;XMAS&#34;;&#34;+&#34;;&#34;&#34;)
 </span></span></code></pre></div><p>It&rsquo;s quite easy, right? We copy the formula (not the result of the cell!) to a text editor and modify it to get the other seven directions.</p>
 <p>Eventually, you end up with eight lines looking like this:</p>
@@ -386,11 +384,9 @@ And today’s task perfectly fits Excel. Some—if not most—people don’t lik
 </span></span><span class="line"><span class="ln">7</span><span class="cl">    --(VERKETTEN(G21;G20;G19;G18)=&#34;XMAS&#34;)+
 </span></span><span class="line"><span class="ln">8</span><span class="cl">    --(VERKETTEN(G21;H20;I19;J18)=&#34;XMAS&#34;)
 </span></span></code></pre></div><p>And now apply it to our testing dataset. Copy the cell (not the formula!) next to our matrix. It should refer to the first column in the first row. Then drag it to the right and down to cover the whole area. You should end up with something like this:</p>
-<p><img src="/en/2024/2024-12-04-aoc-day-4/image-5.png" alt="alt text"></p>
-<p>The sum of the matrix is 18 — which is exactly the number of <code>XMAS</code> hidden in the test dataset. Now take the actual puzzle input, copy it to your sheet, and apply your <em>magic formula</em> to it. If you want to avoid dragging the formula to the right and down, you could use <code>SEQUENCE</code> again, but we&rsquo;ll save that for later&hellip;</p>
+<img src="/en/2024/2024-12-04-aoc-day-4/image-5.png" alt="alt text"><p>The sum of the matrix is 18 — which is exactly the number of <code>XMAS</code> hidden in the test dataset. Now take the actual puzzle input, copy it to your sheet, and apply your <em>magic formula</em> to it. If you want to avoid dragging the formula to the right and down, you could use <code>SEQUENCE</code> again, but we&rsquo;ll save that for later&hellip;</p>
 <p>The good thing about the Excel approach is that the second part doesn&rsquo;t make it more complicated. We stick with our strategy and now just look for all possible variations of <code>X-MAS</code>. There are four:</p>
-<p><img src="/en/2024/2024-12-04-aoc-day-4/image-6.png" alt="alt text"></p>
-<p>And our formula changes a little. We know that <code>A</code> has to be in the middle. We concatenate the surrounding four cells and just test for all four possible combinations of <code>S</code> and <code>M</code>, which leads us to something like this:</p>
+<img src="/en/2024/2024-12-04-aoc-day-4/image-6.png" alt="alt text"><p>And our formula changes a little. We know that <code>A</code> has to be in the middle. We concatenate the surrounding four cells and just test for all four possible combinations of <code>S</code> and <code>M</code>, which leads us to something like this:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=--(OR(CONCAT(F210;G209;G211;E211;E209)=&#34;AMSSM&#34;;
 </span></span><span class="line"><span class="ln">2</span><span class="cl">    CONCAT(F210;G209;G211;E211;E209)=&#34;ASSMM&#34;;
 </span></span><span class="line"><span class="ln">3</span><span class="cl">    CONCAT(F210;G209;G211;E211;E209)=&#34;ASMMS&#34;;

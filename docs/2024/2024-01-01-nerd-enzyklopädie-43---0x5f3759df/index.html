@@ -12,7 +12,6 @@
   
   
   <meta name="description" content="In der Informationstechnologie gibt es zwei wichtige Innovationstreiber: Die Porno-Industrie und die Spiele-Industrie. Quake III ist ein wegweisender Vertreter der Spiele-Industrie. Der Pionier unter den Ego-Shootern wurde 1999 veröffentlicht, eroberte die Herzen der spielenden Gemeinde im Sturm und glänzte mit für die damaligen Verhältnisse herausragenden optischen Effekten. Und das trotz vergleichsweise geringer Anforderungen an die Hardware.
-
 Nerd-Enzyklopädie #43
 Um das zu ermöglichen nutzte Quake die „fast inverse square root“ (zu Deutsch klingt es etwas sperriger: „Schnelle umgekehrte Quadratwurzel”).">
   
@@ -349,18 +348,14 @@ Um das zu ermöglichen nutzte Quake die „fast inverse square root“ (zu Deuts
   <article style="border-top: 2px solid #878787;" class="content">
     
     <p>In der Informationstechnologie gibt es zwei wichtige Innovationstreiber: Die <strong>Porno-Industrie</strong> und die <strong>Spiele-Industrie</strong>. <strong>Quake III</strong> ist ein wegweisender Vertreter der Spiele-Industrie. Der Pionier unter den Ego-Shootern wurde <strong>1999</strong> veröffentlicht, eroberte die Herzen der spielenden Gemeinde im Sturm und glänzte mit für die damaligen Verhältnisse herausragenden optischen Effekten. Und das trotz vergleichsweise geringer Anforderungen an die Hardware.</p>
-<p><img src="/2024/2024-01-01-nerd-enzyklop%C3%A4die-43---0x5f3759df/image_1.png" alt=""></p>
-<p>Nerd-Enzyklopädie #43</p>
+<img src="/2024/2024-01-01-nerd-enzyklop%C3%A4die-43---0x5f3759df/image_1.png" alt=""><p>Nerd-Enzyklopädie #43</p>
 <p>Um das zu ermöglichen nutzte <strong>Quake</strong> die „<strong>fast inverse square root</strong>“ (zu Deutsch klingt es etwas sperriger: „Schnelle umgekehrte Quadratwurzel”).</p>
 <p>Aber… warum? Um in einer dreidimensionalen Welt bestimmte physikalische Effekt zu simulieren, nutzt man <strong>Vektoren</strong>. Nehmen wir z.B. die Berechnung von <strong>Lichtreflektionen</strong>: Um den Einfalls- und Ausfallswinkel auf einer beliebigen Fläche korrekt zu berechnen, benötigt man einen Vektor, genau genommen einen <strong>normierten Vektor</strong>.</p>
 <p>Die Formel für die Berechnung des Betrages eines Vektor (sprich seiner „Länge“) sieht folgendermaßen aus:</p>
-<p><img src="/2024/2024-01-01-nerd-enzyklop%C3%A4die-43---0x5f3759df/image_2.png" alt=""></p>
-<p>Wer in der Schule gut aufgepasst hat, sollte davon nicht sonderlich beeindruckt sein. Es handelt sich im Prinzip um den <strong>Satz des Pythagoras</strong> <strong>auf Steroiden</strong>.</p>
+<img src="/2024/2024-01-01-nerd-enzyklop%C3%A4die-43---0x5f3759df/image_2.png" alt=""><p>Wer in der Schule gut aufgepasst hat, sollte davon nicht sonderlich beeindruckt sein. Es handelt sich im Prinzip um den <strong>Satz des Pythagoras</strong> <strong>auf Steroiden</strong>.</p>
 <p>Ein <strong>normierter Vektor</strong> hat einen Betrag von 1, die Richtung bleibt unverändert:</p>
-<p><img src="/2024/2024-01-01-nerd-enzyklop%C3%A4die-43---0x5f3759df/image_3.png" alt=""></p>
-<p>Um einen Vektor zu normieren, multipliziert man ihm mit dem Kehrwert seines Betrages:</p>
-<p><img src="/2024/2024-01-01-nerd-enzyklop%C3%A4die-43---0x5f3759df/image_4.png" alt=""></p>
-<p>Diese Formel muss <strong>millionenfach</strong> ausgeführt werden, wenn man eine Lichtbrechung mit einer halbwegs ansehnlichen Qualität in einem Spiel erzeugen möchte.</p>
+<img src="/2024/2024-01-01-nerd-enzyklop%C3%A4die-43---0x5f3759df/image_3.png" alt=""><p>Um einen Vektor zu normieren, multipliziert man ihm mit dem Kehrwert seines Betrages:</p>
+<img src="/2024/2024-01-01-nerd-enzyklop%C3%A4die-43---0x5f3759df/image_4.png" alt=""><p>Diese Formel muss <strong>millionenfach</strong> ausgeführt werden, wenn man eine Lichtbrechung mit einer halbwegs ansehnlichen Qualität in einem Spiel erzeugen möchte.</p>
 <p>Für die Summen und Potenzen (das sind ja letztlich auch nur Summen) ist das kein Problem, wohl aber für die Wurzel bzw. den Kehrwert der Wurzel — die <strong>inverse square root</strong>.</p>
 <p>Anfangs behalf man sich mit riesigen Tabellen, die die Ergebnisse zahlreicher Berechnungen enthielten. Das sprengt irgendwann den Rahmen und man musste eine andere Lösung finden. Und diese ist und war <strong>elegant und rebellisch</strong> zugleich — der „<strong>fast inverse square root</strong>“ Algorithmus:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl">    <span class="ne">float</span> <span class="n">Q_rsqrt</span><span class="p">(</span> <span class="ne">float</span> <span class="n">number</span> <span class="p">)</span>  

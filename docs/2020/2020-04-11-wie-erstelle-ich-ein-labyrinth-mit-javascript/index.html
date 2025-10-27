@@ -431,8 +431,7 @@
 </span></span><span class="line"><span class="ln">25</span><span class="cl">
 </span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Hier werden noch keine Wände entfernt, sondern erstmal nur der Weg nachgezeichnet, um eine Idee für den Algorithmus zu bekommen. Und so sieht das aus:</p>
-<p><img src="/2020/2020-04-11-wie-erstelle-ich-ein-labyrinth-mit-javascript/images/grafik-3-700x701.png" alt=""></p>
-<h2 id="schritt-2-einen-funken-abwechslung">Schritt 2: Einen Funken Abwechslung</h2>
+<img src="/2020/2020-04-11-wie-erstelle-ich-ein-labyrinth-mit-javascript/images/grafik-3-700x701.png" alt=""><h2 id="schritt-2-einen-funken-abwechslung">Schritt 2: Einen Funken Abwechslung</h2>
 <p>Ein wenig Abwechslung erhalten wir, wenn wir uns einfach abwechselnd nach unten und rechts bewegen. Dazu füllen wir die Liste mit den Ausgängen einfach in einer Schleife:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">var</span> <span class="n">exits</span> <span class="o">=</span> <span class="p">[];</span>
 </span></span><span class="line"><span class="ln">2</span><span class="cl">
@@ -443,8 +442,7 @@
 </span></span><span class="line"><span class="ln">7</span><span class="cl">
 </span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Das war es schon. Das Ergebnis sieht folgendermaßen aus:</p>
-<p><img src="/2020/2020-04-11-wie-erstelle-ich-ein-labyrinth-mit-javascript/images/grafik-4-700x703.png" alt=""></p>
-<h2 id="schritt-3-die-wände-einreißen">Schritt 3: Die Wände einreißen</h2>
+<img src="/2020/2020-04-11-wie-erstelle-ich-ein-labyrinth-mit-javascript/images/grafik-4-700x703.png" alt=""><h2 id="schritt-3-die-wände-einreißen">Schritt 3: Die Wände einreißen</h2>
 <p>Nun sorgen wir dafür, dass tatsächlich ein Weg vom Start zum Ziel entsteht. Dazu werden einfach die Rahmen unten bzw. rechts entfernt, sobald wir uns in die entsprechende Richtung bewegen. Unsere Hauptschleife wird also etwas aufgebohrt.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="k">var</span>  <span class="n">currentCell</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">getElementById</span><span class="p">(</span><span class="s2">&#34;cell_1_1&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl">
@@ -498,8 +496,7 @@
 </span></span><span class="line"><span class="ln">5</span><span class="cl">
 </span></span><span class="line"><span class="ln">6</span><span class="cl">}
 </span></span></code></pre></div><p>Nun reichen uns nicht mehr nur 9 Schritte nach unten und rechts. Da wir nun für jedes Feld den unteren bzw. rechten Rahmen entfernen, müssen wir insgesamt 10 Felder in jede Richtung berücksichtigen. Das Ergebnis ist jetzt tatsächlich schon ein Irrgarten. Allerdings ein ziemlich einfacher:</p>
-<p><img src="/2020/2020-04-11-wie-erstelle-ich-ein-labyrinth-mit-javascript/images/grafik-5-700x697.png" alt=""></p>
-<h2 id="schritt-4-noch-mehr-abwechslung">Schritt 4: Noch mehr Abwechslung</h2>
+<img src="/2020/2020-04-11-wie-erstelle-ich-ein-labyrinth-mit-javascript/images/grafik-5-700x697.png" alt=""><h2 id="schritt-4-noch-mehr-abwechslung">Schritt 4: Noch mehr Abwechslung</h2>
 <p>Der nächste Schritt ist naheliegend: Wir durchlaufen nicht einfach die Liste möglicher Ausgänge, sondern entscheiden zufällig, welcher Ausgang als nächstes kommt. Dazu muss die Schleifenbedinung allerdings etwas angepasst werden.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">for (loop = 0; loop &lt; (mazeWidth + mazeHeight - 2); loop++) {
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl">
@@ -548,8 +545,7 @@
 </span></span><span class="line"><span class="ln">45</span><span class="cl">}
 </span></span></code></pre></div><p>Die ersten drei Zeilen innerhalb der Zeile sind hier von Bedeutung. Zuerst wird der nächste Ausgang per Zufall bestimmt und in der Variable exit abgelegt. Danach wird dieser Eintrag auch aus der Liste möglicher Ausgänge entfernt. Das ist wichtig, da wir uns ja z.B. nicht mehr als 10 mal nach rechts bewegen können. Außerdem erzeugen wir so eine Art Gewichtung, die sich bei jedem Durchlauf verändert. Würden wir einfach nur per Zufall zwischen <em>rechts</em> und <em>unten</em> entscheiden, wäre das Ergebnis im Moment vielleicht ähnlich. Aber sobald wir auch die Richtungen <em>oben</em> und <em>links</em> dazu nehmen, ist das Ergebnis weitaus chaotischer.</p>
 <p>Das Ergebnis ist immer noch recht banal, aber sieht schon etwas mehr nach Labyrinth aus:</p>
-<p><img src="/2020/2020-04-11-wie-erstelle-ich-ein-labyrinth-mit-javascript/images/grafik-6-700x695.png" alt=""></p>
-<h2 id="schritt-5-mehr-bewegungsfreiheit">Schritt 5: Mehr Bewegungsfreiheit</h2>
+<img src="/2020/2020-04-11-wie-erstelle-ich-ein-labyrinth-mit-javascript/images/grafik-6-700x695.png" alt=""><h2 id="schritt-5-mehr-bewegungsfreiheit">Schritt 5: Mehr Bewegungsfreiheit</h2>
 <p>Bisher haben wir uns nur nach rechts und unten bewegt. Nun wollen wir uns auch nach links und oben bewegen. Dazu noch mal eine wichtige Grundannahme: Wir müssen uns 9 mal nach rechts und unten bewegen, um zum Ziel zu kommen. Erst wenn wir uns ein mal nach rechts bewegt haben, können wir uns dafür ein mal nach linsk bewegen. Das gleiche gilt für oben und unten. Da ich nun vier Bewegungsfreiheiten haben, muss die Schleifenbedingung erneut angepasst werden. Diesmal können wir ja theoretisch jedes der 100 Felder belegen. Außerdem muss ich nun zusätzliche Rahmen entfernen.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">while (loop &lt; ((mazeWidth * mazeHeight) - 1)) {
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl">
@@ -625,8 +621,7 @@
 </span></span></code></pre></div><p>In der ersten _Switch-_Anweisung gibt es außerdem eine wichtige Anweisung. Wenn der nächste Ausgang nach rechts geht, ergänze ich die Liste möglicher Ausgänge um einen Ausgang nach links (analog natürlich für die anderen Richtungen):</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">exits.push(&#34;left&#34;);
 </span></span></code></pre></div><p>Und wie sieht das Ergebnis aus?</p>
-<p><img src="/2020/2020-04-11-wie-erstelle-ich-ein-labyrinth-mit-javascript/images/grafik-8-700x703.png" alt=""></p>
-<p>Ich würde sagen: Bescheiden. Das Problem ist, dass wir uns nach links bewegen, nachdem wir uns gerade erst nach rechts bewegt haben. Genauso dürfen wir uns nicht nach oben und gleich danach wieder nach unten bewegen.<br>
+<img src="/2020/2020-04-11-wie-erstelle-ich-ein-labyrinth-mit-javascript/images/grafik-8-700x703.png" alt=""><p>Ich würde sagen: Bescheiden. Das Problem ist, dass wir uns nach links bewegen, nachdem wir uns gerade erst nach rechts bewegt haben. Genauso dürfen wir uns nicht nach oben und gleich danach wieder nach unten bewegen.<br>
 Wir müssen also etwas nachbessern. Wenn wir uns nun in z.B. der Zelle mit den Koordinaten x = 4 und y = 4 befinden, prüfen wir, ob die drei benachbarten Zellen bereits belegt sind (Hintergrundfarbe ist rot). Ist z.B. die rechte Nachbarzelle belegt, dürfen wir uns nicht nach rechts bewegen.<br>
 Auch die Liste möglicher Ausgänge wird etwas anders organisiert:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">var</span> <span class="n">validExits</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;right&#34;</span><span class="p">,</span> <span class="s2">&#34;bottom&#34;</span><span class="p">,</span> <span class="s2">&#34;left&#34;</span><span class="p">,</span> <span class="s2">&#34;top&#34;</span><span class="p">];</span>
@@ -757,8 +752,7 @@ Auch die Liste möglicher Ausgänge wird etwas anders organisiert:</p>
 </span></span><span class="line"><span class="ln">3</span><span class="cl">remainingExits.right--;
 </span></span><span class="line"><span class="ln">4</span><span class="cl">[...]
 </span></span></code></pre></div><p>Der Rest der Schleife bleibt unverändert. Und tatsächlich: Der Irrgarten sieht weitaus schöner aus:</p>
-<p><img src="/2020/2020-04-11-wie-erstelle-ich-ein-labyrinth-mit-javascript/images/grafik-9-700x705.png" alt=""></p>
-<p>Allerdings fehlt immer noch eine offensichtliche Kleinigkeit: Wir erreichen das Ziel nicht.</p>
+<img src="/2020/2020-04-11-wie-erstelle-ich-ein-labyrinth-mit-javascript/images/grafik-9-700x705.png" alt=""><p>Allerdings fehlt immer noch eine offensichtliche Kleinigkeit: Wir erreichen das Ziel nicht.</p>
 <h2 id="schritt-6-das-sackgassenproblem">Schritt 6: Das Sackgassenproblem</h2>
 <p>Wir erzeugen eine Sackgasse. Der Weg aus der Sackgasse sieht folgendermaßen aus: Wir müssen uns zurück bewegen. Bei jeder Zelle prüfen wir die möglichen Ausgänge und nehmen einfach einen anderen. Die bereits belegten Zellen bleiben weiterhin belegt.</p>
 <p>Da wir nun in den Schleifenablauf eingreifen, führen wir eine Sicherung ein. So vermeiden wir, dass die Schleife z.B. unendlich läuft.</p>
@@ -811,8 +805,7 @@ Auch die Liste möglicher Ausgänge wird etwas anders organisiert:</p>
 </span></span><span class="line"><span class="ln">12</span><span class="cl">
 </span></span><span class="line"><span class="ln">13</span><span class="cl">}
 </span></span></code></pre></div><p>Das Ergebnis überzeugt: Wir erzeugen nun einen verzweigten Weg, der nicht nur nach rechts und unten geht, sondern sogar Sackgassen enthält:</p>
-<p><img src="/2020/2020-04-11-wie-erstelle-ich-ein-labyrinth-mit-javascript/images/grafik-10-700x704.png" alt=""></p>
-<h2 id="schritt-7-noch-mehr-sackgassen">Schritt 7: Noch mehr Sackgassen!</h2>
+<img src="/2020/2020-04-11-wie-erstelle-ich-ein-labyrinth-mit-javascript/images/grafik-10-700x704.png" alt=""><h2 id="schritt-7-noch-mehr-sackgassen">Schritt 7: Noch mehr Sackgassen!</h2>
 <p>Wie bekommen wir noch mehr Sackgassen in unser Labyrinth? Indem wir die echte Route abgehen und einfach von jeder Zelle aus eine neue Route starten? Ja. Das war auch mein erster Gedanke. Allerdings ist die aktuelle Zielroute oft von Sackgassen umgeben. Wenn wir diesen Weg wählen, könnten also weiterhin einige Felder unbearbeitet bleiben. Deshalb werden wir ziemlich schroff einfach jedes belegte Feld als Startpunkt für einen Abzweig nutzen. Das Erzeugen der Abzweigungen kommt natürlich ohne die Sackgassen-Schutz-Funktion aus.</p>
 <p>Dazu müssen wir erstmal die aktuelle Logik in eine Funktion packen, die jetzt drei Parameter erwartet:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">startAtRow = 1;
@@ -1054,10 +1047,8 @@ Auch die Liste möglicher Ausgänge wird etwas anders organisiert:</p>
 </span></span><span class="line"><span class="ln">21</span><span class="cl">
 </span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Et voila: Ein Irrgarten:</p>
-<p><img src="/2020/2020-04-11-wie-erstelle-ich-ein-labyrinth-mit-javascript/images/grafik-12-700x696.png" alt=""></p>
-<p>Und auch wenn der Algorithmus teilweise etwas stumpf gestaltet ist, kann sich die Performance sehen lassen. Ein Labyrinth mit der Kantenlänge 100 x 100 dauert nur wenige Sekunden:</p>
-<p><img src="/2020/2020-04-11-wie-erstelle-ich-ein-labyrinth-mit-javascript/images/grafik-13-700x699.png" alt=""></p>
-<p>Natürlich gibt es an der einen oder anderen Stelle noch Optimierungspotential. Ich hab die ganze Logik noch mit einer Navigation und einer Stopp-Uhr ausgestattet. So sieht das ganze dann als Zeitvertreib für die Quarantäne aus: <a href="https://nickyreinert.github.io/maze/">https://nickyreinert.github.io/maze/</a></p>
+<img src="/2020/2020-04-11-wie-erstelle-ich-ein-labyrinth-mit-javascript/images/grafik-12-700x696.png" alt=""><p>Und auch wenn der Algorithmus teilweise etwas stumpf gestaltet ist, kann sich die Performance sehen lassen. Ein Labyrinth mit der Kantenlänge 100 x 100 dauert nur wenige Sekunden:</p>
+<img src="/2020/2020-04-11-wie-erstelle-ich-ein-labyrinth-mit-javascript/images/grafik-13-700x699.png" alt=""><p>Natürlich gibt es an der einen oder anderen Stelle noch Optimierungspotential. Ich hab die ganze Logik noch mit einer Navigation und einer Stopp-Uhr ausgestattet. So sieht das ganze dann als Zeitvertreib für die Quarantäne aus: <a href="https://nickyreinert.github.io/maze/">https://nickyreinert.github.io/maze/</a></p>
 
     
   </article>

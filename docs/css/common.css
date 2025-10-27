@@ -89,6 +89,8 @@ a {
 }
 img {
     border: 1px dotted #ababab;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 time {
@@ -101,7 +103,7 @@ time {
     background-color: #FAFAFA;
     display: flex;
     flex-direction: column;
-    font-family: 'Courier New';
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
     min-height: 100vh;
     overflow-wrap: break-word;
     padding: 1rem;
@@ -121,11 +123,21 @@ main.index, main.archive, main.post {
     font-size: 1rem;
 }
 
-a:not(.prev):not(.next):not(.default-link)::before {
+/* Add underscore before links (except special cases) */
+a:not(.prev):not(.next):not(.default-link):not(.lang-btn):not(.image-link):not(.link):not(:has(img))::before {
     content: '_';
-    
     text-align: center;
     font-size: 0.8rem;
+}
+
+/* Remove underscore for image links */
+a.image-link::before {
+    content: '';
+}
+
+/* Remove underscore before links that contain images */
+a:has(img)::before {
+    content: '' !important;
 }
 
 a#site-title::before {
@@ -186,6 +198,7 @@ a:hover {
     flex-direction: column;
     padding-bottom: 1rem;
     border-bottom: 1px solid #000;
+    font-family: 'Courier New', monospace;
 }
 
 #header div.footnote {
@@ -199,6 +212,7 @@ a:hover {
     margin: 1rem 0 1rem;
     font-size: 2em;
     font-weight: bold;
+    font-family: 'Courier New', monospace;
 }
 
 .navigation {
@@ -321,7 +335,7 @@ main.index, main.archive {
 }
 
 main.archive {
-    font-family: monospace;
+    font-family: inherit;
 }
 
 main.post {

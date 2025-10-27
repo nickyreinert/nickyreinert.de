@@ -386,8 +386,7 @@ Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es a
 <p>Und das ist die Grundlage einer Technologie, die in jüngster Vergangenheit immer mehr von sich Reden macht: Die <strong>Blockchain</strong>, Basis für Kryptowährungen wie zB den <strong>Bitcoin</strong>. Bei der Blockchain sind, und auch das nur laienhaft heruntergebrochen, die Einträge des “Kassenbuches” sicher vor Manipulation, weil eben die Änderung eines historischen Wertes (zB Buchungsvorganges) unweigerlich eine drastische Änderung der daraus erzeugten Prüfsummen nach sich ziehen würde. Um den Blockchain-Apologeten gleich den Wind aus den Segeln zu nehmen zitiere ich mal Fefe, sinngemäß: <a href="https://ptrace.fefe.de/Blockchain/#46">Es geht auch einfacher</a>. Ich gebrauche Bitcoin hier auch nur als Buzzword, aus Marketing-Gründen. :]</p>
 <p>Um dich nun aber auch zum Weiterlesen zu motivieren, ein wichtiger Hinweis:</p>
 <p>Der Algorithmus wird dazu verwendet, die nächsten Einträge der Blockchain zu berechnen. Genau genommen wird hier ein bestimmter Hash vorgegeben, der errechnet werden soll (das berüchtigte <em>Mining</em>). Die Belohnung für die korrekte Berechnung sind Bitcoins. Das Problem: Diese Berechnung ist <strong>sehr,</strong> <strong>sehr aufwendig</strong>, denn wie schon oben geschrieben: Sie funktioniert nur in eine Richtung. Die <em>Miner</em> müssen also unsagbar viele Berechnungen durchführen, um einen Ziel-Wert zu errechnen. Und der Miner, der die Berechnung am schnellsten ausführt, wird dafür auch belohnt. Gelingt es dir also, wider erwarten, den Algorithmus zu optimieren, kannst du im Mining-Business ganz groß rauskommen. Das klingt doch nach einer Herausforderung, oder? ;)</p>
-<p><img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/images/image2.png" alt=""></p>
-<p>Quelle: <a href="https://peakd.com/deutsch/@marcus0alameda/dagobert-gold-bitcoin-perfektion">https://peakd.com/deutsch/@marcus0alameda/dagobert-gold-bitcoin-perfektion</a></p>
+<img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/images/image2.png" alt=""><p>Quelle: <a href="https://peakd.com/deutsch/@marcus0alameda/dagobert-gold-bitcoin-perfektion">https://peakd.com/deutsch/@marcus0alameda/dagobert-gold-bitcoin-perfektion</a></p>
 <blockquote>
 <p>Disclaimer: Ich habe den ganzen Algorithmus in Python nachgebaut. Python ist aus Performance-Sicht sicher nicht die beste Option, um SHA-256 zu berechnen und der Umgang mit binären oder hexadezimalen Werten ist etwas unbequem. Python eignet sich dank Jupyter aber am ehesten dazu, einen komplexen Algorithmus Schritt-für-Schritt zu beschreiben.</p></blockquote>
 <h3 id="einführung">Einführung</h3>
@@ -399,29 +398,25 @@ Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es a
 <h4 id="das-explizite-oderxor">Das explizite Oder (XOR)</h4>
 <p>Das explizite Oder (<strong>Entweder-Oder</strong>) ist ein elementarer logischer, bitweise Operator. Der Ausgang der Operation ist nur dann wahr, wenn exakt ein Zustand wahr ist (im Vergleich dazu ist das Ergebnis bei dem “einfachen“ <strong>OR</strong> übrigens dann wahr, wenn mindestens ein Operand wahr ist oder beide).</p>
 <p>Es werden also zwei Werte folgendermaßen verarbeitet:</p>
-<p><img src="images/image.png" alt=""></p>
-<p>XOR: nur wenn genau ein Wert wahr (1) ist, ist die entsprechende Stelle im Ergebnis wahr (1)</p>
+<img src="images/image.png" alt=""><p>XOR: nur wenn genau ein Wert wahr (1) ist, ist die entsprechende Stelle im Ergebnis wahr (1)</p>
 <p>Die Implementierung in Python erfolgt mit dem <strong>Zirkumflex</strong>:</p>
 <p># 110 ^ 100<br>
 # 010</p>
 <h4 id="das-logische-undand"><strong>Das logische Und (AND)</strong></h4>
 <p>Der AND-Operator ist ebenfalls recht geläufig und vergleichsweise simpel. Analog zu XOR ist das Ergebnis wahr, wenn exakt beide (bzw. alle) Operanden wahr sind.</p>
-<p><img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/images/image-4.png" alt=""></p>
-<p>AND: Nur wenn beide Werte einer Stelle wahr sind, ist die Stelle im Ergebnis wahr</p>
+<img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/images/image-4.png" alt=""><p>AND: Nur wenn beide Werte einer Stelle wahr sind, ist die Stelle im Ergebnis wahr</p>
 <p>Die Implementierung in Python erfolgt mit dem <strong>kaufmännischen Und</strong>:</p>
 <p># 110 &amp; 100<br>
 # 100</p>
 <h4 id="die-negierung-nope">Die Negierung (Nope?)</h4>
 <p>Jetzt wirds seltsam: Auch dafür gibt es einen Operator: Der bitweise Operator <strong>Negierung</strong> dreht Werte um. Aus 0 wird 1, aus 1 wird 0.</p>
-<p><img src="images/image-3.png" alt=""></p>
-<p>Die Negierung kehrt Werte bitweise um. Nicht mehr aber auch nich weniger.</p>
+<img src="images/image-3.png" alt=""><p>Die Negierung kehrt Werte bitweise um. Nicht mehr aber auch nich weniger.</p>
 <p>Die Implementierung in Python erfolgt mit der <strong>Tilde —</strong> meinem Lieblingszeichen!</p>
 <p># ~110<br>
 # 001</p>
 <h4 id="die-shift-operation"><strong>Die Shift-Operation</strong></h4>
 <p>Die Shift-Funktion ist eine elementare binäre Rechenoperation, bei der die einzelnen Stellen eines binären Werts <strong>nach links oder rechts geschoben</strong> werden. Die freien Stellen auf der jeweils anderen Seite werden mit 0 aufgefüllt.</p>
-<p><img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/images/image-6.png" alt=""></p>
-<p>Shift nach links um eine Stelle, aus 6 wird 12</p>
+<img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/images/image-6.png" alt=""><p>Shift nach links um eine Stelle, aus 6 wird 12</p>
 <p>Und jetzt gibt es hoffentlich einen positiven Knick in der Lernkurve: Wenn du genau hinschaust, fällt dir etwas auf und lass mich dir versichern, es handelt sich nicht um einen Zufall: 12 ist das Produkt aus 6 und 2. Das deutet auf ein interessanten Nebeneffekt: Ein Shift kommt einer Multiplikation bzw. Division mit 2 gleich. Ein Shift um mehrere Stellen entspricht demnach einer Multiplikation mit einer Potenz zur Basis 2 besteht. Klingt kompliziert, deswegen ein Beispiel:</p>
 <p>Anstatt 139 * 2 ^17 kannst du die binäre Darstellung von 139, also 10001011, um 17 Stellen nach links shiften. Das Ergebnis: 1000101100000000000000000. Zähl gerne nach, rechts der 1 eins gibt es jetzt 17 Nullen.</p>
 <p>In Python ist der binäre Shift mit dem <strong>Doppelpfeil</strong> implementiert:</p>
@@ -431,8 +426,7 @@ Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es a
 # 000</p>
 <h4 id="die-rotate-funktion">Die Rotate-Funktion</h4>
 <p><strong>Rotate</strong> bedeutet, dass ein die Werte einer (binären) Zahl in eine Richtung verschoben werden. Und das erklärt man am besten an einem Beispiel. Die folgende Zahlenreihe soll um einen Zähler nach links rotiert werden. Die Zahl auf der linken Seite fällt also heraus und wir rechts wieder angehangen. Die anderen Zahlen rücken eine Position nach links.</p>
-<p><img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/images/image-5.png" alt=""></p>
-<p>Rotate eines binären Wertes um eine Stelle nach links, aus 6wird 5</p>
+<img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/images/image-5.png" alt=""><p>Rotate eines binären Wertes um eine Stelle nach links, aus 6wird 5</p>
 <p>Das funktioniert in beide Richtungen und mit beliebig vielen Stellen. Die entsprechende Funktion (<a href="https://stackoverflow.com/a/59005609/2360229">Kudos an so</a>) sieht so aus:</p>
 <p>def rotate(value, rotations, width = 32):<br>
 if int(rotations) != abs(int(rotations)):<br>

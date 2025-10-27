@@ -429,8 +429,7 @@ Wie du siehst, nutze ich für Apache außerdem ein separates Verzeichnis. Achte 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">abs -n 1000 -c 100 https://www.example.com:4443/
 </span></span></code></pre></div><p>Der Parameter <em>n</em> steht für die Anzahl von Anfragen insgesamt. Mit <em>c</em> kannst du festlegen, wieviele Anfragen du gleichzeitig abfeuern willst (<em>c</em> muss demnach kleiner sein als <em>n</em>). Der Forward-Slash am Ende ist wichtig, andernfalls erkennt <strong>abs</strong> die URL nicht an. Das gleiche mache ich ohne Port-Angabe um den nginx-Server anzusprechen. Und das sind die Ergebnisse:</p>
 <h3 id="auswertung-der-ergebnisse">Auswertung der Ergebnisse</h3>
-<p><img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik.png" alt=""></p>
-<p>Abbildung 1: Vergleich der Antwortzeiten von Apache und nginx</p>
+<img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik.png" alt=""><p>Abbildung 1: Vergleich der Antwortzeiten von Apache und nginx</p>
 <p>Die Abbildung zeigt, wie hoch der Anteil der Anfragen ist, der nach einer bestimmten Zeit (in Millisekunden) beantwortet wurde. Nginx ist ganz klar Gewinner. Alle Anfrgaen wurden inerhalb von 4 Sekunden bearbeitet, die Hälfte der Anfragen soger innerhalb knapp 1 Sekunde. Bei Apache sieht das ungleich schlimmer aus. Allerdings wurden bei nginx 68 Anfragen abgewiesen, bei Apache 0 - eine Folge meiner Warteschlangen-Einstellung.<br>
 Die folgenden Diagramme zeigen noch mal die Zusammensetzung der Anfrage:</p>
 <ul>
@@ -439,10 +438,8 @@ Die folgenden Diagramme zeigen noch mal die Zusammensetzung der Anfrage:</p>
 <li>Processing - Zeit, bis die vollständige Antwort vom Server eingangen ist, seit die Verbindung geöffnet wurd</li>
 <li>Total - Gesamte Wartezeit</li>
 </ul>
-<p><img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik-1.png" alt=""></p>
-<p>Abbildung 2: Messergebnisse für die Anfragen an Apache</p>
-<p><img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik-2.png" alt=""></p>
-<p>Abbildung 3: Messergebnisse für die Anfragen an nginx</p>
+<img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik-1.png" alt=""><p>Abbildung 2: Messergebnisse für die Anfragen an Apache</p>
+<img src="/2019/2019-10-11-apache-und-nginx-parallel-betreiben-und-mit-apachebench-gegeneinander-antreten-lassen/images/grafik-2.png" alt=""><p>Abbildung 3: Messergebnisse für die Anfragen an nginx</p>
 <p>Die reine Verbindungszeit ist bei beiden Servern relativ niedrig, dieser Wert gibt aber auch eher Rückschlüsse auf die Qualität des Netzwerks. Die TTFB ist bei Apache relativ hoch., es dauert also eine ganze Weile, bis Apache die Anfrage verarbeitet und entsprechend die ersten Daten sendet. Das wird mit ziemlicher Sicherheit am grundsätzlich nicht sehr performanten php-mod liegen. Insgesamt ist das Ergebnis natürlich wenig überraschend. Mein Ziel war ja, mit nginx und php-fpm ein schnelles Setup zu schaffen. Was hiermit wohl gelungen sein dürfte (Anmerkungen zur Repräsentativität werden gerne entgegengenommen). Fairerweise sei aber noch angemerkt, dass ich Apache in der Standard-Einstellung verwende und wirklich keine Maßnahmen unternommen habe, um die Geschwindigkeit zu optimieren.</p>
 
     
