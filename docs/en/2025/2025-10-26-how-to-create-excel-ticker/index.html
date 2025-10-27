@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="How to create an animated ticker in Excel without VBA?
+Last night, around 3 am, I woke up and thought: Wouldn’t it be nice to have an animated ticker in Excel? Like text that scrolls from right to left? With just one big formula? Welcome to the second episode of my series “How to create weird algorithms” First one was about creating a maze in JavaScript). In this article we will create a nested Excel formula to solve a problem that probably not knows exists. Until now.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
+
+  
+  
+  <meta name="keywords" content=" Excel  ticker  animation  LET  MAP  INDIRECT  iterative calculations  no VBA  tutorial ">
+  
+
+  
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="How to create an animated ticker in Excel without VBA">
+  <meta property="og:description" content="How to create an animated ticker in Excel without VBA? Last night, around 3 am, I woke up and thought: Wouldn’t it be nice to have an animated ticker in Excel? Like text that scrolls from right to left? With just one big formula? Welcome to the second episode of my series “How to create weird algorithms” First one was about creating a maze in JavaScript). In this article we will create a nested Excel formula to solve a problem that probably not knows exists. Until now.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2025">
+    <meta property="article:published_time" content="2025-10-26T12:34:56+01:00">
+    <meta property="article:modified_time" content="2025-10-26T12:34:56+01:00">
+    <meta property="article:tag" content="Excel">
+    <meta property="article:tag" content="Tutorial">
+    <meta property="article:tag" content="No-Vba">
+    <meta property="article:tag" content="Formulas">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/">
+
+  
+  
+  
+  <meta itemprop="name" content="How to create an animated ticker in Excel without VBA">
+  <meta itemprop="description" content="How to create an animated ticker in Excel without VBA? Last night, around 3 am, I woke up and thought: Wouldn’t it be nice to have an animated ticker in Excel? Like text that scrolls from right to left? With just one big formula? Welcome to the second episode of my series “How to create weird algorithms” First one was about creating a maze in JavaScript). In this article we will create a nested Excel formula to solve a problem that probably not knows exists. Until now.">
+  <meta itemprop="datePublished" content="2025-10-26T12:34:56+01:00">
+  <meta itemprop="dateModified" content="2025-10-26T12:34:56+01:00">
+  <meta itemprop="wordCount" content="1261">
+  <meta itemprop="keywords" content="Excel,ticker,animation,LET,MAP,INDIRECT,iterative calculations,no VBA,tutorial">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>How to create an animated ticker in Excel without VBA - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="How to create an animated ticker in Excel without VBA">
+  <meta name="twitter:description" content="How to create an animated ticker in Excel without VBA? Last night, around 3 am, I woke up and thought: Wouldn’t it be nice to have an animated ticker in Excel? Like text that scrolls from right to left? With just one big formula? Welcome to the second episode of my series “How to create weird algorithms” First one was about creating a maze in JavaScript). In this article we will create a nested Excel formula to solve a problem that probably not knows exists. Until now.">
+
+
+  
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "How to create an animated ticker in Excel without VBA",
+    "description": "How to create an animated ticker in Excel without VBA? Last night, around 3 am, I woke up and thought: Wouldn’t it be nice to have an animated ticker in Excel? …",
+    "datePublished": "2025-10-26T12:34:56\u002b01:00",
+    "dateModified": "2025-10-26T12:34:56\u002b01:00",
+    "author": {
+      "@type": "Person",
+      "name": "Nicky Reinert",
+      "url": "https:\/\/nickyreinert.de\/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Nicky Reinert",
+      "url": "https:\/\/nickyreinert.de\/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https:\/\/nickyreinert.de\/images\/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/nickyreinert.de\/en\/2025\/2025-10-26-how-to-create-excel-ticker\/"
+    },
+    
+    "image": {
+      "@type": "ImageObject",
+      "url": "https:\/\/nickyreinert.de\/images\/posts\/excel-ticker.png",
+      "width": 1200,
+      "height": 630
+    },
+    
+    "url": "https:\/\/nickyreinert.de\/en\/2025\/2025-10-26-how-to-create-excel-ticker\/",
+    "wordCount":  1261 ,
+    
+    "timeRequired": "PT6M",
+    
+    
+    "keywords": ["Excel", "tutorial", "no-vba", "formulas"],
+    
+    
+    "articleSection": ["blog", "howto"],
+    
+    
+    "abstract": "Step‑by‑step guide to building a text ticker in Excel without VBA using modern formulas (LET, MAP, SEQUENCE, INDIRECT). Shows how to enable iterative calculations, construct a one‑cell-driven canvas, and simulate animation with self‑referencing formulas.",
+    
+    
+    "genre": "tutorial",
+    
+    
+    "educationalLevel": "beginner",
+    
+    "inLanguage": "en"
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "How to create an animated ticker in Excel without VBA",
+    "description": "How to create an animated ticker in Excel without VBA? Last night, around 3 am, I woke up and thought: Wouldn’t it be nice to have an animated ticker in Excel? …",
+    
+    "proficiencyLevel": "beginner",
+    
+    
+    "dependencies": ["Basic Excel knowledge", "Familiarity with formulas"],
+    
+    
+    "about": [
+      
+      
+      {
+        "@type": "Thing",
+        "name": "Excel"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Formulas"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "No-VBA"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Tutorial"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Spreadsheet Tricks"
+      }
+      
+    ],
+    
+    "datePublished": "2025-10-26T12:34:56\u002b01:00",
+    "dateModified": "2025-10-26T12:34:56\u002b01:00",
+    "author": {
+      "@type": "Person",
+      "name": "Nicky Reinert"
+    }
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Nicky Reinert",
+    "url": "https:\/\/nickyreinert.de\/",
+    "description": "Blog \u0026 projects by Nicky Reinert (Institute for Digital Challenges): web development \u0026 software development, SEO \u0026 analytics, hosting \u0026 DevOps, WordPress \u0026 Hugo, tools \u0026 projects, data protection \u0026 digital culture — plus content on AI and autism \u0026 society.",
+    "inLanguage": "en",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https:\/\/nickyreinert.de\/search/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+]
+</script>
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+  
+
+<script defer src="/js/alpine.min.js"></script>
+
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institute for Digital Challenges</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://not-a-brand.myspreadshop.de/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/analysen/">analysen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+    
+<main id="main" class="post">
+  
+  
+  <div class="post-header">
+    <div class="navigation">
+      
+      <a class="link prev" href="/en/2025/2025-08-29-ai-assisted-coding/">&lt;&lt;&lt;</a>
+      
+      
+      <h1 style="flex-grow: 1; text-align: center;" itemprop="headline">How to create an animated ticker in Excel without VBA</h1>
+      
+      
+    </div>
+  </div>
+  
+  
+  <div class="post-date">October 26, 2025</div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <details style="margin-top: 2rem; margin-bottom: 2rem;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#how-to-create-an-animated-ticker-in-excel-without-vba">How to create an animated ticker in Excel without VBA?</a>
+      <ul>
+        <li><a href="#tyl--today-youll-learn">TYL — Today You’ll Learn</a></li>
+        <li><a href="#preparations">Preparations</a></li>
+        <li><a href="#how-to-draw-a-little-canvas-from-just-one-cell">How to draw a little canvas from just one cell?</a></li>
+        <li><a href="#how-to-simulate-an-animation">How to simulate an “animation”?</a></li>
+        <li><a href="#finish-the-animation">Finish the animation</a></li>
+        <li><a href="#nota-bene">Nota bene</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
+    <h2 id="how-to-create-an-animated-ticker-in-excel-without-vba">How to create an animated ticker in Excel without VBA?</h2>
+<p>Last night, around 3 am, I woke up and thought: Wouldn’t it be nice to have an animated ticker in Excel? Like text that scrolls from right to left? With just one big formula? Welcome to the second episode of my series “How to create weird algorithms” First one was about <a href="https://medium.com/swlh/how-to-create-a-maze-with-javascript-36f3ad8eebc1">creating a maze in JavaScript</a>). In this article we will create a nested Excel formula to solve a problem that probably not knows exists. Until now.</p>
+<h3 id="tyl--today-youll-learn">TYL — Today You’ll Learn</h3>
+<ul>
+<li>How to build complex nested formulas from the scratch</li>
+<li>The MAP-formula to create an array and modify it’s values</li>
+<li>The LET-formula to declare variables to clean up nested formulas</li>
+<li>How self-referencing cells in Excel could be useful</li>
+<li>How to use INDIRECT and R/C referencing</li>
+</ul>
+<p align="center">
+  <a href="spoiler-code.png" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="excel-ticker.gif" alt="Animated text ticker in Excel (no VBA)" width="300"/>
+    </a>
+</p> 
+<br />
+<h3 id="preparations">Preparations</h3>
+<p>First let me introduce you into an widely ignored feature in Excel: Iterative calculations. Excel tries to protect you from “<strong>circular references</strong>” and therefore disables this feature by default.</p>
+<p>Our ticker requires a formular that references itself. <a href="https://support.microsoft.com/en-us/office/change-formula-recalculation-iteration-or-precision-in-excel-73fc7dac-91cf-4d36-86e8-67124f6bcce4">So you need to enable “iterative calculations” in the settings and set “maximal iterations” to 1</a>:</p>
+<p align="center">
+  <a href="iterative-calc.png" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="iterative-calc.png" alt="Activate “Iterative Calculations” and limit the iteration count to 1" width="600"/>
+  </a>
+</p>
+<br />
+<p>Now let’s get back to your worksheet and start from the scratch:</p>
+<h3 id="how-to-draw-a-little-canvas-from-just-one-cell">How to draw a little canvas from just one cell?</h3>
+<p>In our case we need <strong>a one-dimensional array</strong> to use as a canvas. But how to create an array over multiple cells, just using one formula?</p>
+<p>Well, there are a couple of ways to do that, like <strong>SEQUENCE</strong>, <strong>MAKEARRAY</strong> or <strong>INDIRECT</strong> (and probably more). For our problem we will use <strong>MAP</strong> and <strong>SEQUENCE</strong>. <strong>MAP</strong> allows us to create an array and modify the values within this array. Let’s try a simple example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="o">=</span><span class="n">MAP</span><span class="p">({</span><span class="mi">1</span><span class="p">;</span><span class="mi">2</span><span class="p">;</span><span class="mi">3</span><span class="p">;</span><span class="mi">4</span><span class="p">;</span><span class="mi">5</span><span class="p">;</span><span class="mi">6</span><span class="p">;</span><span class="mi">7</span><span class="p">;</span><span class="mi">8</span><span class="p">;</span><span class="mi">9</span><span class="p">;</span><span class="mi">10</span><span class="p">};</span><span class="n">LAMBDA</span><span class="p">(</span><span class="k">var</span><span class="p">;</span><span class="k">var</span><span class="p">))</span>
+</span></span></code></pre></div><p>This will put the numbers from 1 to 10 to your worksheet. You could even add additional rows. For our case the one dimensional array is sufficient. The <strong>LAMBDA</strong> function allows you to modify the values. To make it more handy, let’s add <strong>SEQUENCE</strong> to construct the array and <strong>LET</strong> to define variables:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=LET(
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    length; 10; 
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    MAP(
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        SEQUENCE(1;length);
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        LAMBDA(val;val)
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    )
+</span></span><span class="line"><span class="ln">7</span><span class="cl">)
+</span></span></code></pre></div><p><strong>LET</strong> is a good way to declare variables that you may need in your nested formula.</p>
+<h3 id="how-to-simulate-an-animation">How to simulate an “animation”?</h3>
+<p>We’re not really going to animate something. We’re just going to create the <strong>impression of animated</strong> <strong>text</strong>. To achieve this we first need to add some momentum. That’s were rely on the self-referencing feature. We just add the value of the first cell to all the other cells:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=LET(
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    inc; INDIRECT(&#34;R&#34; &amp; ROW() &amp; &#34;C&#34; &amp; COL(); 0);
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    length; 10; 
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    MAP(
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        SEQUENCE(1;length);
+</span></span><span class="line"><span class="ln">6</span><span class="cl">        LAMBDA(val;val + inc)
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    )
+</span></span><span class="line"><span class="ln">8</span><span class="cl">)
+</span></span></code></pre></div><p>OK, this probably looks weird, so I’m gonna explain it. In the second row we are assigning a calculation to a variable called <strong>inc</strong>, this will be our “incrementor”. Instead of a fixed reference like <strong>A1</strong> we use an indirect reference. This makes it easier to use the final result everywhere we want. <strong>INDIRECT</strong> takes the <strong>value</strong> from the current row and current column: This is the 1 from the sequence. The second parameter of <strong>INDIRECT</strong> is a 0. This enables the R/C reference: referencing a cell by it’s row and column index instead of the “common” A1 notation.</p>
+<p>Now as we have this value from the first cell, we just add it to every cell of this range — which results in a row of incrementing numbers. Press and hold F9 and see what happens:</p>
+<p align="center">
+  <a href="animation-1.gif" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="animation-1.gif" alt="Animated text ticker in Excel (no VBA)" width="400"/>
+  </a>
+</p>
+<br />
+<blockquote>
+<p>From now on, when I say “<strong>let it run</strong>”, you need to press and hold <strong>F9</strong> and see the result.</p></blockquote>
+<p>Now let’s add the text. We want to display “<strong>hello, world</strong>” and therefore provide this as a variable named <strong>ticker</strong>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">=LET(
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    ticker; &#34;hello world&#34;;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    length; LEN(ticker);
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    inc; IF(
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        INDIRECT(&#34;Z&#34; &amp; ROW() &amp; &#34;S&#34; &amp; COL(); 0) &gt; length;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        1;
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        INDIRECT(&#34;Z&#34; &amp; ROW() &amp; &#34;S&#34; &amp; COL(); 0) 
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    );
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    MAP(
+</span></span><span class="line"><span class="ln">10</span><span class="cl">        SEQUENCE(1; length);
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        LAMBDA(val;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        IF(val = 1; 
+</span></span><span class="line"><span class="ln">13</span><span class="cl">            val +  inc;
+</span></span><span class="line"><span class="ln">14</span><span class="cl">            MID(&#34; &#34; &amp; ticker; val + inc; 1)
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        )
+</span></span><span class="line"><span class="ln">16</span><span class="cl">    )
+</span></span><span class="line"><span class="ln">17</span><span class="cl">)
+</span></span></code></pre></div><p>The ticker-declaration should be clear as well as the length-dependency. The length was set to 10 before, now it’s the length of the ticker-text.</p>
+<p>What looks a bit complicated is the improved declaration of the incrementing variable (<strong>inc</strong>): Actually we just check if the variable is greater than the amount of available letters. If so, reset it to 1 to start over.</p>
+<p>Before we look at the LAMBDA let’s be clear about the “canvas”: We need one cell that contains an incrementing value — the first cell. All the other cells are meant for “rendering”.</p>
+<p>The <strong>first IF-condition</strong> checks if the value of the particular cell equals 1. This would be our counting cell and that’s why we increase only this cell’s value.</p>
+<p>The <strong>MID-formula</strong> takes care of the rendering-part: The <strong>second cell</strong> in our one-dimensional array should start with the H, the <strong>first letter</strong> of our ticker. The <strong>third cell</strong> displays the <strong>second letter</strong> E and so on.</p>
+<p>You see the discrepancy? The second cell holds the value 2, but we need the first letter. We are one counter ahead, that’s why we add the empty char before the ticker text.</p>
+<p>What happens if your run it?</p>
+<p align="center">
+  <a href="animation-2.gif" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="animation-2.gif" alt="Animated text ticker in Excel (no VBA)" width="400"/>
+  </a>
+</p>
+<br />
+<p>Well, we have a pretty good loop. It’s not that smooth, but we get to that in a second.</p>
+<h3 id="finish-the-animation">Finish the animation</h3>
+<p>The main work is done, but we still need some improvements. First let’s add a second variable to define the canvas width. It makes more sense to use a fixed value here. So we can render even long text on the small canvas.</p>
+<p>We just call it “width”. And we also want to start the ticker on the most-right position of the canvas. That’s why we take the width of the canvas we just declared and use it as a substractor.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">=LET(
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    ticker; &#34;hello world&#34;; 
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    width; 10;
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    length; LEN(ticker);
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    inc; IF(
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        INDIRECT(&#34;Z&#34; &amp; ROW() &amp; &#34;S&#34; &amp; COL(); 0)
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">            &gt; (length + width);
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        1;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">        INDIRECT(&#34;Z&#34; &amp; ROW() &amp; &#34;S&#34; &amp; COL(); 0)
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    );
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    MAP(
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        SEQUENCE(1; width);
+</span></span><span class="line"><span class="ln">13</span><span class="cl">        LAMBDA(val;
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        IF(val = 1; 
+</span></span><span class="line"><span class="ln">15</span><span class="cl">            val +  inc;
+</span></span><span class="line"><span class="ln">16</span><span class="cl">            IF((val + inc) &gt; (width - 1); 
+</span></span><span class="line"><span class="ln">17</span><span class="cl">                MID(&#34; &#34; &amp; ticker; val + inc - (width - 1); 1); 
+</span></span><span class="line"><span class="ln">18</span><span class="cl">                &#34;&#34;)
+</span></span><span class="line"><span class="ln">19</span><span class="cl">        )
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    )
+</span></span><span class="line"><span class="ln">21</span><span class="cl">)
+</span></span></code></pre></div><p>Please note how the width-variable replaces length as an argument for SEQUENCE. We also need to adapt the inc-part a little. We need to reset the incrementation a little later, because the animation should start at the most right column and therefore needs more steps to finish.</p>
+<p>The <strong>second</strong> and nested <strong>IF-condition</strong> checks if the current incremented value of the particular cell is greater than the width of the canvas. That ensures that we address a valid value from the ticker text when using MID.</p>
+<p>And that’s it. I adjusted the <strong>cell widths</strong> a little, <strong>hid grid lines</strong> and made the <strong>first cell invisible</strong> to make it look a little better. This is your ticker:</p>
+<p align="center">
+  <a href="animation-3.gif" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="animation-3.gif" alt="Animated text ticker in Excel (no VBA)" width="400"/>
+  </a>
+</p>
+<br />
+<p>You can just copy and paste the formula to every sheet you want or you can create a LAMBDA function to get a handy formula. Do not forget to enable “iterative calculations” and change the ticker text.</p>
+<p>Have fun.</p>
+<h3 id="nota-bene">Nota bene</h3>
+<p>This does not work in Google Sheets, out of the box, because Google Sheets do not support the LET formula. You still could just fixed values or named ranges. But this makes it less fun.</p>
+
+    
+  </article>
+  
+  
+  
+  <div style="margin-top: 5rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Summary</h2>
+    <div style="font-size: 1rem;">
+
+      <p>Step‑by‑step guide to building a text ticker in Excel without VBA using modern formulas (LET, MAP, SEQUENCE, INDIRECT). Shows how to enable iterative calculations, construct a one‑cell-driven canvas, and simulate animation with self‑referencing formulas.</p>
+      <br />
+      
+      <p><strong>Main Topics:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Excel</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Formulas</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">No-VBA</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Tutorial</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Spreadsheet Tricks</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Difficulty:</strong> beginner</p>
+      
+      
+      
+      <p><strong>Reading Time:</strong> approx. 6 minutes</p>
+      
+    </div>
+  </div>
+  
+  
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/en/2025/2025-08-29-ai-assisted-coding/">← prev</a>
+    
+    
+    <a></a>
+    
+  </div>
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="privacy.html">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>
