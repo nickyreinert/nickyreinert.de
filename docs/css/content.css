@@ -10,6 +10,78 @@
     overflow-y: hidden;
 }
 
+/* Image link styling */
+.content a.image-link {
+    display: inline-block;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.content a.image-link:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.content a.image-link img {
+    display: block;
+    transition: filter 0.2s ease;
+}
+
+.content a.image-link:hover img {
+    filter: brightness(1.05);
+}
+
+/* Center alignment for images */
+.content a.image-link.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+/* Figure and caption styling */
+.content figure {
+    margin: 2rem 0;
+}
+
+/* Figures inside gallery have no margin */
+.content .image-gallery figure {
+    margin: 0;
+}
+
+.content figure a.image-link {
+    display: block;
+}
+
+.content figure a.image-link img {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.content figcaption {
+    margin-top: 0.75rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+/* Image gallery/grid layout */
+.content .image-gallery {
+    width: 100%;
+}
+
+.content .image-gallery a.image-link {
+    width: 100%;
+}
+
+
+.content .image-gallery img {
+    width: 100%;
+    height: auto;
+}
+
 .content :last-child {
     margin-bottom: 0;
 }
