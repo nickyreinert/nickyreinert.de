@@ -54,7 +54,7 @@ Schon mal was von Telegramm gehört oder gar einem Telegramm-Bot gehört? Nein? 
   <meta itemprop="description" content="Was ist ein Telegramm-Bot? Schon mal was von Telegramm gehört oder gar einem Telegramm-Bot gehört? Nein? Macht nichts. Telegramm ist ein Messenger, wie Whatsapp oder Threema. Der große Vorteil von Telegramm gegenüber Whatsapp ist die Plattforum-Unabhängigkeit. Es gibt nicht nur Apps für Android und iOs, auch unter OS X (Mac) und Windows lässt sich Telegramm unkompliziert nutzen. Bei Whatsapp war das bisher nur über den Browser möglich, Threema bietet diese Möglichkeit gar nicht an.">
   <meta itemprop="datePublished" content="2018-03-02T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-08-20T20:47:33+02:00">
-  <meta itemprop="wordCount" content="2131">
+  <meta itemprop="wordCount" content="2136">
   <meta itemprop="keywords" content="Telegram Bot,Amazon API,PHP,Chatbot,API Integration,Web Development,BotFather,Composer,Botan,Yandex AppMetrica,Datenschutz,Tutorial">
 
   
@@ -110,7 +110,7 @@ Schon mal was von Telegramm gehört oder gar einem Telegramm-Bot gehört? Nein? 
     },
     
     "url": "https:\/\/nickyreinert.de\/2018\/2018-03-02-wie-entwickelt-man-einen-amazon-bot-fuer-telegramm\/",
-    "wordCount":  2131 ,
+    "wordCount":  2136 ,
     
     "timeRequired": "PT5M",
     
@@ -380,22 +380,204 @@ Schon mal was von Telegramm gehört oder gar einem Telegramm-Bot gehört? Nein? 
     <h2 id="was-ist-ein-telegramm-bot">Was ist ein Telegramm-Bot?</h2>
 <p>Schon mal was von Telegramm gehört oder gar einem Telegramm-Bot gehört? Nein? Macht nichts. Telegramm ist ein Messenger, wie Whatsapp oder Threema. Der große Vorteil von Telegramm gegenüber Whatsapp ist die Plattforum-Unabhängigkeit. Es gibt nicht nur Apps für Android und iOs, auch unter OS X (Mac) und Windows lässt sich Telegramm unkompliziert nutzen. Bei Whatsapp war das bisher nur über den Browser möglich, Threema bietet diese Möglichkeit gar nicht an.</p>
 <p>Außerdem bietet Telegramm ein sehr umfangreiche API an, die noch dazu sehr gut dokumentiert ist. Damit lassen sich sogenannte Telegramm-Bots entwickeln. Diese Bots können dann von den Nutzern mit @einBot angesprochen werden, um alle Möglichen Aufgaben auszuführen. Einer der bekanntesten ist vermutlich der @gif-Bot, der die Plattform giphy.com durchsuchen kann und die Ergebnisse in den Chat-Verlauf schicken kann. Und diese Art von Bots lassen sich auch selber entwickeln und anbieten. Unter anderem auch mit PHP.</p>
-<p>Wer die Kommunikation mit Telegramm nicht komplett von vorne aufbauen will, kann auf eine Bibliothek <a href="https://github.com/php-telegram-bot/core">von Longman auf github.com</a> zugreifen. Für meinen Geschmack ist diese leider etwas zu schlecht dokumentiert und mitunter etwas durcheinander organisiert. Noch dazu wird sie offenbar nur sporadisch betreut. Dennoch gibt es ein relativ großes Repository mit Beispielen, was definitiv sehr hilfreich  ist. Etwas verwirrend sind die beiden Repositories, die da <em>Core</em> und <em>Manager</em> heißen. Der <em>Manager</em> ist nur eine Art Wrapper für das Core-Repository. Dessen Nutzung erleichtert die Einrichtung und Entwicklung des Bots um ein vielfaches und bietet z.B. eine zentrale Datei (manager.php) an, um alle Funktionen zu steuern. Beim Core werden die jeweiligen Bot-Funktionen über verschiedene Dateien gesteuert.</p>
+<p>Wer die Kommunikation mit Telegramm nicht komplett von vorne aufbauen will, kann auf eine Bibliothek 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/php-telegram-bot/core?utm_source=allyourbasearebelongtous">von Longman auf github.com</a>
+
+
+ zugreifen. Für meinen Geschmack ist diese leider etwas zu schlecht dokumentiert und mitunter etwas durcheinander organisiert. Noch dazu wird sie offenbar nur sporadisch betreut. Dennoch gibt es ein relativ großes Repository mit Beispielen, was definitiv sehr hilfreich  ist. Etwas verwirrend sind die beiden Repositories, die da <em>Core</em> und <em>Manager</em> heißen. Der <em>Manager</em> ist nur eine Art Wrapper für das Core-Repository. Dessen Nutzung erleichtert die Einrichtung und Entwicklung des Bots um ein vielfaches und bietet z.B. eine zentrale Datei (manager.php) an, um alle Funktionen zu steuern. Beim Core werden die jeweiligen Bot-Funktionen über verschiedene Dateien gesteuert.</p>
 <h3 id="was-ist-das-ziel">Was ist das Ziel?</h3>
 <p>Was ist also der Plan? Wir bauen uns einen Telegramm-Bot, mit dem sich Amazon nach Produkten durchsuchen lässt. Das Ergebnis wird in einem Grid dargestellt. Wählt man ein Element aus, erscheint es mit Link zum Produkt im Chat-Verlauf. Und mit einer Analytics-Plattform soll das ganze</p>
-<p>Um deinen eigenen Bot betreiben zu können brauchst du natürlich erstmal Telegramm und außerdem einen Web-Server und eine Domain für die du ein SSL-Zertifikat einrichten musst. Außerdem solltest du <a href="https://getcomposer.org/download/">composer</a> installiert haben und so ungefähr wissen, wie man damit umgeht.</p>
+<p>Um deinen eigenen Bot betreiben zu können brauchst du natürlich erstmal Telegramm und außerdem einen Web-Server und eine Domain für die du ein SSL-Zertifikat einrichten musst. Außerdem solltest du 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://getcomposer.org/download/?utm_source=allyourbasearebelongtous">composer</a>
+
+
+ installiert haben und so ungefähr wissen, wie man damit umgeht.</p>
 <h2 id="anmelden-eines-bots">Anmelden eines Bots</h2>
-<p>Zunächst musst du deinen neuen Telegramm-Bot anmelden. Dazu nutzt du den BotFather (<a href="https://telegram.me/botfather">BotFather)</a>. dem du mit dem Befehl /<em>newbot</em> dazu bringen kannst, einen neuen Bot zu registrieren. Zuerst wird ein Name für den Bot verlangt - das ist allerdings noch <em>nicht</em> der Name, mit dem der Bot später auch angesprochen wird. Das ist erst der sogenannte <em>username</em>, der im 2. Schritt verlangt wird. Ich nenne meinen Bot <em>@buecherBot</em>.</p>
+<p>Zunächst musst du deinen neuen Telegramm-Bot anmelden. Dazu nutzt du den BotFather (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://telegram.me/botfather?utm_source=allyourbasearebelongtous">BotFather)</a>
+
+
+. dem du mit dem Befehl /<em>newbot</em> dazu bringen kannst, einen neuen Bot zu registrieren. Zuerst wird ein Name für den Bot verlangt - das ist allerdings noch <em>nicht</em> der Name, mit dem der Bot später auch angesprochen wird. Das ist erst der sogenannte <em>username</em>, der im 2. Schritt verlangt wird. Ich nenne meinen Bot <em>@buecherBot</em>.</p>
 <p>Leider gibt es hier eine Restriktion: Der Name muss mit <em>bot</em> enden. Wer einen kurzen Namen wie @gif oder @youtube nutzen möchte, muss dazu vermutlich etwas mehr Aufwand betreiben. Als nächstes rufst du die Einstellungen des Bots auf, indem du das Inline-Menü mit /mybots öffnest.</p>
 <p>Für unseren Bot solltest du zunächst den Inline-Mode aktivieren. Damit kannst du den Bot im Textfeld direkt ansprechen. Das gehst du über den Punkt Bot-Settings zum Inline-Mode und aktivierst diesen.</p>
-<p>[caption id=&ldquo;attachment_1655&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/wie-entwickelt-man-einen-bot-fuer-telegramm/telegramm-bot-father.png"><img src="/2018/2018-03-02-wie-entwickelt-man-einen-amazon-bot-fuer-telegramm/images/telegramm-bot-father-300x200.png" alt="Inline-Mode für den Telegramm-Bot aktivieren"></a> Inline-Mode für den Telegramm-Bot aktivieren[/caption]</p>
+<p>[caption id=&ldquo;attachment_1655&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/wie-entwickelt-man-einen-bot-fuer-telegramm/telegramm-bot-father.png?utm_source=allyourbasearebelongtous"><img src="/2018/2018-03-02-wie-entwickelt-man-einen-amazon-bot-fuer-telegramm/images/telegramm-bot-father-300x200.png" alt="Inline-Mode für den Telegramm-Bot aktivieren"></a>
+
+
+ Inline-Mode für den Telegramm-Bot aktivieren[/caption]</p>
 <p> </p>
 <p>Schließlich kannst du <em>Allow Groups</em> auf Nein setzen und die <em>Group Privacy</em> aktivieren. Da der Bot noch nicht in Gruppen aktiv sein soll, muss er weder Mitglied von Gruppen sein noch deren Nachrichten mitlesen.</p>
 <p>Als nächstes lässt du dir den API-Schlüssel anzeigen, damit du auch von außen mit dem Bot kommunizieren kannst. Der API-Schlüssel befindet sich im obersten Menü und ist folgendermaßen aufgebaut:</p>
 <p>123123123:128390123jKF19082_1293123123</p>
 <p>Das war es, was die Vorbereitung angeht. Weiter geht es mit PHP und einer kleinen Bot-Logik.</p>
 <h2 id="dem-bot-mit-php-leben-einhauchen">Dem Bot mit PHP Leben einhauchen</h2>
-<p>Als Library bzw. Framework nutzen wir das <a href="https://github.com/php-telegram-bot/core">Telegram-Bot-Repository</a> von Longman bzw. den dazugehörigen <a href="https://github.com/php-telegram-bot/telegram-bot-manager">Manager</a>, eine Art Wrapper, der die Steuerung etwas erleichtert.Damit du für den ersten Start bereits eine gute Grundlage hast, solltest du dir <a href="https://github.com/php-telegram-bot/example-bot">die Beispiel-Dateien von github</a> herunterladen. Auf der github-Seite wird zwar die Einstellung für die composer.json vorgegeben, allerdings hat der checkout damit bei mir nicht funktioniert. Mit folgenden Parametern klappte es dann:</p>
+<p>Als Library bzw. Framework nutzen wir das 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/php-telegram-bot/core?utm_source=allyourbasearebelongtous">Telegram-Bot-Repository</a>
+
+
+ von Longman bzw. den dazugehörigen 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/php-telegram-bot/telegram-bot-manager?utm_source=allyourbasearebelongtous">Manager</a>
+
+
+, eine Art Wrapper, der die Steuerung etwas erleichtert.Damit du für den ersten Start bereits eine gute Grundlage hast, solltest du dir 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/php-telegram-bot/example-bot?utm_source=allyourbasearebelongtous">die Beispiel-Dateien von github</a>
+
+
+ herunterladen. Auf der github-Seite wird zwar die Einstellung für die composer.json vorgegeben, allerdings hat der checkout damit bei mir nicht funktioniert. Mit folgenden Parametern klappte es dann:</p>
 <p>{
 &ldquo;require&rdquo;: {
 &ldquo;php-telegram-bot/telegram-bot-manager&rdquo;: &ldquo;^1.2&rdquo;,
@@ -415,7 +597,33 @@ Schon mal was von Telegramm gehört oder gar einem Telegramm-Bot gehört? Nein? 
 <p><strong>secret</strong> - ein selbst erzeugtes Passwort um die Datei vor Zugriffen von außen zu schützen - die PHP-Datei liegt ja auf deinem öffentlichen Server und kann theoretisch von überall aufgerufen werden.</p>
 </li>
 <li>
-<p><strong>webhook-&gt;url</strong> - hier trägst du die URL zur manager.php-Datei ein, also <a href="https://telegramm.example.com/manager.php">https://telegramm.example.com/manager.php</a></p>
+<p><strong>webhook-&gt;url</strong> - hier trägst du die URL zur manager.php-Datei ein, also 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://telegramm.example.com/manager.php?utm_source=allyourbasearebelongtous">https://telegramm.example.com/manager.php</a>
+
+
+</p>
 </li>
 <li>
 <p><strong>commands-&gt;paths</strong> - diese Zeile muss auskommentiert sein und zu einem Pfad verweisen, der deine Bot-Commandos enthält. Wenn du dich an dem Bot-Example orientierst, sieht diese Einstellung so aus:</p>
@@ -434,13 +642,65 @@ Schon mal was von Telegramm gehört oder gar einem Telegramm-Bot gehört? Nein? 
 <li><strong>limiter</strong> - die Telegram-API lässt natürlich nur eine begrenzte Anzahl von Anfragen zu, um das eigene System zu schützen, offenbar bringt das Framework eine Funktion mit, um das Erreichen des Limits bestmöglich zu vermeiden - wie das funktioniert, kann ich nicht sagen, da dazu auch nicht mehr in der Doku steht, ich hab es erstmal aktiviert</li>
 </ul>
 <p>Grundsätzlich war es das erstmal, was die Voreinstellungen betrifft. Jetzt kannst du den sog. webhook aktivieren. Dazu rufst du die manager.php im Browser auf, wie z.B.</p>
-<p><a href="https://telegramm.example.com/manager.php">https://telegramm.example.com/manager.php</a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://telegramm.example.com/manager.php?utm_source=allyourbasearebelongtous">https://telegramm.example.com/manager.php</a>
+
+
+</p>
 <h3 id="den-zugriff-von-außen-beschränken">Den Zugriff von außen beschränken</h3>
 <p>Wenn du alles richtig gemacht hast, erscheint jetzt erstmal ein Fehler. Und das ist auch gut so - denn schließlich soll der Zugriff von außen ja nicht jedem gewährt werden.</p>
 <p>Fatal error: Uncaught TelegramBot\TelegramBotManager\Exception\InvalidAccessException:
 Invalid access in &hellip;</p>
 <p>Also packst du noch das secret-Token an die URL, dass du weiter oben in der manager.php angegeben hast (nicht den API-Schlüssel von Telegramm!). Und damit du auch eine Aktion auslöst, setzt du erstmal den webhook mit dem Parameter a=set:</p>
-<p><a href="https://telegramm.example.com/manager.php?s=123123123&amp;a=set">https://telegramm.example.com/manager.php?s=123123123&a=set</a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://telegramm.example.com/manager.php?s=123123123&amp;a=set&amp;utm_source=allyourbasearebelongtous">https://telegramm.example.com/manager.php?s=123123123&a=set</a>
+
+
+</p>
 <p>Dein Webhook für den Bot ist nun aktiv. Da du in der <em>manager.php</em> außerdem schon den Ordner commands freigegeben hast, kann der Bot nun schon auf Inline-Anfragen antworten. Im Telegramm-Client kannst du nun deinen Privat-Chat öffnen (&ldquo;Gespeichertes&rdquo;) und den Telegramm-Bot mit @buecherBot ansprechen. Der Bot sollte nun, wenn alles korrekt eingerichtet, so antworten, wie es in der Datei <em>InlinequeryCommand.php</em> vorgegeben ist. Nämlich mit einer sehr einfache 3-zeiligen Liste.</p>
 <p>Um nun ein Ergebnis von der Amazon API als Bilder-Liste darzustellen, habe ich <em>InlinequeryCommand.php</em> ein wenig angepasst. Zuerst benötigen wir die entsprechende Klasse, um nicht nur mit Text sondern auch mit Bildern zu antworten:</p>
 <p>use Longman\TelegramBot\Entities\InlineQuery\InlineQueryResultPhoto;</p>
@@ -460,7 +720,85 @@ Invalid access in &hellip;</p>
 <p>return Request::answerInlineQuery($data);</p>
 <p>Grundsätzlich war es das schon. Du kannst nun noch alle möglichen anderen Funktionen des Bots nutzen. Schau dir dazu einfach den Commands-Ordner des Example-Repository an. Die Auswahl ist sehr groß, für meine Zwecke soll es aber erstmal bei der Inline-Query bleiben.</p>
 <h2 id="eine-suchanfrage-zu-amazon-schicken">Eine Suchanfrage zu Amazon schicken</h2>
-<p>Natürlich soll derTelegramm-Bot nun auch in der Lage sein, Anfragen der Benutzer zu Amazon zu schicken und mit einem vernünftigen Suchergebnis zu antworten. Zunächst benötigt man dafür einen Partner-Account bei <a href="https://partnernet.amazon.de">Amazon</a>. <a href="https://partnernet.amazon.de/assoc_credentials/home">In den Einstellungen</a> kann man sich dann ein Schlüsselpaar erstellen um die Suchanfragen zu authentifizieren. Und auch für die Suchanfrage selber gibt es eine PHP-API, nämlich <a href="https://github.com/Exeu/apai-io/">apai-io von exeu</a>. Die Einrichtung und der Aufbau sind relativ einfach. Nachdem composer die notwendigen Dateien heruntergeladen hat, packt man - wie üblich - ein paar Zeilen in eine PHP-Datei und hat die erste Anfrage an die Amazon-API fertig:</p>
+<p>Natürlich soll derTelegramm-Bot nun auch in der Lage sein, Anfragen der Benutzer zu Amazon zu schicken und mit einem vernünftigen Suchergebnis zu antworten. Zunächst benötigt man dafür einen Partner-Account bei 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://partnernet.amazon.de?utm_source=allyourbasearebelongtous">Amazon</a>
+
+
+. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://partnernet.amazon.de/assoc_credentials/home?utm_source=allyourbasearebelongtous">In den Einstellungen</a>
+
+
+ kann man sich dann ein Schlüsselpaar erstellen um die Suchanfragen zu authentifizieren. Und auch für die Suchanfrage selber gibt es eine PHP-API, nämlich 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/Exeu/apai-io/?utm_source=allyourbasearebelongtous">apai-io von exeu</a>
+
+
+. Die Einrichtung und der Aufbau sind relativ einfach. Nachdem composer die notwendigen Dateien heruntergeladen hat, packt man - wie üblich - ein paar Zeilen in eine PHP-Datei und hat die erste Anfrage an die Amazon-API fertig:</p>
 <pre><code>&lt;?php ini\_set('display\_errors', 1);
 
 require\_once \_\_DIR\_\_ . '/vendor/autoload.php';
@@ -495,7 +833,85 @@ $response = $apaiIO-&gt;runOperation($search);
 
 $results = simplexml\_load\_string( $response ); 
 </code></pre>
-<p>Leider gestalten sich die ersten Versuche mit der API etwas schwieriger. Nutzt man den Beispiel-Code, liefert das ganze Script nur einen sehr langen String zurück. In der weiterführenden <a href="http://apai-io.readthedocs.io/en/latest/chapters/responsetransformer.html">Dokumentation</a> wird zwar ein <em>setResponseTransformer</em> beschrieben (siehe auskommentierte Zeile oben). Doch auch dann ist die Antwort nicht nutzbar. Das Suchergebnis bleibt weiterhin ein langer String. Erst <a href="https://github.com/Exeu/apai-io/issues/48">Issue 48</a> gibt einen Hinweis auf die Lösung: <em>new SimpleXMLElement</em>.  Jetzt erhalte ich ein XML-Object, in dem ich mich mit einer Schleife durch das Ergebnis arbeiten kann. Oder man greift auf <a href="https://gist.github.com/ottanxyz/4a44a5094bf27606c12803590a92d131">die hier verwendete Funktion</a>  <em>simplexml_load_string</em> zurück - mein Favorit.</p>
+<p>Leider gestalten sich die ersten Versuche mit der API etwas schwieriger. Nutzt man den Beispiel-Code, liefert das ganze Script nur einen sehr langen String zurück. In der weiterführenden 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://apai-io.readthedocs.io/en/latest/chapters/responsetransformer.html?utm_source=allyourbasearebelongtous">Dokumentation</a>
+
+
+ wird zwar ein <em>setResponseTransformer</em> beschrieben (siehe auskommentierte Zeile oben). Doch auch dann ist die Antwort nicht nutzbar. Das Suchergebnis bleibt weiterhin ein langer String. Erst 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/Exeu/apai-io/issues/48?utm_source=allyourbasearebelongtous">Issue 48</a>
+
+
+ gibt einen Hinweis auf die Lösung: <em>new SimpleXMLElement</em>.  Jetzt erhalte ich ein XML-Object, in dem ich mich mit einer Schleife durch das Ergebnis arbeiten kann. Oder man greift auf 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gist.github.com/ottanxyz/4a44a5094bf27606c12803590a92d131?utm_source=allyourbasearebelongtous">die hier verwendete Funktion</a>
+
+
+  <em>simplexml_load_string</em> zurück - mein Favorit.</p>
 <p>Nun geht es darum, die Antwort in eine Schleife zu packen, um die notwendigen Informationen zu extrahieren. Das Suchergebnis muss also vorbereitet und zurück an denTelegramm-Bot geschickt werden.</p>
 <h2 id="die-hochzeit---amazons-antwort-an-dentelegramm-bot-weiterleiten">Die Hochzeit - Amazons-Antwort an denTelegramm-Bot weiterleiten</h2>
 <p>Bisher war die Amazon-Funktionalität in eine andere Datei ausgelagert. Also müssen erstmal Zugangsdaten und die Abhängigkeiten in die InlineQueryCommand.php übernommen werden. Ich mach mir das Leben nicht unnötig schwer, und packe das alles in die InlinequeryCommand.php. Sauberer wäre es vielleicht, die initiale bot-Klasse etwas zu erweitern. Außerdem  muss die Anfrage an den Bot an die Amazon-API durchgeschliffen werden. Wenn der Benutzer nur einen Suchbegriff angibt (Bruce Willis), wird danach in allen Kategorien gesucht. Wer die Suche einschränken möchte, muss dem Suchbegriff die entsprechende Kategorie voranstellen. Also z.B.: Books:Bibel Das ganze sieht dann in etwa so aus:</p>
@@ -545,8 +961,60 @@ array(
 <p>}</p>
 <p>Grundsätzlich war es das. Das ganze Script gibt es zum Nachlesen wie gesagt auf github.</p>
 <h2 id="zugriffsstatistiken-mit-botan-aufzeichnen-und-darstellen">Zugriffsstatistiken mit Botan aufzeichnen und darstellen</h2>
-<p>Um Botan nutzen zu können, brauchst du einen Account bei <a href="https://appmetrica.yandex.com/">AppMetrica</a> von Yandex. Dort kannst du direkt nach der Registrierung einen API-Schlüssel für deinen Bot anlegen:</p>
-<p>[caption id=&ldquo;attachment_1649&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/wie-entwickelt-man-einen-bot-fuer-telegramm/appmetrics-yandex-bot-api-key-anlegen.png"><img src="/2018/2018-03-02-wie-entwickelt-man-einen-amazon-bot-fuer-telegramm/images/appmetrics-yandex-bot-api-key-anlegen-300x130.png" alt="AppMetrics API Key für Bot anlegen"></a> AppMetrics API Key für Bot anlegen[/caption]</p>
+<p>Um Botan nutzen zu können, brauchst du einen Account bei 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://appmetrica.yandex.com/?utm_source=allyourbasearebelongtous">AppMetrica</a>
+
+
+ von Yandex. Dort kannst du direkt nach der Registrierung einen API-Schlüssel für deinen Bot anlegen:</p>
+<p>[caption id=&ldquo;attachment_1649&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/wie-entwickelt-man-einen-bot-fuer-telegramm/appmetrics-yandex-bot-api-key-anlegen.png?utm_source=allyourbasearebelongtous"><img src="/2018/2018-03-02-wie-entwickelt-man-einen-amazon-bot-fuer-telegramm/images/appmetrics-yandex-bot-api-key-anlegen-300x130.png" alt="AppMetrics API Key für Bot anlegen"></a>
+
+
+ AppMetrics API Key für Bot anlegen[/caption]</p>
 <p>Wenn das erledigt ist, gelangst du zu der Übersichtsseite deines Bots und siehst dort den API-Key, den du als token in der <em>manager.php</em> einträgst. Die entsprechenden Zeilen müssen natürlich auch auskommentiert werden:</p>
 <pre><code>    // Botan.io integration
     'botan' =&gt; \[

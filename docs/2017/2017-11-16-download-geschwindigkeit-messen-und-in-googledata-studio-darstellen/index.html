@@ -56,7 +56,7 @@ Die Aufgabe lautet also: Ein Script soll in regelmäßigen Abständen Test-Datei
 Die Aufgabe lautet also: Ein Script soll in regelmäßigen Abständen Test-Dateien herunterladen. Die Dauer dafür und der Zeitpunkt des Tests schreibe ich in eine CSV-Datei, die mit GoogleDrive synchronisiert ist. Von dort werden die Ergebnisse im DataStudio von Google automatisch ausgelesen.">
   <meta itemprop="datePublished" content="2017-11-16T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-08-20T20:47:33+02:00">
-  <meta itemprop="wordCount" content="1062">
+  <meta itemprop="wordCount" content="1065">
   <meta itemprop="keywords" content="Download Geschwindigkeit,Internet Speed,Google Data Studio,Data Studio Connector,Shell Script,wget,awk,Google Drive,Automatisierung,Performance Messung,Monitoring">
 
   
@@ -113,7 +113,7 @@ Die Aufgabe lautet also: Ein Script soll in regelmäßigen Abständen Test-Datei
     },
     
     "url": "https:\/\/nickyreinert.de\/2017\/2017-11-16-download-geschwindigkeit-messen-und-in-googledata-studio-darstellen\/",
-    "wordCount":  1062 ,
+    "wordCount":  1065 ,
     
     "timeRequired": "PT5M",
     
@@ -408,7 +408,33 @@ $sourceFileSize&quot;MByte&rdquo;&quot;
 <ul>
 <li>Am Ende wird entweder das Script verlassen, wenn zuletzt die 1GByte-Datei heruntergeladen wurde. Da das Script mehrmals am Tag läuft, will ich das Volumen nicht unnötig strapazieren. Oder es wird eine definierte Pause eingelegt, damit sich die Leitung abkühlen kann.</li>
 </ul>
-<p>Das komplette Script gibt es auf <a href="https://github.com/nickyreinert/speedTest/blob/master/speedTest.sh">github.</a></p>
+<p>Das komplette Script gibt es auf 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/speedTest/blob/master/speedTest.sh?utm_source=allyourbasearebelongtous">github.</a>
+
+
+</p>
 <p>Das ganze muss nun nur in der CronTabelle des Systems regelmäßig aufgerufen werden. Der Zielordner</p>
 <p>/share/Download/Speedtest/</p>
 <p>wird außerdem mit GoogleDrive synchronisiert.</p>
@@ -420,7 +446,33 @@ $sourceFileSize&quot;MByte&rdquo;&quot;
 <p>Anmerkung: Ich nutze den Netzwerkspeicher von QNAP, das TS-431. Für diesen wird ein Backup &amp; Sync-Plugin angeboten, das lokale Ordner mit einem Ordner in GoogleDrive synchronisiert.</p>
 <h2 id="schritt-2---der-community-connector-für-das-datastudio">Schritt 2 - der Community Connector für das DataStudio</h2>
 <p>Das Google DataStudio bringt von Hause aus schon eine Reihe von Schnittstellen mit, über die es möglich ist, auf z.B. Datenbanken oder Online-Dienste zurückzugreifen um in Echzeit an allerlei Messreihen zu kommen. Doch leider fehlt hier bisher ein Verbindung zu CSV-Dateien. Den Connector musste ich mir also erst selber erstellen.</p>
-<p>Der Connector ist im Moment noch sehr einfach gehalten. Es ermöglicht keine großen Anpassungen und ist sicherlich noch verbesserungsfähig (<a href="https://datastudio.google.com/datasources/create?connectorId=AKfycbxxafV6ymAs6S2DRADTGKzJ2aNCdwrnMgRIMt-KJAzoO-YESKc19U9z2w">Link zum Connector</a>):</p>
+<p>Der Connector ist im Moment noch sehr einfach gehalten. Es ermöglicht keine großen Anpassungen und ist sicherlich noch verbesserungsfähig (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://datastudio.google.com/datasources/create?connectorId=AKfycbxxafV6ymAs6S2DRADTGKzJ2aNCdwrnMgRIMt-KJAzoO-YESKc19U9z2w&amp;utm_source=allyourbasearebelongtous">Link zum Connector</a>
+
+
+):</p>
 <p>function getConfig() {
 var config = {
 configParams: [
@@ -432,7 +484,33 @@ text: &ldquo;The CSV-Connector currently supports a fixed amount of three column
 ,{
 type: &ldquo;TEXTINPUT&rdquo;,
 name: &ldquo;url&rdquo;,
-helpText: &ldquo;If you want to use a CSV-file from GoogleDrive, use this format where 123 at the end is your document id: <a href="https://drive.google.com/uc?export=download&amp;id=123%22">https://drive.google.com/uc?export=download&id=123"</a>,
+helpText: &ldquo;If you want to use a CSV-file from GoogleDrive, use this format where 123 at the end is your document id: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://drive.google.com/uc?export=download&amp;id=123%22&amp;utm_source=allyourbasearebelongtous">https://drive.google.com/uc?export=download&id=123"</a>
+
+
+,
 displayName: &ldquo;Provide the url to your csv file.&rdquo;
 }</p>
 <pre><code>\]
@@ -583,11 +661,141 @@ return response;
 <p>Im Data Studio ein Diagramm erstellen, dass die Messwerte der regelmäßigen Test-Download darstellt: Darum muss ich mich noch kümmern.</p>
 <p> </p>
 <h2 id="links-und-noch-mehr-links">Links und noch  mehr Links</h2>
-<p><a href="https://github.com/nickyreinert/speedTest/blob/master/speedTest.sh">Link zu GitHub mit dem Quellcode</a></p>
-<p><a href="https://datastudio.google.com/datasources/create?connectorId=AKfycbxxafV6ymAs6S2DRADTGKzJ2aNCdwrnMgRIMt-KJAzoO-YESKc19U9z2w">Link zum Connector</a></p>
-<p><a href="https://developers.google.com/datastudio/connector/get-started">Einführung und Doku auf developers.google.com</a></p>
-<p><a href="https://www.benlcollins.com/data-studio/community-connector/">kleinere Beispiele auf benlcollins.com</a></p>
-<p><a href="https://github.com/google/datastudio">andere Projekte auf github.com</a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/speedTest/blob/master/speedTest.sh?utm_source=allyourbasearebelongtous">Link zu GitHub mit dem Quellcode</a>
+
+
+</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://datastudio.google.com/datasources/create?connectorId=AKfycbxxafV6ymAs6S2DRADTGKzJ2aNCdwrnMgRIMt-KJAzoO-YESKc19U9z2w&amp;utm_source=allyourbasearebelongtous">Link zum Connector</a>
+
+
+</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://developers.google.com/datastudio/connector/get-started?utm_source=allyourbasearebelongtous">Einführung und Doku auf developers.google.com</a>
+
+
+</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.benlcollins.com/data-studio/community-connector/?utm_source=allyourbasearebelongtous">kleinere Beispiele auf benlcollins.com</a>
+
+
+</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/google/datastudio?utm_source=allyourbasearebelongtous">andere Projekte auf github.com</a>
+
+
+</p>
 
     
   </article>

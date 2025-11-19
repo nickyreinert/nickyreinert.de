@@ -373,7 +373,33 @@ Redirect 302 /redirect0r/foobar/2/ /redirect0r/foobar/index.php</p>
 <p>Wenn man nun von einem System (z.B. Joomla) auf ein anderes System (z.B. Wordpress) umzieht und dabei nicht nur auf eine veraltete URL sondern auf 100 URLs stößt, die im neuen System nicht mehr existieren, stellt sich oft die Frage: Was mache ich mit all den alten URLs, die ich im neuen System nicht exakt abbilden kann? Macht es Sinn, die htaccess-Datei mit zahllosen Weiterleitungen zu überfluten? Es kommen zu ersten Zweifeln: Die htaccess-Datei wird bei jedem Aufruf der Website geladen. Kann eine große htaccess-Datei sich also negativ auf die Performance der Seite auswirken?</p>
 <p>Die Frage hat auch mich beschäftigt und deshalb habe ich ein kleines PHP-Script geschrieben, dass helfen soll, die Antwort zu finden.</p>
 <h2 id="funktion">Funktion</h2>
-<p>Der Quellcode für das PHP-Script ist über <a href="https://github.com/nickyreinert/redirect0r">github</a> verfügbar. Das Script kann im Browser oder über die Kommandozeile aufgerufen werden. Sämtliche Einstellungen werden in einer JSON-Datei vorgenommen.</p>
+<p>Der Quellcode für das PHP-Script ist über 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/redirect0r?utm_source=allyourbasearebelongtous">github</a>
+
+
+ verfügbar. Das Script kann im Browser oder über die Kommandozeile aufgerufen werden. Sämtliche Einstellungen werden in einer JSON-Datei vorgenommen.</p>
 <p>Der Ablauf des Scripts ist relativ einfach. In einer Schleife schreibt es eine beliebige Anzahl von Weiterleitungs-Regeln in eine htaccess-Datei. Diese Regeln haben folgenden Aufbau:</p>
 <p>Redirect 302 /foobar/<strong><em>i</em></strong>/ /foobar/index.php</p>
 <p>/foobar ist der Ordner, der für die Messung verwendet wird. In diesem Ordner befindet sich auch die htaccess-Datei. i ist eine fortlaufende Ziffer, die mit jedem Schleifendurchlauf inkrementiert wird. Schließlich wird das Ziel der Weiterleitung mit /foobar/index.php angegeben. Der Ordner und die Zieldatei sowie der Inhalt der Zieldatei können angepasst werden.</p>
@@ -390,7 +416,33 @@ Redirect 302 /redirect0r/foobar/2/ /redirect0r/foobar/index.php</p>
 <p>Als Zeilenlimitin der htaccess-Datei wurden 100.000 Zeilen gewählt. Die Schrittweite beträgt 5.000. Nach jedem Aufruf gab es eine Pause von 3 Sekunden. Insgesamt gab es drei Aufrufe je Zeilenanzahl. Über diese 3 Aufrufe zu einer bestimmten Zeilenanzahl wurde schließlich der Mittelwert errechnet.</p>
 <p>Bei 10.000 Zeilen wurde bei allen Methoden ca. 90 ms gemessen. Bei 20.000 Zeilen in der htaccess-Datei beträgt die Reaktionszeiten knapp das doppelte, aber immer noch recht unauffällige 185 ms. Ab da gehen die gemessenen Zeit leicht auseinander, der lokale Server scheint die schlechtere Performance zu haben.</p>
 <p>Bei 60.000 Zeilen wird bei allen Methoden die &ldquo;magische&rdquo; Grenze von 1 Sekunde überschritten. Die Antwortzeiten steigen jetzt nicht mehr proportional. Bei 100.000 Zeilen benötigt der lokale Server schon über 4 Sekunden für die Antwort. Der gehostete Webserver braucht dafür über knapp 3 Sekunden.</p>
-<p>[caption id=&ldquo;attachment_1580&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/htaccess-geschwindigkeit.png"><img src="/2017/2017-10-26-wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/images/htaccess-geschwindigkeit-300x186.png" alt="Geschwindigkeit bei wachsender htaccess-Datei"></a> Geschwindigkeit bei wachsender htaccess-Datei[/caption]</p>
+<p>[caption id=&ldquo;attachment_1580&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/htaccess-geschwindigkeit.png?utm_source=allyourbasearebelongtous"><img src="/2017/2017-10-26-wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/images/htaccess-geschwindigkeit-300x186.png" alt="Geschwindigkeit bei wachsender htaccess-Datei"></a>
+
+
+ Geschwindigkeit bei wachsender htaccess-Datei[/caption]</p>
 <h2 id="fazit">Fazit</h2>
 <p>Natürlich wirkt sich eine große htaccess-Datei auf die Performance des Servers auf. Denn wie bereits bemerkt, muss der Webserver diese Datei bei jeder Anfrage öffnen und verarbeiten. Allerdings ist der negative Einfluss ziemlich gering und macht sich erst bei einer sehr großen Anzahl von Zeilen bemerkbar.</p>
 <p>Eine htaccess-Datei mit 10.000 Zeilen verringert die Antwortzeit kaum. Allerdings steigt die Antwortzeit überproportional an. Bei 100.000 Zeilen ist sie bereits 50 mal langsamer.</p>

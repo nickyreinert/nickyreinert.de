@@ -51,7 +51,7 @@
   <meta itemprop="description" content="In dieser kleinen Tutorial-Serie will ich anhand einer Online-Handy-Datenbank zeigen, wie man mit VBA Seiten aus dem Internet abruft und nach Informationen sucht, die sich dann in einer Tabelle abspeichern lassen. Warum VBA? Es gibt vermutlich elegantere Lösungen, doch Excel ist eine Software, die die meisten zuhause nutzen. Man benötigt also keine zusätzliche Entwicklungsumgebung. Außerdem hat diese Methode den Vorteil, dass die Daten sofort zur weiteren Verarbeitung verfügbar sind. VBA ist vielleicht nicht die performanteste Programmiersprache, dafür aber relativ leicht zu beherrschen.">
   <meta itemprop="datePublished" content="2010-09-16T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-08-21T18:08:54+02:00">
-  <meta itemprop="wordCount" content="1093">
+  <meta itemprop="wordCount" content="1094">
   <meta itemprop="keywords" content="VBA,Excel,Web-Scraping,Screen-Scraping,HTML,DOM,WinHttpRequest,HTTP-Request,GET,POST,Tutorial">
 
   
@@ -107,7 +107,7 @@
     },
     
     "url": "https:\/\/nickyreinert.de\/2010\/2010-09-16-tutorial-web-scraping-mit-vba-teil-1\/",
-    "wordCount":  1093 ,
+    "wordCount":  1094 ,
     
     "timeRequired": "PT5M",
     
@@ -327,7 +327,33 @@
   <article style="border-top: 2px solid #878787;" class="content">
     
     <p>In dieser kleinen Tutorial-Serie will ich anhand einer Online-Handy-Datenbank zeigen, wie man mit VBA Seiten aus dem Internet abruft und nach Informationen sucht, die sich dann in einer Tabelle abspeichern lassen. Warum VBA? Es gibt vermutlich elegantere Lösungen, doch Excel ist eine Software, die die meisten zuhause nutzen. Man benötigt also keine zusätzliche Entwicklungsumgebung. Außerdem hat diese Methode den  Vorteil, dass die Daten sofort zur weiteren Verarbeitung verfügbar sind. VBA ist vielleicht nicht die performanteste Programmiersprache, dafür aber relativ leicht zu beherrschen.</p>
-<p><a href="http://www.rechtzweinull.de/archives/100-screen-scraping-wann-ist-das-auslesen-und-die-veroeffentlichung-fremder-daten-zulaessig.html">(FYI: Rechtliches zum Thema Web- oder Screen-Scraping)</a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://www.rechtzweinull.de/archives/100-screen-scraping-wann-ist-das-auslesen-und-die-veroeffentlichung-fremder-daten-zulaessig.html?utm_source=allyourbasearebelongtous">(FYI: Rechtliches zum Thema Web- oder Screen-Scraping)</a>
+
+
+</p>
 <p> 
 Diese Artikelserie richtet sich an den fortgeschrittenen Nutzer. Für den Einsteiger gehe ich nicht auf grundlegendes Programmierwissen ein (was sind Klassen, welche Variablen-Typen bietet Excel, etc.pp.) und für den professionellen Softwareentwickler sind meine Codebeispiele vermutlich zu infantil. Ich habe aber die Erfahrung gemacht, dass VBA und Excel für kurzfristige und kleine Projekte dieser Art recht nützliche Hilfsmittel sind. Außerdem bin ich kein &ldquo;ausgebildeter Softwareentwickler&rdquo;, weshalb ich an der Stelle auch gleich darauf Hinweise, dass Verbesserungsvorschläge sehr gerne gesehen sind!</p>
 <p>Welches wissen solltest du also mitbringen?  Da es um das Parsen von HTML-Code geht, solltest du zumindest Bescheid wissen, wenn ich von div- und a-Elementen und css-Klassen rede. Du solltest auch wissen, wie man in VBA Variablen deklariert oder was eine if-Abfrage ist.</p>
@@ -337,7 +363,33 @@ Diese Artikelserie richtet sich an den fortgeschrittenen Nutzer. Für den Eins
 <p>Die erste Routine schließlich liefert die Liste aller URL zu den Herstellern, die wir uns aus dem HTML-Code der Herstellerübersicht auf inside-handy.de laden. Und damit geht es nun los:</p>
 <p>1. Die URL zu den Hersteller-Unterseiten auslesen - sub getManufacturer</p>
 <p>1.1 Datei per HTTP von einem Server laden</p>
-<p>Im ersten Schritt laden wir die komplette HTML-Datei in den Zwischenspeicher. Dazu gibt es mindesten zwei Methoden, die gängigste ist vermutlich die über <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa384106%28v=vs.85%29.aspx">WinHttpRequest</a>. Bevor du das nutzen kannst, musst du bei VBA unter Extras - Verweise jedoch erst die Microsoft HTML Object Library einbinden.</p>
+<p>Im ersten Schritt laden wir die komplette HTML-Datei in den Zwischenspeicher. Dazu gibt es mindesten zwei Methoden, die gängigste ist vermutlich die über 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa384106%28v=vs.85%29.aspx?utm_source=allyourbasearebelongtous">WinHttpRequest</a>
+
+
+. Bevor du das nutzen kannst, musst du bei VBA unter Extras - Verweise jedoch erst die Microsoft HTML Object Library einbinden.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Dim url As String
 </span></span><span class="line"><span class="ln">2</span><span class="cl">Dim result As String
 </span></span><span class="line"><span class="ln">3</span><span class="cl">Dim winHttpReq As Object

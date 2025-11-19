@@ -53,7 +53,7 @@ Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit
 Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit deiner WordPress-Seite zu optimieren. Und da neben der Geschwindigkeit die Sicherheit ein weiteres beliebtes Thema ist, werde ich auch dazu ein paar kleine Kniffe mit großer Wirkung zeigen. Doch zunächst ein paar…">
   <meta itemprop="datePublished" content="2020-07-01T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-10-11T11:01:31+02:00">
-  <meta itemprop="wordCount" content="2799">
+  <meta itemprop="wordCount" content="2814">
   <meta itemprop="keywords" content="WordPress,Performance,Geschwindigkeit,Sicherheit,Optimierung,functions.php,.htaccess,wp-config.php,WPO,Core Web Vitals,gzip,defer,async,XML-RPC,REST API">
 
   
@@ -110,7 +110,7 @@ Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit
     },
     
     "url": "https:\/\/nickyreinert.de\/2020\/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup\/",
-    "wordCount":  2799 ,
+    "wordCount":  2814 ,
     
     "timeRequired": "PT5M",
     
@@ -373,7 +373,33 @@ Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit
 <li><strong>Backups</strong> - Nuff said. Du wirst dein System niemals 100% absichern können. Umso wichtiger sind Backup.</li>
 <li><strong>Plugin-Sparksamkeit</strong> - jedes zusätzliche Plugin ist nicht nur ein potentielles Sicherheitsrisiko, sondern lässt deine Seite auch unnötig anwachsen. Versuche so viele Funktionen wie möglich selber umzusetzen. Ein Child-Theme erlaubt dir in der <strong>functions.php</strong> nicht nur Anpassungen des Layouts sondern auch des Funktionsumfanges vorzunehmen.</li>
 <li><strong>Updates</strong> - Halte WordPress, Plugins und Themes immer auf dem neuesten Stand. Verzichte möglichst auf Plugins und Themes, die lange nicht aktualisiert wurden.</li>
-<li><strong>Page Builder</strong> - <a href="https://www.nickyreinert.de/wordpress-page-builder-pro-und-contra/">ich bin wahrlich kein Fan von Page-Buildern</a>, auch wenn es da draußen relativ performante Vertreter dieser Art gibt. Allerdings wohnt jedem Page-Builder in der Regel ein Problem inne: Sie kommen mit einer Menge von Funktionen, die du oft nicht benötigst, die aber trotzdem Ressourcen verbrauchen.</li>
+<li><strong>Page Builder</strong> - 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/wordpress-page-builder-pro-und-contra/?utm_source=allyourbasearebelongtous">ich bin wahrlich kein Fan von Page-Buildern</a>
+
+
+, auch wenn es da draußen relativ performante Vertreter dieser Art gibt. Allerdings wohnt jedem Page-Builder in der Regel ein Problem inne: Sie kommen mit einer Menge von Funktionen, die du oft nicht benötigst, die aber trotzdem Ressourcen verbrauchen.</li>
 </ul>
 <p>Nun, da das geklärt ist und ich meinen Unmut über Page-Builder mal wieder unterbringen konnte: Was kannst du aktiv tun, um die <strong>Geschwindigkeit und Sicherheit</strong> zu optimieren? Im Folgenden werden wir Änderungen an drei Dateien vornehmen:</p>
 <ul>
@@ -381,7 +407,33 @@ Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit
 <li>.htaccess-Datei</li>
 <li>wp-config.php</li>
 </ul>
-<p>Du findest alle drei Dateien auf <a href="https://github.com/nickyreinert/wordPressSettings/tree/master">github.com</a>.</p>
+<p>Du findest alle drei Dateien auf 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/wordPressSettings/tree/master?utm_source=allyourbasearebelongtous">github.com</a>
+
+
+.</p>
 <h2 id="warnung">Warnung</h2>
 <p>Da es sich mitunter um sehr tiefe Eingriffe in die WordPress-Mechanik handelt, folgender wichtiger Hinweis:</p>
 <p>Nehme die hier beschriebenen Änderungen niemals an einer Live-Installation vor; teste sie in einer geschützten Umgebung und übertrage sie dann sorgfältig und ggf. nacheinander in das Live-System!</p>
@@ -393,11 +445,63 @@ Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit
 <li>Nutze als <strong>Benutzername</strong> für den Administrator-Account nicht den Standardwert &ldquo;admin&rdquo;. Erzeuge einen neuen Admin-Nutzer (z.B. MyLittlePony) mit allen Admin-Rechten und entferne den originalen Admin-Nutzer</li>
 <li>Nutze ein &ldquo;kryptisches&rdquo; <strong>Tabellen-Prefix</strong> (z.B. x02349d_), um das Auffinden der WordPress-Tabellen in der Datenbank zu erschweren. Bei Angriffen über <strong>SQL-Injection</strong> wird oft vom Standard-Prefix (wp_) ausgegangen.</li>
 <li>Ach ja, und nein: Verschiebe nicht die <strong>wp-admin</strong>-URL - das erzeugt mehr Unruhe im System, als dass es nutzt. Hier reicht der zusätzliche Schutz mit <strong>HTTP Basic Auth</strong>.</li>
-<li>Setze korrekte Dateirechte ein, um zu vermeiden, dass jemand deine PHP-Dateien ändern und Schadcode einfügen kann (das ist ein etwas größeres Thema auf Serverseite, <a href="https://binary-butterfly.de/artikel/dateirechte-wie-stelle-ich-das-bei-meinem-hoster-ein/">was hier ganz gut beschrieben ist</a>).</li>
+<li>Setze korrekte Dateirechte ein, um zu vermeiden, dass jemand deine PHP-Dateien ändern und Schadcode einfügen kann (das ist ein etwas größeres Thema auf Serverseite, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://binary-butterfly.de/artikel/dateirechte-wie-stelle-ich-das-bei-meinem-hoster-ein/?utm_source=allyourbasearebelongtous">was hier ganz gut beschrieben ist</a>
+
+
+).</li>
 <li>Kein Standard-Passwort. Ok. Muss ich das wirklich erwähnen? ;)</li>
 </ul>
 <h2 id="emoticons-und-emojis">Emoticons und Emojis</h2>
-<p>Emojis sind zwar unstrittig ein fester Bestandteil der modernen Kommunikation, was nicht heißt, dass man sie überall nutzen muss. In WordPress gehören sie leider zum Standard, was die Ladezeit verringert. Um sich der kleinen Kecker zu entledigen, ist eine ganze Menge PHP-Code (<a href="https://kinsta.com/de/wissensdatenbank/deaktivierst-emojis-wordpress/">lose basierend auf diesem Beitrag</a>):</p>
+<p>Emojis sind zwar unstrittig ein fester Bestandteil der modernen Kommunikation, was nicht heißt, dass man sie überall nutzen muss. In WordPress gehören sie leider zum Standard, was die Ladezeit verringert. Um sich der kleinen Kecker zu entledigen, ist eine ganze Menge PHP-Code (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://kinsta.com/de/wissensdatenbank/deaktivierst-emojis-wordpress/?utm_source=allyourbasearebelongtous">lose basierend auf diesem Beitrag</a>
+
+
+):</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">function disable_emojis() {
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl">    remove_action( &#39;wp_head&#39;, &#39;print_emoji_detection_script&#39;, 7 );
 </span></span><span class="line"><span class="ln"> 3</span><span class="cl">    remove_action( &#39;admin_print_scripts&#39;, &#39;print_emoji_detection_script&#39; );
@@ -524,7 +628,33 @@ Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit
 </span></span><span class="line"><span class="ln">10</span><span class="cl">    
 </span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><h2 id="google-fonts-deaktivieren">Google Fonts deaktivieren</h2>
-<p>Die Einbindung der Fonts über Google ist bequem, birgt neben dem Performance-Nachteil aber unter Umständen auch ein Datenschutz problem. (Grundsätzlich solltest du versuchen, alle Ressourcen von deinem Server zu laden und auch auf CDN zu verzichten - <a href="https://binary-butterfly.de/artikel/warum-dir-ein-cdn-vermutlich-keinen-geschwindigkeitsvorteil-bringen-wird/">das bringt selten einen Vorteil</a>.)</p>
+<p>Die Einbindung der Fonts über Google ist bequem, birgt neben dem Performance-Nachteil aber unter Umständen auch ein Datenschutz problem. (Grundsätzlich solltest du versuchen, alle Ressourcen von deinem Server zu laden und auch auf CDN zu verzichten - 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://binary-butterfly.de/artikel/warum-dir-ein-cdn-vermutlich-keinen-geschwindigkeitsvorteil-bringen-wird/?utm_source=allyourbasearebelongtous">das bringt selten einen Vorteil</a>
+
+
+.)</p>
 <p>Leider ist das Entfernen nicht ohne weiteres möglich. Du musst erst herausfinden, unter welchem Handler das Theme die Google Fonts einbindet (Eine Liste bekannter Themes und der verwendeten Font-Handler findest du hier.) Dazu durchsuchst du die functions.php nach z.B. Google. Für das Theme Rowling sieht das dann folgendermaßen aus:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">wp_register_style( &#39;rowling_google_fonts&#39;, &#39;//fonts.googleapis.com/css?family=Lato:400,700,900,400italic,700italic|Merriweather:700,900,400italic&#39; );
 </span></span></code></pre></div><p>Der Handler lautet also &ldquo;<strong>rowling_google_fonts</strong>&rdquo;. Auf gehts:</p>
@@ -540,12 +670,68 @@ Hier möchte ich dir ein paar einfache Tricks vorstellen, um die Geschwindigkeit
 <p>Seit einiger Zeit gibt es in WordPress das ansich ganz nützliche Feature der Revisionen: Bei jeder Änderung und jeder Speicherung legt WordPress in der Datenbank eine Kopie der vorherigen Version des Beitrages an. Das ist praktisch. Aber auch grenzenlos.<br>
 Zunächst solltest du die Anzahl der Revisionen pro Beitrag eingrenzen. Dazu setzt du in der wp-config.php folgenden Parameter:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">define(&#39;WP_POST_REVISIONS&#39;, 5);
-</span></span></code></pre></div><p>Die Fünf beschreibt die Anzahl der erlaubten Revisionen. Du kannst die Zahl natürlich beliebig anpassen. Damit ist es aber noch nicht getan, du solltest die alten Revisionen natürlich noch aufräumen. Dazu kannst du dir das Plugin <a href="https://de.wordpress.org/plugins/wp-sweep/">WP Sweep installieren</a>. Du kannst nun ganz bequem alle Revisionen löschen:</p>
+</span></span></code></pre></div><p>Die Fünf beschreibt die Anzahl der erlaubten Revisionen. Du kannst die Zahl natürlich beliebig anpassen. Damit ist es aber noch nicht getan, du solltest die alten Revisionen natürlich noch aufräumen. Dazu kannst du dir das Plugin 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://de.wordpress.org/plugins/wp-sweep/?utm_source=allyourbasearebelongtous">WP Sweep installieren</a>
+
+
+. Du kannst nun ganz bequem alle Revisionen löschen:</p>
 <img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-2-700x102.png" alt=""><p>Alle Revisionen mit WP Sweep löschen</p>
 <h2 id="oembeds-deaktivieren">oEmbeds deaktivieren</h2>
 <p>Hierbei handelt es sich um ein Feature, das WordPress seit Version 4.4 mitbringt, die sogenannten Embeds. Dir ist es vielleicht schon mal aufgefallen: Beim Einfügen von URL in den Beitrag, wird nicht die URL angezeigt, sondern eine Art Snippet mit zusätzlichne Informationen und sogar einer Vorschau. Das sieht schick aus, braucht aber vielleicht nicht jeder. Wenn du Embed also nicht benötigst, erspart dir das wieder ein paar Zeilen im HTML-Header und sogar eine zusätzliche JavaScript-Bibliothek:</p>
 <img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-4-700x52.png" alt=""><p>Die Embed-Bibliothek von WordPress</p>
-<p>Füge dazu folgendes in die <strong>functions.php</strong> ein (<a href="https://kinsta.com/de/wissensdatenbank/deaktivierst-embeds-wordpress/#disable-embeds-code">Quelle</a>):</p>
+<p>Füge dazu folgendes in die <strong>functions.php</strong> ein (
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://kinsta.com/de/wissensdatenbank/deaktivierst-embeds-wordpress/?utm_source=allyourbasearebelongtous#disable-embeds-code">Quelle</a>
+
+
+):</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">add_action( &#39;init&#39;, &#39;disable_embeds_code_init&#39;, 9999 );
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl">
 </span></span><span class="line"><span class="ln"> 3</span><span class="cl">function disable_embeds_code_init() {
@@ -577,7 +763,59 @@ Zunächst solltest du die Anzahl der Revisionen pro Beitrag eingrenzen. Dazu set
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">&lt;link rel=&#34;wlwmanifest&#34; type=&#34;application/wlwmanifest+xml&#34; href=&#34;https://example.com/wp-includes/wlwmanifest.xml&#34;&gt;
 </span></span></code></pre></div><p>Und so deaktivierst du den Spaß:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">remove_action( &#39;wp_head&#39;, &#39;wlwmanifest_link&#39;);
-</span></span></code></pre></div><p>Weiter geht es mit dem Verweis zum <strong>Shortlink</strong> des jeweiligen Beitrages. Shortlinks sind praktisch, um mit kurzem URL auf Inhalte deiner Webseite zu verweisen. Anstatt dem langen Permalink <a href="https://www.example.com/das-ist-mein-allererster-beitrag-hier-und-ich-liebe-es">www.example.com/das-ist-mein-allererster-beitrag-hier-und-ich-liebe-es</a> nutzt du z.B. einfach <strong><a href="https://www.example.com/?p=1">www.example.com/?p=1</a></strong>. Wenn du das nicht brauchst, entferne den Shortlink-Verweis aus dem HTML-Header und dem HTTP-Antwort-Header:</p>
+</span></span></code></pre></div><p>Weiter geht es mit dem Verweis zum <strong>Shortlink</strong> des jeweiligen Beitrages. Shortlinks sind praktisch, um mit kurzem URL auf Inhalte deiner Webseite zu verweisen. Anstatt dem langen Permalink 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.example.com/das-ist-mein-allererster-beitrag-hier-und-ich-liebe-es?utm_source=allyourbasearebelongtous">www.example.com/das-ist-mein-allererster-beitrag-hier-und-ich-liebe-es</a>
+
+
+ nutzt du z.B. einfach <strong>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.example.com/?p=1&amp;utm_source=allyourbasearebelongtous">www.example.com/?p=1</a>
+
+
+</strong>. Wenn du das nicht brauchst, entferne den Shortlink-Verweis aus dem HTML-Header und dem HTTP-Antwort-Header:</p>
 <img src="/2020/2020-07-01-leitfaden-fur-ein-sicheres-und-schnelles-wordpress-setup/images/grafik-3-700x336.png" alt=""><p>Der Shortlink-Verweis im HTTP-Header</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">remove_action( &#39;wp_head&#39;, &#39;wp_shortlink_wp_head&#39;);
 </span></span><span class="line"><span class="ln">2</span><span class="cl">
@@ -597,17 +835,147 @@ Zunächst solltest du die Anzahl der Revisionen pro Beitrag eingrenzen. Dazu set
 </span></span></code></pre></div><h2 id="cache-plugin">Cache-Plugin</h2>
 <p>Wenn du immer noch nicht zufrieden bist, kannst du auch auf ein Cache-Plugin zurück greifen. Das sorgt dafür, dass die Seiten nicht bei jedem Aufruf komplett neu über PHP erstellt, sondern statische Inhalte ausgeliefert werden. Das bringt noch mal einen enormen Geschwindigkeitsgewinn.</p>
 <h2 id="die-xml-rpc-schnittstelle-deaktivieren">Die XML-RPC-Schnittstelle deaktivieren</h2>
-<p>XML-RPC steht für Extensible Markup Language Remote Procedure Call. Klingt kompliziert, ist es auch. Dabei handelt es sich um eine Schnittstelle. mit der du, ganz einfach gesagt, WordPress steuern kannst, ohne auf das Backend zuzugreifen (<a href="https://www.kuketz-blog.de/wordpress-angriffe-auf-die-xmlrpc-schnittstelle-xmlrpc-php-unterbinden/">mehr Hintergründe dazu hier</a>). Wenn du diese Schnittstelle deaktivierst, verlierst du also Funktionalität, wie z.B. <strong>Pingbacks</strong> oder das <strong>Verwalten von WordPress mit einer externen App</strong>. Auch Jetpack greift auf die XML-RPC zu! Du gewinnst aber auch etwas an Sicherheit dazu. Entscheide selber.</p>
+<p>XML-RPC steht für Extensible Markup Language Remote Procedure Call. Klingt kompliziert, ist es auch. Dabei handelt es sich um eine Schnittstelle. mit der du, ganz einfach gesagt, WordPress steuern kannst, ohne auf das Backend zuzugreifen (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.kuketz-blog.de/wordpress-angriffe-auf-die-xmlrpc-schnittstelle-xmlrpc-php-unterbinden/?utm_source=allyourbasearebelongtous">mehr Hintergründe dazu hier</a>
+
+
+). Wenn du diese Schnittstelle deaktivierst, verlierst du also Funktionalität, wie z.B. <strong>Pingbacks</strong> oder das <strong>Verwalten von WordPress mit einer externen App</strong>. Auch Jetpack greift auf die XML-RPC zu! Du gewinnst aber auch etwas an Sicherheit dazu. Entscheide selber.</p>
 <p>In den aktuellen Apache-Versionen (ab 2.4) sperrst du den Zugriff auf xmlrpc.php in der .htaccess-Datei folgendermaßen:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">&lt;FilesMatch &#34;(^\.|wp-config\.php|xmlrpc\.php|(?&lt;!robots)\.txt|(liesmich|readme)\.*)&#34;&gt;
 </span></span><span class="line"><span class="ln">2</span><span class="cl">   Require all denied
 </span></span><span class="line"><span class="ln">3</span><span class="cl">&lt;/FilesMatch&gt;
-</span></span></code></pre></div><p>Eigentlich sollte das schon genügen. Willst du auf Nummer sicher gehen, kannst du durchaus mehrt tun. Der weniger disruptive Weg wäre, <a href="https://developer.wordpress.org/reference/hooks/xmlrpc_enabled/">alle</a> <a href="https://developer.wordpress.org/reference/hooks/xmlrpc_enabled/"></a><a href="https://developer.wordpress.org/reference/hooks/xmlrpc_enabled/">Methoden zu deaktivieren, die eine Authentifizierung erfordern</a>. Das funktioniert folgendermaßen (in der functions.php deines Child-Themes):</p>
+</span></span></code></pre></div><p>Eigentlich sollte das schon genügen. Willst du auf Nummer sicher gehen, kannst du durchaus mehrt tun. Der weniger disruptive Weg wäre, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://developer.wordpress.org/reference/hooks/xmlrpc_enabled/?utm_source=allyourbasearebelongtous">alle</a>
+
+
+ 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://developer.wordpress.org/reference/hooks/xmlrpc_enabled/?utm_source=allyourbasearebelongtous"></a>
+
+
+
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://developer.wordpress.org/reference/hooks/xmlrpc_enabled/?utm_source=allyourbasearebelongtous">Methoden zu deaktivieren, die eine Authentifizierung erfordern</a>
+
+
+. Das funktioniert folgendermaßen (in der functions.php deines Child-Themes):</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"># XML RPC deaktivieren
 </span></span><span class="line"><span class="ln">2</span><span class="cl">add_filter( &#39;xmlrpc_enabled&#39;, &#39;__return_false&#39; );
 </span></span><span class="line"><span class="ln">3</span><span class="cl"># XML RPC Verweis aus Header entfernen
 </span></span><span class="line"><span class="ln">4</span><span class="cl">remove_action(&#39;wp_head&#39;, &#39;rsd_link&#39;);
-</span></span></code></pre></div><p>Allerdings ist das ganze Sub-System weiterhin aktiv. <a href="https://www.scottbrownconsulting.com/2020/03/two-ways-to-fully-disable-wordpress-xml-rpc/">Willst du das also komplett deaktivieren</a>, füge der functions.php folgendes hinzu:</p>
+</span></span></code></pre></div><p>Allerdings ist das ganze Sub-System weiterhin aktiv. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.scottbrownconsulting.com/2020/03/two-ways-to-fully-disable-wordpress-xml-rpc/?utm_source=allyourbasearebelongtous">Willst du das also komplett deaktivieren</a>
+
+
+, füge der functions.php folgendes hinzu:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">// disable xmlrpc
 </span></span><span class="line"><span class="ln">2</span><span class="cl">function remove_xmlrpc_methods( $methods ) {
 </span></span><span class="line"><span class="ln">3</span><span class="cl">  return array();
@@ -618,7 +986,33 @@ Zunächst solltest du die Anzahl der Revisionen pro Beitrag eingrenzen. Dazu set
 <p>Seit Version 4.4 hat WordPress eine REST-API an Bord, die wie XML-RPC eine Schnittstelle bietete, um bestimmte Informationen über deine Seite automatisiert auszulesen. Obgleich das Sicherheitsrisiko der REST-API ungleich niedriger ist als bei XML-RPC, kannst du auch hier ein wenig aufräumen, indem du den Verweis auf die REST-API folgendermaßen aus den HTML- sowie HTTP-Header entfernst:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">remove_action(&#39;wp_head&#39;, &#39;rest_output_link_wp_head&#39;, 10);
 </span></span><span class="line"><span class="ln">2</span><span class="cl">remove_action(&#39;template_redirect&#39;, &#39;rest_output_link_header&#39;, 11, 0);
-</span></span></code></pre></div><p>Ganz deaktivieren solltest du die API allerdings nicht, da sie vor allem auch für die reibungslose Backend-Funktionalität wichtig ist. Was du aber machen kannst, ist die REST-API <a href="https://developer.wordpress.org/rest-api/frequently-asked-questions/">nur nach Anmeldung zulassen:</a></p>
+</span></span></code></pre></div><p>Ganz deaktivieren solltest du die API allerdings nicht, da sie vor allem auch für die reibungslose Backend-Funktionalität wichtig ist. Was du aber machen kannst, ist die REST-API 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://developer.wordpress.org/rest-api/frequently-asked-questions/?utm_source=allyourbasearebelongtous">nur nach Anmeldung zulassen:</a>
+
+
+</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">add_filter(&#39;rest_authentication_errors&#39;, &#39;rest_api_auth&#39;);
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl">
 </span></span><span class="line"><span class="ln"> 3</span><span class="cl">function rest_api_auth($result) {
@@ -640,7 +1034,33 @@ Zunächst solltest du die Anzahl der Revisionen pro Beitrag eingrenzen. Dazu set
 </span></span><span class="line"><span class="ln">19</span><span class="cl">    return $result;
 </span></span><span class="line"><span class="ln">20</span><span class="cl">}
 </span></span></code></pre></div><h2 id="fazit">Fazit</h2>
-<p>Das war es erstmal. Wenn du jetzt noch das Gefühl hast, dass dein WordPress zu langsam ist, wirf mal einen Blick in die Entwickler-Konsole und schau nach, welche Ressourcen lange dauern oder ob du Anfragen doppelt absetzt. Es gibt vor allem auf Server-Seite, also unterhalb von WordPress, noch eine Menge Möglichkeiten. Einige davon habe ich in der <a href="https://www.nickyreinert.de/mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-1-3/">Artikel-Serie zum perfekten Web-Server-Setup aufgeführt</a>. Außerdem gibt es hier eine wirklich brilliante Artikel-Serie zum Thema Sicherheit, die du dir unbedingt lesen solltest. Hier werden unzählige wichtige Hinweise gegeben,</p>
+<p>Das war es erstmal. Wenn du jetzt noch das Gefühl hast, dass dein WordPress zu langsam ist, wirf mal einen Blick in die Entwickler-Konsole und schau nach, welche Ressourcen lange dauern oder ob du Anfragen doppelt absetzt. Es gibt vor allem auf Server-Seite, also unterhalb von WordPress, noch eine Menge Möglichkeiten. Einige davon habe ich in der 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-1-3/?utm_source=allyourbasearebelongtous">Artikel-Serie zum perfekten Web-Server-Setup aufgeführt</a>
+
+
+. Außerdem gibt es hier eine wirklich brilliante Artikel-Serie zum Thema Sicherheit, die du dir unbedingt lesen solltest. Hier werden unzählige wichtige Hinweise gegeben,</p>
 <p>Zum Abschluss noch mal der Hinweis: Es handelt sich hierbei um mitunter tiefe Eingriffe in die <strong>WordPress-Mechanik</strong>. Solltest du in der Zukunft Probleme mit deiner Seite haben, nimm diese Änderungen Schritt für Schritt zurück. Arbeite mit einem Staging-System und nutze Backups. Bei Probleme und Inkompatiblitäten freue ich mich über sachdienliche Hinweise, die ich in den Artikel einbauen kann!</p>
 
     

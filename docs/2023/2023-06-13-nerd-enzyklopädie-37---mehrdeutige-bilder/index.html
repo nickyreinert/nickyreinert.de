@@ -55,7 +55,7 @@ Ein Bild auf dem Computer muss „interpretiert“ werden, denn schließlich han
 Ein Bild auf dem Computer muss „interpretiert“ werden, denn schließlich handelte sich dabei um nichts anderes als eine Datei voller verrückter Zeichen — Nullen und Einsen. Es gibt verschiedene Formate, um Bilder in Dateien zu speichern, allen voran JPG, GIF und PNG.">
   <meta itemprop="datePublished" content="2023-06-13T12:19:31+01:00">
   <meta itemprop="dateModified" content="2023-06-13T12:19:31+01:00">
-  <meta itemprop="wordCount" content="255">
+  <meta itemprop="wordCount" content="261">
   <meta itemprop="keywords" content="PNG,iDOT,Apple,Bildverarbeitung,Sicherheitslücke,David Buchanan,Nerd Enzyklopädie,Bildformate">
 
   
@@ -112,7 +112,7 @@ Ein Bild auf dem Computer muss „interpretiert“ werden, denn schließlich han
     },
     
     "url": "https:\/\/nickyreinert.de\/2023\/2023-06-13-nerd-enzyklop%C3%A4die-37---mehrdeutige-bilder\/",
-    "wordCount":  255 ,
+    "wordCount":  261 ,
     
     "timeRequired": "PT5M",
     
@@ -341,10 +341,88 @@ Ein Bild auf dem Computer muss „interpretiert“ werden, denn schließlich han
     
     <img src="/2023/2023-06-13-nerd-enzyklop%C3%A4die-37---mehrdeutige-bilder/image1.png" alt=""><p>Ein Bild ist ein Bild ist ein Bild. Ob in der realen Welt oder auf dem Computer. Oder? ODER? Du ahnst es schon: Die Sache hätte keinen Haken, wenn ich es nicht so betonen würde.</p>
 <p>Ein Bild auf dem Computer muss „interpretiert“ werden, denn schließlich handelte sich dabei um nichts anderes als eine Datei voller verrückter Zeichen — Nullen und Einsen. Es gibt verschiedene Formate, um Bilder in Dateien zu speichern, allen voran <strong>JPG</strong>, <strong>GIF</strong> und <strong>PNG</strong>.</p>
-<p>Per Definition besteht eine PNG-Datei aus vielen kleinen <strong>Chunks</strong> (“Stücken”), die unterschiedliche Informationen enthalten, um das Bild aufzubauen. Dazu gehören z.B. die Farbpalette, die tatsächlichen Bild-Daten, Meta-Daten und so weiter [<a href="https://einstein.informatik.uni-oldenburg.de/rechnernetze/png.htm">EINS1</a>].</p>
-<p>Zwar folgt PNG einem fest definierten Standard, aber wie es mit Standards so ist: Jeder kocht sein eigenes Süppchen. So auch <strong>Apple</strong>. Dort hat man für die eigenen Zwecke einen zusätzlichen Chunk names <strong>iDOT</strong> eingeführt. Um diesen zu verarbeiten, greifen Apple-Geräte auf einen nur dafür entwickelten Algorithmus zurück, der die Informationen aus dem iDOT-Chunk nutzbar macht. Apple hat die Funktion von iDOT nicht öffentlich dokumentiert und so ist der Zweck nicht ganz klar. Anonymen Hinweisen nach soll damit aber die optimierte Verarbeitung der Bilddaten auf Mehrkern-Prozessoren im Vordergrund stehen [<a href="https://www.hackerfactor.com/blog/index.php?/archives/895-Connecting-the-iDOTs.html">HACK1</a>].</p>
+<p>Per Definition besteht eine PNG-Datei aus vielen kleinen <strong>Chunks</strong> (“Stücken”), die unterschiedliche Informationen enthalten, um das Bild aufzubauen. Dazu gehören z.B. die Farbpalette, die tatsächlichen Bild-Daten, Meta-Daten und so weiter [
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://einstein.informatik.uni-oldenburg.de/rechnernetze/png.htm?utm_source=allyourbasearebelongtous">EINS1</a>
+
+
+].</p>
+<p>Zwar folgt PNG einem fest definierten Standard, aber wie es mit Standards so ist: Jeder kocht sein eigenes Süppchen. So auch <strong>Apple</strong>. Dort hat man für die eigenen Zwecke einen zusätzlichen Chunk names <strong>iDOT</strong> eingeführt. Um diesen zu verarbeiten, greifen Apple-Geräte auf einen nur dafür entwickelten Algorithmus zurück, der die Informationen aus dem iDOT-Chunk nutzbar macht. Apple hat die Funktion von iDOT nicht öffentlich dokumentiert und so ist der Zweck nicht ganz klar. Anonymen Hinweisen nach soll damit aber die optimierte Verarbeitung der Bilddaten auf Mehrkern-Prozessoren im Vordergrund stehen [
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.hackerfactor.com/blog/index.php?/archives/895-Connecting-the-iDOTs.html&amp;utm_source=allyourbasearebelongtous">HACK1</a>
+
+
+].</p>
 <p><strong>Ende 2021</strong> fand <strong>David Buchanan</strong> heraus, dass dieser Algorithmus fehlerbehaftet ist und sich die Bild-Datei so manipulieren lässt, dass das Bild auf einem Apple-Gerät anders dargestellt wird als auf einem Windows-Computer. Und das sieht dann so aus:</p>
-<img src="/2023/2023-06-13-nerd-enzyklop%C3%A4die-37---mehrdeutige-bilder/image2.png" alt=""><p>Das gleiche PNG-Bild, dargestellt auf einem nicht-Apple-Computer (links) und auf einem Apple-Computer (rechts) [<a href="https://www.da.vidbuchanan.co.uk/widgets/pngdiff/">DAVI1</a>]</p>
+<img src="/2023/2023-06-13-nerd-enzyklop%C3%A4die-37---mehrdeutige-bilder/image2.png" alt=""><p>Das gleiche PNG-Bild, dargestellt auf einem nicht-Apple-Computer (links) und auf einem Apple-Computer (rechts) [
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.da.vidbuchanan.co.uk/widgets/pngdiff/?utm_source=allyourbasearebelongtous">DAVI1</a>
+
+
+]</p>
 <p>Apple den Bug mittlerweile „leider„ behoben…</p>
 
     

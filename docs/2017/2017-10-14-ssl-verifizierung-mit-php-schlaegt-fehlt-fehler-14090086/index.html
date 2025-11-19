@@ -56,7 +56,7 @@ So sieht die Fehlermeldung bei Verwendung von file_get_contents(); aus. Aber auc
 So sieht die Fehlermeldung bei Verwendung von file_get_contents(); aus. Aber auch andere Funktionen, mit denen man auf externe Ressourcen verweisen kann, werfen diesen Fehler, wie z.B. imagecreatefrompng();.">
   <meta itemprop="datePublished" content="2017-10-14T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-08-20T21:05:13+02:00">
-  <meta itemprop="wordCount" content="712">
+  <meta itemprop="wordCount" content="717">
   <meta itemprop="keywords" content="PHP,SSL,Zertifikat,Fehler 14090086,SSL_VERIFY_PEER,Zertifikatskette,CAfile,OpenSSL,cURL,Troubleshooting,Websicherheit">
 
   
@@ -113,7 +113,7 @@ So sieht die Fehlermeldung bei Verwendung von file_get_contents(); aus. Aber auc
     },
     
     "url": "https:\/\/nickyreinert.de\/2017\/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086\/",
-    "wordCount":  712 ,
+    "wordCount":  717 ,
     
     "timeRequired": "PT5M",
     
@@ -376,10 +376,62 @@ on line 50</p>
 <p>Warning: file_get_contents():
 Failed to enable crypto in /website/script.php<br>
 on line 50</p>
-<p>Warning: file_get_contents(<a href="https://www.nickyreinert.de/foobar.json%29">https://www.nickyreinert.de/foobar.json)</a>:
+<p>Warning: file_get_contents(
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/foobar.json%29?utm_source=allyourbasearebelongtous">https://www.nickyreinert.de/foobar.json)</a>
+
+
+:
 failed to open stream: operation failed in /website/script.php<br>
 on line 50</p>
-<p>Die Erklärung ist simpel: PHP kennt den Aussteller des Zertifikates für <a href="https://www.nickyreinert.de">https://www.nickyreinert.de</a> nicht und verweigert aus Sicherheitsgründen den Aufbau einer Verbindung. Die Ursachen hingegen können vielfältig sein, oft ist der Aussteller des Zertifikats z.B. nicht bekannt. Wir müssen also entweder dafür sorgen, dass PHP dem Aussteller vertraut oder festlegen, dass PHP die Zertifikate gar nicht erst prüft.</p>
+<p>Die Erklärung ist simpel: PHP kennt den Aussteller des Zertifikates für 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de?utm_source=allyourbasearebelongtous">https://www.nickyreinert.de</a>
+
+
+ nicht und verweigert aus Sicherheitsgründen den Aufbau einer Verbindung. Die Ursachen hingegen können vielfältig sein, oft ist der Aussteller des Zertifikats z.B. nicht bekannt. Wir müssen also entweder dafür sorgen, dass PHP dem Aussteller vertraut oder festlegen, dass PHP die Zertifikate gar nicht erst prüft.</p>
 <h2 id="verifizierung-des-ssl-hosts-unterdrücken">Verifizierung des SSL Hosts unterdrücken</h2>
 <p>Das ist die quick&rsquo;n&rsquo;dirty Lösung. Zumindest <em>file_get_contents()</em>; kann mit Parametern gefüttert werden, die die Verifizierung der Ressource unterdrücken:</p>
 <p>$stream = stream_context_create(array(    
@@ -392,15 +444,119 @@ $stream = stream_context_create(array(
 <p>$result = file_get_contents($url, 0, $stream);</p>
 <p>Wer auf eine eigene Ressource zurückgreift, z.B. im lokalen Netz oder zu Testzwecken, kann damit leben. Aus Sicherheitsgründen ist die Lösung allerdings nicht zu empfehlen. Außerdem erlaubt nicht jede Funktion die Angabe eines Stream-Contextes, wie z.B. <em>imagecreatefromjpeg();</em></p>
 <h2 id="die-zertifikatskette-manuell-einrichten">Die Zertifikatskette manuell einrichten</h2>
-<p>Man kommt also nicht darum, die saubere Lösung zu nutzen. Dazu muss man wissen, dass es in den allermeisten Fällen nicht nur um das eine Zertifikat geht, sondern um die gesamte Zertifikatskette. Diese beinhaltet auch die Zertifikate der Stellen, die dem infragekommenden Server, also <a href="https://www.nickyreinert.de">https://www.nickyreinert.de</a>, das Zertifikat ausgestellt haben. Wenn PHP diese Stellen nicht kennt, geht es auch davon aus, dass die von dort ausgestellten Zertifikate nicht gültig sind.</p>
-<p><a href="https://www.nickyreinert.de/files/1561/ssl-zertifikats-kette.png"><img src="/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/images/ssl-zertifikats-kette-300x219.png" alt=" SSL Zertifikats-Kette mit den Intermediate Zertifikaten"></a></p>
+<p>Man kommt also nicht darum, die saubere Lösung zu nutzen. Dazu muss man wissen, dass es in den allermeisten Fällen nicht nur um das eine Zertifikat geht, sondern um die gesamte Zertifikatskette. Diese beinhaltet auch die Zertifikate der Stellen, die dem infragekommenden Server, also 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de?utm_source=allyourbasearebelongtous">https://www.nickyreinert.de</a>
+
+
+, das Zertifikat ausgestellt haben. Wenn PHP diese Stellen nicht kennt, geht es auch davon aus, dass die von dort ausgestellten Zertifikate nicht gültig sind.</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/1561/ssl-zertifikats-kette.png?utm_source=allyourbasearebelongtous"><img src="/2017/2017-10-14-ssl-verifizierung-mit-php-schlaegt-fehlt-fehler-14090086/images/ssl-zertifikats-kette-300x219.png" alt=" SSL Zertifikats-Kette mit den Intermediate Zertifikaten"></a>
+
+
+</p>
 <p>SSL Zertifikats-Kette mit den Intermediate Zertifikaten</p>
-<p>Um die Zertifikatskette zu erhalten, kannst du einen Service wie <a href="https://whatsmychaincert.com/">https://whatsmychaincert.com/</a> nutzen. Dieser liefert dir eine Datei mit der  kompletten Zertifikatskette. Oder du machst dich selber auf die Suche. Jedes Zertfikat enthält den Namen des Ausstellers bzw. den Typ des Zertifikats. Damit lassen sich die notwendigen Zwischenzertifkate auch manuell zusammenstellen.</p>
+<p>Um die Zertifikatskette zu erhalten, kannst du einen Service wie 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://whatsmychaincert.com/?utm_source=allyourbasearebelongtous">https://whatsmychaincert.com/</a>
+
+
+ nutzen. Dieser liefert dir eine Datei mit der  kompletten Zertifikatskette. Oder du machst dich selber auf die Suche. Jedes Zertfikat enthält den Namen des Ausstellers bzw. den Typ des Zertifikats. Damit lassen sich die notwendigen Zwischenzertifkate auch manuell zusammenstellen.</p>
 <h2 id="php-die-zertifikatskette-mitteilen">PHP die Zertifikatskette mitteilen</h2>
 <p>Die Datei mit der Zertifikatskette gehört nun, oh Wunder, an einen Ort, den PHP erreichen kann. Dann musst du PHP noch mitteilen, dass es auch diese Zertifikatskette berücksichtigen soll. Auch das passiert über den Stream-Context, den ich oben schon angesprochen habe. Doch diesmal erlauben wir PHP, den SSL-Host zu verfizieren und verweisen auf die Zertifikatskette, die wir oben erstellt haben:</p>
 <p>$stream = stream_context_create(array(
 &ldquo;ssl&rdquo;=&gt;array(    
-&ldquo;cafile&rdquo; =&gt; &ldquo;<a href="https://www.nickyreinert.de.pem">www.nickyreinert.de.pem</a>&rdquo;,    
+&ldquo;cafile&rdquo; =&gt; &ldquo;
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de.pem?utm_source=allyourbasearebelongtous">www.nickyreinert.de.pem</a>
+
+
+&rdquo;,    
 &ldquo;verify_peer&rdquo;=&gt; true,    
 &ldquo;verify_peer_name&rdquo;=&gt; true, ),&lsquo;http&rsquo; =&gt; array(    
 &rsquo;timeout&rsquo; =&gt; $this-&gt;configUrlTimeOut     ) )

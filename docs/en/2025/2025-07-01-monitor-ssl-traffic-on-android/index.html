@@ -57,7 +57,7 @@ These days, most apps use a thing called “certificate pinning”, which makes 
 These days, most apps use a thing called “certificate pinning”, which makes it quite difficult to monitor traffic. You need a rooted device, to bypass certificate pinning. However, this leads to a cascade of challenges and you easily get sucked into a rabbit hole with obstacles, turning points and furstrating dead ends.">
   <meta itemprop="datePublished" content="2025-07-01T12:34:56+01:00">
   <meta itemprop="dateModified" content="2025-08-20T16:16:37+02:00">
-  <meta itemprop="wordCount" content="1296">
+  <meta itemprop="wordCount" content="1298">
   <meta itemprop="keywords" content="Android,SSL,HTTPS,Traffic Monitoring,Certificate Pinning,Frida,MITMProxy,ADB,Rooting,Security Research,Reverse Engineering">
 
   
@@ -114,7 +114,7 @@ These days, most apps use a thing called “certificate pinning”, which makes 
     },
     
     "url": "https:\/\/nickyreinert.de\/en\/2025\/2025-07-01-monitor-ssl-traffic-on-android\/",
-    "wordCount":  1296 ,
+    "wordCount":  1298 ,
     
     "timeRequired": "PT5M",
     
@@ -446,7 +446,33 @@ These days, most apps use a thing called “certificate pinning”, which makes 
 <li>one is running the Frida tool on the host, injecting a script into the app</li>
 </ul>
 <h3 id="installing-and-running-the-monitoring-tool">Installing and running the monitoring tool</h3>
-<p>This is the easiest part. We use <a href="https://mitmproxy.org/">MITMProxy</a> to listen to the HTTP traffic coming from the device. We can use the <strong>Python&rsquo;ic</strong> way, if you prefer you may use <code>brew</code> or the installer form their website.</p>
+<p>This is the easiest part. We use 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://mitmproxy.org/?utm_source=allyourbasearebelongtous">MITMProxy</a>
+
+
+ to listen to the HTTP traffic coming from the device. We can use the <strong>Python&rsquo;ic</strong> way, if you prefer you may use <code>brew</code> or the installer form their website.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">pip install mitmproxy
 </span></span></code></pre></div><p>Done. Now run it and see what happens:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">mitmproxy --listen-port 8080
@@ -458,7 +484,40 @@ These days, most apps use a thing called “certificate pinning”, which makes 
   </a>
 </p>
 <h2 id="installing-and-running-the-frida-server">Installing and running the Frida server</h2>
-<p>Now we will install the <em>Frida Server</em> on the device. <a href="frida.re">Frida</a> - in short - is a tooblxo for developers to debug or monitor apps. You can get the latest version <a href="https://github.com/frida/frida/releases">from their GitHub repo</a>. Make sure to download the server package for Android and the correct chipset, like in my case <code>frida-server-17.2.14-android-x86_64.xz</code>. Extract its content which will get you a binary file that you push to the virtual android device:</p>
+<p>Now we will install the <em>Frida Server</em> on the device. 
+
+
+
+
+  <a href="frida.re">Frida</a>
+
+ - in short - is a tooblxo for developers to debug or monitor apps. You can get the latest version 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/frida/frida/releases?utm_source=allyourbasearebelongtous">from their GitHub repo</a>
+
+
+. Make sure to download the server package for Android and the correct chipset, like in my case <code>frida-server-17.2.14-android-x86_64.xz</code>. Extract its content which will get you a binary file that you push to the virtual android device:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">adb push frida-server-17.2.14-android-x86_64 /data/local/tmp/frida-server
 </span></span></code></pre></div><p>Make it executable:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">adb shell chmod <span class="m">755</span> /data/local/tmp/frida-server
@@ -479,7 +538,33 @@ These days, most apps use a thing called “certificate pinning”, which makes 
 <p>We also need to install the <strong>Frida-toolbox</strong> on our host machine. There are several ways, we stick with the the <strong>Python&rsquo;ic</strong>-way:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">pip install frida-tools
 </span></span></code></pre></div><p>Not much to explain here. After you done, we need to find a script that we &ldquo;inject&rdquo;. This script will circumvent the certificate pinning of the app. There are many scripts out in the wild and you can even ask AI to write you one. I am using this one:</p>
-<p>`<a href="https://gist.github.com/akabe1/5632cbc1cd49f0237cbd0a93bc8e4452%60%60">https://gist.github.com/akabe1/5632cbc1cd49f0237cbd0a93bc8e4452``</a></p>
+<p>`
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gist.github.com/akabe1/5632cbc1cd49f0237cbd0a93bc8e4452%60%60?utm_source=allyourbasearebelongtous">https://gist.github.com/akabe1/5632cbc1cd49f0237cbd0a93bc8e4452``</a>
+
+
+</p>
 <p>Download it to a nicer name like <code>frida_multiple_unpinning.js</code>.</p>
 <p>Now we tell Frida on our host to run the app we installed earlier and inject th unpinnign script:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">frida -U -f com.Foobar.apk -l frida_multiple_unpinning.js

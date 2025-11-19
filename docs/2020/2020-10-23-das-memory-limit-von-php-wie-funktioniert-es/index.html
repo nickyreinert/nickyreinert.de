@@ -11,7 +11,141 @@
 
   
   
-  <meta name="description" content="Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. Viele Anleitungen sind oft unvollständig, und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:
+  <meta name="description" content="Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  Viele
+
+
+ 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  Anleitungen
+
+
+ 
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  sind
+
+
+ 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  oft
+
+
+ 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  unvollständig
+
+
+, und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:
 
 super-global in der php.ini
 global in der pool.conf, bei Verwendung von PHP-FPM
@@ -20,6 +154,32 @@ auf Ordner-Ebene in der user.ini
 auf Ordner-Ebene in der .htaccess-Datei
 auf Applikations-Ebene über die WordPress-Konstanten WP_MEMORY_LIMIT und WP_MAX_MEMORY_LIMIT
 oder auf Datei-Ebene im Script mit ini_set();
+
+
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  
+
 
 ">
   
@@ -39,7 +199,7 @@ oder auf Datei-Ebene im Script mit ini_set();
   <meta property="og:url" content="https://nickyreinert.de/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/">
   <meta property="og:site_name" content="Nicky Reinert">
   <meta property="og:title" content="Das Memory Limit von PHP und WordPress erhöhen - die vollständige Anleitung">
-  <meta property="og:description" content="Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. Viele Anleitungen sind oft unvollständig, und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:
+  <meta property="og:description" content="Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. Viele Anleitungen sind oft unvollständig , und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:
 super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM oder global in der httpd.conf (Apache) oder server.conf (nginx) auf Ordner-Ebene in der user.ini auf Ordner-Ebene in der .htaccess-Datei auf Applikations-Ebene über die WordPress-Konstanten WP_MEMORY_LIMIT und WP_MAX_MEMORY_LIMIT oder auf Datei-Ebene im Script mit ini_set();">
   <meta property="og:locale" content="de_DE">
   <meta property="og:type" content="article">
@@ -60,11 +220,11 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
   
   
   <meta itemprop="name" content="Das Memory Limit von PHP und WordPress erhöhen - die vollständige Anleitung">
-  <meta itemprop="description" content="Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. Viele Anleitungen sind oft unvollständig, und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:
+  <meta itemprop="description" content="Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. Viele Anleitungen sind oft unvollständig , und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:
 super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM oder global in der httpd.conf (Apache) oder server.conf (nginx) auf Ordner-Ebene in der user.ini auf Ordner-Ebene in der .htaccess-Datei auf Applikations-Ebene über die WordPress-Konstanten WP_MEMORY_LIMIT und WP_MAX_MEMORY_LIMIT oder auf Datei-Ebene im Script mit ini_set();">
   <meta itemprop="datePublished" content="2020-10-23T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-10-11T11:01:31+02:00">
-  <meta itemprop="wordCount" content="1655">
+  <meta itemprop="wordCount" content="1659">
   <meta itemprop="keywords" content="PHP,memory_limit,php.ini,wp-config.php,.htaccess,Nginx,Apache,PHP-FPM,Server-Konfiguration,WordPress,Troubleshooting,Allowed memory size exhausted">
 
   
@@ -80,7 +240,7 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
   
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Das Memory Limit von PHP und WordPress erhöhen - die vollständige Anleitung">
-  <meta name="twitter:description" content="Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. Viele Anleitungen sind oft unvollständig, und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:
+  <meta name="twitter:description" content="Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. Viele Anleitungen sind oft unvollständig , und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:
 super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM oder global in der httpd.conf (Apache) oder server.conf (nginx) auf Ordner-Ebene in der user.ini auf Ordner-Ebene in der .htaccess-Datei auf Applikations-Ebene über die WordPress-Konstanten WP_MEMORY_LIMIT und WP_MAX_MEMORY_LIMIT oder auf Datei-Ebene im Script mit ini_set();">
 
 
@@ -121,7 +281,7 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
     },
     
     "url": "https:\/\/nickyreinert.de\/2020\/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es\/",
-    "wordCount":  1655 ,
+    "wordCount":  1659 ,
     
     "timeRequired": "PT5M",
     
@@ -387,7 +547,141 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
   
   <article style="border-top: 2px solid #878787;" class="content">
     
-    <p>Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. <a href="https://wp-ninjas.de/wordpress-php-memory-limit">Viele</a> <a href="https://www.hosttest.de/artikel/was-ist-das-php-memory-limit-1411.html">Anleitungen</a> <a href="https://socialmediadozent.com/php-memory-limit-erhoehen/#Drei_Loesungen_um_das_PHP_Memory_Limit_zu_erhoehen">sind</a> <a href="https://www.how-to-wordpress.de/php-memory-limit/">oft</a> <a href="http://juliusbeckmann.de/blog/php-memory-limit-erhohen.html">unvollständig</a>, und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:</p>
+    <p>Das Memory Limit, sprich die Speichergrenze, von PHP ist für viele oft ein Rätsel. Es ist nicht klar, wie bzw. wo es gesetzt wird und welche Auswirkungen die unterschiedlichen Einstellungsorte haben. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://wp-ninjas.de/wordpress-php-memory-limit?utm_source=allyourbasearebelongtous">Viele</a>
+
+
+ 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.hosttest.de/artikel/was-ist-das-php-memory-limit-1411.html?utm_source=allyourbasearebelongtous">Anleitungen</a>
+
+
+ 
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://socialmediadozent.com/php-memory-limit-erhoehen/?utm_source=allyourbasearebelongtous#Drei_Loesungen_um_das_PHP_Memory_Limit_zu_erhoehen">sind</a>
+
+
+ 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.how-to-wordpress.de/php-memory-limit/?utm_source=allyourbasearebelongtous">oft</a>
+
+
+ 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://juliusbeckmann.de/blog/php-memory-limit-erhohen.html?utm_source=allyourbasearebelongtous">unvollständig</a>
+
+
+, und tragen damit eher zur Irritation bei. Denn tatsächlich gibt es unzählige Möglichkeiten das Memory Limit zu setzen:</p>
 <ul>
 <li>super-global in der php.ini</li>
 <li>global in der pool.conf, bei Verwendung von PHP-FPM</li>
@@ -397,19 +691,101 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
 <li>auf Applikations-Ebene über die WordPress-Konstanten WP_MEMORY_LIMIT und WP_MAX_MEMORY_LIMIT</li>
 <li>oder auf Datei-Ebene im Script mit ini_set();</li>
 </ul>
-<p><a href="https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-7.png"><img src="/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/images/grafik-7-700x246.png" alt=""></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-7.png?utm_source=allyourbasearebelongtous"><img src="/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/images/grafik-7-700x246.png" alt=""></a>
+
+
+</p>
 <p>Unterschiedliche Orte, um das PHP Memory Limit (und andere Parameter) zu setzen</p>
 <p>Die Reihenfolge entspricht übrigens der Hierarchie. Wird das Limit also im PHP-Script mit ini_set() gesetzt, überschreibt das die Einstellung in der <strong>httpd.conf</strong> oder <strong>server.conf</strong>. Wie sich das vermeiden lässt, dazu unten mehr. Das trifft natürlich nicht nur auf das Memory Limit, sondern so ziemlich jede PHP-Einstellung zu.</p>
 <p>Außerdem hängen die Möglichkeiten stark davon ab, wie du PHP nutzt, also ob als Modul oder über CGI. Um das Vorgehen besser zu verdeutlichen, gehe ich im Folgenden von zwei WordPress-Setups aus. Einmal wird nginx als HTTP-Server genutzt und dort PHP-FPM über CGI angesprochen. Das zweite Setup nutzt Apache2 als HTTP-Server und dort PHP als Modul (php-mod).</p>
 <h2 id="was-bedeutet-das-memory-limit-von-php">Was bedeutet das Memory Limit von PHP?</h2>
 <p>Jeder Dienst benötigt für seine Ausführung Platz im Arbeitsspeicher. So auch PHP. Und mit jedem Aufruf eines PHP-Scripts wird PHP aktiviert und fordert somit Platz im Arbeitsspeicher ein. Und genau dort spielt die Speichergrenze eine Rolle: Um zu vermeiden, dass bei der Verarbeitung <strong>eines PHP-Scripts</strong> zu viel Speicher verbraucht und damit der ganze Server in Mitleidenschaft gezogen wird, legt man eine Obergrenze fest, das <strong>memory_limit</strong>.</p>
-<p>Diese Grenze gilt <strong>für jeden einzelnen Script-Aufruf</strong>. Ein Beispiel: Dein Server hat 8 GByte (<strong>8.192 MByte</strong>) Arbeitsspeicher. Der Aufruf der Datei index.php, die eine sehr aufwendige Datenbankabfrage durchführt und damit viele Daten verarbeitet, erfordert 10 MByte Arbeitsspeicher (das ist übrigens relativ viel und <a href="https://www.deimeke.net/dirk/blog/index.php?/archives/304-Bytes-auf-Papier-....html">entspricht etwa 5.000 bedruckten A4 Seiten</a>). Das Memory-Limit ist auf <strong>32 MByte</strong> eingestellt. Das physikalische Limit beträgt allerdings <strong>8.192 MByte</strong>. Die index.php kann also <strong>819 mal</strong> gleichzeitig (!) aufgerufen werden; erst dann ist der Arbeitsspeicher voll. Das Memory-Limit hat hier also keine Auswirkungen.</p>
+<p>Diese Grenze gilt <strong>für jeden einzelnen Script-Aufruf</strong>. Ein Beispiel: Dein Server hat 8 GByte (<strong>8.192 MByte</strong>) Arbeitsspeicher. Der Aufruf der Datei index.php, die eine sehr aufwendige Datenbankabfrage durchführt und damit viele Daten verarbeitet, erfordert 10 MByte Arbeitsspeicher (das ist übrigens relativ viel und 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.deimeke.net/dirk/blog/index.php?/archives/304-Bytes-auf-Papier-....html&amp;utm_source=allyourbasearebelongtous">entspricht etwa 5.000 bedruckten A4 Seiten</a>
+
+
+). Das Memory-Limit ist auf <strong>32 MByte</strong> eingestellt. Das physikalische Limit beträgt allerdings <strong>8.192 MByte</strong>. Die index.php kann also <strong>819 mal</strong> gleichzeitig (!) aufgerufen werden; erst dann ist der Arbeitsspeicher voll. Das Memory-Limit hat hier also keine Auswirkungen.</p>
 <p>Gehen wir nun davon aus, dass bei einem der <strong>819</strong> Aufrufe bestimmte Parameter gesetzt werden, die eine weitaus größere Datenmenge in der Datenbank abfragen. Die Datenmenge erhöht sich auf <strong>40 MByte</strong>. An dieser Stelle wird das memory_limit aktiv. Der Aufruf dieses Scripts wird abgebrochen mit der Fehlermeldung, dass die erlaubte Speichergrenze überschritten wurde. PHP wird in diesem Fall eine Fehlermeldung wie diese anzeigen:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Fatal error: Allowed memory size of 33554432 bytes exhausted…” followed by something like “(tried to allocate 8388608 bytes) in /home/www/index.php on line 42.”
 </span></span></code></pre></div><p>Das Gute daran: Der Aufruf der anderen Scripte wird davon nicht in Mitleidenschaft gezogen.</p>
 <p>Es gibt sehr viele Wege, das Speicherlimit zu setzen. Das hat Vorteile aber auch Nachteile: So wird die Suche nach den gesetzen Einstellungen oft zur Suche nach der berühmten Nadel im Heuhaufen. Der Vorteil: Du kannst das Speicherlimit sehr granular an die Anforderungen deiner verschiedenen Anwendungen anpassen. Bereit? Los gehts&hellip;</p>
 <h2 id="grundsätzliches">Grundsätzliches</h2>
-<p>Der Wert, den du für das Memory Limit übermittelst, kann als einfache Ziffer übergeben werden und legt die Speichergrenze somit in <strong>Byte</strong> fest. PHP unterstützt darüber hinaus einige <strong><a href="https://www.php.net/manual/de/faq.using.php#faq.using.shorthandbytes">Kurzschreibweisen</a></strong>, also z.B. K für Kilobyte (32K), M für Megabyte (256M) und G für Gigabye (2G).</p>
+<p>Der Wert, den du für das Memory Limit übermittelst, kann als einfache Ziffer übergeben werden und legt die Speichergrenze somit in <strong>Byte</strong> fest. PHP unterstützt darüber hinaus einige <strong>
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.php.net/manual/de/faq.using.php?utm_source=allyourbasearebelongtous#faq.using.shorthandbytes">Kurzschreibweisen</a>
+
+
+</strong>, also z.B. K für Kilobyte (32K), M für Megabyte (256M) und G für Gigabye (2G).</p>
 <p>Willst du verhindern möchtest, dass die Speichergrenze später an anderer Stelle überschrieben wird, definierst du sie mithilfe von <strong>php_admin_value</strong> anstatt nur <strong>php_value</strong>. Also z.B.:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">php_admin_value[memory_limit] = 256M
 </span></span><span class="line"><span class="ln">2</span><span class="cl"># oder
@@ -422,7 +798,33 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
 <p>Und abschließend noch der Verweis auf zwei nützliche Funktionen, die eigentlich bekannt sein sollten:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">echo ini_get(&#39;memory_limit&#39;); // zeigt das aktuell gesetzte Memory Limit
 </span></span><span class="line"><span class="ln">2</span><span class="cl">phpinfo(); // zeigt alle relevanten Parameter, u.a. Memory Limit und verwendete .ini-Dateien
-</span></span></code></pre></div><p><a href="https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-1.png"><img src="/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/images/grafik-1-700x25.png" alt=""></a></p>
+</span></span></code></pre></div><p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-1.png?utm_source=allyourbasearebelongtous"><img src="/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/images/grafik-1-700x25.png" alt=""></a>
+
+
+</p>
 <p><strong>Wichtig</strong>: Derartige Funktionen dienen der Fehlersuche und sollten im Live-System nicht unbedingt öffentlich abrufbar sein!</p>
 <h2 id="das-memory-limit-in-php-einstellen">Das Memory Limit in PHP einstellen</h2>
 <h3 id="super-global-in-der-phpini">Super global in der php.ini</h3>
@@ -466,7 +868,33 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
 </span></span><span class="line"><span class="ln">5</span><span class="cl">&lt;/VirtualHost&gt;
 </span></span></code></pre></div><h3 id="global-für-jeden-ordner">Global für jeden Ordner</h3>
 <p>Weiter geht es mit dem Ordner-Spezifische Memory-Limit in nginx im location-Kontext (die Datei dürfte in der Regel unverändert sein).</p>
-<p>Achtung: <a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html">In nginx kann die Direktive fastcgi_param</a> auch im übergeordneten http-Kontext oder auf Ordner-Ebene innerhalb des location-Blocks gesetzt werden:</p>
+<p>Achtung: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html?utm_source=allyourbasearebelongtous">In nginx kann die Direktive fastcgi_param</a>
+
+
+ auch im übergeordneten http-Kontext oder auf Ordner-Ebene innerhalb des location-Blocks gesetzt werden:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">location ~ .(php|php.*)$ {
 </span></span><span class="line"><span class="ln">2</span><span class="cl">
 </span></span><span class="line"><span class="ln">3</span><span class="cl">  fastcgi_param PHP_VALUE &#34;memory_limit = 256M&#34;;
@@ -478,11 +906,63 @@ super-global in der php.ini global in der pool.conf, bei Verwendung von PHP-FPM 
 </span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="o">&lt;/</span><span class="ne">Directory</span><span class="o">&gt;</span>
 </span></span></code></pre></div><h2 id="das-memory-limit-auf-ordner-ebene-setzen">Das Memory-Limit auf Ordner-Ebene setzen</h2>
 <h3 id="für-jeden-ordner-mit-der-userini">Für jeden Ordner mit der .user.ini</h3>
-<p>Mit der Datei <strong>.super.ini</strong> kannst du PHP-Einstellungen für beliebige Ordner individuell konfigurieren. Dieser Weg steht dir allerdings nur offen, <a href="https://www.php.net/manual/en/configuration.file.per-user.php">wenn du PHP nicht als Modul nutzt, sondern über CGI/FastCGI</a>. In meinem Beispiel-Setup mit Apache2 und php-mod fällt diese Option also weg.</p>
+<p>Mit der Datei <strong>.super.ini</strong> kannst du PHP-Einstellungen für beliebige Ordner individuell konfigurieren. Dieser Weg steht dir allerdings nur offen, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.php.net/manual/en/configuration.file.per-user.php?utm_source=allyourbasearebelongtous">wenn du PHP nicht als Modul nutzt, sondern über CGI/FastCGI</a>
+
+
+. In meinem Beispiel-Setup mit Apache2 und php-mod fällt diese Option also weg.</p>
 <p>Du kannst die Datei in jedem Ordner anlegen und dort Parameter so einstellen, wie du es von der php.ini gewohnt bist. Dieser Weg muss allerdings vorher &ldquo;freigeschaltet&rdquo; werden, indem in der php.ini (bzw. den anderen o.g. Orten), der folgende Parameter gesetzt ist:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">user_ini.filename = .user.ini
 </span></span></code></pre></div><p>Ob das der Fall ist, erfährst du, wie immer, mithilfe von phpinfo();. Dort siehst du unter &ldquo;Additional .ini files parsed&rdquo; auch, ob sich im aktuellen Ordner eine .user.ini befindet und diese gelesen wurde:</p>
-<p><a href="https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-4.png"><img src="/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/images/grafik-4-700x164.png" alt=""></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/das-memory-limit-von-php-wie-funktioniert-es/grafik-4.png?utm_source=allyourbasearebelongtous"><img src="/2020/2020-10-23-das-memory-limit-von-php-wie-funktioniert-es/images/grafik-4-700x164.png" alt=""></a>
+
+
+</p>
 <p>Überprüfen, welche .ini-Dateien PHP gelesen hat</p>
 <p>Wenn das alles passt, verwendest du die .user.ini wie die php.ini und setzt das Speicherlimit demnach folgenermaßen:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">memory_limit=256M

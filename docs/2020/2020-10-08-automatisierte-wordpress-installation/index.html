@@ -57,7 +57,7 @@ Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und
 Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und unbedingt Backups nutzen. Das Script verwendet, wenn der entsprechende Parameter gesetzt ist, den Befehl “rm -rf”, um einen Ordner komplett zu löschen. Dieser Schritt lässt sich nicht widerrufen. Außerdem wird, sofern per Parameter gefordert, eine Datenbank mit “DROP DATABASE” komplett entfernt. Wenn du das Script auf eine existierende WordPress-Installation oder Datenbank anwendest, können existierende Daten überschrieben werden!">
   <meta itemprop="datePublished" content="2020-10-08T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-10-11T11:01:31+02:00">
-  <meta itemprop="wordCount" content="940">
+  <meta itemprop="wordCount" content="945">
   <meta itemprop="keywords" content="WordPress,Automatisierung,Bash Script,wp-cli,Installation,Konfiguration,DevOps,Content Seeding,Dummy Content,Server Setup,Tutorial">
 
   
@@ -114,7 +114,7 @@ Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und
     },
     
     "url": "https:\/\/nickyreinert.de\/2020\/2020-10-08-automatisierte-wordpress-installation\/",
-    "wordCount":  940 ,
+    "wordCount":  945 ,
     
     "timeRequired": "PT5M",
     
@@ -380,16 +380,198 @@ Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und
 <h2 id="warnung">Warnung!</h2>
 <p>Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und unbedingt <strong>Backups</strong> nutzen. Das Script verwendet, wenn der entsprechende Parameter gesetzt ist, den Befehl &ldquo;rm -rf&rdquo;, um einen Ordner komplett zu <strong>löschen</strong>. Dieser Schritt lässt sich nicht widerrufen. Außerdem wird, sofern per Parameter gefordert, eine Datenbank mit &ldquo;DROP DATABASE&rdquo; komplett entfernt. Wenn du das Script auf eine existierende WordPress-Installation oder Datenbank anwendest, können existierende Daten <strong>überschrieben</strong> werden!</p>
 <h2 id="funktionsweise">Funktionsweise</h2>
-<p>Das Script wird über die Kommandozeile aufgerufen und nutzt die <a href="https://wp-cli.org/de/">WordPress Kommandozeilen-Benutzeroberfläche,</a> um <strong>WordPress</strong> zu installieren sowie samt <strong>Themes</strong> und <strong>Plugins</strong> einzurichten. Du kannst außerdem beliebig viele <strong>Beiträge</strong> anlegen. Die Inhalte für die Beiträge stammen von einem Online-Dienst für zufällige englische Texte: <a href="http://metaphorpsum.com/paragraphs/">metaphorpsum.com/paragraphs</a>. Außerdem werden zufällige <strong>Textauszüge</strong> (Excerpts) sowie <strong>Schlagwörter</strong> (Tags) und sogar <strong>Bilder</strong> jedem Beitrag hinzugefügt. Beiträge werden außerdem Kategorien zugeordnet. Diese werden ebenfalls <strong>zufällig</strong> bis zu einer Tiefe von 2 Ebenen erzeugt.</p>
+<p>Das Script wird über die Kommandozeile aufgerufen und nutzt die 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://wp-cli.org/de/?utm_source=allyourbasearebelongtous">WordPress Kommandozeilen-Benutzeroberfläche,</a>
+
+
+ um <strong>WordPress</strong> zu installieren sowie samt <strong>Themes</strong> und <strong>Plugins</strong> einzurichten. Du kannst außerdem beliebig viele <strong>Beiträge</strong> anlegen. Die Inhalte für die Beiträge stammen von einem Online-Dienst für zufällige englische Texte: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://metaphorpsum.com/paragraphs/?utm_source=allyourbasearebelongtous">metaphorpsum.com/paragraphs</a>
+
+
+. Außerdem werden zufällige <strong>Textauszüge</strong> (Excerpts) sowie <strong>Schlagwörter</strong> (Tags) und sogar <strong>Bilder</strong> jedem Beitrag hinzugefügt. Beiträge werden außerdem Kategorien zugeordnet. Diese werden ebenfalls <strong>zufällig</strong> bis zu einer Tiefe von 2 Ebenen erzeugt.</p>
 <h2 id="installation">Installation</h2>
-<p>Du findest den Sourcecode auf github: <a href="https://github.com/nickyreinert/AutomatedWordPressInstallation">https://github.com/nickyreinert/AutomatedWordPressInstallation</a>.</p>
+<p>Du findest den Sourcecode auf github: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/AutomatedWordPressInstallation?utm_source=allyourbasearebelongtous">https://github.com/nickyreinert/AutomatedWordPressInstallation</a>
+
+
+.</p>
 <p>Nach der Installation kopierst du die Datei settings-template zu .settings, um in dieser Datei die Einstellungen für deine WordPress-Installation vorzunehmen. Du startest den Prozess mit <strong>bash start.sh</strong> oder setzt den Ausführen-Flag für bash.sh um diese direkt auszuführen:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">chmod u+x bash.sh
 </span></span><span class="line"><span class="ln">2</span><span class="cl">./bash.sh
 </span></span></code></pre></div><h2 id="zufällige-inhalte">Zufällige Inhalte</h2>
 <p>Das Script ermöglicht das Anlegen von beliebig vielen zufälligen Beiträgen in beliebig vielen zufälligen Kategorien. Was genau dabei passiert, beschreibe ich hier kurz:</p>
-<p>Zunächst wird eine Kategorie erzeugt. Dazu wird von der folgenden API ein zufälliges Wort abgerufen: <a href="https://random-word-api.herokuapp.com/word?swear=0&amp;number=">https://random-word-api.herokuapp.com/word?swear=0&amp;number=</a></p>
-<p>Dieser Kategorie wird dann ein Beitrag wird mit einer beliebigen Anzahl von <strong>Absätzen</strong> von dieser API zugeordnet: <a href="http://metaphorpsum.com/paragraphs/">http://metaphorpsum.com/paragraphs/</a>. Der Beitrag erhält einen zufälligen Titel (von dort: <a href="http://metaphorpsum.com/sentences/">http://metaphorpsum.com/sentences</a>), einen Textauszug (gleiche API), sowie eine beliebige Anzahl zufälliger Tags (Schlagwörter), ebenfalls von <a href="https://random-word-api.herokuapp.com/word?swear=0&amp;number=">random-word-api.herokuapp.com</a>. Dann werden für diesen Beitrag Revisionen erzeugt - auch diese in beliebiger Höhe. Abschließend erhält jeder Beitrag ein zufälliges Featured Image sowie ein weiteres zufälliges Bild am Ende des Fließtextes.</p>
+<p>Zunächst wird eine Kategorie erzeugt. Dazu wird von der folgenden API ein zufälliges Wort abgerufen: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://random-word-api.herokuapp.com/word?swear=0&amp;number=&amp;utm_source=allyourbasearebelongtous">https://random-word-api.herokuapp.com/word?swear=0&amp;number=</a>
+
+
+</p>
+<p>Dieser Kategorie wird dann ein Beitrag wird mit einer beliebigen Anzahl von <strong>Absätzen</strong> von dieser API zugeordnet: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://metaphorpsum.com/paragraphs/?utm_source=allyourbasearebelongtous">http://metaphorpsum.com/paragraphs/</a>
+
+
+. Der Beitrag erhält einen zufälligen Titel (von dort: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://metaphorpsum.com/sentences/?utm_source=allyourbasearebelongtous">http://metaphorpsum.com/sentences</a>
+
+
+), einen Textauszug (gleiche API), sowie eine beliebige Anzahl zufälliger Tags (Schlagwörter), ebenfalls von 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://random-word-api.herokuapp.com/word?swear=0&amp;number=&amp;utm_source=allyourbasearebelongtous">random-word-api.herokuapp.com</a>
+
+
+. Dann werden für diesen Beitrag Revisionen erzeugt - auch diese in beliebiger Höhe. Abschließend erhält jeder Beitrag ein zufälliges Featured Image sowie ein weiteres zufälliges Bild am Ende des Fließtextes.</p>
 <p>Je nachdem, wieviele Beiträge und Kategorien bzw. Sub-Kategorien eingerichtet werden soll, wird dieser Prozess natürlich wiederholt.</p>
 <p><em>(Bisher werden die Inhalte leider nur auf Englisch eingefügt)</em></p>
 <h2 id="einstellungen">Einstellungen</h2>

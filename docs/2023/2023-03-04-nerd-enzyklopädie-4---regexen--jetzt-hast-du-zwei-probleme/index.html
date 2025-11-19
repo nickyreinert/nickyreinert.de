@@ -64,7 +64,7 @@ Eine exotische Tierart Reguläre Ausdrücke, kurz RegExen, sind mitunter schwer 
 ^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&amp;*])(?=.*[0–9].*[0–9])(?=.*[a-z].*[a-z].*[a-z]).{8}$ Na, erkannt? Diese RegExe überprüft ob eine Passwort-Zeichenfolge bestimmten Sicherheitsanforderungen entspricht. Diesen Hinweis kann man im Quellcode vielleicht noch dokumentieren. Aber was wenn sich die Sicherheitsanforderungen im Detail ändern?">
   <meta itemprop="datePublished" content="2023-03-04T12:19:31+01:00">
   <meta itemprop="dateModified" content="2023-03-04T12:19:31+01:00">
-  <meta itemprop="wordCount" content="505">
+  <meta itemprop="wordCount" content="517">
   <meta itemprop="keywords" content="RegEx,Reguläre Ausdrücke,Backtracking,ReDOS,Denial of Service,Jamie Zawinski,awk,Nerd Enzyklopädie,Programmierer-Humor">
 
   
@@ -123,7 +123,7 @@ Eine exotische Tierart Reguläre Ausdrücke, kurz RegExen, sind mitunter schwer 
     },
     
     "url": "https:\/\/nickyreinert.de\/2023\/2023-03-04-nerd-enzyklop%C3%A4die-4---regexen--jetzt-hast-du-zwei-probleme\/",
-    "wordCount":  505 ,
+    "wordCount":  517 ,
     
     "timeRequired": "PT5M",
     
@@ -371,7 +371,33 @@ Woher kommt diese Hassliebe?</p>
 </code></pre>
 <p>Na, erkannt? Diese RegExe überprüft ob eine Passwort-Zeichenfolge bestimmten Sicherheitsanforderungen entspricht. Diesen Hinweis kann man im Quellcode vielleicht noch dokumentieren. Aber was wenn sich die Sicherheitsanforderungen im Detail ändern?</p>
 <h2 id="mit-kanonen-auf-spatzen">Mit Kanonen auf Spatzen…</h2>
-<p>RegExen werden außerdem gerne dort eingesetzt, wo eigentlich bessere, standardisierte Lösungen vorhanden sind, wie z.B. für das Parsen von XML [<a href="https://flapenguin.me/xml-regex">FLAP1</a>]:</p>
+<p>RegExen werden außerdem gerne dort eingesetzt, wo eigentlich bessere, standardisierte Lösungen vorhanden sind, wie z.B. für das Parsen von XML [
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://flapenguin.me/xml-regex?utm_source=allyourbasearebelongtous">FLAP1</a>
+
+
+]:</p>
 <pre><code>\s*  
 (?(?=&lt;)  
   (?&lt;opentag&gt;  
@@ -400,7 +426,111 @@ Woher kommt diese Hassliebe?</p>
 </code></pre>
 <p>Was aussieht als wäre deine Katze auf der Tastatur eingeschlafen, ist eine funktionsfähige RegExe. Mit genau einem Vorteil: Wenn man den Ausdruck Stück für Stück zerpflückt, um ihn zu verstehen, kann man viel über die Möglichkeiten regulärer Ausdrücke lernen. Im produktiven Betrieb sollte man trotzdem auf alternative Ansätze zurückgreifen, um mit XML-Daten zu arbeiten. Wie z.B. XML-Parser, die soll es ja wirklich geben.</p>
 <h2 id="backtracking">Backtracking</h2>
-<p>RegExen können auch zu handfesten Sicherheitsproblemen führen. Die Ursache liegt in der Art, wie RegExen verarbeitet werden. Sie durchlaufen einen String zeichenweise, bis eine Bedingung nicht mehr erfüllt wird und springen dann zu dem Zeichen zurück, an dem der Ausdruck vielleicht einen anderen Lösungsweg nehmen kann. Dieses Vorgehen nennt man <strong>Backtracking</strong>, also Rückverfolgung. Diese Funktion kann aber zu einem Rückkopplungs-Effekt führen, wodurch die Dauer der Verarbeitung exponentiell ansteigt. Die Folge nennt man „Catastrophic Backtracking“, eine wichtige Grundlage für <a href="https://medium.com/@nitinpatel_20236/what-are-evil-regexes-7b21058c747e">ReDOS</a> (<a href="https://medium.com/@nitinpatel_20236/what-are-evil-regexes-7b21058c747e">Regular Expression Denial Of Service</a>) Angriffe [<a href="https://www.regular-expressions.info/catastrophic.html">REGU1</a>]. Ein einfaches Beispiel ist dieser reguläre Ausdruck [<a href="https://medium.com/@nitinpatel_20236/what-are-evil-regexes-7b21058c747e">MEDI1</a>]:</p>
+<p>RegExen können auch zu handfesten Sicherheitsproblemen führen. Die Ursache liegt in der Art, wie RegExen verarbeitet werden. Sie durchlaufen einen String zeichenweise, bis eine Bedingung nicht mehr erfüllt wird und springen dann zu dem Zeichen zurück, an dem der Ausdruck vielleicht einen anderen Lösungsweg nehmen kann. Dieses Vorgehen nennt man <strong>Backtracking</strong>, also Rückverfolgung. Diese Funktion kann aber zu einem Rückkopplungs-Effekt führen, wodurch die Dauer der Verarbeitung exponentiell ansteigt. Die Folge nennt man „Catastrophic Backtracking“, eine wichtige Grundlage für 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/@nitinpatel_20236/what-are-evil-regexes-7b21058c747e?utm_source=allyourbasearebelongtous">ReDOS</a>
+
+
+ (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/@nitinpatel_20236/what-are-evil-regexes-7b21058c747e?utm_source=allyourbasearebelongtous">Regular Expression Denial Of Service</a>
+
+
+) Angriffe [
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.regular-expressions.info/catastrophic.html?utm_source=allyourbasearebelongtous">REGU1</a>
+
+
+]. Ein einfaches Beispiel ist dieser reguläre Ausdruck [
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/@nitinpatel_20236/what-are-evil-regexes-7b21058c747e?utm_source=allyourbasearebelongtous">MEDI1</a>
+
+
+]:</p>
 <pre><code>(x+x+)+y.
 </code></pre>
 <p>Diese RegExe lässt sich sicherlich optimieren, sie soll auch nur zeigen, wie schnell die Verarbeitung eskalieren kann. Als Test-String dient diese einfache Zeichenkette:</p>
@@ -410,13 +540,91 @@ Woher kommt diese Hassliebe?</p>
 <pre><code>xxxxxxxxxxxxxy
 </code></pre>
 <p>Mehr als <strong>38.000 Schritte</strong> sind jetzt erforderlich, um den regulären Ausdruck zu prüfen. Mit dem richtigen regulären Ausdruck und der passenden Zeichenkette kann ein Browser „mühelos“ zum Absturz gebracht werden.</p>
-<p>Der Einsatz von regulären Ausdrücken ist also streitbar. Übrigens: Dem Netscape Entwickler <strong>Jamie Zawinski</strong> wird zugeschrieben, diese Erkenntnis als erster in Worte gefasst zu haben. Er stellte bereits <strong>1997</strong> fest [<a href="https://blog.codinghorror.com/regular-expressions-now-you-have-two-problems/">CODI1</a>]:</p>
+<p>Der Einsatz von regulären Ausdrücken ist also streitbar. Übrigens: Dem Netscape Entwickler <strong>Jamie Zawinski</strong> wird zugeschrieben, diese Erkenntnis als erster in Worte gefasst zu haben. Er stellte bereits <strong>1997</strong> fest [
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://blog.codinghorror.com/regular-expressions-now-you-have-two-problems/?utm_source=allyourbasearebelongtous">CODI1</a>
+
+
+]:</p>
 <blockquote>
 <p>Some people, when confronted with a problem, think “I know, I’ll use regular expressions.” Now they have two problems.</p></blockquote>
-<p>Dieser Ausspruch geht wiederum auf <strong>David Tilbrook</strong> zurück, der sich (selber nur vage) erinnert, wie er <strong>1985</strong> auf einer Konferenz in <strong>Dublin</strong> die Nutzung des Kommandozeilen-Tools <strong>awk</strong> kommentiert [<a href="http://regex.info/blog/2006-09-15/247">REGE1</a>]:</p>
+<p>Dieser Ausspruch geht wiederum auf <strong>David Tilbrook</strong> zurück, der sich (selber nur vage) erinnert, wie er <strong>1985</strong> auf einer Konferenz in <strong>Dublin</strong> die Nutzung des Kommandozeilen-Tools <strong>awk</strong> kommentiert [
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://regex.info/blog/2006-09-15/247?utm_source=allyourbasearebelongtous">REGE1</a>
+
+
+]:</p>
 <blockquote>
 <p>“If you have a problem and you think awk is the solution, then you have two problems.”</p></blockquote>
-<p><strong>RegExen</strong> und <strong>awk</strong> sind nicht die einzigen zweifelhaften Tools, auch <a href="http://regex.info/blog/2006-09-15/247">Perl</a> hat einen gewissen Ruf. Aber vermutlich ist das nur eine besondere Art von Nerd-Humor, vor der niemand sicher ist:</p>
+<p><strong>RegExen</strong> und <strong>awk</strong> sind nicht die einzigen zweifelhaften Tools, auch 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://regex.info/blog/2006-09-15/247?utm_source=allyourbasearebelongtous">Perl</a>
+
+
+ hat einen gewissen Ruf. Aber vermutlich ist das nur eine besondere Art von Nerd-Humor, vor der niemand sicher ist:</p>
 <img src="/2023/2023-03-04-nerd-enzyklop%C3%A4die-4---regexen--jetzt-hast-du-zwei-probleme/image.png" alt=""><p style="text-align: center;font-style:italic">
 Bildquelle [[XKCD1](https://xkcd.com/1171/)]
 </p>

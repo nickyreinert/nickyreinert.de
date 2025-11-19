@@ -369,13 +369,91 @@ Um das zu demonstrieren habe ich eine Datenquelle mit 1 Mio. Zeilen und 10 Dimen
     
     <p>In Tableau gibt es die eigentlich sehr nützliche Möglichkeit, Dimensionen beliebig zu kombinieren und in einer Hierarchie zusammenzufassen. Diese Funktion ist sehr intuitiv hat aber einen Haken: Wenn man bei großen Datenmengen und Dimensionen mit hoher Kardinalität einen Drill Down macht, werden die Abfragen nicht nur irrsinnig langsam, je tiefer man kommt. Die Übersicht geht auch komplett verloren.</p>
 <p>Um das zu demonstrieren habe ich eine Datenquelle mit 1 Mio. Zeilen und 10 Dimensionen erzeugt. Der Drill-Down auf Ebene 8 dauert hier auf normaler Hardware über 20 Sekunden und das Ergebnis ist&hellip; nun ja: Für eine schnellen Überblick kaum zu gebrauchen:</p>
-<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-700x380.png" alt=" Drill-Down auf die 8. Ebene einer Hierarchie mit hoher Kardinalität: Übersicht ade "></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik.png?utm_source=allyourbasearebelongtous"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-700x380.png" alt=" Drill-Down auf die 8. Ebene einer Hierarchie mit hoher Kardinalität: Übersicht ade "></a>
+
+
+</p>
 <p>Drill-Down auf die 8. Ebene einer Hierarchie mit hoher Kardinalität: Übersicht ade</p>
 <p>Im Folgenden beschreibe ich einen Weg, wie man einen fokussierten Drill-Down ermöglicht, der weitaus performanter und vor allem übersichtlicher ist. Man könnte zwar die eingebaute Quick-Filter-Funktion nutzen, das ist dann aber relativ umständlich, da man je Ebene mindestens zwei Klicks benötigt und vor allem immer noch nicht übersichtlich:</p>
-<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-2.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-2.png" alt="Die Quick-Filter-Funktion bei mehreren Dimensionen in einer Hierarchie"></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-2.png?utm_source=allyourbasearebelongtous"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-2.png" alt="Die Quick-Filter-Funktion bei mehreren Dimensionen in einer Hierarchie"></a>
+
+
+</p>
 <p>Drill-Down bei mehreren Dimensionen einer Hierarchie unter Verwendung des Quick-Filters: Unpraktisch</p>
 <p>Bevor ich die Schritte im einzelnen erkläre, möchte ich zeigen, was das Ziel der ganzen Übung sein soll:</p>
-<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-1.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-1-700x526.png" alt="Schematische Darstellung der Logik"></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-1.png?utm_source=allyourbasearebelongtous"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-1-700x526.png" alt="Schematische Darstellung der Logik"></a>
+
+
+</p>
 <p>Schematische Darstellung der Logik</p>
 <p>Die Namen der einzelnen Dimensonen werden für jedes Level zusammengefasst. Jede Dimension in der Hierarchie wird außerdem durch einen <strong>Index</strong> repräsentiert, der die Tiefe wiederspiegelt. Dadurch entsteht ein Pfad nach dem Schema <strong>nameA.nameB.NameC.nameD.nameX</strong> usw. Diese Pfad soll als Filter dienen. So kann ich mit einem einzigen Filter mehrere Dimensionen abdecken.</p>
 <p>Ein Klick auf eine Zeile im Arbeitsblatt &ldquo;<strong>main</strong>&rdquo; soll dafür sorgen, dass der Index für die aktuelle Ebene um 1 hochgezählt wird - man also tiefer in den Baum hineingeht. Außerdem wird der Pfad für die entsprechende Ebene als Filter genutzt. Dadurch erhalte ich eine Ansicht, die einem kombinierten Filter gleicht, immer nur die Zeilen anzeigt, die ich beim Drill-Down ausgewählt habe. Klicke ich auf das zweite Arbeitsblatt, wird der Index heruntergezählt, also immer die nächsthöhere Ebene angezeigt. Außerdem wird bei dem zusammengesetzten Pfad das letzte Element entfernt, wodurch sich gleichzeitig die Filterbedingung ändert.<br>
@@ -385,18 +463,96 @@ Klar soweit? Los geht&rsquo;s:</p>
 Der Parameter &ldquo;<strong>current level index</strong>&rdquo; enthält, entsprechend der Anzahl der Dimensionen, die Ziffern 1 bis 10. Der Parameter &ldquo;<strong>level name concatenated</strong>&rdquo; dient später als Filter-Element und enthält den oben erwähnten Pfad:</p>
 <ul>
 <li>
-<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-breadcrumb-navigation-in-tableau/parameter_level_name_concatenated.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/parameter_level_name_concatenated.png" alt="Parameter level name concatenated"></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-breadcrumb-navigation-in-tableau/parameter_level_name_concatenated.png?utm_source=allyourbasearebelongtous"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/parameter_level_name_concatenated.png" alt="Parameter level name concatenated"></a>
+
+
+</p>
 <p>Parameter level name concatenated</p>
 </li>
 <li>
-<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-breadcrumb-navigation-in-tableau/parameter_current_level_index.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/parameter_current_level_index.png" alt="Parameter current level index"></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-breadcrumb-navigation-in-tableau/parameter_current_level_index.png?utm_source=allyourbasearebelongtous"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/parameter_current_level_index.png" alt="Parameter current level index"></a>
+
+
+</p>
 <p>Parameter current level index</p>
 </li>
 </ul>
 <p>Nun erstellst du einen Filter, der sich auf den Parameter &ldquo;<strong>level name concatenated</strong>&rdquo; bezieht. Das vereinfacht den weiteren Prozess ungemein, da du kein Filter-Aktion anlegen musst, sondern Tableau den Filter immer dynamisch anpasst. Dazu legst du einen Filter für das Arbeitsblatt &ldquo;<strong>main</strong>&rdquo; an und wählst im Reiter &ldquo;Bedingung&rdquo; die Option &ldquo;nach Formel&rdquo; aus. Als Formel verwendest du diese:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[level name concatenated] = [current level filter]
 </span></span></code></pre></div><p>So sollte der Filter dann in Tableau aussehen:</p>
-<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-4.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-4.png" alt="Filter mit einer Formel als Bedingung"></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-4.png?utm_source=allyourbasearebelongtous"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-4.png" alt="Filter mit einer Formel als Bedingung"></a>
+
+
+</p>
 <p>Filter mit einer Formel als Bedingung</p>
 <p>Weiter geht es mit ein paar berechneten Feldern:</p>
 <p>Das erste Feld nennt sich &ldquo;<strong>current level</strong>&rdquo;, dass den Parameter &ldquo;<strong>current level index</strong>&rdquo; nutzt um die entsprechende Dimension darzustellen. Die Formel dazu ist simpel:</p>
@@ -481,16 +637,94 @@ Der Parameter &ldquo;<strong>current level index</strong>&rdquo; enthält, entsp
 </span></span><span class="line"><span class="ln">20</span><span class="cl">    LEFT([level name concatenated], FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, FIND([level name concatenated], &#39;.&#39;, 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1) - 1)
 </span></span><span class="line"><span class="ln">21</span><span class="cl">END
 </span></span></code></pre></div><p>Das gröbste ist somit erledigt, du solltest nun die folgenden Felder und Parameter haben. Achte darauf, dass du die Felder als Dimension nutzt:</p>
-<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-3.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-3.png" alt="Alle berechneten Felder und Parameter auf einen Blick"></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-3.png?utm_source=allyourbasearebelongtous"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-3.png" alt="Alle berechneten Felder und Parameter auf einen Blick"></a>
+
+
+</p>
 <p>Alle berechneten Felder und Parameter auf einen Blick</p>
 <p>Nun ziehst du die Felder &ldquo;<strong>next level index</strong>&rdquo;, &ldquo;<strong>current level</strong>&rdquo; und &ldquo;<strong>current level concat</strong>&rdquo; auf das Arbeitsblatt &ldquo;<strong>main</strong>&rdquo;, die Felder &ldquo;<strong>previous level index</strong>&rdquo; und &ldquo;<strong>previous level concat</strong>&rdquo; gehören auf das Arbeitsblatt &ldquo;<strong>go back</strong>&rdquo;.</p>
 <ul>
 <li>
-<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-5-700x172.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-5-700x172.png" alt="Arbeitsblatt main mit allen nötigen Feldern"></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-5-700x172.png?utm_source=allyourbasearebelongtous"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-5-700x172.png" alt="Arbeitsblatt main mit allen nötigen Feldern"></a>
+
+
+</p>
 <p>Arbeitsblatt main mit allen nötigen Feldern</p>
 </li>
 <li>
-<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-6.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-6.png" alt="Arbeitsblatt “go back” mit allen nötigen Feldern"></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-6.png?utm_source=allyourbasearebelongtous"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-6.png" alt="Arbeitsblatt “go back” mit allen nötigen Feldern"></a>
+
+
+</p>
 <p>Arbeitsblatt &ldquo;go back&rdquo; mit allen nötigen Feldern</p>
 </li>
 </ul>
@@ -498,29 +732,159 @@ Der Parameter &ldquo;<strong>current level index</strong>&rdquo; enthält, entsp
 <p>Abschließend geht es an die Aktionen um das Dashboard mit Leben zu füllen. Insgesamt benötigen wir vier Aktionen zur Änderung eines Parameters. Die ersten beiden Aktionen sorgen dafür, dass der aktuelle Index entsprechen hoch- und runtergezählt wird. Die Aktion &ldquo;<strong>increase level index</strong>&rdquo; nutzt als Quellblatt &ldquo;<strong>main</strong>&rdquo; sowie das Feld &ldquo;<strong>next level index</strong>&rdquo; und verweist auf den Parameter &ldquo;<strong>current level index</strong>&rdquo;. Und vice versa die Aktion &ldquo;<strong>decrease level index</strong>&rdquo; mit dem Quellblatt &ldquo;<strong>go back</strong>&rdquo;, dem Feld &ldquo;<strong>previous level index&rdquo;</strong> und ebenfalls dem Ziel-Parameter &ldquo;<strong>current level index</strong>&rdquo;:</p>
 <ul>
 <li>
-<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-7.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-7.png" alt="Aktion zur Parameter-Steuerng: Den Level-Index um 1 erhöhen…"></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-7.png?utm_source=allyourbasearebelongtous"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-7.png" alt="Aktion zur Parameter-Steuerng: Den Level-Index um 1 erhöhen…"></a>
+
+
+</p>
 <p>Aktion zur Parameter-Steuerng: Den Level-Index um 1 erhöhen&hellip;</p>
 </li>
 <li>
-<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-8.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-8.png" alt="…und um eins verringern"></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-8.png?utm_source=allyourbasearebelongtous"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-8.png" alt="…und um eins verringern"></a>
+
+
+</p>
 <p>&hellip;und um eins verringern</p>
 </li>
 </ul>
 <p>Danach benötigen wir eine Aktion, um den Filter-Parameter &ldquo;<strong>level name concatenated</strong>&rdquo; zu setzen: Dieser erhält den Wert aus dem berechneten Feld &ldquo;<strong>current level concat</strong>&rdquo;, wenn man auf das Arbeitsblatt &ldquo;<strong>main</strong>&rdquo; klickt. Und beim Arbeitsblatt &ldquo;<strong>go back</strong>&rdquo; ist es wieder genau andersrum: Hier kommt der Wert aus dem Feld &ldquo;<strong>previous level concat</strong>&rdquo;:</p>
 <ul>
 <li>
-<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-9.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-9.png" alt="Die Aktion um den Filter für die nächsttiefere Eben zu setzen.."></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-9.png?utm_source=allyourbasearebelongtous"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-9.png" alt="Die Aktion um den Filter für die nächsttiefere Eben zu setzen.."></a>
+
+
+</p>
 <p>Die Aktion um den Filter für die nächsttiefere Eben zu setzen..</p>
 </li>
 <li>
-<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-10.png"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-10.png" alt="… und für die darüberliegende Ebene"></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-10.png?utm_source=allyourbasearebelongtous"><img src="/2019/2019-07-15-fokussierter-drill-down-mit-tableau/images/grafik-10.png" alt="… und für die darüberliegende Ebene"></a>
+
+
+</p>
 <p>&hellip; und für die darüberliegende Ebene</p>
 </li>
 </ul>
 <h3 id="et-voila">Et voila</h3>
 <p>Das war es. Du kannst nun das Dashboard nutzen, um beliebig durch deine Dimensionen zu klicken. Hier und da lässt sich das ganze sicherlich noch etwas optimieren. Zuerst kannst du z.B. die &ldquo;Steuerfelder&rdquo; ausblenden, um nur die relevanten Informationen zu präsentieren (in der Regel über rechte Maustaste &ldquo;<strong>Kopfzeile ausblenden</strong>&rdquo;). Außerdem kann man die Formeln optimieren und z.B. verhindern, dass der Nutzer tiefer klickt, als die verwendete Anzahl von Dimensionen. Das sind aber nur kleinere Baustellen. Das wichtigste Ziel sollte erreicht sein: Die Darstellung ist weitaus übersichtlicher und vor allem kann man nun in Sekundenbruchteilen bis zur letzten Eben navigieren.<br>
 Natürlich kann man das ganze auch mit einem Chart kombinieren, was der Sache noch etwas mehr Glanz verleiht. Auf Tableau Public habe ich eine Dashboard veröffentlicht, dass das ganze in Aktion zeigt. Aus Gründen ist die Datenquelle dort allerdings nur 100.000 Zeilen groß:</p>
-<p><a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-10.png">https://public.tableau.com/profile/nr1871#!/vizhome/focussedDrillDown/dashboard</a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/fokussierter-drill-down-mit-tableau/grafik-10.png?utm_source=allyourbasearebelongtous">https://public.tableau.com/profile/nr1871#!/vizhome/focussedDrillDown/dashboard</a>
+
+
+</p>
 
     
   </article>

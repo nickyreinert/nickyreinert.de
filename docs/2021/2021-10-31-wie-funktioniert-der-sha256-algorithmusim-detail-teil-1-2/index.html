@@ -11,8 +11,86 @@
 
   
   
-  <meta name="description" content="SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. SHA-256 ist Teil einer ganzen Gruppe von Algorithmen, mit dem gleichen Ziel: Die Erzeugung eines Hashes, der resistent gegen Kollisionen ist, dessen Berechnung nur in eine Richtung funktioniert und eine feste Länge hat. Im folgenden Artikel beschreibe ich die einzelnen Schritte die der Algorithmus vornimmt, um einen Hash zu erzeugen.
-Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es an den eigentlichen Algorithmus. Der Sourcecode liegt auf Github.">
+  <meta name="description" content="SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  SHA-256 ist Teil einer ganzen Gruppe von Algorithmen
+
+
+, mit dem gleichen Ziel: Die Erzeugung eines Hashes, der resistent gegen Kollisionen ist, dessen Berechnung nur in eine Richtung funktioniert und eine feste Länge hat. Im folgenden Artikel beschreibe ich die einzelnen Schritte die der Algorithmus vornimmt, um einen Hash zu erzeugen.
+Im ersten Teil kümmern wir uns um die Vorbereitungen, im 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  zweiten Teil
+
+
+ geht es an den eigentlichen Algorithmus. Der Sourcecode 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  liegt auf Github
+
+
+.">
   
 
   
@@ -30,8 +108,8 @@ Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es a
   <meta property="og:url" content="https://nickyreinert.de/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/">
   <meta property="og:site_name" content="Nicky Reinert">
   <meta property="og:title" content="Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&nbsp;1/2)">
-  <meta property="og:description" content="SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. SHA-256 ist Teil einer ganzen Gruppe von Algorithmen, mit dem gleichen Ziel: Die Erzeugung eines Hashes, der resistent gegen Kollisionen ist, dessen Berechnung nur in eine Richtung funktioniert und eine feste Länge hat. Im folgenden Artikel beschreibe ich die einzelnen Schritte die der Algorithmus vornimmt, um einen Hash zu erzeugen.
-Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es an den eigentlichen Algorithmus. Der Sourcecode liegt auf Github.">
+  <meta property="og:description" content="SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. SHA-256 ist Teil einer ganzen Gruppe von Algorithmen , mit dem gleichen Ziel: Die Erzeugung eines Hashes, der resistent gegen Kollisionen ist, dessen Berechnung nur in eine Richtung funktioniert und eine feste Länge hat. Im folgenden Artikel beschreibe ich die einzelnen Schritte die der Algorithmus vornimmt, um einen Hash zu erzeugen.
+Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es an den eigentlichen Algorithmus. Der Sourcecode liegt auf Github .">
   <meta property="og:locale" content="de_DE">
   <meta property="og:type" content="article">
     <meta property="article:section" content="2021">
@@ -51,11 +129,11 @@ Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es a
   
   
   <meta itemprop="name" content="Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&nbsp;1/2)">
-  <meta itemprop="description" content="SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. SHA-256 ist Teil einer ganzen Gruppe von Algorithmen, mit dem gleichen Ziel: Die Erzeugung eines Hashes, der resistent gegen Kollisionen ist, dessen Berechnung nur in eine Richtung funktioniert und eine feste Länge hat. Im folgenden Artikel beschreibe ich die einzelnen Schritte die der Algorithmus vornimmt, um einen Hash zu erzeugen.
-Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es an den eigentlichen Algorithmus. Der Sourcecode liegt auf Github.">
+  <meta itemprop="description" content="SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. SHA-256 ist Teil einer ganzen Gruppe von Algorithmen , mit dem gleichen Ziel: Die Erzeugung eines Hashes, der resistent gegen Kollisionen ist, dessen Berechnung nur in eine Richtung funktioniert und eine feste Länge hat. Im folgenden Artikel beschreibe ich die einzelnen Schritte die der Algorithmus vornimmt, um einen Hash zu erzeugen.
+Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es an den eigentlichen Algorithmus. Der Sourcecode liegt auf Github .">
   <meta itemprop="datePublished" content="2021-10-31T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-10-11T11:01:31+02:00">
-  <meta itemprop="wordCount" content="2204">
+  <meta itemprop="wordCount" content="2209">
   <meta itemprop="keywords" content="SHA256,Hashfunktion,Kryptographie,Blockchain,Bitcoin,Binär,Bitweise Operationen,Python Algorithmus,Datensicherheit">
 
   
@@ -71,8 +149,8 @@ Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es a
   
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil&nbsp;1/2)">
-  <meta name="twitter:description" content="SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. SHA-256 ist Teil einer ganzen Gruppe von Algorithmen, mit dem gleichen Ziel: Die Erzeugung eines Hashes, der resistent gegen Kollisionen ist, dessen Berechnung nur in eine Richtung funktioniert und eine feste Länge hat. Im folgenden Artikel beschreibe ich die einzelnen Schritte die der Algorithmus vornimmt, um einen Hash zu erzeugen.
-Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es an den eigentlichen Algorithmus. Der Sourcecode liegt auf Github.">
+  <meta name="twitter:description" content="SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. SHA-256 ist Teil einer ganzen Gruppe von Algorithmen , mit dem gleichen Ziel: Die Erzeugung eines Hashes, der resistent gegen Kollisionen ist, dessen Berechnung nur in eine Richtung funktioniert und eine feste Länge hat. Im folgenden Artikel beschreibe ich die einzelnen Schritte die der Algorithmus vornimmt, um einen Hash zu erzeugen.
+Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es an den eigentlichen Algorithmus. Der Sourcecode liegt auf Github .">
 
 
   
@@ -82,7 +160,7 @@ Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es a
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": "Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil\u0026nbsp;1\/2)",
-    "description": "SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. SHA-256 ist Teil einer ganzen Gruppe von Algorithmen, mit dem gleichen Ziel: …",
+    "description": "SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. SHA-256 ist Teil einer ganzen Gruppe von Algorithmen , mit dem gleichen Ziel: …",
     "datePublished": "2021-10-31T00:00:00Z",
     "dateModified": "2025-10-11T11:01:31\u002b02:00",
     "author": {
@@ -112,7 +190,7 @@ Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es a
     },
     
     "url": "https:\/\/nickyreinert.de\/2021\/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2\/",
-    "wordCount":  2204 ,
+    "wordCount":  2209 ,
     
     "timeRequired": "PT5M",
     
@@ -138,7 +216,7 @@ Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es a
     "@context": "https://schema.org",
     "@type": "TechArticle",
     "headline": "Wie funktioniert der SHA256 Algorithmus…im Detail? (Teil\u0026nbsp;1\/2)",
-    "description": "SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. SHA-256 ist Teil einer ganzen Gruppe von Algorithmen, mit dem gleichen Ziel: …",
+    "description": "SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. SHA-256 ist Teil einer ganzen Gruppe von Algorithmen , mit dem gleichen Ziel: …",
     
     "proficiencyLevel": "advanced",
     
@@ -377,16 +455,150 @@ Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es a
   
   <article style="border-top: 2px solid #878787;" class="content">
     
-    <p>SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. <a href="https://de.wikipedia.org/wiki/SHA-2">SHA-256 ist Teil einer ganzen Gruppe von Algorithmen</a>, mit dem gleichen Ziel: Die Erzeugung eines Hashes, der resistent gegen Kollisionen ist, dessen Berechnung nur in eine Richtung funktioniert und eine feste Länge hat. Im folgenden Artikel beschreibe ich die einzelnen Schritte die der Algorithmus vornimmt, um einen Hash zu erzeugen.</p>
-<p><em>Im ersten Teil kümmern wir uns um die Vorbereitungen, im <a href="https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/">zweiten Teil</a> geht es an den eigentlichen Algorithmus. Der Sourcecode</em> <a href="https://gist.github.com/nickyreinert/00d631fe9a90108924b1df6e911c8cd5"><em>liegt auf Github</em></a><em>.</em></p>
+    <p>SHA-256 (Secure Hash Algorithm) ist der Name einer “kryptologischen Hashfunktion”. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://de.wikipedia.org/wiki/SHA-2?utm_source=allyourbasearebelongtous">SHA-256 ist Teil einer ganzen Gruppe von Algorithmen</a>
+
+
+, mit dem gleichen Ziel: Die Erzeugung eines Hashes, der resistent gegen Kollisionen ist, dessen Berechnung nur in eine Richtung funktioniert und eine feste Länge hat. Im folgenden Artikel beschreibe ich die einzelnen Schritte die der Algorithmus vornimmt, um einen Hash zu erzeugen.</p>
+<p><em>Im ersten Teil kümmern wir uns um die Vorbereitungen, im 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/?utm_source=allyourbasearebelongtous">zweiten Teil</a>
+
+
+ geht es an den eigentlichen Algorithmus. Der Sourcecode</em> 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gist.github.com/nickyreinert/00d631fe9a90108924b1df6e911c8cd5?utm_source=allyourbasearebelongtous"><em>liegt auf Github</em></a>
+
+
+<em>.</em></p>
 <h3 id="was-wirst-dulernen">Was wirst du lernen?</h3>
 <p>Neben dem Erzeugen eines SHA-256 wirst du hier vor allem den Umgang mit binären Zahlen und binäre Rechenoperationen wie <strong>XOR</strong>, <strong>AND</strong> usw kennenleren. Ich gehe allerdings davon aus, dass ein Grundverständnis für binäre Zahlen vorhanden ist, der Fokus liegt auf dem Algorithmus. <strong>10</strong> sollte in deinem Kopf also entweder für die <strong>zehn</strong> oder eine <strong>zwei</strong> stehen. (Oder auch <strong>zwölf</strong>, wenn du das <strong>Duodezimalsystem</strong> magst.)</p>
 <h3 id="vorwort">Vorwort</h3>
 <p>Bricht man das auf eine maximal laienhafte Beschreibung herunter, passiert bei einer krytpologischen Hash-Funktion das folgende: Ein Ausgangs-Text <strong>beliebiger</strong> Länge wird so verarbeitet, dass daraus einen Ergebnis-Text (<em>der</em> <em>Hash</em>) mit der <strong>immer gleichen</strong> Länge entsteht. Es ist nahezu unmöglich, aus dem Hash den Ausgangs-Text zu berechnen. Außerdem kann man fast sicher davon ausgehen, dass jeder Ausgangs-Text <strong>einen anderen Hash</strong> erzeugt. Ändere ich nur ein Zeichen, wirkt sich das drastisch auf den Ausgangs-Text aus. Ein derartiger Algorithmus ist daher zB prädestiniert, Texte, sprich Nachrichten, zu verfizieren. Man spricht deswegen auch von einer Prüfsumme.</p>
-<p>Und das ist die Grundlage einer Technologie, die in jüngster Vergangenheit immer mehr von sich Reden macht: Die <strong>Blockchain</strong>, Basis für Kryptowährungen wie zB den <strong>Bitcoin</strong>. Bei der Blockchain sind, und auch das nur laienhaft heruntergebrochen, die Einträge des “Kassenbuches” sicher vor Manipulation, weil eben die Änderung eines historischen Wertes (zB Buchungsvorganges) unweigerlich eine drastische Änderung der daraus erzeugten Prüfsummen nach sich ziehen würde. Um den Blockchain-Apologeten gleich den Wind aus den Segeln zu nehmen zitiere ich mal Fefe, sinngemäß: <a href="https://ptrace.fefe.de/Blockchain/#46">Es geht auch einfacher</a>. Ich gebrauche Bitcoin hier auch nur als Buzzword, aus Marketing-Gründen. :]</p>
+<p>Und das ist die Grundlage einer Technologie, die in jüngster Vergangenheit immer mehr von sich Reden macht: Die <strong>Blockchain</strong>, Basis für Kryptowährungen wie zB den <strong>Bitcoin</strong>. Bei der Blockchain sind, und auch das nur laienhaft heruntergebrochen, die Einträge des “Kassenbuches” sicher vor Manipulation, weil eben die Änderung eines historischen Wertes (zB Buchungsvorganges) unweigerlich eine drastische Änderung der daraus erzeugten Prüfsummen nach sich ziehen würde. Um den Blockchain-Apologeten gleich den Wind aus den Segeln zu nehmen zitiere ich mal Fefe, sinngemäß: 
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://ptrace.fefe.de/Blockchain/?utm_source=allyourbasearebelongtous#46">Es geht auch einfacher</a>
+
+
+. Ich gebrauche Bitcoin hier auch nur als Buzzword, aus Marketing-Gründen. :]</p>
 <p>Um dich nun aber auch zum Weiterlesen zu motivieren, ein wichtiger Hinweis:</p>
 <p>Der Algorithmus wird dazu verwendet, die nächsten Einträge der Blockchain zu berechnen. Genau genommen wird hier ein bestimmter Hash vorgegeben, der errechnet werden soll (das berüchtigte <em>Mining</em>). Die Belohnung für die korrekte Berechnung sind Bitcoins. Das Problem: Diese Berechnung ist <strong>sehr,</strong> <strong>sehr aufwendig</strong>, denn wie schon oben geschrieben: Sie funktioniert nur in eine Richtung. Die <em>Miner</em> müssen also unsagbar viele Berechnungen durchführen, um einen Ziel-Wert zu errechnen. Und der Miner, der die Berechnung am schnellsten ausführt, wird dafür auch belohnt. Gelingt es dir also, wider erwarten, den Algorithmus zu optimieren, kannst du im Mining-Business ganz groß rauskommen. Das klingt doch nach einer Herausforderung, oder? ;)</p>
-<img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/images/image2.png" alt=""><p>Quelle: <a href="https://peakd.com/deutsch/@marcus0alameda/dagobert-gold-bitcoin-perfektion">https://peakd.com/deutsch/@marcus0alameda/dagobert-gold-bitcoin-perfektion</a></p>
+<img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/images/image2.png" alt=""><p>Quelle: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://peakd.com/deutsch/@marcus0alameda/dagobert-gold-bitcoin-perfektion?utm_source=allyourbasearebelongtous">https://peakd.com/deutsch/@marcus0alameda/dagobert-gold-bitcoin-perfektion</a>
+
+
+</p>
 <blockquote>
 <p>Disclaimer: Ich habe den ganzen Algorithmus in Python nachgebaut. Python ist aus Performance-Sicht sicher nicht die beste Option, um SHA-256 zu berechnen und der Umgang mit binären oder hexadezimalen Werten ist etwas unbequem. Python eignet sich dank Jupyter aber am ehesten dazu, einen komplexen Algorithmus Schritt-für-Schritt zu beschreiben.</p></blockquote>
 <h3 id="einführung">Einführung</h3>
@@ -427,7 +639,33 @@ Im ersten Teil kümmern wir uns um die Vorbereitungen, im zweiten Teil geht es a
 <h4 id="die-rotate-funktion">Die Rotate-Funktion</h4>
 <p><strong>Rotate</strong> bedeutet, dass ein die Werte einer (binären) Zahl in eine Richtung verschoben werden. Und das erklärt man am besten an einem Beispiel. Die folgende Zahlenreihe soll um einen Zähler nach links rotiert werden. Die Zahl auf der linken Seite fällt also heraus und wir rechts wieder angehangen. Die anderen Zahlen rücken eine Position nach links.</p>
 <img src="/2021/2021-10-31-wie-funktioniert-der-sha256-algorithmusim-detail-teil-1-2/images/image-5.png" alt=""><p>Rotate eines binären Wertes um eine Stelle nach links, aus 6wird 5</p>
-<p>Das funktioniert in beide Richtungen und mit beliebig vielen Stellen. Die entsprechende Funktion (<a href="https://stackoverflow.com/a/59005609/2360229">Kudos an so</a>) sieht so aus:</p>
+<p>Das funktioniert in beide Richtungen und mit beliebig vielen Stellen. Die entsprechende Funktion (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://stackoverflow.com/a/59005609/2360229?utm_source=allyourbasearebelongtous">Kudos an so</a>
+
+
+) sieht so aus:</p>
 <p>def rotate(value, rotations, width = 32):<br>
 if int(rotations) != abs(int(rotations)):<br>
 rotations = width + int(rotations)<br>
@@ -540,7 +778,33 @@ floored_product = floor(product)<br>
 compression_constants.append(bin(floored_product)[2:].zfill(32))</p>
 <p>Die Namen haben übrigens eine Bedeutung, auf die ich später noch eingehe.</p>
 <h3 id="epilog">Epilog</h3>
-<p>Die Vorbereitungen sind damit abgeschlossen und wir können uns <a href="https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/">im zweiten Teil</a> dem eigentlichen Algorithmus widmen.</p>
+<p>Die Vorbereitungen sind damit abgeschlossen und wir können uns 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://nickyreinert.de/blog/2021/10/31/wie-funktioniert-der-sha256-algorithmusim-detail-teil-2-2/?utm_source=allyourbasearebelongtous">im zweiten Teil</a>
+
+
+ dem eigentlichen Algorithmus widmen.</p>
 
     
   </article>

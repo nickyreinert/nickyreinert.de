@@ -370,7 +370,33 @@ brew install php71-mongodb</p>
 <p>Danach lässt sich die Extension in der /Applications/XAMPP/xamppfiles/etc/php.ini Datei aktivieren:</p>
 <p>extension=&quot;/usr/local/opt/php71-mongodb/mongodb.so&quot;</p>
 <p>Soweit. So einfach. Das Problem: Nachdem ich diese Zeile in der php.ini Datei hinzugefügt hatte, ließ sich der Apache-Dienst nicht mehr über die XAMPP-Oberfläche starten, obwohl diese mit root-Rechten ausgeführt wird. Leider gab auch die Log-Datei /Applications/XAMPP/xamppfiles/logs/error_log nicht viel her. Und auch nachdem ich die Zeile aus der php.ini-Datei entfernt habe, trat das Problem weiter auf. Ich bekam den Web-Server also nicht zum laufen und an keiner Stelle in den Log-Dateien war ersichtlich, was nicht stimmte.</p>
-<p>[caption id=&ldquo;attachment_1567&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/xampp-startet-nicht-mehr-nachdem-eine-php-extension-hinzugefuegt-wurde/XAMPP-UI-in-OS-X.png"><img src="/2017/2017-10-19-xampp-startet-nicht-mehr-nachdem-eine-php-extension-hinzugefuegt-wurde/images/XAMPP-UI-in-OS-X-300x209.png" alt="XAMPP UI in OS X um den Web-Server zu starten"></a> XAMPP UI in OS X um den Web-Server zu starten[/caption]</p>
+<p>[caption id=&ldquo;attachment_1567&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/xampp-startet-nicht-mehr-nachdem-eine-php-extension-hinzugefuegt-wurde/XAMPP-UI-in-OS-X.png?utm_source=allyourbasearebelongtous"><img src="/2017/2017-10-19-xampp-startet-nicht-mehr-nachdem-eine-php-extension-hinzugefuegt-wurde/images/XAMPP-UI-in-OS-X-300x209.png" alt="XAMPP UI in OS X um den Web-Server zu starten"></a>
+
+
+ XAMPP UI in OS X um den Web-Server zu starten[/caption]</p>
 <h2 id="recherche-der-aufgerufenen-kommandos">Recherche der aufgerufenen Kommandos</h2>
 <p>Also musste ich mich auf die Fehlersuche machen. Und das ist recht umständlich, denn der Klick auf den Button im XAMPP-UI stößt eine etwas längere Befehlskette an an deren Ende der Start des http-Daemons steht:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">/Applications/XAMPP/xamppfiles/ctlscript.sh start apache

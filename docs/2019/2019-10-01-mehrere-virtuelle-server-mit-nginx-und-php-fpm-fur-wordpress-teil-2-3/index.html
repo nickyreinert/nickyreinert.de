@@ -51,7 +51,7 @@ Server oder virtual hosts? Im Gegensatz zu den “virtual hosts” von Apache sp
 Server oder virtual hosts? Im Gegensatz zu den “virtual hosts” von Apache spricht man bei nginx von “servern”. Ich möchte das Aufgreifen und nutze im Folgenden einfach nur von “Server” wenn ich von einem individuellen Host oder virtuellem Server spreche. Wie bei Apache werden diese idealerweise in eigenständigen Konfig-Dateien definiert. Hier gibt es verschiedene Vorlieben, ob die Konfig-Dateien unter /etc/nginx/sites-available oder /etc/nginx/conf.d abgelegt werden.">
   <meta itemprop="datePublished" content="2019-10-01T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-08-20T09:03:20+02:00">
-  <meta itemprop="wordCount" content="2419">
+  <meta itemprop="wordCount" content="2429">
   <meta itemprop="keywords" content="Hosting,Wordpress,Web,WordPress,Development">
 
   
@@ -108,7 +108,7 @@ Server oder virtual hosts? Im Gegensatz zu den “virtual hosts” von Apache sp
     },
     
     "url": "https:\/\/nickyreinert.de\/2019\/2019-10-01-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-2-3\/",
-    "wordCount":  2419 ,
+    "wordCount":  2429 ,
     
     "timeRequired": "PT5M",
     
@@ -432,17 +432,219 @@ Server oder virtual hosts? Im Gegensatz zu den “virtual hosts” von Apache sp
 </span></span><span class="line"><span class="ln">24</span><span class="cl">}  
 </span></span></code></pre></div><h3 id="wie-soll-gecached-werden">Wie soll gecached werden?</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">fastcgi_cache_path</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">example_com</span><span class="o">/</span><span class="n">cache</span> <span class="n">use_temp_path</span><span class="o">=</span><span class="n">off</span> <span class="n">levels</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span> <span class="n">keys_zone</span><span class="o">=</span><span class="n">cache_example_com</span><span class="p">:</span><span class="mi">100</span><span class="n">m</span> <span class="n">inactive</span><span class="o">=</span><span class="mi">60</span><span class="n">m</span> <span class="n">max_size</span><span class="o">=</span><span class="mi">2048</span><span class="n">m</span><span class="p">;</span>
-</span></span></code></pre></div><p>Um den Zweck der Parameter hinter <a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_cache_key">fastcgi_cache_path</a> zu verstehen, werde ich grob erklären, wie der nginx-Cache funktioniert:</p>
+</span></span></code></pre></div><p>Um den Zweck der Parameter hinter 
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html?utm_source=allyourbasearebelongtous#fastcgi_cache_key">fastcgi_cache_path</a>
+
+
+ zu verstehen, werde ich grob erklären, wie der nginx-Cache funktioniert:</p>
 <p>Über <strong>FastCGI</strong> wird zunächst die PHP-Datei an den PHP-Interpreter übergeben. Das Ergebnis, z.B. ein HTML-Dokument geht dann an den Empfänger. Ist diese Ressource als &ldquo;<strong>cachable</strong>&rdquo; markiert, legt nginx das zu Ergbnis außerdem in <strong>temporär</strong> in einen Ordner ab und kopiert es von dort in den <strong>eigentlich Cache-Ordner</strong>. Damit diese Resource später wiedergefunden wird, wird ein <strong>Schlüssel</strong> erstellt. Ein Liste (&ldquo;Cache-Verzeichnis&rdquo;) dieser Schlüssel und ein paar Meta-Daten (z.B. der letzte Abruf) werden im <strong>Arbeitsspeicher</strong> abgelegt.</p>
 <img src="/2019/2019-10-01-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-2-3/images/grafik-700x222.png" alt=""><p>Zugegeben: Eine wirklich stark vereinfachte Darstellung des Cachings mit nginx</p>
 <p>Mit <strong>fastcgi_cache_path</strong> legst du also den eigentlichen Cache-Ordner fest. Danach deaktivierst du mit <strong>use_temp_path=off</strong> die Zwischenspeicherung in einem temporären Ordner, um den Cache-Prozess zu beschleunigen. Mit <strong>levels</strong> kannst du die Tiefe des Cache-Ordners festlegen. Jede Position steht zwischen den Doppelpunkten für ein Level, drei Level sind möglich. Die Ziffer legt fest, wieviel Zeichen die Dateinamen enthalten. Folgende Angabe reduziert die Tiefe z.B. auf 2 Level deren Ordnernamen 1 Zeichen enthalten:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">levels=1:1
-</span></span></code></pre></div><p>Der Parameter <strong>keys_zone</strong> gibt dem Bereich im Arbeitsspeicher einen eindeutigen Namen, der das &ldquo;Cache-Verzeichnis&rdquo; enthält. Das ist notwendig, da du auch andere Cache-Bereich anlegen kannst (z.b. den <a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache">proxy_cache</a>). Die Ziffer hinter dem Doppelpunkt gibt die Größe der Liste an. 1 MByte entspricht etwa 8.000 cache keys - mit 100 MB solltest du also eine Weile auskommen.</p>
+</span></span></code></pre></div><p>Der Parameter <strong>keys_zone</strong> gibt dem Bereich im Arbeitsspeicher einen eindeutigen Namen, der das &ldquo;Cache-Verzeichnis&rdquo; enthält. Das ist notwendig, da du auch andere Cache-Bereich anlegen kannst (z.b. den 
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html?utm_source=allyourbasearebelongtous#proxy_cache">proxy_cache</a>
+
+
+). Die Ziffer hinter dem Doppelpunkt gibt die Größe der Liste an. 1 MByte entspricht etwa 8.000 cache keys - mit 100 MB solltest du also eine Weile auskommen.</p>
 <p>Mit <strong>inactive=60m</strong> legst du fest, wie lange ein Objekt im Cache gültig ist, in diesem Fall 60 Minuten. Wenn du mit Inhalten arbeitest, die sich sehr oft ändern, solltest du diesen Wert natürlich verkleinern. Schließlich kannst du mit <strong>max_size</strong> die tatsächlicheGröße des Caches im Dateisystem begrenzen.</p>
-<p>Die Direktive <strong>fastcgi_cache_path</strong> wird <strong>nicht auf Server-Ebene</strong> angegeben, sondern global unter <strong>http</strong>. Du kannst damit beliebig viele Caches anlegen, musst aber unbedingt auf die <strong>Unterscheidbarkeit</strong> achten, damit nginx die Caches deiner unterschiedlichen Server nicht zusammenhaut. Wie macht sich das bemerkbar? Wenn du eine deiner Seiten lädst (<strong><a href="https://www.example.com">www.example.com</a></strong>) und plötzlich auf einer völlig anderen deiner Seiten (Domain) landest (<strong><a href="https://www.test.com">www.test.com</a></strong>), solltest du dir die Direktiven fastcgi_cache_path oder fastcgi_cache_key noch mal genauer anschauen.</p>
+<p>Die Direktive <strong>fastcgi_cache_path</strong> wird <strong>nicht auf Server-Ebene</strong> angegeben, sondern global unter <strong>http</strong>. Du kannst damit beliebig viele Caches anlegen, musst aber unbedingt auf die <strong>Unterscheidbarkeit</strong> achten, damit nginx die Caches deiner unterschiedlichen Server nicht zusammenhaut. Wie macht sich das bemerkbar? Wenn du eine deiner Seiten lädst (<strong>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.example.com?utm_source=allyourbasearebelongtous">www.example.com</a>
+
+
+</strong>) und plötzlich auf einer völlig anderen deiner Seiten (Domain) landest (<strong>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.test.com?utm_source=allyourbasearebelongtous">www.test.com</a>
+
+
+</strong>), solltest du dir die Direktiven fastcgi_cache_path oder fastcgi_cache_key noch mal genauer anschauen.</p>
 <h2 id="die-php-einstellungen">Die PHP-Einstellungen</h2>
 <p>Jetzt wird es spannend um nicht zu sagen: etwas kompliziert. Die Einstellungen für den PHP-Interpreter in <strong>fastcgi-php.conf</strong>. Diese bezieht sich alleine auf Dateien, deren Dateiendung ich in <strong>location</strong> festlege. Zunächst nutzen wir ein paar Standard-Einstellungen aus der bei nginx mitgelieferten fastcgi.conf-Datei. Hier werden einige Werte festgelegt, wie z.B. Document Root, Protokolle usw. Das muss zwingend zu Beginn passieren, da wir einige Parameter weiter unten überschreiben. Außerdem wird noch die Standard-Script-Datei festgelegt, sollte keine Datei in der URL mitgegeben werden.</p>
-<p>Mit <a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_cache">fastcgi_cache</a> verweise ich nun auf <strong>Cache-Zone</strong>, die ich oben bereits definiert habe. Hier kannst du mit Parameter arbeiten ($server). Mit <a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_cache_valid">fastcgi_cache_valid</a> kann ich für jeden HTTP-Antwortcode festlegen, wie lange der Cache gültig ist. Ich verweise hier nur auf erfolgreiche Anfragen (HTTP 200). Weiter oben habe ich bereits festgelegt, welche Anfragen überhaupt gecached werden, hier kann ich diese Anfragen mit <a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_cache_bypass">fastcgi_cache_bypass</a> nun explizit ausklammern.</p>
+<p>Mit 
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html?utm_source=allyourbasearebelongtous#fastcgi_cache">fastcgi_cache</a>
+
+
+ verweise ich nun auf <strong>Cache-Zone</strong>, die ich oben bereits definiert habe. Hier kannst du mit Parameter arbeiten ($server). Mit 
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html?utm_source=allyourbasearebelongtous#fastcgi_cache_valid">fastcgi_cache_valid</a>
+
+
+ kann ich für jeden HTTP-Antwortcode festlegen, wie lange der Cache gültig ist. Ich verweise hier nur auf erfolgreiche Anfragen (HTTP 200). Weiter oben habe ich bereits festgelegt, welche Anfragen überhaupt gecached werden, hier kann ich diese Anfragen mit 
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html?utm_source=allyourbasearebelongtous#fastcgi_cache_bypass">fastcgi_cache_bypass</a>
+
+
+ nun explizit ausklammern.</p>
 <p>Danach folgt eine wordpress-exklusive Einstellung: Die PHP-Datei wird nur an den PHP-Interpreter weitergereicht, wenn sie sich <strong>nicht</strong> im Ordner &ldquo;uploads&rdquo; befinden. Das ist ein Sicherheitsfeature: Sollte irgendwie eine PHP-Datei mit schadhaften Code in den (üblicherweise) schreibbaren Ordner &ldquo;Uploads&rdquo; gelangen, wird nginx diesen <strong>niemals</strong> an PHP weitergeben.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="n">location</span> <span class="o">~</span> \<span class="o">.</span><span class="p">(</span><span class="n">php</span><span class="o">|</span><span class="n">php</span><span class="o">.*</span><span class="p">)</span><span class="o">$</span> <span class="p">{</span>
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl">
@@ -474,14 +676,96 @@ Server oder virtual hosts? Im Gegensatz zu den “virtual hosts” von Apache sp
 </span></span><span class="line"><span class="ln">28</span><span class="cl">	<span class="n">fastcgi_param</span> <span class="n">SCRIPT_NAME</span> <span class="o">$</span><span class="n">fastcgi_script_name</span><span class="p">;</span>
 </span></span><span class="line"><span class="ln">29</span><span class="cl">
 </span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>Weiter geht es mit einer wichtigen Einstellung für Sicherheit und Geschwindigkeit. Wir haben oben zwar schon grob festgelegt, welche Dateien nicht als Script zu PHP geschickt werden. Das ist aber noch ziemlich wacklig (warum, <a href="https://www.digitalocean.com/community/tutorials/understanding-and-implementing-fastcgi-proxying-in-nginx">das ist hier ganz gut beschrieben</a>): Was wir bisher nicht vermeiden, ist der Aufruf von z.B. /test.jpg/index.php - die Datei index.php würde vom Interpreter nicht gefunden werden. Er würde demnach versuchen, test.jpg auszuführen und den Anhang als Parameter verstehen. Das wollen wir vermeiden.</p>
+</span></span></code></pre></div><p>Weiter geht es mit einer wichtigen Einstellung für Sicherheit und Geschwindigkeit. Wir haben oben zwar schon grob festgelegt, welche Dateien nicht als Script zu PHP geschickt werden. Das ist aber noch ziemlich wacklig (warum, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.digitalocean.com/community/tutorials/understanding-and-implementing-fastcgi-proxying-in-nginx?utm_source=allyourbasearebelongtous">das ist hier ganz gut beschrieben</a>
+
+
+): Was wir bisher nicht vermeiden, ist der Aufruf von z.B. /test.jpg/index.php - die Datei index.php würde vom Interpreter nicht gefunden werden. Er würde demnach versuchen, test.jpg auszuführen und den Anhang als Parameter verstehen. Das wollen wir vermeiden.</p>
 <p>Es gibt viele Möglichkeiten, das zu verhindern. Einige davon werden wir hier nutzen.</p>
 <p>Mit <strong>fastcgi_split_path_info</strong> zerlegst du die URL in den Pfad und den Dateinamen um zielsicher zu erkennen, welcher Teil der URL auf eine Datei zeigt und was als Ordner verstanden wird. Die RegExe beinhaltet deswegen zwei Capture-Gruppen. Der Inhalt der ersten Gruppe (.+.php) wird in der Variable <strong>$fastcgi_script_name</strong> abgelegt, der der zweiten Gruppe (/.+) landet in <strong>$fastcgi_path_info</strong>.</p>
-<p>Mit <strong>try_files</strong> bestimmst du nun, dass nur PHP-Dateien verarbeitet werden, die überhaupt exisiterien. Das Problem dabei ist, dass dadurch der Parameter <strong>$fastcgi_path_info</strong> zurückgesetzt wird (<a href="http://trac.nginx.org/nginx/ticket/321">siehe auch hier</a>). Deshalb wird dessen Inhalt einen Schritt davor in die Variable <strong>$path_info</strong> geschrieben. Danach legen die Parameter für FastCGI fest und greifen nun auf die eben per RegExe extrahierten Infos für das Script und den Pfad zurück:</p>
+<p>Mit <strong>try_files</strong> bestimmst du nun, dass nur PHP-Dateien verarbeitet werden, die überhaupt exisiterien. Das Problem dabei ist, dass dadurch der Parameter <strong>$fastcgi_path_info</strong> zurückgesetzt wird (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://trac.nginx.org/nginx/ticket/321?utm_source=allyourbasearebelongtous">siehe auch hier</a>
+
+
+). Deshalb wird dessen Inhalt einen Schritt davor in die Variable <strong>$path_info</strong> geschrieben. Danach legen die Parameter für FastCGI fest und greifen nun auf die eben per RegExe extrahierten Infos für das Script und den Pfad zurück:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">fastcgi_param PATH_INFO $path_info;
 </span></span><span class="line"><span class="ln">2</span><span class="cl">fastcgi_param SCRIPT_FILENAME /htdocs/$fastcgi_script_name;
 </span></span><span class="line"><span class="ln">3</span><span class="cl">fastcgi_param SCRIPT_NAME $fastcgi_script_name;
-</span></span></code></pre></div><p>Damit das ganze wirklich reibungslos funktioniert, musst du in der php.ini den Parameter <strong><a href="https://www.php.net/manual/de/ini.core.php#ini.cgi.fix-pathinfo">cgi.fix_pathinfo</a></strong> auf 1 setzen - das ist zwar die Standardeinstellungen, schau aber trotzdem noch mal nach:</p>
+</span></span></code></pre></div><p>Damit das ganze wirklich reibungslos funktioniert, musst du in der php.ini den Parameter <strong>
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.php.net/manual/de/ini.core.php?utm_source=allyourbasearebelongtous#ini.cgi.fix-pathinfo">cgi.fix_pathinfo</a>
+
+
+</strong> auf 1 setzen - das ist zwar die Standardeinstellungen, schau aber trotzdem noch mal nach:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">cgi.fix_pathinfo=1
 </span></span></code></pre></div><h2 id="die-https-einstellungen">Die HTTPS-Einstellungen</h2>
 <p>Die nächsten Parameter sind wieder etwas unkompliziert und auch selbsterklärend. Wir kommen zu den HTTP- und HTTPS-Einstellungen, die ich in einer Datei zusammengefasst habe (<strong>default_https.conf</strong>). Hier werden nur die Port-Einstellungen festgelegt, SSL korrekt eingerichtet und auf eine Standard-Datei verwiesen, wenn die Anfrage nicht auf eine Datei verweist:</p>
@@ -495,7 +779,33 @@ Server oder virtual hosts? Im Gegensatz zu den “virtual hosts” von Apache sp
 </span></span><span class="line"><span class="ln">8</span><span class="cl">include /etc/letsencrypt/options-ssl-nginx.conf;
 </span></span><span class="line"><span class="ln">9</span><span class="cl">ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 </span></span></code></pre></div><h3 id="die-gzip-einstellungen">Die GZIP-Einstellungen</h3>
-<p>Auch die Datei gzip.conf bedarf keiner großen Erklärung. Einen Großteil habe ich bereits global konfiguriert, hier werden auf Server-Ebene noch einige Einstellungen vorgenommen. Dabei setze ich das Kompressions-Level auf 3 und lege fest, welche Ressourcen komprimiert werden. Welches Level du wählst, hängt von deiner Hardware ab. Die Kompression kann die Auslieferung deiner Seite auf jeden Fall beschleunigen, einen etwas ausführlicheren Beitrag dazu findest du bei <a href="https://royal.pingdom.com/can-gzip-compression-really-improve-web-performance/">pingdom.com</a>.</p>
+<p>Auch die Datei gzip.conf bedarf keiner großen Erklärung. Einen Großteil habe ich bereits global konfiguriert, hier werden auf Server-Ebene noch einige Einstellungen vorgenommen. Dabei setze ich das Kompressions-Level auf 3 und lege fest, welche Ressourcen komprimiert werden. Welches Level du wählst, hängt von deiner Hardware ab. Die Kompression kann die Auslieferung deiner Seite auf jeden Fall beschleunigen, einen etwas ausführlicheren Beitrag dazu findest du bei 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://royal.pingdom.com/can-gzip-compression-really-improve-web-performance/?utm_source=allyourbasearebelongtous">pingdom.com</a>
+
+
+.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">gzip             on;
 </span></span><span class="line"><span class="ln">2</span><span class="cl">gzip_comp_level  3;
 </span></span><span class="line"><span class="ln">3</span><span class="cl">gzip_types       text/plain text/html text/css application/javascript image/*;
@@ -511,7 +821,33 @@ Server oder virtual hosts? Im Gegensatz zu den “virtual hosts” von Apache sp
 </span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Wie du siehst beziehe ich mir hier erneut auf die Rate Limit Einstellung aus dem ersten Teil in der Datei <strong>nginx.conf</strong>. Mit Verweis auf meine Zone (<strong>one</strong>) beschränke ich die Warteschlange auf 10: <strong>burst=10;</strong> Wenn als mehr Anfragen als erlaubt ankommen (ich hatte 5 pro Sekunde zugelassen), werden bis zu 10 der darauf folgenden Anfragen in eine Warteschlange gepackt. Die anderen Parameter habe ich inline erklärt.</p>
 <h3 id="die-logging-einstellungen">Die Logging-Einstellungen</h3>
-<p>Auf zur Datei <strong>logging.conf</strong>. Diese Einstellungen betreffen nicht nur das Log-Verhalten ansich, sondern haben auch Auswirkungen auf <strong>Geschwindigkeit</strong> und <strong>Sicherheit</strong>. Ich lege nämlich fest, welche Anfragen nicht ins Log-File geschrieben werden bzw. gänzlich ignoriert werden. Eine aus führliche Dokumentation findest du auf <a href="https://www.if-not-true-then-false.com/2011/nginx-and-php-fpm-configuration-and-optimizing-tips-and-tricks">diesem Blog</a>. Die Einträge sind inline beschrieben und erklären sich, so blöd das klingt, eigentlich selber. Nicht jeder Aufruf muss auch im Log dokumentiert werden. Uns interessieren ja eigentlich nur Fehler oder ungewöhnliche Anfragen.</p>
+<p>Auf zur Datei <strong>logging.conf</strong>. Diese Einstellungen betreffen nicht nur das Log-Verhalten ansich, sondern haben auch Auswirkungen auf <strong>Geschwindigkeit</strong> und <strong>Sicherheit</strong>. Ich lege nämlich fest, welche Anfragen nicht ins Log-File geschrieben werden bzw. gänzlich ignoriert werden. Eine aus führliche Dokumentation findest du auf 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.if-not-true-then-false.com/2011/nginx-and-php-fpm-configuration-and-optimizing-tips-and-tricks?utm_source=allyourbasearebelongtous">diesem Blog</a>
+
+
+. Die Einträge sind inline beschrieben und erklären sich, so blöd das klingt, eigentlich selber. Nicht jeder Aufruf muss auch im Log dokumentiert werden. Uns interessieren ja eigentlich nur Fehler oder ungewöhnliche Anfragen.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl"># nicht loggen: Bilder, XML, CSS, usw.
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl"># außerdem das Cache-Datum auf 360 Tage setzen
 </span></span><span class="line"><span class="ln"> 3</span><span class="cl">location ~* \.(jpg|jpeg|gif|png|css|js|ico|xml)$ {
@@ -584,7 +920,33 @@ Server oder virtual hosts? Im Gegensatz zu den “virtual hosts” von Apache sp
 </span></span><span class="line"><span class="ln">25</span><span class="cl">        <span class="n">fastcgi_pass</span> <span class="n">unix</span><span class="p">:</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">php</span><span class="o">/</span><span class="n">php</span><span class="o">-</span><span class="n">fpm</span><span class="o">-$</span><span class="n">server</span><span class="o">.</span><span class="n">sock</span><span class="p">;</span>
 </span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Natürlich wollen wir nicht nur den Zugriff auf kritische Ressourcen verhindern, sondern ggf. auch andere Angriffsvektoren erschweren, wie z.B. BruteForce-Attacken. In einer Wordpress-Installation ist ein beliebter Angriffspunkt z.B. die Datei <strong>wp-login.php</strong>. Weiter oben haben wir schon mal festgelegt, wie oft eine Ressouce abgefragt werden kann. Für <strong>wp-login.php</strong> wollen wir diese Grenze noch etwa enger ziehen. Unser Setup erlaubt 5 Anfragen / Sekunde. Mit Burst verkürze ich zuerst die Warteschlange auf 1. Mit <strong>nodelay</strong> sorge ich nun dafür, dass Anfragen sofort beantwortet werden, aber der Slot in de Warteschlange nicht gleich wieder frei wird. Ergo werden direkt darauf folgende Zugriffe im erlaubten Zeitfenster mit dem <strong>HTTP-Fehler 503</strong> (Service temporarly not available) abgelehnt.</p>
-<p>Weiter gehts abschließend mit der Einrichtung von <a href="https://www.nickyreinert.de/mehrere-virtuelle-server-mit-nginx-und-php-fpm-fuer-wordpress-teil-3-3/">PHP in Teil 3.</a></p>
+<p>Weiter gehts abschließend mit der Einrichtung von 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/mehrere-virtuelle-server-mit-nginx-und-php-fpm-fuer-wordpress-teil-3-3/?utm_source=allyourbasearebelongtous">PHP in Teil 3.</a>
+
+
+</p>
 
     
   </article>

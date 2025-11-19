@@ -52,7 +52,7 @@
   <meta itemprop="description" content="Um beim Text Mining zusammengehörende Wörter zu gruppieren, bedient man sich im Natural Language Processing (NLP) zweier Methoden: Lemmatisierung (lemmatising) und Stemming. Das ist notwendig, um z.B. einen Text besser kategorisieren bzw. mit Stichworten versehen zu können. Eines der wichtigsten Anwendungsgebiete ist sicherlich die Indexierung von Dokumenten durch eine Suchmaschine. Ein ganz einfaches Beispiel: Enthält ein Dokument sehr oft das Wort Häuser und der Nutzer sucht nach dem Begriff Haus, wird das relevante Dokument wohl nicht in den Suchergebnissen auftauchen.">
   <meta itemprop="datePublished" content="2020-12-09T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-10-11T11:01:31+02:00">
-  <meta itemprop="wordCount" content="1555">
+  <meta itemprop="wordCount" content="1564">
   <meta itemprop="keywords" content="Python,NLP,Stemming,Lemmatisierung,NLTK,SpaCy,HannoverTagger,IWNLP,Text Mining,German NLP,Data Science,Textverarbeitung">
 
   
@@ -108,7 +108,7 @@
     },
     
     "url": "https:\/\/nickyreinert.de\/2020\/2020-12-09-einfuehrung-in-stemming-und-lemmatisierung-deutscher-texte-mit-python\/",
-    "wordCount":  1555 ,
+    "wordCount":  1564 ,
     
     "timeRequired": "PT5M",
     
@@ -372,10 +372,114 @@
 <li>Lancaster Stemmer</li>
 <li>Snowball Stemmer</li>
 </ul>
-<p>Der <strong>Porter Stemmer</strong> wurde bereits 1979 von <strong>Martin F. Porter</strong> entwickelt und <a href="https://nlp.stanford.edu/IR-book/html/htmledition/stemming-and-lemmatization-1.html">gilt zumindest in der englischen Sprache als sehr effektiv</a>. Der <strong>Lancaster Stammer</strong> geht auf den Ende der 1980er Jahre an der Lancaster University von <strong>Chris Paice</strong> und <strong>Gareth Husk</strong> entwickelten Paice-Husk Stemming Algorithmus zurück. Im Gegensatz zum festen Regelsatz von Porter wird <a href="https://www.scientificpsychic.com/paice/paice.html">beim Lancaster mit externen Regeln gearbeitet</a>, womit der Algorithmus flexibler ist.</p>
-<p>Der Snowball Stemmer ist eigentlich kein eigener Algorithmus, <a href="https://www.datacamp.com/community/tutorials/stemming-lemmatization-python">sondern eine Sprache</a>, um einen eigenen Stemmer zu schreiben.</p>
+<p>Der <strong>Porter Stemmer</strong> wurde bereits 1979 von <strong>Martin F. Porter</strong> entwickelt und 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://nlp.stanford.edu/IR-book/html/htmledition/stemming-and-lemmatization-1.html?utm_source=allyourbasearebelongtous">gilt zumindest in der englischen Sprache als sehr effektiv</a>
+
+
+. Der <strong>Lancaster Stammer</strong> geht auf den Ende der 1980er Jahre an der Lancaster University von <strong>Chris Paice</strong> und <strong>Gareth Husk</strong> entwickelten Paice-Husk Stemming Algorithmus zurück. Im Gegensatz zum festen Regelsatz von Porter wird 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.scientificpsychic.com/paice/paice.html?utm_source=allyourbasearebelongtous">beim Lancaster mit externen Regeln gearbeitet</a>
+
+
+, womit der Algorithmus flexibler ist.</p>
+<p>Der Snowball Stemmer ist eigentlich kein eigener Algorithmus, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.datacamp.com/community/tutorials/stemming-lemmatization-python?utm_source=allyourbasearebelongtous">sondern eine Sprache</a>
+
+
+, um einen eigenen Stemmer zu schreiben.</p>
 <h3 id="installation-und-anwendung">Installation und Anwendung</h3>
-<p>Alle drei Module sind Bestandteil des <a href="https://www.nltk.org/">Natural Language Toolkit</a> und können dementsprechend sehr unkompliziert mit <strong>pip install nltk</strong> installiert werden. Danach sieht ein Anwendungsbeispiel folgendermaßen aus:</p>
+<p>Alle drei Module sind Bestandteil des 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nltk.org/?utm_source=allyourbasearebelongtous">Natural Language Toolkit</a>
+
+
+ und können dementsprechend sehr unkompliziert mit <strong>pip install nltk</strong> installiert werden. Danach sieht ein Anwendungsbeispiel folgendermaßen aus:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl"> from nltk.stem import PorterStemmer
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl"> from nltk.stem import LancasterStemmer
 </span></span><span class="line"><span class="ln"> 3</span><span class="cl"> from nltk.stem.snowball import SnowballStemmer
@@ -396,7 +500,33 @@
 </span></span></code></pre></div><p>Keiner der Stemmer kommt auf <em>Katze</em>. Klar: Hier werden einfach nur ein paar Buchstaben abgeschnitten. Da Porter nicht für die deutsche Sprache ausgelegt ist, wird hier sogar die reflektierte Form zurückgegeben. Das Stemming kann also dabei helfen, reflektierte Wörter auf einen gemeinsamen Stamm zu reduzieren. Die Bedeutung geht dabei aber oft verloren.</p>
 <p>Genau deshalb gibt es die <strong>Lemmatisierung</strong>&hellip;</p>
 <h2 id="lemmatisieren-mit-hannovertagger-wordnet-spacy-und-iwnlp">Lemmatisieren mit HannoverTagger, WordNet, Spacy und IWNLP</h2>
-<p>Für die Lemmatisierung habe ich vier Module herausgesucht. Vor allem <a href="https://www.machinelearningplus.com/nlp/lemmatization-examples-python/">für die englische Sprache ist die Auswahl aber weitaus größer</a>, für deutsche Texte ist es hingegen schwierig, aktuelle und gepflegte Module zu finden.</p>
+<p>Für die Lemmatisierung habe ich vier Module herausgesucht. Vor allem 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.machinelearningplus.com/nlp/lemmatization-examples-python/?utm_source=allyourbasearebelongtous">für die englische Sprache ist die Auswahl aber weitaus größer</a>
+
+
+, für deutsche Texte ist es hingegen schwierig, aktuelle und gepflegte Module zu finden.</p>
 <ul>
 <li>WordNet</li>
 <li>SpaCy</li>
@@ -405,15 +535,249 @@
 </ul>
 <p>Das <strong>WordNet</strong> Modul gehört ebenfalls zum NLTK und ist einer der am weitesten verbreiteten Lemmatiser. Das Modul wurde 2001 entwickelt; <strong>WordNet</strong> selber ist eine riesige lexikalische Datenbank, die seit 1985 an der <strong>Princeton University</strong> entwickelt wird und mittlerweile über 200 Sprachen unterstützt.</p>
 <p><strong>SpaCy</strong> ist vergleichsweise jung (2015) aber mittlerweile auch sehr weit verbreitet. Im Gegensatz zum NLTK, dass eine Vielzahl von Lösungen und Algorithmen mitbringt, konzentriert sich SpaCy auf genau einen Algorithmus, um ein Problem zu lösen und ist damit ein wenig fokussierter als das NLTK. Während das NLTK eher im Forschungsbereich anzutreffen ist, wird SpaCy vornehmlich im produktiven Bereich verwendet.</p>
-<p>Der <strong>HannoverTagger</strong>, kurz <strong>HanTa</strong> - <a href="https://www.rki.de/DE/Content/Infekt/EpidBull/Merkblaetter/Ratgeber_Hantaviren.html">nicht zu verwechseln mit dem gleichnamigen Virus</a>, wurde 2019 <a href="https://textmining.wp.hs-hannover.de/Preprocessing.html">an der Hochschule Hannover</a> entwickelt. HanTa wurde mit dem Ziel entwickelt, auch für deutsche Texte eine vernünftige Lemmatisierungs-Lösung zu besitzen.</p>
-<p>Daneben gibt es noch <a href="https://github.com/Liebeck/spacy-iwnlp">IWNLP</a> von <strong>Matthias Liebeck</strong>. IWNLP ist der Name der entsprechenden SpaCy-Erweiterung für <a href="https://github.com/Liebeck/iwnlp-py">IWNLP-py</a>, was wiederum die Python-Implementierung von IWNLP ist: <strong>Inverse Wiktionary for Natural Language Processing</strong>. IWNLP nutzt zur Lemmatisierung einfach den Deutschen Bereich des Wiktionaries.</p>
+<p>Der <strong>HannoverTagger</strong>, kurz <strong>HanTa</strong> - 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.rki.de/DE/Content/Infekt/EpidBull/Merkblaetter/Ratgeber_Hantaviren.html?utm_source=allyourbasearebelongtous">nicht zu verwechseln mit dem gleichnamigen Virus</a>
+
+
+, wurde 2019 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://textmining.wp.hs-hannover.de/Preprocessing.html?utm_source=allyourbasearebelongtous">an der Hochschule Hannover</a>
+
+
+ entwickelt. HanTa wurde mit dem Ziel entwickelt, auch für deutsche Texte eine vernünftige Lemmatisierungs-Lösung zu besitzen.</p>
+<p>Daneben gibt es noch 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/Liebeck/spacy-iwnlp?utm_source=allyourbasearebelongtous">IWNLP</a>
+
+
+ von <strong>Matthias Liebeck</strong>. IWNLP ist der Name der entsprechenden SpaCy-Erweiterung für 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/Liebeck/iwnlp-py?utm_source=allyourbasearebelongtous">IWNLP-py</a>
+
+
+, was wiederum die Python-Implementierung von IWNLP ist: <strong>Inverse Wiktionary for Natural Language Processing</strong>. IWNLP nutzt zur Lemmatisierung einfach den Deutschen Bereich des Wiktionaries.</p>
 <h3 id="was-ist-mit-germalemma-und-german-lemmatizer">Was ist mit GermaLemma und German Lemmatizer?</h3>
-<p><strong><a href="https://github.com/WZBSocialScienceCenter/germalemma">GermaLemma</a></strong> ist ein weiteres, recht junges Modul von <strong>Markus Konrad</strong>, das aber leider die <strong>POS</strong> der Wörter erfordert. POS steht für <strong>Part-Of-Speech</strong>, also die Wortart, wie z.B. Substantiv, Verb, Adjektiv und so weiter. Da alle anderen Lemmatizer ohne die POS arbeiten und ich die einfachste Lösung gesucht habe, bleibt dieses Modul außen vor.</p>
-<p>Eine weitere Lösung wäre <a href="https://pypi.org/project/german-lemmatizer/">Docker-Image</a> mit dem Namen <strong>German Lemmatizer</strong> gewesen, dass die Funktionen von <strong>INWLP</strong> und <strong>GermaLemma</strong> kombiniert. Das ganze lässt sich aber leider nur mit etwas Mehraufwand auch außerhalb von Docker nutzen, weshalb ich auch den <strong>German Lemmatizer</strong> hier nicht berücksichtigt habe.</p>
-<p><strong>WordNet</strong> kann Wörter übrigens ohne POS lemmatisieren, die Ergebnisse sind mit POS aber weitaus genauer. Die Klassifizierung des POS ist freilich keine Raketenwissenschaft und <a href="https://www.machinelearningplus.com/nlp/lemmatization-examples-python/">z.B. hier recht gut beschrieben</a>.</p>
+<p><strong>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/WZBSocialScienceCenter/germalemma?utm_source=allyourbasearebelongtous">GermaLemma</a>
+
+
+</strong> ist ein weiteres, recht junges Modul von <strong>Markus Konrad</strong>, das aber leider die <strong>POS</strong> der Wörter erfordert. POS steht für <strong>Part-Of-Speech</strong>, also die Wortart, wie z.B. Substantiv, Verb, Adjektiv und so weiter. Da alle anderen Lemmatizer ohne die POS arbeiten und ich die einfachste Lösung gesucht habe, bleibt dieses Modul außen vor.</p>
+<p>Eine weitere Lösung wäre 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://pypi.org/project/german-lemmatizer/?utm_source=allyourbasearebelongtous">Docker-Image</a>
+
+
+ mit dem Namen <strong>German Lemmatizer</strong> gewesen, dass die Funktionen von <strong>INWLP</strong> und <strong>GermaLemma</strong> kombiniert. Das ganze lässt sich aber leider nur mit etwas Mehraufwand auch außerhalb von Docker nutzen, weshalb ich auch den <strong>German Lemmatizer</strong> hier nicht berücksichtigt habe.</p>
+<p><strong>WordNet</strong> kann Wörter übrigens ohne POS lemmatisieren, die Ergebnisse sind mit POS aber weitaus genauer. Die Klassifizierung des POS ist freilich keine Raketenwissenschaft und 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.machinelearningplus.com/nlp/lemmatization-examples-python/?utm_source=allyourbasearebelongtous">z.B. hier recht gut beschrieben</a>
+
+
+.</p>
 <h3 id="installation-und-anwendung-1">Installation und Anwendung</h3>
 <p>Da wir oben schon das NLTK installiert haben, können wir direkt auf WordNet zugreifen. SpaCy installieren wir mit <strong>pip install spacy</strong>, dort wird dann auch gleich IWNLP mitgeliefert. Der HanTa lässt sich ebenfalls unkompliziert installieren: <strong>pip install HanTa</strong>.</p>
-<p>Um IWNLP zum Laufen zu bringen, benötigen wir noch <a href="http://lager.cs.uni-duesseldorf.de/NLP/IWNLP/">den letzten Dump von hier</a> (letzter Stand 2018/10/01). Das Archiv enthälte eine JSON-Datei - das Lexikon mit etwa drölfizigtausend Lemmas. Um SpaCy für die deutsche Sprache anwendbar zumachen, <a href="https://spacy.io/models/de/">müssen wir hier ein komplettes Modell herunterladen</a>. Das übernimmt SpaCy für uns mit folgendem Befehl:</p>
+<p>Um IWNLP zum Laufen zu bringen, benötigen wir noch 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://lager.cs.uni-duesseldorf.de/NLP/IWNLP/?utm_source=allyourbasearebelongtous">den letzten Dump von hier</a>
+
+
+ (letzter Stand 2018/10/01). Das Archiv enthälte eine JSON-Datei - das Lexikon mit etwa drölfizigtausend Lemmas. Um SpaCy für die deutsche Sprache anwendbar zumachen, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://spacy.io/models/de/?utm_source=allyourbasearebelongtous">müssen wir hier ein komplettes Modell herunterladen</a>
+
+
+. Das übernimmt SpaCy für uns mit folgendem Befehl:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">spacy</span> <span class="n">download</span> <span class="n">de_core_news_md</span>
 </span></span></code></pre></div><p><em>(Es gibt drei verschieden große Modelle, ich habe mich für die goldene Mitte entschieden).</em></p>
 <p>Die Implementierung ist dann etwas aufwendiger, da bei der Lemmatisierung Trainingsmodelle eingesetzt werden, und nicht nur &ldquo;einfache&rdquo; Algorithmen:</p>
@@ -447,11 +811,89 @@
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"> print (str([token._.iwnlp_lemmas for token in iwnlp(word)][0]))
 </span></span><span class="line"><span class="ln">2</span><span class="cl"> print (str([token.pos_ for token in iwnlp(word)][0]))
 </span></span></code></pre></div><p>Mit <strong>pos_</strong> und <strong>_.iwnlp_lemmas</strong> bekommt man einerseits den Part-Of-Speech und in IWNLP sogar eine Liste aller denkbaren Lemmas - sofern zutreffend.</p>
-<p>Wer den Vergleich etwas hübscher aufbereitet für mehrer Wörter nutzen will, <a href="https://gist.github.com/nickyreinert/72548ce88d812f9203687ece93c608d8">kann dazu folgendes Jupyter-Notebook nutzen</a>. Ich hab das ganze mal <a href="https://www.spiegel.de/wissenschaft/mensch/uno-bericht-ueber-klimaziele-auf-dem-weg-zu-drei-grad-erderwaermung-a-05ecdcdb-2f84-4aa0-84b6-a7a2d8c71c80">für eine beliebige Schlagzeile von Spiegel Online</a> durchgespielt und folgendes Ergebnis erhalten. Der Original-Satz lautet:</p>
+<p>Wer den Vergleich etwas hübscher aufbereitet für mehrer Wörter nutzen will, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gist.github.com/nickyreinert/72548ce88d812f9203687ece93c608d8?utm_source=allyourbasearebelongtous">kann dazu folgendes Jupyter-Notebook nutzen</a>
+
+
+. Ich hab das ganze mal 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.spiegel.de/wissenschaft/mensch/uno-bericht-ueber-klimaziele-auf-dem-weg-zu-drei-grad-erderwaermung-a-05ecdcdb-2f84-4aa0-84b6-a7a2d8c71c80?utm_source=allyourbasearebelongtous">für eine beliebige Schlagzeile von Spiegel Online</a>
+
+
+ durchgespielt und folgendes Ergebnis erhalten. Der Original-Satz lautet:</p>
 <blockquote>
 <p>Der weltweite CO₂-Ausstoß steigt weiter – trotz Corona-Knick, heißt es im neuen Bericht des Uno-Umweltprogramms. Ohne grüne Konjunkturpakete sei das Pariser Zwei-Grad-Limit nicht mehr zu retten.</p></blockquote>
 <p>Und das ist das Ergebnis nach dem <strong>Steming</strong> und <strong>Lemmatisieren</strong>:</p>
-<p><a href="https://www.nickyreinert.de/files/eine-kleine-einfuhrung-in-das-stemming-lemmatisieren-deutscher-texte/grafik.png"><img src="/2020/2020-12-09-einfuehrung-in-stemming-und-lemmatisierung-deutscher-texte-mit-python/images/grafik-700x249.png" alt=""></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/eine-kleine-einfuhrung-in-das-stemming-lemmatisieren-deutscher-texte/grafik.png?utm_source=allyourbasearebelongtous"><img src="/2020/2020-12-09-einfuehrung-in-stemming-und-lemmatisierung-deutscher-texte-mit-python/images/grafik-700x249.png" alt=""></a>
+
+
+</p>
 <p>7 Methoden zum Stemming und Lemmatisieren im Vergleich</p>
 <p>Das Stemming liefert, naturgemäß, ein relativ grobes Ergebnis ab. Um die Wörter in einem Text schnell zu kategorisieren reicht das sicherlich aus. Bei der Lemmatisierung fällt auf, das SpaCy trotz deutscher Sprachpakete nicht ganz zufriedenstellend arbeitet. So wird aus &ldquo;das&rdquo; z.B. &ldquo;der&rdquo;. Dafür wird &ldquo;trotz&rdquo; korrekt &ldquo;trotzen&rdquo; zugeordenet - was dem HanTa nicht gelingt. HanTa wiederum kennt als einziger den Singular von Konjunkturpakete.</p>
 <h2 id="fazit">Fazit</h2>

@@ -51,7 +51,7 @@
   <meta itemprop="description" content="Die korrekten Dateirechte sollten eine wichtige Rolle spielen, wenn du an einem Sicherheitskonzept für deine Webseite bzw. Wordpress arbeitest. Leider wird das Thema Dateirechte oft stiefmütterlich behandelt, nicht zuletzt weil es fälschlicherweise als zu kompliziert angesehen wird. Dabei muss es das gar nicht sein: Das Grundprinzip ist einfach: Du willst nicht, dass jedermann Dateien ändern, ausführen oder lesen kann. Sicherlich gibt es feine Abstufungen. und genau die möchte ich hier erklären.">
   <meta itemprop="datePublished" content="2020-11-05T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-08-20T21:05:13+02:00">
-  <meta itemprop="wordCount" content="2588">
+  <meta itemprop="wordCount" content="2598">
   <meta itemprop="keywords" content="Dateirechte,Permissions,chmod,chown,Linux,Server,Sicherheit,WordPress,Apache,Nginx,FTP,SysAdmin,Hosting">
 
   
@@ -107,7 +107,7 @@
     },
     
     "url": "https:\/\/nickyreinert.de\/2020\/2020-11-05-wie-funktionieren-dateirechte\/",
-    "wordCount":  2588 ,
+    "wordCount":  2598 ,
     
     "timeRequired": "PT5M",
     
@@ -357,18 +357,178 @@
 <p>Du solltest nach der Lektüre aber das Konzept verstehen und vielleicht sogar in der Lage sein, die Dateirechte selbstständig zu setzen.</p>
 <h2 id="die-grundlagen-wie-verarbeitet-ein-web-server-anfragen">Die Grundlagen: Wie verarbeitet ein Web-Server Anfragen?</h2>
 <p>Jetzt fragst du dich sicherlich, was das mit Dateirechten zu tun hat? Was passiert, wenn du auf einer Webseite surfst? Folgende Vereinfachung dürfte das konzept hilfreich beschreibe: Der Web-Server schickt eine Datei an deinen Browser. Und du kannst Dateien an den Web-Server schicken, sprich hochladen. Wer also verstehen will, wie Dateirechte gesetzt werden müssen, sollte das Grundkonzept eines Servers verstehen.</p>
-<p>Wie sieht diese Kommunikation mit dem Server also im Detail aus? Du schickst über deinen Browser eine Anfrage (<a href="https://nickyreinert.de/index.html">http://nickyreinert.de/index.html</a>) an den Server (was auch nur irgendein anderer Computer auf der Welt ist, egal ob in der Cloud oder in einem Keller). Auf dem Server laufen verschiedene Dienste - die verwirrenderweise auch als Server bezeichnet werden.</p>
+<p>Wie sieht diese Kommunikation mit dem Server also im Detail aus? Du schickst über deinen Browser eine Anfrage (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://nickyreinert.de/index.html?utm_source=allyourbasearebelongtous">http://nickyreinert.de/index.html</a>
+
+
+) an den Server (was auch nur irgendein anderer Computer auf der Welt ist, egal ob in der Cloud oder in einem Keller). Auf dem Server laufen verschiedene Dienste - die verwirrenderweise auch als Server bezeichnet werden.</p>
 <img src="https://pbs.twimg.com/media/D864DxrWsAAmvXi?format=png&amp;name=small" alt="Bild"><p>Die Cloud ist auch nur der Computer von jemand anders</p>
-<p>Einer dieser Dienste ist der <strong><a href="https://de.wikipedia.org/wiki/Internetdienst#Die_Internetdienste_im_Einzelnen">HTTP-Dienst</a></strong>. Sehr verbreitet sind <strong>Apache2</strong> und <strong>nginx</strong>. Das Konzept ist bei beiden gleich: Sie empfangen deine Anfrage und schicken dir eine Antwort. Bei dieser Antwort unterscheidet man grob zwischen <strong>statische Inhalten</strong> (HTML-Datei, Texte, Bilder, &hellip;), die der <strong>HTTP-Dienst</strong> direkt zurückschickt und <strong>dynamischen Inhalten</strong>. Dynamische Inhalte müssen auf dem Server erst verarbeitet werden, wie z.B. Datenbankabfragen oder ganz simpel die Darstellung der aktuellen Uhrzeit: <a href="https://nickyreinert.de/dynamisch.php">https://nickyreinert.de/dynamisch.php</a>. Das ermöglicht ein <strong>PHP-Dienst</strong> bzw. <strong>PHP-Interpreter</strong>.</p>
-<p>Im Kontext der Dateirechte muss man hier eine wichtige Unterscheidung treffen: Der PHP-Interpreter ist entweder Teil des HTTP-Dienstes (<strong>PHP-Modul</strong>). Damit ist z.B. <strong>Apache2</strong> in der Lage, die PHP-Datei quasi selber zu interpretieren, und den dynamischen Inhalt für die Antwort zu erzeugen. Oder der PHP-Dienst ist ein getrennt laufender Dienst bzw. Prozess, der über eine Schnittstelle (CGI) vom HTTP-Dienst angesprochen wird (<a href="http://www.php-faq.de/q/q-php-cgi-vs-modul.html">mehr dazu hier</a>).</p>
+<p>Einer dieser Dienste ist der <strong>
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://de.wikipedia.org/wiki/Internetdienst?utm_source=allyourbasearebelongtous#Die_Internetdienste_im_Einzelnen">HTTP-Dienst</a>
+
+
+</strong>. Sehr verbreitet sind <strong>Apache2</strong> und <strong>nginx</strong>. Das Konzept ist bei beiden gleich: Sie empfangen deine Anfrage und schicken dir eine Antwort. Bei dieser Antwort unterscheidet man grob zwischen <strong>statische Inhalten</strong> (HTML-Datei, Texte, Bilder, &hellip;), die der <strong>HTTP-Dienst</strong> direkt zurückschickt und <strong>dynamischen Inhalten</strong>. Dynamische Inhalte müssen auf dem Server erst verarbeitet werden, wie z.B. Datenbankabfragen oder ganz simpel die Darstellung der aktuellen Uhrzeit: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://nickyreinert.de/dynamisch.php?utm_source=allyourbasearebelongtous">https://nickyreinert.de/dynamisch.php</a>
+
+
+. Das ermöglicht ein <strong>PHP-Dienst</strong> bzw. <strong>PHP-Interpreter</strong>.</p>
+<p>Im Kontext der Dateirechte muss man hier eine wichtige Unterscheidung treffen: Der PHP-Interpreter ist entweder Teil des HTTP-Dienstes (<strong>PHP-Modul</strong>). Damit ist z.B. <strong>Apache2</strong> in der Lage, die PHP-Datei quasi selber zu interpretieren, und den dynamischen Inhalt für die Antwort zu erzeugen. Oder der PHP-Dienst ist ein getrennt laufender Dienst bzw. Prozess, der über eine Schnittstelle (CGI) vom HTTP-Dienst angesprochen wird (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://www.php-faq.de/q/q-php-cgi-vs-modul.html?utm_source=allyourbasearebelongtous">mehr dazu hier</a>
+
+
+).</p>
 <p>Um Informationen auf dem Server zu speichern, gibt es zwei Möglichkeiten: Zum einen wäre da die Datenbank, wie z.B. <strong>MySQL</strong> oder <strong>MariaDB</strong>. Der PHP-Dienst nutzt die Datenbank, um Informationen abzulegen, die in der Regel volatil sind. Wie z.B. Kommentare oder Texte für deinen Blog. Und es gibt das <strong>Dateisystem</strong>. Ganz banal ausgedrückt ist das die Festplatte des Servers. Und genau dort brauchst du Dateirechte. Die folgende Abbildung zeigt die beiden oben erwähnten Konfigurationen: In der ersten Konfiguration sind HTTP- und PHP-Dienst getrennte Dienste, in der zweiten Konfiguration nutzt der HTTP-Dienst PHP als integriertes Modul.</p>
 <p>Die Abbildung zeigt außerdem ein beispielhaftes Dateisystem mit einigen ausgewählten Dateien und Ordnern, die dir von WordPress bekannt vorkommen dürften.</p>
 <ul>
 <li>
-<p><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/Folie1.png"><img src="/2020/2020-11-05-wie-funktionieren-dateirechte/images/Folie1-700x394.png" alt=""></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/Folie1.png?utm_source=allyourbasearebelongtous"><img src="/2020/2020-11-05-wie-funktionieren-dateirechte/images/Folie1-700x394.png" alt=""></a>
+
+
+</p>
 </li>
 <li>
-<p><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/Folie2.png"><img src="/2020/2020-11-05-wie-funktionieren-dateirechte/images/Folie2-700x394.png" alt=""></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/Folie2.png?utm_source=allyourbasearebelongtous"><img src="/2020/2020-11-05-wie-funktionieren-dateirechte/images/Folie2-700x394.png" alt=""></a>
+
+
+</p>
 </li>
 </ul>
 <p>Der vierte Dienst im Bunde ist übrigens der <strong>FTP-Dienst</strong>. Dieser ermöglicht es (in der Regel dem Web-Entwickler) sich per <strong>FTP</strong> auf den Server zu verbinden und Dateien über einen FTP-Client hochzuladen, zu bearbeiten oder zu löschen.</p>
@@ -417,7 +577,33 @@
 <li>Ausführen (bzw. x für eXecute) = 1</li>
 <li>Kein Recht = 0</li>
 </ul>
-<p><a href="https://www.nickyreinert.de/files/2227/berechnung-der-Dateirechte-fu%CC%88r-chmod.png"><img src="images/berechnung-der-Dateirechte-fu%CC%88r-chmod-300x167.png" alt="Die Berechnung der Dateirechte für chmod"></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/2227/berechnung-der-Dateirechte-fu%cc%88r-chmod.png?utm_source=allyourbasearebelongtous"><img src="images/berechnung-der-Dateirechte-fu%CC%88r-chmod-300x167.png" alt="Die Berechnung der Dateirechte für chmod"></a>
+
+
+</p>
 <p>Die Berechnung der Dateirechte für chmod</p>
 <p>Um Rechte zu kombinieren, bildet man deren Summe. Will man also alle Rechte vergeben, erechnet sich das folgendermaßen:</p>
 <ul>
@@ -433,7 +619,33 @@
 <li>Gruppe (www-data): 4 (Lesen)</li>
 <li>Alle anderen (others): 0 (keine Rechte)</li>
 </ul>
-<p>Was heißt das? Der FTP-Nutzer darf als Besitzer alles: Dateien hochladen, löschen, bearbeiten usw. Jedes Mitglied der Gruppe www-data darf Dateien nur lesen. Jeder andere Nutzer (bzw. Dienst) darf gar nicht auf die Dateien in deinem WordPress-Projekt zugreifen. Das klingt sehr sicher, führt allerdings zu einem Problem: Dein Server dürfte so nicht funktionieren. Nimm als Beispiel diesen Aufruf: <a href="https://nickyreinert.de/ordner/">https://nickyreinert.de/ordner/</a></p>
+<p>Was heißt das? Der FTP-Nutzer darf als Besitzer alles: Dateien hochladen, löschen, bearbeiten usw. Jedes Mitglied der Gruppe www-data darf Dateien nur lesen. Jeder andere Nutzer (bzw. Dienst) darf gar nicht auf die Dateien in deinem WordPress-Projekt zugreifen. Das klingt sehr sicher, führt allerdings zu einem Problem: Dein Server dürfte so nicht funktionieren. Nimm als Beispiel diesen Aufruf: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://nickyreinert.de/ordner/?utm_source=allyourbasearebelongtous">https://nickyreinert.de/ordner/</a>
+
+
+</p>
 <p>Die HTTP-Fehlermeldung <strong>403 Forbidden</strong> erscheint. Das sind die Zugriffsrechte für den Ordner, so wie wir sie eben gesetzt haben:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">drw-r----- 2 ftp-user www-data   4096 Okt 14 11:48 ordner/
 </span></span></code></pre></div><p>In der zweiten Spalte sehen wir: Der Ordner gehört <strong>ftp-user</strong> und der Gruppe <strong>www-data</strong>.</p>
@@ -458,10 +670,88 @@
 <li>Wenn man den Upload von Dateien zulassen möchte, muss der Ordner /wp-content/uploads dauerhaft beschreibbar sein.</li>
 </ol>
 <p>Es gibt also verschiedene <strong>Ordner- und Datei-Kategorien</strong>, die verschiedene Rechte erfordern. Die folgende Matrix zeigt, am Beispiel von WordPress, eine <strong>ideale</strong> Konfiguration:</p>
-<p><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/grafik-4.png"><img src="/2020/2020-11-05-wie-funktionieren-dateirechte/images/grafik-4-700x315.png" alt=""></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/grafik-4.png?utm_source=allyourbasearebelongtous"><img src="/2020/2020-11-05-wie-funktionieren-dateirechte/images/grafik-4-700x315.png" alt=""></a>
+
+
+</p>
 <p>Die **.htaccess-**Datei muss für den PHP-Dienst gar nicht sichtbar, geschweige denn beschreibbar sein. Die Datei <strong>wp-config.php</strong> wiederum sollte für den HTTP-Dienst unsichtbar sein. Generell müssen PHP-Dateien, also dynamische Ressourcen, für den HTTP-Dienst gar nicht sichtbar sein. Der Upload-Ordner ist hier beschreibbar, um das Hochladen von Datein zu ermöglichen. Wird ein Cache verwendet, muss natürlich auch dieser Ordner beschreibbar sein.</p>
-<p>Solltest du, z.B. auf deinem eigenen Webspace, die Möglichkeit haben, Besitzrechte derart granular zu konfigurieren, kann dir die Matrix vielleicht als Inspiration dienen. In der Realität hilft das aber nicht weiter, da der PHP-Dienst als Modul entweder innerhalb des HTTP-Dienstes läuft oder beide Dienste unter einer Gruppe (www-data) laufen (<a href="https://binary-butterfly.de/artikel/dateirechte-wie-stelle-ich-das-bei-meinem-hoster-ein/">hier wird das Problem noch etwas genauer beleuchtet</a>). Die Konfiguration sieht dann in etwa so aus:</p>
-<p><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/grafik-5.png"><img src="/2020/2020-11-05-wie-funktionieren-dateirechte/images/grafik-5-700x288.png" alt=""></a></p>
+<p>Solltest du, z.B. auf deinem eigenen Webspace, die Möglichkeit haben, Besitzrechte derart granular zu konfigurieren, kann dir die Matrix vielleicht als Inspiration dienen. In der Realität hilft das aber nicht weiter, da der PHP-Dienst als Modul entweder innerhalb des HTTP-Dienstes läuft oder beide Dienste unter einer Gruppe (www-data) laufen (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://binary-butterfly.de/artikel/dateirechte-wie-stelle-ich-das-bei-meinem-hoster-ein/?utm_source=allyourbasearebelongtous">hier wird das Problem noch etwas genauer beleuchtet</a>
+
+
+). Die Konfiguration sieht dann in etwa so aus:</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/grafik-5.png?utm_source=allyourbasearebelongtous"><img src="/2020/2020-11-05-wie-funktionieren-dateirechte/images/grafik-5-700x288.png" alt=""></a>
+
+
+</p>
 <p>Nun stellst du dir sicher die Frage, wie du ein derartiges Setup möglichst unkompliziert einrichten kannst. Eins Vorweg: Ohne Zugriff auf die Shell wird das ziemlich aufwendig. Mit Zugriff auf die Kommandozeile kannst du die Dateirechte z.B. folgendermaßen setzen:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">find</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">htdocs</span><span class="o">/.</span> <span class="o">-</span><span class="n">type</span> <span class="n">f</span> <span class="o">-</span><span class="n">exec</span> <span class="n">chmod</span> <span class="mi">640</span> <span class="o">--</span> <span class="p">{}</span> <span class="o">+</span>
 </span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">find</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">htdocs</span><span class="o">/.</span> <span class="o">-</span><span class="n">type</span> <span class="n">d</span> <span class="o">-</span><span class="n">exec</span> <span class="n">chmod</span> <span class="mi">750</span> <span class="o">--</span> <span class="p">{}</span> <span class="o">+</span>
@@ -477,7 +767,33 @@
 </span></span></code></pre></div><p>Beim Update von WordPress trifft das natürlich auf die ganze Installation zu:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">find</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">htdocs</span><span class="o">/.</span> <span class="o">-</span><span class="n">type</span> <span class="n">f</span> <span class="o">-</span><span class="n">exec</span> <span class="n">chmod</span> <span class="mi">660</span> <span class="o">--</span> <span class="p">{}</span> <span class="o">+</span>
 </span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">find</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">htdocs</span><span class="o">/.</span> <span class="o">-</span><span class="n">type</span> <span class="n">d</span> <span class="o">-</span><span class="n">exec</span> <span class="n">chmod</span> <span class="mi">770</span> <span class="o">--</span> <span class="p">{}</span> <span class="o">+</span>
-</span></span></code></pre></div><p>Wenn du keinen Zugriff auf die Kommandozeile hast, kannst du auch PHP nutzen, insofern du die Rechte dazu hast. Die Funktion lautet <a href="https://www.php.net/manual/de/function.chmod.php">chmod()</a>.</p>
+</span></span></code></pre></div><p>Wenn du keinen Zugriff auf die Kommandozeile hast, kannst du auch PHP nutzen, insofern du die Rechte dazu hast. Die Funktion lautet 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.php.net/manual/de/function.chmod.php?utm_source=allyourbasearebelongtous">chmod()</a>
+
+
+.</p>
 <h2 id="ausführen-von-php-code-in-bestimmten-ordnern-unterbinden">Ausführen von PHP-Code in bestimmten Ordnern unterbinden</h2>
 <p>Oben hatte ich das Problem mit dem Upload-Ordner angesprochen. Wenn Nutzer in der Lage sind, dort Dateien zu modifizieren oder abzulegen, ist das ein Sicherheitsrisiko. Du kannst das Risiko aber eindämmen, indem du dafür sorgst, dass Dateien in diesem Ordner schlicht nicht von PHP interpretiert, sprich ausgeführt, werden können.</p>
 <p>So kann der Ordner beschreibbar bleiben, das Sicherheitsrisiko wird aber trotzdem reduziert. Dazu erstellst du eine .htaccess-Datei im uploads-Ordner mit diesem Inhalt:</p>
@@ -500,10 +816,114 @@ php_flag engine off</p>
 <p>Dieser Parameter kann recht nützlich sein, wenn du die Dateirechte noch restriktiver vergeben willst, sprich: PHP gar keine Schreibrechte einräumst. Du musst dann einen FTP-Nutzer anlegen, über den WordPress sozusagen indirekt auf das Dateisystem zugreifen kann.</p>
 <h2 id="wenig-aufwand-viel-nutzen">Wenig Aufwand, viel Nutzen</h2>
 <p>Die Einarbeitung in die Benutzerrechte mit <strong>chmod</strong> mag anfangs vielleicht ungewohnt sein, mit etwa Übung hat man den Dreh aber recht schnell raus. Der Nutzen ist immens, denn die falsche Rechte-Vergabe ist ein häufiger Grund, warum bösartige Software sich überhaupt auf einem Server verbreiten kann. Es gibt noch eine Handvoll andere Maßnahmen, die relativ simpel und effektiv sind, denen ich mich in einem anderen Beitrag widmen möchte.</p>
-<p>Zuguter Letzt: Willst du wissen, ob die Dateirechte in deiner Installation korrekt gesetzt wurden, kannst du auf dieses Script zurückgreifen. Ich habe dazu das Script von <a href="https://binary-butterfly.de/artikel/dateirechte-warum-eigentlich/">Ernesto Ruge</a> etwas überarbeitet, in der Funktionalität aber unverändert gelassen:</p>
-<p><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/grafik-7.png"><img src="/2020/2020-11-05-wie-funktionieren-dateirechte/images/grafik-7-700x366.png" alt=""></a></p>
+<p>Zuguter Letzt: Willst du wissen, ob die Dateirechte in deiner Installation korrekt gesetzt wurden, kannst du auf dieses Script zurückgreifen. Ich habe dazu das Script von 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://binary-butterfly.de/artikel/dateirechte-warum-eigentlich/?utm_source=allyourbasearebelongtous">Ernesto Ruge</a>
+
+
+ etwas überarbeitet, in der Funktionalität aber unverändert gelassen:</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/grafik-7.png?utm_source=allyourbasearebelongtous"><img src="/2020/2020-11-05-wie-funktionieren-dateirechte/images/grafik-7-700x366.png" alt=""></a>
+
+
+</p>
 <p>Die korrekten Datei und Ordner-Rechte für WordPress prüfen</p>
-<p><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/testFileFolderPermissions.php_-1.zip">testFileFolderPermissions.php_-1</a><a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/testFileFolderPermissions.php_-1.zip">Herunterladen</a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/testFileFolderPermissions.php_-1.zip?utm_source=allyourbasearebelongtous">testFileFolderPermissions.php_-1</a>
+
+
+
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/wie-funktionieren-dateirechte/testFileFolderPermissions.php_-1.zip?utm_source=allyourbasearebelongtous">Herunterladen</a>
+
+
+</p>
 
     
   </article>

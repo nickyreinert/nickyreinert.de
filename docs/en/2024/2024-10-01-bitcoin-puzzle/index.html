@@ -53,7 +53,7 @@
   <meta itemprop="description" content="In this post, I’ll explain how I fell into a deep rabbit hole. I’ll cover how the puzzle works and how the algorithm can be optimized in Python using techniques like parallelization and pre-compiling with Cython. Finally, I’ll reveal how you can increase computation speed by nearly 100x by implementing Metal to fully harness the power of your Apple Silicon. Let’s go!">
   <meta itemprop="datePublished" content="2024-10-01T12:34:56+01:00">
   <meta itemprop="dateModified" content="2025-08-20T16:16:37+02:00">
-  <meta itemprop="wordCount" content="3455">
+  <meta itemprop="wordCount" content="3464">
   <meta itemprop="keywords" content="Bitcoin Puzzle,Private Key,Cryptography,SECP256k1,Python,Performance,Optimization,Multiprocessing,Cython,GPU,Apple Metal,Swift">
 
   
@@ -109,7 +109,7 @@
     },
     
     "url": "https:\/\/nickyreinert.de\/en\/2024\/2024-10-01-bitcoin-puzzle\/",
-    "wordCount":  3455 ,
+    "wordCount":  3464 ,
     
     "timeRequired": "PT5M",
     
@@ -363,12 +363,64 @@
     
     <p>In this post, I’ll explain how I fell into a deep rabbit hole. I’ll cover how the puzzle works and how the algorithm can be optimized in Python using techniques like parallelization and pre-compiling with Cython. Finally, I’ll reveal how you can increase computation speed by nearly 100x by implementing Metal to fully harness the power of your Apple Silicon. Let’s go!</p>
 <h2 id="the-puzzle">The Puzzle</h2>
-<p>It all started with 256 transactions of roughly <a href="https://www.blockchain.com/de/explorer/transactions/btc/08389f34c98c606322740c0be6a7125d9860bb8d5cb182c02f98461e5fa6cd15.">33 BTC in January 2015</a>. The first transaction to wallet #1 contained 0.001 BTC, wallet #2 received 0.002 BTC, then 0.003 BTC to wallet #3 and so on — the final wallet #256 received an amount of 0.256 BTC. Back in those days, the 33 BTC were worth about $5,000.</p>
+<p>It all started with 256 transactions of roughly 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.blockchain.com/de/explorer/transactions/btc/08389f34c98c606322740c0be6a7125d9860bb8d5cb182c02f98461e5fa6cd15.?utm_source=allyourbasearebelongtous">33 BTC in January 2015</a>
+
+
+. The first transaction to wallet #1 contained 0.001 BTC, wallet #2 received 0.002 BTC, then 0.003 BTC to wallet #3 and so on — the final wallet #256 received an amount of 0.256 BTC. Back in those days, the 33 BTC were worth about $5,000.</p>
 <p>In the following years, additional transactions were made to adjust each wallet’s balance. In 2017, the balances from wallets 161 to 256 were moved to the lower ranges. And in 2023, someone — allegedly the creator — released another 900 BTC to all wallets from #66 upwards, following a similar principle. Wallet #66 is now worth 66 BTC instead of 0.66 BTC, and so on. At this point, the value of the transferred BTC summed up to over $27 million.</p>
 <p>The goal of this exercise is to guess the corresponding private key from the known public address of each wallet. You might think this is impossible because it’s based on a hashing algorithm and you can’t just reverse it or brute-force the whole range of possible combinations.</p>
 <p>You are right. Basically…</p>
 <p>That’s why the creator limited the complexity of each private key. The first private key has an upper range limit of 1. What does that mean? As the private key is basically just a (huge) number, in the case of the first wallet, you just have to test all numbers from 0 to the upper limit of 1. This means calculating the public key (or signing key) and the compressed wallet address, and comparing it with the known wallet address. If there’s a match, you have access to the wallet and can claim your reward.</p>
-<p>These are the first 10 items that were solved quickly after the puzzle was released (<a href="https://privatekeys.pw/puzzles/bitcoin-puzzle-tx">full list</a>)</p>
+<p>These are the first 10 items that were solved quickly after the puzzle was released (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://privatekeys.pw/puzzles/bitcoin-puzzle-tx?utm_source=allyourbasearebelongtous">full list</a>
+
+
+)</p>
 <pre><code>Index 0:   Hash: 00[..]00   Address: C 1BgGZ9tcN4[..]Z26SAMH  
 Index 1:   Hash: 00[..]03   Address: C 1CUNEBjYrC[..]4wpP326Lb  
 Index 2:   Hash: 00[..]07   Address: C 19ZewH8Kk1P[..]EiCjTRaZMZQA  
@@ -384,8 +436,60 @@ Index 9:   Hash: 00[..]202   Address: C 1LeBZP5QCwwgXR[..]PUokyLHqe
 <p>At the lower levels, this is quite a simple task that takes just seconds to solve. And that’s why the first 66 private keys have already been found, as well as some outliers in the upper ranges.</p>
 <h2 id="trivia">Trivia</h2>
 <p>First of all, it is not known who actually created this task, puzzle, or riddle — whatever you want to call it.</p>
-<p>Second, there was a lot of volume going through this wallet: tens of thousands of transactions with millions of BTC. <a href="https://www.blockchain.com/de/explorer/addresses/btc/173ujrhEVGqaZvPHXLqwXiSmPVMo225cqT">The last transaction took</a> place in 2017, ignoring the winner claiming their rewards.</p>
-<p>Third, this has created a rabbit hole for some people, like me. In the chase for the big prize, they are not only throwing hardware into the ring but also knowledge and inventive minds. One of the <a href="https://bitcointalk.org/index.php?topic=5218972.0">“official threads”</a> has dozens of pages where people share their findings; they built algorithms to improve the process further and further.</p>
+<p>Second, there was a lot of volume going through this wallet: tens of thousands of transactions with millions of BTC. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.blockchain.com/de/explorer/addresses/btc/173ujrhEVGqaZvPHXLqwXiSmPVMo225cqT?utm_source=allyourbasearebelongtous">The last transaction took</a>
+
+
+ place in 2017, ignoring the winner claiming their rewards.</p>
+<p>Third, this has created a rabbit hole for some people, like me. In the chase for the big prize, they are not only throwing hardware into the ring but also knowledge and inventive minds. One of the 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://bitcointalk.org/index.php?topic=5218972.0&amp;utm_source=allyourbasearebelongtous">“official threads”</a>
+
+
+ has dozens of pages where people share their findings; they built algorithms to improve the process further and further.</p>
 <p>And fourth, this challenge reveals a drawback of the Bitcoin transaction system. A couple of days ago, someone found the private key for wallet #66. He or she tried to withdraw the prize from the wallet. An attacker who was watching the chain for transactions was able to “hijack” this transaction and steal the funds.</p>
 <h2 id="bitcoins-double-spending-attack">Bitcoins double spending attack</h2>
 <p>To understand how this attack works, you need to understand how the puzzle and Bitcoin transactions work. Each transaction requires three important components to identify the recipient: A private key, a verifying (signing) key and a wallet address.</p>
@@ -462,7 +566,33 @@ Final Memory Usage: 162.25 MB
 </code></pre>
 <p>This looks like a great starting point for some fine-tuning</p>
 <h2 id="parallel-threads">Parallel Threads</h2>
-<p>(rel. <a href="https://github.com/nickyreinert/Bitcoin-Puzzle/blob/main/bitcoinPuzzle-v1.py">bitcoinPuzzle-v1.py</a>)</p>
+<p>(rel. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/Bitcoin-Puzzle/blob/main/bitcoinPuzzle-v1.py?utm_source=allyourbasearebelongtous">bitcoinPuzzle-v1.py</a>
+
+
+)</p>
 <p>First, let’s move from Jupyter to a Python file and try to implement parallel threads. To effectively use parallel computing, we need to determine how many units we can actually utilize. We can leverage some built-in Python functions to find this out (also see section Measure available system resources in this Notebook):</p>
 <pre><code>multiprocessing.cpu_count()
 </code></pre>
@@ -495,7 +625,33 @@ Final Memory Usage: 162.25 MB
 <p>The idea is simple: at some point, we start a few threads and monitor the output of each process.</p>
 <p>Try running it, and you’ll notice that it takes quite a long time. In our case, this approach isn’t very efficient. The generate_key function is relatively fast, but it gets called twelve times, resulting in significant overhead from thread management. If generate_key were a heavier function, we could maintain this structure. However, in this scenario, we need to divide the search range into batches.</p>
 <h2 id="batching">Batching</h2>
-<p>(rel. <a href="https://github.com/nickyreinert/Bitcoin-Puzzle/blob/main/bitcoinPuzzle-v2.py">bitcoinPuzzle-v2.py</a>)</p>
+<p>(rel. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/Bitcoin-Puzzle/blob/main/bitcoinPuzzle-v2.py?utm_source=allyourbasearebelongtous">bitcoinPuzzle-v2.py</a>
+
+
+)</p>
 <p>To clarify things a bit, we can create a wrapper function called batch_key_generation.</p>
 <pre><code>def batch_key_generation(start, end, target_address):
 
@@ -544,7 +700,33 @@ Final Memory Usage: 16.86 MB
 </code></pre>
 <p>Great! What’s next?</p>
 <h2 id="stop-at-succes">Stop-At-Succes</h2>
-<p>(rel. <a href="https://github.com/nickyreinert/Bitcoin-Puzzle/blob/main/bitcoinPuzzle-v3.py">bitcoinPuzzle-v3.py</a>)</p>
+<p>(rel. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/Bitcoin-Puzzle/blob/main/bitcoinPuzzle-v3.py?utm_source=allyourbasearebelongtous">bitcoinPuzzle-v3.py</a>
+
+
+)</p>
 <p>Did you notice the slight delay between the success confirmation and the actual termination of the script? This occurs because the pool manager waits for all other threads to finish. We need a global flag to monitor the success state. Here’s how to do it:</p>
 <p>First, we wrap our thread loop in a Manager, which acts as a global watchdog for shared state. We also provide a lock and our global state, found_flag, to our calculation function:</p>
 <p>with Manager() as manager:</p>
@@ -594,7 +776,59 @@ return found_key
 </code></pre>
 <p>There’s an important drawback: accessing the lock is a “time-consuming” operation. You will notice a slower processing time when using the lock, which can increase the total execution time from 5 seconds to 11 seconds. You need to decide whether you want a quick result on the command line while the threads are still running or if you’re willing to add this extra time to ensure that all threads finish by the end of the script.</p>
 <h2 id="cython--pre-compile-our-code">Cython — pre compile our code</h2>
-<p>(rel. <a href="https://github.com/nickyreinert/Bitcoin-Puzzle/blob/main/bitcoinPuzzle-v4.pyx">bitcoinPuzzle-v4.pyx</a> and <a href="https://github.com/nickyreinert/Bitcoin-Puzzle/blob/main/bitcoinPuzzle-v4-setup.py">bitcoinPuzzle-v4-setup.py</a>)</p>
+<p>(rel. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/Bitcoin-Puzzle/blob/main/bitcoinPuzzle-v4.pyx?utm_source=allyourbasearebelongtous">bitcoinPuzzle-v4.pyx</a>
+
+
+ and 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/Bitcoin-Puzzle/blob/main/bitcoinPuzzle-v4-setup.py?utm_source=allyourbasearebelongtous">bitcoinPuzzle-v4-setup.py</a>
+
+
+)</p>
 <p>There’s another trick to speed up processing: precompiling the Python code. Don’t worry, it sounds more complicated than it actually is. We just need to rename the extension of our Python script to .pyx and create a setup.py file like this:</p>
 <pre><code>from setuptools import setup
 from Cython.Build import cythonize
@@ -617,7 +851,33 @@ random.shuffle(start_points)
 </code></pre>
 <p>As this is a hack that cannot be measured in time, I’m right jumping to the final improvement:</p>
 <h2 id="what-about-pytorch">What about Pytorch?</h2>
-<p>(rel: <a href="https://github.com/nickyreinert/Bitcoin-Puzzle/blob/main/bitcoinPuzzle-v5.ipynb">bitcoinPuzzle-v5.ipynb</a>)</p>
+<p>(rel: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/Bitcoin-Puzzle/blob/main/bitcoinPuzzle-v5.ipynb?utm_source=allyourbasearebelongtous">bitcoinPuzzle-v5.ipynb</a>
+
+
+)</p>
 <p>First, we need to identify the most expensive operations in this puzzle and then try to improve it further. Let’s determine how long it takes to run 10,000 private keys through the following processes:</p>
 <pre><code>SECP256k1): 2.37 seconds
 3 x SHA-256): 0.02 seconds
@@ -626,7 +886,33 @@ BASE58: 0.09 seconds
 </code></pre>
 <p>The elliptic curve operation is clearly the bottleneck. Currently, we are only utilizing our CPU without taking advantage of the full power of more sophisticated processing units like a GPU or MPS. PyTorch could assist with that, but it doesn’t natively support SECP256k1. Therefore, we need to find another solution, and this is called:</p>
 <h2 id="metal">Metal!</h2>
-<p>(rel: <a href="https://github.com/nickyreinert/Metal-To-Python-API/blob/main/computation.metal">computation.metal</a>)</p>
+<p>(rel: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/Metal-To-Python-API/blob/main/computation.metal?utm_source=allyourbasearebelongtous">computation.metal</a>
+
+
+)</p>
 <p>Metal is a high-performance graphics and computing API created by Apple that allows developers to harness the full power of the GPU for tasks beyond just rendering graphics, such as machine learning and data processing. It provides low-level access to the GPU, enabling more efficient parallel processing and better performance for applications on iOS and macOS devices.</p>
 <p>Spoiler Alert: I wasn’t able to fully implement the working SECP256k1 algorithm in Metal, primarily because the elliptic curve algorithm requires 256-bit integers, which are not natively supported in Metal. This limitation necessitates significant adjustments. However, the performance gains are impressive, and I’m actively working on it!</p>
 <p>For demonstration purposes, I chose a mathematical operation that can be implemented in PyTorch, pure Python, and Metal: the cosine!</p>

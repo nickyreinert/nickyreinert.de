@@ -69,7 +69,7 @@ GnuTLS error -48: Key usage violation in certificate has been detected. Could no
 Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast, kann die Verbindung nicht vollendet werden. FileZilla bleibt dann z.B. bei der folgenden Zeile stehen:">
   <meta itemprop="datePublished" content="2015-10-14T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-08-20T20:47:33+02:00">
-  <meta itemprop="wordCount" content="281">
+  <meta itemprop="wordCount" content="284">
   <meta itemprop="keywords" content="SFTP,IIS,Microsoft,Windows Server,Zertifikat,PowerShell,FileZilla,FTP,Troubleshooting,Server Konfiguration,Netzwerksicherheit">
 
   
@@ -128,7 +128,7 @@ Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast
     },
     
     "url": "https:\/\/nickyreinert.de\/2015\/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten\/",
-    "wordCount":  281 ,
+    "wordCount":  284 ,
     
     "timeRequired": "PT5M",
     
@@ -382,8 +382,60 @@ GnuTLS error -48: Key usage violation in certificate has been detected. Could no
 <p>3. Und schließlich kann es sein, dass der Benutzer nicht die nötigen Zugriffsrechte für den Ordner hat, den du in den Einstellungen des FTP-Servers angegeben hast.</p>
 <p>Keine Sorge. Mit diesen drei Probleme durfte auch ich schon kämpfen und ich habe die Lösungen hier zusammengetragen. Also.. eins nach dem anderen.</p>
 <p>Die Ursache des ersten Problems ist der Assistent, mit dem man im IIS das Server-Zertifikat erstellt. Auf den Punkt gebracht, nutzt dieser ein paar falsche Parameter. Aus diesem Grund muss das Zertifikat per Hand in der PowerShell erstellt werden. Wichtig: In der normalen Konsole funktioniert das nicht.</p>
-<p><a href="https://superuser.com/questions/1167351/filezilla-reporting-gnutls-error-48-key-usage-violation-in-certificate-has-be">https://superuser.com/questions/1167351/filezilla-reporting-gnutls-error-48-key-usage-violation-in-certificate-has-be</a></p>
-<p>According to a post in the <a href="https://forums.iis.net/t/1234970.aspx">IIS forums</a>, you can generate the certificate with PowerShell instead until the issue is fixed by Microsoft:</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://superuser.com/questions/1167351/filezilla-reporting-gnutls-error-48-key-usage-violation-in-certificate-has-be?utm_source=allyourbasearebelongtous">https://superuser.com/questions/1167351/filezilla-reporting-gnutls-error-48-key-usage-violation-in-certificate-has-be</a>
+
+
+</p>
+<p>According to a post in the 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://forums.iis.net/t/1234970.aspx?utm_source=allyourbasearebelongtous">IIS forums</a>
+
+
+, you can generate the certificate with PowerShell instead until the issue is fixed by Microsoft:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">New-SelfSignedCertificate -CertStoreLocation cert:\LocalMachine\My -dnsname ftp.example.com
 </span></span></code></pre></div><p>Replace <code>ftp.example.com</code> by your server&rsquo;s hostname.</p>
 <p>You will get a fingerprint, copy that. Set a password for the private key:</p>
@@ -391,10 +443,114 @@ GnuTLS error -48: Key usage violation in certificate has been detected. Could no
 </span></span></code></pre></div><p>Now export it (you can change <code>C:\cert.pfx</code> to the path you want to save it to, just make sure it ends in <code>.pfx</code>):</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Export-PfxCertificate -cert cert:\LocalMachine\My\FINGERPRINT -FilePath C:\cert.pfx -Password $password
 </span></span></code></pre></div><p>Benutzer anlegen</p>
-<p><a href="https://www.nickyreinert.de/files/ssl-zertifikat-auf-windows-korrekt-installieren/windows-server-ssl-zertifikat-zuweisen.png"><img src="/2015/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten/images/windows-server-ssl-zertifikat-zuweisen-300x121.png" alt=""></a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/ssl-zertifikat-auf-windows-korrekt-installieren/windows-server-ssl-zertifikat-zuweisen.png?utm_source=allyourbasearebelongtous"><img src="/2015/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten/images/windows-server-ssl-zertifikat-zuweisen-300x121.png" alt=""></a>
+
+
+</p>
 <p><strong>siehe auch:</strong></p>
-<p><a href="https://www.visualsvn.com/support/topic/00056/">https://www.visualsvn.com/support/topic/00056/</a></p>
-<p>[http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/ http://ekiwi-blog.de/?p=3465](<a href="http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/">http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/</a> <a href="http://ekiwi-blog.de/?p=3465">http://ekiwi-blog.de/?p=3465</a>)</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.visualsvn.com/support/topic/00056/?utm_source=allyourbasearebelongtous">https://www.visualsvn.com/support/topic/00056/</a>
+
+
+</p>
+<p>[http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/ http://ekiwi-blog.de/?p=3465](
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/?utm_source=allyourbasearebelongtous">http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/</a>
+
+
+ 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://ekiwi-blog.de/?p=3465&amp;utm_source=allyourbasearebelongtous">http://ekiwi-blog.de/?p=3465</a>
+
+
+)</p>
 
     
   </article>

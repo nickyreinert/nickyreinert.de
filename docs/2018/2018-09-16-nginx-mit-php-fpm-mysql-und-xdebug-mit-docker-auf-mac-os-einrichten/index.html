@@ -53,7 +53,7 @@
   <meta itemprop="description" content="Ich habe mich eine ganze weile erfolgreich vor Docker als lokale Entwicklungsumgebung gedrückt. Der Grund: Ich nutze eine kommerzielle Parallels Lizenz, über die ich Ubuntu virtualisiert laufen lasse und bin damit bisher ganz gut gefahren. Bisher. Paralles hat nämlich immer wieder Problem gemacht. So konnte ich nach manchen Updates von Parallels oder Ubuntu die Parallels Tools nicht mehr nutzen und musste diese umständlich neu installieren. Da die Doku dazu auch nur unvollständig vorliegt, war das regelmäßig eine ziemliche Zeitverschwendung. Die Parallels Tools sind aber notwendig, um von Ubuntu aus auf die Dateien des Gastsystems, Mac OS X, zuzugreifen.">
   <meta itemprop="datePublished" content="2018-09-16T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-08-20T12:38:10+02:00">
-  <meta itemprop="wordCount" content="1912">
+  <meta itemprop="wordCount" content="1916">
   <meta itemprop="keywords" content="Docker,macOS,Nginx,PHP-FPM,MySQL,Xdebug,Dockerfile,docker-compose,LEMP,Development Environment,Visual Studio Code,Debugging">
 
   
@@ -109,7 +109,7 @@
     },
     
     "url": "https:\/\/nickyreinert.de\/2018\/2018-09-16-nginx-mit-php-fpm-mysql-und-xdebug-mit-docker-auf-mac-os-einrichten\/",
-    "wordCount":  1912 ,
+    "wordCount":  1916 ,
     
     "timeRequired": "PT5M",
     
@@ -370,9 +370,61 @@
     
     <p>Ich habe mich eine ganze weile erfolgreich vor <strong>Docker</strong> als lokale Entwicklungsumgebung gedrückt. Der Grund: Ich nutze eine kommerzielle Parallels Lizenz, über die ich Ubuntu virtualisiert laufen lasse und bin damit bisher ganz gut gefahren. Bisher. Paralles hat nämlich immer wieder Problem gemacht. So konnte ich nach manchen Updates von Parallels oder Ubuntu die <em>Parallels Tools</em> nicht mehr nutzen und musste diese umständlich neu installieren. Da die Doku dazu auch nur unvollständig vorliegt, war das regelmäßig eine ziemliche Zeitverschwendung. Die <em>Parallels Tools</em> sind aber notwendig, um von Ubuntu aus auf die Dateien des Gastsystems, Mac OS X, zuzugreifen.</p>
 <p>Beim letzten Update auf Ubuntu 18.04 ließen sich die <em>Parallels Tools</em> gar nicht mehr installieren. Die Ursache dafür ist wohl irgendeine Inkompatibilität eines abhängigen Paketes mit dem neuen Linux-Kernel. Wie auch immer: Ich war die Sorgen leid und auf der Suche nach einer Alternative. Weshalb ich <strong>Docker</strong> stieß. Der Vorteil: Docker ist weitaus performanter und portabler. Der Nachteil: Um damit eine funktionierende Entwicklungsumgebung zu schaffen, kommt man um die Shell nicht herum. Das mitgelieferte UI Kitematic liegt noch als Beta vor und lässt einige Funktionen einfach vermissen. Es gibt also einige kleinere Fallstricke, die es zu überwinde galt. Was mir gelungen ist. Wie, das werde ich nun genauer erläutern. <em>Viel Spass</em>.</p>
-<p>[caption id=&ldquo;attachment_2166&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/nginx-mit-php-fpm-und-mysql-mit-docker-auf-mac-os-einrichten/kitematic-scho%CC%88n-aber-noch-nutzlos.png"><img src="images/kitematic-scho%CC%88n-aber-noch-nutzlos-300x181.png" alt="Kitematic - schön aber (noch) weitestgehend nutzlos"></a> Kitematic - schön aber (noch) weitestgehend nutzlos[/caption]</p>
+<p>[caption id=&ldquo;attachment_2166&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/nginx-mit-php-fpm-und-mysql-mit-docker-auf-mac-os-einrichten/kitematic-scho%cc%88n-aber-noch-nutzlos.png?utm_source=allyourbasearebelongtous"><img src="images/kitematic-scho%CC%88n-aber-noch-nutzlos-300x181.png" alt="Kitematic - schön aber (noch) weitestgehend nutzlos"></a>
+
+
+ Kitematic - schön aber (noch) weitestgehend nutzlos[/caption]</p>
 <h2 id="erste-schritte">Erste Schritte</h2>
-<p>Grundsätzlich kann man bei der  Installation der Docker-Anwendung nicht viel falsch machen: Account anlegen, Docker herunterladen, installieren, anmelden - fertig. Auf die zugrunde liegende Technologie will ich hier nicht weiter eingehen, das machen andere weitaus besser (z.B. <a href="https://www.ab-heute-programmieren.de/docker-teil-1-was-ist-docker/">ist diese Anleitung sehr zu empfehlen</a>).</p>
+<p>Grundsätzlich kann man bei der  Installation der Docker-Anwendung nicht viel falsch machen: Account anlegen, Docker herunterladen, installieren, anmelden - fertig. Auf die zugrunde liegende Technologie will ich hier nicht weiter eingehen, das machen andere weitaus besser (z.B. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.ab-heute-programmieren.de/docker-teil-1-was-ist-docker/?utm_source=allyourbasearebelongtous">ist diese Anleitung sehr zu empfehlen</a>
+
+
+).</p>
 <p>Nur soviel soll gesagt sein: Du lädst ein <strong>Image</strong> herunter, dass du dann <em>starten</em> kannst. Dadurch erhältst du einen <strong>Container</strong>, der bestimmte Dienste bereitstellt. Dieser Container ist kein vollständiges Betriebssystem mit all seinem Ballast. So kannst du z.B. nicht ohne weiteres per SSH darauf zugreifen. Das funktioniert nur, wenn der entsprechende SSH-Dienst auch im Image vorgesehen ist. Das schöne an Docker ist aber, dass du das Image mit beliebigen Funktionalitäten über ein sogenanntes <strong>Dockerfile</strong> relativ unkompliziert nachrüsten kannst. Das erfordert zwar eine gewisse Umgewöhnung im Arbeitsablauf ab, bringt aber auch viele Vorteile mit sich.</p>
 <p>Wer will kann sich mit der <strong>Kitematic UI</strong> durch die vorhandenen Docker-Images wühlen und auch direkt herunterladen. Diese stehen dann natürlich auch auf der Kommandozeile zur Verfügung. Mit <strong>docker image ls</strong> zeigst du alle verfügbaren Images an. Analog dazu listet <strong>docker container ls</strong> alle erstellten Container auf. Außerdem gibt es noch ein paar andere, für den Anfang ganz brauchbare Befehle:</p>
 <p># alle lokal verfügbaren Images auflisten
@@ -383,8 +435,86 @@ docker image ls</p>
 <p>docker exec -it mysql /bin/bash</p>
 <h1 id="für-den-container-mit-dem-namen-mysql-das-setup-anzeigen">für den Container mit dem Namen &ldquo;mysql&rdquo; das Setup anzeigen</h1>
 <p>docker inspect mysql</p>
-<p>Für eine lokale Entwicklungsumgebung benötigt man zunächst einen <strong>HTTP- und einen MySQL-Server.</strong> Natürlich gehört zu jeder guten Entwicklungsumgebung auch ein Debugger - für PHP wäre das wohl <strong>xdebug</strong>. Ich nutze hier die beiden Images: <a href="https://hub.docker.com/r/richarvey/nginx-php-fpm/">nginx-php-fpm von Ric Harvey</a> und <a href="https://hub.docker.com/_/mysql/">das sehr aktuelle und offizielle MySQL-Image</a>, die ich erstmal ganz unkompliziert über Kitematic herunterlade. Das nginx-Image werde ich schließlich mit einem <strong>Dockerfile</strong> anpassen um auch <strong>xdebug</strong> nutzen zu können.</p>
-<p>[caption id=&ldquo;attachment_2167&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/nginx-mit-php-fpm-und-mysql-mit-docker-auf-mac-os-einrichten/kitematic-auswahl-von-images.png"><img src="/2018/2018-09-16-nginx-mit-php-fpm-mysql-und-xdebug-mit-docker-auf-mac-os-einrichten/images/kitematic-auswahl-von-images-300x152.png" alt="Die Auswahl neuer Images über Kitematic ist sehr bequem"></a> Die Auswahl neuer Images über Kitematic ist sehr bequem[/caption]</p>
+<p>Für eine lokale Entwicklungsumgebung benötigt man zunächst einen <strong>HTTP- und einen MySQL-Server.</strong> Natürlich gehört zu jeder guten Entwicklungsumgebung auch ein Debugger - für PHP wäre das wohl <strong>xdebug</strong>. Ich nutze hier die beiden Images: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://hub.docker.com/r/richarvey/nginx-php-fpm/?utm_source=allyourbasearebelongtous">nginx-php-fpm von Ric Harvey</a>
+
+
+ und 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://hub.docker.com/_/mysql/?utm_source=allyourbasearebelongtous">das sehr aktuelle und offizielle MySQL-Image</a>
+
+
+, die ich erstmal ganz unkompliziert über Kitematic herunterlade. Das nginx-Image werde ich schließlich mit einem <strong>Dockerfile</strong> anpassen um auch <strong>xdebug</strong> nutzen zu können.</p>
+<p>[caption id=&ldquo;attachment_2167&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/nginx-mit-php-fpm-und-mysql-mit-docker-auf-mac-os-einrichten/kitematic-auswahl-von-images.png?utm_source=allyourbasearebelongtous"><img src="/2018/2018-09-16-nginx-mit-php-fpm-mysql-und-xdebug-mit-docker-auf-mac-os-einrichten/images/kitematic-auswahl-von-images-300x152.png" alt="Die Auswahl neuer Images über Kitematic ist sehr bequem"></a>
+
+
+ Die Auswahl neuer Images über Kitematic ist sehr bequem[/caption]</p>
 <p>Ab hier verlasse ich Kitematic allerdings wieder und werde Docker nur noch über die Kommandozeile und ein paar selbst geschriebene Scripte nutzen. Los gehts&hellip;</p>
 <h2 id="den-mysql-container-starten">Den MySQL-Container starten</h2>
 <p>&hellip; es mit dem MySQL-Container. Da der nginx-Container auf MySQL zugreift, muss der MySQL-Container auch zuerst dasein. Der Aufruf dafür sieht folgendermaßen aus:</p>
@@ -462,7 +592,33 @@ echo xdebug.remote_log=/tmp/php-xdebug.log &raquo; /usr/local/etc/php/conf.d/xde
 <p>{
 // Use IntelliSense to learn about possible attributes.
 // Hover to view descriptions of existing attributes.
-// For more information, visit: <a href="https://go.microsoft.com/fwlink/?linkid=830387">https://go.microsoft.com/fwlink/?linkid=830387</a>
+// For more information, visit: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://go.microsoft.com/fwlink/?linkid=830387&amp;utm_source=allyourbasearebelongtous">https://go.microsoft.com/fwlink/?linkid=830387</a>
+
+
+
 &ldquo;version&rdquo;: &ldquo;0.2.0&rdquo;,
 &ldquo;configurations&rdquo;: [
 {
@@ -475,11 +631,89 @@ echo xdebug.remote_log=/tmp/php-xdebug.log &raquo; /usr/local/etc/php/conf.d/xde
 ]
 }</p>
 <p>Fertig. Mit einem Klick auf den grünen Playbutton wird VSC sich nun mit xdebug verbinden.</p>
-<p>[caption id=&ldquo;attachment_2199&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="https://www.nickyreinert.de/files/nginx-mit-php-fpm-und-mysql-mit-docker-auf-mac-os-einrichten/visual-studio-code-den-debugger-starten.png"><img src="/2018/2018-09-16-nginx-mit-php-fpm-mysql-und-xdebug-mit-docker-auf-mac-os-einrichten/images/visual-studio-code-den-debugger-starten-300x162.png" alt="Visual Studio Code - den Debugger starten"></a> Visual Studio Code - den Debugger starten[/caption]</p>
+<p>[caption id=&ldquo;attachment_2199&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/nginx-mit-php-fpm-und-mysql-mit-docker-auf-mac-os-einrichten/visual-studio-code-den-debugger-starten.png?utm_source=allyourbasearebelongtous"><img src="/2018/2018-09-16-nginx-mit-php-fpm-mysql-und-xdebug-mit-docker-auf-mac-os-einrichten/images/visual-studio-code-den-debugger-starten-300x162.png" alt="Visual Studio Code - den Debugger starten"></a>
+
+
+ Visual Studio Code - den Debugger starten[/caption]</p>
 <h2 id="fazit">Fazit</h2>
 <p>Docker hat mich voll überzeugt. Ich bereue es, dass ich nicht schon früher umgestiegen bin. Es läuft sauber und wenn man das Konzept erstmal verstanden hat, ist es auch sehr intuitiv zu bedienen und lässt vor allem keine Wünsche auf. Im Nachhinein betrachtet hat mich die komplette Einrichtung der virtuellen Maschine mit Ubuntu unter Parallels auch weitaus mehr Zeit - und Nerven! - gekostet. Was jetzt noch fehlt, ist das etwas dynamischere Verwalten mehrerer lokaler Websiten mit Docker. Dazu komme ich später - <em>stay tuned</em>.</p>
 <h2 id="referenzen">Referenzen</h2>
-<p>Mein Dank gilt <a href="http://paislee.io/a-minimal-development-server-with-nginx-and-docker/">Caleb Sotelo</a>, von wo ich einen Großteil der Scripte habe. Ein Teil des Dockerfiles stammt von <a href="https://blog.philipphauer.de/debug-php-docker-container-idea-phpstorm/">philipphauer.de</a>. Danke!</p>
+<p>Mein Dank gilt 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://paislee.io/a-minimal-development-server-with-nginx-and-docker/?utm_source=allyourbasearebelongtous">Caleb Sotelo</a>
+
+
+, von wo ich einen Großteil der Scripte habe. Ein Teil des Dockerfiles stammt von 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://blog.philipphauer.de/debug-php-docker-container-idea-phpstorm/?utm_source=allyourbasearebelongtous">philipphauer.de</a>
+
+
+. Danke!</p>
 
     
   </article>

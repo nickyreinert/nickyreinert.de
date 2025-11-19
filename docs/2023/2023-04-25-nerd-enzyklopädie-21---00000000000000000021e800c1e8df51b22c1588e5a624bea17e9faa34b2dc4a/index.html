@@ -62,7 +62,7 @@ Zunächst einmal die offensichtlichen Unklarheiten: Ein Hash ist eine Art Ableit
 Wie kann man im binären Zahlensystem, in dem ja nur zwei Symbole zur Verfügung stehen (0 und 1), einen höheren Wert als 1 darstellen? Indem wir mehrere Stellen benutzen. Verteilt man das Symbol 1 auf 8 Stellen, kann man so den Wert 255 darstellen — wie das genau funktioniert habe ich im 1. Teil erklärt):">
   <meta itemprop="datePublished" content="2023-04-25T12:19:31+01:00">
   <meta itemprop="dateModified" content="2023-04-25T12:19:31+01:00">
-  <meta itemprop="wordCount" content="828">
+  <meta itemprop="wordCount" content="830">
   <meta itemprop="keywords" content="Nerdenz,Web,IT,Tools">
 
   
@@ -122,7 +122,7 @@ Wie kann man im binären Zahlensystem, in dem ja nur zwei Symbole zur Verfügung
     },
     
     "url": "https:\/\/nickyreinert.de\/2023\/2023-04-25-nerd-enzyklop%C3%A4die-21---00000000000000000021e800c1e8df51b22c1588e5a624bea17e9faa34b2dc4a\/",
-    "wordCount":  828 ,
+    "wordCount":  830 ,
     
     "timeRequired": "PT5M",
     
@@ -351,7 +351,33 @@ Sexagesimalsystem zur Basis 60 der Sumerer
 <p>Die Zeichen mögen exotisch anmutend, tatsächlich benutzen wir das System aber in unserem Alltag: In der Zeitmessung und zur Angabe von geografischen Längen und Breiten. Der Wert <strong>255</strong> wird hier als <strong>4’15</strong>, also <strong>4 Minuten und 15 Sekunden</strong>, dargestellt.</p>
 <p>Aber zurück zu unserem Hash: Ein <strong>SHA-256</strong> <strong>Hash</strong> besteht aus <strong>32 Bytes</strong> in hexadezimaler Schreibweise. Und da ein Byte aus 8 Bit entsteht, benötigt die Darstellung des höchstens Wertes (nämlich FF) zwei Stellen. Damit besteht der Hash also effektiv aus <strong>64 Zeichen</strong>. In binärer Schreibweise, also bei Verwendung von 0 und 1, hat der Hash eine Länge von <strong>256 Zeichen</strong> und so schließt sich der Kreis!</p>
 <h1 id="von-der-mathematik-zur-magie">Von der Mathematik zur Magie…</h1>
-<p>Das war ganz schön kompliziert und deswegen widmen wir uns jetzt etwas einfacherem: Was ist denn an dem Hash so besonders? Es handelt sich um den Hash eines sogenannten Blocks einer sogenannten <strong>Blockchain</strong> (und zwar der sogenannten Kryptowährung Bitcoin und dem Block mit der Nummer <strong>528.249</strong> [<a href="https://explorer.btc.com/btc/block/00000000000000000021e800c1e8df51b22c1588e5a624bea17e9faa34b2dc4a">BTC1</a>]). In <strong>2018</strong> führte dieser Hash zu Verwirrung und Begeisterung zugleich. Die Szene beschrieb den Hash sogar als…“<strong>magisch</strong>”. Aber warum?</p>
+<p>Das war ganz schön kompliziert und deswegen widmen wir uns jetzt etwas einfacherem: Was ist denn an dem Hash so besonders? Es handelt sich um den Hash eines sogenannten Blocks einer sogenannten <strong>Blockchain</strong> (und zwar der sogenannten Kryptowährung Bitcoin und dem Block mit der Nummer <strong>528.249</strong> [
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://explorer.btc.com/btc/block/00000000000000000021e800c1e8df51b22c1588e5a624bea17e9faa34b2dc4a?utm_source=allyourbasearebelongtous">BTC1</a>
+
+
+]). In <strong>2018</strong> führte dieser Hash zu Verwirrung und Begeisterung zugleich. Die Szene beschrieb den Hash sogar als…“<strong>magisch</strong>”. Aber warum?</p>
 <p>Wie eben beschrieben entsteht ein Hash wenn eine bestimmte Information durch einen Algorithmus modifiziert wird. Bei der Bitcoin-Blockchain gibt es <strong>komplexe Regeln</strong>, die diese Berechnung sehr aufwendig machen. Unter anderem ist ein Hash durch eine bestimmte Anzahl führender Nullen gekennzeichnet. Dadurch entsteht eine rechnerische Schwierigkeit, die nicht nur als Voraussetzung für die <strong>Sicherheit</strong> der Blockhchain herhalten muss, sondern auch für <strong>Wettbewerb</strong> unter den Teilnehmer:innen sorgt (und auch für den oft kritisierten <strong>hohen Energieverbrauch</strong> der Bitcoin-Blockchain verantwortlich ist). Diejenige, die diese „<strong>kryptologische Aufgabe</strong>“ zuerst löst, wird belohnt. So die Kurzfassung.</p>
 <p>Die auffällige große Anzahl führender Nullen ist aber nicht der Aufregung wert. Sie ist beeindruckend, aber keine Seltenheit. Die Aufmerksamkeit richtete sich vielmehr auf die ersten Zeichen nach den Nullen:</p>
 <pre><code>21E8

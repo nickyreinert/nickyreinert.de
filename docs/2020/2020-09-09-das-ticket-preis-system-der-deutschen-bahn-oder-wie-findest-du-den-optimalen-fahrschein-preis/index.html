@@ -59,7 +59,7 @@ Ich reise gerne. Nicht viel, aber gerne. Am liebsten jage ich mit einem Porsche 
 Die Sache hat natürlich einen kleinen Haken: Ich habe weder einen Porsche noch eine Tankkarte mit Flatrate. Ich hab nicht mal ein Auto, das 250 km/h fährt.">
   <meta itemprop="datePublished" content="2020-09-09T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-10-11T11:01:31+02:00">
-  <meta itemprop="wordCount" content="5879">
+  <meta itemprop="wordCount" content="5893">
   <meta itemprop="keywords" content="Deutsche Bahn,Ticketpreise,Sparpreis,Flexpreis,Datenanalyse,API,Reverse Engineering,Datenvisualisierung,nickets.de,Reise,Mobilität,Statistik">
 
   
@@ -117,7 +117,7 @@ Die Sache hat natürlich einen kleinen Haken: Ich habe weder einen Porsche noch 
     },
     
     "url": "https:\/\/nickyreinert.de\/2020\/2020-09-09-das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis\/",
-    "wordCount":  5879 ,
+    "wordCount":  5893 ,
     
     "timeRequired": "PT5M",
     
@@ -397,10 +397,88 @@ Die Sache hat natürlich einen kleinen Haken: Ich habe weder einen Porsche noch 
 <p>Die Sache hat natürlich einen kleinen Haken: Ich habe weder einen Porsche noch eine Tankkarte mit Flatrate. Ich hab nicht mal ein Auto, das 250 km/h fährt.</p>
 <p><strong>Ich fahre aber auch sehr gerne mit der Bahn</strong>. Am liebsten in der 1. Klasse. Bequeme Sitze, ein Schokoherzchen zur Begrüßung, Sitzplatzreservierung inklusive, breite Ledersitze sowieso. Und dann sitze ich da und schaue verträumt nach links aus dem Fenster, zur Autobahn, wo ein paar Unverbesserliche im Stau stehen.</p>
 <p>1. Klasse? Moment mal. Ist das nicht <strong>versnobt</strong>? Unbezahlbar? Nein. Ist es nicht. Man kann relativ günstig mit der 1. Klasse fahren, wenn man sich durch das Preis-System der Deutschen Bahn gequält hat und etwas flexibel ist. Und da hätten wir auch schon unser Problem und damit auch die <strong>erste und auch oberste Prämisse</strong> für diesen Essay: Die Suche nach dem optimalen Preis macht nur dann Sinn, wenn Geld mindestens eine Rolle spielt und wenn man flexibel in der Wahl der Abfahrtszeit ist, vielleicht sogar was den Reisetag angeht. Und wenn man trotzdem damit leben kann, an eine Verbindung gebunden zu sein, sobald das Ticket gebucht ist.</p>
-<p>Nun ist das Preis-System bzw. dessen Darstellung aber <a href="https://www.heise.de/tp/features/Das-Preissystem-der-Bahn-zwischen-Irrwitz-und-Unverschaemtheit-4268591.html">ein wenig unübersichtlich</a>, so dass <a href="https://www.adac.de/der-adac/aktuelles/guenstig-bahnfahren/">die Suche nach dem besagten optimalen Preis</a> zu einem Geduldsspiel wird, weshalb man sich am Ende wohl schlicht mit dem begnügt, was am günstigsten erscheint: <strong>2. Klasse, Super-Sparpreis.</strong> Dem muss aber nicht so sein&hellip;</p>
+<p>Nun ist das Preis-System bzw. dessen Darstellung aber 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.heise.de/tp/features/Das-Preissystem-der-Bahn-zwischen-Irrwitz-und-Unverschaemtheit-4268591.html?utm_source=allyourbasearebelongtous">ein wenig unübersichtlich</a>
+
+
+, so dass 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.adac.de/der-adac/aktuelles/guenstig-bahnfahren/?utm_source=allyourbasearebelongtous">die Suche nach dem besagten optimalen Preis</a>
+
+
+ zu einem Geduldsspiel wird, weshalb man sich am Ende wohl schlicht mit dem begnügt, was am günstigsten erscheint: <strong>2. Klasse, Super-Sparpreis.</strong> Dem muss aber nicht so sein&hellip;</p>
 <h2 id="überblick">Überblick</h2>
 <p>Was dich hier erwartet: Im <strong>1. Teil</strong> erkläre ich, wie das Preis-System der Deutschen Bahn aufgebaut ist. Im <strong>2. Teil</strong> zeige ich, warum die aktuelle Oberfläche kaum dabei hilft, das komplexe Preissystem zu begreifen. Im <strong>3. Teil</strong> erkläre ich dir, wenn dich der technische Hintergrund interessiert, wie du an die Preise für die Verbindungen kommst. Im <strong>4. Teil</strong> versuche ich herauszufinden, ob sich die Preisbildung nachvollziehen und vielleicht sogar eine <strong>Faust-Formel</strong> erkennen lässt und im <strong>5. Teil</strong> schließe stelle ich eine <strong>alternative Oberfläche</strong> vor. Viel Spaß.</p>
-<p>Wenn du dich nur für die alternative Oberfläche interessiert und dich der analytische und technische Teil nicht interessiert, dann schau einfach direkt auf <a href="http://nickets.de">nickets.de</a> vorbei bzw. <strong>überspringe Teil 1 bis 4</strong>,</p>
+<p>Wenn du dich nur für die alternative Oberfläche interessiert und dich der analytische und technische Teil nicht interessiert, dann schau einfach direkt auf 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://nickets.de?utm_source=allyourbasearebelongtous">nickets.de</a>
+
+
+ vorbei bzw. <strong>überspringe Teil 1 bis 4</strong>,</p>
 <p><em>Zur Verteidigung der Bahn möchte ich vorab noch festhalten, dass der Vorgang der Bepreisung von Fahrkarten sicher nicht banal ist. Eine Verbindung von Berlin nach Stuttgart ist nicht nur einfach das. Sie kann über mehrere Zwischenbahnhöfe gehen und es gibt zig Faktoren, die die Preisfindung beeinflussen können.</em></p>
 <h2 id="teil-1-die-preis-kategorien-der-deutschen-bahn">Teil 1: Die Preis-Kategorien der Deutschen Bahn</h2>
 <p>Das Preis-System der Deutschen Bahn ist <strong>komplex</strong>. Die Deutsche Bahn bietet <strong>zwei Klassen</strong> mit jeweils <strong>drei Kategorien</strong> an. Es gibt in der 1. und 2. Klasse jeweils den Flex-Preis, den Spar-Preis und den Super-Spar-Preis:</p>
@@ -410,7 +488,33 @@ Die Sache hat natürlich einen kleinen Haken: Ich habe weder einen Porsche noch 
 <p>Offenbar hat die Bahn eine neue Preis-Kategorie eingeführt. Mit dem <strong>Flexpreis Plus</strong> ist das Ticket nun einen Tag vor und zwei Tage nach gewähltem Reisetag gültig. Die Stornierung ist solange möglich, wie das Ticket gültig ist. Diese Kategorie gibt es offenbar nur in der 1. Klasse und erst für Fahrten ab dem 1. November. Auf der Seite der Bahn habe ich dazu noch keine Informationen gefunden. Der Übersicht ist das natürlich nicht gerade zuträglich.</p>
 <img src="/2020/2020-09-09-das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/images/grafik-73-700x329.png" alt=""><p>Der Flexpreis Plus, ab dem 1. November 2020?</p>
 <h3 id="freie-zugwahl">Freie Zugwahl</h3>
-<p>Fangen wir mit dem <strong>Flex-Preis</strong> an, der den wirklich angenehmen Vorteil der freien <strong>Zugwahl</strong> am Reisetag ermöglicht. Man kann die Fahrt sogar unterbrechen und erst am nächsten Tag fortsetzen. Der Flexpreis soll grundsätzlich gleich hoch sein, unterscheidet sich aber in der Realität, um die &ldquo;<a href="https://www.bahn.de/p/view/angebot/flexpreis.shtml"><strong>Nachfragelenkung</strong> zu optimieren</a>&rdquo;. Beim Flex-Preis gibt es allerdings eine zusätzliche Ebene, die Einfluss auf den Preis hat: Die Zug-Art wird, wie z.B. bei der Auto-Vermietung, ebenfalls unterschiedlich bepreist. Ein <strong>ICE-Ticket</strong> gehört zu einer <strong>höheren</strong> <strong>Kategorie</strong> als ein IC-Ticket. Buchst du ein Ticket für den IC, kannst du damit am gleichen Tag alle IC-Verbindungen nutzen, nicht jedoch den ICE (dafür wäre ein Aufschlag nötig, Stichwort <strong>Produktübergang</strong>).</p>
+<p>Fangen wir mit dem <strong>Flex-Preis</strong> an, der den wirklich angenehmen Vorteil der freien <strong>Zugwahl</strong> am Reisetag ermöglicht. Man kann die Fahrt sogar unterbrechen und erst am nächsten Tag fortsetzen. Der Flexpreis soll grundsätzlich gleich hoch sein, unterscheidet sich aber in der Realität, um die &ldquo;
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.bahn.de/p/view/angebot/flexpreis.shtml?utm_source=allyourbasearebelongtous"><strong>Nachfragelenkung</strong> zu optimieren</a>
+
+
+&rdquo;. Beim Flex-Preis gibt es allerdings eine zusätzliche Ebene, die Einfluss auf den Preis hat: Die Zug-Art wird, wie z.B. bei der Auto-Vermietung, ebenfalls unterschiedlich bepreist. Ein <strong>ICE-Ticket</strong> gehört zu einer <strong>höheren</strong> <strong>Kategorie</strong> als ein IC-Ticket. Buchst du ein Ticket für den IC, kannst du damit am gleichen Tag alle IC-Verbindungen nutzen, nicht jedoch den ICE (dafür wäre ein Aufschlag nötig, Stichwort <strong>Produktübergang</strong>).</p>
 <h3 id="sitzplatzreservierung">Sitzplatzreservierung</h3>
 <p>Außerdem gibt es ein wichtiges Detail zur <strong>Sitzplatzreservierung</strong>. Diese ist bei der <strong>1. Klasse inklusive</strong>. In der <strong>2. Klasse</strong> kostet sie <strong>4 Euro</strong>. Wer sich nicht auf ein Abenteuer (Reise nach Jerusalem) einlassen will, sollte diesen Aufschlag immer einkalkulieren. Gerade bei populären Verbindungen ist die Auslastung der Züge relativ hoch.</p>
 <p>Der <strong>Super-Spar-Preis</strong> der 2. Klasse ist (siehe Abbildung 1) dann &ldquo;nur&rdquo; noch knapp 25 Euro günstiger als in der 1. Klasse. Der einzige Vorteil des Spar-Preises gegenüber dem Super-Spar-Preis ist übrigens die <strong>Stornomöglichkeit</strong> und das <strong>Cityticket</strong>. Der Storno ist bis vor den Reisetag gegen eine Gebühr von <strong>10 Euro</strong> möglich. Irritierend daran: Die Gebühr ist immer gleich, egal ob das Ticket 17,90 Euro oder über 200 Euro kostet. Am Reisetag ist die Stornierung des Flex-Tickets übrigens auch kostenpflichtig, hier sogar <strong>19,90 Euro</strong>.</p>
@@ -422,10 +526,62 @@ Die Sache hat natürlich einen kleinen Haken: Ich habe weder einen Porsche noch 
 <img src="/2020/2020-09-09-das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/images/grafik-47-700x433.png" alt=""><p><strong>Abbildung 2:</strong> Kleinster Super-Spar-Preis für die Verbindung Berlin - Stuttgart in Abhängigkeit von der Tageszeit (Abreise), ohne Umsteigen</p>
 <p>Die günstigste Zeit zum Reisen ist für diese Verbindung also der Vormittag. In der ersten Klasse macht es sogar Sinn, erst abends zu reisen. Gegen 21 Uhr ist das <strong>Super-Spar-Preis-Ticket</strong> sogar günstiger als zu anderen Zeiten in der 2. Klasse. <strong>Achtung:</strong> Es handelt sich um die aggregierten Werte über die <strong>Tageszeit</strong>. Das besagte günstige 1. Klasse-Ticket bezieht sich auf einen anderen Tag. Es ist also nicht nur die Uhrzeit ausschlaggebend, sondern auch der Wochentag. Die Preise über den <strong>Wochentag</strong> aggregiert zeigt folgende Abbildung: Dienstag ist also 1.-Klasse-Spar-und-Fahrtag:</p>
 <img src="/2020/2020-09-09-das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/images/Spar-Preis-ueber-den-Wochentag-Berlin-Stuttgart-700x432.png" alt=""><p><strong>Abbildung 3:</strong> Kleinster Spar-Preis für die Verbindung Berlin - Stuttgart in Abhängigkeit von der Tageszeit (Abreise), ohne Umsteigen</p>
-<p>Der <strong>Preis</strong> einer Verbindung ist also von <strong>vielen Faktoren abhängig</strong>. Da wäre es doch schön, wenn man die Preise in einer schönen Übersicht vergleichen könnte. (Übrigens, just als ich diesen Artikel geschrieben habe, <a href="https://www.deutschebahn.com/de/presse/pressestart_zentrales_uebersicht/ICE-Fahren-zum-kleinen-Preis-Super-Sparpreis-Young-ab-12-90-Euro-5577616">hat die Deutsche Bahn einen Sonderpreis für &ldquo;<strong>junge Leute bis 26</strong>&rdquo; angekündigt</a>. Es handelt sich dabei um ein auf <strong>1 Mio. Tickets</strong> limitiertes Sonderangebot für den Super-Spar-Preis der 2. Klasse.) Das Problem: Derzeit gibt es im Buchungssystem der DB keinen Hinweis darauf.</p>
+<p>Der <strong>Preis</strong> einer Verbindung ist also von <strong>vielen Faktoren abhängig</strong>. Da wäre es doch schön, wenn man die Preise in einer schönen Übersicht vergleichen könnte. (Übrigens, just als ich diesen Artikel geschrieben habe, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.deutschebahn.com/de/presse/pressestart_zentrales_uebersicht/ICE-Fahren-zum-kleinen-Preis-Super-Sparpreis-Young-ab-12-90-Euro-5577616?utm_source=allyourbasearebelongtous">hat die Deutsche Bahn einen Sonderpreis für &ldquo;<strong>junge Leute bis 26</strong>&rdquo; angekündigt</a>
+
+
+. Es handelt sich dabei um ein auf <strong>1 Mio. Tickets</strong> limitiertes Sonderangebot für den Super-Spar-Preis der 2. Klasse.) Das Problem: Derzeit gibt es im Buchungssystem der DB keinen Hinweis darauf.</p>
 <p>Wollen wir doch mal schauen, wie einfach es ist, den optimalen Preis für ein Ticket der Deutschen Bahn zu finden.</p>
 <h2 id="teil-2-das-buchungssystem-der-deutschen-bahn">Teil 2: Das Buchungssystem der Deutschen Bahn</h2>
-<p>Um ein Ticket bei der Bahn zu buchen sind mir bisher zwei (bzw. drei) Wege bekannt: Das Portal für <strong>Tickets und Angebote</strong> (auch <strong>Reiseauskunft</strong>) und der <strong>Sparpreis-Finder</strong>. Wir möchten diese Portale <strong>Oberfläche 1</strong> und <strong>2</strong> nennen. Hinzu kommt <strong><strong>Oberfläche</strong></strong> <strong>3</strong>, das ebenfalls zum Sparpreis-Finder gehört. Oberfläche 1 und 2 erreichst du recht simpel, wenn du <a href="http://bahn.de/">bahn.de</a> direkt aufrufst, über das Menü <strong>Tickets &amp; Angebote</strong>. Oberfläche 2 führt dich am Ende zu Oberfläche 3. Oberfläche 3 ist entweder über die Google-Suche oder wenn du dich durch das Hover-Menü klickst. Es ist liegt außerdem auf einer anderen Sub-Domain, auf der das Hover-Menü &ldquo;Tickets &amp; Angebote&rdquo; nicht mehr existiert. Du kommst also nur auf Umwegen wieder zurück_._</p>
+<p>Um ein Ticket bei der Bahn zu buchen sind mir bisher zwei (bzw. drei) Wege bekannt: Das Portal für <strong>Tickets und Angebote</strong> (auch <strong>Reiseauskunft</strong>) und der <strong>Sparpreis-Finder</strong>. Wir möchten diese Portale <strong>Oberfläche 1</strong> und <strong>2</strong> nennen. Hinzu kommt <strong><strong>Oberfläche</strong></strong> <strong>3</strong>, das ebenfalls zum Sparpreis-Finder gehört. Oberfläche 1 und 2 erreichst du recht simpel, wenn du 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://bahn.de/?utm_source=allyourbasearebelongtous">bahn.de</a>
+
+
+ direkt aufrufst, über das Menü <strong>Tickets &amp; Angebote</strong>. Oberfläche 2 führt dich am Ende zu Oberfläche 3. Oberfläche 3 ist entweder über die Google-Suche oder wenn du dich durch das Hover-Menü klickst. Es ist liegt außerdem auf einer anderen Sub-Domain, auf der das Hover-Menü &ldquo;Tickets &amp; Angebote&rdquo; nicht mehr existiert. Du kommst also nur auf Umwegen wieder zurück_._</p>
 <p>Hinweis: Es gibt noch eine zusätzliche Oberfläche, die mobile Anwendung. Hier ist es aber aufgrund technischer Maßnahmen nicht ohne weiteres möglich, an die HTTP-Abfragen zu kommen. Diese sind per TLS geschützt, lassen sich also nicht ohne weiteres über z.B. einen Proxy abfangen. SSL-Pinning sorgt außerdem dafür, dass man mit einfache Boardmitteln kein eigenes SSL-Zertifikat unterschummeln kann. Der Aufwand hat den Nutzen überstiegen.</p>
 <img src="/2020/2020-09-09-das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/images/grafik-700x443.png" alt=""><p><strong>Abbildung 4:</strong> Oberfläche 1 - Die Reiseauskunft</p>
 <img src="/2020/2020-09-09-das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/images/grafik-1-700x544.png" alt=""><p><strong>Abbildung 5:</strong> Oberfläche 2 - Der Sparpreis-Finder</p>
@@ -450,10 +606,62 @@ Die Sache hat natürlich einen kleinen Haken: Ich habe weder einen Porsche noch 
 <img src="/2020/2020-09-09-das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/images/grafik-3-700x132.png" alt=""><p><strong>Abbildung 10:</strong> 1. Klasse-Preis bei der 2. Klasse-Übersicht</p>
 <p>Um das beste Preis-Leistungs-Verhältnis zu finden, <strong>fehlt es an einer einheitlichen Darstellung</strong>. Man kann mit der Komlexität leben, wenn die Übersicht nur etwas sinnvoller gestaltet wäre. Bevor wir uns diesem Problem widmen, will ich trotzdem mal versuchen, eine Regelmäßigkeit in der Bepreisung zu entdecken.</p>
 <h2 id="teil-3-wie-funktioniert-die-ticket-api-der-deutschen-bahn">Teil 3: Wie funktioniert die Ticket-API der Deutschen Bahn?</h2>
-<p>Bevor ich die Daten auswerte, erkläre ich kurz, für alle technisch interessierten, wie man an die Preise kommt. Auf der Suche nach einer Beschreibung der Preis-Api bin ich auf folgendes Dokument gestoßen: <a href="https://wiki.fhem.de/w/images/6/63/Parametrisierte_%C3%9Cbergabe_Bahnauskunft%28V_5.12-R4.30c%2C_f%C3%BCr.pdf">Externe Aufrufparameter und Rückgabeparameter an externe System (pdf)</a>. Diese Information konnte ich als Grundlage nutzen, um die Anfragen an den DB-Server zu formulieren (die Dokumentation ist allerdings unvollständig und weicht in einigen Punkten ab, ist also vermutlich veraltet).</p>
+<p>Bevor ich die Daten auswerte, erkläre ich kurz, für alle technisch interessierten, wie man an die Preise kommt. Auf der Suche nach einer Beschreibung der Preis-Api bin ich auf folgendes Dokument gestoßen: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://wiki.fhem.de/w/images/6/63/Parametrisierte_%C3%9Cbergabe_Bahnauskunft%28V_5.12-R4.30c%2C_f%C3%BCr.pdf?utm_source=allyourbasearebelongtous">Externe Aufrufparameter und Rückgabeparameter an externe System (pdf)</a>
+
+
+. Diese Information konnte ich als Grundlage nutzen, um die Anfragen an den DB-Server zu formulieren (die Dokumentation ist allerdings unvollständig und weicht in einigen Punkten ab, ist also vermutlich veraltet).</p>
 <h3 id="die-identifikation-der-bahnhöfe">Die Identifikation der Bahnhöfe</h3>
 <p>Die beiden wichtigsten Parameter zur Ticket-Suche sind, wie sollte es anders sein, der <strong>Start- und Zielbahnhof</strong>. Hier gibt es mehrere Möglichkeiten, diese zu bestimmen.</p>
-<p>Die <strong>erste Methode</strong> ist der offizielle Weg über die (nach Registrierung) frei zugängliche <a href="https://developer.deutschebahn.com/store/apis/info?name=StaDa-Station_Data&amp;version=v2&amp;provider=DBOpenData&amp;">Stations-Daten-API an.</a> Die Liste enthält zu jedem Bahnhof den Namen im Klartext, die Geo-Lokation und eine Kategorie (Hauptbahnhof, Wald-und-Wiesen-Bahnhof, &hellip;) Die dort aufgeführten Bahnhöfe werden in der Regel ohne Probleme auch von der Preis-Auskunft erkannt.</p>
+<p>Die <strong>erste Methode</strong> ist der offizielle Weg über die (nach Registrierung) frei zugängliche 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://developer.deutschebahn.com/store/apis/info?name=StaDa-Station_Data&amp;version=v2&amp;provider=DBOpenData&amp;&amp;utm_source=allyourbasearebelongtous">Stations-Daten-API an.</a>
+
+
+ Die Liste enthält zu jedem Bahnhof den Namen im Klartext, die Geo-Lokation und eine Kategorie (Hauptbahnhof, Wald-und-Wiesen-Bahnhof, &hellip;) Die dort aufgeführten Bahnhöfe werden in der Regel ohne Probleme auch von der Preis-Auskunft erkannt.</p>
 <p>Die zweite Methode führt über einen GET-Request, der dir drei verwertbare Informationen liefert. Der <strong>öffentliche Endpunkt</strong> dazu lautet:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">https://reiseauskunft.bahn.de/bin/ajax-getstop.exe/dn
 </span></span></code></pre></div><p>Die wichtigsten Parameter lauten hier:</p>
@@ -530,7 +738,33 @@ Die Sache hat natürlich einen kleinen Haken: Ich habe weder einen Porsche noch 
 <li><strong>service=pscangebotsuche</strong> sowie</li>
 <li><strong>data={}</strong> ein JSON-Objekt mit den Reise-Parametern</li>
 </ul>
-<p>Nun können also die Reise-Parameter für die Preissuche übermittelt werden. Das <strong>JSON-Objekt</strong> hat folgenden Aufbau (an dieser Stelle im <strong>YAML-Format,</strong> zur besseren Dokumentation, <a href="https://onlineyamltools.com/convert-yaml-to-json">hiermit</a> kannst du daraus ein gültiges JSON-Objekt erstellen):</p>
+<p>Nun können also die Reise-Parameter für die Preissuche übermittelt werden. Das <strong>JSON-Objekt</strong> hat folgenden Aufbau (an dieser Stelle im <strong>YAML-Format,</strong> zur besseren Dokumentation, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://onlineyamltools.com/convert-yaml-to-json?utm_source=allyourbasearebelongtous">hiermit</a>
+
+
+ kannst du daraus ein gültiges JSON-Objekt erstellen):</p>
 <p><em>Anmerkung: Im Gegensatz zur ersten Schnittstelle, kann hier mit der Id der Bahnhöfe gearbeitet werden, die weitaus weniger sperrig ist.</em></p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">---
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl"># Id des Start-Bahnhofs
@@ -581,14 +815,92 @@ Die Sache hat natürlich einen kleinen Haken: Ich habe weder einen Porsche noch 
 <p>Bei beiden Schnittstellen fehlt dennoch die <strong>Vergleichbarkeit</strong> mit der 1. Klasse sowie die Aufzählung des (Super-)Spar-Preises, der ja, wie wir wissen, ebenfalls einer Schwankung unterliegt.</p>
 <p>Nun, da ich weiß, wie ich programmatisch an die Preise der Deutschen Bahn komme, habe ich ein Script geschrieben, das die Preise für beliebige Verbindungen regelmäßig abrufen kann. Dazu habe ich in mehreren Durchläufen Verbindungen und Preise bis zu <strong>90 Tage</strong> im Voraus abgerufen (90 Tage ist das Limit für das Buchen im Voraus). Die <strong>ersten Durchläufe</strong> (Ende 2019 und Mitte 2020) waren mehr ein Testen und Herantasten, im <strong>finalen Durchlauf</strong> (die &ldquo;relevante Stichprobe&rdquo;) Anfang September 2020 habe ich die folgenden Verbindungen abgefragt:</p>
 <ul>
-<li>Berlin - Hannover (<a href="https://de.statista.com/statistik/daten/studie/1092635/umfrage/puenktlichkeit-der-zuege-der-deutschen-bahn-auf-den-meistbefahrenen-verbindungen/">die Strecke mit den meisten Verspätungen</a>)</li>
+<li>Berlin - Hannover (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://de.statista.com/statistik/daten/studie/1092635/umfrage/puenktlichkeit-der-zuege-der-deutschen-bahn-auf-den-meistbefahrenen-verbindungen/?utm_source=allyourbasearebelongtous">die Strecke mit den meisten Verspätungen</a>
+
+
+)</li>
 <li>Berlin - Stuttgart (eine selbst gewählte Verbindung, die ich früher oft genutzt habe)</li>
 <li>Stuttgart - Berlin (und zurück)</li>
 <li>Gotha - Eisenach (eine selbst gewählte möglichst kurze Verbindung)</li>
-<li>Ingolstadt - Nürnberg (<a href="https://inside.bahn.de/familie-9-bahnstrecken-mit-wow-effekt/">eine Hochgeschwindigkeitsstrecke</a>)</li>
+<li>Ingolstadt - Nürnberg (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://inside.bahn.de/familie-9-bahnstrecken-mit-wow-effekt/?utm_source=allyourbasearebelongtous">eine Hochgeschwindigkeitsstrecke</a>
+
+
+)</li>
 <li>München - Berlin (eine weitere Hochgeschwindigkeitsstrecke)</li>
 <li>Köln - Dresden (eine selbst gewählte Ost-West-Verbindung)</li>
-<li>Offenburg - Greifswald (<a href="https://inside.bahn.de/laengste-zugstrecken-deutschlands/">mit 1.300 km die längste Strecke</a>)</li>
+<li>Offenburg - Greifswald (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://inside.bahn.de/laengste-zugstrecken-deutschlands/?utm_source=allyourbasearebelongtous">mit 1.300 km die längste Strecke</a>
+
+
+)</li>
 </ul>
 <p>Erfasst werden die <strong>Abfahrtszeit</strong>, die <strong>Dauer der Reise,</strong> die <strong>Anzahl der Umstiege,</strong> die <strong>erwartete Auslastung,</strong> die <strong>beteiligten Zugarten</strong> und natürlich der <strong>Flex-Preis</strong> sowie der <strong>Super Spar-Preis.</strong> Zur Qualitätssicherung habe ich außerdem die URL zur Preisübersicht erfasst.</p>
 <p>Mein <strong>Ziel</strong> ist es zu erkennen, inwiefern Preise von der <strong>Tageszeit</strong> oder dem <strong>Wochentag</strong> abhängen. Wie stark ist der Einfluss der <strong>Auslastung</strong>? Wann muss man ein Ticket spätestens buchen, um noch einen guten Preis zu bekommen? Im nächsten Teil schaue ich mir an, welche Zusammenhänge sich erkennen lassen:</p>
@@ -597,9 +909,61 @@ Die Sache hat natürlich einen kleinen Haken: Ich habe weder einen Porsche noch 
 <img src="/2020/2020-09-09-das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/images/grafik-54-700x412.png" alt=""><p><strong>Abbildung 14:</strong> Preis-Überblick</p>
 <p><em>Anmerkung: &ldquo;Durchschn. Preis&rdquo; meint immer arithmetisches Mittel.</em></p>
 <p>Die 1. Klasse bekommt man bei der Deutschen Bahn schon für <strong>12,30 Euro</strong>, das obere Limit liegt bei stabilen <strong>259,70 Euro.</strong> Die günstigste Reise tritt man für <strong>5,60 Euro</strong> an. In Testläufen von 2019 kostete das teuerste Ticket übrigens <strong>294,00 Euro</strong> (Berlin -&gt; Stuttgart, 02.10.2019). Offensichtlich wurden die Preise in 2020 also angepasst.</p>
-<p><em>Anmerkung: Die folgende Auswertung zeigt, dass die Verbindung <strong>Offenburg -&gt; Greifswald</strong> nicht mehr als Direktverbindung zu existieren scheint und somit auch nicht, wie angepriesen, die längste zusammenhängende Strecke ist. <a href="https://zugfahrplande.com/ic-zugfahrplan/1846-ic-2216">Offenbar fährt der ICE 2216 nur noch von Stuttgart nach Kiel</a>.</em></p>
+<p><em>Anmerkung: Die folgende Auswertung zeigt, dass die Verbindung <strong>Offenburg -&gt; Greifswald</strong> nicht mehr als Direktverbindung zu existieren scheint und somit auch nicht, wie angepriesen, die längste zusammenhängende Strecke ist. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://zugfahrplande.com/ic-zugfahrplan/1846-ic-2216?utm_source=allyourbasearebelongtous">Offenbar fährt der ICE 2216 nur noch von Stuttgart nach Kiel</a>
+
+
+.</em></p>
 <img src="/2020/2020-09-09-das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/images/grafik-4-700x387.png" alt=""><p><strong>Abbildung 15:</strong> Gegenprobe: Keine Direktverbindungen für Offenburg -&gt; Greifswald?</p>
-<p>Die nächste Abbildung zeigt die Dauer, Streckenlänge und mittlere erwartete Auslastung aller abgefragten Verbindungen. Um die Entfernung zu ermittelten, <a href="https://www.evg-online.org/deine-vorteile/services/service-meldungen/entfernungsrechner-fuer-fahrverguenstigungen/">nutze ich dieses Tool</a>.</p>
+<p>Die nächste Abbildung zeigt die Dauer, Streckenlänge und mittlere erwartete Auslastung aller abgefragten Verbindungen. Um die Entfernung zu ermittelten, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.evg-online.org/deine-vorteile/services/service-meldungen/entfernungsrechner-fuer-fahrverguenstigungen/?utm_source=allyourbasearebelongtous">nutze ich dieses Tool</a>
+
+
+.</p>
 <img src="/2020/2020-09-09-das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/images/grafik-55-700x164.png" alt=""><p><strong>Abbildung 16:</strong> Entferung, Dauer und Auslastung aller Verbindungen</p>
 <p>Insgesamt gibt es fünf Stufen der Auslastung, die bei der Ticket-Auswahl angezeigt werden:</p>
 <ul>
@@ -644,7 +1008,33 @@ Die Sache hat natürlich einen kleinen Haken: Ich habe weder einen Porsche noch 
 <p>Die Strecken <strong>Berlin -&gt; Stuttgart</strong> und <strong>München -&gt; Berlin</strong> haben also Schnäppchenpotential im Flex-Preis-Segment (wenn die unterschiedlichen Preise an einem Tag verfügbar sind). Nun ist es aber so, dass man mit dem Flexpreis <strong>nicht</strong> <strong>in der Zug-Kategorie</strong> <strong>aufsteigen</strong> darf (siehe oben). Wer also ein Ticket im IC bucht, darf nicht ICE fahren. Schauen wir uns doch mal die Verbindung Berlin -&gt; Stuttgart genauer an:</p>
 <img src="/2020/2020-09-09-das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/images/grafik-24-700x440.png" alt=""><p><strong>Abbildung 25:</strong> 1. Klasse, Flex-Preis, Mindest-Flex-Preis x durchschnittliche Dauer und Umstiege, Berlin - Stuttgart</p>
 <p>Du siehst, das untere Limit bei der ICE-Fahrt liegt bei etwas über <strong>200 Euro</strong>. Wenn du ein paar Euro auf der Verbindung sparen willst, musst du fast 3 Stunden mehr einplanen und z.B. IC fahren. Aber was mit der Verbindung mit <strong>vier Umstiegen</strong> (blauer Kreis)? Das Ticket kostet <strong>188 Euro</strong> und <strong>beinhaltet eine ICE-Strecke</strong>. Handelt es sich damit um ein vollwertiges ICE-Ticket und kann ich damit auch die direkte aber teurere Verbindung am gleichen Tag nutzen? Der Twitter-Support hat das mehr oder weniger bestätigt:</p>
-<img src="/2020/2020-09-09-das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/images/grafik-25-700x397.png" alt=""><p><strong>Abbildung 26:</strong> Quelle: <a href="https://twitter.com/DB_Bahn/status/1303241966759665665">Twitter</a></p>
+<img src="/2020/2020-09-09-das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/images/grafik-25-700x397.png" alt=""><p><strong>Abbildung 26:</strong> Quelle: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://twitter.com/DB_Bahn/status/1303241966759665665?utm_source=allyourbasearebelongtous">Twitter</a>
+
+
+</p>
 <p><em>Anmerkung: Die gestellte Frage lautete: &ldquo;Bei einem Flex-Preis-Ticket mit einem Umstieg (ICE zu IC) habe ich ja ein ICE-Ticket - für den ersten Teil der Strecke. Das Ticket ist dann nur für den 1. Teil gültig?&rdquo; Mein Verdacht ist allerdings, dass der Support nicht ganz verstanden hat, worauf ich hinaus wollte. Nachfragen lohnt sich also.</em></p>
 <p>Wenn dem so ist, ergibt sich daraus ein wichtiges Kriterium bei der Preissuche: Wenn du ein günstiges Flex-Preis-Ticket zu einer &ldquo;verrückten&rdquo; Tageszeit findest, z.B. 0:12 Uhr in der Nacht, das nur eine ICE-Verbindung enthält, kannst du damit den ganzen Tag auf dieser Strecke reisen. Idealerweise auch auf einer Direktverbindung, nur mit dem ICE. In dem Fall ist erst Recht wichtig, Preise immer in einem <strong>großzügigen Zeitfenster</strong> zu vergleichen.</p>
 <p>Noch mal zurück zur <strong>Abbildung 25</strong>. Die folgende <strong>Abbildung 27</strong> zeigt die Flex-Preise für die 2. Klasse:</p>
@@ -672,12 +1062,90 @@ Die Sache hat natürlich einen kleinen Haken: Ich habe weder einen Porsche noch 
 <img src="/2020/2020-09-09-das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/images/grafik-43-700x429.png" alt=""><p><strong>Abbildung 34:</strong> Median-Preise über die Tageszeit für die Verbindung München -&gt; Berlin</p>
 <p>Ein Rückschluss auf die Nachfrage-Steuerung, die ich oben schon betrachtet habe, ist hier übrigens nur schwer möglich. Es handelt sich um die aggregierten Preise und Reisezeiten. Nur soviel: Zur Nachmittagszeit, also vermutlich der Haupt-Reisezeit, gibt es Preis-Spitzen beim Super-Spar-Preis. Der Flex-Preis ist relativ stabil.</p>
 <h2 id="teil-5---eine-alternative-oberfläche">Teil 5 - Eine alternative Oberfläche</h2>
-<p>Nun, da wir die spannenden Zahlenspiele und bunten Grafiken abgearbeitet haben, wollen wir uns eine mögliche Alternative anschauen. Ich habe mich oben schon recht intensiv mit den &ldquo;Preis-APIs&rdquo; der Deutschen Bahn beschäftigt. Diese habe ich nicht nur zur stumpfen Abfrage unzähliger Preise verwendet, sondern auch um eine alternative Ticket-Preis-Suche zu bauen: <a href="https://nickets.de/">nickets.de</a></p>
+<p>Nun, da wir die spannenden Zahlenspiele und bunten Grafiken abgearbeitet haben, wollen wir uns eine mögliche Alternative anschauen. Ich habe mich oben schon recht intensiv mit den &ldquo;Preis-APIs&rdquo; der Deutschen Bahn beschäftigt. Diese habe ich nicht nur zur stumpfen Abfrage unzähliger Preise verwendet, sondern auch um eine alternative Ticket-Preis-Suche zu bauen: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://nickets.de/?utm_source=allyourbasearebelongtous">nickets.de</a>
+
+
+</p>
 <img src="/2020/2020-09-09-das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/images/grafik-45-700x385.png" alt=""><p><strong>Abbildung 36:</strong> nickets - Visuelle Ticket-Preissuche</p>
 <p>Die Bedienung sollte eigentlich relativ intutiv sein, das war ja das Ziel der ganzen Übung. Du gibst Start- und Zielbahnhof an, legst den Abfahrts-Zeitpunkt fest und lässt dir die entsprechenden Preise in einer Grafik anzeigen. Dort siehst du zu jeder Verbindung den Super-Spar-Preis sowie den Flex-Preis und die Anzahl der Umstiege. Fährst du mit dem Maus-Cursor über die Kreise, erhälst du zusätzliche Informationen zu dem jeweiligen Ticket. Mit Klick auf die kleinen Kreise kommst du zur Buchung auf der Seite der Deutschen Bahn.</p>
 <p>Die Oberfläche befindet sich noch im Beta-Stadium, es kann also zu ungewohnten Verhalten kommen. Im Grunde sollten die Preise aber korrekt angezeigt werden und vor allem aktuell sein. Feedback und Wünsche sind natürlich sehr gerne gesehen.</p>
 <h3 id="download-der-postman-collection">Download der Postman-Collection</h3>
-<p><a href="https://www.nickyreinert.de/files/das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/Deutsche-Bahn-Tickets.postman_collection.json_.7z">Deutsche-Bahn-Tickets.postman_collection.json_</a><a href="https://www.nickyreinert.de/files/das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/Deutsche-Bahn-Tickets.postman_collection.json_.7z">Herunterladen</a></p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/Deutsche-Bahn-Tickets.postman_collection.json_.7z?utm_source=allyourbasearebelongtous">Deutsche-Bahn-Tickets.postman_collection.json_</a>
+
+
+
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/Deutsche-Bahn-Tickets.postman_collection.json_.7z?utm_source=allyourbasearebelongtous">Herunterladen</a>
+
+
+</p>
 
     
   </article>

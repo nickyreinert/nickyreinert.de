@@ -57,7 +57,7 @@ Warum JTL-Wawi auf einem gehosteten Windows-Server problematisch sein könnten? 
 Warum JTL-Wawi auf einem gehosteten Windows-Server problematisch sein könnten? Erstens ist die Verbindung per RDP auf einen Windows-Server per Microsoft-Lizenzbedingung für gewöhnlich nur für administrative Zwecke erlaubt. Es sei denn, man installiert einen Terminal-Server und die notwendigen Zugriffslizenzen. Das Problem ist aber, dass die Verwendung eines Terminal Servers auf Virtuellen Servern von Microsoft ebenfalls untersagt ist. Entweder man hat den Windows-Server also zuhause unter dem Tisch stehen oder man nutzt beim Hoster seiner Wahl die weitaus teureren Dedicated Root Server.">
   <meta itemprop="datePublished" content="2017-09-28T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-08-20T20:47:33+02:00">
-  <meta itemprop="wordCount" content="868">
+  <meta itemprop="wordCount" content="870">
   <meta itemprop="keywords" content="JTL-Wawi,SQL Server,Windows Server,Fernzugriff,RDP,Firewall,Datenbank,ERP,Warenwirtschaft,Anleitung,Troubleshooting,Netzwerk">
 
   
@@ -114,7 +114,7 @@ Warum JTL-Wawi auf einem gehosteten Windows-Server problematisch sein könnten? 
     },
     
     "url": "https:\/\/nickyreinert.de\/2017\/2017-09-28-jtl-wawi-fernsteuerung-auf-windows-server-einrichten\/",
-    "wordCount":  868 ,
+    "wordCount":  870 ,
     
     "timeRequired": "PT5M",
     
@@ -387,7 +387,33 @@ Warum JTL-Wawi auf einem gehosteten Windows-Server problematisch sein könnten? 
 <h2 id="wie-kann-der-windows-server-eingerichtet-werden-um-jtl-wawi-den-zugriff-von-außen-zu-ermöglichen">Wie kann der Windows-Server eingerichtet werden, um JTL-Wawi den Zugriff von außen zu ermöglichen?</h2>
 <p>Auf einem gehosteten Windows-Server läuft ein Microsoft SQL Server. Die Anwender sollen auf ihren lokalen Windows-Rechnern die JTL Wawi nutzen, die sich mit dem entfernten Microsoft SQL-Server verbindet.</p>
 <h3 id="porteinstellungen">Porteinstellungen</h3>
-<p>Zunächst einmal bringen wir dem SQL Server bei, dass er auch auf der öffentlichen IP-Adresse erreichbar ist und welchen Port er dafür benutzen soll. Im SQL-Server-Configuration-Manager (SQLServerManager13.msc) muss dazu unterhalb der Netzwerk-Konfiguration &ldquo;Protokolle für JTL-WAWI&rdquo; ausgewählt werden. Dort befinden sich die Einstellungen für das Protokoll TCP/IP, die wir nun anpassen. Erstmal muss natürlich das Protokoll unter aktiviert werden: &ldquo;Enabled: Ja&rdquo;. Danach wird mit &ldquo;Listen all: Ja&rdquo; festgelegt, dass der SQL-Server über alle verfügbaren Netzwerkschnittstellen ansprechbar ist (<a href="https://docs.microsoft.com/de-de/sql/tools/configuration-manager/tcp-ip-properties-protocols-tab">siehe Microsoft-Doks</a>). Wer den Server nur lokal verwendet, sollte diesen Schalter auf &ldquo;Nein&rdquo; setzen und die Einstellungen nur für die private, lokale IP-Adresse vornehmen.</p>
+<p>Zunächst einmal bringen wir dem SQL Server bei, dass er auch auf der öffentlichen IP-Adresse erreichbar ist und welchen Port er dafür benutzen soll. Im SQL-Server-Configuration-Manager (SQLServerManager13.msc) muss dazu unterhalb der Netzwerk-Konfiguration &ldquo;Protokolle für JTL-WAWI&rdquo; ausgewählt werden. Dort befinden sich die Einstellungen für das Protokoll TCP/IP, die wir nun anpassen. Erstmal muss natürlich das Protokoll unter aktiviert werden: &ldquo;Enabled: Ja&rdquo;. Danach wird mit &ldquo;Listen all: Ja&rdquo; festgelegt, dass der SQL-Server über alle verfügbaren Netzwerkschnittstellen ansprechbar ist (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://docs.microsoft.com/de-de/sql/tools/configuration-manager/tcp-ip-properties-protocols-tab?utm_source=allyourbasearebelongtous">siehe Microsoft-Doks</a>
+
+
+). Wer den Server nur lokal verwendet, sollte diesen Schalter auf &ldquo;Nein&rdquo; setzen und die Einstellungen nur für die private, lokale IP-Adresse vornehmen.</p>
 <p>Die entscheidende Einstellung befindet sich im Reiter &ldquo;IP-Adressen&rdquo;. Wenn zuvor &ldquo;Listen all: Ja&rdquo; eingestellt wurde, muss hier am Ende der Liste die Einstellung für &ldquo;IPALL&rdquo; angepasst werden. Hier genügt es, für TCP-Port einen beliebigen Port anzugeben. Der Standard-Port für Microsoft SQL ist 1433. Es empfiehlt sich, einen anderen Port zu wählen, damit der einfache Port-Scan nicht sofort auf die Idee kommt, dass hier ein MS-SQL-Dienst erreichbar ist.</p>
 <p>[gallery ids=&ldquo;1514,1512,1513&rdquo;]</p>
 <p> </p>
@@ -400,10 +426,62 @@ Warum JTL-Wawi auf einem gehosteten Windows-Server problematisch sein könnten? 
 <p> </p>
 <p>Auf der Serverseite ist nun alles fertig eingerichtet. Als nächstes folgt die Einrichtung der JTL-Wawi auf dem lokalen Rechner.</p>
 <h3 id="jtl-wawi-einrichten">JTL-Wawi einrichten</h3>
-<p>Nach dem <a href="https://www.jtl-software.de/JTL-Wawi-Download">Download</a> und der Installation der Software wird uns diese beim ersten Start zur Datenbankverwaltung führen. Hier legen wir ein neues Profil mit einem wohlklingenden Namen an tragen die Adresse zu unserem Windows-Server ein, auf dem der Microsoft SQL-Server läuft.  Wichtig ist, dass wir den oben konfigurierten Port hier mit einem Komma getrennt hinter die Server-Adresse eintragen. Als nächstes will das Programm von uns die vorher angelegten Zugangsdaten wissen. Wenn diese korrekt sind, erhalten wir nun eine Liste der Mandanten zur Auswahl und die Einrichtung der Software ist abgeschlossen.</p>
+<p>Nach dem 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.jtl-software.de/JTL-Wawi-Download?utm_source=allyourbasearebelongtous">Download</a>
+
+
+ und der Installation der Software wird uns diese beim ersten Start zur Datenbankverwaltung führen. Hier legen wir ein neues Profil mit einem wohlklingenden Namen an tragen die Adresse zu unserem Windows-Server ein, auf dem der Microsoft SQL-Server läuft.  Wichtig ist, dass wir den oben konfigurierten Port hier mit einem Komma getrennt hinter die Server-Adresse eintragen. Als nächstes will das Programm von uns die vorher angelegten Zugangsdaten wissen. Wenn diese korrekt sind, erhalten wir nun eine Liste der Mandanten zur Auswahl und die Einrichtung der Software ist abgeschlossen.</p>
 <p>[gallery ids=&ldquo;1520,1519,1521&rdquo;]</p>
 <p>Fertig. Nun  kann man die JTL-Wawi Fernsteuerung so nutzen, als würde man direkt auf dem Server arbeiten.</p>
-<p>[caption id=&ldquo;attachment_1527&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;150&rdquo;]<a href="https://www.nickyreinert.de/files/jtl-wawi-fernsteuerung-mit-windows-server-ermoeglichen/jtl-wawi-fernsteuerung.png"><img src="/2017/2017-09-28-jtl-wawi-fernsteuerung-auf-windows-server-einrichten/images/jtl-wawi-fernsteuerung-150x150.png" alt="Die JTL-Wawi Fernsteuerung ist komplett eingerichtet"></a> Die JTL-Wawi Fernsteuerung ist komplett eingerichtet[/caption]</p>
+<p>[caption id=&ldquo;attachment_1527&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;150&rdquo;]
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/jtl-wawi-fernsteuerung-mit-windows-server-ermoeglichen/jtl-wawi-fernsteuerung.png?utm_source=allyourbasearebelongtous"><img src="/2017/2017-09-28-jtl-wawi-fernsteuerung-auf-windows-server-einrichten/images/jtl-wawi-fernsteuerung-150x150.png" alt="Die JTL-Wawi Fernsteuerung ist komplett eingerichtet"></a>
+
+
+ Die JTL-Wawi Fernsteuerung ist komplett eingerichtet[/caption]</p>
 <h2 id="nachteile-der-jtl-wawi-fernsteuerung">Nachteile der JTL-Wawi Fernsteuerung</h2>
 <p>Die hier vorgestellte Konfiguration für die JTL-Wawi Fernsteuerung hat einen großen, entscheidenden Nachteil: Sie ist relativ unsicher. Zwar ist der Zugriff auf die Datenbank mit Benutzernamen und Passwort geschützt, dennoch gehört es nicht gerade zum guten Ton, die Datenbank öffentlich über das Internet erreichbar zu machen. Hier gibt es einige Möglichkeiten, sich besser zu schützen.</p>
 <p>Entweder man richtet einen  VPN-Tunnel ein, über den auf die Datenbank zugegriffen wird. Oder man hat die Möglichkeit, feste IP-Adressen zu vergeben, für den der Zugriff in der Windows-Firewall eingeschränkt werden kann. Ist auch das nicht möglich, sollte man wenigstens den IP-Adressbereich in der Windows-Firewall einrichten, dass er nur Zugriffe des jeweiligen Internet-Service-Providers (ISP) zulässt.</p>

@@ -53,7 +53,7 @@
   <meta itemprop="description" content="Die Datensicherung des eigenen, öffentlichen Webservers ist nicht nur wichtig, sie kann auch auf vielen Wegen geschehen und wirft vermutlich gerade deshalb sehr viele Fragen auf. Soll ich ein Image des ganzen Servers anlegen oder nur einzelne Ordner sichern? Wie oft muss ich ein Backup machen und wie gelange ich im Notfall an die Daten? Reicht es aus, z.B. als Wordpress-Nutzer, ein Plugin zu verwenden oder ist es sinnvoller externe Software zu nutzen?">
   <meta itemprop="datePublished" content="2018-08-23T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-08-20T21:05:13+02:00">
-  <meta itemprop="wordCount" content="2576">
+  <meta itemprop="wordCount" content="2580">
   <meta itemprop="keywords" content="Backup,Webserver,Linux,duplicity,GnuPG,Bash Scripting,MySQL Backup,Datensicherung,Server Sicherheit,WebDAV,Automatisierung,Tutorial">
 
   
@@ -109,7 +109,7 @@
     },
     
     "url": "https:\/\/nickyreinert.de\/2018\/2018-08-23-den-eigenen-web-server-sichern\/",
-    "wordCount":  2576 ,
+    "wordCount":  2580 ,
     
     "timeRequired": "PT5M",
     
@@ -394,13 +394,91 @@
 <h2 id="die-backup-strategie">Die Backup-Strategie</h2>
 <h3 id="wo-soll-das-backup-gespeichert-werden">Wo soll das Backup gespeichert werden?</h3>
 <p>Die erste Frage die ich mir gestellt habe war: <strong>Wo soll das Backup landen</strong>? Direkt auf dem Web-Server? Dann sind die Daten verloren, sobald der ganze Server weg ist. Auf einem Cloud-Speicher? Das ist bequem, birgt allerdings auch Probleme mit den <strong>Datenschutzgesetzen</strong>. Oder auf einem privaten NAS? Das ist aus Datenschutzsicht zwar in Ordnung, aber dann muss das NAS über das Internet erreichbar sein. Das wollte ich vermeiden.</p>
-<p>Ich habe mich deshalb für einen Zwischenweg entschieden: Für den schnellen Zugriff lege ich das Backup <strong>auf dem Server</strong> ab. Gleichzeitig nutze ich das kostenlose Angebot von <a href="https://www.blaucloud.de/"><strong>blaucloud.de</strong></a>. Das ist ein Cloud-Speicher, dessen Server in Deutschland stehen. Außerdem unterstützt blaucloud, das auf nextcloud basiert, das WebDav-Protokoll. Zusätzlich, aber das ist nur ein Bonus. Außerdem habe ich auf meinem NAS eine Synchronisierung mit der blaucloud eingerichtet. Dadurch bleibt das NAS im Internet verborgen und ich habe trotzdem eine <strong>3. Kopie des Backups</strong> in meinen eigenen, sicheren vier Wänden.</p>
+<p>Ich habe mich deshalb für einen Zwischenweg entschieden: Für den schnellen Zugriff lege ich das Backup <strong>auf dem Server</strong> ab. Gleichzeitig nutze ich das kostenlose Angebot von 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.blaucloud.de/?utm_source=allyourbasearebelongtous"><strong>blaucloud.de</strong></a>
+
+
+. Das ist ein Cloud-Speicher, dessen Server in Deutschland stehen. Außerdem unterstützt blaucloud, das auf nextcloud basiert, das WebDav-Protokoll. Zusätzlich, aber das ist nur ein Bonus. Außerdem habe ich auf meinem NAS eine Synchronisierung mit der blaucloud eingerichtet. Dadurch bleibt das NAS im Internet verborgen und ich habe trotzdem eine <strong>3. Kopie des Backups</strong> in meinen eigenen, sicheren vier Wänden.</p>
 <h3 id="welche-software-soll-ich-nutzen">Welche Software soll ich nutzen?</h3>
 <p>Die Auswahl von Plugins für automatische Backups mit Wordpress ist sehr umfangreich, einige davon sind kostenlos und die große Mehrheit ist sehr bequem zu bedienen. Die Backups laufen automatisch und auch die Wiederherstellung ist nur einen Mausklick entfernt. Das klingt paradiesisch, aber der Schein trügt. Zunächst halte ich es für absurd, ein System aus sich selber heraus zu sichern. Das ist wie ein <strong>Feuerlöscher</strong>, der bei <strong>Waldbrandgefahr</strong> zwischen den trockenen Bäumen steht.</p>
 <p>Sicher kann ich mit den zahlreichen Wordpress-Plugins die Datenbank und das Dateisystem sichern. Aber der Prozess wird eben innerhalb eines System ausgeführt, das auch von außen erreichbar ist. Wenn nur ein anderes Plugin kompromittiert wird, gefährdet das die ganze Backup-Strategie. Außerdem muss ich, bei der Verwendung mehrerer Wordpress-Instanzen jedes Backup-Plugin einzeln pflegen.</p>
-<p>Auch die regelmäßige Datensicherung, die viele Hoster von sich aus anbieten, reicht mir nicht aus, da diese nur minimal gesteuert werden kann und dort immer das ganze System gesichert wird, man also bei der Wiederherstellung nicht selektieren kann, welche Backup, welcher Ordner oder welche Datenbank zurück gespielt werden soll. Ich habe mich also für <strong>duplicity</strong> entschieden. <a href="http://duplicity.nongnu.org/"><strong>Duplicity</strong></a> wird über die Kommandozeile bedient (deshalb der notwendige SSH-Zugang), unterstützt viele Protokolle (FTP, <strong>WebDav</strong>, Amazon S3, rsync, &hellip;) und es gibt sogar eine grafische Benutzeroberfläche - wenn man doch nicht ohne kann. Außerdem bietet duplicity die Verschlüsselung mit <strong>GnuPG</strong> an und ist damit auch bestens geeignet, um die Datensicherung in der Cloud abzulegen.</p>
+<p>Auch die regelmäßige Datensicherung, die viele Hoster von sich aus anbieten, reicht mir nicht aus, da diese nur minimal gesteuert werden kann und dort immer das ganze System gesichert wird, man also bei der Wiederherstellung nicht selektieren kann, welche Backup, welcher Ordner oder welche Datenbank zurück gespielt werden soll. Ich habe mich also für <strong>duplicity</strong> entschieden. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://duplicity.nongnu.org/?utm_source=allyourbasearebelongtous"><strong>Duplicity</strong></a>
+
+
+ wird über die Kommandozeile bedient (deshalb der notwendige SSH-Zugang), unterstützt viele Protokolle (FTP, <strong>WebDav</strong>, Amazon S3, rsync, &hellip;) und es gibt sogar eine grafische Benutzeroberfläche - wenn man doch nicht ohne kann. Außerdem bietet duplicity die Verschlüsselung mit <strong>GnuPG</strong> an und ist damit auch bestens geeignet, um die Datensicherung in der Cloud abzulegen.</p>
 <h3 id="wie-oft-soll-ich-ein-backup-anlegen">Wie oft soll ich ein Backup anlegen?</h3>
-<p>Die Frage sollte mich nicht länger beschäftigen, vor allem weil ich dazu <a href="https://blog.yadutaf.fr/2012/09/08/lazy-man-backup-strategy-with-duplicity-part-1/">einen sehr schönen Blog-Eintrag gefunden</a> habe. Dazu muss erklärt werden, dass <strong>duplicity</strong> mit <strong>inkrementellen Backups</strong> arbeitet. Dabei wird initial ein komplettes Backup angelegt. Danach werden nur noch die Änderungen an den zu sichernden Dateien erfasst. Für die Wiederherstellung muss also erst das letzte volle Backup zurückgespielt werden, um darauf dann die inkrementellen Backups &ldquo;anzuwenden. Der Backup-Plan lautet also wie folgt:</p>
+<p>Die Frage sollte mich nicht länger beschäftigen, vor allem weil ich dazu 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://blog.yadutaf.fr/2012/09/08/lazy-man-backup-strategy-with-duplicity-part-1/?utm_source=allyourbasearebelongtous">einen sehr schönen Blog-Eintrag gefunden</a>
+
+
+ habe. Dazu muss erklärt werden, dass <strong>duplicity</strong> mit <strong>inkrementellen Backups</strong> arbeitet. Dabei wird initial ein komplettes Backup angelegt. Danach werden nur noch die Änderungen an den zu sichernden Dateien erfasst. Für die Wiederherstellung muss also erst das letzte volle Backup zurückgespielt werden, um darauf dann die inkrementellen Backups &ldquo;anzuwenden. Der Backup-Plan lautet also wie folgt:</p>
 <ul>
 <li>es erfolgt initial eine volle Datensicherung</li>
 <li>danach gibt es jeden Tag eine inkrementelle Datensicherung</li>
@@ -416,14 +494,92 @@
 <h3 id="duplicity-und-verschlüsselung-einrichten">Duplicity und Verschlüsselung einrichten</h3>
 <p>Die erste Hürde, die du nehmen musst, ist die Installation von <strong>duplicity</strong>. Entweder du bekommst das über die Konsole selber hin - oder du fragst bei deinem Hoster nach. In vielen Fällen kann auch ein Shared Hostern das für dich installieren:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">sudo apt-get install duplicity
-</span></span></code></pre></div><p>Als nächstes benötigst du <a href="https://www.gnupg.org/">GnuPG</a>. Das ist bei den meisten Hostern vorinstalliert. Sollte dem nicht so sein, fragst du entweder den Support oder erledigst das mit folgendem Befehl selber:</p>
+</span></span></code></pre></div><p>Als nächstes benötigst du 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.gnupg.org/?utm_source=allyourbasearebelongtous">GnuPG</a>
+
+
+. Das ist bei den meisten Hostern vorinstalliert. Sollte dem nicht so sein, fragst du entweder den Support oder erledigst das mit folgendem Befehl selber:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">sudo apt-get install gnupg2
-</span></span></code></pre></div><p><a href="https://wiki.ubuntuusers.de/GnuPG/">GnuPG</a> ist ein Software zur <strong>Verschlüsselung</strong> von Informationen bzw. Dateien, das z.B. auch bei der Verschlüsselung von E-Mails zum Einsatz kommt. Für diesen Prozess werden zwei sogenannte <strong>Schlüssel</strong> benötigt - der private und der öffentliche Schlüssel. Der öffentliche Schlüssel dient dazu, die Daten zu verschlüsseln, mit dem privaten Schlüssel kannst du den Prozess &ldquo;umkehren&rdquo; - die Daten also entschlüsseln. Diese beiden Schlüssel müssen zunächst einmal erzeugt werden:</p>
+</span></span></code></pre></div><p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://wiki.ubuntuusers.de/GnuPG/?utm_source=allyourbasearebelongtous">GnuPG</a>
+
+
+ ist ein Software zur <strong>Verschlüsselung</strong> von Informationen bzw. Dateien, das z.B. auch bei der Verschlüsselung von E-Mails zum Einsatz kommt. Für diesen Prozess werden zwei sogenannte <strong>Schlüssel</strong> benötigt - der private und der öffentliche Schlüssel. Der öffentliche Schlüssel dient dazu, die Daten zu verschlüsseln, mit dem privaten Schlüssel kannst du den Prozess &ldquo;umkehren&rdquo; - die Daten also entschlüsseln. Diese beiden Schlüssel müssen zunächst einmal erzeugt werden:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">gpg --gen-key
 </span></span></code></pre></div><p>Du musst dazu ein paar Fragen beantworten. Die Frage nach der Schlüssel-Art beantwortest du mit 1, bzw. <em>RSA and RSA</em>. Als Schlüssellänge (<em>keysize</em>) empfiehlt sich 2.048 bits. Die Gültigkeitsdauer beträgt &ldquo;unendlich&rdquo;. Danach kannst, musst aber nicht, du deinen Namen und Kontaktdaten angeben. Abschließend wirst du nach einem Passwort für den privaten Schlüssel gefragt und aufgefordert durch ein paar zufällige Tasteneingaben eine Entropie zu erzeugen. Danach befindet sich im Ordner <strong><em>~/.gnupg</em></strong> dein Schlüsselpaar.</p>
 <img src="/2018/2018-08-23-den-eigenen-web-server-sichern/images/gnupg.png" alt="Ein GnuPG Schlüsselpaar erzeugen"><p>Außerdem quittiert dir <strong>gnupg</strong> die Erstellung des Schlüsselpaars mit einer Statistik, aus der du dir die <strong>Id für den öffentlichen Schlüssel</strong> merken musst:</p>
 <img src="/2018/2018-08-23-den-eigenen-web-server-sichern/images/gnupg-ausgabe.png" alt=""><h3 id="cloud-speicher-einrichten">Cloud-Speicher einrichten</h3>
-<p>Der kostenlose <a href="https://www.blaucloud.de/">blaucloud</a>-Account für 5 GByte-Speicher ist ziemlich schnell eingerichtet. Dazu benötigst du nur einen beliebigen Benutzernamen, eine E-Mail-Adresse und ein Passwort. Über den Benutzerbnamen wird später auch deine Cloud erreichbar sein. Ich habe eine zufällige Zeichenkette verwendet, damit die Verbindung zur Funktion als Backup-Speicher nicht auf den ersten Blick ersichtlich ist (z.B. <em>qwertz123.blaucloud.de</em>). Danach musst du nur noch deine E-Mail-Adresse bestätigen und schon ist der Cloud-Speicher über folgende URL verfügbar:</p>
+<p>Der kostenlose 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.blaucloud.de/?utm_source=allyourbasearebelongtous">blaucloud</a>
+
+
+-Account für 5 GByte-Speicher ist ziemlich schnell eingerichtet. Dazu benötigst du nur einen beliebigen Benutzernamen, eine E-Mail-Adresse und ein Passwort. Über den Benutzerbnamen wird später auch deine Cloud erreichbar sein. Ich habe eine zufällige Zeichenkette verwendet, damit die Verbindung zur Funktion als Backup-Speicher nicht auf den ersten Blick ersichtlich ist (z.B. <em>qwertz123.blaucloud.de</em>). Danach musst du nur noch deine E-Mail-Adresse bestätigen und schon ist der Cloud-Speicher über folgende URL verfügbar:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">webdav://benutzername:passwor@benutzername.blaucloud.de/remote.php/webdav/
 </span></span></code></pre></div><h3 id="mysql-benutzer-einrichten">MySQL-Benutzer einrichten</h3>
 <p>Natürlich kannst du für das Backup einfach den Benutzer nutzen, den du auch für administrative Zwecke nutzt. Ich verrate dir aber kein Geheimnis wenn ich dir sage, dass es sehr sinnvoll ist, dafür einen eigenen Benutzer anzulegen, insofern deine Hosting-Umgebung das zulässt. Dazu führst du auf einer beliebigen Oberfläche (phpMyAdmin, MySQL Workbench oder direkt über das MySQL-CLI) folgende Query aus. Hier setzt du nur einen Benutzernamen und ein Passwort ein.</p>
@@ -565,7 +721,33 @@
 </span></span></code></pre></div><p>Willst du zusätzliche Ordner sichern, kannst du das über das Script <em>backupFilesystem.sh</em> tun, z.B:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">0 1 * * * root /bin/bash /backup/backupFilesystem.sh -f /home/ -d /private-backup/home/
 </span></span></code></pre></div><h3 id="github">Github</h3>
-<p>Die gesammelten Scripte und Vorlagen für die Konfigurationsdateien findest du auf <a href="https://github.com/nickyreinert/completeWebServerBackup">github.com</a>. Du kopierst einfach den Inhalt des Ordners <em>scripts</em> an einen Ort auf deinen Server, wie z.B. <em>/backup.</em></p>
+<p>Die gesammelten Scripte und Vorlagen für die Konfigurationsdateien findest du auf 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/completeWebServerBackup?utm_source=allyourbasearebelongtous">github.com</a>
+
+
+. Du kopierst einfach den Inhalt des Ordners <em>scripts</em> an einen Ort auf deinen Server, wie z.B. <em>/backup.</em></p>
 
     
   </article>

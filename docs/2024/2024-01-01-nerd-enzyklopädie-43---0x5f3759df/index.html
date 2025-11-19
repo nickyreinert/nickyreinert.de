@@ -58,7 +58,7 @@ Nerd-Enzyklopädie #43
 Um das zu ermöglichen nutzte Quake die „fast inverse square root“ (zu Deutsch klingt es etwas sperriger: „Schnelle umgekehrte Quadratwurzel”).">
   <meta itemprop="datePublished" content="2024-01-01T12:19:31+01:00">
   <meta itemprop="dateModified" content="2024-01-01T12:19:31+01:00">
-  <meta itemprop="wordCount" content="1111">
+  <meta itemprop="wordCount" content="1121">
   <meta itemprop="keywords" content="Fast Inverse Square Root,0x5f3759df,Quake III,id Software,John Carmack,Vektornormierung,IEEE 754,Floating Point,Bit-Manipulation,Newton-Verfahren,Nerd Enzyklopädie,Algorithmus">
 
   
@@ -116,7 +116,7 @@ Um das zu ermöglichen nutzte Quake die „fast inverse square root“ (zu Deuts
     },
     
     "url": "https:\/\/nickyreinert.de\/2024\/2024-01-01-nerd-enzyklop%C3%A4die-43---0x5f3759df\/",
-    "wordCount":  1111 ,
+    "wordCount":  1121 ,
     
     "timeRequired": "PT5M",
     
@@ -388,15 +388,145 @@ Um das zu ermöglichen nutzte Quake die „fast inverse square root“ (zu Deuts
 <p>Abschließend findet noch ein weiterer kleiner Trick aus der wunderbaren Welt der Mathematik Anwendung: Mittels des <strong>Newton-Verfahrens</strong> erfolgt eine Korrektur des bisherigen Ergebnisses.</p>
 <p>Schließlich kann die Funktion den <strong>Kehrwert einer Wurzel</strong> in etwa genauso gut bestimmen, wie eine konventionelle Berechnung, aber weitaus schneller.</p>
 <p>Diese geniale Optimierung der Berechnung wird übrigens oft alleine <strong>John Carmack</strong> zugeschrieben, einem der Schöpfer von <strong>Quake III</strong>. Tatsächlich führen die Wurzeln (<strong>no pun intended…</strong>) aber viel weiter zurück. So basiert die Funktion wohl auf den Arbeiten vieler schlauer Köpfe.</p>
-<p>Bereits <strong>1974</strong> tauchte eine ähnliche Routine im Quellcode für den <strong>PDP-11</strong> auf [<a href="https://minnie.tuhs.org/cgi-bin/utree.pl?file=V5%2Fusr%2Fsource%2Fs3%2Fsqrt.s"><strong>TUHS1</strong></a>]. In einem Quellcode von <strong>1993</strong> findet sich ein Kommentar mit dem Verweis auf eine wissenschaftliche Arbeit von <strong>William Kahan</strong> und <strong>K.C. Ng</strong> aus <strong>1983</strong>, in dem sie genau diese optimierte Methode beschreiben. Kahan gilt übrigens als „Architekt“ der IEEE-Fließkommazahlen-Aritmetik. <strong>1997</strong> präsentierte <strong>Jim Blinn</strong> in den „Floating-point tricks“ eine vergleichbare Funktion, dort noch ohne die „magische Konstante“ [<a href="https://ieeexplore.ieee.org/document/595279">IEEE2</a>].</p>
+<p>Bereits <strong>1974</strong> tauchte eine ähnliche Routine im Quellcode für den <strong>PDP-11</strong> auf [
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://minnie.tuhs.org/cgi-bin/utree.pl?file=V5%2Fusr%2Fsource%2Fs3%2Fsqrt.s&amp;utm_source=allyourbasearebelongtous"><strong>TUHS1</strong></a>
+
+
+]. In einem Quellcode von <strong>1993</strong> findet sich ein Kommentar mit dem Verweis auf eine wissenschaftliche Arbeit von <strong>William Kahan</strong> und <strong>K.C. Ng</strong> aus <strong>1983</strong>, in dem sie genau diese optimierte Methode beschreiben. Kahan gilt übrigens als „Architekt“ der IEEE-Fließkommazahlen-Aritmetik. <strong>1997</strong> präsentierte <strong>Jim Blinn</strong> in den „Floating-point tricks“ eine vergleichbare Funktion, dort noch ohne die „magische Konstante“ [
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://ieeexplore.ieee.org/document/595279?utm_source=allyourbasearebelongtous">IEEE2</a>
+
+
+].</p>
 <p>Aber zurück zu John Carnack, der die Urheberschaft ganz explizit von sich wies:</p>
 <blockquote>
 <p>Not me, and I don’t think it is Michael [Abrash]. Terje Matheson perhaps?</p>
 <p>~John Carmack, per E-Mail in 2004</p></blockquote>
-<p>Der nächste „Verdächtige“ wäre <strong>Gary Tarolli</strong>, <strong>NVidia</strong>-Mitarbeiter der ersten Stunde und Mitbegründer von <strong>3Dfx</strong>. Dieser räumte ein, Mitte der 1990er Jahre die besagte Funktion genutzt und vielleicht sogar optimiert zu haben, weißt aber die eigentliche Urheberschaft ebenfalls von sich [<a href="https://www.beyond3d.com/content/articles/8/">BEYON1</a>].</p>
+<p>Der nächste „Verdächtige“ wäre <strong>Gary Tarolli</strong>, <strong>NVidia</strong>-Mitarbeiter der ersten Stunde und Mitbegründer von <strong>3Dfx</strong>. Dieser räumte ein, Mitte der 1990er Jahre die besagte Funktion genutzt und vielleicht sogar optimiert zu haben, weißt aber die eigentliche Urheberschaft ebenfalls von sich [
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.beyond3d.com/content/articles/8/?utm_source=allyourbasearebelongtous">BEYON1</a>
+
+
+].</p>
 <p>Die Spur führt schließlich zu <strong>Greg Walsh</strong>, Ende der 1980er Jahre Entwickler bei der <strong>Ardent Computer Corporation</strong>. Inspiriert von der Arbeit seines Kollegen, dem Informatiker und Mathematiker <strong>Cleve Moler</strong>, Autor von <strong>MatLab</strong>, war es wohl Walsh, der die berüchtigte Funktion entwickelte.</p>
-<p>Übrigens: Auch zwischen Moler und Kahan gibt es eine Verbindung. Zwar ist nicht klar wie eng die Bekanntschaft war, aber sie sind sich zumindest einmal über den Weg gelaufen [<a href="https://blogs.mathworks.com/cleve/2014/07/07/floating-point-numbers/">MATH1</a>].</p>
-<p>Zurück zu Ardent: Das Unternehmen wurde damals unter anderem von <strong>Kubota</strong> “finanziell unterstützt”, einem japanischen Mischkonzern. Für Kubota arbeitete seinerzeit auch <strong>Gary Tarolli</strong>! So gelang der Quellcode wohl in die Hände von Tarolli. Die Verbindung zu John Carmack und <strong>id Software</strong> entstand dann vermutlich über <strong>Brian Hook</strong>, einem der ersten Angestellten von 3Dfx und später auch Entwickler bei id Software [<a href="https://www.quakewiki.net/profile-retro-interview-brian-hook/">QUAKE1</a>]. Und so schließt sich der Kreis…</p>
+<p>Übrigens: Auch zwischen Moler und Kahan gibt es eine Verbindung. Zwar ist nicht klar wie eng die Bekanntschaft war, aber sie sind sich zumindest einmal über den Weg gelaufen [
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://blogs.mathworks.com/cleve/2014/07/07/floating-point-numbers/?utm_source=allyourbasearebelongtous">MATH1</a>
+
+
+].</p>
+<p>Zurück zu Ardent: Das Unternehmen wurde damals unter anderem von <strong>Kubota</strong> “finanziell unterstützt”, einem japanischen Mischkonzern. Für Kubota arbeitete seinerzeit auch <strong>Gary Tarolli</strong>! So gelang der Quellcode wohl in die Hände von Tarolli. Die Verbindung zu John Carmack und <strong>id Software</strong> entstand dann vermutlich über <strong>Brian Hook</strong>, einem der ersten Angestellten von 3Dfx und später auch Entwickler bei id Software [
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.quakewiki.net/profile-retro-interview-brian-hook/?utm_source=allyourbasearebelongtous">QUAKE1</a>
+
+
+]. Und so schließt sich der Kreis…</p>
 <p>Der <strong>Fast Inverse Square Root Algorithmus</strong> hat nichts an Faszination eingebüßt, vielleicht aber etwas an Bedeutung. Moderne Computer ermöglichen mittlerweile — dank hoher Leistung und angepasster Befehlssätze — eine sehr schnelle Berechnung von Wurzeln und deren Kehrwerten.</p>
 <p>Hinter der mysteriösen Konstante und der merkwürdigen Optimierung steckt also eine verworrene Geschichte und am Ende fast schon der tragische Untergang in die Bedeutungslosigkeit. Wenn das kein Material für einen <strong>Nerd-Blockbuster</strong> ist…</p>
 

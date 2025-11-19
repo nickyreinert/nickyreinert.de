@@ -47,7 +47,7 @@
   <meta itemprop="description" content="Bisher war ich immer recht zufrieden mit der Geschwindigkeit meiner selbstgehosteten Wordpress-Seiten. Im Schnitt hat es nicht länger als 2 Sekunden gedauert, bis die Inhalte aufgebaut waren. Mal mehr, mal weniger. Und das schien mir ein akzeptabler Wert zu sein. Ich nutzte eine der üblichen Standard-Installationen, die da draußen wohl weit verbreitet ist: Apache2 mit mod_php. Der PHP-Interpreter ist dabei “Teil” des Apache2-Servers. Das ist unkompliziert und schnell zu installieren und somit einfach eine pragmatische Lösung und auch deshalb wohl sehr weit verbreitet. Aber: Die einfachsten Lösungen sind oft nicht die besten. Geschweige denn, die sichersten.">
   <meta itemprop="datePublished" content="2019-04-12T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-08-20T09:03:20+02:00">
-  <meta itemprop="wordCount" content="2746">
+  <meta itemprop="wordCount" content="2754">
   <meta itemprop="keywords" content="Hosting,Web,WordPress,Development">
 
   
@@ -103,7 +103,7 @@
     },
     
     "url": "https:\/\/nickyreinert.de\/2019\/2019-04-12-mehrere-virtuelle-server-mit-nginx-und-php-fpm-fur-wordpress-teil-1-3\/",
-    "wordCount":  2746 ,
+    "wordCount":  2754 ,
     
     "timeRequired": "PT5M",
     
@@ -352,14 +352,92 @@
 <p>Um es kurz zu machen: Das Ziel ist es, einen sicheren und schnellen Web-Server mit <strong>Nginx</strong>, <strong>PHP-FPM</strong> und <strong>chroot</strong> aufzusetzen, mit dem sich mehrere getrennte Webseiten betreiben lassen. Um der Sache einen Zweck zu geben, werde ich mich im Folgenden an Wordpress orientieren.</p>
 <p><strong>Warum chroot?</strong> Wenn sich mehrere Wordpress-Installationen einen (virtuellen) Server teilen, ist es fast schon fahrlässig diese einfach in ein paar Unterordner zu packen und die Domains darauf zeigen zu lassen. Wird eine Wordpress-Installation kompromittiert, ist es für den Angreifer nicht sonderlich schwer, sich im gesamten System zu auszubrreiten. Mit <strong>chroot</strong> sorge ich dafür, dass jede Wordpress-Instanz sich nur in ihrem eigenen Verzeichnis bewegen kann. Das ist in etwa zu vergleichen mit der PHP-Direktive <strong>open_basedir</strong> aber noch etwas restriktiver.</p>
 <p><strong>Warum PHP-FPM?</strong> Weil es sicherer und schneller ist und weil <strong>mod_php</strong> nur unter Apache2 funktioniert. Hier stand anfangs auch <strong>FastCGI</strong> zur Wahl.  CGI bedeutet Common Gateway Interface. Mit dieser Schnittstelle können Anfragen über einen Port oder einen Datei-Socket an den PHP-Interpreter weitergeleitet werden, der dazu aber immer wieder komplett neu gestartet wird. Bei <strong>FastCGI</strong>, einer Weiterentwicklung, wird der Interpreter nicht jedes mal neu gestartet, sondern läuft permanent im Hintergrund.</p>
-<p>Und <strong>FPM</strong> schließlich steht für <strong>FastCGI Process Manager</strong>, eine weitere Weiterentwicklung. Ein Neuerung ist unter anderem, dass nun mehrere PHP-Interpreter im Hintergrund laufen. Einen tieferen Überblick über die Grundlagen und Unterschiede <a href="https://www.admin-magazin.de/Das-Heft/2012/06/Der-PHP-Interpreter-PHP-FPM">bietet dieser Artikel</a>.</p>
+<p>Und <strong>FPM</strong> schließlich steht für <strong>FastCGI Process Manager</strong>, eine weitere Weiterentwicklung. Ein Neuerung ist unter anderem, dass nun mehrere PHP-Interpreter im Hintergrund laufen. Einen tieferen Überblick über die Grundlagen und Unterschiede 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.admin-magazin.de/Das-Heft/2012/06/Der-PHP-Interpreter-PHP-FPM?utm_source=allyourbasearebelongtous">bietet dieser Artikel</a>
+
+
+.</p>
 <p><strong>Und warum nginx?</strong> Meine Seite ist nicht der größte Krümel auf dem Kuchenblech, weshalb die Performance-Vorteile vielleicht kaum ins Gewicht fallen. Dennoch: <strong>Nginx</strong> ist leichtfüßiger als der mit allen möglichen Paketen ausgestattete Apache. Außerdem hatte ich bisher frustriert versucht, <strong>PHP-FPM</strong> mit <strong>chroot</strong> unter Apache zum Laufen zu bringen. Ohne Erfolg.</p>
 <p>Und den Zahn muss ich allen nginx-Kritikern gleich einmal ziehen: <strong>nginx ist nicht komplizierter zu bedienen als Apache</strong>. Wer sich bisher für Apache durch die Config-Dateien gewühlt hat, bekommt das locker auch mit nginx hin. Beide Server nehmen sich in Punkte Komplexität, Community und Dokumentation aus meiner Sicht nichts.</p>
 <p>Da das ganz jetzt schon ziemlich umfangreich ist, ich den Beitrag in zwei Teile getrennt. Viel Spass beim Lesen.</p>
 <h2 id="installation">Installation</h2>
 <p>Alles beginnt mit einem apt für <strong>nginx</strong> und zwei wichtigen Helfern:</p>
 <p>apt install nginx nscd python-certbot-nginx</p>
-<p><strong>Nscd</strong> steht für Name Service Cache Daemon und dient dazu, DNS-Anfragen auch im chroot zu ermöglichen, gleichzeitig anhand eines internen Caches aber auch zu beschleunigen. Die genauen Hintergründe <a href="https://blog.kthx.at/2015/09/23/php-fpm-chroot">sind hier beschrieben</a>. Außerdem nutze ich die SSL-Zertifikate von <a href="https://letsencrypt.org/">Let&rsquo;s Encrypt</a>, da diese kostenlos sind und sich die Re-Zertifizierung außerdem bequem automatisieren lässt. Ich muss also den entsprechenden <strong>certbot</strong> für <strong>nginx</strong> installieren.</p>
+<p><strong>Nscd</strong> steht für Name Service Cache Daemon und dient dazu, DNS-Anfragen auch im chroot zu ermöglichen, gleichzeitig anhand eines internen Caches aber auch zu beschleunigen. Die genauen Hintergründe 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://blog.kthx.at/2015/09/23/php-fpm-chroot?utm_source=allyourbasearebelongtous">sind hier beschrieben</a>
+
+
+. Außerdem nutze ich die SSL-Zertifikate von 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://letsencrypt.org/?utm_source=allyourbasearebelongtous">Let&rsquo;s Encrypt</a>
+
+
+, da diese kostenlos sind und sich die Re-Zertifizierung außerdem bequem automatisieren lässt. Ich muss also den entsprechenden <strong>certbot</strong> für <strong>nginx</strong> installieren.</p>
 <h2 id="ordnerstruktur">Ordnerstruktur</h2>
 <p>Chroot (<em>change root</em>) bedeutet, dass einem Prozess (sprich: der entsprechend konfigurierten Website) ein eigenes Root-Verzeichnis <em>vorgegaugelt</em> wird. Das ist sehr sinnvoll, weil der Prozess so nicht auf die gesamte Partition zugreifen kann. Das erschwert die Sache allerdings auch, da ihm wichtige Systemfunktionen zur Verfügung gestellt werden müssen, die sich sonst irgendwo auf der Partition befinden. Die Lösung dafür lautet <em>mount</em>. Grundsätzlich forderte chroot mir bei der Konfiguration sämtlicher Pfade etwas mehr Konzentration ab, da das Root-Verzeichnis nun nicht mehr unter / sondern z.B. unter /var/www/nickyreinert/ liegt.</p>
 <p>Jede Website bekommt grundsätzlich erstmal ein eigenes Verzeichnis, in dem sich jedoch nun nicht nur - wie gewohnt - die Ressourcen der Webseite befinden. Hier werden System-Funktionen, Sockets etc. eingebunden, die PHP und nginx für die einwandfreie Funktion benötigen. Die Ordner-Struktur sieht also folgendermaßen aus:</p>
@@ -390,7 +468,33 @@ chown root:sudo htdocs
 chown $1:www-data logs
 chown $1:www-data sessions
 chmod 700 sessions</p>
-<p>Um nun noch das das mounten zu erleichtern, nutze ich <a href="https://blog.kthx.at/2015/09/23/php-fpm-chroot">das Init-Script von kthx.at</a>, das ich noch etwas angepasst habe (Unterstützung für <em>sendmail</em> und <em>php-gettext</em>):</p>
+<p>Um nun noch das das mounten zu erleichtern, nutze ich 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://blog.kthx.at/2015/09/23/php-fpm-chroot?utm_source=allyourbasearebelongtous">das Init-Script von kthx.at</a>
+
+
+, das ich noch etwas angepasst habe (Unterstützung für <em>sendmail</em> und <em>php-gettext</em>):</p>
 <p>#!/bin/bash</p>
 <h3 id="begin-init-info">BEGIN INIT INFO</h3>
 <h1 id="provides----------php5-fpm-chroot-setup">Provides:          php5-fpm-chroot-setup</h1>
@@ -601,31 +705,415 @@ stop)
 </span></span><span class="line"><span class="ln">120</span><span class="cl">	<span class="c1">#	include /etc/nginx/sites-enabled/*.conf;</span>
 </span></span><span class="line"><span class="ln">121</span><span class="cl">
 </span></span><span class="line"><span class="ln">122</span><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p><a href="https://nginx.org/en/docs/ngx_core_module.html#worker_processes">worker_processes</a> - Natürlich kannst du nginx mit einem einzigen Prozess laufen lassen. Du kannst aber auch dafür sorgen, dass sich mehrere Prozesse um die Beantwortung der Anfragen kümmern. Es empfiehlt sich <strong>für jeden Prozessor-Kern</strong> einen Prozess zu starten. Mit dem Wert &ldquo;auto&rdquo; kümmert sich nginx selber darum. Mit </p>
+</span></span></code></pre></div><p>
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://nginx.org/en/docs/ngx_core_module.html?utm_source=allyourbasearebelongtous#worker_processes">worker_processes</a>
+
+
+ - Natürlich kannst du nginx mit einem einzigen Prozess laufen lassen. Du kannst aber auch dafür sorgen, dass sich mehrere Prozesse um die Beantwortung der Anfragen kümmern. Es empfiehlt sich <strong>für jeden Prozessor-Kern</strong> einen Prozess zu starten. Mit dem Wert &ldquo;auto&rdquo; kümmert sich nginx selber darum. Mit </p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">grep processor /proc/cpuinfo | wc -l
 </span></span></code></pre></div><p>findest du heraus, wieviele Kerne dein System hat, um diesen Wert manuell zu setzen.</p>
-<p><a href="https://nginx.org/en/docs/ngx_core_module.html#worker_connections">worker_connections</a> - Dieser Wert legt fest, wieviele Anfragen jeder einzelne <em>worker process</em> verarbeiten kann. Hat nginx also 8 simultane <em>worker processes</em> gestartet und ist dieser Wert  auf 1024 eingestellt, wird nginx insgesamt 8.192 Verbindungen gleichzeitig vertragen. Der Wert für diese Direktive wird allerdings durch die Anzahl gleichzeitiger offener Dateien für einen Prozess begrenzt. Diese erfährst du mit <em>ulimit -n</em>.</p>
-<p><a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#sendfile">sendfile</a>, tcp_nopush und tcp_nodelay - Jetzt geht es ein wenig ans Eingemachte. Diese Parameter können einerseits einen wichtigen Geschwindigkeitsgewinn bedeuten oder völlig sinnlos sein. Da mir aber kein negative Impact bekannt ist, möchte ich an der Stelle pauschal erwähnen, diesen Parameter zu aktivieren. Wenn ich mich hier irre, lasst mir gerne einen Kommentar dazu da. Sendfile optimiert die Art, wie auf eine angefragte Datei zugegriffen wird. Tcp_nopush sorgt dafür, dass die Antwort in einem Paket verschickt wird und tcp_nodelay schließlich vermeidet das Buffern von Daten die zum Versand bereit liegen. Planst du den Einsatz von Cache, solltest du unbedingt prüfen, wie sich diese Parameter dann auswirken, da ein Cache durchaus ein Kontraindikator sein kann!</p>
-<p><a href="https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration">client_body_timeout, client_header_timeout</a> - Diese Parameter werden die tatsächliche Geschwindigkeit weniger beeinflussen, sondern nur dafür sorgen, dass der HTTP Fehler 408 (Request time out) schneller ausgeliefert wird.</p>
-<p><a href="https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration">keepalive_timeout und send_timeout</a> - Diese Parameter machen vermutlich eher Sinn, wenn du mit wirklich vielen (organischen) Verbindungen konfrontiert wirst. Sie sorgen dafür, dass nicht genutzte Verbindungen schneller geschlossen werden und der Prozess so neue Anfragen annehmen kann.</p>
-<p><a href="http://nginx.org/en/docs/http/ngx_http_limit_req_module.html">limit_req_zone</a> - Mit dieser Direktive legst du fest, wie viele Anfragen der Server innerhalb eines Zeitraums annimmt, bevor er mit einem Fehler antwortet. Als Indikator habe ich die IP-Adresse gewählt ($binary_remote_addr), mit $server_name lässt sich das Limit je Server einstellen. Mit zone lege ich einen Namen für diese Einstellung fest. So kann ich z.B. mehrer Zonen für beliebige Orte oder Ordner einrichten. 10m beschreibt die Größe des Speichers, in dem die IP-Adressen abgelegt werden. 10 MByte sollte für etwa 160.000 IP-Adressen reichen. Rate legt fest, wie viele Anfragen pro Sekunde erlaubt sind. Mit burst kann eine Warteschlange eingerichtet werden, die (hier) 20 Anfragen zurückstellt um sie dann abzuarbeiten.</p>
-<p><a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#server_names_hash_bucket_size">server_names_hash_bucket_size</a> - Damit kommst du unter Umständen in Berührung, wenn nginx dich mit der Fehlermeldung &ldquo;<em>could not build the server_names_hash, you should increase server_names_hash_bucket_size</em>&rdquo; begrüßt. Die Direktive beschreibt ihre Funktion eigentlich schon ganz gut: Die Größe des Buckets für die Hash-Werte der Server-Namen. Oder: Dein Server-Name ist zu groß und passt nicht in den Eimer.</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://nginx.org/en/docs/ngx_core_module.html?utm_source=allyourbasearebelongtous#worker_connections">worker_connections</a>
+
+
+ - Dieser Wert legt fest, wieviele Anfragen jeder einzelne <em>worker process</em> verarbeiten kann. Hat nginx also 8 simultane <em>worker processes</em> gestartet und ist dieser Wert  auf 1024 eingestellt, wird nginx insgesamt 8.192 Verbindungen gleichzeitig vertragen. Der Wert für diese Direktive wird allerdings durch die Anzahl gleichzeitiger offener Dateien für einen Prozess begrenzt. Diese erfährst du mit <em>ulimit -n</em>.</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://nginx.org/en/docs/http/ngx_http_core_module.html?utm_source=allyourbasearebelongtous#sendfile">sendfile</a>
+
+
+, tcp_nopush und tcp_nodelay - Jetzt geht es ein wenig ans Eingemachte. Diese Parameter können einerseits einen wichtigen Geschwindigkeitsgewinn bedeuten oder völlig sinnlos sein. Da mir aber kein negative Impact bekannt ist, möchte ich an der Stelle pauschal erwähnen, diesen Parameter zu aktivieren. Wenn ich mich hier irre, lasst mir gerne einen Kommentar dazu da. Sendfile optimiert die Art, wie auf eine angefragte Datei zugegriffen wird. Tcp_nopush sorgt dafür, dass die Antwort in einem Paket verschickt wird und tcp_nodelay schließlich vermeidet das Buffern von Daten die zum Versand bereit liegen. Planst du den Einsatz von Cache, solltest du unbedingt prüfen, wie sich diese Parameter dann auswirken, da ein Cache durchaus ein Kontraindikator sein kann!</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration?utm_source=allyourbasearebelongtous">client_body_timeout, client_header_timeout</a>
+
+
+ - Diese Parameter werden die tatsächliche Geschwindigkeit weniger beeinflussen, sondern nur dafür sorgen, dass der HTTP Fehler 408 (Request time out) schneller ausgeliefert wird.</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration?utm_source=allyourbasearebelongtous">keepalive_timeout und send_timeout</a>
+
+
+ - Diese Parameter machen vermutlich eher Sinn, wenn du mit wirklich vielen (organischen) Verbindungen konfrontiert wirst. Sie sorgen dafür, dass nicht genutzte Verbindungen schneller geschlossen werden und der Prozess so neue Anfragen annehmen kann.</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://nginx.org/en/docs/http/ngx_http_limit_req_module.html?utm_source=allyourbasearebelongtous">limit_req_zone</a>
+
+
+ - Mit dieser Direktive legst du fest, wie viele Anfragen der Server innerhalb eines Zeitraums annimmt, bevor er mit einem Fehler antwortet. Als Indikator habe ich die IP-Adresse gewählt ($binary_remote_addr), mit $server_name lässt sich das Limit je Server einstellen. Mit zone lege ich einen Namen für diese Einstellung fest. So kann ich z.B. mehrer Zonen für beliebige Orte oder Ordner einrichten. 10m beschreibt die Größe des Speichers, in dem die IP-Adressen abgelegt werden. 10 MByte sollte für etwa 160.000 IP-Adressen reichen. Rate legt fest, wie viele Anfragen pro Sekunde erlaubt sind. Mit burst kann eine Warteschlange eingerichtet werden, die (hier) 20 Anfragen zurückstellt um sie dann abzuarbeiten.</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://nginx.org/en/docs/http/ngx_http_core_module.html?utm_source=allyourbasearebelongtous#server_names_hash_bucket_size">server_names_hash_bucket_size</a>
+
+
+ - Damit kommst du unter Umständen in Berührung, wenn nginx dich mit der Fehlermeldung &ldquo;<em>could not build the server_names_hash, you should increase server_names_hash_bucket_size</em>&rdquo; begrüßt. Die Direktive beschreibt ihre Funktion eigentlich schon ganz gut: Die Größe des Buckets für die Hash-Werte der Server-Namen. Oder: Dein Server-Name ist zu groß und passt nicht in den Eimer.</p>
 <h3 id="logging">Logging</h3>
-<p>An erster Stelle definiere ich meine eigenen Log-Templates <strong>main</strong> und <strong>cache_status</strong>. Beachte, dass ich die IP-Adresse nur anonymisiert übernehme. Dies übernimmt die map-Direktive, die per regulärem Ausdruck das letzte Tupel der IP-Adresse entfernt. Das ganze ist <a href="https://blag.nullteilerfrei.de/2018/05/26/anonymize-ip-addresses-in-nginx-log-files/">hier etwas genauer dokumentiert</a>. Ebenfalls mit <strong>map</strong> lese ich einen HTTP-Header aus, um das Logging vom Client aus zu deaktivieren - warum ich das mache, <a href="https://www.nickyreinert.de/zugriff-nicht-loggen-wenn-ein-bestimmter-http-request-header-gesetzt-ist/">ist hier beschrieben</a>.</p>
+<p>An erster Stelle definiere ich meine eigenen Log-Templates <strong>main</strong> und <strong>cache_status</strong>. Beachte, dass ich die IP-Adresse nur anonymisiert übernehme. Dies übernimmt die map-Direktive, die per regulärem Ausdruck das letzte Tupel der IP-Adresse entfernt. Das ganze ist 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://blag.nullteilerfrei.de/2018/05/26/anonymize-ip-addresses-in-nginx-log-files/?utm_source=allyourbasearebelongtous">hier etwas genauer dokumentiert</a>
+
+
+. Ebenfalls mit <strong>map</strong> lese ich einen HTTP-Header aus, um das Logging vom Client aus zu deaktivieren - warum ich das mache, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/zugriff-nicht-loggen-wenn-ein-bestimmter-http-request-header-gesetzt-ist/?utm_source=allyourbasearebelongtous">ist hier beschrieben</a>
+
+
+.</p>
 <p>Schließlich lege ich mit <strong>access_log</strong> und <strong>error_log</strong> fest, an welchem Ort die Log-Files per default abgelegt werden. Das ändere ich später natürlich noch auf Server-Ebene.</p>
 <h3 id="der-cache">Der Cache</h3>
-<p>In der globalen Konfig-Datei werde ich nur zwei Direktiven vorgeben, die für alle Server gleich sind. Mit der Direktive <strong><a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_cache_key">fastcgi_cache_key</a></strong>, lege ich fest, wie nginx die Cache-Keys erstellt. Hier sollte natürlich jeder Server unterscheidbar sein.</p>
+<p>In der globalen Konfig-Datei werde ich nur zwei Direktiven vorgeben, die für alle Server gleich sind. Mit der Direktive <strong>
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html?utm_source=allyourbasearebelongtous#fastcgi_cache_key">fastcgi_cache_key</a>
+
+
+</strong>, lege ich fest, wie nginx die Cache-Keys erstellt. Hier sollte natürlich jeder Server unterscheidbar sein.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">fastcgi_cache_key &#34;$scheme$request_method$host$request_uri&#34;;
-</span></span></code></pre></div><p>Außerdem soll jede Antwort einen Header enthalten, der den Cache-Status enthält. Mit der Variable <em>upstream_cache_status</em> kann z.B. ich so <a href="http://nginx.org/en/docs/http/ngx_http_upstream_module.html">HIT, MISS oder EXPIRED</a> übermitteln.</p>
+</span></span></code></pre></div><p>Außerdem soll jede Antwort einen Header enthalten, der den Cache-Status enthält. Mit der Variable <em>upstream_cache_status</em> kann z.B. ich so 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://nginx.org/en/docs/http/ngx_http_upstream_module.html?utm_source=allyourbasearebelongtous">HIT, MISS oder EXPIRED</a>
+
+
+ übermitteln.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">add_header X-Cache $upstream_cache_status;
 </span></span></code></pre></div><p>Wie der Cache bei nginx funktioniert und auf den wichtigsten Parameter fastcgi_cache_path gehe ich im 2. Teil genauer ein.</p>
 <h3 id="welches-dateisystem-für-den-cache---tempfs-oder-ramfs">Welches Dateisystem für den Cache - tempfs oder ramfs?</h3>
 <p>Der <strong>FastCGI</strong>-Cache ist dafür gedacht, die Auslieferung der PHP-Dateien zu beschleunigen. Es macht nämlich durchaus Sinn, eine PHP-Datei nicht jedes mal durch den PHP-Interpreter zu jagen, wenn sich am Inhalt nichts geändert hat. Dazu wird die &ldquo;interpretierte&rdquo; PHP-Datei einfach in einem Cache-Ordner abgelegt und bei Bedarf abgerufen. Dieser Ordner kann sich auf der Festplatte oder im Arbeitsspeicher befinden. Auf die Unterschiede gehe ich hier kurz ein:</p>
-<p>Im <strong>Init-Script</strong> (siehe oben) wird dir ein großer, auskommentierter Block aufgefallen sein. Mein Setup ist darauf ausgelegt, dass der Cache auf der Festplatte abgelegt wird. Es ist aber wie gesagt auch möglich, eine <strong>RAM-Disk</strong> zu nutzen, wobei der Arbeitsspeicher als Ablage dient. Das ist in den meisten Fällen weitaus schneller ist als die Festplatte. <a href="https://www.searchstorage.de/tipp/Linux-Server-Unnoetige-Dateien-mit-tmpfs-vom-Storage-fernhalten">Man unterscheidet</a> zwischen zwei nutzbaren Dateisystemen: <strong>ramfs</strong> und <strong>tempfs</strong>.</p>
+<p>Im <strong>Init-Script</strong> (siehe oben) wird dir ein großer, auskommentierter Block aufgefallen sein. Mein Setup ist darauf ausgelegt, dass der Cache auf der Festplatte abgelegt wird. Es ist aber wie gesagt auch möglich, eine <strong>RAM-Disk</strong> zu nutzen, wobei der Arbeitsspeicher als Ablage dient. Das ist in den meisten Fällen weitaus schneller ist als die Festplatte. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.searchstorage.de/tipp/Linux-Server-Unnoetige-Dateien-mit-tmpfs-vom-Storage-fernhalten?utm_source=allyourbasearebelongtous">Man unterscheidet</a>
+
+
+ zwischen zwei nutzbaren Dateisystemen: <strong>ramfs</strong> und <strong>tempfs</strong>.</p>
 <p>Der <strong>Vorteil von ramfs</strong> ist, dass direkt der <strong>Arbeitsspeicher</strong> genutzt wird. Der <strong>Nachteil</strong> ist: Es gibt <strong>keine Größenbeschränkung</strong>. Mit den falschen Einstellungen kann man also ungewollt den Arbeitsspeicher volllaufen lassen. Bei <strong>tempfs</strong> kann zwar eine <strong>Obergrenze</strong> angegeben werden. Es kann aber sein, dass das <strong>Dateisystem</strong> selber eine Swap-Partition zum Zwischenspeichern nutzt (vor allem dann, wenn die vorgegeben Speichergrenze erreicht ist). Ein Test mit tempfs und normaler Festplatte hat bei mir ergeben, dass der <strong>Cache</strong> um den <strong>Faktor 10</strong> langsamer wird. Aus diesem Grund ist der Bereich hier deaktiviert. Um das Thema kümmere ich mich also vielleicht an anderer Stelle noch mal</p>
 <h3 id="ssl">SSL</h3>
 <p>Natürlich gehört auch SSL zu meinem Server-Setup. Ich nutze dazu <strong>Let&rsquo;s Encrypt</strong> in Verbindung mit dem certbot, da das so ziemlich den ganzen Prozess automatisiert. Der Parameter <em>ssl_session_cache</em> beschreibt, wie groß der Cache für Session-Caches ist. Der Standardwert von 5 MByte sollte hier völlig ausreichen und reicht für knapp 20.000 Sessions. Auch beim <em>ssl_session_timeout</em> kann der Standardwert übernommen werden. Nach 1 Stunde verfällt also die SSL-Session. Außerdem sorgen wir mit <em>add_header</em> Strict-Transport-Security dafür, dass nur Verbindungen über HTTPS aufgebaut werden können (HTTP Strict Transport Security, HSTS).</p>
-<p>Schließlich solltest du über <em>ssl_protocols</em> die verwendeten SSL-Protokolle einschränken. Die meisten modernen Browser kommen mit TLS 1.2 schon ganz gut klar und seit August 2018 gibt es auch TLS 1.3. Ältere Versionen haben hier nichts mehr verloren, um z.B. Lücken wie <a href="https://de.wikipedia.org/wiki/Poodle">Poodle</a> keine Angriffsfläche zu bieten. Außerdem kannst du mit <em>ssl_prefer_server_ciphers</em> und <em>ssl_ciphers</em> festlegen, welche Verschlüsselungsmethoden akzeptiert werden sollen. Auch hier gibt es schwache und langsame Methoden. <a href="https://mozilla.github.io/server-side-tls/ssl-config-generator/">Mozilla bietet dafür übrigens ein Online-Tool</a> an, dessen Einstellung ich für einen guten Kompromiss zwischen Kompatibilität und Sicherheit halte</p>
+<p>Schließlich solltest du über <em>ssl_protocols</em> die verwendeten SSL-Protokolle einschränken. Die meisten modernen Browser kommen mit TLS 1.2 schon ganz gut klar und seit August 2018 gibt es auch TLS 1.3. Ältere Versionen haben hier nichts mehr verloren, um z.B. Lücken wie 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://de.wikipedia.org/wiki/Poodle?utm_source=allyourbasearebelongtous">Poodle</a>
+
+
+ keine Angriffsfläche zu bieten. Außerdem kannst du mit <em>ssl_prefer_server_ciphers</em> und <em>ssl_ciphers</em> festlegen, welche Verschlüsselungsmethoden akzeptiert werden sollen. Auch hier gibt es schwache und langsame Methoden. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://mozilla.github.io/server-side-tls/ssl-config-generator/?utm_source=allyourbasearebelongtous">Mozilla bietet dafür übrigens ein Online-Tool</a>
+
+
+ an, dessen Einstellung ich für einen guten Kompromiss zwischen Kompatibilität und Sicherheit halte</p>
 <h3 id="gzip---kompression">GZIP - Kompression</h3>
 <p>Neben dem Cache ist Kompression eine sinnvolle Maßnahme um den Seitenaufbau noch etwas zu beschleunigen. Die Kompression aktivierst du mit - Überraschung - <em>gzip on</em>.</p>
 <p>Mit <em>gzip_vary</em> sorgst du dafür, dass komprimierte und unkomprimierte Ressourcen gecached werden. Der Parameter <em>gzip_min_length</em> legt fest, wie groß eine Ressource mindestens sein muss, um komprimiert zu werden. Mit gzip_proxied sorgst du dafür, dass Anfragen von Proxies komprimierte Daten bekommen und <em>gzip_types</em> definiert die Ressourcen-Typen, die komprimiert werden. Und schließlich sorgen wir noch dafür, dass Anfragen vom alten Internet Explorer nicht komprimiert werden, da dieser damit nicht arbeiten kann: <em>gzip_disable</em>.</p>
