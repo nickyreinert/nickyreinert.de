@@ -375,7 +375,7 @@
   
 
   
-  <a href="https://www.admin-magazin.de/Das-Heft/2012/06/Der-PHP-Interpreter-PHP-FPM?utm_source=allyourbasearebelongtous">bietet dieser Artikel</a>
+  <a href="https://www.admin-magazin.de/Das-Heft/2012/06/Der-PHP-Interpreter-PHP-FPM?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">bietet dieser Artikel</a>
 
 
 .</p>
@@ -408,7 +408,7 @@
   
 
   
-  <a href="https://blog.kthx.at/2015/09/23/php-fpm-chroot?utm_source=allyourbasearebelongtous">sind hier beschrieben</a>
+  <a href="https://blog.kthx.at/2015/09/23/php-fpm-chroot?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">sind hier beschrieben</a>
 
 
 . Außerdem nutze ich die SSL-Zertifikate von 
@@ -434,7 +434,7 @@
   
 
   
-  <a href="https://letsencrypt.org/?utm_source=allyourbasearebelongtous">Let&rsquo;s Encrypt</a>
+  <a href="https://letsencrypt.org/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Let&rsquo;s Encrypt</a>
 
 
 , da diese kostenlos sind und sich die Re-Zertifizierung außerdem bequem automatisieren lässt. Ich muss also den entsprechenden <strong>certbot</strong> für <strong>nginx</strong> installieren.</p>
@@ -491,7 +491,7 @@ chmod 700 sessions</p>
   
 
   
-  <a href="https://blog.kthx.at/2015/09/23/php-fpm-chroot?utm_source=allyourbasearebelongtous">das Init-Script von kthx.at</a>
+  <a href="https://blog.kthx.at/2015/09/23/php-fpm-chroot?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">das Init-Script von kthx.at</a>
 
 
 , das ich noch etwas angepasst habe (Unterstützung für <em>sendmail</em> und <em>php-gettext</em>):</p>
@@ -732,7 +732,7 @@ stop)
   
 
   
-  <a href="https://nginx.org/en/docs/ngx_core_module.html?utm_source=allyourbasearebelongtous#worker_processes">worker_processes</a>
+  <a href="https://nginx.org/en/docs/ngx_core_module.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous#worker_processes" target="_blank" rel="noopener noreferrer">worker_processes</a>
 
 
  - Natürlich kannst du nginx mit einem einzigen Prozess laufen lassen. Du kannst aber auch dafür sorgen, dass sich mehrere Prozesse um die Beantwortung der Anfragen kümmern. Es empfiehlt sich <strong>für jeden Prozessor-Kern</strong> einen Prozess zu starten. Mit dem Wert &ldquo;auto&rdquo; kümmert sich nginx selber darum. Mit </p>
@@ -765,7 +765,7 @@ stop)
   
 
   
-  <a href="https://nginx.org/en/docs/ngx_core_module.html?utm_source=allyourbasearebelongtous#worker_connections">worker_connections</a>
+  <a href="https://nginx.org/en/docs/ngx_core_module.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous#worker_connections" target="_blank" rel="noopener noreferrer">worker_connections</a>
 
 
  - Dieser Wert legt fest, wieviele Anfragen jeder einzelne <em>worker process</em> verarbeiten kann. Hat nginx also 8 simultane <em>worker processes</em> gestartet und ist dieser Wert  auf 1024 eingestellt, wird nginx insgesamt 8.192 Verbindungen gleichzeitig vertragen. Der Wert für diese Direktive wird allerdings durch die Anzahl gleichzeitiger offener Dateien für einen Prozess begrenzt. Diese erfährst du mit <em>ulimit -n</em>.</p>
@@ -796,7 +796,7 @@ stop)
   
 
   
-  <a href="http://nginx.org/en/docs/http/ngx_http_core_module.html?utm_source=allyourbasearebelongtous#sendfile">sendfile</a>
+  <a href="http://nginx.org/en/docs/http/ngx_http_core_module.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous#sendfile" target="_blank" rel="noopener noreferrer">sendfile</a>
 
 
 , tcp_nopush und tcp_nodelay - Jetzt geht es ein wenig ans Eingemachte. Diese Parameter können einerseits einen wichtigen Geschwindigkeitsgewinn bedeuten oder völlig sinnlos sein. Da mir aber kein negative Impact bekannt ist, möchte ich an der Stelle pauschal erwähnen, diesen Parameter zu aktivieren. Wenn ich mich hier irre, lasst mir gerne einen Kommentar dazu da. Sendfile optimiert die Art, wie auf eine angefragte Datei zugegriffen wird. Tcp_nopush sorgt dafür, dass die Antwort in einem Paket verschickt wird und tcp_nodelay schließlich vermeidet das Buffern von Daten die zum Versand bereit liegen. Planst du den Einsatz von Cache, solltest du unbedingt prüfen, wie sich diese Parameter dann auswirken, da ein Cache durchaus ein Kontraindikator sein kann!</p>
@@ -823,7 +823,7 @@ stop)
   
 
   
-  <a href="https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration?utm_source=allyourbasearebelongtous">client_body_timeout, client_header_timeout</a>
+  <a href="https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">client_body_timeout, client_header_timeout</a>
 
 
  - Diese Parameter werden die tatsächliche Geschwindigkeit weniger beeinflussen, sondern nur dafür sorgen, dass der HTTP Fehler 408 (Request time out) schneller ausgeliefert wird.</p>
@@ -850,7 +850,7 @@ stop)
   
 
   
-  <a href="https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration?utm_source=allyourbasearebelongtous">keepalive_timeout und send_timeout</a>
+  <a href="https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">keepalive_timeout und send_timeout</a>
 
 
  - Diese Parameter machen vermutlich eher Sinn, wenn du mit wirklich vielen (organischen) Verbindungen konfrontiert wirst. Sie sorgen dafür, dass nicht genutzte Verbindungen schneller geschlossen werden und der Prozess so neue Anfragen annehmen kann.</p>
@@ -877,7 +877,7 @@ stop)
   
 
   
-  <a href="http://nginx.org/en/docs/http/ngx_http_limit_req_module.html?utm_source=allyourbasearebelongtous">limit_req_zone</a>
+  <a href="http://nginx.org/en/docs/http/ngx_http_limit_req_module.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">limit_req_zone</a>
 
 
  - Mit dieser Direktive legst du fest, wie viele Anfragen der Server innerhalb eines Zeitraums annimmt, bevor er mit einem Fehler antwortet. Als Indikator habe ich die IP-Adresse gewählt ($binary_remote_addr), mit $server_name lässt sich das Limit je Server einstellen. Mit zone lege ich einen Namen für diese Einstellung fest. So kann ich z.B. mehrer Zonen für beliebige Orte oder Ordner einrichten. 10m beschreibt die Größe des Speichers, in dem die IP-Adressen abgelegt werden. 10 MByte sollte für etwa 160.000 IP-Adressen reichen. Rate legt fest, wie viele Anfragen pro Sekunde erlaubt sind. Mit burst kann eine Warteschlange eingerichtet werden, die (hier) 20 Anfragen zurückstellt um sie dann abzuarbeiten.</p>
@@ -908,7 +908,7 @@ stop)
   
 
   
-  <a href="http://nginx.org/en/docs/http/ngx_http_core_module.html?utm_source=allyourbasearebelongtous#server_names_hash_bucket_size">server_names_hash_bucket_size</a>
+  <a href="http://nginx.org/en/docs/http/ngx_http_core_module.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous#server_names_hash_bucket_size" target="_blank" rel="noopener noreferrer">server_names_hash_bucket_size</a>
 
 
  - Damit kommst du unter Umständen in Berührung, wenn nginx dich mit der Fehlermeldung &ldquo;<em>could not build the server_names_hash, you should increase server_names_hash_bucket_size</em>&rdquo; begrüßt. Die Direktive beschreibt ihre Funktion eigentlich schon ganz gut: Die Größe des Buckets für die Hash-Werte der Server-Namen. Oder: Dein Server-Name ist zu groß und passt nicht in den Eimer.</p>
@@ -936,7 +936,7 @@ stop)
   
 
   
-  <a href="https://blag.nullteilerfrei.de/2018/05/26/anonymize-ip-addresses-in-nginx-log-files/?utm_source=allyourbasearebelongtous">hier etwas genauer dokumentiert</a>
+  <a href="https://blag.nullteilerfrei.de/2018/05/26/anonymize-ip-addresses-in-nginx-log-files/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">hier etwas genauer dokumentiert</a>
 
 
 . Ebenfalls mit <strong>map</strong> lese ich einen HTTP-Header aus, um das Logging vom Client aus zu deaktivieren - warum ich das mache, 
@@ -962,7 +962,7 @@ stop)
   
 
   
-  <a href="https://www.nickyreinert.de/zugriff-nicht-loggen-wenn-ein-bestimmter-http-request-header-gesetzt-ist/?utm_source=allyourbasearebelongtous">ist hier beschrieben</a>
+  <a href="https://www.nickyreinert.de/zugriff-nicht-loggen-wenn-ein-bestimmter-http-request-header-gesetzt-ist/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">ist hier beschrieben</a>
 
 
 .</p>
@@ -995,7 +995,7 @@ stop)
   
 
   
-  <a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html?utm_source=allyourbasearebelongtous#fastcgi_cache_key">fastcgi_cache_key</a>
+  <a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous#fastcgi_cache_key" target="_blank" rel="noopener noreferrer">fastcgi_cache_key</a>
 
 
 </strong>, lege ich fest, wie nginx die Cache-Keys erstellt. Hier sollte natürlich jeder Server unterscheidbar sein.</p>
@@ -1023,7 +1023,7 @@ stop)
   
 
   
-  <a href="http://nginx.org/en/docs/http/ngx_http_upstream_module.html?utm_source=allyourbasearebelongtous">HIT, MISS oder EXPIRED</a>
+  <a href="http://nginx.org/en/docs/http/ngx_http_upstream_module.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">HIT, MISS oder EXPIRED</a>
 
 
  übermitteln.</p>
@@ -1054,7 +1054,7 @@ stop)
   
 
   
-  <a href="https://www.searchstorage.de/tipp/Linux-Server-Unnoetige-Dateien-mit-tmpfs-vom-Storage-fernhalten?utm_source=allyourbasearebelongtous">Man unterscheidet</a>
+  <a href="https://www.searchstorage.de/tipp/Linux-Server-Unnoetige-Dateien-mit-tmpfs-vom-Storage-fernhalten?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Man unterscheidet</a>
 
 
  zwischen zwei nutzbaren Dateisystemen: <strong>ramfs</strong> und <strong>tempfs</strong>.</p>
@@ -1084,7 +1084,7 @@ stop)
   
 
   
-  <a href="https://de.wikipedia.org/wiki/Poodle?utm_source=allyourbasearebelongtous">Poodle</a>
+  <a href="https://de.wikipedia.org/wiki/Poodle?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Poodle</a>
 
 
  keine Angriffsfläche zu bieten. Außerdem kannst du mit <em>ssl_prefer_server_ciphers</em> und <em>ssl_ciphers</em> festlegen, welche Verschlüsselungsmethoden akzeptiert werden sollen. Auch hier gibt es schwache und langsame Methoden. 
@@ -1110,7 +1110,7 @@ stop)
   
 
   
-  <a href="https://mozilla.github.io/server-side-tls/ssl-config-generator/?utm_source=allyourbasearebelongtous">Mozilla bietet dafür übrigens ein Online-Tool</a>
+  <a href="https://mozilla.github.io/server-side-tls/ssl-config-generator/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Mozilla bietet dafür übrigens ein Online-Tool</a>
 
 
  an, dessen Einstellung ich für einen guten Kompromiss zwischen Kompatibilität und Sicherheit halte</p>
