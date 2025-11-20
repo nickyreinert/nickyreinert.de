@@ -210,30 +210,55 @@ a:hover {
 #header > span {
     text-align: left;
     margin: 1rem 0 1rem;
-    font-size: 2em;
+    font-size: 1em;
     font-weight: bold;
     font-family: 'Courier New', monospace;
 }
 
-.navigation {
+#header div.footnote {
+    font-size: 0.7em;
+}
 
+.navigation {
     display: flex; 
     justify-content: space-between; 
-    align-items: center;
+    align-items: flex-start;
+    gap: 0.5rem;
+    width: 100%;
+}
 
+.navigation > div {
+    display: flex;
+}
+
+.navigation .prev,
+.navigation .next {
+    flex-shrink: 0;
+    padding-top: 0.5rem;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-block !important;
 }
 
 .post-header {
     margin: 1rem 0;
+    width: 100%;
+    overflow: visible;
 }
 
 h1 {
-    padding: 0 1rem;
+    padding: 0 0.5rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 @media screen and (min-width: 768px) {
     #header > span {
-        font-size: 1.8rem;
+        font-size: 2em;
+    }
+    
+    #header div.footnote {
+        font-size: 1em;
     }
 }
 

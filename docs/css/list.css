@@ -1,6 +1,34 @@
 #main > .post-group > ul > li > div {
-    display: flex; align-items: center;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 0;
 }
+
+.post-date-left {
+    flex-shrink: 0;
+}
+
+.post-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+    flex: 1;
+}
+
+.post-title-wrapper a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.post-title-wrapper svg {
+    flex-shrink: 0;
+}
+
 div.hidden {
     display: none !important;
 }
@@ -21,7 +49,7 @@ div.hidden {
     align-items: center;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    gap: 0.5rem;
     line-height: 1.6;
     padding: .8rem 0;
     border-bottom: 1px solid #ddd;
@@ -31,9 +59,28 @@ div.hidden {
     text-align: right;
 }
 
-@media screen and (min-width: 768px) {
-    #main > .post-group > ul {
-        margin-left: 0;
-        padding-left: 0;
+#main > .post-group > ul > li > div > a {
+    font-size: 1rem;
+    color: #000;
+    text-decoration: none;
+}
+
+#main > .post-group > ul > li > div > a:hover {
+    text-decoration: underline;
+}
+
+#main > .post-group > ul > li > div > svg {
+    flex-shrink: 0;
+    margin-right: 8px;
+}
+
+@media screen and (max-width: 768px) {
+    #main > .post-group > ul > li > div {
+        max-width: calc(100% - 80px);
+        font-size: 0.9rem;
+    }
+
+    #main > .post-group > ul > li > time {
+        font-size: 0.7rem;
     }
 }
