@@ -11,7 +11,8 @@
 
   
   
-  <meta name="description" content="Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch kriminelle Geister an und so schwirren immer wieder Nachrichten über Sicherheitslücken und gehackte WP-Seiten durch die einschlägigen Medien. Aus diesem Grund will ich mal meine Erfahrungen in Bezug auf Wordpress-Sicherheit an dieser Stelle zusammenfassen und zwar so kompakt wie möglich, damit diese Information als Checkliste genutzt werden kann.">
+  <meta name="description" content="Wordpress hat unter den Content-Management-Systemen im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch kriminelle Geister an. So schwirren immer wieder Nachrichten über Sicherheitslücken und gehackte WP-Seiten durch die einschlägigen Medien. Aus diesem Grund will ich mal meine Erfahrungen in Bezug auf Wordpress-Sicherheit an dieser Stelle zusammenfassen – und zwar so kompakt wie möglich, damit diese Information als Checkliste genutzt werden kann.
+Wenn du Betreiber einer Wordpress-Seite bist, gibt es dafür drei Wege und unterschiedliche Freiheiten, sich selber um die Sicherheit der WP-Installation zu kümmern – im Folgenden die &ldquo;Freiheitsgrade&rdquo; genannt: Bei &ldquo;Wordpress as a Service&rdquo; greifst du auf ein Angebot zurück, das bekannteste ist wordpress.com, bei dem du nur Zugriff auf das Backend hast und dementsprechend wenig Konfigurationsmöglichkeiten. Als Nutzer eines Shared Hosting hast du zusätzlich die Möglichkeit, per FTP oder SSH auf den Webspace zu gelangen und dort Einstellungen vorzunehmen. Und schließlich gibt es noch die Möglichkeit, einen eigenen Server zu nutzen, bei dem du dich auch um die Konfiguration auf Systemebene, also des Webservers, kümmern musst. In dieser Reihenfolge möchte ich nun im Folgenden zusammenfassen, welche Möglichkeiten du hast, deine WP-Installation etwas sicherer zu gestalten.">
   
 
   
@@ -29,7 +30,8 @@
   <meta property="og:url" content="https://nickyreinert.de/2000/2000-01-01-wordpress-security-checkliste/">
   <meta property="og:site_name" content="Nicky Reinert">
   <meta property="og:title" content="Wordpress-Security Checkliste">
-  <meta property="og:description" content="Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch kriminelle Geister an und so schwirren immer wieder Nachrichten über Sicherheitslücken und gehackte WP-Seiten durch die einschlägigen Medien. Aus diesem Grund will ich mal meine Erfahrungen in Bezug auf Wordpress-Sicherheit an dieser Stelle zusammenfassen und zwar so kompakt wie möglich, damit diese Information als Checkliste genutzt werden kann.">
+  <meta property="og:description" content="Wordpress hat unter den Content-Management-Systemen im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch kriminelle Geister an. So schwirren immer wieder Nachrichten über Sicherheitslücken und gehackte WP-Seiten durch die einschlägigen Medien. Aus diesem Grund will ich mal meine Erfahrungen in Bezug auf Wordpress-Sicherheit an dieser Stelle zusammenfassen – und zwar so kompakt wie möglich, damit diese Information als Checkliste genutzt werden kann.
+Wenn du Betreiber einer Wordpress-Seite bist, gibt es dafür drei Wege und unterschiedliche Freiheiten, sich selber um die Sicherheit der WP-Installation zu kümmern – im Folgenden die “Freiheitsgrade” genannt: Bei “Wordpress as a Service” greifst du auf ein Angebot zurück, das bekannteste ist wordpress.com, bei dem du nur Zugriff auf das Backend hast und dementsprechend wenig Konfigurationsmöglichkeiten. Als Nutzer eines Shared Hosting hast du zusätzlich die Möglichkeit, per FTP oder SSH auf den Webspace zu gelangen und dort Einstellungen vorzunehmen. Und schließlich gibt es noch die Möglichkeit, einen eigenen Server zu nutzen, bei dem du dich auch um die Konfiguration auf Systemebene, also des Webservers, kümmern musst. In dieser Reihenfolge möchte ich nun im Folgenden zusammenfassen, welche Möglichkeiten du hast, deine WP-Installation etwas sicherer zu gestalten.">
   <meta property="og:locale" content="de_DE">
   <meta property="og:type" content="article">
     <meta property="article:section" content="2000">
@@ -49,10 +51,11 @@
   
   
   <meta itemprop="name" content="Wordpress-Security Checkliste">
-  <meta itemprop="description" content="Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch kriminelle Geister an und so schwirren immer wieder Nachrichten über Sicherheitslücken und gehackte WP-Seiten durch die einschlägigen Medien. Aus diesem Grund will ich mal meine Erfahrungen in Bezug auf Wordpress-Sicherheit an dieser Stelle zusammenfassen und zwar so kompakt wie möglich, damit diese Information als Checkliste genutzt werden kann.">
+  <meta itemprop="description" content="Wordpress hat unter den Content-Management-Systemen im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch kriminelle Geister an. So schwirren immer wieder Nachrichten über Sicherheitslücken und gehackte WP-Seiten durch die einschlägigen Medien. Aus diesem Grund will ich mal meine Erfahrungen in Bezug auf Wordpress-Sicherheit an dieser Stelle zusammenfassen – und zwar so kompakt wie möglich, damit diese Information als Checkliste genutzt werden kann.
+Wenn du Betreiber einer Wordpress-Seite bist, gibt es dafür drei Wege und unterschiedliche Freiheiten, sich selber um die Sicherheit der WP-Installation zu kümmern – im Folgenden die “Freiheitsgrade” genannt: Bei “Wordpress as a Service” greifst du auf ein Angebot zurück, das bekannteste ist wordpress.com, bei dem du nur Zugriff auf das Backend hast und dementsprechend wenig Konfigurationsmöglichkeiten. Als Nutzer eines Shared Hosting hast du zusätzlich die Möglichkeit, per FTP oder SSH auf den Webspace zu gelangen und dort Einstellungen vorzunehmen. Und schließlich gibt es noch die Möglichkeit, einen eigenen Server zu nutzen, bei dem du dich auch um die Konfiguration auf Systemebene, also des Webservers, kümmern musst. In dieser Reihenfolge möchte ich nun im Folgenden zusammenfassen, welche Möglichkeiten du hast, deine WP-Installation etwas sicherer zu gestalten.">
   <meta itemprop="datePublished" content="2000-01-01T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-08-21T18:08:54+02:00">
-  <meta itemprop="wordCount" content="922">
+  <meta itemprop="wordCount" content="925">
   <meta itemprop="keywords" content="WordPress,Sicherheit,Checkliste,Websecurity,PHP,htaccess,Dateirechte,Backup,Staging,Serverhärtung,Cybersecurity">
 
   
@@ -68,7 +71,8 @@
   
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Wordpress-Security Checkliste">
-  <meta name="twitter:description" content="Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch kriminelle Geister an und so schwirren immer wieder Nachrichten über Sicherheitslücken und gehackte WP-Seiten durch die einschlägigen Medien. Aus diesem Grund will ich mal meine Erfahrungen in Bezug auf Wordpress-Sicherheit an dieser Stelle zusammenfassen und zwar so kompakt wie möglich, damit diese Information als Checkliste genutzt werden kann.">
+  <meta name="twitter:description" content="Wordpress hat unter den Content-Management-Systemen im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch kriminelle Geister an. So schwirren immer wieder Nachrichten über Sicherheitslücken und gehackte WP-Seiten durch die einschlägigen Medien. Aus diesem Grund will ich mal meine Erfahrungen in Bezug auf Wordpress-Sicherheit an dieser Stelle zusammenfassen – und zwar so kompakt wie möglich, damit diese Information als Checkliste genutzt werden kann.
+Wenn du Betreiber einer Wordpress-Seite bist, gibt es dafür drei Wege und unterschiedliche Freiheiten, sich selber um die Sicherheit der WP-Installation zu kümmern – im Folgenden die “Freiheitsgrade” genannt: Bei “Wordpress as a Service” greifst du auf ein Angebot zurück, das bekannteste ist wordpress.com, bei dem du nur Zugriff auf das Backend hast und dementsprechend wenig Konfigurationsmöglichkeiten. Als Nutzer eines Shared Hosting hast du zusätzlich die Möglichkeit, per FTP oder SSH auf den Webspace zu gelangen und dort Einstellungen vorzunehmen. Und schließlich gibt es noch die Möglichkeit, einen eigenen Server zu nutzen, bei dem du dich auch um die Konfiguration auf Systemebene, also des Webservers, kümmern musst. In dieser Reihenfolge möchte ich nun im Folgenden zusammenfassen, welche Möglichkeiten du hast, deine WP-Installation etwas sicherer zu gestalten.">
 
 
   
@@ -78,7 +82,7 @@
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": "Wordpress-Security Checkliste",
-    "description": "Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch …",
+    "description": "Wordpress hat unter den Content-Management-Systemen im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch …",
     "datePublished": "2000-01-01T00:00:00Z",
     "dateModified": "2025-08-21T18:08:54\u002b02:00",
     "author": {
@@ -108,7 +112,7 @@
     },
     
     "url": "https:\/\/nickyreinert.de\/2000\/2000-01-01-wordpress-security-checkliste\/",
-    "wordCount":  922 ,
+    "wordCount":  925 ,
     
     "timeRequired": "PT5M",
     
@@ -134,7 +138,7 @@
     "@context": "https://schema.org",
     "@type": "TechArticle",
     "headline": "Wordpress-Security Checkliste",
-    "description": "Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch …",
+    "description": "Wordpress hat unter den Content-Management-Systemen im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch …",
     
     "proficiencyLevel": "intermediate",
     
@@ -363,25 +367,25 @@
   
   <article style="border-top: 2px solid #878787;" class="content">
     
-    <img src="/2000/2000-01-01-wordpress-security-checkliste/image-1.png" alt="alt text"><p>Wordpress hat unter den Content Management System im Internet mittlerweile einen Marktanteil von 60% erreicht und lockt mit dieser Verbreitung natürlich auch kriminelle Geister an und so schwirren immer wieder Nachrichten über Sicherheitslücken und gehackte WP-Seiten durch die einschlägigen Medien. Aus diesem Grund will ich mal meine Erfahrungen in Bezug auf Wordpress-Sicherheit an dieser Stelle zusammenfassen und zwar so kompakt wie möglich, damit diese Information als Checkliste genutzt werden kann.</p>
-<p>Wenn du Betreiber einer Wordpress-Seite bist, gibt es dafür drei Wege und unterschiedliche Freiheiten, sich selber um die Sicherheit der WP-Installation zu nutzen - im folgenden die &ldquo;Freiheitsgrade&rdquo; genannt: Bei &ldquo;wordpress as a service&rdquo; greifst du auf einen Angebot zurück, das bekannteste ist wordpress.com, bei dem du nur Zugriff auf das Backend hast und dementsprechend wenig Konfigurationsmöglichkeiten. Als Nutzer eines Shared Hosting hast du zusätzlich die Möglichkeit, per FTP oder SSH auf den Webspace zu gelangen und dort Einstellungen vorzunehmen. Und schließlich gibt es noch die Möglichkeit, einen eigenen Server zu nutzen, bei dem du dich auch um die Konfiguration auf Systemebene, also des Webserver kümmern musst. In dieser Reihenfolge möchte ich nun im folgenden Zusammenfassen, welche Möglichkeiten du hast, deine WP-Installation etwas sicherer zu gestalten.</p>
+    <img src="/2000/2000-01-01-wordpress-security-checkliste/image-1.png" alt="alt text"><p><strong>Wordpress</strong> hat unter den Content-Management-Systemen im Internet mittlerweile einen Marktanteil von <strong>60%</strong> erreicht und lockt mit dieser Verbreitung natürlich auch kriminelle Geister an. So schwirren immer wieder Nachrichten über Sicherheitslücken und gehackte WP-Seiten durch die einschlägigen Medien. Aus diesem Grund will ich mal meine Erfahrungen in Bezug auf <strong>Wordpress-Sicherheit</strong> an dieser Stelle zusammenfassen – und zwar so kompakt wie möglich, damit diese Information als <strong>Checkliste</strong> genutzt werden kann.</p>
+<p>Wenn du Betreiber einer Wordpress-Seite bist, gibt es dafür drei Wege und unterschiedliche Freiheiten, sich selber um die Sicherheit der WP-Installation zu kümmern – im Folgenden die &ldquo;Freiheitsgrade&rdquo; genannt: Bei <strong>&ldquo;Wordpress as a Service&rdquo;</strong> greifst du auf ein Angebot zurück, das bekannteste ist wordpress.com, bei dem du nur Zugriff auf das Backend hast und dementsprechend wenig Konfigurationsmöglichkeiten. Als Nutzer eines <strong>Shared Hosting</strong> hast du zusätzlich die Möglichkeit, per FTP oder SSH auf den Webspace zu gelangen und dort Einstellungen vorzunehmen. Und schließlich gibt es noch die Möglichkeit, einen <strong>eigenen Server</strong> zu nutzen, bei dem du dich auch um die Konfiguration auf Systemebene, also des Webservers, kümmern musst. In dieser Reihenfolge möchte ich nun im Folgenden zusammenfassen, welche Möglichkeiten du hast, deine WP-Installation etwas sicherer zu gestalten.</p>
 <h2 id="aktuelle-updates">Aktuelle Updates</h2>
-<p>Zunächst zum Offensichtlichen: Sicherheitsupdates. Die automatischen Updates des WP-Cores (also dem, was WP ausmacht) sind mit jedem Freiheitsgrad konfigurierbar, bergen aber auch Risikos. So hatte z.B. das Update auf Version 4.9.3 Anfang 2018 den Auto-Update-Mechanismus deaktiviert. Spätere Sicherheitsupdates würden also ignoriert werden. Grundsätzlich ist das Auto-Update nur für sog. Minor-Versionen zu empfehlen, wodurch Sicherheitlücken und Bugs behoben werden. Wer diese Funktion auf einem Test-System auch für Major-Versionen aktivieren möchte, muss in der wp-config.php folgenden Parameter setzen:</p>
+<p>Zunächst zum Offensichtlichen: <strong>Sicherheitsupdates</strong>. Die automatischen Updates des WP-Cores (also dem, was WP ausmacht) sind mit jedem Freiheitsgrad konfigurierbar, bergen aber auch Risiken. So hatte z. B. das Update auf Version 4.9.3 Anfang 2018 den Auto-Update-Mechanismus deaktiviert. Spätere Sicherheitsupdates würden also ignoriert werden. Grundsätzlich ist das Auto-Update nur für sog. <strong>Minor-Versionen</strong> zu empfehlen, wodurch Sicherheitslücken und Bugs behoben werden. Wer diese Funktion auf einem Test-System auch für <strong>Major-Versionen</strong> aktivieren möchte, muss in der <code>wp-config.php</code> folgenden Parameter setzen:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">define</span><span class="p">(</span> <span class="s1">&#39;WP_AUTO_UPDATE_CORE&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span> <span class="p">);</span>
-</span></span></code></pre></div><p>(der Parameter ist per default auf <em>minor</em> gesetzt.) Grundsätzlich ist das aber nicht zu empfehlen: Denn: Bevor ein großes Update eingespielt wird, sollte das auf Herz &amp; Nieren und natürlich Kompatibilität mit den vorhandenen Themes und Plugins getestet werden. Dazu sollte man ein Staging-System einrichten, worauf ich im nächsten Absatz eingehe.</p>
+</span></span></code></pre></div><p>(Der Parameter ist per default auf <em>minor</em> gesetzt.) Grundsätzlich ist das aber nicht zu empfehlen: Denn bevor ein großes Update eingespielt wird, sollte das auf Herz und Nieren und natürlich auf Kompatibilität mit den vorhandenen Themes und Plugins getestet werden. Dazu sollte man ein <strong>Staging-System</strong> einrichten, worauf ich im nächsten Absatz eingehe.</p>
 <h2 id="ein-staging-system-nutzen">Ein Staging-System nutzen</h2>
-<p>Die Sicherheit der WP-Installation kann nicht nur durch Malware oder Angriffe von außen versehrt werden, sondern auch durch Bedienfehler. Ein wichtiger Baustein ist also ein Staging-System. Das ist im weitesten Sinne eine exakte Kopie der aktuelle WP-Installation. Das Staging-System erfüllt eine Reihe von Funktionen:</p>
+<p>Die Sicherheit der WP-Installation kann nicht nur durch Malware oder Angriffe von außen gefährdet werden, sondern auch durch Bedienfehler. Ein wichtiger Baustein ist also ein <strong>Staging-System</strong>. Das ist im weitesten Sinne eine exakte Kopie der aktuellen WP-Installation. Das Staging-System erfüllt eine Reihe von Funktionen:</p>
 <ul>
-<li>Testen von Plugins &amp; Updates auf Kompatibilität</li>
+<li>Testen von Plugins und Updates auf Kompatibilität</li>
 <li>Referenz-System zum Erkennen von verdächtigen Änderungen</li>
 <li>Testen von Änderungen am Theme</li>
 </ul>
-<p>Wie ein Staging-System eingerichtet wird, habe ich hier genauer erklärt. Was es mit dem 2. Punkt auf sich hat, erkläre ich weiter unten.</p>
+<p>Wie ein Staging-System eingerichtet wird, habe ich hier genauer erklärt. Was es mit dem zweiten Punkt auf sich hat, erkläre ich weiter unten.</p>
 <h2 id="regelmäßige-backups">Regelmäßige Backups</h2>
-<p>Auch Backups sind ein wichtiger Teil eines Sicherheitskonzeptes. Hier gibt es je nach Freiheitsgrad verschiedene Möglichkeiten. Als Plugin empfehle ich zunächst das sehr weit verbreitete Updraft. Das Backup sollte unbedingt auf einen anderen Ort kopiert werden. Updraft unterstützt in der kostenlosen Version z.B. FTP. Wer kein Problem mit Dropbox oder Google Drive hat, kann natürlich auch die Cloud nutzen. Updraft unterstützt die Verschlüsselung der Datenbank-Sicherung nur in der bezahlten Version. Wer mit personenbezogenen Daten hantiert, sollte sich diese Funktion unbedingt zulegen!</p>
-<p>Eine bessere Alternative, die aber nur ab dem 2. Freiheitsgrad möglich ist, ist das Backup über die Kommandozeile. Das ist vor allem dann unumgänglich, wenn die WP-Installation sehr groß ist und nicht mehr mit den gängigen Plugins durchführbar ist. Außerdem funktioniert das unabhängig von Wordpress und kann demnach auch nicht durch andere Plugins beeinträchtigt werden. Wie genau man das einrichtet und vor allem auch die Wiederherstellung habe ich in diesem Beitrag genauer beschrieben.</p>
+<p>Auch <strong>Backups</strong> sind ein wichtiger Teil eines Sicherheitskonzeptes. Hier gibt es je nach Freiheitsgrad verschiedene Möglichkeiten. Als Plugin empfehle ich zunächst das sehr weit verbreitete <strong>Updraft</strong>. Das Backup sollte unbedingt auf einen anderen Ort kopiert werden. Updraft unterstützt in der kostenlosen Version z. B. FTP. Wer kein Problem mit Dropbox oder Google Drive hat, kann natürlich auch die Cloud nutzen. Updraft unterstützt die Verschlüsselung der Datenbank-Sicherung nur in der bezahlten Version. Wer mit personenbezogenen Daten hantiert, sollte sich diese Funktion unbedingt zulegen!</p>
+<p>Eine bessere Alternative, die aber nur ab dem zweiten Freiheitsgrad möglich ist, ist das Backup über die <strong>Kommandozeile</strong>. Das ist vor allem dann unumgänglich, wenn die WP-Installation sehr groß ist und nicht mehr mit den gängigen Plugins durchführbar ist. Außerdem funktioniert das unabhängig von Wordpress und kann demnach auch nicht durch andere Plugins beeinträchtigt werden. Wie genau man das einrichtet und vor allem auch die Wiederherstellung, habe ich in diesem Beitrag genauer beschrieben.</p>
 <h2 id="plugin-sparsamkeit">Plugin-Sparsamkeit</h2>
-<p>Hierunter ist eher ein Konzept als eine konkrete Handlungsempfehlung zu verstehen. Vor allem technisch unbedarfte Nutzer tendieren dazu, sofort ein Plugin zu installieren, wenn eine bestimmte Funktion benötigt wird. Doch gerade unsaubere, nicht gepflegte Plugins bieten eine Angriffsfläche und noch dazu wirkt sich ein zunehmendes Plugin-Portfolio negativ auf die Performance aus. Wer ein Plugin installieren möchte, sollte dazu nur auf vertrauenswürdige und bekannte Quellen zurückgreifen. Im Klartext: 
+<p>Hierunter ist eher ein Konzept als eine konkrete Handlungsempfehlung zu verstehen. Vor allem technisch unbedarfte Nutzer tendieren dazu, sofort ein Plugin zu installieren, wenn eine bestimmte Funktion benötigt wird. Doch gerade unsaubere, nicht gepflegte Plugins bieten eine Angriffsfläche und noch dazu wirkt sich ein zunehmendes Plugin-Portfolio negativ auf die <strong>Performance</strong> aus. Wer ein Plugin installieren möchte, sollte dazu nur auf vertrauenswürdige und bekannte Quellen zurückgreifen. Im Klartext: 
 
 
 
@@ -414,24 +418,24 @@
 </ol>
 <h2 id="die-technischen-maßnahmen">Die technischen Maßnahmen</h2>
 <ol>
-<li>Admin-Bereich mit .htaccess schützen</li>
+<li>Admin-Bereich mit <code>.htaccess</code> schützen</li>
 <li>Dateirechte korrekt setzen</li>
-<li>PHP-Ausführung in bestimmten Unterordner deaktivieren</li>
+<li>PHP-Ausführung in bestimmten Unterordnern deaktivieren</li>
 </ol>
 <h2 id="plugins-und-themes">Plugins und Themes</h2>
-<p>Ein zentrales Element und der größte Vorteil von Wordpress ist seine fast unerreichbar funktionale Erweiterbarkeit und sehr große Community. Das zieht allerdings auch schwarze Schafe an.</p>
+<p>Ein zentrales Element und der größte Vorteil von Wordpress ist seine fast unerreichbare funktionale Erweiterbarkeit und sehr große Community. Das zieht allerdings auch schwarze Schafe an.</p>
 <ol>
-<li>Installiere nicht wahllos Plugins, weil du eine bestimmte Funktion benötigst</li>
-<li>Installiere Plugins nur von vertrauenswürdigen Quellen</li>
-<li>Räume deinen Plugin-Ordner regelmäßig auf</li>
+<li>Installiere nicht wahllos Plugins, weil du eine bestimmte Funktion benötigst.</li>
+<li>Installiere Plugins nur von vertrauenswürdigen Quellen.</li>
+<li>Räume deinen Plugin-Ordner regelmäßig auf.</li>
 </ol>
 <h2 id="die-mutigen-maßnahmen">Die mutigen Maßnahmen</h2>
 <h3 id="php-ini-parameter">PHP ini-Parameter</h3>
-<p>Es dürfte kein Geheimnis sein, dass PHP über die php.ini gesteuert wird. Es gibt allerdings einige sicherheitsrelevante Parameter, um die man sich allerdings selber kümmern muss. Die wichtigsten möchte ich hier vorstellen.</p>
-<p>Um die Übersicht über manuelle Änderungen nicht zu verlieren, solltest du die Einstellungen in einer separaten Datei (z.B. <em>security.ini</em>) speichern. Auf der Kommandozeile zeigt dir der folgende Befehl, aus welchem zusätzlichen Ordner PHP zusätzliche ini-Dateien liest:</p>
+<p>Es dürfte kein Geheimnis sein, dass PHP über die <code>php.ini</code> gesteuert wird. Es gibt allerdings einige sicherheitsrelevante Parameter, um die man sich allerdings selber kümmern muss. Die wichtigsten möchte ich hier vorstellen.</p>
+<p>Um die Übersicht über manuelle Änderungen nicht zu verlieren, solltest du die Einstellungen in einer separaten Datei (z. B. <em>security.ini</em>) speichern. Auf der Kommandozeile zeigt dir der folgende Befehl, aus welchem zusätzlichen Ordner PHP zusätzliche ini-Dateien liest:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">php --ini
 </span></span></code></pre></div><p>In den meisten Fällen dürfte das <code>/etc/php/7.1/apache2/conf.d/</code> sein.</p>
-<p>Eine einfache aber sehr wirksame Maßnahme ist das deaktivieren potentiell gefährlicher PHP-Funktionen. Wie z.B. 
+<p>Eine einfache, aber sehr wirksame Maßnahme ist das Deaktivieren potenziell gefährlicher PHP-Funktionen. Wie z. B. 
 
 
 
@@ -457,7 +461,7 @@
   <a href="http://php.net/manual/en/function.shell-exec.php?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">shell_exec()</a>
 
 
- - im Wordpress-Umfeld gibt es kaum ein Szenario, in dem diese Funktion nützlich sein könnte. Um PHP-Funktionen zu deaktivieren, kannst du den ini-Parameter 
+ – im Wordpress-Umfeld gibt es kaum ein Szenario, in dem diese Funktion nützlich sein könnte. Um PHP-Funktionen zu deaktivieren, kannst du den ini-Parameter 
 
 
 

@@ -11,17 +11,15 @@
 
   
   
-  <meta name="description" content="Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Problem, denen du begegnen wirst.
+  <meta name="description" content="Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:
 
+Ungültiges Server-Zertifikat: Die Verbindung zum Server schlägt fehl, weil das Server-Zertifikat ungültig ist. Die Fehlermeldung in FileZilla lautet dann z. B.:
+GnuTLS error -48: Key usage violation in certificate has been detected. Could not connect to server.
+Probleme mit passiven Verbindungen: Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast, kann die Verbindung nicht vollendet werden. FileZilla bleibt dann z. B. bei der folgenden Zeile stehen:
+150 Opening BINARY mode data connection.
+Fehlende Zugriffsrechte: Der Benutzer hat nicht die nötigen Zugriffsrechte für den Ordner, den du in den Einstellungen des FTP-Servers angegeben hast.
 
-
-
-
-Du kannst die Verbindung zum Server nicht herstellen, weil das Server-Zertifikat ungültig ist. Die Fehlermeldung in FileZilla lautet dann z.B.
-GnuTLS error -48: Key usage violation in certificate has been detected. Could not connect to server
-
-
-Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast, kann die Verbindung nicht vollendet werden. FileZilla bleibt dann z.B. bei der folgenden Zeile stehen:">
+Keine Sorge. Mit diesen drei Problemen durfte auch ich schon kämpfen, und ich habe die Lösungen hier zusammengetragen. Also&hellip; eins nach dem anderen.">
   
 
   
@@ -39,10 +37,10 @@ Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast
   <meta property="og:url" content="https://nickyreinert.de/2015/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten/">
   <meta property="og:site_name" content="Nicky Reinert">
   <meta property="og:title" content="SFTP auf Microsoft IIS korrekt einrichten">
-  <meta property="og:description" content="Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Problem, denen du begegnen wirst.
-Du kannst die Verbindung zum Server nicht herstellen, weil das Server-Zertifikat ungültig ist. Die Fehlermeldung in FileZilla lautet dann z.B.
-GnuTLS error -48: Key usage violation in certificate has been detected. Could not connect to server
-Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast, kann die Verbindung nicht vollendet werden. FileZilla bleibt dann z.B. bei der folgenden Zeile stehen:">
+  <meta property="og:description" content="Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:
+Ungültiges Server-Zertifikat: Die Verbindung zum Server schlägt fehl, weil das Server-Zertifikat ungültig ist. Die Fehlermeldung in FileZilla lautet dann z. B.:
+GnuTLS error -48: Key usage violation in certificate has been detected. Could not connect to server. Probleme mit passiven Verbindungen: Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast, kann die Verbindung nicht vollendet werden. FileZilla bleibt dann z. B. bei der folgenden Zeile stehen:
+150 Opening BINARY mode data connection. Fehlende Zugriffsrechte: Der Benutzer hat nicht die nötigen Zugriffsrechte für den Ordner, den du in den Einstellungen des FTP-Servers angegeben hast. Keine Sorge. Mit diesen drei Problemen durfte auch ich schon kämpfen, und ich habe die Lösungen hier zusammengetragen. Also… eins nach dem anderen.">
   <meta property="og:locale" content="de_DE">
   <meta property="og:type" content="article">
     <meta property="article:section" content="2015">
@@ -63,13 +61,13 @@ Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast
   
   
   <meta itemprop="name" content="SFTP auf Microsoft IIS korrekt einrichten">
-  <meta itemprop="description" content="Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Problem, denen du begegnen wirst.
-Du kannst die Verbindung zum Server nicht herstellen, weil das Server-Zertifikat ungültig ist. Die Fehlermeldung in FileZilla lautet dann z.B.
-GnuTLS error -48: Key usage violation in certificate has been detected. Could not connect to server
-Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast, kann die Verbindung nicht vollendet werden. FileZilla bleibt dann z.B. bei der folgenden Zeile stehen:">
+  <meta itemprop="description" content="Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:
+Ungültiges Server-Zertifikat: Die Verbindung zum Server schlägt fehl, weil das Server-Zertifikat ungültig ist. Die Fehlermeldung in FileZilla lautet dann z. B.:
+GnuTLS error -48: Key usage violation in certificate has been detected. Could not connect to server. Probleme mit passiven Verbindungen: Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast, kann die Verbindung nicht vollendet werden. FileZilla bleibt dann z. B. bei der folgenden Zeile stehen:
+150 Opening BINARY mode data connection. Fehlende Zugriffsrechte: Der Benutzer hat nicht die nötigen Zugriffsrechte für den Ordner, den du in den Einstellungen des FTP-Servers angegeben hast. Keine Sorge. Mit diesen drei Problemen durfte auch ich schon kämpfen, und ich habe die Lösungen hier zusammengetragen. Also… eins nach dem anderen.">
   <meta itemprop="datePublished" content="2015-10-14T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-08-20T20:47:33+02:00">
-  <meta itemprop="wordCount" content="284">
+  <meta itemprop="wordCount" content="348">
   <meta itemprop="keywords" content="SFTP,IIS,Microsoft,Windows Server,Zertifikat,PowerShell,FileZilla,FTP,Troubleshooting,Server Konfiguration,Netzwerksicherheit">
 
   
@@ -85,10 +83,10 @@ Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast
   
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="SFTP auf Microsoft IIS korrekt einrichten">
-  <meta name="twitter:description" content="Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Problem, denen du begegnen wirst.
-Du kannst die Verbindung zum Server nicht herstellen, weil das Server-Zertifikat ungültig ist. Die Fehlermeldung in FileZilla lautet dann z.B.
-GnuTLS error -48: Key usage violation in certificate has been detected. Could not connect to server
-Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast, kann die Verbindung nicht vollendet werden. FileZilla bleibt dann z.B. bei der folgenden Zeile stehen:">
+  <meta name="twitter:description" content="Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:
+Ungültiges Server-Zertifikat: Die Verbindung zum Server schlägt fehl, weil das Server-Zertifikat ungültig ist. Die Fehlermeldung in FileZilla lautet dann z. B.:
+GnuTLS error -48: Key usage violation in certificate has been detected. Could not connect to server. Probleme mit passiven Verbindungen: Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast, kann die Verbindung nicht vollendet werden. FileZilla bleibt dann z. B. bei der folgenden Zeile stehen:
+150 Opening BINARY mode data connection. Fehlende Zugriffsrechte: Der Benutzer hat nicht die nötigen Zugriffsrechte für den Ordner, den du in den Einstellungen des FTP-Servers angegeben hast. Keine Sorge. Mit diesen drei Problemen durfte auch ich schon kämpfen, und ich habe die Lösungen hier zusammengetragen. Also… eins nach dem anderen.">
 
 
   
@@ -98,7 +96,7 @@ Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": "SFTP auf Microsoft IIS korrekt einrichten",
-    "description": "Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Problem, denen du begegnen wirst.\nDu kannst die Verbindung zum …",
+    "description": "Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:\nUngültiges Server-Zertifikat: …",
     "datePublished": "2015-10-14T00:00:00Z",
     "dateModified": "2025-08-20T20:47:33\u002b02:00",
     "author": {
@@ -122,13 +120,13 @@ Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast
     
     "image": {
       "@type": "ImageObject",
-      "url": "https:\/\/nickyreinert.de\/images\/posts\/placeholder.jpg",
+      "url": "https:\/\/nickyreinert.de\/images\/posts\/sftp-iis-setup.jpg",
       "width": 1200,
       "height": 630
     },
     
     "url": "https:\/\/nickyreinert.de\/2015\/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten\/",
-    "wordCount":  284 ,
+    "wordCount":  348 ,
     
     "timeRequired": "PT5M",
     
@@ -154,7 +152,7 @@ Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast
     "@context": "https://schema.org",
     "@type": "TechArticle",
     "headline": "SFTP auf Microsoft IIS korrekt einrichten",
-    "description": "Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Problem, denen du begegnen wirst.\nDu kannst die Verbindung zum …",
+    "description": "Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:\nUngültiges Server-Zertifikat: …",
     
     "proficiencyLevel": "advanced",
     
@@ -364,31 +362,120 @@ Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast
   
   
   
+  <details style="margin-top: 0.5rem; margin-bottom: 2rem; font-size: 0.9rem; color: #878787; background: none; border: none;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc" style="margin-left: 1rem;">
+      <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#problem-1-ungültiges-server-zertifikat">Problem 1: Ungültiges Server-Zertifikat</a></li>
+        <li><a href="#problem-2-passive-ports-und-firewall">Problem 2: Passive Ports und Firewall</a></li>
+        <li><a href="#problem-3-benutzerberechtigungen">Problem 3: Benutzerberechtigungen</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+  </details>
+  
   
   
   
   <article style="border-top: 2px solid #878787;" class="content">
     
-    <p>Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Problem, denen du begegnen wirst.</p>
-<blockquote>
+    <p>Das Einrichten eines <strong>SFTP-Servers</strong> klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:</p>
 <ol>
-<li>
-<ol>
-<li>
-<p>Du kannst die Verbindung zum Server nicht herstellen, weil das Server-Zertifikat ungültig ist. Die Fehlermeldung in FileZilla lautet dann z.B.<br>
-GnuTLS error -48: Key usage violation in certificate has been detected. Could not connect to server</p>
-</li>
-<li>
-<p>Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast, kann die Verbindung nicht vollendet werden. FileZilla bleibt dann z.B. bei der folgenden Zeile stehen:</p>
-<p>150 Opening BINARY mode data connection</p>
-</li>
+<li><strong>Ungültiges Server-Zertifikat:</strong> Die Verbindung zum Server schlägt fehl, weil das Server-Zertifikat ungültig ist. Die Fehlermeldung in FileZilla lautet dann z. B.:<br>
+<em>GnuTLS error -48: Key usage violation in certificate has been detected. Could not connect to server.</em></li>
+<li><strong>Probleme mit passiven Verbindungen:</strong> Obwohl du in der Firewall die <strong>passiven Ports</strong> für den Server freigeschaltet hast, kann die Verbindung nicht vollendet werden. FileZilla bleibt dann z. B. bei der folgenden Zeile stehen:<br>
+<em>150 Opening BINARY mode data connection.</em></li>
+<li><strong>Fehlende Zugriffsrechte:</strong> Der Benutzer hat nicht die nötigen Zugriffsrechte für den Ordner, den du in den Einstellungen des FTP-Servers angegeben hast.</li>
 </ol>
+<p>Keine Sorge. Mit diesen drei Problemen durfte auch ich schon kämpfen, und ich habe die Lösungen hier zusammengetragen. Also&hellip; eins nach dem anderen.</p>
+<h3 id="problem-1-ungültiges-server-zertifikat">Problem 1: Ungültiges Server-Zertifikat</h3>
+<p>Die Ursache des ersten Problems ist der Assistent, mit dem man im IIS das Server-Zertifikat erstellt. Auf den Punkt gebracht, nutzt dieser ein paar falsche Parameter. Aus diesem Grund muss das Zertifikat per Hand in der <strong>PowerShell</strong> erstellt werden. Wichtig: In der normalen Konsole funktioniert das nicht.</p>
+<p>Lösung: Laut einem Beitrag in den 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://forums.iis.net/t/1234970.aspx?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">IIS-Foren</a>
+
+
+ kannst du das Zertifikat mit PowerShell generieren:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">New-SelfSignedCertificate</span> <span class="n">-CertStoreLocation</span> <span class="n">cert</span><span class="err">:</span><span class="p">\</span><span class="n">LocalMachine</span><span class="p">\</span><span class="n">My</span> <span class="n">-dnsname</span> <span class="n">ftp</span><span class="p">.</span><span class="py">example</span><span class="p">.</span><span class="py">com</span>
+</span></span></code></pre></div><p>Ersetze <code>ftp.example.com</code> durch den Hostnamen deines Servers.</p>
+<p>Du erhältst einen Fingerabdruck (Fingerprint). Kopiere diesen und setze ein Passwort für den privaten Schlüssel:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="ln">1</span><span class="cl"><span class="nv">$password</span> <span class="p">=</span> <span class="nb">ConvertTo-SecureString</span> <span class="n">-String</span> <span class="s2">&#34;password goes here&#34;</span> <span class="n">-Force</span> <span class="n">-AsPlainText</span>
+</span></span></code></pre></div><p>Exportiere das Zertifikat (ändere <code>C:\cert.pfx</code> auf den gewünschten Speicherort, die Datei muss mit <code>.pfx</code> enden):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">Export-PfxCertificate</span> <span class="n">-cert</span> <span class="n">cert</span><span class="err">:</span><span class="p">\</span><span class="n">LocalMachine</span><span class="p">\</span><span class="n">My</span><span class="p">\</span><span class="n">FINGERPRINT</span> <span class="n">-FilePath</span> <span class="n">C:</span><span class="p">\</span><span class="n">cert</span><span class="p">.</span><span class="py">pfx</span> <span class="n">-Password</span> <span class="nv">$password</span>
+</span></span></code></pre></div><h3 id="problem-2-passive-ports-und-firewall">Problem 2: Passive Ports und Firewall</h3>
+<p>Stelle sicher, dass die <strong>passiven Ports</strong> in der Firewall freigegeben sind. Dies geschieht in den IIS-Einstellungen unter <strong>FTP-Firewall-Unterstützung</strong>. Trage dort den Portbereich ein, den du verwenden möchtest, und öffne diese Ports in der Windows-Firewall.</p>
+<h3 id="problem-3-benutzerberechtigungen">Problem 3: Benutzerberechtigungen</h3>
+<p>Überprüfe, ob der Benutzer die richtigen Berechtigungen für den angegebenen Ordner hat. Dies kannst du in den <strong>Sicherheitseinstellungen</strong> des Ordners anpassen.</p>
+<figure>
+  <a href="/images/posts/sftp-iis-setup.jpg" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="/images/posts/sftp-iis-setup.jpg" 
+      alt="SFTP auf Microsoft IIS korrekt einrichten - Beispiel für Zertifikate"
+      
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Beispiel für die Einrichtung eines SFTP-Servers auf Microsoft IIS</figcaption>
+</figure>
+
+<p><strong>Weitere Ressourcen:</strong></p>
+<ul>
+<li>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.visualsvn.com/support/topic/00056/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">VisualSVN: Zertifikate korrekt zuweisen</a>
+
+
 </li>
-</ol></blockquote>
-<p>3. Und schließlich kann es sein, dass der Benutzer nicht die nötigen Zugriffsrechte für den Ordner hat, den du in den Einstellungen des FTP-Servers angegeben hast.</p>
-<p>Keine Sorge. Mit diesen drei Probleme durfte auch ich schon kämpfen und ich habe die Lösungen hier zusammengetragen. Also.. eins nach dem anderen.</p>
-<p>Die Ursache des ersten Problems ist der Assistent, mit dem man im IIS das Server-Zertifikat erstellt. Auf den Punkt gebracht, nutzt dieser ein paar falsche Parameter. Aus diesem Grund muss das Zertifikat per Hand in der PowerShell erstellt werden. Wichtig: In der normalen Konsole funktioniert das nicht.</p>
-<p>
+<li>
 
 
 
@@ -411,45 +498,11 @@ GnuTLS error -48: Key usage violation in certificate has been detected. Could no
   
 
   
-  <a href="https://superuser.com/questions/1167351/filezilla-reporting-gnutls-error-48-key-usage-violation-in-certificate-has-be?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://superuser.com/questions/1167351/filezilla-reporting-gnutls-error-48-key-usage-violation-in-certificate-has-be</a>
+  <a href="http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">FileZilla und IIS hinter NAT</a>
 
 
-</p>
-<p>According to a post in the 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://forums.iis.net/t/1234970.aspx?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">IIS forums</a>
-
-
-, you can generate the certificate with PowerShell instead until the issue is fixed by Microsoft:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">New-SelfSignedCertificate -CertStoreLocation cert:\LocalMachine\My -dnsname ftp.example.com
-</span></span></code></pre></div><p>Replace <code>ftp.example.com</code> by your server&rsquo;s hostname.</p>
-<p>You will get a fingerprint, copy that. Set a password for the private key:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">$password = ConvertTo-SecureString -String &#34;password goes here&#34; -Force -AsPlainText
-</span></span></code></pre></div><p>Now export it (you can change <code>C:\cert.pfx</code> to the path you want to save it to, just make sure it ends in <code>.pfx</code>):</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Export-PfxCertificate -cert cert:\LocalMachine\My\FINGERPRINT -FilePath C:\cert.pfx -Password $password
-</span></span></code></pre></div><p>Benutzer anlegen</p>
-<p>
+</li>
+<li>
 
 
 
@@ -472,91 +525,11 @@ GnuTLS error -48: Key usage violation in certificate has been detected. Could no
   
 
   
-  <a href="https://www.nickyreinert.de/files/ssl-zertifikat-auf-windows-korrekt-installieren/windows-server-ssl-zertifikat-zuweisen.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="/2015/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten/images/windows-server-ssl-zertifikat-zuweisen-300x121.png" alt=""></a>
+  <a href="http://ekiwi-blog.de/?p=3465&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Ekiwi-Blog: Troubleshooting</a>
 
 
-</p>
-<p><strong>siehe auch:</strong></p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.visualsvn.com/support/topic/00056/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://www.visualsvn.com/support/topic/00056/</a>
-
-
-</p>
-<p>[http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/ http://ekiwi-blog.de/?p=3465](
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/</a>
-
-
- 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://ekiwi-blog.de/?p=3465&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">http://ekiwi-blog.de/?p=3465</a>
-
-
-)</p>
+</li>
+</ul>
 
     
   </article>
