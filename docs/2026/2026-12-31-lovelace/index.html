@@ -1,0 +1,2588 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="Bernoulli! Lass uns erstmal verstehen, wie die Berechnung der Bernoulli-Zahlen überhaupt funktioniert!
+$$
+B_0 = 1,\qquad
+B_n = -\frac{1}{n&#43;1}\sum_{k=0}^{n-1}\binom{n&#43;1}{k}B_k\quad (n\ge 1)
+$$
+Das sieht jetzt erstmal ganz schön wild aus, aber keine Sorge. So kompliziert ist das gar nicht. Lass uns die einzelnen Teile einmal genauer anschauen:
+
+es gibt einen Bruch
+eine Summen-Funktion für ein seltsam anmutendes Konstrukt in einer Klammer, der sogenannte Binomialkoeffizient
+gefolgt von einem Produkt
+
+Über den Bruch müssen wir uns nicht lange den Kopf zerbrechen. Es gibt ein Minus-Zeichen, Der Nenner ist immer 1 und im Zähler nutzen wir einfach die Zahl n aus der Gleichung plus 1:">
+  
+
+  
+  <link rel="icon" href="http://localhost:1313/images/favicon.svg">
+
+  
+  
+  <meta name="keywords" content=" Webentwicklung  Software Development  Programmierung  SEO  Analytics  Hosting  DevOps  WordPress  Hugo  Tools  Projekte  Anleitungen  Datenschutz  Digitale Kultur  Künstliche Intelligenz  KI  Autismus ">
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/css/katex.min.css">
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '\\[', right: '\\]', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false }
+      ],
+      ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'option'],
+      throwOnError: false
+    });
+  });
+</script>
+
+
+  
+
+  
+  <meta property="og:url" content="http://localhost:1313/2026/2026-12-31-lovelace/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Lovelace und Bernoulli">
+  <meta property="og:description" content="Bernoulli! Lass uns erstmal verstehen, wie die Berechnung der Bernoulli-Zahlen überhaupt funktioniert!
+$$ B_0 = 1,\qquad B_n = -\frac{1}{n&#43;1}\sum_{k=0}^{n-1}\binom{n&#43;1}{k}B_k\quad (n\ge 1) $$
+Das sieht jetzt erstmal ganz schön wild aus, aber keine Sorge. So kompliziert ist das gar nicht. Lass uns die einzelnen Teile einmal genauer anschauen:
+es gibt einen Bruch eine Summen-Funktion für ein seltsam anmutendes Konstrukt in einer Klammer, der sogenannte Binomialkoeffizient gefolgt von einem Produkt Über den Bruch müssen wir uns nicht lange den Kopf zerbrechen. Es gibt ein Minus-Zeichen, Der Nenner ist immer 1 und im Zähler nutzen wir einfach die Zahl n aus der Gleichung plus 1:">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2026">
+    <meta property="article:published_time" content="2025-12-14T12:34:56+01:00">
+    <meta property="article:modified_time" content="2025-12-14T12:34:56+01:00">
+
+
+  
+  <link rel="canonical" href="http://localhost:1313/2026/2026-12-31-lovelace/">
+
+  
+  
+  
+  <meta itemprop="name" content="Lovelace und Bernoulli">
+  <meta itemprop="description" content="Bernoulli! Lass uns erstmal verstehen, wie die Berechnung der Bernoulli-Zahlen überhaupt funktioniert!
+$$ B_0 = 1,\qquad B_n = -\frac{1}{n&#43;1}\sum_{k=0}^{n-1}\binom{n&#43;1}{k}B_k\quad (n\ge 1) $$
+Das sieht jetzt erstmal ganz schön wild aus, aber keine Sorge. So kompliziert ist das gar nicht. Lass uns die einzelnen Teile einmal genauer anschauen:
+es gibt einen Bruch eine Summen-Funktion für ein seltsam anmutendes Konstrukt in einer Klammer, der sogenannte Binomialkoeffizient gefolgt von einem Produkt Über den Bruch müssen wir uns nicht lange den Kopf zerbrechen. Es gibt ein Minus-Zeichen, Der Nenner ist immer 1 und im Zähler nutzen wir einfach die Zahl n aus der Gleichung plus 1:">
+  <meta itemprop="datePublished" content="2025-12-14T12:34:56+01:00">
+  <meta itemprop="dateModified" content="2025-12-14T12:34:56+01:00">
+  <meta itemprop="wordCount" content="3109">
+  <meta itemprop="keywords" content="Blog">
+
+  
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/common.css'>
+  <link media="screen" rel="stylesheet" href='http://localhost:1313/css/content.css'>
+
+  
+  
+  <title>Lovelace und Bernoulli - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Lovelace und Bernoulli">
+  <meta name="twitter:description" content="Bernoulli! Lass uns erstmal verstehen, wie die Berechnung der Bernoulli-Zahlen überhaupt funktioniert!
+$$ B_0 = 1,\qquad B_n = -\frac{1}{n&#43;1}\sum_{k=0}^{n-1}\binom{n&#43;1}{k}B_k\quad (n\ge 1) $$
+Das sieht jetzt erstmal ganz schön wild aus, aber keine Sorge. So kompliziert ist das gar nicht. Lass uns die einzelnen Teile einmal genauer anschauen:
+es gibt einen Bruch eine Summen-Funktion für ein seltsam anmutendes Konstrukt in einer Klammer, der sogenannte Binomialkoeffizient gefolgt von einem Produkt Über den Bruch müssen wir uns nicht lange den Kopf zerbrechen. Es gibt ein Minus-Zeichen, Der Nenner ist immer 1 und im Zähler nutzen wir einfach die Zahl n aus der Gleichung plus 1:">
+
+
+  
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Lovelace und Bernoulli",
+    "description": "Bernoulli! Lass uns erstmal verstehen, wie die Berechnung der Bernoulli-Zahlen überhaupt funktioniert!\n$$ B_0 = 1,\\qquad B_n = …",
+    "datePublished": "2025-12-14T12:34:56\u002b01:00",
+    "dateModified": "2025-12-14T12:34:56\u002b01:00",
+    "author": {
+      "@type": "Person",
+      "name": "",
+      "url": "http:\/\/localhost:1313\/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Nicky Reinert",
+      "url": "http:\/\/localhost:1313\/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "http:\/\/localhost:1313\/images\/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/localhost:1313\/2026\/2026-12-31-lovelace\/"
+    },
+    
+    "url": "http:\/\/localhost:1313\/2026\/2026-12-31-lovelace\/",
+    "wordCount":  3109 ,
+    
+    "timeRequired": "PT1M",
+    
+    
+    
+    "articleSection": ["blog"],
+    
+    
+    
+    "genre": "blog",
+    
+    
+    "educationalLevel": "Mittel",
+    
+    "inLanguage": "de"
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Lovelace und Bernoulli",
+    "description": "Bernoulli! Lass uns erstmal verstehen, wie die Berechnung der Bernoulli-Zahlen überhaupt funktioniert!\n$$ B_0 = 1,\\qquad B_n = …",
+    
+    "proficiencyLevel": "Mittel",
+    
+    
+    
+    "datePublished": "2025-12-14T12:34:56\u002b01:00",
+    "dateModified": "2025-12-14T12:34:56\u002b01:00",
+    "author": {
+      "@type": "Person",
+      "name": ""
+    }
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Nicky Reinert",
+    "url": "http:\/\/localhost:1313\/",
+    "description": "Blog \u0026 Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung \u0026 Software Development, KI, SEO \u0026 Analytics, Hosting \u0026 DevOps, WordPress \u0026 Hugo, Tools \u0026 Projekte, Datenschutz und digitale Kultur",
+    "inLanguage": "de",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "http:\/\/localhost:1313\/search/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+]
+</script>
+
+  
+<link rel="stylesheet" href='http://localhost:1313/css/single.css'>
+
+  
+
+<script defer src="/js/alpine.min.js"></script>
+
+
+
+  
+  
+
+<link rel="webmention" href="https://webmention.io/nickyreinert.de/webmention" />
+<link rel="me" href="https://github.com/nickyreinert" />
+
+
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="http://localhost:1313/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institut für digitale Herausforderungen</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://not-a-brand.myspreadshop.de/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/analysen/">analysen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+
+
+    
+<main id="main" class="post">
+  
+  
+  <div class="post-header">
+    <div class="navigation" style="align-items: center;">
+      <div style="flex-shrink: 0; width: 50px;">
+        
+      </div>
+      
+      <h1 style="flex: 1; text-align: center; min-width: 0; padding: 0 0.5rem;" itemprop="headline">Lovelace und Bernoulli</h1>
+      
+      <div style="flex-shrink: 0; width: 50px; text-align: right;">
+        
+        <a class="link next" href="/2026/2026-01-03-ai-effect/" style="font-size: 1.2rem;">>>></a>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="post-meta" style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; color: #878787;">
+    December 14, 2025 &nbsp;|&nbsp; Kategorie: 
+    
+    <a class="link" href='http://localhost:1313/categories/blog' style="text-decoration: none;">blog</a>
+    
+  </div>
+    
+  
+  
+  
+  <details style="margin-top: 0.5rem; margin-bottom: 2rem; font-size: 0.9rem; color: #878787; background: none; border: none;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc" style="margin-left: 1rem;">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#die-fakultät">Die Fakultät</a></li>
+    <li><a href="#der-binomialkoeffizient">Der Binomialkoeffizient</a></li>
+  </ul>
+</nav>
+    </div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
+    <p>Bernoulli! Lass uns erstmal verstehen, wie die Berechnung der Bernoulli-Zahlen überhaupt funktioniert!</p>
+<p>$$
+B_0 = 1,\qquad
+B_n = -\frac{1}{n+1}\sum_{k=0}^{n-1}\binom{n+1}{k}B_k\quad (n\ge 1)
+$$</p>
+<p>Das sieht jetzt erstmal ganz schön wild aus, aber keine Sorge. So kompliziert ist das gar nicht. Lass uns die einzelnen Teile einmal genauer anschauen:</p>
+<ul>
+<li>es gibt einen Bruch</li>
+<li>eine Summen-Funktion für ein seltsam anmutendes Konstrukt in einer Klammer, der sogenannte <strong>Binomialkoeffizient</strong></li>
+<li>gefolgt von einem Produkt</li>
+</ul>
+<p>Über den Bruch müssen wir uns nicht lange den Kopf zerbrechen. Es gibt ein Minus-Zeichen, Der Nenner ist immer 1 und im Zähler nutzen wir einfach die Zahl n aus der Gleichung plus 1:</p>
+<p>$$
+-\frac{1}{n+1}
+$$</p>
+<p>Simpel. Schauen wir uns den Teil in der Klammer an - der sogenannte <strong>Binomialkoeffizient</strong>. Gelesen wird der Bereich als &ldquo;n über k&rdquo; (<em>n choose k</em> in Englisch) und beschreibt die Anzahl der Möglichkeiten, <em>k Objekte</em> aus einer <em>Menge von n Objekten</em> auszuwählen. Ein Beispiel: Du hast 3 Früchte: einen Apfel, eine Banane und eine Kirsche. Wieviel Möglichkeiten gibt es, 2 Früchte auszuwählen?</p>
+<ol>
+<li>Apfel + Banane</li>
+<li>Apfel + Kirsche</li>
+<li>Banane + Kirsche</li>
+</ol>
+<p>Also 3 Möglichkeiten. Die kurze Schreibweise dafür ist $\binom{3}{2} = 3$. Ausgeschrieben sieht es so aus:</p>
+<p>$$
+\frac{3!}{2!(3-2)!}
+$$</p>
+<p>Das Ausrufezeichen steht für die Fakultät. Und das ist einfach das Produkt aller natürlichen Zahlen bis zu der angegebenen Zahl. Für 2 und 3 ist das noch einfach:</p>
+<p>$$
+3! = 3 \times 2 \times 1 = 6
+2! = 2 \times 1 = 2
+$$</p>
+<p>Und eingesetzt in den Binomialkoeffizienten:</p>
+<p>$$
+\frac{3!}{2!(3-2)!} = \frac{6}{2 \times 1} = 3
+$$</p>
+<p>Was hat das nun mit der Summe aufsich? Nun, der Wert über dem Summenzeichen gibt an, bis zu welcher Zahl wir zählen sollen: $n-1$. Der Wert unter dem Summenzeichen gibt an, mit welcher Zahl wir anfangen zu zählen: $k=0$.</p>
+<p>Wenn wir also die Bernoulli-Zahl $B_3$ suchen, berechnen wir den Term, der hinter dem Summenzeichen steht - den <em>Binominalkoeffizienten</em> - für 0, 1 und 2 und multiplizieren ihn jeweils mit der entsprechenden Bernoulli-Zahl $B_k$:</p>
+<p>Dank des Summenzeichens und des Binomialkoeffizienten sieht das in der Kurzfrom so aus:</p>
+<p>$$
+\sum_{k=0}^{2}\binom{3+1}{k}B_k
+$$</p>
+<p>Und eingesetzt für $n=3$:</p>
+<p>$$
+\binom{3+1}{0}B_0 + \binom{3+1}{1}B_1 + \binom{3+1}{2}B_2
+$$</p>
+<p>Jetzt fehlt nur noch der Bruch - zusammengesetzt sieht das also so aus - die Berechnung der Bernoulli-Zahl $B_3$:</p>
+<p>$$
+B_3 = \color{red}-\frac{1}{3+1}\color{black}\left(\binom{3+1}{0}B_0 + \binom{3+1}{1}B_1 + \binom{3+1}{2}B_2\right)
+$$</p>
+<p>Die Bernoulli-Zahlen $B_0$, $B_1$ und $B_2$ sollten wir natürlich schon kennen:</p>
+<p>$$
+B_0 = 1, \quad B_1 = -\frac{1}{2}, \quad B_2 = \frac{1}{6}
+$$</p>
+<p>Also ab damit in die Formel:</p>
+<p>$$
+B_3 = -\frac{1}{3+1}\left(\binom{(3+1)}{0} \times \color{red}1\color{black} + \binom{(3+1)}{1} \times \color{red}-\frac{1}{2}\color{black} + \binom{(3+1)}{2} \times \color{red}\frac{1}{6}\color{black}\right)
+$$</p>
+<p>Wie war das? Du willst die Langform sehen, mit den Fakultäten? Kein Problem:</p>
+<p>$$
+B_3 = -\frac{1}{4}\left(\frac{4!}{0!(4-0)!} \times 1 + \frac{4!}{1!(4-1)!} \times -\frac{1}{2} + \frac{4!}{2!(4-2)!} \times \frac{1}{6}\right)
+$$</p>
+<p>Gut. Wir wissen nun also, wie man eine Bernoulli-Zahl berechnet. Eigentlich nur ein paar einfache mathatische Operationen. Mit komplizierten Namen.</p>
+<p>Die Frage ist nun, und diese hat sich wohl vor 100 Jahren auch Ada Lovelace gestellt: Wie sieht ein Algorithmus aus, der diese Berechnung für jede beliebige Zahl n durchführen kann?</p>
+<p>Wir fangen mal einfach an. Mit einer Schleife und dem ersten Teil der Formel - dem Bruch:</p>
+<div class="js-editor-container" id="beispiel1">
+  <div class="js-editor-header">
+    <span class="js-editor-title">JavaScript Live Editor</span>
+    <button class="js-editor-run" data-editor="beispiel1">▶ Code ausführen</button>
+    <button class="js-editor-reset" data-editor="beispiel1">↻ Zurücksetzen</button>
+  </div>
+  
+  <textarea 
+    class="js-editor-code" 
+    id="codebeispiel1" 
+    style="height:300px;"
+    spellcheck="false">
+let n = 3; // da sind sie wieder, unsere drei Früchte
+for (let k = 0; k &lt;= n; k&#43;&#43;) {
+  let fraction = -1 / (k &#43; 1);
+  console.log(`Bruch für n=${k}: ${fraction}`);
+}
+</textarea>
+  
+  <div class="js-editor-output-header">Ausgabe:</div>
+  <pre class="js-editor-output" id="outputbeispiel1"></pre>
+</div>
+
+<style>
+.js-editor-container {
+  margin: 2rem 0;
+  border: 1px solid #ddd;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.js-editor-header {
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.js-editor-title {
+  flex: 1;
+  font-weight: normal;
+  font-size: 13px;
+  color: #666;
+}
+
+.js-editor-run,
+.js-editor-reset {
+  background: #fff;
+  border: 1px solid #ccc;
+  color: #333;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.js-editor-run:hover,
+.js-editor-reset:hover {
+  background: #f9f9f9;
+  border-color: #999;
+}
+
+.js-editor-code {
+  width: 100%;
+  padding: 12px;
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  resize: vertical;
+  background: #fff;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.js-editor-code:focus {
+  outline: none;
+  background: #fafafa;
+}
+
+.js-editor-output-header {
+  background: #f5f5f5;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: normal;
+  color: #666;
+  border-bottom: 1px solid #ddd;
+}
+
+.js-editor-output {
+  margin: 0;
+  padding: 12px;
+  background: #fff;
+  color: #333;
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  min-height: 60px;
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: 1px solid #eee;
+}
+
+.js-editor-output:empty::before {
+  content: 'Keine Ausgabe';
+  color: #999;
+  font-style: italic;
+}
+
+.js-editor-output .log-error {
+  color: #c00;
+}
+
+.js-editor-output .log-warn {
+  color: #c60;
+}
+
+.js-editor-output .log-info {
+  color: #06c;
+}
+</style>
+
+<script>
+(function() {
+  var editorId = 'beispiel1';
+  
+  var runBtn = document.querySelector('.js-editor-run[data-editor="' + editorId + '"]');
+  var resetBtn = document.querySelector('.js-editor-reset[data-editor="' + editorId + '"]');
+  var codeArea = document.getElementById('code' + editorId);
+  var outputArea = document.getElementById('output' + editorId);
+  var initialCode = codeArea.value;
+  
+  function runCode() {
+    var code = codeArea.value;
+    outputArea.innerHTML = '';
+    
+    var logs = [];
+    var originalConsole = {
+      log: console.log.bind(console),
+      error: console.error.bind(console),
+      warn: console.warn.bind(console),
+      info: console.info.bind(console)
+    };
+    
+    console.log = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'log', args: args });
+      originalConsole.log.apply(console, args);
+    };
+    console.error = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'error', args: args });
+      originalConsole.error.apply(console, args);
+    };
+    console.warn = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'warn', args: args });
+      originalConsole.warn.apply(console, args);
+    };
+    console.info = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'info', args: args });
+      originalConsole.info.apply(console, args);
+    };
+    
+    try {
+      var result = (function() {
+        return eval(code);
+      })();
+      
+      if (logs.length === 0 && result !== undefined) {
+        logs.push({ type: 'log', args: [result] });
+      }
+    } catch (error) {
+      logs.push({ type: 'error', args: [error.toString()] });
+    } finally {
+      console.log = originalConsole.log;
+      console.error = originalConsole.error;
+      console.warn = originalConsole.warn;
+      console.info = originalConsole.info;
+    }
+    
+    logs.forEach(function(log) {
+      var line = document.createElement('div');
+      line.className = 'log-' + log.type;
+      line.textContent = log.args.map(function(arg) {
+        if (typeof arg === 'object' && arg !== null) {
+          try {
+            return JSON.stringify(arg, null, 2);
+          } catch (e) {
+            return String(arg);
+          }
+        }
+        return String(arg);
+      }).join(' ');
+      outputArea.appendChild(line);
+    });
+  }
+  
+  function resetCode() {
+    codeArea.value = initialCode;
+    outputArea.innerHTML = '';
+  }
+  
+  runBtn.addEventListener('click', runCode);
+  resetBtn.addEventListener('click', resetCode);
+  
+  codeArea.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      var start = this.selectionStart;
+      var end = this.selectionEnd;
+      this.value = this.value.substring(0, start) + '  ' + this.value.substring(end);
+      this.selectionStart = this.selectionEnd = start + 2;
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      runCode();
+    }
+  });
+})();
+</script>
+<h2 id="die-fakultät">Die Fakultät</h2>
+<p>Soweit. So einfach. Wie sieht es mit der Fakultät aus, die wir für den Binomialkoeefizenten benötigen? Ada Lovelace hatte kein JavaScript und JavaScript kennt die Faktultät nicht als eigentständigen OPerator, also müssen wir dafür eine Funktion schreiben. Alles beginnt mit einer Schleife</p>
+<div class="js-editor-container" id="beispiel-fakultaet">
+  <div class="js-editor-header">
+    <span class="js-editor-title">JavaScript Live Editor</span>
+    <button class="js-editor-run" data-editor="beispiel-fakultaet">▶ Code ausführen</button>
+    <button class="js-editor-reset" data-editor="beispiel-fakultaet">↻ Zurücksetzen</button>
+  </div>
+  
+  <textarea 
+    class="js-editor-code" 
+    id="codebeispiel-fakultaet" 
+    style="height:300px;"
+    spellcheck="false">
+function faculty(num) {
+  let result = BigInt(num);
+  for (let factor = 2; factor &lt; num; factor&#43;&#43;) {
+    result *= BigInt(factor);
+  }
+  return result;
+}
+
+const start = (typeof performance !== &#39;undefined&#39;) ? performance.now() : Date.now();
+const result = faculty(8);
+const duration = ((typeof performance !== &#39;undefined&#39;) ? performance.now() : Date.now()) - start;
+console.log(&#34;Dauer: &#34; &#43; duration.toFixed(3) &#43; &#34; ms Ergebnis: &#34; &#43; result);
+</textarea>
+  
+  <div class="js-editor-output-header">Ausgabe:</div>
+  <pre class="js-editor-output" id="outputbeispiel-fakultaet"></pre>
+</div>
+
+<style>
+.js-editor-container {
+  margin: 2rem 0;
+  border: 1px solid #ddd;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.js-editor-header {
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.js-editor-title {
+  flex: 1;
+  font-weight: normal;
+  font-size: 13px;
+  color: #666;
+}
+
+.js-editor-run,
+.js-editor-reset {
+  background: #fff;
+  border: 1px solid #ccc;
+  color: #333;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.js-editor-run:hover,
+.js-editor-reset:hover {
+  background: #f9f9f9;
+  border-color: #999;
+}
+
+.js-editor-code {
+  width: 100%;
+  padding: 12px;
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  resize: vertical;
+  background: #fff;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.js-editor-code:focus {
+  outline: none;
+  background: #fafafa;
+}
+
+.js-editor-output-header {
+  background: #f5f5f5;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: normal;
+  color: #666;
+  border-bottom: 1px solid #ddd;
+}
+
+.js-editor-output {
+  margin: 0;
+  padding: 12px;
+  background: #fff;
+  color: #333;
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  min-height: 60px;
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: 1px solid #eee;
+}
+
+.js-editor-output:empty::before {
+  content: 'Keine Ausgabe';
+  color: #999;
+  font-style: italic;
+}
+
+.js-editor-output .log-error {
+  color: #c00;
+}
+
+.js-editor-output .log-warn {
+  color: #c60;
+}
+
+.js-editor-output .log-info {
+  color: #06c;
+}
+</style>
+
+<script>
+(function() {
+  var editorId = 'beispiel-fakultaet';
+  
+  var runBtn = document.querySelector('.js-editor-run[data-editor="' + editorId + '"]');
+  var resetBtn = document.querySelector('.js-editor-reset[data-editor="' + editorId + '"]');
+  var codeArea = document.getElementById('code' + editorId);
+  var outputArea = document.getElementById('output' + editorId);
+  var initialCode = codeArea.value;
+  
+  function runCode() {
+    var code = codeArea.value;
+    outputArea.innerHTML = '';
+    
+    var logs = [];
+    var originalConsole = {
+      log: console.log.bind(console),
+      error: console.error.bind(console),
+      warn: console.warn.bind(console),
+      info: console.info.bind(console)
+    };
+    
+    console.log = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'log', args: args });
+      originalConsole.log.apply(console, args);
+    };
+    console.error = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'error', args: args });
+      originalConsole.error.apply(console, args);
+    };
+    console.warn = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'warn', args: args });
+      originalConsole.warn.apply(console, args);
+    };
+    console.info = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'info', args: args });
+      originalConsole.info.apply(console, args);
+    };
+    
+    try {
+      var result = (function() {
+        return eval(code);
+      })();
+      
+      if (logs.length === 0 && result !== undefined) {
+        logs.push({ type: 'log', args: [result] });
+      }
+    } catch (error) {
+      logs.push({ type: 'error', args: [error.toString()] });
+    } finally {
+      console.log = originalConsole.log;
+      console.error = originalConsole.error;
+      console.warn = originalConsole.warn;
+      console.info = originalConsole.info;
+    }
+    
+    logs.forEach(function(log) {
+      var line = document.createElement('div');
+      line.className = 'log-' + log.type;
+      line.textContent = log.args.map(function(arg) {
+        if (typeof arg === 'object' && arg !== null) {
+          try {
+            return JSON.stringify(arg, null, 2);
+          } catch (e) {
+            return String(arg);
+          }
+        }
+        return String(arg);
+      }).join(' ');
+      outputArea.appendChild(line);
+    });
+  }
+  
+  function resetCode() {
+    codeArea.value = initialCode;
+    outputArea.innerHTML = '';
+  }
+  
+  runBtn.addEventListener('click', runCode);
+  resetBtn.addEventListener('click', resetCode);
+  
+  codeArea.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      var start = this.selectionStart;
+      var end = this.selectionEnd;
+      this.value = this.value.substring(0, start) + '  ' + this.value.substring(end);
+      this.selectionStart = this.selectionEnd = start + 2;
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      runCode();
+    }
+  });
+})();
+</script>
+<p>Um den Lerneffekt zu erhöhen, lass uns ein paar Optimierungen probieren: Den Faktor 2 können wir überspringen. Denn das Verdoppeln einer Zahl funktioniert auf binärer Ebene sehr einfach mit dem Links-Shift-Operator <code>&lt;&lt;</code>. Wir schieben die &ldquo;Lämpchen&rdquo; eine Stelle nach links:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">0110 
+</span></span><span class="line"><span class="ln">2</span><span class="cl">&lt;&lt; 1
+</span></span><span class="line"><span class="ln">3</span><span class="cl">---------
+</span></span><span class="line"><span class="ln">4</span><span class="cl">1100  (12 in Dezimal)
+</span></span></code></pre></div><p>Wenn die 2 sich durch eine &ldquo;Shift&rdquo;-Operation ersetzen lässt, dann könnte man die anderen geraden Faktoren doch auch bis auf den Faktor zwei Zerlegen (die sogenannten Primfaktorial Zerlegung) und dann für jeden Faktor 2 einen Links-Shift durchführen. Oder? ODER?</p>
+<p>Lass uns das einmal durchspielen. Zunächst die einfache Fakultäts-Funktion:</p>
+<p>$$
+19! = 19 \times 18 \times 17 \times 16 \times 15 \times 14 \times 13 \times 12 \times 11 \times 10 \times 9 \times 8 \times 7 \times 6 \times 5 \times 4 \times 3 \times 2 \times 1
+$$</p>
+<p>Jetzt berücksichtigen wir nur die geraden Faktoren, denn nur diese lassen sich durch 2 teilen und durch einen Links-Shift ersetzen (das nennt man übrigens die &ldquo;doppelte Fakultät&rdquo;):</p>
+<p>$$
+18 \times 16 \times 14 \times 12 \times 10 \times 8 \times 6 \times 4 \times 2
+$$</p>
+<p>Und zerlegt in Primfaktoren, das sind mehrere Schritte</p>
+<p>$$
+(2 \times 9) \times (2 \times 8) \times (2 \times 7) \times (2 \times 6) \times (2 \times 5) \times (2 \times 4) \times (2 \times 3) \times (2 \times 2) \times 2
+\newline
+(2 \times 9) \times (2 \times 2 \times 4) \times (2 \times 7) \times (2 \times 2 \times 3) \times (2 \times 5) \times (2 \times 2 \times 2) \times (2 \times 3) \times (2 \times 2) \times 2
+\newline
+(2 \times \color{red}9\color{black}) \times (2 \times 2 \times 2 \times 2) \times (2 \times \color{red}7\color{black}) \times (2 \times 2 \times \color{red}3\color{black}) \times (2 \times \color{red}5\color{black}) \times (2 \times 2 \times 2) \times (2 \times \color{red}3\color{black}) \times (2 \times 2) \times 2
+\newline
+2^16 \times 9 \times 7 \times 5 \times 3 \times 3
+$$</p>
+<p>Also 16 Links-Shifts und ein paar Multiplikationen. Ohne mir Gedanken darüber zu machen, welche arithmetische Gesetzmäßigkeit den Exponenten 16 oder die Primzahlen größer als 2 erklärt, dachte ich mir: Das ist der Holzweg. Können wir die &ldquo;doppelte Fakultät&rdquo; in einer Funktion berechnen? Wie wäre es mit der Königigung der Funktionen - der <strong>rekursiven Funktion</strong>? Also eine Funktion, die sich selbst aufruft. (Der Effekt, wenn man einen Begriff immer wieder wiederholt und dann vergisst, nennt sich brigens semantische Sättigung. Funktion. Funktion. Funktion.)</p>
+<p>Zurück zum Thema: Rekursive Funktionen sind faszinierend schön! Weil deren Aufgabe meist simpel ist, die Umsetzung aber etwas Überlegung erfordert. Und auch das ist nur eine Frage der systematischen Herangehensweise - eine klassische Problemlösungsstrategie in der Informatik. Und deshalb sind rekursive Funktionen die Königing der Funktionen. Sag ich.</p>
+<p>Wir brauchen hier eine Funktion, die eine gerade Zahl entgegenmimmt und die doppelte Fakultät berechnet! Wie stellt man sich das vor? Starten wir mit einem kleinen Beispiel, der 8:</p>
+<p>$$
+8!! = 8 \times 6 \times 4 \times 2
+$$</p>
+<p>Unsere rekursive Funktion geht nun die geraden Zahlen von 2 bis 8 durch und multipliziert sie miteinander.</p>
+<p>In der nicht-rekursiven Form, bei der wir die Faktoren nicht zerlegen, sähe die Funktion so aus:</p>
+<div class="js-editor-container" id="beispiel-2">
+  <div class="js-editor-header">
+    <span class="js-editor-title">JavaScript Live Editor</span>
+    <button class="js-editor-run" data-editor="beispiel-2">▶ Code ausführen</button>
+    <button class="js-editor-reset" data-editor="beispiel-2">↻ Zurücksetzen</button>
+  </div>
+  
+  <textarea 
+    class="js-editor-code" 
+    id="codebeispiel-2" 
+    style="height:300px;"
+    spellcheck="false">
+function doubleFactorialEven(num) {
+    if (num &lt; 2) return 1n;
+    let result = BigInt(num);
+    for (let i = BigInt(num) - 2n; i &gt;= 2n; i -= 2n) {
+        result *= i;
+    }
+    return result;
+}
+
+const iterations = 1000000; 
+const start = performance.now();
+
+for (let i = 0; i &lt; iterations; i&#43;&#43;) {
+    doubleFactorialEven(20);
+}
+
+const end = performance.now();
+const totalMs = end - start;
+const avgNs = (totalMs / iterations) * 1000000; // Umrechnung in Nanosekunden
+
+console.log(&#34;Dauer: &#34; &#43; totalMs.toFixed(3) &#43; &#34; ms&#34;);
+console.log(&#34;Ergebnis einer Ausführung: &#34; &#43; doubleFactorialEven(20));
+</textarea>
+  
+  <div class="js-editor-output-header">Ausgabe:</div>
+  <pre class="js-editor-output" id="outputbeispiel-2"></pre>
+</div>
+
+<style>
+.js-editor-container {
+  margin: 2rem 0;
+  border: 1px solid #ddd;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.js-editor-header {
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.js-editor-title {
+  flex: 1;
+  font-weight: normal;
+  font-size: 13px;
+  color: #666;
+}
+
+.js-editor-run,
+.js-editor-reset {
+  background: #fff;
+  border: 1px solid #ccc;
+  color: #333;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.js-editor-run:hover,
+.js-editor-reset:hover {
+  background: #f9f9f9;
+  border-color: #999;
+}
+
+.js-editor-code {
+  width: 100%;
+  padding: 12px;
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  resize: vertical;
+  background: #fff;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.js-editor-code:focus {
+  outline: none;
+  background: #fafafa;
+}
+
+.js-editor-output-header {
+  background: #f5f5f5;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: normal;
+  color: #666;
+  border-bottom: 1px solid #ddd;
+}
+
+.js-editor-output {
+  margin: 0;
+  padding: 12px;
+  background: #fff;
+  color: #333;
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  min-height: 60px;
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: 1px solid #eee;
+}
+
+.js-editor-output:empty::before {
+  content: 'Keine Ausgabe';
+  color: #999;
+  font-style: italic;
+}
+
+.js-editor-output .log-error {
+  color: #c00;
+}
+
+.js-editor-output .log-warn {
+  color: #c60;
+}
+
+.js-editor-output .log-info {
+  color: #06c;
+}
+</style>
+
+<script>
+(function() {
+  var editorId = 'beispiel-2';
+  
+  var runBtn = document.querySelector('.js-editor-run[data-editor="' + editorId + '"]');
+  var resetBtn = document.querySelector('.js-editor-reset[data-editor="' + editorId + '"]');
+  var codeArea = document.getElementById('code' + editorId);
+  var outputArea = document.getElementById('output' + editorId);
+  var initialCode = codeArea.value;
+  
+  function runCode() {
+    var code = codeArea.value;
+    outputArea.innerHTML = '';
+    
+    var logs = [];
+    var originalConsole = {
+      log: console.log.bind(console),
+      error: console.error.bind(console),
+      warn: console.warn.bind(console),
+      info: console.info.bind(console)
+    };
+    
+    console.log = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'log', args: args });
+      originalConsole.log.apply(console, args);
+    };
+    console.error = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'error', args: args });
+      originalConsole.error.apply(console, args);
+    };
+    console.warn = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'warn', args: args });
+      originalConsole.warn.apply(console, args);
+    };
+    console.info = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'info', args: args });
+      originalConsole.info.apply(console, args);
+    };
+    
+    try {
+      var result = (function() {
+        return eval(code);
+      })();
+      
+      if (logs.length === 0 && result !== undefined) {
+        logs.push({ type: 'log', args: [result] });
+      }
+    } catch (error) {
+      logs.push({ type: 'error', args: [error.toString()] });
+    } finally {
+      console.log = originalConsole.log;
+      console.error = originalConsole.error;
+      console.warn = originalConsole.warn;
+      console.info = originalConsole.info;
+    }
+    
+    logs.forEach(function(log) {
+      var line = document.createElement('div');
+      line.className = 'log-' + log.type;
+      line.textContent = log.args.map(function(arg) {
+        if (typeof arg === 'object' && arg !== null) {
+          try {
+            return JSON.stringify(arg, null, 2);
+          } catch (e) {
+            return String(arg);
+          }
+        }
+        return String(arg);
+      }).join(' ');
+      outputArea.appendChild(line);
+    });
+  }
+  
+  function resetCode() {
+    codeArea.value = initialCode;
+    outputArea.innerHTML = '';
+  }
+  
+  runBtn.addEventListener('click', runCode);
+  resetBtn.addEventListener('click', resetCode);
+  
+  codeArea.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      var start = this.selectionStart;
+      var end = this.selectionEnd;
+      this.value = this.value.substring(0, start) + '  ' + this.value.substring(end);
+      this.selectionStart = this.selectionEnd = start + 2;
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      runCode();
+    }
+  });
+})();
+</script>
+<blockquote>
+<p>Die Last-Simulation habe ich eingebaut, um den Erfolg der Optimuerung messen zu können. Auf modernen System ist ein Durchlauf sonst so schnell, dass die Messung zu gering ist.</p></blockquote>
+<p>Das funktioniert ja schon mal ganz gut. Nun wollen wir aber den Teil der Schleife optimieren und nicht stumpf multiplizieren, sondern die Faktoren zerlegen. Schauen wir uns das ganze für eine wenig verfängliche Zahl an, die 8:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">result</span> <span class="o">=</span> <span class="nx">result</span> <span class="o">*</span> <span class="mi">8</span><span class="p">;</span> 
+</span></span></code></pre></div><p>Wir müssten die 8 nun zerlegen, also eine Division. Die ist aber relativ aufwendig. Wie kommen wir an die Primfaktoren ran? Wir wissen, dass die Zahl durch 2 teilbar ist, wir durchlaufen ja nur gerade Zahlen. Der Ausweg: Ein Right-Shift!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="mi">8</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">=</span> <span class="mi">4</span>  <span class="o">&lt;=&gt;</span>  <span class="mi">8</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span> <span class="o">=</span> <span class="mi">4</span>
+</span></span></code></pre></div><p>Ich erhalte eine andere gerade Zahl, die sich wiederum nach rechts shiften lässt.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="mi">4</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">=</span> <span class="mi">2</span>  <span class="o">&lt;=&gt;</span>  <span class="mi">4</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span> <span class="o">=</span> <span class="mi">2</span>
+</span></span></code></pre></div><p>Und auch die 2 ist natürlich durch 2 teilbar:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">=</span> <span class="mi">1</span>  <span class="o">&lt;=&gt;</span>  <span class="mi">2</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span></code></pre></div><p>Was heißt das für unsere Multiplikation? Schauen wir es uns genauer an:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">result</span> <span class="o">=</span> <span class="nx">result</span> <span class="o">*</span> <span class="mi">8</span><span class="p">;</span> 
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="nx">result</span> <span class="o">=</span> <span class="nx">result</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span><span class="p">);</span>
+</span></span></code></pre></div><p>Der Exponent ist also 3 (<code>3^2</code>) - wir können also 3 Links-Shifts durchführen, um das gleiche Ergebnis zu erhalten:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">result</span> <span class="o">&lt;&lt;=</span> <span class="mi">3</span><span class="p">;</span> <span class="c1">// entspricht result = result * 8
+</span></span></span></code></pre></div><p>Woher wissen wir, dass der Expontent 3 ist? Weil wir den Right-Shift so oft durchgeführt haben, bis wir bei 1 angekommen sind. Wir zählen also die Anzahl der Right-Shifts. Das war noch einfach. Wie sieht es mit der 10 aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">result</span> <span class="o">=</span> <span class="nx">result</span> <span class="o">*</span> <span class="mi">10</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="mi">10</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span> <span class="o">=</span> <span class="mi">5</span>
+</span></span></code></pre></div><p>Es gibt gerade Zahlen, die lassen sich nicht bis zur 1 shiften. Wir landen bei einer Primzahl. Die Rechnung sieht dann also so aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">result</span> <span class="o">=</span> <span class="nx">result</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">5</span><span class="p">);</span>
+</span></span></code></pre></div><p>Der Exponent ist 1 - die Anzahl der möglichen Right-Shifts und dann folgt eine &ldquo;teure&rdquo; Multiplikation mit der Primzahl 5.</p>
+<p>Zurück zu unserer Funktion. Wir müssen also so lange nach rechts shiften, bis wir bei einer ungeraden Zahl landen. Die Anzahl der Rechts-Shifts entspricht der Anzahl der Links-Shifts und der &ldquo;Rest&rdquo; ist der letzte Faktor!</p>
+<div class="js-editor-container" id="beispiel-shift">
+  <div class="js-editor-header">
+    <span class="js-editor-title">JavaScript Live Editor</span>
+    <button class="js-editor-run" data-editor="beispiel-shift">▶ Code ausführen</button>
+    <button class="js-editor-reset" data-editor="beispiel-shift">↻ Zurücksetzen</button>
+  </div>
+  
+  <textarea 
+    class="js-editor-code" 
+    id="codebeispiel-shift" 
+    style="height:300px;"
+    spellcheck="false">
+function getExponentAndFactor(evenNum) {
+  let exponent = 0;
+  let factor = BigInt(evenNum);
+  
+  while((factor & 1n) === 0n) {
+    factor &gt;&gt;= 1n;
+    exponent&#43;&#43;;
+  }
+
+  return {exponent, factor };
+}
+
+const { exponent, factor } = getExponentAndFactor(20);
+console.log(`Exponent: ${exponent}, Faktor: ${factor}`);
+</textarea>
+  
+  <div class="js-editor-output-header">Ausgabe:</div>
+  <pre class="js-editor-output" id="outputbeispiel-shift"></pre>
+</div>
+
+<style>
+.js-editor-container {
+  margin: 2rem 0;
+  border: 1px solid #ddd;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.js-editor-header {
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.js-editor-title {
+  flex: 1;
+  font-weight: normal;
+  font-size: 13px;
+  color: #666;
+}
+
+.js-editor-run,
+.js-editor-reset {
+  background: #fff;
+  border: 1px solid #ccc;
+  color: #333;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.js-editor-run:hover,
+.js-editor-reset:hover {
+  background: #f9f9f9;
+  border-color: #999;
+}
+
+.js-editor-code {
+  width: 100%;
+  padding: 12px;
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  resize: vertical;
+  background: #fff;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.js-editor-code:focus {
+  outline: none;
+  background: #fafafa;
+}
+
+.js-editor-output-header {
+  background: #f5f5f5;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: normal;
+  color: #666;
+  border-bottom: 1px solid #ddd;
+}
+
+.js-editor-output {
+  margin: 0;
+  padding: 12px;
+  background: #fff;
+  color: #333;
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  min-height: 60px;
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: 1px solid #eee;
+}
+
+.js-editor-output:empty::before {
+  content: 'Keine Ausgabe';
+  color: #999;
+  font-style: italic;
+}
+
+.js-editor-output .log-error {
+  color: #c00;
+}
+
+.js-editor-output .log-warn {
+  color: #c60;
+}
+
+.js-editor-output .log-info {
+  color: #06c;
+}
+</style>
+
+<script>
+(function() {
+  var editorId = 'beispiel-shift';
+  
+  var runBtn = document.querySelector('.js-editor-run[data-editor="' + editorId + '"]');
+  var resetBtn = document.querySelector('.js-editor-reset[data-editor="' + editorId + '"]');
+  var codeArea = document.getElementById('code' + editorId);
+  var outputArea = document.getElementById('output' + editorId);
+  var initialCode = codeArea.value;
+  
+  function runCode() {
+    var code = codeArea.value;
+    outputArea.innerHTML = '';
+    
+    var logs = [];
+    var originalConsole = {
+      log: console.log.bind(console),
+      error: console.error.bind(console),
+      warn: console.warn.bind(console),
+      info: console.info.bind(console)
+    };
+    
+    console.log = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'log', args: args });
+      originalConsole.log.apply(console, args);
+    };
+    console.error = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'error', args: args });
+      originalConsole.error.apply(console, args);
+    };
+    console.warn = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'warn', args: args });
+      originalConsole.warn.apply(console, args);
+    };
+    console.info = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'info', args: args });
+      originalConsole.info.apply(console, args);
+    };
+    
+    try {
+      var result = (function() {
+        return eval(code);
+      })();
+      
+      if (logs.length === 0 && result !== undefined) {
+        logs.push({ type: 'log', args: [result] });
+      }
+    } catch (error) {
+      logs.push({ type: 'error', args: [error.toString()] });
+    } finally {
+      console.log = originalConsole.log;
+      console.error = originalConsole.error;
+      console.warn = originalConsole.warn;
+      console.info = originalConsole.info;
+    }
+    
+    logs.forEach(function(log) {
+      var line = document.createElement('div');
+      line.className = 'log-' + log.type;
+      line.textContent = log.args.map(function(arg) {
+        if (typeof arg === 'object' && arg !== null) {
+          try {
+            return JSON.stringify(arg, null, 2);
+          } catch (e) {
+            return String(arg);
+          }
+        }
+        return String(arg);
+      }).join(' ');
+      outputArea.appendChild(line);
+    });
+  }
+  
+  function resetCode() {
+    codeArea.value = initialCode;
+    outputArea.innerHTML = '';
+  }
+  
+  runBtn.addEventListener('click', runCode);
+  resetBtn.addEventListener('click', resetCode);
+  
+  codeArea.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      var start = this.selectionStart;
+      var end = this.selectionEnd;
+      this.value = this.value.substring(0, start) + '  ' + this.value.substring(end);
+      this.selectionStart = this.selectionEnd = start + 2;
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      runCode();
+    }
+  });
+})();
+</script>
+<p>Perfekt! Nun können wir die doppelte Fakultät-Funktion optimieren und die Multiplikation ersetzen:</p>
+<div class="js-editor-container" id="beispiel-3">
+  <div class="js-editor-header">
+    <span class="js-editor-title">JavaScript Live Editor</span>
+    <button class="js-editor-run" data-editor="beispiel-3">▶ Code ausführen</button>
+    <button class="js-editor-reset" data-editor="beispiel-3">↻ Zurücksetzen</button>
+  </div>
+  
+  <textarea 
+    class="js-editor-code" 
+    id="codebeispiel-3" 
+    style="height:300px;"
+    spellcheck="false">
+function getExponentAndFactor(evenNum) {
+  let exponent = 0;
+  let factor = BigInt(evenNum);
+  
+  while ((factor & 1n) === 0n) {
+    factor &gt;&gt;= 1n;
+    exponent&#43;&#43;;
+  }
+
+  return { exponent, factor };
+}
+
+function doubleFactorialEven(num) {
+  let result = BigInt(num) &lt;&lt; 1n;
+  
+  if (num === 2) {
+      return result;
+  }
+
+  for (let i = 4n; i &lt; BigInt(num); i &#43;= 2n) {
+      const { exponent, factor } = getExponentAndFactor(i);
+      result &lt;&lt;= BigInt(exponent);
+      result *= factor;
+  }
+  return result;
+}
+
+const iterations = 1000000; 
+const start = performance.now();
+
+for (let i = 0; i &lt; iterations; i&#43;&#43;) {
+    doubleFactorialEven(20);
+}
+const end = performance.now();
+const totalMs = end - start;
+console.log(&#34;Dauer: &#34; &#43; totalMs.toFixed(3) &#43; &#34; ms&#34;);
+console.log(&#34;Ergebnis einer Ausführung: &#34; &#43; doubleFactorialEven(20));
+</textarea>
+  
+  <div class="js-editor-output-header">Ausgabe:</div>
+  <pre class="js-editor-output" id="outputbeispiel-3"></pre>
+</div>
+
+<style>
+.js-editor-container {
+  margin: 2rem 0;
+  border: 1px solid #ddd;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.js-editor-header {
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.js-editor-title {
+  flex: 1;
+  font-weight: normal;
+  font-size: 13px;
+  color: #666;
+}
+
+.js-editor-run,
+.js-editor-reset {
+  background: #fff;
+  border: 1px solid #ccc;
+  color: #333;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.js-editor-run:hover,
+.js-editor-reset:hover {
+  background: #f9f9f9;
+  border-color: #999;
+}
+
+.js-editor-code {
+  width: 100%;
+  padding: 12px;
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  resize: vertical;
+  background: #fff;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.js-editor-code:focus {
+  outline: none;
+  background: #fafafa;
+}
+
+.js-editor-output-header {
+  background: #f5f5f5;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: normal;
+  color: #666;
+  border-bottom: 1px solid #ddd;
+}
+
+.js-editor-output {
+  margin: 0;
+  padding: 12px;
+  background: #fff;
+  color: #333;
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  min-height: 60px;
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: 1px solid #eee;
+}
+
+.js-editor-output:empty::before {
+  content: 'Keine Ausgabe';
+  color: #999;
+  font-style: italic;
+}
+
+.js-editor-output .log-error {
+  color: #c00;
+}
+
+.js-editor-output .log-warn {
+  color: #c60;
+}
+
+.js-editor-output .log-info {
+  color: #06c;
+}
+</style>
+
+<script>
+(function() {
+  var editorId = 'beispiel-3';
+  
+  var runBtn = document.querySelector('.js-editor-run[data-editor="' + editorId + '"]');
+  var resetBtn = document.querySelector('.js-editor-reset[data-editor="' + editorId + '"]');
+  var codeArea = document.getElementById('code' + editorId);
+  var outputArea = document.getElementById('output' + editorId);
+  var initialCode = codeArea.value;
+  
+  function runCode() {
+    var code = codeArea.value;
+    outputArea.innerHTML = '';
+    
+    var logs = [];
+    var originalConsole = {
+      log: console.log.bind(console),
+      error: console.error.bind(console),
+      warn: console.warn.bind(console),
+      info: console.info.bind(console)
+    };
+    
+    console.log = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'log', args: args });
+      originalConsole.log.apply(console, args);
+    };
+    console.error = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'error', args: args });
+      originalConsole.error.apply(console, args);
+    };
+    console.warn = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'warn', args: args });
+      originalConsole.warn.apply(console, args);
+    };
+    console.info = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'info', args: args });
+      originalConsole.info.apply(console, args);
+    };
+    
+    try {
+      var result = (function() {
+        return eval(code);
+      })();
+      
+      if (logs.length === 0 && result !== undefined) {
+        logs.push({ type: 'log', args: [result] });
+      }
+    } catch (error) {
+      logs.push({ type: 'error', args: [error.toString()] });
+    } finally {
+      console.log = originalConsole.log;
+      console.error = originalConsole.error;
+      console.warn = originalConsole.warn;
+      console.info = originalConsole.info;
+    }
+    
+    logs.forEach(function(log) {
+      var line = document.createElement('div');
+      line.className = 'log-' + log.type;
+      line.textContent = log.args.map(function(arg) {
+        if (typeof arg === 'object' && arg !== null) {
+          try {
+            return JSON.stringify(arg, null, 2);
+          } catch (e) {
+            return String(arg);
+          }
+        }
+        return String(arg);
+      }).join(' ');
+      outputArea.appendChild(line);
+    });
+  }
+  
+  function resetCode() {
+    codeArea.value = initialCode;
+    outputArea.innerHTML = '';
+  }
+  
+  runBtn.addEventListener('click', runCode);
+  resetBtn.addEventListener('click', resetCode);
+  
+  codeArea.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      var start = this.selectionStart;
+      var end = this.selectionEnd;
+      this.value = this.value.substring(0, start) + '  ' + this.value.substring(end);
+      this.selectionStart = this.selectionEnd = start + 2;
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      runCode();
+    }
+  });
+})();
+</script>
+<blockquote>
+<p>Auf meinem System dauert die Berechnung drei mal so lange, wie über die nicht-optinierte Version!</p></blockquote>
+<p>Warum ist unsere optimierte Version so langsam? Weil wir über viele Funktionsaufrufe und die while-Schleife enormen Overhead erzeugen! Aus Performance-Sicht war das eine Sackgasse, außerdem kannte Lovelace das Konzept der Bit-Operationen nicht. Aber wir haben trotzdem etwas ziemlich coolees gelernt, dass in bestimmten Situationen extrem hilfreich sein kann. Sorry, dass ich dich bisher hingehalten habe.</p>
+<p>Was wir hier &ldquo;entwickelt&rdquo; haben ist aber nicht sinnfrei. Es gibt durchaus System und Prozessoren, auf denen diese Art der Optimierung für einen Geschwindigkeitsgewinn sorgt.</p>
+<h2 id="der-binomialkoeffizient">Der Binomialkoeffizient</h2>
+<p>Nach dem kleinen aber hilflosen Ausflug in die Algoirthmus OPtimuerng zurück auf den Pfad der Tugend. Der Binomialkoeffizient ist eien Kombination von 3 Fakultäts-Berechnungen:</p>
+<p>$$
+\binom{n}{k} = \frac{n!}{k!(n-k)!}
+$$</p>
+<p>Und so sieht das in JavaScript aus:</p>
+<div class="js-editor-container" id="beispiel4">
+  <div class="js-editor-header">
+    <span class="js-editor-title">JavaScript Live Editor</span>
+    <button class="js-editor-run" data-editor="beispiel4">▶ Code ausführen</button>
+    <button class="js-editor-reset" data-editor="beispiel4">↻ Zurücksetzen</button>
+  </div>
+  
+  <textarea 
+    class="js-editor-code" 
+    id="codebeispiel4" 
+    style="height:300px;"
+    spellcheck="false">
+function faculty(num) {
+  let result = BigInt(num);
+  for (let factor = 2; factor &lt; num; factor&#43;&#43;) {
+    result *= BigInt(factor);
+  }
+  return result;
+}
+
+function binomialCoefficient(n, k) {
+  let numerator = faculty(n);
+  let factor_a = faculty(k);
+  let factor_b = faculty(n - k);
+  let denominator = factor_a * factor_b;
+  return numerator / denominator;
+}
+
+const n = 5;
+const k = 2;
+
+const iterations = 100000; 
+const start = performance.now();
+for (let i = 0; i &lt; iterations; i&#43;&#43;) {
+    binomialCoefficient(n, k);
+}
+const end = performance.now();
+const totalMs = end - start;
+console.log(&#34;Dauer: &#34; &#43; totalMs.toFixed(3) &#43; &#34; ms&#34;);
+console.log(`Binomialkoeffizient für n=${n} über k=${k}: ` &#43; binomialCoefficient(n, k));
+</textarea>
+  
+  <div class="js-editor-output-header">Ausgabe:</div>
+  <pre class="js-editor-output" id="outputbeispiel4"></pre>
+</div>
+
+<style>
+.js-editor-container {
+  margin: 2rem 0;
+  border: 1px solid #ddd;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.js-editor-header {
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.js-editor-title {
+  flex: 1;
+  font-weight: normal;
+  font-size: 13px;
+  color: #666;
+}
+
+.js-editor-run,
+.js-editor-reset {
+  background: #fff;
+  border: 1px solid #ccc;
+  color: #333;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.js-editor-run:hover,
+.js-editor-reset:hover {
+  background: #f9f9f9;
+  border-color: #999;
+}
+
+.js-editor-code {
+  width: 100%;
+  padding: 12px;
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  resize: vertical;
+  background: #fff;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.js-editor-code:focus {
+  outline: none;
+  background: #fafafa;
+}
+
+.js-editor-output-header {
+  background: #f5f5f5;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: normal;
+  color: #666;
+  border-bottom: 1px solid #ddd;
+}
+
+.js-editor-output {
+  margin: 0;
+  padding: 12px;
+  background: #fff;
+  color: #333;
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  min-height: 60px;
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: 1px solid #eee;
+}
+
+.js-editor-output:empty::before {
+  content: 'Keine Ausgabe';
+  color: #999;
+  font-style: italic;
+}
+
+.js-editor-output .log-error {
+  color: #c00;
+}
+
+.js-editor-output .log-warn {
+  color: #c60;
+}
+
+.js-editor-output .log-info {
+  color: #06c;
+}
+</style>
+
+<script>
+(function() {
+  var editorId = 'beispiel4';
+  
+  var runBtn = document.querySelector('.js-editor-run[data-editor="' + editorId + '"]');
+  var resetBtn = document.querySelector('.js-editor-reset[data-editor="' + editorId + '"]');
+  var codeArea = document.getElementById('code' + editorId);
+  var outputArea = document.getElementById('output' + editorId);
+  var initialCode = codeArea.value;
+  
+  function runCode() {
+    var code = codeArea.value;
+    outputArea.innerHTML = '';
+    
+    var logs = [];
+    var originalConsole = {
+      log: console.log.bind(console),
+      error: console.error.bind(console),
+      warn: console.warn.bind(console),
+      info: console.info.bind(console)
+    };
+    
+    console.log = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'log', args: args });
+      originalConsole.log.apply(console, args);
+    };
+    console.error = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'error', args: args });
+      originalConsole.error.apply(console, args);
+    };
+    console.warn = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'warn', args: args });
+      originalConsole.warn.apply(console, args);
+    };
+    console.info = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'info', args: args });
+      originalConsole.info.apply(console, args);
+    };
+    
+    try {
+      var result = (function() {
+        return eval(code);
+      })();
+      
+      if (logs.length === 0 && result !== undefined) {
+        logs.push({ type: 'log', args: [result] });
+      }
+    } catch (error) {
+      logs.push({ type: 'error', args: [error.toString()] });
+    } finally {
+      console.log = originalConsole.log;
+      console.error = originalConsole.error;
+      console.warn = originalConsole.warn;
+      console.info = originalConsole.info;
+    }
+    
+    logs.forEach(function(log) {
+      var line = document.createElement('div');
+      line.className = 'log-' + log.type;
+      line.textContent = log.args.map(function(arg) {
+        if (typeof arg === 'object' && arg !== null) {
+          try {
+            return JSON.stringify(arg, null, 2);
+          } catch (e) {
+            return String(arg);
+          }
+        }
+        return String(arg);
+      }).join(' ');
+      outputArea.appendChild(line);
+    });
+  }
+  
+  function resetCode() {
+    codeArea.value = initialCode;
+    outputArea.innerHTML = '';
+  }
+  
+  runBtn.addEventListener('click', runCode);
+  resetBtn.addEventListener('click', resetCode);
+  
+  codeArea.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      var start = this.selectionStart;
+      var end = this.selectionEnd;
+      this.value = this.value.substring(0, start) + '  ' + this.value.substring(end);
+      this.selectionStart = this.selectionEnd = start + 2;
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      runCode();
+    }
+  });
+})();
+</script>
+<p>Dass wir die Berechnung der Fakulrtät nicht optimieren können, haben wir ja bereits festgestellt. Wie sieht es beim Binomialkoeffizienten aus? Zwei Dinge fallen auf: Wir berechnen die Fakutält drei mal für jweils $n$, $k$ und $n - k$.  Wenn wir die Fakutätl aber für $n$ berechnen, dann stolpern wir automatisch über die Fakutät von $n-k$ und $k$!</p>
+<p>Wir könnten uns die Ergebnisse also merken. Dazu müssen wir nur die Schleife Anpassen und nicht mit dem Produkt aus $n$ und $2$ starten, sondern bei 1, da bei n - k und k ja auch mal 1 herauskommen kann:</p>
+<div class="js-editor-container" id="beispiel5">
+  <div class="js-editor-header">
+    <span class="js-editor-title">JavaScript Live Editor</span>
+    <button class="js-editor-run" data-editor="beispiel5">▶ Code ausführen</button>
+    <button class="js-editor-reset" data-editor="beispiel5">↻ Zurücksetzen</button>
+  </div>
+  
+  <textarea 
+    class="js-editor-code" 
+    id="codebeispiel5" 
+    style="height:300px;"
+    spellcheck="false">
+function faculty(n, k) {
+  let numerator = BigInt(1);
+  let factor_a = BigInt(0);
+  let factor_b = BigInt(0);
+
+  for (let factor = 2; factor &lt;= n; factor&#43;&#43;) {
+    numerator *= BigInt(factor);
+    if (factor === (n - k)) {
+      factor_b = numerator;
+    }
+    if (factor === k) {
+      factor_a = numerator;
+    }
+  }
+
+  return { numerator, factor_a, factor_b };
+}
+
+function binomialCoefficient(n, k) {
+  const {numerator, factor_a, factor_b} = faculty(n, k);
+  let denominator = factor_a * factor_b;
+  if (denominator === 0n) {
+    return 1n;
+  }
+  return numerator / denominator;
+}
+
+const n = 10;
+const k = 5;
+
+const iterations = 1; 
+const start = performance.now();
+for (let i = 0; i &lt; iterations; i&#43;&#43;) {
+    binomialCoefficient(n, k);
+}
+const end = performance.now();
+const totalMs = end - start;
+console.log(&#34;Dauer: &#34; &#43; totalMs.toFixed(3) &#43; &#34; ms&#34;);
+console.log(`Binomialkoeffizient für n=${n} über k=${k}: ` &#43; binomialCoefficient(n, k));
+</textarea>
+  
+  <div class="js-editor-output-header">Ausgabe:</div>
+  <pre class="js-editor-output" id="outputbeispiel5"></pre>
+</div>
+
+<style>
+.js-editor-container {
+  margin: 2rem 0;
+  border: 1px solid #ddd;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.js-editor-header {
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.js-editor-title {
+  flex: 1;
+  font-weight: normal;
+  font-size: 13px;
+  color: #666;
+}
+
+.js-editor-run,
+.js-editor-reset {
+  background: #fff;
+  border: 1px solid #ccc;
+  color: #333;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.js-editor-run:hover,
+.js-editor-reset:hover {
+  background: #f9f9f9;
+  border-color: #999;
+}
+
+.js-editor-code {
+  width: 100%;
+  padding: 12px;
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  resize: vertical;
+  background: #fff;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.js-editor-code:focus {
+  outline: none;
+  background: #fafafa;
+}
+
+.js-editor-output-header {
+  background: #f5f5f5;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: normal;
+  color: #666;
+  border-bottom: 1px solid #ddd;
+}
+
+.js-editor-output {
+  margin: 0;
+  padding: 12px;
+  background: #fff;
+  color: #333;
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  min-height: 60px;
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: 1px solid #eee;
+}
+
+.js-editor-output:empty::before {
+  content: 'Keine Ausgabe';
+  color: #999;
+  font-style: italic;
+}
+
+.js-editor-output .log-error {
+  color: #c00;
+}
+
+.js-editor-output .log-warn {
+  color: #c60;
+}
+
+.js-editor-output .log-info {
+  color: #06c;
+}
+</style>
+
+<script>
+(function() {
+  var editorId = 'beispiel5';
+  
+  var runBtn = document.querySelector('.js-editor-run[data-editor="' + editorId + '"]');
+  var resetBtn = document.querySelector('.js-editor-reset[data-editor="' + editorId + '"]');
+  var codeArea = document.getElementById('code' + editorId);
+  var outputArea = document.getElementById('output' + editorId);
+  var initialCode = codeArea.value;
+  
+  function runCode() {
+    var code = codeArea.value;
+    outputArea.innerHTML = '';
+    
+    var logs = [];
+    var originalConsole = {
+      log: console.log.bind(console),
+      error: console.error.bind(console),
+      warn: console.warn.bind(console),
+      info: console.info.bind(console)
+    };
+    
+    console.log = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'log', args: args });
+      originalConsole.log.apply(console, args);
+    };
+    console.error = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'error', args: args });
+      originalConsole.error.apply(console, args);
+    };
+    console.warn = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'warn', args: args });
+      originalConsole.warn.apply(console, args);
+    };
+    console.info = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'info', args: args });
+      originalConsole.info.apply(console, args);
+    };
+    
+    try {
+      var result = (function() {
+        return eval(code);
+      })();
+      
+      if (logs.length === 0 && result !== undefined) {
+        logs.push({ type: 'log', args: [result] });
+      }
+    } catch (error) {
+      logs.push({ type: 'error', args: [error.toString()] });
+    } finally {
+      console.log = originalConsole.log;
+      console.error = originalConsole.error;
+      console.warn = originalConsole.warn;
+      console.info = originalConsole.info;
+    }
+    
+    logs.forEach(function(log) {
+      var line = document.createElement('div');
+      line.className = 'log-' + log.type;
+      line.textContent = log.args.map(function(arg) {
+        if (typeof arg === 'object' && arg !== null) {
+          try {
+            return JSON.stringify(arg, null, 2);
+          } catch (e) {
+            return String(arg);
+          }
+        }
+        return String(arg);
+      }).join(' ');
+      outputArea.appendChild(line);
+    });
+  }
+  
+  function resetCode() {
+    codeArea.value = initialCode;
+    outputArea.innerHTML = '';
+  }
+  
+  runBtn.addEventListener('click', runCode);
+  resetBtn.addEventListener('click', resetCode);
+  
+  codeArea.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      var start = this.selectionStart;
+      var end = this.selectionEnd;
+      this.value = this.value.substring(0, start) + '  ' + this.value.substring(end);
+      this.selectionStart = this.selectionEnd = start + 2;
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      runCode();
+    }
+  });
+})();
+</script>
+<p>Aber moment mal, das ist ja noch nicht alles. Eine entscheidene und simple Möglichkeit, den Rechenaufwnad zu reduzieren, sehene wir wenn wir den Term eimal ausschreiben:</p>
+<p>$$
+\binom{5}{3} = \frac{5 \times 4 \times 3 \times 2 \times 1}{(3 \times 2 \times 1) \times (2 \times 1)}
+$$</p>
+<p>Kürzen! Wir können kürzen! Wir könnnen $k!$ im Nenner komplett gegen die entsprechenden Faktoren von $n!$ im Zähler kürzen. Aber wie gehen wir vor? Schauen wir uns mal ein paar Variante an, die relevanten Faktoren sind rot markiert:</p>
+<p>$$
+\binom{12}{8} = \frac{12 \times 11 \times 10 \times 9 \times \color{red}8 \times 7 \times 6 \times 5 \times 4 \times 3 \times 2 \times 1\color{black}}{(\color{red}8 \times 7 \times 6 \times 5 \times 4 \times 3 \times 2 \times 1\color{black}) \times (4 \times 3 \times 2 \times 1)}
+\newline
+\text{}
+\newline
+\binom{12}{3} = \frac{12 \times 11 \times 10 \times \color{red}9 \times 8 \times 7 \times 6 \times 5 \times 4 \times 3 \times 2 \times 1\color{black}}{(3 \times 2 \times 1) \times (\color{red}9 \times 8 \times 7 \times 6 \times 5 \times 4 \times 3 \times 2 \times 1\color{black})}
+\newline
+\text{}
+\newline
+\binom{9}{5} = \frac{9 \times 8 \times 7 \times 6 \times \color{red}5 \times 4 \times 3 \times 2 \times 1\color{black}}{(\color{red}5 \times 4 \times 3 \times 2 \times 1\color{black}) \times (4 \times 3 \times 2 \times 1)}
+\newline
+\text{}
+\newline
+\binom{8}{4} = \frac{8 \times 7 \times 6 \times 5 \times \color{red}4 \times 3 \times 2 \times 1\color{black}}{(\color{red}4 \times 3 \times 2 \times 1\color{black}) \times (4 \times 3 \times 2 \times 1)}
+$$</p>
+<p>Einfach nur $k!$ zu kürzem, scheint etwas <em>zu kurz gedacht</em> (pun intended). Die zu kürzenden Faktoren hängen davon ab, ob $k!$ größer oder kleiner als $(n - k)!$ ist. Etwas verkürzt heißt es also:</p>
+<ol>
+<li>Wenn $k &gt; n - k$, dann kürzen wir $k!$ und der Zähler geht von $n$ bis $k + 1$</li>
+<li>Wenn $k &lt;= n-k$, dann kürzen wir $(n-k)!$ und der Zähler geht von $n$ bis $(n - k) + 1$</li>
+</ol>
+<p>Um den ganzen Spaß etwas zu erleichtern, mache ich mal etwas nicht ganz so mathematisches: Wenn man sich die vier Fälle anschaut, lässt sich das sogar ohne Wenn-Dann-Bedingung abbilden, denn es scheint eine Gesetzmäßigkeit zu geben: Ohne den Beweis zu führen, nehmen wir dies mal als gegeben an:</p>
+<p>Es scheint so, als würde das Ende im Zähler und die brig Faktoren im Nenner etwas mit der Hälfte von $n$ zu tun haben:</p>
+<p>Die Fakultätsfunktion wird erstmal wieder zurck gebaut und erhält dafür einen Endwert:
+<div class="js-editor-container" id="beispiel5">
+  <div class="js-editor-header">
+    <span class="js-editor-title">JavaScript Live Editor</span>
+    <button class="js-editor-run" data-editor="beispiel5">▶ Code ausführen</button>
+    <button class="js-editor-reset" data-editor="beispiel5">↻ Zurücksetzen</button>
+  </div>
+  
+  <textarea 
+    class="js-editor-code" 
+    id="codebeispiel5" 
+    style="height:300px;"
+    spellcheck="false">
+function faculty(n, end_at) {
+  let result = BigInt(n); // kurz für BigInt(1)
+
+  for (let factor = n - 1; factor &gt;= end_at; factor--) {
+    result *= BigInt(factor);
+  }
+
+  return result;
+}
+
+function binomialCoefficient(n, k) {
+  let numerator;
+  let denominator;
+
+  let half_n = n / 2;
+  let diff = Math.abs(half_n - k);
+  let end_at = diff &#43; half_n &#43; 1;
+
+  numinator = faculty(n, end_at);
+  denominator = faculty(k, 1);
+  
+  return numerator / denominator;
+
+}
+
+const n = 10;
+const k = 5;
+
+const iterations = 1; 
+const start = performance.now();
+for (let i = 0; i &lt; iterations; i&#43;&#43;) {
+    binomialCoefficient(n, k);
+}
+const end = performance.now();
+const totalMs = end - start;
+console.log(&#34;Dauer: &#34; &#43; totalMs.toFixed(3) &#43; &#34; ms&#34;);
+console.log(`Binomialkoeffizient für n=${n} über k=${k}: ` &#43; binomialCoefficient(n, k));
+</textarea>
+  
+  <div class="js-editor-output-header">Ausgabe:</div>
+  <pre class="js-editor-output" id="outputbeispiel5"></pre>
+</div>
+
+<style>
+.js-editor-container {
+  margin: 2rem 0;
+  border: 1px solid #ddd;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.js-editor-header {
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.js-editor-title {
+  flex: 1;
+  font-weight: normal;
+  font-size: 13px;
+  color: #666;
+}
+
+.js-editor-run,
+.js-editor-reset {
+  background: #fff;
+  border: 1px solid #ccc;
+  color: #333;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.js-editor-run:hover,
+.js-editor-reset:hover {
+  background: #f9f9f9;
+  border-color: #999;
+}
+
+.js-editor-code {
+  width: 100%;
+  padding: 12px;
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  resize: vertical;
+  background: #fff;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.js-editor-code:focus {
+  outline: none;
+  background: #fafafa;
+}
+
+.js-editor-output-header {
+  background: #f5f5f5;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: normal;
+  color: #666;
+  border-bottom: 1px solid #ddd;
+}
+
+.js-editor-output {
+  margin: 0;
+  padding: 12px;
+  background: #fff;
+  color: #333;
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  min-height: 60px;
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: 1px solid #eee;
+}
+
+.js-editor-output:empty::before {
+  content: 'Keine Ausgabe';
+  color: #999;
+  font-style: italic;
+}
+
+.js-editor-output .log-error {
+  color: #c00;
+}
+
+.js-editor-output .log-warn {
+  color: #c60;
+}
+
+.js-editor-output .log-info {
+  color: #06c;
+}
+</style>
+
+<script>
+(function() {
+  var editorId = 'beispiel5';
+  
+  var runBtn = document.querySelector('.js-editor-run[data-editor="' + editorId + '"]');
+  var resetBtn = document.querySelector('.js-editor-reset[data-editor="' + editorId + '"]');
+  var codeArea = document.getElementById('code' + editorId);
+  var outputArea = document.getElementById('output' + editorId);
+  var initialCode = codeArea.value;
+  
+  function runCode() {
+    var code = codeArea.value;
+    outputArea.innerHTML = '';
+    
+    var logs = [];
+    var originalConsole = {
+      log: console.log.bind(console),
+      error: console.error.bind(console),
+      warn: console.warn.bind(console),
+      info: console.info.bind(console)
+    };
+    
+    console.log = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'log', args: args });
+      originalConsole.log.apply(console, args);
+    };
+    console.error = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'error', args: args });
+      originalConsole.error.apply(console, args);
+    };
+    console.warn = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'warn', args: args });
+      originalConsole.warn.apply(console, args);
+    };
+    console.info = function() {
+      var args = Array.prototype.slice.call(arguments);
+      logs.push({ type: 'info', args: args });
+      originalConsole.info.apply(console, args);
+    };
+    
+    try {
+      var result = (function() {
+        return eval(code);
+      })();
+      
+      if (logs.length === 0 && result !== undefined) {
+        logs.push({ type: 'log', args: [result] });
+      }
+    } catch (error) {
+      logs.push({ type: 'error', args: [error.toString()] });
+    } finally {
+      console.log = originalConsole.log;
+      console.error = originalConsole.error;
+      console.warn = originalConsole.warn;
+      console.info = originalConsole.info;
+    }
+    
+    logs.forEach(function(log) {
+      var line = document.createElement('div');
+      line.className = 'log-' + log.type;
+      line.textContent = log.args.map(function(arg) {
+        if (typeof arg === 'object' && arg !== null) {
+          try {
+            return JSON.stringify(arg, null, 2);
+          } catch (e) {
+            return String(arg);
+          }
+        }
+        return String(arg);
+      }).join(' ');
+      outputArea.appendChild(line);
+    });
+  }
+  
+  function resetCode() {
+    codeArea.value = initialCode;
+    outputArea.innerHTML = '';
+  }
+  
+  runBtn.addEventListener('click', runCode);
+  resetBtn.addEventListener('click', resetCode);
+  
+  codeArea.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      var start = this.selectionStart;
+      var end = this.selectionEnd;
+      this.value = this.value.substring(0, start) + '  ' + this.value.substring(end);
+      this.selectionStart = this.selectionEnd = start + 2;
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      runCode();
+    }
+  });
+})();
+</script></p>
+<p>Aber es gibt noch eine interessante Beobachtunbg. Schauen wir uns einen bereits gekürzten Binomialkoeffizienten an, genauer die gerade Faktoren im Zähler:s</p>
+<p>$$
+\binom{24}{8} = \frac{\color{red}24\color{black} \times 23 \color{red}\times 22\color{black} \times 21 \color{red}\times 20 \color{black}\times 19 \times \color{red}18 \color{black}\times 17}{8 \times 7 \times 6 \times 5 \times 4 \times 3 \times 2 \times 1}
+$$</p>
+<p>Gerade Faktoren lassen sich durch 2 teilen und dann sieht es so aus:</p>
+<p>$$
+\binom{24}{8} = \frac{23 \times 21 \times 19 \times 17 \times
+\color{red}12 \times 2 \times 11 \times 2 \times 10 \times 2 \times 9 \times 2
+\color{black}}{8 \times 7 \times 6 \times 5 \times 4 \times 3 \times 2 \times 1}
+$$</p>
+<p>Und noch etwas zusammgengefasste:</p>
+<p>$$
+\binom{24}{8} = \frac{23 \times 21 \times 19 \times 17 \times
+\color{red}12 \times 11 \times 10 \times 9 \times 2^4
+\color{black}}{8 \times 7 \times 6 \times 5 \times 4 \times 3 \times 2 \times 1}
+$$</p>
+<p>Der Zähler lässt sich noch weiter zerlegen, aber vermutlich hilft uns das nicht viel weiter. Stattdessen klnnen wir versuchen, in dem Ergebnis eine Gesetzmäßigkeit zu erkennen:</p>
+<p>Die Höhe des Exponenten ergibt sich aus der Anzahl der geraden Zahlen. Und das ist im Prinzip immer die Hälft von $n - end_at$. Außerdem befinden sich die neuen Faktoren in einer fortlaufenden Reihe, beginnend mit $end_at + 1$.</p>
+
+    
+  </article>
+
+
+  
+  <div style="width: 100%; margin: 3rem auto 2rem; border-top: 2px solid #9a9a9a; padding-top: 1.5rem;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem; color: #878787;">Reaktionen</h2>
+    <div id="cusdis_thread"
+    style="width: 100%; height: auto;"
+    data-host="https://cusdis.com"
+    data-app-id="e885b617-2ae8-4610-983a-311fc563e28d"
+    data-page-id="393bed239197d13b1310079361c5bd28"
+    data-page-url="http://localhost:1313/2026/2026-12-31-lovelace/"
+    data-page-title="Lovelace und Bernoulli"
+    data-require-email="true"
+    data-required-fields="email"> </div>
+    
+<script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+  </div>
+
+  
+  
+
+  
+  <div class="paginator">
+    
+    <a></a>
+    
+    
+    <a class="link" href="http://localhost:1313/2026/2026-01-03-ai-effect/">next →</a>
+    
+  </div>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="privacy.html">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>
