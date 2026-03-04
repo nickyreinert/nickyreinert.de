@@ -381,6 +381,13 @@ An mich wurde vor einiger Zeit ein Wunsch herangetragen, den ganzen neumodischen
       <nav id="TableOfContents">
   <ul>
     <li><a href="#pre-processing---es-geht-nicht-ohne">Pre-Processing - es geht nicht ohne.</a></li>
+    <li><a href="#ingestion">Ingestion</a></li>
+    <li><a href="#die-erste-abfrage">Die erste Abfrage</a></li>
+    <li><a href="#re-ranking-mit-dem-cross-encoder">Re-Ranking mit dem Cross-Encoder</a></li>
+    <li><a href="#feedback-schleife">Feedback-Schleife</a></li>
+    <li><a href="#hygiene-features">Hygiene-Features</a></li>
+    <li><a href="#entwicklungsprozess">Entwicklungsprozess</a></li>
+    <li><a href="#famous-last-words">Famous Last Words</a></li>
   </ul>
 </nav>
     </div>
@@ -412,7 +419,7 @@ Und dann lass ich auch nicht einfach <strong>Gemini</strong> auf das Konzept los
 <p>Nicht nur für die Qualität auch für die Leistung ist die Vorverarbeitung essentiell. Punkt. Dazu müssen die Tickets bereinigt werden. Das fängt damit an, dass z.B. <strong>Grußfloskeln</strong> und <strong>Abschiedszeilen</strong> entfernt werden. Dazu habe ich eine kleine &ldquo;<strong>State-Machine</strong>&rdquo; geschrieben (schreiben lassen, hehe), die die Ticket-Texte Zeile für Zeile durchgeht. Je nachdem, wie die Zeile anfängt bzw. welche Schlagwörter enthalten sind, wechselt der Status und der Status bestimmt, ob eine Zeile weiter verwendet wird.</p>
 <p>Beginnt eine Zeile mit &ldquo;Hallo&rdquo;, kann ich sie ignorieren. Beginnt eine Zeile mit &ldquo;mit freundlichen Grüßen&rdquo;, weiß ich, dass ich den Rest des Tickets ignorieren kann. Und so weiter. Dazu gibt es noch ein paar einfache Filter-Regeln, um alte Tickets zu ignorieren oder Tickets, die anhand der (sehr gut gepflegten Kategorien) keine Probleme beschreiben.</p>
 <p>Viel mehr gibt es dazu gar nicht zu sagen, nur soviel: Die Datenqualität ist extrem wichtig, sie erfordert ein Verständnis des vorliegenden Datenmodells und das ist, jedenfalls im Moment, durch KI noch nicht lösbar.</p>
-<h1 id="ingestion">Ingestion</h1>
+<h2 id="ingestion">Ingestion</h2>
 <p>Nach der Verarbeitung der Rohdaten kommt der eigentliche Spaß - jetzt geht um architektonische Entscheidungen. Sicherlich gäbe es andere Möglichkeiten, die Informationen weiter zu verarbeiten. Man könnte ein vorhandenes <strong>LLM feintunen</strong> oder sogar komplett neu trainieren.  Ich hielt das hier für zu aufwendig und finde den Weg über <strong>RAG</strong> und eine <strong>Vektordatenbank</strong> weitaus sinnvoller. Aber verwandeln wir einfach alle Tickets in Vektoren und ballern die in eine Datenbank?</p>
 <p>Nope. <code>(⌐■_■)</code></p>
 <p>Hier muss weiter gefeilt werden:</p>
@@ -483,7 +490,7 @@ Und dann lass ich auch nicht einfach <strong>Gemini</strong> auf das Konzept los
 ).</p>
 <p>Für das Embedding nutze ich <strong>perplexity-ai/pplx-embed-v1-0.6B</strong> - Perplexity hatte das Model gerade erst als Open Source zur Verfügung gestellt.</p>
 <p>Als Zuckerguß habe ich das Ticket dann noch durch ein LLM gedrückt, um eine kurze Zusammenfassung zu erhalten. Das ist in der Realität aber sehr aufwendig und für die Suche noch nicht relevant und deshalb nur optional.</p>
-<h1 id="die-erste-abfrage">Die erste Abfrage</h1>
+<h2 id="die-erste-abfrage">Die erste Abfrage</h2>
 <p>Nun haben wir also eine Datenbank mit mindestens zwei wichtigen Spalten: Den Suchvektoren für die <strong>Synonyme</strong> und die <strong>Titel</strong>. Wie geht geht es weiter?</p>
 <p>Wenn ich nach einem Ticket suche, bekomme ich erstmal einen Suchbegriff, entweder nur ein Schlagwort oder eine kurze Beschreibung meines Problems. Auch der Suchbegriff muss vektorisiert werden, natürlich mit dem gleichen <strong>Embedding-Model</strong>, wie bei der Erstellung der Datenbank.</p>
 <p>Die Datenbank (übrigens eine <strong>PostgreSQL</strong> mit der Erweiterung <strong>pgvector</strong>) vergleicht zunächst beide Vektoren miteinander. Bei mehreren Tausend Tickets geht das noch relativ fix. Als Vergleichsmethoden bieten sich verschiedene Optionen an, ich habe mich für die <strong>Kosinus-Ähnlichkeit</strong> entschieden. Was genau heißt das?</p>
@@ -495,7 +502,7 @@ Und dann lass ich auch nicht einfach <strong>Gemini</strong> auf das Konzept los
 <p>Das Ergebnis ist natürlich noch nicht perfekt, also schleifen wir noch etwas nach:</p>
 <blockquote>
 <p>Das ganze Spektakel firmiert übrigens unter dem Begriff <strong>Bi-Encoder</strong>: Ich encodiere die vorhandenen Tickets im Vorlauf, den Suchbegriff im Nachlauf. Zwei Encoding-Vorgänge. Bi.</p></blockquote>
-<h1 id="re-ranking-mit-dem-cross-encoder">Re-Ranking mit dem Cross-Encoder</h1>
+<h2 id="re-ranking-mit-dem-cross-encoder">Re-Ranking mit dem Cross-Encoder</h2>
 <p>Was macht der Cross-Encoder?</p>
 <p>Sehr viel Arbeit!</p>
 <p>Hier nehmen wir den unkodierten, tatsächlichen (aber vorbehandelten und bereinigten) Tickettext und &ldquo;verschmelzen&rdquo; ihn mit der Anfrage:</p>
@@ -504,10 +511,10 @@ Und dann lass ich auch nicht einfach <strong>Gemini</strong> auf das Konzept los
 <p>Aus &ldquo;Display&rdquo; wird nicht nur ein Vektor, sondern drei: Der <strong>Query-Vektor</strong> (Wonach suche ich?), Der <strong>Key-Vektor</strong> (Was ist mein &ldquo;Etikett&rdquo;?) und der Value-Vektor (Was hab ich anzubieten?). Die Grundlage davor ist fest im Modell verdrahtet.</p>
 <p>Und jetzt wird es aufwendig: Wir multiplizieren den <strong>Query-Vektor</strong> und <strong>Key-Vektor</strong> jedes Tokens miteinander, also <strong>Frage x Antwort</strong>, und enhalten damit die &ldquo;<strong>Attention-Matrix</strong>&rdquo;, die im Prinzip beschreibt, wie die Token des Textes zueinander passen. Im Prinzip wie die Heamtap einer <strong>Correlation-Matrix</strong>. Diese dient nun als &ldquo;Gewicht&rdquo; und wird über den <strong>Value-Vektor</strong> für jedes Token gelegt. Und so erhält jedes Token ein individuelles &ldquo;Preisschild&rdquo;, deren Summe wiederum den Wert‚ des gesammten Textes beschreibt. Also eine Zahl, die ausdrückt, wie &ldquo;konsistent&rdquo; der Text ist, bzw. damit wie gut die Antwort zu der Frage ist. Einfachste Mathematik, die nur aufgrund der schieren Menge so rechenintensiv ist.</p>
 <p>Der Cross-Encoder reduziert die Ergebnis-Menge nun noch einmal deutlich herunter. Die letzten zehn Tickets können nun ganz einfach noch mal gegen ein LLM geworfen werden, um eine finale Prüfung der Plausibilität durchzuführen. Aber das erkläre ich jetzt nicht noch einmal im Detail.</p>
-<h1 id="feedback-schleife">Feedback-Schleife</h1>
+<h2 id="feedback-schleife">Feedback-Schleife</h2>
 <p>Als besonderes <strong>Schmankerl</strong> gönne ich dem ganzen noch eine manuell <strong>Feedback-Funktion</strong>. Wenn ein Ticket in der Ergebnisliste so gar nicht zu der Suche passt, kann diese Kombination aus &ldquo;Frage und Antwort&rdquo; (nicht) valide <strong>klassifiziert</strong> werden. Die Ergebnisse werden in einer gesonderten Tabelle erfasst. Bei der nächsten Suche wir der Such-Vektor erst mit den historischen Such-Vektoren verglichen. Hier wird erneut die Kosinus-Ähnlichkeit berücksichtigt - der <strong>erste Faktor</strong>. Der <strong>zweite Faktor</strong> ist das Alter der Bewertung - je älter, desto weniger wichtig. Und schließlich die Klassifizierung als <strong>dritter Faktor</strong>: valide (1) oder nicht valide (-1). Das Produkt ist der <strong>Contribution-Score</strong> für dieses Kombination aus Suchanfrage und Ticket-ID.</p>
 <p>Dieser Wert wird noch vor dem Re-Ranking dem Vektor-Score zugerechnet (oder davon abgezogen).</p>
-<h1 id="hygiene-features">Hygiene-Features</h1>
+<h2 id="hygiene-features">Hygiene-Features</h2>
 <p>Das Ganze ist natürlich nicht an einem Abend und schon gar nicht im <strong>Vibe-Coding</strong> entstanden. Vor allem die Entwicklung eines Datenmodells, die Auswahl der Embedding-Modelle und einzelner Parameter erfordert sehr viel &ldquo;Forschungsarbeit&rdquo;. Umso wichtiger ist es, Änderungen nachvollziehbar zu dokumentieren. Das klingt total deutsch, ich weiß. Aber trotzdem:</p>
 <ol>
 <li>
@@ -523,7 +530,7 @@ Und dann lass ich auch nicht einfach <strong>Gemini</strong> auf das Konzept los
 <p>Die Vektor-Tabelle enthält komplette Debug-Datensätze! <strong>Warum?</strong> Um gezielt un stichprobenartig die Qualität zu prüfen - auch hier gilt: Das ganze darf keine Blackbox sein. Gerade wenn die Entwicklungs-Arbeit durch KI unterstützt wird, braucht man explizite Beispiele.</p>
 </li>
 </ol>
-<h1 id="entwicklungsprozess">Entwicklungsprozess</h1>
+<h2 id="entwicklungsprozess">Entwicklungsprozess</h2>
 <p>Da ich oft gefragt werde, wie ich in 2026 entwickle, will ich dazu zwei, drei oder mehr Sätze verlieren:</p>
 <ol start="0">
 <li>
@@ -542,7 +549,7 @@ Und dann lass ich auch nicht einfach <strong>Gemini</strong> auf das Konzept los
 <p>Last but not least: Atomare Commits. Es kommt nicht selten vor, dass die KI mit dem Hintern etwas einreißt, wenn sie vorne werkelt. Jede Code-Änderung abzunicken ist bequem, umso wichtiger ist es, jede Änderung in einem Commit abzulegen. Dazu braucht man nicht mal zwingend ein Repo auf Github, es reicht schon, das Repository lokal zu pflegen.</p>
 </li>
 </ol>
-<h1 id="famous-last-words">Famous Last Words</h1>
+<h2 id="famous-last-words">Famous Last Words</h2>
 <p>Vielleicht stell ich mich auch nur glatt an: Wir sind aus meiner Sicht noch weit davon entfernt, dass die KI losläuft und <strong>komplexe Tools</strong> in einer <strong>hinreichenden Qualität</strong> (!) baut. Es gibt Anwendungsfälle, in denen das sehr gut funktioniert und außerdem habe ich für das Projekt auch nur kostenlose Kontingente genutzt (bis auf <strong>Claude Plus</strong>, aber das erst in den letzten Wochen). Insofern steht mir das Urteil vielleicht auch nicht zu. Dennoch: Hier war sehr viel <strong>manuelle Arbeit</strong> erforderlich, angefangen beim <strong>Verständnis</strong> für das Problem und der Entwicklung einer <strong>Strategie</strong>, bis hin dazu, den Output des Coding-Agenten permanent zu überwachen. Ich glaube, dass vor allem die <strong>Integration</strong> in vorhandene <strong>Business-Prozesse</strong> noch eine große Hürde ist. Vielleicht kann <strong>Gemini</strong> eine <strong>iOS-App</strong> auf die Beine stellen. Aber das ist nicht das, was die Produktivität von <strong>100.000 KMU</strong> in Deutschland steigert, in denen <strong>selbst gebaute hochgadig integrierte IT-Monolithen</strong> seit 20 Jahren auf einer <strong>staubigen Windows-Kiste</strong> unter der Küchen-Theke laufen.</p>
 <p>Im Prinzip zeigt der Fortschritt in dem Bereich aber auch, worauf es schon immer in der <strong>Software-Entwicklung</strong> ankam: Das Code-Schreiben ist nur der <strong>Fleiß-Teil</strong> der Aufgabe. Mach  dir keinen Kopf, wenn du das <strong>SQL-Vokabular</strong> nicht beherrschst oder nicht auf Zuruf in <strong>JavaScript</strong> ein Frontend bauen kannst - das sind zwar beliebte, aber ziemlich dämliche Hürden, die nichts über die Qualitäten einer Entwickler:in aussagen. (Kleine Anekdote am Rande: Ich reite sehr gerne auf dem Beherrschen des SQL-Vokabulars herum, weil ich bei <strong>DCMN</strong> mal einen &ldquo;Einstellungs-Test&rdquo; zu SQL machen durfte und das Durchfallen dann zu einer Ablehnung geführt hatte&hellip;ja, das hat an meinem Ego gekratzt  <code>(づ ￣ ³￣)づ</code>)</p>
 <p>Also, an all die Junior-Devs da draußen: Seht KI nicht als Konkurrenz, sondern als Werkzeug, dass euch den Einstieg erleichtert. Und an die Unternehmen: KI ersetzt keine Junior-Devs, sie macht sie nur effizienter.</p>
