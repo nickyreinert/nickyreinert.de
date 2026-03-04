@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="Reden ja immer alle von KI und wie das die Arbeitswelt verändert wird, aber bis auf Hyphens und Raketen-Emoticons auf LinkedIn sind das meist nur charmante Sprüche.
+An mich wurde vor einiger Zeit ein Wunsch herangetragen, den ganzen neumodischen Kram auch mal produktivitätssteigernd einzusetzen. Genau genommen ging es um Support-Tickets, die besser durchsuchbar sein sollen. Und noch genauer genommen ging es um Tickets, in denen ein technisches Problem beschrieben wird und der Support eine Antwort liefert. Die Herausforderung: Es handelt sich um eine Branche mit sehr speziellen Symptom-Beschreibungen zu sehr spezifischen Produkten.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
+
+  
+  
+  <meta name="keywords" content=" Webentwicklung  Software Development  Programmierung  SEO  Analytics  Hosting  DevOps  WordPress  Hugo  Tools  Projekte  Anleitungen  Datenschutz  Digitale Kultur  Künstliche Intelligenz  KI  Autismus ">
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/css/katex.min.css">
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '\\[', right: '\\]', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false }
+      ],
+      ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'option'],
+      throwOnError: false
+    });
+  });
+</script>
+
+
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/2026/2026-03-04-rag-search/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Support-Tickets durchsuchbar machen mit RAG-Search - eine Anleitung">
+  <meta property="og:description" content="Reden ja immer alle von KI und wie das die Arbeitswelt verändert wird, aber bis auf Hyphens und Raketen-Emoticons auf LinkedIn sind das meist nur charmante Sprüche.
+An mich wurde vor einiger Zeit ein Wunsch herangetragen, den ganzen neumodischen Kram auch mal produktivitätssteigernd einzusetzen. Genau genommen ging es um Support-Tickets, die besser durchsuchbar sein sollen. Und noch genauer genommen ging es um Tickets, in denen ein technisches Problem beschrieben wird und der Support eine Antwort liefert. Die Herausforderung: Es handelt sich um eine Branche mit sehr speziellen Symptom-Beschreibungen zu sehr spezifischen Produkten.">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2026">
+    <meta property="article:published_time" content="2026-03-04T12:34:56+01:00">
+    <meta property="article:modified_time" content="2026-03-04T12:34:56+01:00">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/2026/2026-03-04-rag-search/">
+
+  
+  
+  
+  <meta itemprop="name" content="Support-Tickets durchsuchbar machen mit RAG-Search - eine Anleitung">
+  <meta itemprop="description" content="Reden ja immer alle von KI und wie das die Arbeitswelt verändert wird, aber bis auf Hyphens und Raketen-Emoticons auf LinkedIn sind das meist nur charmante Sprüche.
+An mich wurde vor einiger Zeit ein Wunsch herangetragen, den ganzen neumodischen Kram auch mal produktivitätssteigernd einzusetzen. Genau genommen ging es um Support-Tickets, die besser durchsuchbar sein sollen. Und noch genauer genommen ging es um Tickets, in denen ein technisches Problem beschrieben wird und der Support eine Antwort liefert. Die Herausforderung: Es handelt sich um eine Branche mit sehr speziellen Symptom-Beschreibungen zu sehr spezifischen Produkten.">
+  <meta itemprop="datePublished" content="2026-03-04T12:34:56+01:00">
+  <meta itemprop="dateModified" content="2026-03-04T12:34:56+01:00">
+  <meta itemprop="wordCount" content="2670">
+  <meta itemprop="keywords" content="Blog,Anleitungen,KI,RAG,LLM,Vektordatenbanken,Datenschutz,Software-Engineering,Python,Mistral,PostgreSQL">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>Support-Tickets durchsuchbar machen mit RAG-Search - eine Anleitung - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Support-Tickets durchsuchbar machen mit RAG-Search - eine Anleitung">
+  <meta name="twitter:description" content="Reden ja immer alle von KI und wie das die Arbeitswelt verändert wird, aber bis auf Hyphens und Raketen-Emoticons auf LinkedIn sind das meist nur charmante Sprüche.
+An mich wurde vor einiger Zeit ein Wunsch herangetragen, den ganzen neumodischen Kram auch mal produktivitätssteigernd einzusetzen. Genau genommen ging es um Support-Tickets, die besser durchsuchbar sein sollen. Und noch genauer genommen ging es um Tickets, in denen ein technisches Problem beschrieben wird und der Support eine Antwort liefert. Die Herausforderung: Es handelt sich um eine Branche mit sehr speziellen Symptom-Beschreibungen zu sehr spezifischen Produkten.">
+
+
+  
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Support-Tickets durchsuchbar machen mit RAG-Search - eine Anleitung",
+    "description": "Reden ja immer alle von KI und wie das die Arbeitswelt verändert wird, aber bis auf Hyphens und Raketen-Emoticons auf LinkedIn sind das meist nur charmante …",
+    "datePublished": "2026-03-04T12:34:56\u002b01:00",
+    "dateModified": "2026-03-04T12:34:56\u002b01:00",
+    "author": {
+      "@type": "Person",
+      "name": "",
+      "url": "https:\/\/nickyreinert.de\/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Nicky Reinert",
+      "url": "https:\/\/nickyreinert.de\/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https:\/\/nickyreinert.de\/images\/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/nickyreinert.de\/2026\/2026-03-04-rag-search\/"
+    },
+    
+    "image": {
+      "@type": "ImageObject",
+      "url": "https:\/\/nickyreinert.de\/image.png",
+      "width": 1200,
+      "height": 630
+    },
+    
+    "url": "https:\/\/nickyreinert.de\/2026\/2026-03-04-rag-search\/",
+    "wordCount":  2670 ,
+    
+    "timeRequired": "PT12M",
+    
+    
+    
+    "articleSection": ["blog", "anleitungen"],
+    
+    
+    "abstract": "Ein praxisnaher Einblick in die Implementierung einer lokalen RAG-Architektur für Support-Tickets. Der Text beschreibt Pre-Processing, Embedding-Strategien mit Bi-Encodern und das Re-Ranking mittels Cross-Encodern unter Berücksichtigung von Datenschutz und Hardware-Limits.",
+    
+    
+    "genre": "blog",
+    
+    
+    "educationalLevel": "Fortgeschritten",
+    
+    "inLanguage": "de"
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Support-Tickets durchsuchbar machen mit RAG-Search - eine Anleitung",
+    "description": "Reden ja immer alle von KI und wie das die Arbeitswelt verändert wird, aber bis auf Hyphens und Raketen-Emoticons auf LinkedIn sind das meist nur charmante …",
+    
+    "proficiencyLevel": "Fortgeschritten",
+    
+    
+    "dependencies": ["Grundkenntnisse in NLP und Vektorsuche", "Verständnis von lokaler LLM-Infrastruktur"],
+    
+    
+    "about": [
+      
+      
+      {
+        "@type": "Thing",
+        "name": "KI"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "RAG"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "LLM"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Vektordatenbanken"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Datenschutz"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Software-Engineering"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Python"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Mistral"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "PostgreSQL"
+      }
+      
+    ],
+    
+    "datePublished": "2026-03-04T12:34:56\u002b01:00",
+    "dateModified": "2026-03-04T12:34:56\u002b01:00",
+    "author": {
+      "@type": "Person",
+      "name": ""
+    }
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Nicky Reinert",
+    "url": "https:\/\/nickyreinert.de\/",
+    "description": "Blog \u0026 Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung \u0026 Software Development, KI, SEO \u0026 Analytics, Hosting \u0026 DevOps, WordPress \u0026 Hugo, Tools \u0026 Projekte, Datenschutz und digitale Kultur",
+    "inLanguage": "de",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https:\/\/nickyreinert.de\/search/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+]
+</script>
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+  
+
+<script defer src="/js/alpine.min.js"></script>
+
+
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institut für digitale Herausforderungen</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://not-a-brand.myspreadshop.de/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/analysen/">analysen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+
+
+    
+<main id="main" class="post">
+  
+  
+  <div class="post-header">
+    <div class="navigation" style="align-items: center;">
+      <div style="flex-shrink: 0; width: 50px;">
+        
+        <a class="link prev" href="/2026/2026-02-16-cognitive-overload/" style="font-size: 1.2rem;">&lt;&lt;&lt;</a>
+        
+      </div>
+      
+      <h1 style="flex: 1; text-align: center; min-width: 0; padding: 0 0.5rem;" itemprop="headline">Support-Tickets durchsuchbar machen mit RAG-Search - eine Anleitung</h1>
+      
+      <div style="flex-shrink: 0; width: 50px; text-align: right;">
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="post-meta" style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; color: #878787;">
+    March 4, 2026 &nbsp;|&nbsp; Kategorie: 
+    
+    <a class="link" href='https://nickyreinert.de/categories/blog' style="text-decoration: none;">blog</a>
+    
+    <a class="link" href='https://nickyreinert.de/categories/anleitungen' style="text-decoration: none;">anleitungen</a>
+    
+  </div>
+    
+  
+  
+  
+  <details style="margin-top: 0.5rem; margin-bottom: 2rem; font-size: 0.9rem; color: #878787; background: none; border: none;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc" style="margin-left: 1rem;">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#pre-processing---es-geht-nicht-ohne">Pre-Processing - es geht nicht ohne.</a></li>
+  </ul>
+</nav>
+    </div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
+    <p>Reden ja immer alle von KI und wie das die Arbeitswelt verändert wird, aber bis auf <strong>Hyphens</strong> und <strong>Raketen-Emoticons</strong> auf <strong>LinkedIn</strong> sind das meist nur charmante Sprüche.</p>
+<p>An mich wurde vor einiger Zeit ein Wunsch herangetragen, den ganzen neumodischen Kram auch mal <strong>produktivitätssteigernd</strong> einzusetzen. Genau genommen ging es um <strong>Support-Tickets</strong>, die besser durchsuchbar sein sollen. Und noch genauer genommen ging es um Tickets, in denen ein technisches Problem beschrieben wird und der Support eine Antwort liefert. Die Herausforderung: Es handelt sich um eine Branche mit sehr <strong>speziellen Symptom-Beschreibungen</strong> zu sehr <strong>spezifischen Produkten</strong>.</p>
+<p>Das klingt einfacher gesagt, als getan. Aber hier ist das Problem: Klar kann ich mit <strong>Claude Code</strong> schnell mal einen <strong>Tetris Klon</strong> aufziehen, aber man stülpt KI eben nicht einfach über vorhandene Geschäfts-Prozesse. Während ich die KI ohne weiteres um Lösungen bitten könnte, die IT-Themen betreffen, würde sie hier gnadenlos versagen. KI ist auf <strong>StackOverflow</strong> trainiert, nicht auf die Support-Themen irgendwelcher mittleren <strong>Unternehmen</strong>.</p>
+<p>Hinzu kommen ganz andere banale Problemen an: Wenn es um Tickets geht, ist eine KI aus der Cloud ausgeschlossen, da hier <strong>personenbezogene Daten</strong> verarbeitet werden. Man braucht also <strong>lokale Hardware</strong>. Und die ist gerade sehr teuer. (Weil alle gerade KI in der Cloud nutzen wollen&hellip; hm, seltsam). Die Realität ist, dass der &ldquo;<strong>Tante Emma Laden um die Ecke</strong>&rdquo; keinen Keller voll mit <strong>H100</strong> hat.
+Und dann lass ich auch nicht einfach <strong>Gemini</strong> auf das Konzept los und erhalte nach 2 Stunden eine Oberfläche, die alle architektonischen Besonderheiten berücksichtigt und mir ein ausgefeiltes Datenmodell zur Verfügung stellt. Es gibt &ldquo;semantische Feinheiten&rdquo;, die lassen sich nur manuell justieren. In diesem Fall müssen die Tickets sorgfältig vorverarbeitet werden, um Noise zu entfernen. <strong>Hype und Realität</strong> liegen sehr, sehr weit auseinander&hellip; aber genug der warmen Worte: Ich beschreibe hier einmal das Vorgehen in groben Zügen. Ins Detail gehen darf ich nicht. Aus Gründen. Viel Spaß!</p>
+<figure>
+  <a href="image.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="image.png" 
+      alt="Visualisierung einer RAG-Architektur mit Vektordatenbank und lokalem LLM"
+      
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Visualisierung einer RAG-Architektur mit Vektordatenbank und lokalem LLM</figcaption>
+</figure>
+
+<h2 id="pre-processing---es-geht-nicht-ohne">Pre-Processing - es geht nicht ohne.</h2>
+<p>Nicht nur für die Qualität auch für die Leistung ist die Vorverarbeitung essentiell. Punkt. Dazu müssen die Tickets bereinigt werden. Das fängt damit an, dass z.B. <strong>Grußfloskeln</strong> und <strong>Abschiedszeilen</strong> entfernt werden. Dazu habe ich eine kleine &ldquo;<strong>State-Machine</strong>&rdquo; geschrieben (schreiben lassen, hehe), die die Ticket-Texte Zeile für Zeile durchgeht. Je nachdem, wie die Zeile anfängt bzw. welche Schlagwörter enthalten sind, wechselt der Status und der Status bestimmt, ob eine Zeile weiter verwendet wird.</p>
+<p>Beginnt eine Zeile mit &ldquo;Hallo&rdquo;, kann ich sie ignorieren. Beginnt eine Zeile mit &ldquo;mit freundlichen Grüßen&rdquo;, weiß ich, dass ich den Rest des Tickets ignorieren kann. Und so weiter. Dazu gibt es noch ein paar einfache Filter-Regeln, um alte Tickets zu ignorieren oder Tickets, die anhand der (sehr gut gepflegten Kategorien) keine Probleme beschreiben.</p>
+<p>Viel mehr gibt es dazu gar nicht zu sagen, nur soviel: Die Datenqualität ist extrem wichtig, sie erfordert ein Verständnis des vorliegenden Datenmodells und das ist, jedenfalls im Moment, durch KI noch nicht lösbar.</p>
+<h1 id="ingestion">Ingestion</h1>
+<p>Nach der Verarbeitung der Rohdaten kommt der eigentliche Spaß - jetzt geht um architektonische Entscheidungen. Sicherlich gäbe es andere Möglichkeiten, die Informationen weiter zu verarbeiten. Man könnte ein vorhandenes <strong>LLM feintunen</strong> oder sogar komplett neu trainieren.  Ich hielt das hier für zu aufwendig und finde den Weg über <strong>RAG</strong> und eine <strong>Vektordatenbank</strong> weitaus sinnvoller. Aber verwandeln wir einfach alle Tickets in Vektoren und ballern die in eine Datenbank?</p>
+<p>Nope. <code>(⌐■_■)</code></p>
+<p>Hier muss weiter gefeilt werden:</p>
+<p>Zunächst schicken wir jedes Ticket an ein lokales LLM (<code>Ollama</code> ftw) und lassen uns zwei Dinge extrahieren: <strong>Symptome</strong> und deren <strong>Synonyme</strong> (<em>symptom extraction and semantic expansion</em>) Warum ist das wichtig? Wie schon oben erwähnt, sind die Problembeschreibungen von einem sehr besonderen Vokabular geprägt. Gleichzeitig macht es kaum Sinn, den kompletten Tickettext - wenn auch schon bereinigt - zu übernehmen, da das zu viel Noise erzeugt. Als Modell habe ich hier <strong>mistral-small:24b-instruct-2501-q4_K_M</strong> verwendet.</p>
+<blockquote>
+<p>Zur Erklärung: Die <strong>24b</strong> geben den Umfang des Modells an: <strong>24 Milliarden</strong> Parameter (<em>das B steht für Billions im Englischen</em>). Die Faustregel lautet, wie so oft, je größer, desto besser. Ein Modell bzw. die Parameter sind im Prinzip nur eine Menge von Zahlen, genauer gesagt <strong>Floats</strong>. Diese haben eine Genauigkeit von <strong>32 bit</strong>. Für <strong>24 Billionen</strong> dieser Floats werden also <code>24 * 4 = 96 GB</code> Speicher benötigt. Das ist sehr viel. Man kann aber die Genauigkeit reduzieren, sprich &ldquo;quantifizieren&rdquo;. Dafür steht hier das <strong>q4</strong>, also <strong>4 Bit</strong>. Der Speicherbedarf sinkt dabei auf ca. <code>12 GB</code>. Das sind nur &ldquo;Überschlagsrechnungen&rdquo;, aber im Prinzip ist es das, was bei der Modellentscheidung berücksichtigt wird, wenn die Hardware der einschränkende Faktor ist.</p></blockquote>
+<p>Danach werden zwei Attribute &ldquo;vektorisiert&rdquo;: Die <strong>Synonyme</strong> und der <strong>Titel</strong> (ein manuell gesetztes, kurzes und damit qualitiativ sehr wichtiges Schlagwort). Die <strong>Symptome</strong> habe ich nur zur Erzeugung der Synonyme verwendet, diese müssen nicht weiter verarbeitet werden.</p>
+<p>Man nennt das ganze &ldquo;embedden&rdquo;. Einfach gesagt wird jedes Wort durch einen Vektor aus Zahlen ersetzt - da sind sie wieder, die Floats! Diese Vektoren sind immer gleich groß, egal wie lang der Text ist.</p>
+<p>&ldquo;Hello world.&rdquo; ergibt mit dem <strong>Paraphrase-MiniLM-L3v-v2</strong> z.B. diesn Vektor:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="ln">1</span><span class="cl"><span class="p">[</span><span class="mf">-0.02387238828205746</span><span class="p">,</span><span class="mf">0.031304207180667405</span><span class="p">,</span><span class="mf">0.05010987525414924</span><span class="p">,</span><span class="mf">0.009739787412972717</span><span class="p">,</span><span class="mf">0.007596318645688104</span><span class="p">,</span><span class="mf">0.011358127811961407</span><span class="p">,</span><span class="mf">0.05233465445881466</span><span class="p">,</span><span class="mf">-0.04094259840171881</span><span class="p">,</span><span class="mf">-0.08519433327669537</span><span class="p">,</span><span class="mf">0.06741062405927463</span><span class="p">,</span><span class="mf">-0.05629769502350367</span><span class="p">,</span><span class="mf">-0.08552042419307328</span><span class="p">,</span><span class="mf">-0.027117592145863668</span><span class="p">,</span><span class="mf">0.018514577213607192</span><span class="p">,</span><span class="mf">0.02138661702784072</span><span class="p">,</span><span class="mf">0.08505345304569854</span><span class="p">,</span><span class="mf">0.03534424499595665</span><span class="p">,</span><span class="mf">-0.02039192971870989</span><span class="p">,</span><span class="mf">-0.07467982484499935</span><span class="p">,</span><span class="mf">-0.023542512391995146</span><span class="p">,</span><span class="mf">0.013782835690474417</span><span class="p">,</span><span class="mf">0.08584731595194102</span><span class="p">,</span><span class="mf">-0.014569365764061261</span><span class="p">,</span><span class="mf">0.026587029658684206</span><span class="p">,</span><span class="mf">-0.03936189839612113</span><span class="p">,</span><span class="mf">-0.004133350198336408</span><span class="p">,</span><span class="mf">0.04320840736431838</span><span class="p">,</span><span class="mf">0.07291740814793016</span><span class="p">,</span><span class="mf">0.05109245958038099</span><span class="p">,</span><span class="mf">-0.07236704310867664</span><span class="p">,</span><span class="mf">0.04510166299090866</span><span class="p">,</span><span class="mf">-0.08221843538814465</span><span class="p">,</span><span class="mf">0.09563565638942244</span><span class="p">,</span><span class="mf">-0.021623402925209603</span><span class="p">,</span><span class="mf">-0.013718578518186624</span><span class="p">,</span><span class="mf">0.036857817511100996</span><span class="p">,</span><span class="mf">-0.01641381866201767</span><span class="p">,</span><span class="mf">-0.011418979031503676</span><span class="p">,</span><span class="mf">-0.007002203451085373</span><span class="p">,</span><span class="mf">0.01787821432441306</span><span class="p">,</span><span class="mf">0.05700190803201256</span><span class="p">,</span><span class="mf">0.014663259259456746</span><span class="p">,</span><span class="mf">0.042964721757510774</span><span class="p">,</span><span class="mf">-0.05282869396034847</span><span class="p">,</span><span class="mf">0.0218669352563494</span><span class="p">,</span><span class="mf">-0.04162956171303024</span><span class="p">,</span><span class="mf">0.0350942051079379</span><span class="p">,</span><span class="mf">0.049304946339457104</span><span class="p">,</span><span class="mf">-0.06521378203069422</span><span class="p">,</span><span class="mf">-0.04777724209917876</span><span class="p">,</span><span class="mf">0.005049966141110513</span><span class="p">,</span><span class="mf">-0.054911207590373524</span><span class="p">,</span><span class="mf">-0.06261055825517689</span><span class="p">,</span><span class="mf">0.026610189263041994</span><span class="p">,</span><span class="mf">0.08624550383854876</span><span class="p">,</span><span class="mf">0.09273989425969606</span><span class="p">,</span><span class="mf">-0.012644277732918185</span><span class="p">,</span><span class="mf">-0.11781329420020094</span><span class="p">,</span><span class="mf">-0.050032919753631416</span><span class="p">,</span><span class="mf">0.05737917262082758</span><span class="p">,</span><span class="mf">0.013147288825618256</span><span class="p">,</span><span class="mf">0.04321210468655136</span><span class="p">,</span><span class="mf">-0.10654501690325223</span><span class="p">,</span><span class="mf">0.038258645555329394</span><span class="p">,</span><span class="mf">0.04870006274129409</span><span class="p">,</span><span class="mf">-0.0020523437733967224</span><span class="p">,</span><span class="mf">-0.053480069799630284</span><span class="p">,</span><span class="mf">0.07050278128769207</span><span class="p">,</span><span class="mf">-0.10607153355633515</span><span class="p">,</span><span class="mf">-0.02745774890899879</span><span class="p">,</span><span class="mf">-0.011854736366861568</span><span class="p">,</span><span class="mf">-0.07639352976897136</span><span class="p">,</span><span class="mf">-0.02125870148517759</span><span class="p">,</span><span class="mf">0.008442483154353789</span><span class="p">,</span><span class="mf">0.021798120344140044</span><span class="p">,</span><span class="mf">0.050767848351988686</span><span class="p">,</span><span class="mf">-0.005701350926838555</span><span class="p">,</span><span class="mf">-0.06242409425401028</span><span class="p">,</span><span class="mf">-0.007944459230994336</span><span class="p">,</span><span class="mf">-0.007884370763769306</span><span class="p">,</span><span class="mf">0.07573314214729135</span><span class="p">,</span><span class="mf">0.018460401737355397</span><span class="p">,</span><span class="mf">-0.045410431418549335</span><span class="p">,</span><span class="mf">0.006516482585695228</span><span class="p">,</span><span class="mf">0.06724287737914389</span><span class="p">,</span><span class="mf">0.024597040175572543</span><span class="p">,</span><span class="mf">-0.05403934129721045</span><span class="p">,</span><span class="mf">0.054917568513643246</span><span class="p">,</span><span class="mf">0.058778795470306996</span><span class="p">,</span><span class="mf">0.006332953764429327</span><span class="p">,</span><span class="mf">-0.04772323796092749</span><span class="p">,</span><span class="mf">-0.021439852923910013</span><span class="p">,</span><span class="mf">0.10642830536119424</span><span class="p">,</span><span class="mf">-0.0018025388143116502</span><span class="p">,</span><span class="mf">0.015056587056925993</span><span class="p">,</span><span class="mf">-0.028003811385376616</span><span class="p">,</span><span class="mf">0.09295024608561078</span><span class="p">,</span><span class="mf">-0.05091595948037502</span><span class="p">,</span><span class="mf">-0.043795700080357235</span><span class="p">,</span><span class="mf">0.19435213540209745</span><span class="p">,</span><span class="mf">0.021498619079271766</span><span class="p">,</span><span class="mf">-0.004907848521713486</span><span class="p">,</span><span class="mf">0.028709279607402056</span><span class="p">,</span><span class="mf">0.00900851491203086</span><span class="p">,</span><span class="mf">0.08828888137509174</span><span class="p">,</span><span class="mf">0.013520897418682036</span><span class="p">,</span><span class="mf">-0.029857111776445896</span><span class="p">,</span><span class="mf">0.09404836271740083</span><span class="p">,</span><span class="mf">-0.04588813287931177</span><span class="p">,</span><span class="mf">0.01754369517792516</span><span class="p">,</span><span class="mf">-0.021003313994476913</span><span class="p">,</span><span class="mf">-0.039032957223305575</span><span class="p">,</span><span class="mf">-0.0715565192085091</span><span class="p">,</span><span class="mf">-0.044025290832233485</span><span class="p">,</span><span class="mf">-0.015913441619971335</span><span class="p">,</span><span class="mf">-0.0037432999178883953</span><span class="p">,</span><span class="mf">-0.09894563653967015</span><span class="p">,</span><span class="mf">-0.007947096806005676</span><span class="p">,</span><span class="mf">-0.008376117128471642</span><span class="p">,</span><span class="mf">-0.042496284070715346</span><span class="p">,</span><span class="mf">-0.033374617353360635</span><span class="p">,</span><span class="mf">-0.020733674374386727</span><span class="p">,</span><span class="mf">0.03419989258783973</span><span class="p">,</span><span class="mf">-0.04416099567963832</span><span class="p">,</span><span class="mf">0.026441443325865822</span><span class="p">,</span><span class="mf">-0.07194358191812507</span><span class="p">,</span><span class="mf">0.07215138631125181</span><span class="p">,</span><span class="mf">0.00013186492424103707</span><span class="p">,</span><span class="mf">0.01651178482373116</span><span class="p">,</span><span class="mf">0.06600182391814176</span><span class="p">,</span><span class="mf">0.03582873436946798</span><span class="p">,</span><span class="mf">0.08916985894597926</span><span class="p">,</span><span class="mf">0.01808284649070205</span><span class="p">,</span><span class="mf">-0.04807543623403191</span><span class="p">,</span><span class="mf">-0.06838142815243269</span><span class="p">,</span><span class="mf">0.032614922551898115</span><span class="p">,</span><span class="mf">-0.016031311659040034</span><span class="p">,</span><span class="mf">0.0007813653986198832</span><span class="p">,</span><span class="mf">0.003902664455662462</span><span class="p">,</span><span class="mf">-0.005937543071615014</span><span class="p">,</span><span class="mf">0.027326753281116462</span><span class="p">,</span><span class="mf">-0.009385310557955981</span><span class="p">,</span><span class="mf">-0.020406212449012074</span><span class="p">,</span><span class="mf">0.04621046615272076</span><span class="p">,</span><span class="mf">-0.005159901089029616</span><span class="p">,</span><span class="mf">0.012942812442713055</span><span class="p">,</span><span class="mf">-0.005802576780456927</span><span class="p">,</span><span class="mf">0.0009701831284583501</span><span class="p">,</span><span class="mf">-0.0013738596598283487</span><span class="p">,</span><span class="mf">-0.05158786416050211</span><span class="p">,</span><span class="mf">-0.03117139637306584</span><span class="p">,</span><span class="mf">0.13421729522189862</span><span class="p">,</span><span class="mf">0.09020963105757421</span><span class="p">,</span><span class="mf">-0.05679930111748895</span><span class="p">,</span><span class="mf">0.08297631622985786</span><span class="p">,</span><span class="mf">0.024485817956037898</span><span class="p">,</span><span class="mf">0.11139894451577483</span><span class="p">,</span><span class="mf">-0.019392536578861943</span><span class="p">,</span><span class="mf">0.011845545655538773</span><span class="p">,</span><span class="mf">0.09058997186837028</span><span class="p">,</span><span class="mf">-0.003199535458221807</span><span class="p">,</span><span class="mf">0.03734236246102072</span><span class="p">,</span><span class="mf">0.022918060679314987</span><span class="p">,</span><span class="mf">-0.003931506307234461</span><span class="p">,</span><span class="mf">0.0007674177533946859</span><span class="p">,</span><span class="mf">-0.0034512472472678925</span><span class="p">,</span><span class="mf">0.059419605014382</span><span class="p">,</span><span class="mf">-0.024932167544851887</span><span class="p">,</span><span class="mf">0.01847251481889453</span><span class="p">,</span><span class="mf">0.000579072694132051</span><span class="p">,</span><span class="mf">-0.10540838446491874</span><span class="p">,</span><span class="mf">0.04102269254601297</span><span class="p">,</span><span class="mf">-0.005848003987817679</span><span class="p">,</span><span class="mf">0.03355380779207788</span><span class="p">,</span><span class="mf">-0.012528532813709714</span><span class="p">,</span><span class="mf">-0.044404421975057465</span><span class="p">,</span><span class="mf">0.024572386751910678</span><span class="p">,</span><span class="mf">0.026256665323156965</span><span class="p">,</span><span class="mf">-0.12723572932453545</span><span class="p">,</span><span class="mf">0.07772025304355233</span><span class="p">,</span><span class="mf">-0.09243295876911488</span><span class="p">,</span><span class="mf">-0.07083935255917208</span><span class="p">,</span><span class="mf">0.009892511772968883</span><span class="p">,</span><span class="mf">-0.010776647168271258</span><span class="p">,</span><span class="mf">0.004348713389662225</span><span class="p">,</span><span class="mf">-0.02049924654336059</span><span class="p">,</span><span class="mf">-0.04266045461229387</span><span class="p">,</span><span class="mf">-0.02485581342173862</span><span class="p">,</span><span class="mf">0.04903333006307083</span><span class="p">,</span><span class="mf">-0.019904631559266896</span><span class="p">,</span><span class="mf">0.046349434419716416</span><span class="p">,</span><span class="mf">-0.05176422708166589</span><span class="p">,</span><span class="mf">0.03361966268444302</span><span class="p">,</span><span class="mf">0.056778859030061656</span><span class="p">,</span><span class="mf">0.026209906586382274</span><span class="p">,</span><span class="mf">-0.008869654815703265</span><span class="p">,</span><span class="mf">-0.01169453845406593</span><span class="p">,</span><span class="mf">0.012622244194703527</span><span class="p">,</span><span class="mf">0.026797119326613928</span><span class="p">,</span><span class="mf">-0.03660282047855738</span><span class="p">,</span><span class="mf">0.03255662208617309</span><span class="p">,</span><span class="mf">0.11695431783832465</span><span class="p">,</span><span class="mf">0.06938860930927629</span><span class="p">,</span><span class="mf">0.020318352789390044</span><span class="p">,</span><span class="mf">0.16244531214072974</span><span class="p">,</span><span class="mf">0.019829265289868912</span><span class="p">,</span><span class="mf">-0.007717919827267578</span><span class="p">,</span><span class="mf">0.008560676959889473</span><span class="p">,</span><span class="mf">0.00326436791411265</span><span class="p">,</span><span class="mf">0.07495976741622948</span><span class="p">,</span><span class="mf">-0.05972770910061397</span><span class="p">,</span><span class="mf">-0.02210877403199542</span><span class="p">,</span><span class="mf">-0.011781474731995228</span><span class="p">,</span><span class="mf">0.020999995947343208</span><span class="p">,</span><span class="mf">-0.011520928598401188</span><span class="p">,</span><span class="mf">0.032058249115858445</span><span class="p">,</span><span class="mf">-0.011671412297217345</span><span class="p">,</span><span class="mf">0.06961780492644404</span><span class="p">,</span><span class="mf">-0.0948813609038121</span><span class="p">,</span><span class="mf">-0.04754430063208485</span><span class="p">,</span><span class="mf">0.029586141406367013</span><span class="p">,</span><span class="mf">0.000903398856214938</span><span class="p">,</span><span class="mf">-0.051885641370628094</span><span class="p">,</span><span class="mf">-0.08039549733784987</span><span class="p">,</span><span class="mf">0.05198611602775561</span><span class="p">,</span><span class="mf">0.009999564508015521</span><span class="p">,</span><span class="mf">-0.07212453938163695</span><span class="p">,</span><span class="mf">-0.05849907466250162</span><span class="p">,</span><span class="mf">0.03551882242333642</span><span class="p">,</span><span class="mf">0.020755246323419182</span><span class="p">,</span><span class="mf">0.05925353592847165</span><span class="p">,</span><span class="mf">0.09015347096133366</span><span class="p">,</span><span class="mf">-0.07901719278531945</span><span class="p">,</span><span class="mf">0.035025136916413666</span><span class="p">,</span><span class="mf">0.01146543040362947</span><span class="p">,</span><span class="mf">-0.021666419980288756</span><span class="p">,</span><span class="mf">0.10045511619121636</span><span class="p">,</span><span class="mf">0.05340332121956959</span><span class="p">,</span><span class="mf">-0.021966585451013522</span><span class="p">,</span><span class="mf">0.06962415422611126</span><span class="p">,</span><span class="mf">0.009499340538308663</span><span class="p">,</span><span class="mf">0.019324012900587825</span><span class="p">,</span><span class="mf">-0.061334953076624635</span><span class="p">,</span><span class="mf">0.1386772992849644</span><span class="p">,</span><span class="mf">-0.01391358705326422</span><span class="p">,</span><span class="mf">0.012068507361862827</span><span class="p">,</span><span class="mf">-0.11044569185904618</span><span class="p">,</span><span class="mf">-0.08281178295055037</span><span class="p">,</span><span class="mf">-0.010711782586505316</span><span class="p">,</span><span class="mf">0.008340670427417934</span><span class="p">,</span><span class="mf">-0.04898325355026687</span><span class="p">,</span><span class="mf">-0.04135487016352843</span><span class="p">,</span><span class="mf">-0.04381012839373899</span><span class="p">,</span><span class="mf">0.015199037253684022</span><span class="p">,</span><span class="mf">0.03954817763961786</span><span class="p">,</span><span class="mf">-0.008425657057830112</span><span class="p">,</span><span class="mf">-0.053974753580844886</span><span class="p">,</span><span class="mf">0.025678967704588117</span><span class="p">,</span><span class="mf">-0.016427080853576585</span><span class="p">,</span><span class="mf">0.10640406428737226</span><span class="p">,</span><span class="mf">-0.024424303208400222</span><span class="p">,</span><span class="mf">-0.09297741291845449</span><span class="p">,</span><span class="mf">-0.01381261217457305</span><span class="p">,</span><span class="mf">0.03255296868285797</span><span class="p">,</span><span class="mf">0.03226282512964212</span><span class="p">,</span><span class="mf">0.03990619367826404</span><span class="p">,</span><span class="mf">-0.06305325932055553</span><span class="p">,</span><span class="mf">0.020385054645886365</span><span class="p">,</span><span class="mf">-0.09224148042038842</span><span class="p">,</span><span class="mf">-0.04468336403538416</span><span class="p">,</span><span class="mf">-0.10641260570358228</span><span class="p">,</span><span class="mf">-0.02049166266800164</span><span class="p">,</span><span class="mf">-0.007267453517665513</span><span class="p">,</span><span class="mf">-0.042410589857737685</span><span class="p">,</span><span class="mf">0.021552663137650526</span><span class="p">,</span><span class="mf">-0.06950890918958591</span><span class="p">,</span><span class="mf">0.0942902599838279</span><span class="p">,</span><span class="mf">-0.04593481191138368</span><span class="p">,</span><span class="mf">-0.005083769000445518</span><span class="p">,</span><span class="mf">0.014050208436974906</span><span class="p">,</span><span class="mf">-0.02461588322128839</span><span class="p">,</span><span class="mf">-0.038741665949480156</span><span class="p">,</span><span class="mf">0.06014764661132077</span><span class="p">,</span><span class="mf">-0.007138825173676598</span><span class="p">,</span><span class="mf">0.029115590189425788</span><span class="p">,</span><span class="mf">-0.02886008266723819</span><span class="p">,</span><span class="mf">0.06793111135692445</span><span class="p">,</span><span class="mf">0.03447861735796481</span><span class="p">,</span><span class="mf">0.00036310927759551295</span><span class="p">,</span><span class="mf">-0.03241847106348535</span><span class="p">,</span><span class="mf">0.03475068868313888</span><span class="p">,</span><span class="mf">0.1057785575040219</span><span class="p">,</span><span class="mf">-0.038965388239286</span><span class="p">,</span><span class="mf">-0.03769480852357527</span><span class="p">,</span><span class="mf">0.0068289067888147965</span><span class="p">,</span><span class="mf">-0.09925825736127845</span><span class="p">,</span><span class="mf">0.000624462489081296</span><span class="p">,</span><span class="mf">-0.02943032732000031</span><span class="p">,</span><span class="mf">0.02750481128273645</span><span class="p">,</span><span class="mf">-0.011477234832773655</span><span class="p">,</span><span class="mf">0.05918152530500318</span><span class="p">,</span><span class="mf">-0.07993246086463764</span><span class="p">,</span><span class="mf">0.058742263605991225</span><span class="p">,</span><span class="mf">-0.016423519524103914</span><span class="p">,</span><span class="mf">0.07507503722492223</span><span class="p">,</span><span class="mf">0.012946391088981267</span><span class="p">,</span><span class="mf">0.06040347905216919</span><span class="p">,</span><span class="mf">-0.04735690850489795</span><span class="p">,</span><span class="mf">-0.012057719032126855</span><span class="p">,</span><span class="mf">-0.03848304242073622</span><span class="p">,</span><span class="mf">-0.023917816760220232</span><span class="p">,</span><span class="mf">-0.01113712537736178</span><span class="p">,</span><span class="mf">0.04507323606466864</span><span class="p">,</span><span class="mf">-0.030755933712100763</span><span class="p">,</span><span class="mf">-0.01773542118054954</span><span class="p">,</span><span class="mf">-0.01058817374106044</span><span class="p">,</span><span class="mf">-0.04809801841983925</span><span class="p">,</span><span class="mf">-0.005658966121181061</span><span class="p">,</span><span class="mf">0.04361403354320549</span><span class="p">,</span><span class="mf">-0.026038411616385485</span><span class="p">,</span><span class="mf">0.0413977306896866</span><span class="p">,</span><span class="mf">-0.015388345953647426</span><span class="p">,</span><span class="mf">0.04326098718766412</span><span class="p">,</span><span class="mf">-0.0511383327460591</span><span class="p">,</span><span class="mf">-0.01830720801086866</span><span class="p">,</span><span class="mf">0.029030402789238262</span><span class="p">,</span><span class="mf">0.04781528347296757</span><span class="p">,</span><span class="mf">-0.0008762621159630972</span><span class="p">,</span><span class="mf">0.0364951287164783</span><span class="p">,</span><span class="mf">-0.03475082857302539</span><span class="p">,</span><span class="mf">-0.06980106271105482</span><span class="p">,</span><span class="mf">0.04849417302321283</span><span class="p">,</span><span class="mf">0.02056891767113985</span><span class="p">,</span><span class="mf">0.02198148941711985</span><span class="p">,</span><span class="mf">0.020540187989026272</span><span class="p">,</span><span class="mf">-0.008665817222614124</span><span class="p">,</span><span class="mf">-0.03814161153455047</span><span class="p">,</span><span class="mf">-0.0334136087787406</span><span class="p">,</span><span class="mf">0.02956480846977873</span><span class="p">,</span><span class="mf">-0.03330474743825718</span><span class="p">,</span><span class="mf">0.0028545249769023335</span><span class="p">,</span><span class="mf">0.06869471263768863</span><span class="p">,</span><span class="mf">0.033229735078750135</span><span class="p">,</span><span class="mf">-0.11089311827466099</span><span class="p">,</span><span class="mf">0.03622985452160378</span><span class="p">,</span><span class="mf">0.03302422904121515</span><span class="p">,</span><span class="mf">0.021828673915202712</span><span class="p">,</span><span class="mf">-0.04162714847693573</span><span class="p">,</span><span class="mf">-0.017870084038072984</span><span class="p">,</span><span class="mf">-0.05564333920431389</span><span class="p">,</span><span class="mf">-0.052430666567564024</span><span class="p">,</span><span class="mf">0.0492756295129216</span><span class="p">,</span><span class="mf">-0.05290992986095472</span><span class="p">,</span><span class="mf">0.005343340547497377</span><span class="p">,</span><span class="mf">0.006437835664631024</span><span class="p">,</span><span class="mf">-0.07147480941735708</span><span class="p">,</span><span class="mf">-0.08764626566551983</span><span class="p">,</span><span class="mf">-0.03926138059950099</span><span class="p">,</span><span class="mf">-0.06221477303159085</span><span class="p">,</span><span class="mf">-0.08675591106678916</span><span class="p">,</span><span class="mf">0.012516419867722799</span><span class="p">,</span><span class="mf">0.037557077983860356</span><span class="p">,</span><span class="mf">-0.021348646818965106</span><span class="p">,</span><span class="mf">-0.04928038698903287</span><span class="p">,</span><span class="mf">0.008176091738118212</span><span class="p">,</span><span class="mf">-0.08146524411088267</span><span class="p">,</span><span class="mf">0.04459189096035061</span><span class="p">,</span><span class="mf">-0.07176819429515259</span><span class="p">,</span><span class="mf">-0.03353958819522012</span><span class="p">,</span><span class="mf">0.03623692872063204</span><span class="p">,</span><span class="mf">-0.05649157223978979</span><span class="p">,</span><span class="mf">-0.027863093545934088</span><span class="p">,</span><span class="mf">0.05306354576481698</span><span class="p">,</span><span class="mf">0.026766801989175013</span><span class="p">,</span><span class="mf">-0.03826281324375054</span><span class="p">,</span><span class="mf">-0.007180518527482264</span><span class="p">,</span><span class="mf">-0.08318304637167591</span><span class="p">,</span><span class="mf">0.002977809716999685</span><span class="p">,</span><span class="mf">-0.11132484774370813</span><span class="p">,</span><span class="mf">-0.03778777185966724</span><span class="p">,</span><span class="mf">0.04035905587327702</span><span class="p">,</span><span class="mf">-0.02854790062815181</span><span class="p">,</span><span class="mf">0.020689314606835846</span><span class="p">,</span><span class="mf">-0.0559375715545614</span><span class="p">]</span>
+</span></span></code></pre></div><p>Das gleiche Embedding angwendet auf den kompletten Inhalt dieser Wikipedia-Seite: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://de.wikipedia.org/wiki/Lorem_ipsum?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://de.wikipedia.org/wiki/Lorem_ipsum</a>
+
+
+ sieht so aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="ln">1</span><span class="cl"><span class="p">[</span><span class="mf">-0.11031187035622363</span><span class="p">,</span><span class="mf">0.08625977311428233</span><span class="p">,</span><span class="mf">-0.042385052945108866</span><span class="p">,</span><span class="mf">0.03498812979392799</span><span class="p">,</span><span class="mf">-0.003439912841829372</span><span class="p">,</span><span class="mf">-0.11651398716400953</span><span class="p">,</span><span class="mf">0.07677254030468374</span><span class="p">,</span><span class="mf">-0.007531723786663544</span><span class="p">,</span><span class="mf">-0.0011816022801577142</span><span class="p">,</span><span class="mf">0.031094804835006762</span><span class="p">,</span><span class="mf">0.04572902217291104</span><span class="p">,</span><span class="mf">-0.07514169507822298</span><span class="p">,</span><span class="mf">0.07823545479404512</span><span class="p">,</span><span class="mf">0.002346218517418519</span><span class="p">,</span><span class="mf">-0.006362053700162901</span><span class="p">,</span><span class="mf">0.06300549564938702</span><span class="p">,</span><span class="mf">-0.10654747097460866</span><span class="p">,</span><span class="mf">0.03812744057993123</span><span class="p">,</span><span class="mf">0.00549224281028129</span><span class="p">,</span><span class="mf">0.0071365929354029935</span><span class="p">,</span><span class="mf">0.042326646848349136</span><span class="p">,</span><span class="mf">0.05641764930874471</span><span class="p">,</span><span class="mf">-0.04108466724722628</span><span class="p">,</span><span class="mf">0.043037357790584374</span><span class="p">,</span><span class="mf">0.11544823712090181</span><span class="p">,</span><span class="mf">0.0010331166704806386</span><span class="p">,</span><span class="mf">0.054383384250261076</span><span class="p">,</span><span class="mf">0.0760843555553685</span><span class="p">,</span><span class="mf">-0.1371371116011184</span><span class="p">,</span><span class="mf">0.0002235974357922117</span><span class="p">,</span><span class="mf">-0.09553859100984802</span><span class="p">,</span><span class="mf">0.055933004425439595</span><span class="p">,</span><span class="mf">-0.008898783151043163</span><span class="p">,</span><span class="mf">0.0383967781397384</span><span class="p">,</span><span class="mf">-0.03236579600030543</span><span class="p">,</span><span class="mf">0.02872287227565173</span><span class="p">,</span><span class="mf">0.04917915701652197</span><span class="p">,</span><span class="mf">-0.022729391177676195</span><span class="p">,</span><span class="mf">-0.03087952476603475</span><span class="p">,</span><span class="mf">0.08526864093342644</span><span class="p">,</span><span class="mf">-0.00920572344239514</span><span class="p">,</span><span class="mf">0.07497320826153271</span><span class="p">,</span><span class="mf">0.02969353801708632</span><span class="p">,</span><span class="mf">-0.010604461024890023</span><span class="p">,</span><span class="mf">-0.027614487808671172</span><span class="p">,</span><span class="mf">0.045192515425660364</span><span class="p">,</span><span class="mf">-0.018423243009230143</span><span class="p">,</span><span class="mf">0.018139241464538724</span><span class="p">,</span><span class="mf">-0.09566745872279075</span><span class="p">,</span><span class="mf">0.0246255769256577</span><span class="p">,</span><span class="mf">-0.009689748706781437</span><span class="p">,</span><span class="mf">-0.04976912984607525</span><span class="p">,</span><span class="mf">-0.052717389458750756</span><span class="p">,</span><span class="mf">0.0035643720818931096</span><span class="p">,</span><span class="mf">0.006640687481307061</span><span class="p">,</span><span class="mf">-0.03073577946791382</span><span class="p">,</span><span class="mf">0.03914304020978485</span><span class="p">,</span><span class="mf">-0.02524051788328802</span><span class="p">,</span><span class="mf">-0.04223029452936462</span><span class="p">,</span><span class="mf">0.021509175829391637</span><span class="p">,</span><span class="mf">0.02552426311520471</span><span class="p">,</span><span class="mf">-0.0011122222634492509</span><span class="p">,</span><span class="mf">-0.06460894221043806</span><span class="p">,</span><span class="mf">-0.03585945167999288</span><span class="p">,</span><span class="mf">-0.0309493193085044</span><span class="p">,</span><span class="mf">0.041846824206930706</span><span class="p">,</span><span class="mf">-0.06620012859823075</span><span class="p">,</span><span class="mf">0.07639187402550657</span><span class="p">,</span><span class="mf">0.043854921640530176</span><span class="p">,</span><span class="mf">0.016715485323416282</span><span class="p">,</span><span class="mf">0.1241913558597273</span><span class="p">,</span><span class="mf">0.03000439968047775</span><span class="p">,</span><span class="mf">-0.05335057973726909</span><span class="p">,</span><span class="mf">0.037953650600022495</span><span class="p">,</span><span class="mf">-0.03777643706717937</span><span class="p">,</span><span class="mf">-0.0418152940483387</span><span class="p">,</span><span class="mf">-0.004585136046260051</span><span class="p">,</span><span class="mf">0.0526776655702412</span><span class="p">,</span><span class="mf">-0.034323231008455295</span><span class="p">,</span><span class="mf">0.01998556931640872</span><span class="p">,</span><span class="mf">-0.03650534236683118</span><span class="p">,</span><span class="mf">-0.05817863384056582</span><span class="p">,</span><span class="mf">0.023740233504869722</span><span class="p">,</span><span class="mf">0.03755189310233574</span><span class="p">,</span><span class="mf">0.020984346058982146</span><span class="p">,</span><span class="mf">0.00873691977218853</span><span class="p">,</span><span class="mf">-0.022081323849523892</span><span class="p">,</span><span class="mf">-0.011228847284277131</span><span class="p">,</span><span class="mf">0.02741766309666759</span><span class="p">,</span><span class="mf">0.06300543292772767</span><span class="p">,</span><span class="mf">-0.04008465182179649</span><span class="p">,</span><span class="mf">-0.039630647078526586</span><span class="p">,</span><span class="mf">0.056891891394395024</span><span class="p">,</span><span class="mf">-0.004036997031006925</span><span class="p">,</span><span class="mf">0.1658759084194007</span><span class="p">,</span><span class="mf">0.029515650904610728</span><span class="p">,</span><span class="mf">-0.06910293730127201</span><span class="p">,</span><span class="mf">-0.015174035348327104</span><span class="p">,</span><span class="mf">0.03983152407893701</span><span class="p">,</span><span class="mf">0.016226228576395725</span><span class="p">,</span><span class="mf">0.001053481957245071</span><span class="p">,</span><span class="mf">0.0037396741555637283</span><span class="p">,</span><span class="mf">0.08518182487252014</span><span class="p">,</span><span class="mf">0.00909719429133018</span><span class="p">,</span><span class="mf">-0.03764326498557664</span><span class="p">,</span><span class="mf">0.011698771205960058</span><span class="p">,</span><span class="mf">0.09311827951214452</span><span class="p">,</span><span class="mf">-0.021356311781906254</span><span class="p">,</span><span class="mf">0.0038570824424384604</span><span class="p">,</span><span class="mf">-0.02066393473578499</span><span class="p">,</span><span class="mf">-0.03531223960369851</span><span class="p">,</span><span class="mf">-0.06783436355304678</span><span class="p">,</span><span class="mf">0.010936961300231968</span><span class="p">,</span><span class="mf">-0.04508551074344735</span><span class="p">,</span><span class="mf">-0.026119098583081243</span><span class="p">,</span><span class="mf">-0.0062453823596114325</span><span class="p">,</span><span class="mf">-0.1027121174967452</span><span class="p">,</span><span class="mf">-0.0574556423345337</span><span class="p">,</span><span class="mf">-0.01930591875600226</span><span class="p">,</span><span class="mf">0.06416746431225026</span><span class="p">,</span><span class="mf">0.024611699360146646</span><span class="p">,</span><span class="mf">0.04151823523277251</span><span class="p">,</span><span class="mf">-0.039909664565784854</span><span class="p">,</span><span class="mf">0.029364677262521014</span><span class="p">,</span><span class="mf">-0.021622006955898238</span><span class="p">,</span><span class="mf">-0.00630688679536369</span><span class="p">,</span><span class="mf">-0.05151342070027465</span><span class="p">,</span><span class="mf">-0.09078420537594335</span><span class="p">,</span><span class="mf">-0.004109190376574855</span><span class="p">,</span><span class="mf">0.016130853452889102</span><span class="p">,</span><span class="mf">0.04780921606405121</span><span class="p">,</span><span class="mf">0.09244275373675744</span><span class="p">,</span><span class="mf">0.06767703017837469</span><span class="p">,</span><span class="mf">0.04516178279065976</span><span class="p">,</span><span class="mf">0.03578451595305691</span><span class="p">,</span><span class="mf">-0.013041501187245138</span><span class="p">,</span><span class="mf">-0.002197915933196802</span><span class="p">,</span><span class="mf">-0.0107821819280602</span><span class="p">,</span><span class="mf">0.005926905694903019</span><span class="p">,</span><span class="mf">-0.023474687481992655</span><span class="p">,</span><span class="mf">-0.038197946499317195</span><span class="p">,</span><span class="mf">-0.1429683442240886</span><span class="p">,</span><span class="mf">0.026856057433486683</span><span class="p">,</span><span class="mf">-0.10991050088632058</span><span class="p">,</span><span class="mf">-0.016444765100304952</span><span class="p">,</span><span class="mf">-0.06155034053848682</span><span class="p">,</span><span class="mf">0.07004121968426376</span><span class="p">,</span><span class="mf">-0.021630279359475698</span><span class="p">,</span><span class="mf">-0.0178723580186398</span><span class="p">,</span><span class="mf">-0.09353018975098319</span><span class="p">,</span><span class="mf">-0.009556362819524475</span><span class="p">,</span><span class="mf">0.03174849387398307</span><span class="p">,</span><span class="mf">-0.02923551862982138</span><span class="p">,</span><span class="mf">-0.03207355867407559</span><span class="p">,</span><span class="mf">0.009697141429773808</span><span class="p">,</span><span class="mf">-0.049119923705205765</span><span class="p">,</span><span class="mf">-0.032909104162973796</span><span class="p">,</span><span class="mf">-0.002487838889590003</span><span class="p">,</span><span class="mf">-0.06311135075477214</span><span class="p">,</span><span class="mf">-0.020638437599180152</span><span class="p">,</span><span class="mf">0.023886473150785924</span><span class="p">,</span><span class="mf">-0.03171893291475956</span><span class="p">,</span><span class="mf">0.012811187646670857</span><span class="p">,</span><span class="mf">0.016926154552521853</span><span class="p">,</span><span class="mf">-0.012019450772922165</span><span class="p">,</span><span class="mf">0.06127872801571197</span><span class="p">,</span><span class="mf">0.038352094413352356</span><span class="p">,</span><span class="mf">0.006990874409686095</span><span class="p">,</span><span class="mf">0.047349175125633136</span><span class="p">,</span><span class="mf">0.041937405569743486</span><span class="p">,</span><span class="mf">-0.029473714678673733</span><span class="p">,</span><span class="mf">-0.03398996649363607</span><span class="p">,</span><span class="mf">0.03621816143693622</span><span class="p">,</span><span class="mf">0.011673095112867233</span><span class="p">,</span><span class="mf">0.046226736959127386</span><span class="p">,</span><span class="mf">0.01496575836506065</span><span class="p">,</span><span class="mf">0.025457258058046488</span><span class="p">,</span><span class="mf">0.0353934026054991</span><span class="p">,</span><span class="mf">0.02626368566674404</span><span class="p">,</span><span class="mf">0.06254215454200944</span><span class="p">,</span><span class="mf">0.08261451450401976</span><span class="p">,</span><span class="mf">0.07679004072135803</span><span class="p">,</span><span class="mf">-0.000464674740255421</span><span class="p">,</span><span class="mf">-0.02427986012368106</span><span class="p">,</span><span class="mf">0.012863199643097657</span><span class="p">,</span><span class="mf">0.027138534315037613</span><span class="p">,</span><span class="mf">-0.031467266646317764</span><span class="p">,</span><span class="mf">-0.03457123360168202</span><span class="p">,</span><span class="mf">0.03573078461963997</span><span class="p">,</span><span class="mf">-0.07979872931088339</span><span class="p">,</span><span class="mf">-0.034941434173407435</span><span class="p">,</span><span class="mf">-0.018194045210406996</span><span class="p">,</span><span class="mf">0.02301555642811542</span><span class="p">,</span><span class="mf">0.012297728628918946</span><span class="p">,</span><span class="mf">0.0029710301543288136</span><span class="p">,</span><span class="mf">-0.022919510273773144</span><span class="p">,</span><span class="mf">-0.035368822250555716</span><span class="p">,</span><span class="mf">0.049067765856796855</span><span class="p">,</span><span class="mf">-0.010716052042335977</span><span class="p">,</span><span class="mf">-0.001363660229473111</span><span class="p">,</span><span class="mf">0.05750035952054147</span><span class="p">,</span><span class="mf">0.07396786565475146</span><span class="p">,</span><span class="mf">0.060227140376287826</span><span class="p">,</span><span class="mf">0.11817386098396808</span><span class="p">,</span><span class="mf">-0.0952558304807058</span><span class="p">,</span><span class="mf">-0.08655881788158143</span><span class="p">,</span><span class="mf">-0.0319903586466004</span><span class="p">,</span><span class="mf">-0.03288594753871867</span><span class="p">,</span><span class="mf">0.008707422092722147</span><span class="p">,</span><span class="mf">0.0329529808504681</span><span class="p">,</span><span class="mf">-0.03867844649115708</span><span class="p">,</span><span class="mf">0.005304367934781592</span><span class="p">,</span><span class="mf">0.0399974849146375</span><span class="p">,</span><span class="mf">0.007521705246003473</span><span class="p">,</span><span class="mf">0.11298060362802856</span><span class="p">,</span><span class="mf">0.06208707158502391</span><span class="p">,</span><span class="mf">-0.01688766888685832</span><span class="p">,</span><span class="mf">0.0696434030709609</span><span class="p">,</span><span class="mf">-0.024637357432709634</span><span class="p">,</span><span class="mf">0.07766941884403082</span><span class="p">,</span><span class="mf">-0.04558928180722794</span><span class="p">,</span><span class="mf">-0.08535168317399268</span><span class="p">,</span><span class="mf">-0.06166999844060314</span><span class="p">,</span><span class="mf">-0.02661058632382305</span><span class="p">,</span><span class="mf">-0.020667745146425096</span><span class="p">,</span><span class="mf">-0.06852067043271969</span><span class="p">,</span><span class="mf">-0.05000968638963765</span><span class="p">,</span><span class="mf">0.015766074391370934</span><span class="p">,</span><span class="mf">0.11925421290490534</span><span class="p">,</span><span class="mf">0.005419795474051792</span><span class="p">,</span><span class="mf">0.021567213240371294</span><span class="p">,</span><span class="mf">-0.008469638465323564</span><span class="p">,</span><span class="mf">-0.05237442868016746</span><span class="p">,</span><span class="mf">-0.07362667827630603</span><span class="p">,</span><span class="mf">0.03881812946085231</span><span class="p">,</span><span class="mf">0.034787160143875846</span><span class="p">,</span><span class="mf">-0.03112426067567574</span><span class="p">,</span><span class="mf">-0.01080966405217232</span><span class="p">,</span><span class="mf">-0.03376055642759762</span><span class="p">,</span><span class="mf">0.013955875308606243</span><span class="p">,</span><span class="mf">0.1305817042879612</span><span class="p">,</span><span class="mf">0.017455159482896488</span><span class="p">,</span><span class="mf">-0.016597636361890798</span><span class="p">,</span><span class="mf">0.024869524644036845</span><span class="p">,</span><span class="mf">0.025496842074216278</span><span class="p">,</span><span class="mf">0.09433530571585483</span><span class="p">,</span><span class="mf">-0.08326927604746587</span><span class="p">,</span><span class="mf">0.009403146710765326</span><span class="p">,</span><span class="mf">0.022691510765552435</span><span class="p">,</span><span class="mf">0.09073251391716504</span><span class="p">,</span><span class="mf">0.005133377250567024</span><span class="p">,</span><span class="mf">0.007722353008556859</span><span class="p">,</span><span class="mf">-0.06587865619676463</span><span class="p">,</span><span class="mf">0.027511741524757022</span><span class="p">,</span><span class="mf">-0.022151877034254617</span><span class="p">,</span><span class="mf">-0.03273460581733426</span><span class="p">,</span><span class="mf">-0.03878143273102975</span><span class="p">,</span><span class="mf">0.016327950391942028</span><span class="p">,</span><span class="mf">0.03581676309923155</span><span class="p">,</span><span class="mf">-0.010365951503082655</span><span class="p">,</span><span class="mf">0.052256148984610444</span><span class="p">,</span><span class="mf">0.05875670479833181</span><span class="p">,</span><span class="mf">-0.05773832260831528</span><span class="p">,</span><span class="mf">0.005141150045846061</span><span class="p">,</span><span class="mf">-0.040937456334872564</span><span class="p">,</span><span class="mf">0.0959588881201249</span><span class="p">,</span><span class="mf">-0.12385039931199342</span><span class="p">,</span><span class="mf">-0.010026963093285853</span><span class="p">,</span><span class="mf">0.05711766544952178</span><span class="p">,</span><span class="mf">-0.07206532240625056</span><span class="p">,</span><span class="mf">-0.0407744003333268</span><span class="p">,</span><span class="mf">-0.10211380087712853</span><span class="p">,</span><span class="mf">-0.005455090149727865</span><span class="p">,</span><span class="mf">-0.0551390515427101</span><span class="p">,</span><span class="mf">-0.0022565341612354522</span><span class="p">,</span><span class="mf">-0.0029498846401649066</span><span class="p">,</span><span class="mf">0.03874143276332507</span><span class="p">,</span><span class="mf">-0.05541035554936892</span><span class="p">,</span><span class="mf">0.011504504544121327</span><span class="p">,</span><span class="mf">-0.06158884458356863</span><span class="p">,</span><span class="mf">-0.0625155224588574</span><span class="p">,</span><span class="mf">-0.07542592182918144</span><span class="p">,</span><span class="mf">0.07465464453012853</span><span class="p">,</span><span class="mf">-0.06604103341348337</span><span class="p">,</span><span class="mf">0.0435644096277753</span><span class="p">,</span><span class="mf">-0.0013637894104476</span><span class="p">,</span><span class="mf">0.05984953335859802</span><span class="p">,</span><span class="mf">0.016359529460565434</span><span class="p">,</span><span class="mf">0.053356709774526494</span><span class="p">,</span><span class="mf">-0.16558710814345978</span><span class="p">,</span><span class="mf">0.03777720908771226</span><span class="p">,</span><span class="mf">-0.025120209946129755</span><span class="p">,</span><span class="mf">-0.0742798591781347</span><span class="p">,</span><span class="mf">0.004629350920988339</span><span class="p">,</span><span class="mf">0.09006393103657812</span><span class="p">,</span><span class="mf">0.02657087213694713</span><span class="p">,</span><span class="mf">0.03328724577714013</span><span class="p">,</span><span class="mf">-0.08807595138617864</span><span class="p">,</span><span class="mf">-0.0391034232812859</span><span class="p">,</span><span class="mf">0.014599110104877697</span><span class="p">,</span><span class="mf">0.038432367609501625</span><span class="p">,</span><span class="mf">-0.0590418339681151</span><span class="p">,</span><span class="mf">-0.03165295260956978</span><span class="p">,</span><span class="mf">0.04834025622811864</span><span class="p">,</span><span class="mf">-0.0532107546365989</span><span class="p">,</span><span class="mf">-0.06840301018549466</span><span class="p">,</span><span class="mf">-0.022301208806194323</span><span class="p">,</span><span class="mf">-0.007510851281623972</span><span class="p">,</span><span class="mf">-0.028798873809474282</span><span class="p">,</span><span class="mf">0.10367738285029167</span><span class="p">,</span><span class="mf">0.02344409450691842</span><span class="p">,</span><span class="mf">-0.02060131843831176</span><span class="p">,</span><span class="mf">0.0120814168575495</span><span class="p">,</span><span class="mf">-0.0344033962267524</span><span class="p">,</span><span class="mf">0.03233643355756385</span><span class="p">,</span><span class="mf">0.09665751747644974</span><span class="p">,</span><span class="mf">0.02258773916755345</span><span class="p">,</span><span class="mf">-0.005823526311774192</span><span class="p">,</span><span class="mf">-0.042462644673001045</span><span class="p">,</span><span class="mf">-0.029241257289724338</span><span class="p">,</span><span class="mf">0.0649493160795022</span><span class="p">,</span><span class="mf">0.0045898278720580155</span><span class="p">,</span><span class="mf">-0.058774156852902874</span><span class="p">,</span><span class="mf">-0.07303537394383189</span><span class="p">,</span><span class="mf">0.06454044304215784</span><span class="p">,</span><span class="mf">0.019896461644572754</span><span class="p">,</span><span class="mf">0.06824677493431712</span><span class="p">,</span><span class="mf">-0.010522078479418823</span><span class="p">,</span><span class="mf">-0.0177416750561821</span><span class="p">,</span><span class="mf">0.03170583251313823</span><span class="p">,</span><span class="mf">-0.008931093352177576</span><span class="p">,</span><span class="mf">-0.06318937836390728</span><span class="p">,</span><span class="mf">-0.055299022905845825</span><span class="p">,</span><span class="mf">-0.021890174304022545</span><span class="p">,</span><span class="mf">-0.035226538168265806</span><span class="p">,</span><span class="mf">0.0162485788993831</span><span class="p">,</span><span class="mf">0.0642226957292144</span><span class="p">,</span><span class="mf">-0.003961505198317958</span><span class="p">,</span><span class="mf">-0.03328300419574982</span><span class="p">,</span><span class="mf">0.028913057835656533</span><span class="p">,</span><span class="mf">0.020265654566110087</span><span class="p">,</span><span class="mf">-0.03239719270308271</span><span class="p">,</span><span class="mf">0.06700269257369063</span><span class="p">,</span><span class="mf">-0.09271049524337059</span><span class="p">,</span><span class="mf">0.010159479384345558</span><span class="p">,</span><span class="mf">0.028653347072721356</span><span class="p">,</span><span class="mf">-0.03203574601739879</span><span class="p">,</span><span class="mf">-0.052243704421099615</span><span class="p">,</span><span class="mf">-0.11779299509196059</span><span class="p">,</span><span class="mf">-0.025421435324249085</span><span class="p">,</span><span class="mf">0.01765473129028742</span><span class="p">,</span><span class="mf">0.05120648939097515</span><span class="p">,</span><span class="mf">-0.026877649284799805</span><span class="p">,</span><span class="mf">-0.019128634385175432</span><span class="p">,</span><span class="mf">0.03593171369233508</span><span class="p">,</span><span class="mf">-0.05761091655054665</span><span class="p">,</span><span class="mf">0.0005816846412815708</span><span class="p">,</span><span class="mf">0.01905676781573102</span><span class="p">,</span><span class="mf">-0.09157066883780016</span><span class="p">,</span><span class="mf">0.130047859495393</span><span class="p">,</span><span class="mf">-0.009626073743120547</span><span class="p">,</span><span class="mf">0.04063073204072345</span><span class="p">,</span><span class="mf">-0.034717773882930944</span><span class="p">,</span><span class="mf">-0.03560067979250155</span><span class="p">,</span><span class="mf">-0.046097427087756555</span><span class="p">,</span><span class="mf">0.025915960779885918</span><span class="p">,</span><span class="mf">0.042288539171926695</span><span class="p">,</span><span class="mf">-0.01001538545922042</span><span class="p">,</span><span class="mf">-0.028439948099122966</span><span class="p">,</span><span class="mf">-0.01109438604940926</span><span class="p">,</span><span class="mf">-0.03214459553396715</span><span class="p">,</span><span class="mf">0.051132576335012364</span><span class="p">,</span><span class="mf">0.06279920862935032</span><span class="p">,</span><span class="mf">0.025182017774324307</span><span class="p">,</span><span class="mf">0.04262168071316358</span><span class="p">,</span><span class="mf">0.06944035453453931</span><span class="p">,</span><span class="mf">-0.03150859266562808</span><span class="p">,</span><span class="mf">-0.013961290531950842</span><span class="p">,</span><span class="mf">0.019373834233081512</span><span class="p">,</span><span class="mf">-0.015131292720082474</span><span class="p">,</span><span class="mf">0.016192837258945235</span><span class="p">,</span><span class="mf">0.01230360260108057</span><span class="p">,</span><span class="mf">0.029964318128147392</span><span class="p">,</span><span class="mf">0.07192467139863752</span><span class="p">]</span>
+</span></span></code></pre></div><p>Du siehst: Jeder Vektor hat die gleiche Größe. Wie geht das denn? Ganz ganz kurz:</p>
+<blockquote>
+<p>Der Inhalt wird erst durch ein <strong>Tokenizer-Modul</strong> geschickt. Dort gibt es eine Tabelle, die Zeichen oder Wörter in einen Index übersetzt. Aus A wird z.B. immer <code>52</code>. Das kann für Buchstaben, Wörter oder Phrasen passieren - je nach Modell-Strategie. Dann geht es in den <strong>Embedding Layer</strong>. Das ist ein großes Nachschlagewerk, in dem das Modell für jeden Index einen <strong>Vektor</strong> bereithält, in immer der gleichen Länge! So wird dem Buschtaben <code>A</code> über den Index <code>52</code> ein &ldquo;indiviudeller&rdquo; Vektor in genau der gewünschten Dimension zugewiesen. Das ist aber nur der Wert des Wortes, nun fehlt noch der Kontext, der über die Position bestimmt wird. Hier wird die Position des Begriffs (Buchstabe, Wort, &hellip;) über einen Positions-Vektor normalisiert. Entweder gibt es auch dafür eine feste Tabelle oder eine spezielle Operation. Das Ergebnis sind zwei Vektoren mit der gleichen Größe, einer beschreibt das &ldquo;Wort&rdquo;, der nächste dessen Position. Und jetzt passiert wunderschöne Mathematik: Nun werden beide Vektoren miteinander addiert - je nach Modell. Das ganze passiert für jedes &ldquo;Wort&rdquo; des Eingabe-Textes. Am Ende wird erneut addiert, um den finalen <strong>Kontext-Vektor</strong> zu erhalten.</p></blockquote>
+<p>(Ich hab das ganze übrigens hier auch mal etwas genauer erklärt: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/DeepLearning-with-PyTorch-from-Scratch/blob/main/06%20-%20language%20model.ipynb?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">LLM from the scratch</a>
+
+
+).</p>
+<p>Für das Embedding nutze ich <strong>perplexity-ai/pplx-embed-v1-0.6B</strong> - Perplexity hatte das Model gerade erst als Open Source zur Verfügung gestellt.</p>
+<p>Als Zuckerguß habe ich das Ticket dann noch durch ein LLM gedrückt, um eine kurze Zusammenfassung zu erhalten. Das ist in der Realität aber sehr aufwendig und für die Suche noch nicht relevant und deshalb nur optional.</p>
+<h1 id="die-erste-abfrage">Die erste Abfrage</h1>
+<p>Nun haben wir also eine Datenbank mit mindestens zwei wichtigen Spalten: Den Suchvektoren für die <strong>Synonyme</strong> und die <strong>Titel</strong>. Wie geht geht es weiter?</p>
+<p>Wenn ich nach einem Ticket suche, bekomme ich erstmal einen Suchbegriff, entweder nur ein Schlagwort oder eine kurze Beschreibung meines Problems. Auch der Suchbegriff muss vektorisiert werden, natürlich mit dem gleichen <strong>Embedding-Model</strong>, wie bei der Erstellung der Datenbank.</p>
+<p>Die Datenbank (übrigens eine <strong>PostgreSQL</strong> mit der Erweiterung <strong>pgvector</strong>) vergleicht zunächst beide Vektoren miteinander. Bei mehreren Tausend Tickets geht das noch relativ fix. Als Vergleichsmethoden bieten sich verschiedene Optionen an, ich habe mich für die <strong>Kosinus-Ähnlichkeit</strong> entschieden. Was genau heißt das?</p>
+<p>Die &ldquo;einfache&rdquo; (besser <strong>euklidische</strong>) <strong>Ähnlichkeit</strong> von zwei Vektoren lässt sich relativ schnell bestimmen: Man legt sie einfach übereinander und erhält dann eine Distanz der einzelen Werte. Bei der <strong>Kosinus-Ähnlichkeit</strong> wird die Ähnlichkeit der Winkel der Vektoren berechnet.</p>
+<p><em>Hä? Moment mal, die Vektoren sind doch drölfzig-dimensional, wie soll ich da einen Winkel berechnen?</em></p>
+<blockquote>
+<p>Naja, stell dir mal einen Vektor in der &ldquo;klassischen Geometrie&rdquo; vor. Also ein &ldquo;Strich&rdquo; (uff, wenn das mein Mathelehrer liest&hellip;), der irgendwo im Raum in eine Richtung zeigt. Dieser Strich aka Vektor enthält zwei Komponenten x und y, die die Verschiebung entlang der x-Achse und der y-Achsee beschreiben. Und da kannst du dir ganz leicht einen Winkel dazudenken. Kommt ein zweiter Vektor hinzu, mit einem anderen Winkel, könntest du die Ähnlichkeit der beiden Winkel berechnen: die Kosinus-Ähnlichkeit. Ist sie 1 zeigen beide Striche in die gleiche Richtung, bei 0 stehen sie im rechten Winkel zueinander und bei -1 zeigen sie in entgegengesetzte Richtungen. Und genau diese mathematische Berechnung kannst du auch dann anwenden, wenn du mehr als 2 Dimensionen hast. Oder nur eine.</p></blockquote>
+<p>Wie dem auch sei: Die Datenbank spuckt also erstmal eine Menge von Zeilen aus, absteigend sortiert nach &ldquo;Kosinus-Ähnlichkeit&rdquo;. Den Suchbegriff werfe ich gegen die <strong>Synonyme</strong> aber auch gegen den <strong>Titel</strong> - der ja manuell angelegt und oft spezifische Produktnamen enthält, also potential wertvoller ist. Die Abfrage liefert für jede der beiden Spalten einen numerischen Wert zurück, den ich per <strong>Gewicht</strong> priorisieren kann.</p>
+<p>Das Ergebnis ist natürlich noch nicht perfekt, also schleifen wir noch etwas nach:</p>
+<blockquote>
+<p>Das ganze Spektakel firmiert übrigens unter dem Begriff <strong>Bi-Encoder</strong>: Ich encodiere die vorhandenen Tickets im Vorlauf, den Suchbegriff im Nachlauf. Zwei Encoding-Vorgänge. Bi.</p></blockquote>
+<h1 id="re-ranking-mit-dem-cross-encoder">Re-Ranking mit dem Cross-Encoder</h1>
+<p>Was macht der Cross-Encoder?</p>
+<p>Sehr viel Arbeit!</p>
+<p>Hier nehmen wir den unkodierten, tatsächlichen (aber vorbehandelten und bereinigten) Tickettext und &ldquo;verschmelzen&rdquo; ihn mit der Anfrage:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[CLS] Display flackert bei Kälte [SEP] Ticket-Inhalt: Sensorfehler bei Niedrigtemperatur [EOS].
+</span></span></code></pre></div><p>Und jetzt machen wir etwas, dass der Arbeit eines LLMs schon sehr nahe kommt: Attention Score! (übrigens ebenda oben auch sehr detailliert erklärt)</p>
+<p>Aus &ldquo;Display&rdquo; wird nicht nur ein Vektor, sondern drei: Der <strong>Query-Vektor</strong> (Wonach suche ich?), Der <strong>Key-Vektor</strong> (Was ist mein &ldquo;Etikett&rdquo;?) und der Value-Vektor (Was hab ich anzubieten?). Die Grundlage davor ist fest im Modell verdrahtet.</p>
+<p>Und jetzt wird es aufwendig: Wir multiplizieren den <strong>Query-Vektor</strong> und <strong>Key-Vektor</strong> jedes Tokens miteinander, also <strong>Frage x Antwort</strong>, und enhalten damit die &ldquo;<strong>Attention-Matrix</strong>&rdquo;, die im Prinzip beschreibt, wie die Token des Textes zueinander passen. Im Prinzip wie die Heamtap einer <strong>Correlation-Matrix</strong>. Diese dient nun als &ldquo;Gewicht&rdquo; und wird über den <strong>Value-Vektor</strong> für jedes Token gelegt. Und so erhält jedes Token ein individuelles &ldquo;Preisschild&rdquo;, deren Summe wiederum den Wert‚ des gesammten Textes beschreibt. Also eine Zahl, die ausdrückt, wie &ldquo;konsistent&rdquo; der Text ist, bzw. damit wie gut die Antwort zu der Frage ist. Einfachste Mathematik, die nur aufgrund der schieren Menge so rechenintensiv ist.</p>
+<p>Der Cross-Encoder reduziert die Ergebnis-Menge nun noch einmal deutlich herunter. Die letzten zehn Tickets können nun ganz einfach noch mal gegen ein LLM geworfen werden, um eine finale Prüfung der Plausibilität durchzuführen. Aber das erkläre ich jetzt nicht noch einmal im Detail.</p>
+<h1 id="feedback-schleife">Feedback-Schleife</h1>
+<p>Als besonderes <strong>Schmankerl</strong> gönne ich dem ganzen noch eine manuell <strong>Feedback-Funktion</strong>. Wenn ein Ticket in der Ergebnisliste so gar nicht zu der Suche passt, kann diese Kombination aus &ldquo;Frage und Antwort&rdquo; (nicht) valide <strong>klassifiziert</strong> werden. Die Ergebnisse werden in einer gesonderten Tabelle erfasst. Bei der nächsten Suche wir der Such-Vektor erst mit den historischen Such-Vektoren verglichen. Hier wird erneut die Kosinus-Ähnlichkeit berücksichtigt - der <strong>erste Faktor</strong>. Der <strong>zweite Faktor</strong> ist das Alter der Bewertung - je älter, desto weniger wichtig. Und schließlich die Klassifizierung als <strong>dritter Faktor</strong>: valide (1) oder nicht valide (-1). Das Produkt ist der <strong>Contribution-Score</strong> für dieses Kombination aus Suchanfrage und Ticket-ID.</p>
+<p>Dieser Wert wird noch vor dem Re-Ranking dem Vektor-Score zugerechnet (oder davon abgezogen).</p>
+<h1 id="hygiene-features">Hygiene-Features</h1>
+<p>Das Ganze ist natürlich nicht an einem Abend und schon gar nicht im <strong>Vibe-Coding</strong> entstanden. Vor allem die Entwicklung eines Datenmodells, die Auswahl der Embedding-Modelle und einzelner Parameter erfordert sehr viel &ldquo;Forschungsarbeit&rdquo;. Umso wichtiger ist es, Änderungen nachvollziehbar zu dokumentieren. Das klingt total deutsch, ich weiß. Aber trotzdem:</p>
+<ol>
+<li>
+<p>Jeder Ingestion-Prozess wird aufgezeichnet, dazu gehören die Anzahl der verarbeiteten Datensätze, Batch-Größe,  Dauer und so weiter. <strong>Warum?</strong> Um herauszufinden, ob bestimmte Kombinationen schneller verarbeitet werden!</p>
+</li>
+<li>
+<p>Die Datensätze werden mit einer Config-Version gespeichert. In einer getrennten Tabelle erfasse ich, welche Parameter geändert wurden. <strong>Warum?</strong> Um die Qualität der Antworten zu überwachen! Die Such-API filtert immer nach der letzten Config-Version. Das kann aber gesteuert werden, um die Qualität direkt zu vergleichen.</p>
+</li>
+<li>
+<p>Das Frontend liefert (noch) sehr transparent alle Zwischenschritte zurück, also auch die Prompts an das LLM. <strong>Warum?</strong> Damit das keine Blackbox ist. Ich muss erklären können, warum ein Datensatz nun angeblich so gut passt.</p>
+</li>
+<li>
+<p>Die Vektor-Tabelle enthält komplette Debug-Datensätze! <strong>Warum?</strong> Um gezielt un stichprobenartig die Qualität zu prüfen - auch hier gilt: Das ganze darf keine Blackbox sein. Gerade wenn die Entwicklungs-Arbeit durch KI unterstützt wird, braucht man explizite Beispiele.</p>
+</li>
+</ol>
+<h1 id="entwicklungsprozess">Entwicklungsprozess</h1>
+<p>Da ich oft gefragt werde, wie ich in 2026 entwickle, will ich dazu zwei, drei oder mehr Sätze verlieren:</p>
+<ol start="0">
+<li>
+<p>Ohne manuelle Arbeit funktioniert ein kompexes Projekt wie dieses nicht. Die Zusammenhänge der Tickets, ihre Attribute, die &ldquo;Stimmung&rdquo; muss man selber verstehen. Die Datenbasis war zwar sehr aufgeräumt, aber eben auch spezifisch. Ohne den Blick für das &ldquo;große Ganze&rdquo; bringt es aus meiner Sicht nichts, den ersten Schritt anzugehen.</p>
+</li>
+<li>
+<p>Die Vorarbeit geschieht im Browser und entweder mit <strong>Gemini</strong> oder <strong>ChatGPT</strong> (jeweils kostenloses Kontingent) - wobei die Qualität der Antworten von ChatGPT zunehmend schlechter wird, aber das ist nur meine subjektive Auffassung.  Hier schildere ich meine Idee und im Dialog ensteht dann ein Konzept, das ich meinem Coding-Agent entgegenwerfen kann.</p>
+</li>
+<li>
+<p>Weiter geht es in <strong>Antigravity</strong> oder <strong>Cursors</strong>. Wichtig sind hier aus meiner Sicht kompakte &ldquo;System Instructions&rdquo;, in der ich Ordnerstruktur oder Programmier-Paradigmen festlege. Nicht zu viel, aber auch nicht zu wenig. Ein Großteil der Arbeit musste ich per Hand erledigen, umso wichtiger ist es, dass die KI sauber arbeitet, Funktionen sinnvoll benennt und inline gut genug, pointiert dokumentiert. Manchmal nutze ich auch die CLI-Tools von <strong>Gemini</strong> aber auch <strong>Mistral</strong> (<code>vibe</code>). Mistral wird oft als europäische Alternative gefeiert, ich bin mit der Qualität aber maximal unzufrieden, nutze aber auch nur das &ldquo;kostenlosen Kontingent&rdquo;.</p>
+</li>
+<li>
+<p>Für &ldquo;Zwischendurch-Fragen&rdquo; greife ich immer wieder auf einen <strong>Canvas</strong> zurück, den mir Gemini schreibt. Dabei geht es oft um Fragen zum weiteren Vorgehen, Inspiration oder der Modellauswahl. Natürlich wusste ich nicht von Beginn an, welche Modelle sinnvoll sind. Die Erkenntnisse habe ich mir im Dialog mit Gemini erarbeitet und erklären lassen.</p>
+</li>
+<li>
+<p>Last but not least: Atomare Commits. Es kommt nicht selten vor, dass die KI mit dem Hintern etwas einreißt, wenn sie vorne werkelt. Jede Code-Änderung abzunicken ist bequem, umso wichtiger ist es, jede Änderung in einem Commit abzulegen. Dazu braucht man nicht mal zwingend ein Repo auf Github, es reicht schon, das Repository lokal zu pflegen.</p>
+</li>
+</ol>
+<h1 id="famous-last-words">Famous Last Words</h1>
+<p>Vielleicht stell ich mich auch nur glatt an: Wir sind aus meiner Sicht noch weit davon entfernt, dass die KI losläuft und <strong>komplexe Tools</strong> in einer <strong>hinreichenden Qualität</strong> (!) baut. Es gibt Anwendungsfälle, in denen das sehr gut funktioniert und außerdem habe ich für das Projekt auch nur kostenlose Kontingente genutzt (bis auf <strong>Claude Plus</strong>, aber das erst in den letzten Wochen). Insofern steht mir das Urteil vielleicht auch nicht zu. Dennoch: Hier war sehr viel <strong>manuelle Arbeit</strong> erforderlich, angefangen beim <strong>Verständnis</strong> für das Problem und der Entwicklung einer <strong>Strategie</strong>, bis hin dazu, den Output des Coding-Agenten permanent zu überwachen. Ich glaube, dass vor allem die <strong>Integration</strong> in vorhandene <strong>Business-Prozesse</strong> noch eine große Hürde ist. Vielleicht kann <strong>Gemini</strong> eine <strong>iOS-App</strong> auf die Beine stellen. Aber das ist nicht das, was die Produktivität von <strong>100.000 KMU</strong> in Deutschland steigert, in denen <strong>selbst gebaute hochgadig integrierte IT-Monolithen</strong> seit 20 Jahren auf einer <strong>staubigen Windows-Kiste</strong> unter der Küchen-Theke laufen.</p>
+<p>Im Prinzip zeigt der Fortschritt in dem Bereich aber auch, worauf es schon immer in der <strong>Software-Entwicklung</strong> ankam: Das Code-Schreiben ist nur der <strong>Fleiß-Teil</strong> der Aufgabe. Mach  dir keinen Kopf, wenn du das <strong>SQL-Vokabular</strong> nicht beherrschst oder nicht auf Zuruf in <strong>JavaScript</strong> ein Frontend bauen kannst - das sind zwar beliebte, aber ziemlich dämliche Hürden, die nichts über die Qualitäten einer Entwickler:in aussagen. (Kleine Anekdote am Rande: Ich reite sehr gerne auf dem Beherrschen des SQL-Vokabulars herum, weil ich bei <strong>DCMN</strong> mal einen &ldquo;Einstellungs-Test&rdquo; zu SQL machen durfte und das Durchfallen dann zu einer Ablehnung geführt hatte&hellip;ja, das hat an meinem Ego gekratzt  <code>(づ ￣ ³￣)づ</code>)</p>
+<p>Also, an all die Junior-Devs da draußen: Seht KI nicht als Konkurrenz, sondern als Werkzeug, dass euch den Einstieg erleichtert. Und an die Unternehmen: KI ersetzt keine Junior-Devs, sie macht sie nur effizienter.</p>
+<p>Ach Mist&hellip;wenn man genauer darüber nachdenkt, entspannt das den IT-Arbeitsmarkt ja auch nicht wirlich&hellip; <code>༼ʘ̚ ʖ ʘ̚༽</code></p>
+
+    
+  </article>
+
+
+  
+  
+  <div style="width: 100%; margin-top: 2rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
+
+      <p>Ein praxisnaher Einblick in die Implementierung einer lokalen RAG-Architektur für Support-Tickets. Der Text beschreibt Pre-Processing, Embedding-Strategien mit Bi-Encodern und das Re-Ranking mittels Cross-Encodern unter Berücksichtigung von Datenschutz und Hardware-Limits.</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">KI</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">RAG</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">LLM</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Vektordatenbanken</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Datenschutz</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Software-Engineering</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Python</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Mistral</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">PostgreSQL</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> Fortgeschritten</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 12 Minuten</p>
+      
+    </div>
+  </div>
+  
+
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/2026/2026-02-16-cognitive-overload/">← prev</a>
+    
+    
+    <a></a>
+    
+  </div>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="privacy.html">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>
