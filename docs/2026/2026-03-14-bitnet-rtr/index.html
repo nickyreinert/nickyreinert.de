@@ -110,7 +110,7 @@ Der technische Hintergrund Was sind 1-Bit-LLMs? LLMs bestehen im Prinzip auf Mil
   <meta property="og:type" content="article">
     <meta property="article:section" content="2026">
     <meta property="article:published_time" content="2026-03-14T12:34:56+01:00">
-    <meta property="article:modified_time" content="2026-03-14T12:34:56+01:00">
+    <meta property="article:modified_time" content="2026-03-28T09:28:58+01:00">
 
 
   
@@ -123,9 +123,9 @@ Der technische Hintergrund Was sind 1-Bit-LLMs? LLMs bestehen im Prinzip auf Mil
   <meta itemprop="description" content="BitNet ist ein Framework von Microsoft ( OpenSource! ), das die Nutzung von 1-Bit-LLMs relativ unkompliziert ermöglicht, und zwar auch auf günstiger Consumer-Hardware.
 Der technische Hintergrund Was sind 1-Bit-LLMs? LLMs bestehen im Prinzip auf Millionen von Zahlen - die sogenannten Parameter und genauer genommen: Kommazahlen - vulgo Floats! Diese haben in der Regel eine Genaugkeit von 16-Bit oder eigentlich sogar 32-Bit. 32 Bit erlauben 7 Stellen nach dem Komma. Stell dir also mal Pi vor (weil heuteg ja World-Pi-Day ist): In 32 Bit könntest du Pi mit 7 Nachkommastellen speichern: 3.1415926. (Wie das ganze mit den Kommazahlen und binären Zahlen funktioniert, mit Exponenten und Mantissen, habe ich hier genauer erklärt ).">
   <meta itemprop="datePublished" content="2026-03-14T12:34:56+01:00">
-  <meta itemprop="dateModified" content="2026-03-14T12:34:56+01:00">
+  <meta itemprop="dateModified" content="2026-03-28T09:28:58+01:00">
   <meta itemprop="wordCount" content="547">
-  <meta itemprop="keywords" content="Blog,Projekte">
+  <meta itemprop="keywords" content="Blog,Projekte,LLMs,Quantisierung,BitNet,1-Bit-LLMs,Ternärsystem">
 
   
   <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
@@ -153,7 +153,7 @@ Der technische Hintergrund Was sind 1-Bit-LLMs? LLMs bestehen im Prinzip auf Mil
     "headline": "BitNet RTR - Und ein kurzer, flacher Ausflug in die Welt der 1-Bit-LLMs",
     "description": "BitNet ist ein Framework von Microsoft ( OpenSource! ), das die Nutzung von 1-Bit-LLMs relativ unkompliziert ermöglicht, und zwar auch auf günstiger …",
     "datePublished": "2026-03-14T12:34:56\u002b01:00",
-    "dateModified": "2026-03-14T12:34:56\u002b01:00",
+    "dateModified": "2026-03-28T09:28:58\u002b01:00",
     "author": {
       "@type": "Person",
       "name": "",
@@ -190,6 +190,8 @@ Der technische Hintergrund Was sind 1-Bit-LLMs? LLMs bestehen im Prinzip auf Mil
     "articleSection": ["blog", "projekte"],
     
     
+    "abstract": "BitNet ist ein Framework von Microsoft, das die Nutzung von 1-Bit-LLMs relativ unkompliziert ermöglicht, und zwar auch auf günstiger Consumer-Hardware. In diesem Artikel erkläre ich kurz, was 1-Bit-LLMs sind, warum sie interessant sind und stelle meinen BitNet RTR Wrapper vor, mit dem man diese Modelle einfach testen kann.",
+    
     
     "genre": "blog",
     
@@ -208,9 +210,45 @@ Der technische Hintergrund Was sind 1-Bit-LLMs? LLMs bestehen im Prinzip auf Mil
     "proficiencyLevel": "Fortgeschritten",
     
     
+    "dependencies": ["Grundverständnis von LLMs und Quantisierung"],
+    
+    
+    "about": [
+      
+      
+      {
+        "@type": "Thing",
+        "name": "LLMs"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Quantisierung"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "BitNet"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "1-Bit-LLMs"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Ternärsystem"
+      }
+      
+    ],
     
     "datePublished": "2026-03-14T12:34:56\u002b01:00",
-    "dateModified": "2026-03-14T12:34:56\u002b01:00",
+    "dateModified": "2026-03-28T09:28:58\u002b01:00",
     "author": {
       "@type": "Person",
       "name": ""
@@ -346,6 +384,8 @@ Der technische Hintergrund Was sind 1-Bit-LLMs? LLMs bestehen im Prinzip auf Mil
       <h1 style="flex: 1; text-align: center; min-width: 0; padding: 0 0.5rem;" itemprop="headline">BitNet RTR - Und ein kurzer, flacher Ausflug in die Welt der 1-Bit-LLMs</h1>
       
       <div style="flex-shrink: 0; width: 50px; text-align: right;">
+        
+        <a class="link next" href="/2026/2026-03-28-claude-channels/" style="font-size: 1.2rem;">>>></a>
         
       </div>
     </div>
@@ -540,6 +580,38 @@ Der technische Hintergrund Was sind 1-Bit-LLMs? LLMs bestehen im Prinzip auf Mil
 
   
   
+  <div style="width: 100%; margin-top: 2rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
+
+      <p>BitNet ist ein Framework von Microsoft, das die Nutzung von 1-Bit-LLMs relativ unkompliziert ermöglicht, und zwar auch auf günstiger Consumer-Hardware. In diesem Artikel erkläre ich kurz, was 1-Bit-LLMs sind, warum sie interessant sind und stelle meinen BitNet RTR Wrapper vor, mit dem man diese Modelle einfach testen kann.</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">LLMs</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Quantisierung</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">BitNet</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">1-Bit-LLMs</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Ternärsystem</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> Fortgeschritten</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 3 Minuten</p>
+      
+    </div>
+  </div>
+  
 
   
   <div class="paginator">
@@ -547,7 +619,7 @@ Der technische Hintergrund Was sind 1-Bit-LLMs? LLMs bestehen im Prinzip auf Mil
     <a class="link" href="https://nickyreinert.de/2026/2026-03-04-rag-search/">← prev</a>
     
     
-    <a></a>
+    <a class="link" href="https://nickyreinert.de/2026/2026-03-28-claude-channels/">next →</a>
     
   </div>
   
