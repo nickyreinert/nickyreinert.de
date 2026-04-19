@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="Whait what, Excel? You call yourself a data engineer and you work with Excel? Sure. Excel is still the best tool for quick’n’dirty solutions, don’t let Tableau, Python or Alteryx tell you something different… ;)
+What’s LAMBDA?
+One sentence: LAMBDA allows you to combine common Excel functions into one new custom function (respectively formula) that is available all over your workbook. Back in the days you had to cope with VBA or multiple columns to implement special calculations. LAMBDA still does not cover one disadvantage: Building custom functions remains a mess and ends up with long, encapsulated formulas.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
+
+  
+  
+  <meta name="keywords" content=" Excel  LAMBDA  Outlier  Quartile  Statistics  Data Analysis  Formula  Tutorial ">
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/css/katex.min.css">
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '\\[', right: '\\]', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false }
+      ],
+      ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'option'],
+      throwOnError: false
+    });
+  });
+</script>
+
+
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/en/2021/2021-05-08-excel-lambda/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="How to use the new LAMBDA-feature in Excel (e.g. to identify outliers)">
+  <meta property="og:description" content="Whait what, Excel? You call yourself a data engineer and you work with Excel? Sure. Excel is still the best tool for quick’n’dirty solutions, don’t let Tableau, Python or Alteryx tell you something different… ;)
+What’s LAMBDA? One sentence: LAMBDA allows you to combine common Excel functions into one new custom function (respectively formula) that is available all over your workbook. Back in the days you had to cope with VBA or multiple columns to implement special calculations. LAMBDA still does not cover one disadvantage: Building custom functions remains a mess and ends up with long, encapsulated formulas.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2021">
+    <meta property="article:published_time" content="2021-05-08T12:34:56+01:00">
+    <meta property="article:modified_time" content="2026-04-15T08:29:23+02:00">
+    <meta property="article:tag" content="Excel">
+    <meta property="article:tag" content="LAMBDA">
+    <meta property="article:tag" content="Outlier">
+    <meta property="article:tag" content="Statistics">
+    <meta property="article:tag" content="Tutorial">
+    <meta property="article:tag" content="Data Analysis">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/en/2021/2021-05-08-excel-lambda/">
+
+  
+  
+  
+  <meta itemprop="name" content="How to use the new LAMBDA-feature in Excel (e.g. to identify outliers)">
+  <meta itemprop="description" content="Whait what, Excel? You call yourself a data engineer and you work with Excel? Sure. Excel is still the best tool for quick’n’dirty solutions, don’t let Tableau, Python or Alteryx tell you something different… ;)
+What’s LAMBDA? One sentence: LAMBDA allows you to combine common Excel functions into one new custom function (respectively formula) that is available all over your workbook. Back in the days you had to cope with VBA or multiple columns to implement special calculations. LAMBDA still does not cover one disadvantage: Building custom functions remains a mess and ends up with long, encapsulated formulas.">
+  <meta itemprop="datePublished" content="2021-05-08T12:34:56+01:00">
+  <meta itemprop="dateModified" content="2026-04-15T08:29:23+02:00">
+  <meta itemprop="wordCount" content="953">
+  <meta itemprop="keywords" content="Excel,LAMBDA,Outlier,Quartile,Statistics,Data Analysis,Formula,Tutorial">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>How to use the new LAMBDA-feature in Excel (e.g. to identify outliers) - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="How to use the new LAMBDA-feature in Excel (e.g. to identify outliers)">
+  <meta name="twitter:description" content="Whait what, Excel? You call yourself a data engineer and you work with Excel? Sure. Excel is still the best tool for quick’n’dirty solutions, don’t let Tableau, Python or Alteryx tell you something different… ;)
+What’s LAMBDA? One sentence: LAMBDA allows you to combine common Excel functions into one new custom function (respectively formula) that is available all over your workbook. Back in the days you had to cope with VBA or multiple columns to implement special calculations. LAMBDA still does not cover one disadvantage: Building custom functions remains a mess and ends up with long, encapsulated formulas.">
+
+
+  
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "How to use the new LAMBDA-feature in Excel (e.g. to identify outliers)",
+    "description": "Whait what, Excel? You call yourself a data engineer and you work with Excel? Sure. Excel is still the best tool for quick’n’dirty solutions, don’t let Tableau, …",
+    "datePublished": "2021-05-08T12:34:56\u002b01:00",
+    "dateModified": "2026-04-15T08:29:23\u002b02:00",
+    "author": {
+      "@type": "Person",
+      "name": "",
+      "url": "https:\/\/nickyreinert.de\/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Nicky Reinert",
+      "url": "https:\/\/nickyreinert.de\/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https:\/\/nickyreinert.de\/images\/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/nickyreinert.de\/en\/2021\/2021-05-08-excel-lambda\/"
+    },
+    
+    "image": {
+      "@type": "ImageObject",
+      "url": "https:\/\/nickyreinert.de\/image.png",
+      "width": 1200,
+      "height": 630
+    },
+    
+    "url": "https:\/\/nickyreinert.de\/en\/2021\/2021-05-08-excel-lambda\/",
+    "wordCount":  953 ,
+    
+    "timeRequired": "PT8M",
+    
+    
+    "keywords": ["Excel", "LAMBDA", "Outlier", "Statistics", "Tutorial", "Data Analysis", "Formula"],
+    
+    
+    "articleSection": ["blog"],
+    
+    
+    "abstract": "A step-by-step tutorial demonstrating how to use Excel\u0027s LAMBDA function to identify outliers by calculating quartiles, interquartile range, and upper\/lower fences. The guide explains how to create a reusable custom formula named IS_OUTLIER that checks whether values fall outside the statistical bounds of a dataset.",
+    
+    
+    "genre": "tutorial",
+    
+    
+    "educationalLevel": "intermediate",
+    
+    "inLanguage": "en"
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "How to use the new LAMBDA-feature in Excel (e.g. to identify outliers)",
+    "description": "Whait what, Excel? You call yourself a data engineer and you work with Excel? Sure. Excel is still the best tool for quick’n’dirty solutions, don’t let Tableau, …",
+    
+    "proficiencyLevel": "intermediate",
+    
+    
+    "dependencies": ["Basic Excel knowledge", "Understanding of statistical concepts like quartiles and outliers"],
+    
+    
+    "about": [
+      
+      
+      {
+        "@type": "Thing",
+        "name": "Excel"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "LAMBDA Function"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Data Analysis"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Statistics"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Tutorial"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Outlier Detection"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Quartiles"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Data Cleaning"
+      }
+      
+    ],
+    
+    "datePublished": "2021-05-08T12:34:56\u002b01:00",
+    "dateModified": "2026-04-15T08:29:23\u002b02:00",
+    "author": {
+      "@type": "Person",
+      "name": ""
+    }
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Nicky Reinert",
+    "url": "https:\/\/nickyreinert.de\/",
+    "description": "Blog \u0026 projects by Nicky Reinert (Institute for Digital Challenges): web development \u0026 software development, SEO \u0026 analytics, hosting \u0026 DevOps, WordPress \u0026 Hugo, tools \u0026 projects, data protection \u0026 digital culture — plus content on AI and autism \u0026 society.",
+    "inLanguage": "en",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https:\/\/nickyreinert.de\/search/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+]
+</script>
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+  
+
+<script defer src="/js/alpine.min.js"></script>
+
+
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institute for Digital Challenges</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://not-a-brand.myspreadshop.de/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/analysen/">analysen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+
+
+    
+<main id="main" class="post">
+  
+  
+  <div class="post-header">
+    <div class="navigation" style="align-items: center;">
+      <div style="flex-shrink: 0; width: 50px;">
+        
+        <a class="link prev" href="/en/2021/2021-02-24-python-foo/" style="font-size: 1.2rem;">&lt;&lt;&lt;</a>
+        
+      </div>
+      
+      <h1 style="flex: 1; text-align: center; min-width: 0; padding: 0 0.5rem;" itemprop="headline">How to use the new LAMBDA-feature in Excel (e.g. to identify outliers)</h1>
+      
+      <div style="flex-shrink: 0; width: 50px; text-align: right;">
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="post-meta" style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; color: #878787;">
+    May 8, 2021 &nbsp;|&nbsp; Kategorie: 
+    
+    <a class="link" href='https://nickyreinert.de/categories/blog' style="text-decoration: none;">blog</a>
+    
+  </div>
+    
+  
+  
+  
+  <details style="margin-top: 0.5rem; margin-bottom: 2rem; font-size: 0.9rem; color: #878787; background: none; border: none;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc" style="margin-left: 1rem;">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#whats-lambda">What’s LAMBDA?</a></li>
+    <li><a href="#what-are-fences">What are fences?</a></li>
+    <li><a href="#step-1-build-the-custom-function-inside-a-cell">Step 1: Build the custom function inside a cell</a></li>
+    <li><a href="#step-2--actually-create-a-new-function--formula">Step 2 — Actually create a new function / formula</a></li>
+  </ul>
+</nav>
+    </div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
+    <p>Whait what, Excel? You call yourself a data engineer and you work with Excel? Sure. Excel is still the best tool for quick’n’dirty solutions, don’t let Tableau, Python or Alteryx tell you something different… ;)</p>
+<h2 id="whats-lambda">What’s LAMBDA?</h2>
+<p>One sentence: <strong>LAMBDA</strong> allows you to combine common Excel functions into one new custom function (respectively formula) that is available all over your workbook. Back in the days you had to cope with VBA or multiple columns to implement special calculations. LAMBDA still does not cover one disadvantage: <strong>Building custom functions remains a mess</strong> and ends up with long, encapsulated formulas.</p>
+<p>Creating a LAMBDA function requires <strong>two steps</strong>. Let’s take an example challenge to demonstrate how that works: Find outliers by calculation <strong>quartiles</strong> and the upper and lower fence.</p>
+<img src="/en/2021/2021-05-08-excel-lambda/image.png" alt="being an outlier"><h2 id="what-are-fences">What are fences?</h2>
+<p>Upper and lower fences are borders, defined by 1,5 times the so called inter quartile range, which is just the area between two quartiles: the first and the third. The following formulas are used to find those borders for a given set of values.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Lower Fence = Q1 - (1,5 * IQR)
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Upper Fence = Q3 + (1,5 * IQR)
+</span></span></code></pre></div><p>Every value that’s outside this range can be considered as an outlier. That’s the short unprofessional explanation. Imagine you have a set of very important values:</p>
+<img src="/en/2021/2021-05-08-excel-lambda/image-1.png" alt="example set of very important numbers — where are the outliers"><p>A couple of steps are required to find the outliers with Excel. Every step requires one column (<em>the bold parts are the actual Excel formulas, you don’t need to fill your sheet, that’s just for showing the process).</em></p>
+<p>First you need to calculate the quartiles (I’m using the including quartile function, on the difference between including and excluding quartile 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://corporatefinanceinstitute.com/resources/excel/functions/quartile-inc-function/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">check this text out)</a>
+
+
+.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">1st Quartile = Q1 =&gt; **Column B: =QUARTILE.INKL(A:A;1)**
+</span></span><span class="line"><span class="ln">2</span><span class="cl">3rd Quartile = Q3 =&gt; **Column C: =QUARTILE.INKL(A:A;3)**
+</span></span></code></pre></div><p>The next column calculates the interquartile range — IQR:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">IQR = Q3 - Q1 =&gt; **Column D: =C2-B2**
+</span></span></code></pre></div><p>Another two columns are required to calculate the lower and upper fence:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Lower Fence = LF =&gt; **Column E: =B2-(1,5*D2)**
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Upper Fence = UP =&gt; **Column F: =C2+(1,5*D2)**
+</span></span></code></pre></div><p>Finally we need to check the actual value: Is it lower than the lower fence or greater than the upper fence? Is it inside our range?</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Is outlier? =&gt; **Column G: =IF(OR(A2&lt;E2;A2&gt;F2);&#34;x&#34;;&#34;&#34;)**
+</span></span></code></pre></div><p>That’s how it would look like in Excel:</p>
+<img src="/en/2021/2021-05-08-excel-lambda/image-2.png" alt="Outlier identification (in case you’re wondering: There are no outliers below the lower fence"><p>Now you would tend to compress the six additional columns into one, like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=IF(
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    OR(
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        A2&lt;QUARTILE.INKL($A$2:$A$2670;1) - (1,5*QUARTILE.INKL($A$2:$A$2670;3) - QUARTILE.INKL($A$2:$A$2670;1));
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        A2&gt;QUARTILE.INKL($A$2:$A$2670;3) + (1,5*QUARTILE.INKL($A$2:$A$2670;3) - QUARTILE.INKL($A$2:$A$2670;1))
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    );
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    &#34;x&#34;;
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    &#34;&#34;)
+</span></span></code></pre></div><img src="/en/2021/2021-05-08-excel-lambda/image-3.png" alt="alt text"><p>Isn’t that beautiful? <strong>Welcome to Excel</strong>! Good news is: <strong>LAMBDA</strong> helps you to make this a little <strong>more readable</strong> and also <strong>portable</strong>. The bad news: It still looks a little chaotic.</p>
+<h2 id="step-1-build-the-custom-function-inside-a-cell">Step 1: Build the custom function inside a cell</h2>
+<p>The <strong>LAMBDA</strong> formula requires <strong>n parameters</strong>. You can add (almost) as many parameters as you want, the <strong>last parameter</strong> always contains the <strong>calculation</strong>, the <strong>ones before</strong> are <strong>parameters</strong> that can be used within the calculation. Example:</p>
+<p>This one expects one parameter and would increment it by 1:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=LAMBDA(x, x + 1)
+</span></span></code></pre></div><p>And this <strong>LAMBDA</strong> calculation just returns a 5 — it does not expect any parameters:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=LAMBDA(5)
+</span></span></code></pre></div><p>And another one that adds up to values:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=LAMBDA(x;y;x+y)
+</span></span></code></pre></div><p>If you just put those lines into a cell, Excel returns a <strong>#CALC-error</strong> because you’re not providing any references. The worksheet is only a place to <strong>create and test</strong> your LAMBDA function. You also need to add example values, according to the parameters your LAMBDA function, to make it work within your worksheet:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=LAMBDA(x;y;x+y)(5;9)
+</span></span></code></pre></div><p>This will actualy return a 14. Now let’s put our <strong>upper-lower-fence-drama</strong> into a LAMBDA-function. First we replace every reference with a distinct variable, I chose <strong>value</strong> and <strong>range:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=IF(
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    OR(
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        value &lt; QUARTILE.INKL(range;1) - (1,5 * QUARTILE.INKL(range;3) - QUARTILE.INKL(range;1));
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        value &gt; QUARTILE.INKL(range;3) + (1,5 * QUARTILE.INKL(range;3) - QUARTILE.INKL(range;1))
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    );
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    &#34;x&#34;;
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    &#34;&#34;)
+</span></span></code></pre></div><p>Now we wrap this up with LAMBDA and some brackets and register our two variables:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=LAMBDA(value;range;IF(
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    OR(
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        value &lt; QUARTILE.INKL(range;1) - (1,5 * QUARTILE.INKL(range;3) - QUARTILE.INKL(range;1));
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        value &gt; QUARTILE.INKL(range;3) + (1,5 * QUARTILE.INKL(range;3) - QUARTILE.INKL(range;1))
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    );
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    &#34;x&#34;;
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    &#34;&#34;)
+</span></span><span class="line"><span class="ln">8</span><span class="cl">)
+</span></span></code></pre></div><p>And last but not least, we need to add some testing values — we just referencing the cells, as we did before:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=LAMBDA(value;range;IF(
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    OR(
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        value &lt; QUARTILE.INKL(range;1) - (1,5 * QUARTILE.INKL(range;3) - QUARTILE.INKL(range;1));
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        value &gt; QUARTILE.INKL(range;3) + (1,5 * QUARTILE.INKL(range;3) - QUARTILE.INKL(range;1))
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    );
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    &#34;x&#34;;
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    &#34;&#34;)
+</span></span><span class="line"><span class="ln">8</span><span class="cl">)(A1;A$2:A$2670)
+</span></span></code></pre></div><p>Now let’s fill the column with this formula:</p>
+<img src="/en/2021/2021-05-08-excel-lambda/image-4.png" alt="alt text"><p>Unsurprisingly the result is the same.</p>
+<h2 id="step-2--actually-create-a-new-function--formula">Step 2 — Actually create a new function / formula</h2>
+<p>Of course we don’t want to copy the whole stuff every time we need to identify outliers. So let’s <strong>register this calculation</strong> as a new formula. Press either <strong>CMD+F3</strong> (CTRL+F3 on Windows) or select “<strong>define names</strong>” in the Formula-Area:</p>
+<img src="/en/2021/2021-05-08-excel-lambda/image-5.png" alt="alt text"><p>Add a name for your new function — lets call it <strong>IS_OUTLIER</strong> — and paste your LAMBDA-formular into the second text field — <strong>without the second pair</strong> of brackets containing your test values:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=LAMBDA(value;range;IF(
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    OR(
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        value &lt; QUARTILE.INKL(range;1) - (1,5 * QUARTILE.INKL(range;3) - QUARTILE.INKL(range;1));
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        value &gt; QUARTILE.INKL(range;3) + (1,5 * QUARTILE.INKL(range;3) - QUARTILE.INKL(range;1))
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    );
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    &#34;x&#34;;
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    &#34;&#34;))
+</span></span></code></pre></div><p><strong>Do not forget to press the plus-button</strong> to actually create the new formula. Confirm everything with OK and <strong>get ready to rumble</strong>. This is your new and simple outlier detection formula:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=IS_OUTLIER(value;range)
+</span></span></code></pre></div><img src="/en/2021/2021-05-08-excel-lambda/image-6.png" alt="alt text"><p>And it works, apparently, like a charm. If you need this feature in another worksheet, just copy the name definition.</p>
+<p>That’s all. No epilog, but one word of advice: You have to subscribe to the <strong>Beta-channel</strong> (at least on MacOS), as the LAMBDA function is not yet provided in the official release candiate. Have fun! :)</p>
+
+    
+  </article>
+
+
+  
+  
+  <div style="width: 100%; margin-top: 2rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Summary</h2>
+    <div style="font-size: 1rem;">
+
+      <p>A step-by-step tutorial demonstrating how to use Excel&#39;s LAMBDA function to identify outliers by calculating quartiles, interquartile range, and upper/lower fences. The guide explains how to create a reusable custom formula named IS_OUTLIER that checks whether values fall outside the statistical bounds of a dataset.</p>
+      <br />
+      
+      <p><strong>Main Topics:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Excel</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">LAMBDA Function</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Data Analysis</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Statistics</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Tutorial</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Outlier Detection</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Quartiles</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Data Cleaning</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Difficulty:</strong> intermediate</p>
+      
+      
+      
+      <p><strong>Reading Time:</strong> approx. 8 minutes</p>
+      
+    </div>
+  </div>
+  
+
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/en/2021/2021-02-24-python-foo/">← prev</a>
+    
+    
+    <a></a>
+    
+  </div>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="privacy.html">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>
