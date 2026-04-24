@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="Once you have successfully processed 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  the first part
+
+
+, you are well prepared to learn in this part how the individual components or. Now functions together.
+Pre-certificate
+Before starting, I would like to clarify the connections again: We will immediately create a message (message), the length of which corresponds to a multiple of 512 bits; in the example, exactly 512 bit. The message is broken down into message blocks that are exactly 512 bit long. Each message block is in turn broken down into a message schedule, with 16 words (Words) of 32 bit length each. The length of the words must and will always be 32 bits! However, the message schedule is then extended to contain 64 words. Its length then: 2,048 bit. And graphically:">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
+
+  
+  
+  <meta name="keywords" content=" Sudoku  Solver  Generator  Python  Algorithm  Backtracking  Brute Force  Puzzle  Logic ">
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/css/katex.min.css">
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '\\[', right: '\\]', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false }
+      ],
+      ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'option'],
+      throwOnError: false
+    });
+  });
+</script>
+
+
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/en/2024/2024-10-04-sha256-part-1/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="How does the SHA256 algorithm work…in detail? (part 2/2)">
+  <meta property="og:description" content="Once you have successfully processed the first part , you are well prepared to learn in this part how the individual components or. Now functions together.
+Pre-certificate Before starting, I would like to clarify the connections again: We will immediately create a message (message), the length of which corresponds to a multiple of 512 bits; in the example, exactly 512 bit. The message is broken down into message blocks that are exactly 512 bit long. Each message block is in turn broken down into a message schedule, with 16 words (Words) of 32 bit length each. The length of the words must and will always be 32 bits! However, the message schedule is then extended to contain 64 words. Its length then: 2,048 bit. And graphically:">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2024">
+    <meta property="article:published_time" content="2024-10-06T12:34:56+01:00">
+    <meta property="article:modified_time" content="2026-04-24T17:43:54+02:00">
+    <meta property="article:tag" content="Python">
+    <meta property="article:tag" content="Algorithm">
+    <meta property="article:tag" content="Sudoku">
+    <meta property="article:tag" content="Tutorial">
+    <meta property="article:tag" content="Project">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/en/2024/2024-10-04-sha256-part-1/">
+
+  
+  
+  
+  <meta itemprop="name" content="How does the SHA256 algorithm work…in detail? (part 2/2)">
+  <meta itemprop="description" content="Once you have successfully processed the first part , you are well prepared to learn in this part how the individual components or. Now functions together.
+Pre-certificate Before starting, I would like to clarify the connections again: We will immediately create a message (message), the length of which corresponds to a multiple of 512 bits; in the example, exactly 512 bit. The message is broken down into message blocks that are exactly 512 bit long. Each message block is in turn broken down into a message schedule, with 16 words (Words) of 32 bit length each. The length of the words must and will always be 32 bits! However, the message schedule is then extended to contain 64 words. Its length then: 2,048 bit. And graphically:">
+  <meta itemprop="datePublished" content="2024-10-06T12:34:56+01:00">
+  <meta itemprop="dateModified" content="2026-04-24T17:43:54+02:00">
+  <meta itemprop="wordCount" content="1642">
+  <meta itemprop="keywords" content="Sudoku,Solver,Generator,Python,Algorithm,Backtracking,Brute Force,Puzzle,Logic">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>How does the SHA256 algorithm work…in detail? (part 2/2) - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="How does the SHA256 algorithm work…in detail? (part 2/2)">
+  <meta name="twitter:description" content="Once you have successfully processed the first part , you are well prepared to learn in this part how the individual components or. Now functions together.
+Pre-certificate Before starting, I would like to clarify the connections again: We will immediately create a message (message), the length of which corresponds to a multiple of 512 bits; in the example, exactly 512 bit. The message is broken down into message blocks that are exactly 512 bit long. Each message block is in turn broken down into a message schedule, with 16 words (Words) of 32 bit length each. The length of the words must and will always be 32 bits! However, the message schedule is then extended to contain 64 words. Its length then: 2,048 bit. And graphically:">
+
+
+  
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "How does the SHA256 algorithm work…in detail? (part 2\/2)",
+    "description": "Once you have successfully processed the first part , you are well prepared to learn in this part how the individual components or. Now functions together. …",
+    "datePublished": "2024-10-06T12:34:56\u002b01:00",
+    "dateModified": "2026-04-24T17:43:54\u002b02:00",
+    "author": {
+      "@type": "Person",
+      "name": "",
+      "url": "https:\/\/nickyreinert.de\/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Nicky Reinert",
+      "url": "https:\/\/nickyreinert.de\/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https:\/\/nickyreinert.de\/images\/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/nickyreinert.de\/en\/2024\/2024-10-04-sha256-part-1\/"
+    },
+    
+    "image": {
+      "@type": "ImageObject",
+      "url": "https:\/\/nickyreinert.de\/sudoku_positions.png",
+      "width": 1200,
+      "height": 630
+    },
+    
+    "url": "https:\/\/nickyreinert.de\/en\/2024\/2024-10-04-sha256-part-1\/",
+    "wordCount":  1642 ,
+    
+    "timeRequired": "PT5M",
+    
+    
+    "keywords": ["Python", "Algorithm", "Sudoku", "Tutorial", "Project"],
+    
+    
+    "articleSection": ["blog"],
+    
+    
+    
+    "genre": "tutorial",
+    
+    
+    "educationalLevel": "intermediate",
+    
+    "inLanguage": "en"
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "How does the SHA256 algorithm work…in detail? (part 2\/2)",
+    "description": "Once you have successfully processed the first part , you are well prepared to learn in this part how the individual components or. Now functions together. …",
+    
+    "proficiencyLevel": "intermediate",
+    
+    
+    "dependencies": ["Good understanding of Python programming", "Familiarity with basic algorithms and data structures (dictionaries, lists)"],
+    
+    
+    "about": [
+      
+      
+      {
+        "@type": "Thing",
+        "name": "Python"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Algorithmen"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Sudoku"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Backtracking"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Problem-Solving"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Computational Thinking"
+      }
+      
+    ],
+    
+    "datePublished": "2024-10-06T12:34:56\u002b01:00",
+    "dateModified": "2026-04-24T17:43:54\u002b02:00",
+    "author": {
+      "@type": "Person",
+      "name": ""
+    }
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Nicky Reinert",
+    "url": "https:\/\/nickyreinert.de\/",
+    "description": "Blog \u0026 projects by Nicky Reinert (Institute for Digital Challenges): web development \u0026 software development, SEO \u0026 analytics, hosting \u0026 DevOps, WordPress \u0026 Hugo, tools \u0026 projects, data protection \u0026 digital culture — plus content on AI and autism \u0026 society.",
+    "inLanguage": "en",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https:\/\/nickyreinert.de\/search/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+]
+</script>
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+  
+
+<script defer src="/js/alpine.min.js"></script>
+
+
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institute for Digital Challenges</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://not-a-brand.myspreadshop.de/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/analysen/">analysen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+
+
+    
+<main id="main" class="post">
+  
+  
+  <div class="post-header">
+    <div class="navigation" style="align-items: center;">
+      <div style="flex-shrink: 0; width: 50px;">
+        
+        <a class="link prev" href="/en/2024/2024-10-06-sha256-part-2/" style="font-size: 1.2rem;">&lt;&lt;&lt;</a>
+        
+      </div>
+      
+      <h1 style="flex: 1; text-align: center; min-width: 0; padding: 0 0.5rem;" itemprop="headline">How does the SHA256 algorithm work…in detail? (part 2/2)</h1>
+      
+      <div style="flex-shrink: 0; width: 50px; text-align: right;">
+        
+        <a class="link next" href="/en/2024/2024-10-18-sudoku/" style="font-size: 1.2rem;">>>></a>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="post-meta" style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; color: #878787;">
+    October 6, 2024 &nbsp;|&nbsp; Kategorie: 
+    
+    <a class="link" href='https://nickyreinert.de/categories/blog' style="text-decoration: none;">blog</a>
+    
+  </div>
+    
+  
+  
+  
+  <details style="margin-top: 0.5rem; margin-bottom: 2rem; font-size: 0.9rem; color: #878787; background: none; border: none;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc" style="margin-left: 1rem;">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#pre-certificate">Pre-certificate</a></li>
+    <li><a href="#decompressions">Decompressions</a></li>
+    <li><a href="#the-loop">The loop!</a></li>
+    <li><a href="#the-compression">The Compression</a></li>
+    <li><a href="#hashes-health-what">Hashes. Health. What?</a></li>
+    <li><a href="#epilog">Epilog</a></li>
+  </ul>
+</nav>
+    </div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
+    <p>Once you have successfully processed 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/@nickyreinert/how-does-the-sha256-algorithm-in-detail-part-1-2-45154fab02d2?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">the first part</a>
+
+
+, you are well prepared to learn in this part how the individual components or. Now functions together.</p>
+<h2 id="pre-certificate">Pre-certificate</h2>
+<p>Before starting, I would like to clarify the connections again: We will immediately create a message (<strong>message</strong>), the length of which corresponds to a multiple of <strong>512</strong> bits; in the example, exactly <strong>512 bit</strong>. The message is broken down into <strong>message blocks</strong> that are exactly <strong>512 bit</strong> long. Each message block is in turn broken down into a <strong>message schedule</strong>, with <strong>16 words</strong> (Words) of <strong>32 bit</strong> length each. The length of the words must and will always be <strong>32</strong> bits! However, the message schedule is then extended to contain <strong>64 words</strong>. Its length then: <strong>2,048 bit</strong>. And graphically:</p>
+<img src="/en/2024/2024-10-04-sha256-part-1/image.png" alt="alt text"><p>Important connections</p>
+<h2 id="decompressions">Decompressions</h2>
+<p>So we want to calculate a <strong>SHA-256</strong> -compliant checksum, the hash, from a message. To do this, the message, i.e. the string, must first be prepared. Our message is, clichéd:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">message = &#39;hello_world&#39;
+</span></span></code></pre></div><p>First we have to get the position in the character table for each letterd, i.e. convert the letters (or each character) into their numerical representation:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">dec_message = []
+</span></span><span class="line"><span class="ln">2</span><span class="cl">for char in message:
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    dec_message.append(ord(char))
+</span></span></code></pre></div><p>The achiedes is a list of integers:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[104, 101, 108, 108, 111, 95, 119, 111, 114, 108, 100]
+</span></span></code></pre></div><p>And since we had so much fun dealing with binary values in the first part, we convert the list into binary values that we simply link together:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">bin_message = &#39;&#39;
+</span></span><span class="line"><span class="ln">2</span><span class="cl">for decimal in dec_message:
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    bin_message += &#39;0&#39; + bin(decimal)[2:
+</span></span></code></pre></div><p>The result:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">0110100001100101011011000110110001111110110110110110110110100100100100100
+</span></span></code></pre></div><p>Here, however, there is a stumbling trap, and I am reluctant to leave it standing for, for which I have not yet found an explanation: in the transformation into the binary equivalent, we are putting ahead with every binary value ahead of everything. So <strong>104</strong> does not become <strong>1101000</strong> but <strong>01101000</strong>, etc.</p>
+<p>In addition, we attach 1 to this date, as a separator for what is now coming up.</p>
+<p>Next we calculate the length of this binary number:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">len_bin_message = len(bin_message)
+</span></span></code></pre></div><p>The length may or must be submitted exactly <strong>64 bits</strong>. So we also convert it into a binary number to hang a few zeros at the front to get exactly 64 digits:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">rest_to_64 = 64 - len(bin(len_bin_message)[2:])
+</span></span><span class="line"><span class="ln">2</span><span class="cl">bin_message_len = &#39;0&#39; * rest_to_64 + bin(len_bin_message)[2:]
+</span></span></code></pre></div><p>Now we not only have to connect this three binary information, message, separating one and longitude, but also fill it with so many zeros, so that the total length is a multiple of 512.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">payload</span> <span class="o">=</span> <span class="n">bin_message</span> <span class="o">+</span> <span class="s1">&#39;1&#39;</span> <span class="o">+</span> <span class="n">bin_message_len</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">len_payload</span> <span class="o">=</span> <span class="n">len</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="n">pad_string</span> <span class="o">=</span> <span class="ne">int</span><span class="p">(</span><span class="mi">512</span> <span class="o">-</span> <span class="p">(</span><span class="n">len_payload</span> <span class="o">%</span> <span class="mi">512</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="n">full_message</span> <span class="o">=</span> <span class="n">bin_message</span> <span class="o">+</span> <span class="s1">&#39;1&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;0&#39;</span> <span class="o">*</span> <span class="n">pad_string</span><span class="p">)</span> <span class="o">+</span> <span class="n">bin_message_len</span>
+</span></span></code></pre></div><p>In our example, the three information shows 153 bits. So we have to include 359 zeros. Strictly speaking, there are between message and length specification. The result is always <em><em>n</em> 512 bits</em>* long:</p>
+<img src="/en/2024/2024-10-04-sha256-part-1/image-1.png" alt="alt text"><p>Setup of a pre-coded message</p>
+<p>Last but not least, we take these very, very, very, very…very, very large number (it is very large, you should not see it as a number, but as a !) and divide it into so-called message blocks with a length of <strong>512 bits</strong> each:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">message_block_length = 512
+</span></span><span class="line"><span class="ln">2</span><span class="cl">message_blocks = [full_message[i:i+message_block_length] for i in range(0, len(full_message), message_block_length)]
+</span></span></code></pre></div><p>Grab a coffee, go fresh air to get another shake out the chair. Now it starts.</p>
+<img src="/en/2024/2024-10-04-sha256-part-1/image-3.png" alt="alt text"><h2 id="the-loop">The loop!</h2>
+<p>Since it is easier to explain the process without a loop, here is just a loop. You can still find the programmatic loop on 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gist.github.com/nickyreinert/00d631fe9a90108924b1df6e911c8cd5?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><strong>Github</strong></a>
+
+
+.</p>
+<img src="/en/2024/2024-10-04-sha256-part-1/image-4.png" alt="alt text"><p>Since our message is exactly 512 bit tall and we work without loop, we can go straight to the full: The laboriously glued message is now included in the so-called. Message Schedule disassembled: Speak in <strong>16 words</strong> with 32 bit length each.</p>
+<p>In the first run we take four words and make the following modifications:</p>
+<ul>
+<li><strong>1</strong> is applied to <strong>word 1</strong> at position 14,</li>
+<li><strong>word 2</strong> of position 9 remains unchanged,</li>
+<li><strong>0</strong> is applied to <strong>word 3</strong> at position 1 and</li>
+<li><strong>Word 4</strong> at position 0 remains unaffected</li>
+</ul>
+<p>The values are added first and now there is <strong>another important point</strong> to consider: We must strictly ensure that the words are no longer than <strong>32 bits</strong>. Because only in this way can we ensure that the final hash is always the same. And at the latest now, when <strong>adding large values</strong>, we can exceed the <strong>32 bits</strong> quite quickly. From a technical point of view, this is also a hurdle. Therefore, here and for all additions we must finally use <strong>Modulo 2</strong> 32. And now the third hopefully positive kink comes in the learning curve: The binary universe also holds a nice simplification for Modulo: <strong>The</strong> <strong>logical And</strong> with 232–1 (or 4,494,967,295, that is a very large number, not as large as the one in the first part, but exactly one smaller counter) leads to the same result.</p>
+<img src="/en/2024/2024-10-04-sha256-part-1/image-5.png" alt="alt text"><p>Calculation of the first step</p>
+<p>This would prepare the message schedule and now contains <strong>64 beautiful words</strong> of <strong>32 bits</strong> <strong>each</strong>. So we first paided up the information from the Message Block and extended from <strong>512 bit to 2,048 bit</strong> — but they are still readable:</p>
+<img src="/en/2024/2024-10-04-sha256-part-1/image-6.png" alt="alt text"><p>The extended Message Schedule</p>
+<p>But that is now over, we are coming to the next and most important step:</p>
+<h2 id="the-compression">The Compression</h2>
+<p>In this step, the extended message schedule is not modified directly, but the words are used as the basis for modifying the <strong>compression constants</strong> initially created.</p>
+<p>In 64 loops runs we go through the message schedule. A new word is calculated from each word of the schedule (i.e. our original message) together with the <strong>64 result constants</strong> and the <strong>8 compression constants</strong>. The new word is then preceded by the compression constants, at the same time the last entry is deleted. This is how the list always contains exactly 8 entries.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="n">new_compression_constants</span> <span class="o">=</span> <span class="n">compression_constants</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">enumerate</span><span class="p">(</span><span class="n">message_schedule</span><span class="p">):</span>    <span class="n">term1</span> <span class="o">=</span> <span class="p">(</span><span class="ne">int</span><span class="p">(</span><span class="n">upper_sigma1</span><span class="p">(</span><span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">4</span><span class="p">]),</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> \
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">                <span class="ne">int</span><span class="p">(</span><span class="n">choose</span><span class="p">(</span><span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">6</span><span class="p">]),</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> \
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">                <span class="ne">int</span><span class="p">(</span><span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> \
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">                <span class="ne">int</span><span class="p">(</span><span class="n">result_constants</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> \
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">                <span class="ne">int</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> \
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">                <span class="o">&amp;</span> <span class="ne">int</span><span class="p">(</span><span class="s1">&#39;11111111111111111111111111111111&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>    <span class="n">term2</span> <span class="o">=</span> <span class="p">(</span><span class="ne">int</span><span class="p">(</span><span class="n">upper_sigma0</span><span class="p">(</span><span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> \
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">                <span class="ne">int</span><span class="p">(</span><span class="n">majority</span><span class="p">(</span><span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="mi">2</span><span class="p">))</span> <span class="o">&amp;</span> <span class="ne">int</span><span class="p">(</span><span class="s1">&#39;11111111111111111111111111111111&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>    <span class="n">new_compression_constants</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="n">new_compression_constants</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>    <span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">bin</span><span class="p">(</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">                <span class="p">(</span><span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="ne">int</span><span class="p">(</span><span class="s1">&#39;11111111111111111111111111111111&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">                <span class="p">)[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>    <span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">bin</span><span class="p">(</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">                <span class="p">(</span><span class="ne">int</span><span class="p">(</span><span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">term1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="ne">int</span><span class="p">(</span><span class="s1">&#39;11111111111111111111111111111111&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">                <span class="p">)[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+</span></span></code></pre></div><p>First, a few calculations:</p>
+<ul>
+<li><strong>Term 1</strong> is calculated from the compression constants, one of the result constants and the respective word. We use here at bit level and <strong>Ã1</strong> (upper sigma1) as well as <strong>choose</strong>.</li>
+<li><strong>Term 2</strong> is a sum of two other compression constants that are modified with the help of <strong>Ã0</strong> (upper sigma0) and <strong>majority</strong>.</li>
+</ul>
+<p>And now pay attention times that the original message part of the 1. Terms is marked in red in the picture:</p>
+<img src="/en/2024/2024-10-04-sha256-part-1/image-7.png" alt="alt text"><p>In the first step, the calculation of two terms is performed</p>
+<p>The two terms are now added (and, as always, brought to 32 bit course with <strong>Modulo 232</strong>) and placed at the beginning of the compression constants. The first term will also be held with the 4th Position of this now 9 words long list sums up:</p>
+<img src="/en/2024/2024-10-04-sha256-part-1/image-8.png" alt="alt text"><p>In the second step, the list of compression constants is updated</p>
+<p>Next, the last entry of the list is deleted, it now includes <strong>8 completely new compression constants</strong> (if you have paid carefully, you will not have missed that they are not even that constant).</p>
+<p>A part of the original message is now a portion <strong>of</strong> the original message as a <strong>summand of term 1</strong> and the <strong>positions 0 and 4.</strong> These will slide part of the same calculations and keep down in the next runs. This distributes the original, previously half-way readable message, over the entire list.</p>
+<p>This list is therefore the basis for the second run, which will “rotate” it again to create a completely new list for the third run. And so on until all 64 words of the message schedule are processed. The result should look something like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">11100010000000010111101011011001
+</span></span><span class="line"><span class="ln">2</span><span class="cl">0100011011010010100000110100100 
+</span></span><span class="line"><span class="ln">3</span><span class="cl">11100011111110010111100001001011 
+</span></span><span class="line"><span class="ln">4</span><span class="cl">0111000110001000100010000011110 
+</span></span><span class="line"><span class="ln">5</span><span class="cl">01001000000111100100000000011000100010001000
+</span></span><span class="line"><span class="ln">6</span><span class="cl">0001111111000110101100110101110101 
+</span></span><span class="line"><span class="ln">7</span><span class="cl">11101001110010001101110111010100 
+</span></span><span class="line"><span class="ln">8</span><span class="cl">0000100110110111100011011011
+</span></span></code></pre></div><p>Or in Hexadecimal:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">0xe2017ad9 0x46d28214 0xe3f9784b 0x7186041e 0x481e4018 0x1fc6b235 0xe9c8ddff4 0x96f0efb
+</span></span></code></pre></div><p>Finally, this list will go through exactly this list of 8. Compression constants and add each position with the corresponding word of the source list:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">result</span> <span class="o">=</span> <span class="p">[]</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span>    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">        <span class="n">bin</span><span class="p">(</span><span class="ne">int</span><span class="p">(</span><span class="n">compression_constants</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> 
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        <span class="ne">int</span><span class="p">(</span><span class="n">new_compression_constants</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>  <span class="o">&amp;</span>    
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        <span class="ne">int</span><span class="p">(</span><span class="s1">&#39;11111111111111111111111111111111&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">))[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">32</span><span class="p">))</span>
+</span></span></code></pre></div><p>And in plain text:</p>
+<img src="/en/2024/2024-10-04-sha256-part-1/image-9.png" alt="alt text"><p>Last step: Adding the lists</p>
+<p>The new list is now the <strong>source list</strong> for the next message schedule. However, since we do not implement the loop here, it was the first. The following is an example summary of the steps:</p>
+<img src="/en/2024/2024-10-04-sha256-part-1/image-10.png" alt="alt text"><p>Schematic representation of the SHA-256 algorithm</p>
+<h2 id="hashes-health-what">Hashes. Health. What?</h2>
+<p>We did it. You did it. Congratulations.</p>
+<img src="/en/2024/2024-10-04-sha256-part-1/image-11.png" alt="Source: memecreator.org"><p>Now we can either output the hash as a hex value or display it again in binary notation, depending on the purpose of the application.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">for word in result:   
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  print(hex(int(word, 2))[2:].zfill(8) + &#39;&#39;, end = &#39;&#39;)
+</span></span></code></pre></div><p>The result is impressive in any case.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">35072c1ae546350e0bfa7ab11d49dc6f129e72cdec7eb671225bbd197c8f1
+</span></span></code></pre></div><p>Or</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">1101010000011100101101101100010101000100011101101100011111111110100111110110100111010100111011011110110110110111100100111001110110110110110111111101111111110111111111111110001001000100101101110110101110101110101101110101101110101101101110001110110111110101101101101101101101110110110110110110110101
+</span></span></code></pre></div><h2 id="epilog">Epilog</h2>
+<p>You can find a complete implementation, including a loop to process even large messages
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gist.github.com/nickyreinert/00d631fe9a90108924b1df6e911c8cd5?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">, in this guest.</a>
+
+
+</p>
+<p>Of course, Python is not suitable for optimizing the SHA-256 process, but it is around to understand the process and learn how to deal with elementary binary computing operation.</p>
+<p>If you want to understand the process in a more interactive 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.youtube.com/watch?v=f9EbD6iY9zI&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">way</a>
+
+
+, I would like to recommend 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.youtube.com/watch?v=f9EbD6iY9zI&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">this video</a>
+
+
+. There, the algorithm is reproduced in Ruby and the individual calculation steps are explained in more detail.</p>
+<p>And why is SHA-256 so important for cryptocurrencies mining now? In short: The hash validates the validity of the <em>cash book</em>. Mining is about calculating exactly a given target hash from a given message and a freely selectable addition. The algorithm therefore has to be mad attenuated. Since this is very complex, it takes time and will be rewarded accordingly.</p>
+
+    
+  </article>
+
+
+  
+  
+
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/en/2024/2024-10-06-sha256-part-2/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/en/2024/2024-10-18-sudoku/">next →</a>
+    
+  </div>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="privacy.html">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>
