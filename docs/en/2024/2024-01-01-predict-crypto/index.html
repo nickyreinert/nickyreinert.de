@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="Flying and predicting stock prices: two of humanity’s greatest dreams. While growing wings seems impossible, let’s focus on predicting the prices of stocks — or in this case, a ‘cryptocurrenciy’! It sounds catchier, doesn’t it?
+Goal
+You’ll learn how to leverage PyTorch, a machine learning library/framework, to construct a learning algorithm. Our focus will be on the cryptocurrency ADA, which operates on the Cardano blockchain.* Unlike most tutorials that solely consider price as the input feature for the model, we’ll incorporate volume and trade amounts. Implementing the sliding window method, we’ll introduce an ‘outlook gap,’ a less commonly utilized technique. Exploring various model architectures and optimizers, I’ll provide a rough explanation of their workings. Additionally, we’ll aim to enhance the model’s performance. Lastly, I’ll touch upon why a simple script and numerical data might not suffice for accurate price prediction: Stock, cryptos or butter. Whatever.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
+
+  
+  
+  <meta name="keywords" content=" PyTorch  Machine Learning  Cryptocurrency  ADA  Stock Price Prediction  LSTM  GRU  Time Series ">
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/css/katex.min.css">
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '\\[', right: '\\]', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false }
+      ],
+      ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'option'],
+      throwOnError: false
+    });
+  });
+</script>
+
+
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/en/2024/2024-01-01-predict-crypto/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Cryptocurrency Price Prediction with PyTorch: A Machine Learning Tutorial">
+  <meta property="og:description" content="Flying and predicting stock prices: two of humanity’s greatest dreams. While growing wings seems impossible, let’s focus on predicting the prices of stocks — or in this case, a ‘cryptocurrenciy’! It sounds catchier, doesn’t it?
+Goal You’ll learn how to leverage PyTorch, a machine learning library/framework, to construct a learning algorithm. Our focus will be on the cryptocurrency ADA, which operates on the Cardano blockchain.* Unlike most tutorials that solely consider price as the input feature for the model, we’ll incorporate volume and trade amounts. Implementing the sliding window method, we’ll introduce an ‘outlook gap,’ a less commonly utilized technique. Exploring various model architectures and optimizers, I’ll provide a rough explanation of their workings. Additionally, we’ll aim to enhance the model’s performance. Lastly, I’ll touch upon why a simple script and numerical data might not suffice for accurate price prediction: Stock, cryptos or butter. Whatever.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2024">
+    <meta property="article:published_time" content="2024-01-01T12:34:56+01:00">
+    <meta property="article:modified_time" content="2026-04-15T08:29:23+02:00">
+    <meta property="article:tag" content="Python">
+    <meta property="article:tag" content="Machine Learning">
+    <meta property="article:tag" content="PyTorch">
+    <meta property="article:tag" content="Cryptocurrency">
+    <meta property="article:tag" content="Tutorial">
+    <meta property="article:tag" content="Project">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/en/2024/2024-01-01-predict-crypto/">
+
+  
+  
+  
+  <meta itemprop="name" content="Cryptocurrency Price Prediction with PyTorch: A Machine Learning Tutorial">
+  <meta itemprop="description" content="Flying and predicting stock prices: two of humanity’s greatest dreams. While growing wings seems impossible, let’s focus on predicting the prices of stocks — or in this case, a ‘cryptocurrenciy’! It sounds catchier, doesn’t it?
+Goal You’ll learn how to leverage PyTorch, a machine learning library/framework, to construct a learning algorithm. Our focus will be on the cryptocurrency ADA, which operates on the Cardano blockchain.* Unlike most tutorials that solely consider price as the input feature for the model, we’ll incorporate volume and trade amounts. Implementing the sliding window method, we’ll introduce an ‘outlook gap,’ a less commonly utilized technique. Exploring various model architectures and optimizers, I’ll provide a rough explanation of their workings. Additionally, we’ll aim to enhance the model’s performance. Lastly, I’ll touch upon why a simple script and numerical data might not suffice for accurate price prediction: Stock, cryptos or butter. Whatever.">
+  <meta itemprop="datePublished" content="2024-01-01T12:34:56+01:00">
+  <meta itemprop="dateModified" content="2026-04-15T08:29:23+02:00">
+  <meta itemprop="wordCount" content="3088">
+  <meta itemprop="keywords" content="PyTorch,Machine Learning,Cryptocurrency,ADA,Stock Price Prediction,LSTM,GRU,Time Series">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>Cryptocurrency Price Prediction with PyTorch: A Machine Learning Tutorial - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Cryptocurrency Price Prediction with PyTorch: A Machine Learning Tutorial">
+  <meta name="twitter:description" content="Flying and predicting stock prices: two of humanity’s greatest dreams. While growing wings seems impossible, let’s focus on predicting the prices of stocks — or in this case, a ‘cryptocurrenciy’! It sounds catchier, doesn’t it?
+Goal You’ll learn how to leverage PyTorch, a machine learning library/framework, to construct a learning algorithm. Our focus will be on the cryptocurrency ADA, which operates on the Cardano blockchain.* Unlike most tutorials that solely consider price as the input feature for the model, we’ll incorporate volume and trade amounts. Implementing the sliding window method, we’ll introduce an ‘outlook gap,’ a less commonly utilized technique. Exploring various model architectures and optimizers, I’ll provide a rough explanation of their workings. Additionally, we’ll aim to enhance the model’s performance. Lastly, I’ll touch upon why a simple script and numerical data might not suffice for accurate price prediction: Stock, cryptos or butter. Whatever.">
+
+
+  
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Cryptocurrency Price Prediction with PyTorch: A Machine Learning Tutorial",
+    "description": "Flying and predicting stock prices: two of humanity’s greatest dreams. While growing wings seems impossible, let’s focus on predicting the prices of stocks — or …",
+    "datePublished": "2024-01-01T12:34:56\u002b01:00",
+    "dateModified": "2026-04-15T08:29:23\u002b02:00",
+    "author": {
+      "@type": "Person",
+      "name": "",
+      "url": "https:\/\/nickyreinert.de\/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Nicky Reinert",
+      "url": "https:\/\/nickyreinert.de\/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https:\/\/nickyreinert.de\/images\/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/nickyreinert.de\/en\/2024\/2024-01-01-predict-crypto\/"
+    },
+    
+    "image": {
+      "@type": "ImageObject",
+      "url": "https:\/\/nickyreinert.de\/image.png",
+      "width": 1200,
+      "height": 630
+    },
+    
+    "url": "https:\/\/nickyreinert.de\/en\/2024\/2024-01-01-predict-crypto\/",
+    "wordCount":  3088 ,
+    
+    "timeRequired": "PT5M",
+    
+    
+    "keywords": ["Python", "Machine Learning", "PyTorch", "Cryptocurrency", "Tutorial", "Project"],
+    
+    
+    "articleSection": ["blog"],
+    
+    
+    
+    "genre": "tutorial",
+    
+    
+    "educationalLevel": "intermediate",
+    
+    "inLanguage": "en"
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Cryptocurrency Price Prediction with PyTorch: A Machine Learning Tutorial",
+    "description": "Flying and predicting stock prices: two of humanity’s greatest dreams. While growing wings seems impossible, let’s focus on predicting the prices of stocks — or …",
+    
+    "proficiencyLevel": "intermediate",
+    
+    
+    "dependencies": ["Good understanding of Python programming", "Familiarity with basic algorithms and data structures (dictionaries, lists)"],
+    
+    
+    "about": [
+      
+      
+      {
+        "@type": "Thing",
+        "name": "Python"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Machine Learning"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "PyTorch"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Cryptocurrency"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "LSTM"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "GRU"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Stock Price Prediction"
+      }
+      
+    ],
+    
+    "datePublished": "2024-01-01T12:34:56\u002b01:00",
+    "dateModified": "2026-04-15T08:29:23\u002b02:00",
+    "author": {
+      "@type": "Person",
+      "name": ""
+    }
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Nicky Reinert",
+    "url": "https:\/\/nickyreinert.de\/",
+    "description": "Blog \u0026 projects by Nicky Reinert (Institute for Digital Challenges): web development \u0026 software development, SEO \u0026 analytics, hosting \u0026 DevOps, WordPress \u0026 Hugo, tools \u0026 projects, data protection \u0026 digital culture — plus content on AI and autism \u0026 society.",
+    "inLanguage": "en",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https:\/\/nickyreinert.de\/search/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+]
+</script>
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+  
+
+<script defer src="/js/alpine.min.js"></script>
+
+
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institute for Digital Challenges</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://not-a-brand.myspreadshop.de/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/analysen/">analysen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+
+
+    
+<main id="main" class="post">
+  
+  
+  <div class="post-header">
+    <div class="navigation" style="align-items: center;">
+      <div style="flex-shrink: 0; width: 50px;">
+        
+      </div>
+      
+      <h1 style="flex: 1; text-align: center; min-width: 0; padding: 0 0.5rem;" itemprop="headline">Cryptocurrency Price Prediction with PyTorch: A Machine Learning Tutorial</h1>
+      
+      <div style="flex-shrink: 0; width: 50px; text-align: right;">
+        
+        <a class="link next" href="/en/2024/2024-05-05-gradio-app/" style="font-size: 1.2rem;">>>></a>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="post-meta" style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; color: #878787;">
+    January 1, 2024 &nbsp;|&nbsp; Kategorie: 
+    
+    <a class="link" href='https://nickyreinert.de/categories/blog' style="text-decoration: none;">blog</a>
+    
+  </div>
+    
+  
+  
+  
+  <details style="margin-top: 0.5rem; margin-bottom: 2rem; font-size: 0.9rem; color: #878787; background: none; border: none;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc" style="margin-left: 1rem;">
+      <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#goal">Goal</a></li>
+        <li><a href="#source-code">Source Code</a></li>
+      </ul>
+    </li>
+    <li><a href="#lets-get-some-data">Let’s get some data</a>
+      <ul>
+        <li><a href="#visualize-visualize-visualize">Visualize, Visualize, Visualize</a></li>
+      </ul>
+    </li>
+    <li><a href="#preparation">Preparation</a>
+      <ul>
+        <li><a href="#data-normalisation">Data Normalisation</a></li>
+        <li><a href="#sliding-window-method">Sliding Window Method</a></li>
+        <li><a href="#splitting-and-batching">Splitting and Batching</a></li>
+        <li><a href="#validation">Validation</a></li>
+      </ul>
+    </li>
+    <li><a href="#init-models-loss-function-and-optimizer">Init Models, Loss Function and Optimizer</a>
+      <ul>
+        <li><a href="#the-training-loop">The training loop</a></li>
+        <li><a href="#the-model-class">The model class</a></li>
+        <li><a href="#the-loss-function">The loss function</a></li>
+        <li><a href="#the-optimizer">The optimizer</a></li>
+        <li><a href="#run-the-loop">Run the loop</a></li>
+        <li><a href="#wait-stop-whats-that-the-learning-rate-scheduler">Wait… stop… what’s that? The learning rate scheduler?</a></li>
+      </ul>
+    </li>
+    <li><a href="#run-it">Run it!</a></li>
+    <li><a href="#next-steps-and-final-thoughts">Next steps and final thoughts</a></li>
+  </ul>
+</nav>
+    </div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
+    <p>Flying and predicting stock prices: two of humanity’s greatest dreams. While growing wings seems impossible, let’s focus on predicting the prices of stocks — or in this case, a ‘cryptocurrenciy’! It sounds catchier, doesn’t it?</p>
+<h3 id="goal">Goal</h3>
+<p>You’ll learn how to leverage PyTorch, a machine learning library/framework, to construct a learning algorithm. Our focus will be on the cryptocurrency ADA, which operates on the Cardano blockchain.* Unlike most tutorials that solely consider price as the input feature for the model, we’ll incorporate volume and trade amounts. Implementing the sliding window method, we’ll introduce an ‘outlook gap,’ a less commonly utilized technique. Exploring various model architectures and optimizers, I’ll provide a rough explanation of their workings. Additionally, we’ll aim to enhance the model’s performance. Lastly, I’ll touch upon why a simple script and numerical data might not suffice for accurate price prediction: Stock, cryptos or butter. Whatever.</p>
+<p><em>*)I’m not aiming to specifically promote cryptocurrencies. It’s simply convenient to access their historical prices. The primary focus is on PyTorch and machine learning.</em></p>
+<h3 id="source-code">Source Code</h3>
+<p>Jumping straight in without perusing my carefully crafted text? Bold move. But sure, go ahead, dive in. No hard feelings, probably. Check out this Colab:</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://drive.google.com/file/d/1lUef_DQBOV5Ngs5rLn3pGPWRpu9ho2Qd/view?usp=sharing&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://drive.google.com/file/d/1lUef_DQBOV5Ngs5rLn3pGPWRpu9ho2Qd/view?usp=sharing</a>
+
+
+</p>
+<h2 id="lets-get-some-data">Let’s get some data</h2>
+<p>We’ll utilize the stock prices of <strong>ADA</strong>, a cryptocurrency operating on the <strong>Cardano</strong> blockchain. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://support.kraken.com/hc/en-us/articles/360047543791-Downloadable-historical-market-data-time-and-sales-?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><strong>Kraken</strong> provides</a>
+
+
+ an extensive archive of historical data encompassing dozens of currencies across various time frames. I’ve opted for the <strong>60-minute time resolution</strong>. Loading this data into a <strong>Pandas</strong> <strong>dataframe</strong> isn’t a significant challenge:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">df = pd.read_csv(&#34;data/ADAEUR_60.csv&#34;)
+</span></span><span class="line"><span class="ln">2</span><span class="cl">df[&#39;date&#39;] = pd.to_datetime(df[&#39;timestamp&#39;], unit=&#39;s&#39;, errors=&#39;coerce&#39;)
+</span></span><span class="line"><span class="ln">3</span><span class="cl">df[&#39;date&#39;] = pd.to_datetime(df[&#39;date&#39;])
+</span></span><span class="line"><span class="ln">4</span><span class="cl">df.set_index(&#39;date&#39;, inplace=True)
+</span></span><span class="line"><span class="ln">5</span><span class="cl">df
+</span></span></code></pre></div><img src="/en/2024/2024-01-01-predict-crypto/image.png" alt="alt text"><h3 id="visualize-visualize-visualize">Visualize, Visualize, Visualize</h3>
+<p>One of the most crucial teachings from</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/u/dbc019e228f5?source=post_page---user_mention--21873964be4b---------------------------------------&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Daniel Bourke</a>
+
+
+</p>
+<p>— a fantastic <strong>PyTorch</strong> and machine learning tutor, and likely much more. As a fellow enthusiast of visualizations, let’s kick things off by plotting the <strong>closing price</strong> and <strong>volume</strong> onto a single chart to gain insights into our data.”</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl"># Downsample the data to not crash the plotting mechanism, we don&#39;t need to plot everything in the dataset
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">downsampled_df = df.resample(&#39;1D&#39;).mean()
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"># close price to the left y axis
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">plt.plot(downsampled_df.index, downsampled_df[&#39;close&#39;], label=&#39;Close&#39;, color=&#39;blue&#39;)
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">plt.ylabel(&#39;Close&#39;, color=&#39;blue&#39;)
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">plt.tick_params(axis=&#39;y&#39;, labelcolor=&#39;blue&#39;)
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"># duplicate to get a second y axis on the right and plot the volune
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">ax2 = plt.twinx()
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">ax2.plot(downsampled_df.index, downsampled_df[&#39;volume&#39;], label=&#39;Volume&#39;, color=&#39;red&#39;)
+</span></span><span class="line"><span class="ln">10</span><span class="cl">ax2.set_ylabel(&#39;Volume&#39;, color=&#39;red&#39;)
+</span></span><span class="line"><span class="ln">11</span><span class="cl">ax2.tick_params(axis=&#39;y&#39;, labelcolor=&#39;red&#39;)
+</span></span><span class="line"><span class="ln">12</span><span class="cl"># Title and legend
+</span></span><span class="line"><span class="ln">13</span><span class="cl">plt.title(&#39;Close Price vs. Volume&#39;)
+</span></span><span class="line"><span class="ln">14</span><span class="cl">plt.show()py
+</span></span></code></pre></div><img src="/en/2024/2024-01-01-predict-crypto/image-1.png" alt="alt text"><p>I might not be a chart analyst, but here’s my take: Even if I had bought 1 million <strong>ADA</strong> in <strong>2020</strong> and sold them in <strong>2021</strong>, I’d likely still be here, writing this article. Writing brings me joy.</p>
+<h2 id="preparation">Preparation</h2>
+<p>Let’s delve into the realm of writing machine learning code. I’ll begin by setting some <strong>hyperparameters</strong>. You might not grasp most of them yet, but we’ll cover them in detail later. For now, it’s beneficial to acknowledge their presence.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">hidden_units = 64
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">num_layers = 4
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">learning_rate = 0.001
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">learning_rate_step_size=5
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">learning_rate_gamma=0.9
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">num_epochs = 100
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">batch_size = 32
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">window_size = 14
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">prediction_steps = 7
+</span></span><span class="line"><span class="ln">10</span><span class="cl">dropout_rate = 0.2
+</span></span><span class="line"><span class="ln">11</span><span class="cl"># stats and metrics
+</span></span><span class="line"><span class="ln">12</span><span class="cl">epoch_count = []
+</span></span><span class="line"><span class="ln">13</span><span class="cl">train_loss_values = []
+</span></span><span class="line"><span class="ln">14</span><span class="cl">test_loss_values = []
+</span></span><span class="line"><span class="ln">15</span><span class="cl">train_rmse_values = []
+</span></span><span class="line"><span class="ln">16</span><span class="cl">test_rmse_values = []
+</span></span><span class="line"><span class="ln">17</span><span class="cl">duration = 0
+</span></span><span class="line"><span class="ln">18</span><span class="cl">features = [&#39;close&#39;, &#39;volume&#39;, &#39;trades&#39;]
+</span></span><span class="line"><span class="ln">19</span><span class="cl">target = &#39;close&#39;
+</span></span></code></pre></div><ul>
+<li><strong>Hidden Units</strong>: The quantity of internal memory cells within our model — visualize them as small algorithms aiding the learning process.</li>
+<li><strong>Num_layers</strong>: Denotes the number of layers in the model, where each layer possesses its own memory cells.</li>
+<li><strong>Learning Rate</strong>: Represents the magnitude by which the model adjusts its weights and biases (parameters) after each step.</li>
+<li><strong>Learning Rate Step Size</strong>: Determines the frequency at which the learning rate should be incremented or decremented.</li>
+<li><strong>Learning Rate Gamma</strong>: Serves as a multiplier to modulate the learning rate.</li>
+<li><strong>Num_epochs</strong>: Signifies the number of iterations our primary loop will undergo during the training process.</li>
+<li><strong>Batch Size</strong>: Specifies the quantity of data processed at a given instance.</li>
+<li><strong>Window Size</strong>: Defines the number of past data points considered for our prediction.</li>
+<li><strong>Prediction Steps</strong>: Indicates the number of data points to skip before reaching the data point we aim to predict.</li>
+<li><strong>Dropout Rate</strong>: Determines the proportion of nodes in the model set to zero.</li>
+</ul>
+<p>Lastly, we’ll designate the columns intended for our model input: <strong>close</strong>, <strong>volume</strong>, <strong>trades</strong>, and naturally, the column containing the price we aim to predict: <strong>close</strong>.</p>
+<h3 id="data-normalisation">Data Normalisation</h3>
+<p>Another essential step involves splitting the data into <strong>training and test</strong> <strong>datasets</strong>. Initially, we normalize the data, a crucial process that not only <strong>accelerates computations</strong> but also <strong>enhances</strong> the overall <strong>quality</strong> of the model.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"># right now start with a small sample, as soon as we have enough computing power, we can skip this step
+</span></span><span class="line"><span class="ln">2</span><span class="cl">df_sampled = df[features].head(1000).copy()
+</span></span><span class="line"><span class="ln">3</span><span class="cl">#scaler = MinMaxScaler() # MinMax would work, too, but in fact a stock price has not really &#34;min/max values&#34;, except the 0 ;)
+</span></span><span class="line"><span class="ln">4</span><span class="cl">scaler = StandardScaler()
+</span></span><span class="line"><span class="ln">5</span><span class="cl"># Extract the selected features and transform them
+</span></span><span class="line"><span class="ln">6</span><span class="cl">selected_features = df_sampled[features].values.reshape(-1, len(features))
+</span></span><span class="line"><span class="ln">7</span><span class="cl">scaled_features = scaler.fit_transform(selected_features)
+</span></span><span class="line"><span class="ln">8</span><span class="cl"># Replace the original features with the scaled features in the DataFrame
+</span></span><span class="line"><span class="ln">9</span><span class="cl">df_sampled[features] = scaled_features
+</span></span></code></pre></div><h3 id="sliding-window-method">Sliding Window Method</h3>
+<p>Considering only the current price to predict the subsequent data point might introduce <strong>bias</strong> and limit the model’s <strong>learning ability</strong> due to the lack of sufficient context. Relying solely on the preceding data point could lead the model to overly adapt to recent changes, potentially hindering its predictive capabilities for future values.</p>
+<p>To mitigate this, we implement the <strong>sliding window</strong> <strong>method</strong>, gathering multiple data points together. Additionally, we introduce a <strong>prediction gap</strong>. Rather than predicting the next hour’s price, which requires swift responses and might cause <strong>overfitting</strong>, we shift focus to predicting the price in <strong>ten hours</strong>. This longer-term prediction enables informed decisions regarding selling or buying.</p>
+<p>Consequently, we generate two <strong>NumPy</strong> arrays: one containing the <strong>features</strong> (<code>X</code>) and the other (<code>y</code>) holding all the <strong>labels</strong>/<strong>targets</strong>, representing the prices we aim to predict.</p>
+<blockquote>
+<p>The mix of upper and lower case might be confusing. Typically, variables representing <strong>scalars</strong> and <strong>vectors</strong> use lowercase names, while <strong>matrices</strong> and <strong>tensors</strong> are denoted by uppercase names.</p></blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">def create_sequences(data, window_size, prediction_steps, features, label):
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    X = []
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    y = []
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    for i in range(len(data) - window_size - prediction_steps + 1):
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        sequence = data.iloc[i:i + window_size][features]
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        target = data.iloc[i + window_size + prediction_steps - 1][label]
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        X.append(sequence)
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        y.append(target)
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    return np.array(X), np.array(y)
+</span></span><span class="line"><span class="ln">10</span><span class="cl">X, y = create_sequences(df_sampled, window_size, prediction_steps, features, target)
+</span></span></code></pre></div><h3 id="splitting-and-batching">Splitting and Batching</h3>
+<p>Now, we’ll divide the data into a <strong>training</strong> and a <strong>test dataset</strong>, which is a common step in machine learning. Next, we’ll address some technical requirements by organizing the data into a helper object. This object will then supply batches of data points for the training process.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1"># SPLITTING</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="n">False</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="c1"># BATCHING</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="n">X_train_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="n">y_train_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="n">X_test_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="n">y_test_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">X_train_tensor</span><span class="p">,</span> <span class="n">y_train_tensor</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="n">test_dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">X_test_tensor</span><span class="p">,</span> <span class="n">y_test_tensor</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="n">train_dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="n">False</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="n">test_dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="n">False</span><span class="p">)</span>
+</span></span></code></pre></div><h3 id="validation">Validation</h3>
+<p>To ensure that no data was lost during the process, we can easily reverse the procedure. I won’t be posting the code here; you can find it in the notebook. Additionally, I’ve included a small section that generates synthetic data to replicate this entire data wrangling process. We’ll revisit this later, so please remember to keep it in mind.</p>
+<img src="/en/2024/2024-01-01-predict-crypto/image-2.png" alt="alt text"><p>The initial 14 lines encompass our features derived from the ‘close,’ ‘volume,’ and ‘trade’ columns. Remember how we set the <strong>sliding window size</strong> to 14? Notably, <strong>7 steps later at position 21</strong>, according to <strong>prediction step</strong>s, we have a closing price marked as 21— this serves as our target!</p>
+<p>Furthermore, I’ve implemented several functions to revert the normalization, splitting, and batching processes. These aid us in verifying that the data preparation was executed accurately. The DataFrame presented here showcases the input we supplied to the ‘DataLoader’.</p>
+<img src="/en/2024/2024-01-01-predict-crypto/image-3.png" alt="alt text"><p>The first three columns represent the features, and the fourth column, labeled as ‘close,’ acts as the target closing price or ‘label’ that our model endeavors to predict. Although it reads as 2.999-something rather than precisely three due to rounding errors, it seems we’re moving in the right direction.</p>
+<h2 id="init-models-loss-function-and-optimizer">Init Models, Loss Function and Optimizer</h2>
+<h3 id="the-training-loop">The training loop</h3>
+<p>To train a model, you’ll need three main components: a <strong>model</strong>, a <strong>loss function</strong>, and an <strong>optimizer:</strong></p>
+<ul>
+<li>The <strong>model</strong> does the prediction works, in the very first loop (aka <strong>epoch</strong>), usually it works with totally random parameters. Remember the X from above? It takes the X (also called <strong>input</strong> or <strong>features</strong>) and calculates the <strong>y</strong>, also called the <strong>output</strong>, <strong>targets</strong> or <strong>labels</strong>.</li>
+<li>The <strong>loss function</strong> calculates the difference between the predicted output and the acutal output, which was also part of the training data set.</li>
+<li>The <strong>optimizer</strong> takes the loss and decides, how to adapt the models parameters.</li>
+<li>And then everything starts over until we reach a loop limit (<strong>num_epochs</strong>)</li>
+</ul>
+<img src="/en/2024/2024-01-01-predict-crypto/image-4.png" alt="alt text"><h3 id="the-model-class">The model class</h3>
+<p>We’ll begin experimenting with the <strong>LSTM</strong> (<strong>Long Short-Term Memory</strong>) approach, which is a type of <strong>recurrent neural network</strong> (<strong>RNN</strong>). Unlike a typical <strong>neural network</strong> that processes data through layers to generate an output, a recurrent neural network can incorporate past information. This ability is facilitated by its memory cells. Here’s the model class:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">class StockPriceLSTM(nn.Module):
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    def __init__(self, input_size, hidden_size, num_layers, output_size=1):
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">        super(StockPriceLSTM, self).__init__()
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        self.hidden_size = hidden_size  # Size of the hidden state in the LSTM
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        self.num_layers = num_layers    # Number of LSTM layers
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)  # LSTM layer
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        self.fc = nn.Linear(hidden_size, output_size)  # Fully connected layer for output prediction
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    def forward(self, input_data):
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">        # Initialize hidden and cell states for LSTM
+</span></span><span class="line"><span class="ln">10</span><span class="cl">        initial_hidden = torch.zeros(self.num_layers, input_data.size(0), self.hidden_size).to(input_data.device)
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        initial_cell = torch.zeros(self.num_layers, input_data.size(0), self.hidden_size).to(input_data.device)
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        
+</span></span><span class="line"><span class="ln">13</span><span class="cl">        # Forward propagate through LSTM
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        lstm_output, _ = self.lstm(input_data, (initial_hidden, initial_cell))  # Output shape: (batch_size, seq_length, hidden_size)
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        
+</span></span><span class="line"><span class="ln">16</span><span class="cl">        # Pass the output of the last time step through the fully connected layer
+</span></span><span class="line"><span class="ln">17</span><span class="cl">        last_time_step_output = lstm_output[:, -1, :]  # Extract the output from the last time step
+</span></span><span class="line"><span class="ln">18</span><span class="cl">        output = self.fc(last_time_step_output)  # Output shape: (batch_size, output_size)
+</span></span><span class="line"><span class="ln">19</span><span class="cl">        return output
+</span></span></code></pre></div><p>When inheriting from <strong>nn.Module</strong>, two methods must be defined: <strong>init</strong> and forward. The <strong>init</strong> method sets up the model’s structure. In this instance, it configures the LSTM portion and a linear layer for the output. The <strong>forward</strong> method handles the computations. It receives the input data (our features), processes it through our model’s modules iteratively, and returns the output.</p>
+<h3 id="the-loss-function">The loss function</h3>
+<p>To measure the loss we calculate the <strong>mean square error (MSE)</strong>. Sounds complicated, but basically its just the difference between model output and actuall values, squared and divided by the number of data points:</p>
+<img src="/en/2024/2024-01-01-predict-crypto/image-5.png" alt="alt text"><p>There are several options available for calculating the loss. Selecting the appropriate loss function is a crucial aspect of fine-tuning your modeling process and is dependent on the goal and the nature of your data. For instance, in <strong>image classification</strong>, the <strong>Cross Entropy Loss is commonly</strong> utilized.</p>
+<h3 id="the-optimizer">The optimizer</h3>
+<p>The optimizer determines how to <strong>adjust the parameters</strong> of the model. There are various optimizers to choose from, depending on the specific use case. In simplified terms, here’s what an optimizer does: It <strong>modifies the parameters</strong> of the model based on the <strong>learning rate</strong> and the <strong>loss</strong>.</p>
+<h3 id="run-the-loop">Run the loop</h3>
+<p>And this is how we initialize all of them before we start the loop:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">model_1 = PricePredictionLSTM(input_size=len(features), hidden_size=hidden_units, num_layers=num_layers)
+</span></span><span class="line"><span class="ln">2</span><span class="cl">loss_fn = nn.MSELoss()
+</span></span><span class="line"><span class="ln">3</span><span class="cl">optimizer = torch.optim.AdamW(model_1.parameters(), lr=learning_rate)
+</span></span></code></pre></div><p>And when the model is the brain, this is the hear of our work, “The Loop”. The steps are always the same, according to the “
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.youtube.com/watch?v=Nutpusq_AFw&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">unofficial optimization loop song</a>
+
+
+”:</p>
+<ol>
+<li><strong>Activate Training Mode:</strong> Set the model to training mode if your model includes components like dropout or batch normalization that behave differently during training and inference.</li>
+<li><strong>Calculate Predictions:</strong> Pass input data through the model to obtain predictions.</li>
+<li><strong>Calculate Loss:</strong> Compute the loss between the predictions and the actual targets.</li>
+<li><strong>Reset Gradients to Zero:</strong> Clear the gradients from the previous iteration using <code>optimizer.zero_grad()</code>.</li>
+<li><strong>Backward Propagation (Calculate Gradients):</strong> Perform backpropagation by calling <code>loss.backward()</code> to compute gradients of the loss with respect to the model parameters.</li>
+<li><strong>Update Parameters:</strong> Use an optimizer (<code>optimizer.step()</code>) to update the model&rsquo;s parameters based on the computed gradients.</li>
+<li>Start over…</li>
+</ol>
+<p>The following code also contains a couple of side features to <strong>keep track</strong> of the <strong>loss values</strong>, <strong>time measuring</strong> and last but not least: <strong>validating</strong> the model against our test data set!</p>
+<p>The crucial aspect here is the use of <code>torch.inference_mode()</code>. When your model isn&rsquo;t in training mode, it should operate within this context to avoid interference with the gradients. Occasionally, you might encounter <code>torch.no_grad()</code>, which essentially serves the same purpose but is an older implementation.</p>
+<p>We additionally compute the <strong>accuracy</strong> metric. Similar to the loss, it involves calculating the <strong>Mean Squared Error (MSE</strong>) and then taking the square root. However, it’s not entirely necessary as it may not offer additional insights beyond the loss values.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="n">start_epoch</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">len</span><span class="p">(</span><span class="n">epoch_count</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">epoch_count</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># helpful if you start over this particular cell</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">start_epoch</span><span class="p">,</span> <span class="n">start_epoch</span> <span class="o">+</span> <span class="n">num_epochs</span><span class="p">)):</span> <span class="c1"># tqdm is our progress bar wrapper</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="n">model_1</span><span class="o">.</span><span class="n">train</span><span class="p">()</span> <span class="c1"># activate training mode</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="c1"># handle loss monitoring</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="n">total_train_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="n">all_train_targets</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="n">all_train_outputs</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="c1"># process batches in the training dataloader</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="k">for</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span> <span class="ow">in</span> <span class="n">enumerate</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">):</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        
+</span></span><span class="line"><span class="ln">13</span><span class="cl">        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span> <span class="c1"># reset gradients</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        <span class="n">outputs</span> <span class="o">=</span> <span class="n">model_1</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span> <span class="c1"># calculate predictions</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(),</span> <span class="n">targets</span><span class="p">)</span> <span class="c1"># calculat the loss</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span> <span class="c1"># backward propagation</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span> <span class="c1"># update parameters</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">        
+</span></span><span class="line"><span class="ln">19</span><span class="cl">        <span class="n">total_train_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">        <span class="n">all_train_targets</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">targets</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">        <span class="n">all_train_outputs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">    <span class="c1"># scheduler.step()</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">    <span class="n">model_1</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span> <span class="c1"># activate eval mode</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">    <span class="c1"># handle loss monitoring</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">    <span class="n">total_test_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">    <span class="n">all_test_targets</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">    <span class="n">all_test_outputs</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">    <span class="c1"># process batches in the testing dataloader</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span> <span class="ow">in</span> <span class="n">enumerate</span><span class="p">(</span><span class="n">test_dataloader</span><span class="p">):</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl">        <span class="n">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">inference_mode</span><span class="p">():</span> <span class="c1"># activate inference mode/no grad</span>
+</span></span><span class="line"><span class="ln">31</span><span class="cl">            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model_1</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span> <span class="c1"># calculate predictions</span>
+</span></span><span class="line"><span class="ln">32</span><span class="cl">            <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(),</span> <span class="n">targets</span><span class="p">)</span> <span class="c1"># calculate loss</span>
+</span></span><span class="line"><span class="ln">33</span><span class="cl">            <span class="c1"># monitor loss</span>
+</span></span><span class="line"><span class="ln">34</span><span class="cl">            <span class="n">total_test_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">35</span><span class="cl">            <span class="n">all_test_targets</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">targets</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+</span></span><span class="line"><span class="ln">36</span><span class="cl">            <span class="n">all_test_outputs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+</span></span><span class="line"><span class="ln">37</span><span class="cl">    <span class="c1"># calculate average epoch losses</span>
+</span></span><span class="line"><span class="ln">38</span><span class="cl">    <span class="n">average_epoch_train_loss</span> <span class="o">=</span> <span class="n">total_train_loss</span> <span class="o">/</span> <span class="n">len</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">39</span><span class="cl">    <span class="n">average_epoch_test_loss</span> <span class="o">=</span> <span class="n">total_test_loss</span> <span class="o">/</span> <span class="n">len</span><span class="p">(</span><span class="n">test_dataloader</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">40</span><span class="cl">    
+</span></span><span class="line"><span class="ln">41</span><span class="cl">    <span class="c1"># caculate accuracy</span>
+</span></span><span class="line"><span class="ln">42</span><span class="cl">    <span class="n">train_rmse</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">all_train_targets</span><span class="p">,</span> <span class="n">all_train_outputs</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">43</span><span class="cl">    <span class="n">test_rmse</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">all_test_targets</span><span class="p">,</span> <span class="n">all_test_outputs</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">44</span><span class="cl">    <span class="c1"># VISUALIZE</span>
+</span></span><span class="line"><span class="ln">45</span><span class="cl">    <span class="n">epoch_count</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">46</span><span class="cl">    <span class="n">train_loss_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">average_epoch_train_loss</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">47</span><span class="cl">    <span class="n">test_loss_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">average_epoch_test_loss</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">48</span><span class="cl">    <span class="n">train_rmse_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_rmse</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">49</span><span class="cl">    <span class="n">test_rmse_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_rmse</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">50</span><span class="cl">    <span class="c1"># LOG</span>
+</span></span><span class="line"><span class="ln">51</span><span class="cl">    <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="ne">int</span><span class="p">(</span><span class="n">num_epochs</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">epoch</span> <span class="o">==</span> <span class="n">num_epochs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln">52</span><span class="cl">        <span class="n">current_lr</span> <span class="o">=</span> <span class="n">scheduler</span><span class="o">.</span><span class="n">get_last_lr</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="ln">53</span><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;Epoch [{epoch + 1}/{start_epoch + num_epochs}], &#34;</span>
+</span></span><span class="line"><span class="ln">54</span><span class="cl">        <span class="n">f</span><span class="s2">&#34;Train Loss: {average_epoch_train_loss:.4f} | &#34;</span>
+</span></span><span class="line"><span class="ln">55</span><span class="cl">        <span class="n">f</span><span class="s2">&#34;Test Loss: {average_epoch_test_loss:.4f} | &#34;</span>
+</span></span><span class="line"><span class="ln">56</span><span class="cl">        <span class="n">f</span><span class="s2">&#34;Train RMSE: {train_rmse:.4f} | &#34;</span>
+</span></span><span class="line"><span class="ln">57</span><span class="cl">        <span class="n">f</span><span class="s2">&#34;Test RMSE: {test_rmse:.4f} | &#34;</span>
+</span></span><span class="line"><span class="ln">58</span><span class="cl">        <span class="n">f</span><span class="s2">&#34;Current LR: {current_lr:.8f} | &#34;</span>
+</span></span><span class="line"><span class="ln">59</span><span class="cl">        <span class="n">f</span><span class="s2">&#34;Duration: {time.time() - start:.0f} seconds&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">60</span><span class="cl"><span class="n">duration</span> <span class="o">+=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+</span></span></code></pre></div><h3 id="wait-stop-whats-that-the-learning-rate-scheduler">Wait… stop… what’s that? The learning rate scheduler?</h3>
+<p>If you’ve thoroughly read through the loop, you might have noticed a commented-out command: <code>scheduler.step()</code>. What does it do?</p>
+<p>The <strong>learning rate</strong> typically remains constant and dictates how the algorithm adjusts the model’s parameters in each step. A scheduler assists in dynamically altering this step size. While not always necessary, experimenting with a scheduler can be beneficial, potentially <strong>improving results</strong> within a <strong>shorter duration</strong>.</p>
+<p>This is how you initialize it:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">scheduler = lr_scheduler.StepLR(optimizer, step_size=learning_rate_step_size, gamma=learning_rate_gamma)  # Adjust step_size and gamma as needed
+</span></span></code></pre></div><h2 id="run-it">Run it!</h2>
+<p>Now we are ready to run everything and see the training/optimization process in action. To get a first impression how good everything works, I suggest to start with the dummy dataset that we defined above. I will not post the plotting code here. This is how your plot should look like:</p>
+<img src="/en/2024/2024-01-01-predict-crypto/image-6.png" alt="alt text"><p>The result is not too bad and this within <strong>27 seconds</strong>. But considering the source data, not a surprise.</p>
+<p>Lets run our real world data through the model. This will not take much much longer and the result after ter 100 epochs looks, well…a little off:</p>
+<img src="/en/2024/2024-01-01-predict-crypto/image-7.png" alt="alt text"><p>Let’s be realistic: You can’t expect substantial results after just 4minutes of training on a small dataset like this in the first attempt.</p>
+<p>This process involves extensive hyperparameter tuning and selecting network architecture. Now, let’s explore another approach: GRU, which stands for Gated Recurrent Unit, is another type of recurrent neural network. Contrary to LSTM, GRU features a simplified architecture. Specifically, GRU employs two gates to manage data flow (reset and update), while LSTM utilizes three gates (input, forget, and output). LSTM is ideal for handling complex dependencies, while GRU offers reduced computational complexity. This is our model class:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">class PricePredictionGRU(nn.Module):
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    def __init__(self, input_size, hidden_size, num_layers, output_size=1):
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">        super(PricePredictionGRU, self).__init__()
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        self.hidden_size = hidden_size
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        self.num_layers = num_layers
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        self.gru = nn.GRU(input_size, hidden_size, num_layers, batch_first=True)
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        self.fc = nn.Linear(hidden_size, output_size)
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    def forward(self, x):
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">        # Initialize hidden state
+</span></span><span class="line"><span class="ln">10</span><span class="cl">        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(x.device)
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        # Forward propagate GRU
+</span></span><span class="line"><span class="ln">13</span><span class="cl">        out, _ = self.gru(x, h0)  # out: tensor of shape (batch_size, seq_length, hidden_size)
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        # Pass the output of the last time step through the fully connected layer
+</span></span><span class="line"><span class="ln">16</span><span class="cl">        out = self.fc(out[:, -1, :])  # Output shape: (batch_size, output_size)
+</span></span><span class="line"><span class="ln">17</span><span class="cl">        return out
+</span></span></code></pre></div><p>As you can see, it’s the exact same structure as before. That’s because PyTorch provides “templates” for the models and we just need to feed them correctly.</p>
+<p>This is the result after 200 epochs:</p>
+<img src="/en/2024/2024-01-01-predict-crypto/image-8.png" alt="alt text"><p>Despite the fact that it ran almost double the expected time, contradicting the promised reduction in computational requirements, the results appear noticeably improved. However, they still aren’t sufficient for accurate stock price prediction.</p>
+<h2 id="next-steps-and-final-thoughts">Next steps and final thoughts</h2>
+<p>Firstly, let me provide an example showcasing the common flaw in many ‘price prediction’ discussions: they often focus on predicting the immediate next data point without considering the data points ahead. This approach simplifies the model’s task significantly. For instance, if presented with today’s closing price, predicting tomorrow’s close becomes relatively easy due to the typical range within which prices fluctuate.</p>
+<p>The following chart shows the prediction when setting the prediction gap to 1, meaning predicting the very next data point:</p>
+<img src="/en/2024/2024-01-01-predict-crypto/image-9.png" alt="alt text"><p>That is the result after 300 epochs for a sample size of 1.000 after 5 minutes of training. Looks tempting, right? As soon as you try to look further into the future, it gets messy. I increased the outlook windows to <code>prediction_steps = 7</code> :</p>
+<img src="/en/2024/2024-01-01-predict-crypto/image-10.png" alt="alt text"><p>Here I increased the sample size for the validation data to <strong>10.000</strong>:</p>
+<img src="/en/2024/2024-01-01-predict-crypto/image-11.png" alt="alt text"><p>It’s not terrible; at least the curve somewhat aligns with the general trend. Ultimately, the quality of your model depends on the computational power allocated and the chosen hyperparameters.</p>
+<p>You’re all set with the basics and the code. Feel free to give it a try on your own. And if you happen to strike it rich, just a reminder: I’ve got a soft spot for a well-made <strong>flat white</strong>!</p>
+
+    
+  </article>
+
+
+  
+  
+
+  
+  <div class="paginator">
+    
+    <a></a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/en/2024/2024-05-05-gradio-app/">next →</a>
+    
+  </div>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="privacy.html">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>

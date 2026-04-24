@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated formulas — but it will hopefully show you, how thoughtful thinking and tinkering will help you with optimising your code.
+
+Nota bene: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  Think Python is faster? Try it!
+
+
+
+What’s a prime number? All of you know that: It’s a number with only two divider natural divisors: 1 and the number itself.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
+
+  
+  
+  <meta name="keywords" content=" JavaScript  Prime Numbers  Algorithm  Optimization  Performance  Tutorial ">
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/css/katex.min.css">
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '\\[', right: '\\]', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false }
+      ],
+      ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'option'],
+      throwOnError: false
+    });
+  });
+</script>
+
+
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="How to predict prime numbers in JavaScript">
+  <meta property="og:description" content="There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated formulas — but it will hopefully show you, how thoughtful thinking and tinkering will help you with optimising your code.
+Nota bene: Think Python is faster? Try it! What’s a prime number? All of you know that: It’s a number with only two divider natural divisors: 1 and the number itself.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2023">
+    <meta property="article:published_time" content="2023-12-12T12:34:56+01:00">
+    <meta property="article:modified_time" content="2026-04-15T08:29:23+02:00">
+    <meta property="article:tag" content="JavaScript">
+    <meta property="article:tag" content="Algorithm">
+    <meta property="article:tag" content="Prime Numbers">
+    <meta property="article:tag" content="Tutorial">
+    <meta property="article:tag" content="Performance">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/">
+
+  
+  
+  
+  <meta itemprop="name" content="How to predict prime numbers in JavaScript">
+  <meta itemprop="description" content="There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated formulas — but it will hopefully show you, how thoughtful thinking and tinkering will help you with optimising your code.
+Nota bene: Think Python is faster? Try it! What’s a prime number? All of you know that: It’s a number with only two divider natural divisors: 1 and the number itself.">
+  <meta itemprop="datePublished" content="2023-12-12T12:34:56+01:00">
+  <meta itemprop="dateModified" content="2026-04-15T08:29:23+02:00">
+  <meta itemprop="wordCount" content="1212">
+  <meta itemprop="keywords" content="JavaScript,Prime Numbers,Algorithm,Optimization,Performance,Tutorial">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>How to predict prime numbers in JavaScript - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="How to predict prime numbers in JavaScript">
+  <meta name="twitter:description" content="There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated formulas — but it will hopefully show you, how thoughtful thinking and tinkering will help you with optimising your code.
+Nota bene: Think Python is faster? Try it! What’s a prime number? All of you know that: It’s a number with only two divider natural divisors: 1 and the number itself.">
+
+
+  
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "How to predict prime numbers in JavaScript",
+    "description": "There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated formulas — but it will …",
+    "datePublished": "2023-12-12T12:34:56\u002b01:00",
+    "dateModified": "2026-04-15T08:29:23\u002b02:00",
+    "author": {
+      "@type": "Person",
+      "name": "",
+      "url": "https:\/\/nickyreinert.de\/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Nicky Reinert",
+      "url": "https:\/\/nickyreinert.de\/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https:\/\/nickyreinert.de\/images\/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/nickyreinert.de\/en\/2023\/2023-12-12-prime-numbers-javascript\/"
+    },
+    
+    "image": {
+      "@type": "ImageObject",
+      "url": "https:\/\/nickyreinert.de\/prime_numbers_comparison.png",
+      "width": 1200,
+      "height": 630
+    },
+    
+    "url": "https:\/\/nickyreinert.de\/en\/2023\/2023-12-12-prime-numbers-javascript\/",
+    "wordCount":  1212 ,
+    
+    "timeRequired": "PT8M",
+    
+    
+    "keywords": ["JavaScript", "Algorithm", "Prime Numbers", "Tutorial", "Performance"],
+    
+    
+    "articleSection": ["blog"],
+    
+    
+    "abstract": "A tutorial on optimizing prime number algorithms in JavaScript, comparing performance with Python, Rust, and C\u002b\u002b",
+    
+    
+    "genre": "tutorial",
+    
+    
+    "educationalLevel": "intermediate",
+    
+    "inLanguage": "en"
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "How to predict prime numbers in JavaScript",
+    "description": "There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated formulas — but it will …",
+    
+    "proficiencyLevel": "intermediate",
+    
+    
+    "dependencies": ["Understanding of JavaScript", "Familiarity with basic algorithms (loops, conditionals)"],
+    
+    
+    "about": [
+      
+      
+      {
+        "@type": "Thing",
+        "name": "JavaScript"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Prime Numbers"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Algorithms"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Performance Optimization"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Computational Thinking"
+      }
+      
+    ],
+    
+    "datePublished": "2023-12-12T12:34:56\u002b01:00",
+    "dateModified": "2026-04-15T08:29:23\u002b02:00",
+    "author": {
+      "@type": "Person",
+      "name": ""
+    }
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Nicky Reinert",
+    "url": "https:\/\/nickyreinert.de\/",
+    "description": "Blog \u0026 projects by Nicky Reinert (Institute for Digital Challenges): web development \u0026 software development, SEO \u0026 analytics, hosting \u0026 DevOps, WordPress \u0026 Hugo, tools \u0026 projects, data protection \u0026 digital culture — plus content on AI and autism \u0026 society.",
+    "inLanguage": "en",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https:\/\/nickyreinert.de\/search/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+]
+</script>
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+  
+
+<script defer src="/js/alpine.min.js"></script>
+
+
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institute for Digital Challenges</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://not-a-brand.myspreadshop.de/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/analysen/">analysen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+
+
+    
+<main id="main" class="post">
+  
+  
+  <div class="post-header">
+    <div class="navigation" style="align-items: center;">
+      <div style="flex-shrink: 0; width: 50px;">
+        
+        <a class="link prev" href="/en/2023/2023-11-11-prime-numbers-python/" style="font-size: 1.2rem;">&lt;&lt;&lt;</a>
+        
+      </div>
+      
+      <h1 style="flex: 1; text-align: center; min-width: 0; padding: 0 0.5rem;" itemprop="headline">How to predict prime numbers in JavaScript</h1>
+      
+      <div style="flex-shrink: 0; width: 50px; text-align: right;">
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="post-meta" style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; color: #878787;">
+    December 12, 2023 &nbsp;|&nbsp; Kategorie: 
+    
+    <a class="link" href='https://nickyreinert.de/categories/blog' style="text-decoration: none;">blog</a>
+    
+  </div>
+    
+  
+  
+  
+  <details style="margin-top: 0.5rem; margin-bottom: 2rem; font-size: 0.9rem; color: #878787; background: none; border: none;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc" style="margin-left: 1rem;">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#update--what-about-rust-and-c">Update — What about Rust and C++?</a></li>
+  </ul>
+</nav>
+    </div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
+    <p>There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated formulas — but it will hopefully show you, how thoughtful thinking and tinkering will help you with optimising your code.</p>
+<blockquote>
+<p>Nota bene: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/how-to-find-prime-numbers-fast-8d0f7e8bd80f?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Think Python is faster? Try it!</a>
+
+
+</p></blockquote>
+<p>What’s a prime number? All of you know that: It’s a number with only two divider natural divisors: 1 and the number itself.</p>
+<p>And when you ask someone for a prime number algorithm, you get two answers: A mathematican will 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://en.wikipedia.org/wiki/Formula_for_primes?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">throw out a complex formula,</a>
+
+
+ like <strong>Mill’s formula:</strong></p>
+<img src="/en/2023/2023-12-12-prime-numbers-javascript/image.png" alt="alt text"><p>Wait, what? Ok. The other answer is just a simple loop that checks if there is another number, lower than the number in question, where the operation <strong>modulo</strong> returns 0. The so called “trial division”. In other words: The number in question divided by the other number returns a third number and all numbers are natural, not factorized.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">function isPrime(number) {
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    for (let i = 2; i &lt; number; i++) {
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        if (number % i === 0) {
+</span></span><span class="line"><span class="ln">4</span><span class="cl">            return false;
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        }
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    return true;
+</span></span><span class="line"><span class="ln">8</span><span class="cl">}
+</span></span></code></pre></div><p>Let’s run this loop to find primes up to 50.000:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">let startTime = performance.now();
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">let count = 0;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">for (let number = 2; number &lt; 50000; number++) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    if (isPrime(number)) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        count++;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">}
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">let endTime = performance.now();
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">let executionTime = endTime - startTime;
+</span></span><span class="line"><span class="ln">10</span><span class="cl">console.log(`found ${count} primes`);
+</span></span><span class="line"><span class="ln">11</span><span class="cl">console.log(`Execution time: ${executionTime} milliseconds`);
+</span></span></code></pre></div><blockquote>
+<p>Did you know? You can run JavaScript inside Visual Studio Code. Just hit Ctrl+F5. Don’t know where to click. I’m a shortcut-nerd.</p></blockquote>
+<p>On my machine this will take 212 milliseconds and find 5.133 primes (your results may differ on a different machine):</p>
+<img src="/en/2023/2023-12-12-prime-numbers-javascript/image-1.png" alt="alt text"><p>Wait a minute! JavaScript is dozens of time faster than… Python?</p>
+<p>Jepp. Let’s see if we could add another level of disgrace:</p>
+<p>Let’s start with some obvious things: We don’t need to test all numbers in our “test division”. In fact we can skip every divisor lower than “number / 2”. Why is that? Because if the divisor is greater than “number / 2” the result must be lower than 2 and a faction.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">function isPrime2(number) {
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    let limit = Math.floor(number / 2);
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    for (let i = 2; i &lt;= limit; i++) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        if (number % i === 0) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            return false;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    return true;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">}
+</span></span><span class="line"><span class="ln">10</span><span class="cl">let startTime = performance.now();
+</span></span><span class="line"><span class="ln">11</span><span class="cl">let count = 0;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">for (let number = 2; number &lt; 50000; number++) {
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    if (isPrime2(number)) {
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        count++;
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">16</span><span class="cl">}
+</span></span><span class="line"><span class="ln">17</span><span class="cl">let endTime = performance.now();
+</span></span><span class="line"><span class="ln">18</span><span class="cl">let executionTime = endTime - startTime;
+</span></span><span class="line"><span class="ln">19</span><span class="cl">console.log(`found ${count} primes`);
+</span></span><span class="line"><span class="ln">20</span><span class="cl">console.log(`Execution time: ${executionTime} milliseconds`);
+</span></span></code></pre></div><p>Again, similar to the Python solution, this halves the calculation time to, but not to 100 milliseconds</p>
+<img src="/en/2023/2023-12-12-prime-numbers-javascript/image-2.png" alt="alt text"><p>But there’s even more in this limit declaration: We can reduce it to the square root <strong>(sqrt)</strong> of our target number. Because if one divisor is greater than <strong>sqrt(number)</strong> the other divisor must be lower than <strong>sqrt</strong>(divisor). Meaning: They have already been checked. Let’s do it:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">function isPrime3(number) {
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    let limit = Math.floor(Math.sqrt(number));
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    for (let i = 2; i &lt;= limit; i++) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        if (number % i === 0) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            return false;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    return true;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">}
+</span></span><span class="line"><span class="ln">10</span><span class="cl">let startTime = performance.now();
+</span></span><span class="line"><span class="ln">11</span><span class="cl">let count = 0;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">for (let number = 2; number &lt; 50000; number++) {
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    if (isPrime3(number)) {
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        count++;
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">16</span><span class="cl">}
+</span></span><span class="line"><span class="ln">17</span><span class="cl">let endTime = performance.now();
+</span></span><span class="line"><span class="ln">18</span><span class="cl">let executionTime = endTime - startTime;
+</span></span><span class="line"><span class="ln">19</span><span class="cl">console.log(`found ${count} primes`);
+</span></span><span class="line"><span class="ln">20</span><span class="cl">console.log(`Execution time: ${executionTime} milliseconds`);
+</span></span></code></pre></div><p>WHAT THE ACTUAL HECK-IDDI-HECK! 4 Milliseconds? Remember Python and 72 Milliseconds?</p>
+<img src="/en/2023/2023-12-12-prime-numbers-javascript/image-3.png" alt="alt text"><p>What’s next?</p>
+<p>Why do we check even numbers at all? It’s “natural law” that an even number cannot be a prime (except the magic number 2).</p>
+<p>We can safely skip them in our main loop. But not only there, we can also safely skip them in the “test division”. An even factor always leads to an even product in a multiplication. This leads to the assumption, that an even number always leads to a modulo unequal 0 when thrown against a prime!</p>
+<p>In JavaScript it is a little trickier to check for the last digit of a number (aka last char of a string).</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">function isPrime4(number) {
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    let limit = Math.floor(Math.sqrt(number));
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    for (let i = 2; i &lt;= limit; i++) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        if ([0, 2, 4, 5, 6, 8].includes(parseInt(i.toString().slice(-1)))) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            continue;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        if (number % i === 0) {
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">            return false;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">        }
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    return true;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">}
+</span></span></code></pre></div><p>Let’s add this logic to both loops:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">let startTime = performance.now();
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">let count = 0;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">for (let number = 2; number &lt; 50000; number++) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    if ([0, 2, 4, 5, 6, 8].includes(parseInt(number.toString().slice(-1)))) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        continue;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    if (isPrime4(number)) {
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        count++;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">10</span><span class="cl">}
+</span></span><span class="line"><span class="ln">11</span><span class="cl">let endTime = performance.now();
+</span></span><span class="line"><span class="ln">12</span><span class="cl">let executionTime = endTime - startTime;
+</span></span><span class="line"><span class="ln">13</span><span class="cl">console.log(`found ${count} primes`);
+</span></span><span class="line"><span class="ln">14</span><span class="cl">console.log(`Execution time: ${executionTime} milliseconds`);
+</span></span></code></pre></div><p>Remember Python? This “silly” approach took a lot time. Same in JavaScript, it increases running time to 47 Milliseconds:</p>
+<img src="/en/2023/2023-12-12-prime-numbers-javascript/image-4.png" alt="alt text"><p>Again — We should implement the last test a little smarter. Right now we are using some string operations and apparently they are slow as heck.</p>
+<p>Python allows us to change the step rate of the <strong>range()</strong> function. This way we could just skip even numbers in the loop itself. Way easier. Heads up: As we will start at 3 now, we increment the counter integer beforehand:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">function isPrime5(number) {
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    let limit = Math.floor(Math.sqrt(number));
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    for (let i = 3; i &lt;= limit; i += 2) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        if (number % i === 0) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            return false;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    return true;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">}
+</span></span><span class="line"><span class="ln">10</span><span class="cl">let startTime = performance.now();
+</span></span><span class="line"><span class="ln">11</span><span class="cl">let count = 1;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">for (let number = 3; number &lt; 50000; number += 2) {
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    if (isPrime5(number)) {
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        count++;
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">16</span><span class="cl">}
+</span></span><span class="line"><span class="ln">17</span><span class="cl">let endTime = performance.now();
+</span></span><span class="line"><span class="ln">18</span><span class="cl">let executionTime = endTime - startTime;
+</span></span><span class="line"><span class="ln">19</span><span class="cl">console.log(`found ${count} primes`);
+</span></span><span class="line"><span class="ln">20</span><span class="cl">console.log(`Execution time: ${executionTime} milliseconds`);
+</span></span></code></pre></div><img src="/en/2023/2023-12-12-prime-numbers-javascript/image-5.png" alt="alt text"><p>It’s not way faster than our initial approach, but it still beats Python by lengths.</p>
+<p>Now, as JavaScript is this fast, let’s increase the numbers a little and see how the improved algorithm performs against Python: How long does it take to find all primes up to… wait for it… it’s gonna be legendary… 100 Million!</p>
+<p>This is JavaScript performance:</p>
+<img src="/en/2023/2023-12-12-prime-numbers-javascript/image-6.png" alt="alt text"><p>And this is Python:</p>
+<img src="/en/2023/2023-12-12-prime-numbers-javascript/image-7.png" alt="alt text"><p>I stopped the script after 10 Minutes. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/how-to-find-prime-numbers-fast-8d0f7e8bd80f?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Check the other post</a>
+
+
+ to find out how to improve Python even more!</p>
+<blockquote>
+<p>According to 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://t5k.org/howmany.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://t5k.org/howmany.html</a>
+
+
+ we have 5.761.455 prime numbers lower than 100.000.000.</p></blockquote>
+<h2 id="update--what-about-rust-and-c">Update — What about Rust and C++?</h2>
+<p>The story does not end here. I tried the same algorithm with Rust. Implementing a progress bar here led to a desaster, I stopped the search after 5 minutes. Without the progress bar it took <strong>400 seconds</strong>. A lot of room for improvement.</p>
+<img src="/en/2023/2023-12-12-prime-numbers-javascript/image-8.png" alt="alt text"><p>And even C++ surprised me in the beginning. The first run took 70 seconds, that’s almost twice the time JavaScript needed. Why that? After a little research I found out, that <strong>-O3</strong> and <strong>-ffast-math</strong> arguments for the compiler are recommended. Now the algorithm is done after 40 seconds:</p>
+<img src="/en/2023/2023-12-12-prime-numbers-javascript/image-9.png" alt="alt text"><p>So… JavaScript is as fast as C++, when it comes to simple calculations. Disclaimer: I’m not a C++ or Rust developer. Leave a comment, if you can explain this!</p>
+<img src="/en/2023/2023-12-12-prime-numbers-javascript/image-10.png" alt="alt text">
+    
+  </article>
+
+
+  
+  
+  <div style="width: 100%; margin-top: 2rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Summary</h2>
+    <div style="font-size: 1rem;">
+
+      <p>A tutorial on optimizing prime number algorithms in JavaScript, comparing performance with Python, Rust, and C&#43;&#43;</p>
+      <br />
+      
+      <p><strong>Main Topics:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">JavaScript</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Prime Numbers</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Algorithms</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Performance Optimization</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Computational Thinking</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Difficulty:</strong> intermediate</p>
+      
+      
+      
+      <p><strong>Reading Time:</strong> approx. 8 minutes</p>
+      
+    </div>
+  </div>
+  
+
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/">← prev</a>
+    
+    
+    <a></a>
+    
+  </div>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="privacy.html">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>

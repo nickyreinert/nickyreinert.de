@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="I am currently building some kind of playground for Huggingface’s text-2-image models. This app offers more than a dozen configuration parameters. The problem: Every time the user reloads the page, all parameters are gone. Here’s my solution to cope with that.
+Gradio has a gr.Stateobject that allows you to persist values for the current user in the current tab. But as soon as you open another tab or even reload the page, your user’s setup is gone. While there’s also a gr.Request oject that allows you to access cookies, this only read cookies.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
+
+  
+  
+  <meta name="keywords" content=" Gradio  JavaScript  Cookies  Python  State Persistence  Configuration  Web Demo  Frontend  State Management ">
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/css/katex.min.css">
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '\\[', right: '\\]', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false }
+      ],
+      ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'option'],
+      throwOnError: false
+    });
+  });
+</script>
+
+
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/en/2024/2024-05-05-gradio-app/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="How to Persist User Configuration in a Gradio App with Cookies">
+  <meta property="og:description" content="I am currently building some kind of playground for Huggingface’s text-2-image models. This app offers more than a dozen configuration parameters. The problem: Every time the user reloads the page, all parameters are gone. Here’s my solution to cope with that.
+Gradio has a gr.Stateobject that allows you to persist values for the current user in the current tab. But as soon as you open another tab or even reload the page, your user’s setup is gone. While there’s also a gr.Request oject that allows you to access cookies, this only read cookies.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2024">
+    <meta property="article:published_time" content="2024-05-05T12:34:56+01:00">
+    <meta property="article:modified_time" content="2026-04-15T08:29:23+02:00">
+    <meta property="article:tag" content="Gradio">
+    <meta property="article:tag" content="JavaScript">
+    <meta property="article:tag" content="Cookies">
+    <meta property="article:tag" content="Python">
+    <meta property="article:tag" content="Tutorial">
+    <meta property="article:tag" content="Web Development">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/en/2024/2024-05-05-gradio-app/">
+
+  
+  
+  
+  <meta itemprop="name" content="How to Persist User Configuration in a Gradio App with Cookies">
+  <meta itemprop="description" content="I am currently building some kind of playground for Huggingface’s text-2-image models. This app offers more than a dozen configuration parameters. The problem: Every time the user reloads the page, all parameters are gone. Here’s my solution to cope with that.
+Gradio has a gr.Stateobject that allows you to persist values for the current user in the current tab. But as soon as you open another tab or even reload the page, your user’s setup is gone. While there’s also a gr.Request oject that allows you to access cookies, this only read cookies.">
+  <meta itemprop="datePublished" content="2024-05-05T12:34:56+01:00">
+  <meta itemprop="dateModified" content="2026-04-15T08:29:23+02:00">
+  <meta itemprop="wordCount" content="699">
+  <meta itemprop="keywords" content="Gradio,JavaScript,Cookies,Python,State Persistence,Configuration,Web Demo,Frontend,State Management">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>How to Persist User Configuration in a Gradio App with Cookies - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="How to Persist User Configuration in a Gradio App with Cookies">
+  <meta name="twitter:description" content="I am currently building some kind of playground for Huggingface’s text-2-image models. This app offers more than a dozen configuration parameters. The problem: Every time the user reloads the page, all parameters are gone. Here’s my solution to cope with that.
+Gradio has a gr.Stateobject that allows you to persist values for the current user in the current tab. But as soon as you open another tab or even reload the page, your user’s setup is gone. While there’s also a gr.Request oject that allows you to access cookies, this only read cookies.">
+
+
+  
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "How to Persist User Configuration in a Gradio App with Cookies",
+    "description": "I am currently building some kind of playground for Huggingface’s text-2-image models. This app offers more than a dozen configuration parameters. The problem: …",
+    "datePublished": "2024-05-05T12:34:56\u002b01:00",
+    "dateModified": "2026-04-15T08:29:23\u002b02:00",
+    "author": {
+      "@type": "Person",
+      "name": "",
+      "url": "https:\/\/nickyreinert.de\/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Nicky Reinert",
+      "url": "https:\/\/nickyreinert.de\/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https:\/\/nickyreinert.de\/images\/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/nickyreinert.de\/en\/2024\/2024-05-05-gradio-app\/"
+    },
+    
+    "image": {
+      "@type": "ImageObject",
+      "url": "https:\/\/nickyreinert.de\/gradio-cookies.png",
+      "width": 1200,
+      "height": 630
+    },
+    
+    "url": "https:\/\/nickyreinert.de\/en\/2024\/2024-05-05-gradio-app\/",
+    "wordCount":  699 ,
+    
+    "timeRequired": "PT5M",
+    
+    
+    "keywords": ["Gradio", "JavaScript", "Cookies", "Python", "Tutorial", "Web Development", "State Management"],
+    
+    
+    "articleSection": ["blog"],
+    
+    
+    
+    "genre": "tutorial",
+    
+    
+    "educationalLevel": "intermediate",
+    
+    "inLanguage": "en"
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "How to Persist User Configuration in a Gradio App with Cookies",
+    "description": "I am currently building some kind of playground for Huggingface’s text-2-image models. This app offers more than a dozen configuration parameters. The problem: …",
+    
+    "proficiencyLevel": "intermediate",
+    
+    
+    "dependencies": ["Understanding of Gradio framework", "Basic knowledge of cookies and JavaScript"],
+    
+    
+    "about": [
+      
+      
+      {
+        "@type": "Thing",
+        "name": "Gradio"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "JavaScript"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Cookies"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Python"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Web Development"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "State Management"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Frontend Development"
+      }
+      
+    ],
+    
+    "datePublished": "2024-05-05T12:34:56\u002b01:00",
+    "dateModified": "2026-04-15T08:29:23\u002b02:00",
+    "author": {
+      "@type": "Person",
+      "name": ""
+    }
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Nicky Reinert",
+    "url": "https:\/\/nickyreinert.de\/",
+    "description": "Blog \u0026 projects by Nicky Reinert (Institute for Digital Challenges): web development \u0026 software development, SEO \u0026 analytics, hosting \u0026 DevOps, WordPress \u0026 Hugo, tools \u0026 projects, data protection \u0026 digital culture — plus content on AI and autism \u0026 society.",
+    "inLanguage": "en",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https:\/\/nickyreinert.de\/search/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+]
+</script>
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+  
+
+<script defer src="/js/alpine.min.js"></script>
+
+
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institute for Digital Challenges</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://medium.com/@nickyreinert">medium.com</a>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://not-a-brand.myspreadshop.de/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/analysen/">analysen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+
+
+    
+<main id="main" class="post">
+  
+  
+  <div class="post-header">
+    <div class="navigation" style="align-items: center;">
+      <div style="flex-shrink: 0; width: 50px;">
+        
+        <a class="link prev" href="/en/2024/2024-01-01-predict-crypto/" style="font-size: 1.2rem;">&lt;&lt;&lt;</a>
+        
+      </div>
+      
+      <h1 style="flex: 1; text-align: center; min-width: 0; padding: 0 0.5rem;" itemprop="headline">How to Persist User Configuration in a Gradio App with Cookies</h1>
+      
+      <div style="flex-shrink: 0; width: 50px; text-align: right;">
+        
+        <a class="link next" href="/en/2024/2024-10-01-bitcoin-puzzle/" style="font-size: 1.2rem;">>>></a>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="post-meta" style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; color: #878787;">
+    May 5, 2024 &nbsp;|&nbsp; Kategorie: 
+    
+    <a class="link" href='https://nickyreinert.de/categories/blog' style="text-decoration: none;">blog</a>
+    
+  </div>
+    
+  
+  
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
+    <p>I am currently building some kind of playground for Huggingface’s text-2-image models. This app offers more than a dozen configuration parameters. The problem: Every time the user reloads the page, all parameters are gone. Here’s my solution to cope with that.</p>
+<p><strong>Gradio</strong> has a <code>gr.State</code>object that allows you to persist values for the current user in the current tab. But as soon as you open another tab or even reload the page, your user’s setup is gone. While there’s also a <code>gr.Request</code> oject that allows you to access cookies, this only read cookies.</p>
+<img src="/en/2024/2024-05-05-gradio-app/image-1.png" alt="alt text"><p>So right now there’s no easy way to achieve some kind of “persistent config” for your Gradio demo. But there’s a workaround: Gradio allows you to add custom <strong>JavaScript</strong> to your app, which 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.gradio.app/guides/custom-CSS-and-JS?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">is “barely” documented</a>
+
+
+. As the implementation is not easy and it took me a while to find the solution, I’d like to share my findings:</p>
+<ol>
+<li>The Javascript</li>
+</ol>
+<hr>
+<p>Let’s start with the JavaScript that takes care of writing the cookie. Put it into a variable and place it before your block definition to make it globally accessible:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">js = &#39;&#39;&#39;function js(){window.set_cookie = function(key, value){document.cookie = key+&#39;=&#39;+value+&#39;; Path=/; SameSite=Strict&#39;;return [value]}}&#39;&#39;&#39;
+</span></span></code></pre></div><p>There’s one <strong>heads up</strong>! here: You have to wrap the actual function inside another function. You also need to make it globally available by attaching it to window. Let’s have a closer look at the important parts. The function head apparently requires the key and the value for your cookie:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">function(key, value){
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    document.cookie = key+&#39;=&#39;+value+&#39;; Path=/; SameSite=Strict&#39;;
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    return [value]
+</span></span><span class="line"><span class="ln">4</span><span class="cl">}
+</span></span></code></pre></div><p>You need those variables to properly set the cookie. The function must return values according to your Gradio element and event handler. In this case it expects one output variable only.</p>
+<p>Done that, load your JavaScript into your demo using the <strong>js-argument</strong> this. The <strong>fn-argument</strong> refers to a Python function that later loads values from your cookies to assign them to your Gradio elements — wich needs to be addressed in <code>outputs</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl">    <span class="n">demo</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fn</span><span class="o">=</span><span class="n">get_config</span><span class="p">,</span> <span class="n">js</span><span class="o">=</span><span class="n">js</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">element1</span><span class="p">])</span>
+</span></span></code></pre></div><ol start="2">
+<li>The event handler</li>
+</ol>
+<hr>
+<p>Now you are ready to reference the cookie mechanism in your event handler:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">element1.change(fn=element1_change inputs=[element1], outputs=[], js=&#34;(value) =&gt; set_cookie(&#39;element1&#39;, value)&#34;)
+</span></span></code></pre></div><p>Again, let’s go through it step by step:</p>
+<p>The <strong>fn-argument</strong> simply refers to a Python function that somehow handles the value of <code>element1</code>. You don’t necessarily need it, depending on your setup. The <strong>inputs-argument</strong> is important, as it defines what values are moved through our <em>pipeline</em>. In this case just the value from <code>element1</code>. The <strong>js-argument</strong> now refers to your <strong>JavaScript function</strong>. <code>(value)</code> takes the value from the <strong>inputs-argument</strong> and gives it a name. I am passing this variable to my function and I also need to pass the <code>element1</code> as a string which will be used as the key for the cookie, to identify it later —see <code>set_cookie()</code> requires a key and a value argument?</p>
+<ol start="3">
+<li>Getting back the value</li>
+</ol>
+<hr>
+<p>We now successfully wrote the value of an element to a cookie. Now we need to read this value when the user reloads the page or open it in another tab:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">def get_config(request: Request):
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  config = {&#34;element1&#34;: &#34;value1&#34;}
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  for key in initial_config.keys():
+</span></span><span class="line"><span class="ln">4</span><span class="cl">      if key in request.cookies:
+</span></span><span class="line"><span class="ln">5</span><span class="cl">          config[key] = request.cookies[key]
+</span></span><span class="line"><span class="ln">6</span><span class="cl">  return config[&#34;element&#34;]
+</span></span></code></pre></div><p>Again — step by step: In the function’s head we refer to Gradio’s Request object which allows us to read the cookies for this request. We then simply loop through all our config parameters, you may define as many as you want, according to your interface. If we find the particular cookie, we can set it’s value.</p>
+<p>Finally we return the values. According to the outputs-argument from our <code>demo.load(</code> function (see above), we only return one value for one element.</p>
+<ol start="4">
+<li>Final Thoughts</li>
+</ol>
+<hr>
+<p>If you want to see the process in action, check out my text-2-image playground at Hugging face either directly via 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://huggingface.co/spaces/n42/pictero?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://huggingface.co/spaces/n42/pictero</a>
+
+
+ or using the easier-to-remember-domain: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://pictero.com?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://pictero.com</a>
+
+
+ (yes, you can use your own custom domains on Huggingface’s spaces — it’s a simply frame-redir in my DNS configuration).</p>
+<p>I am not only using the aboved described workaround to persist users’s configuration: I also implemented a sharing feature reading the configuration from the URL GET-parameter <code>config</code> and put it into my interface.</p>
+<p>Have fun and leave your thoughts!</p>
+
+    
+  </article>
+
+
+  
+  
+
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/en/2024/2024-01-01-predict-crypto/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/en/2024/2024-10-01-bitcoin-puzzle/">next →</a>
+    
+  </div>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="privacy.html">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>
