@@ -1,4 +1,17 @@
-<!doctype html><html lang=de-DE><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="ie=edge"><meta name=author content><meta name=description content="Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:
+<!DOCTYPE html>
+<html lang="de-DE">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:
 
 Ungültiges Server-Zertifikat: Die Verbindung zum Server schlägt fehl, weil das Server-Zertifikat ungültig ist. Die Fehlermeldung in FileZilla lautet dann z. B.:
 GnuTLS error -48: Key usage violation in certificate has been detected. Could not connect to server.
@@ -6,56 +19,667 @@ Probleme mit passiven Verbindungen: Obwohl du in der Firewall die passiven Ports
 150 Opening BINARY mode data connection.
 Fehlende Zugriffsrechte: Der Benutzer hat nicht die nötigen Zugriffsrechte für den Ordner, den du in den Einstellungen des FTP-Servers angegeben hast.
 
-Keine Sorge. Mit diesen drei Problemen durfte auch ich schon kämpfen, und ich habe die Lösungen hier zusammengetragen. Also&mldr; eins nach dem anderen."><link rel=icon href=https://nickyreinert.de/images/favicon.svg><meta name=keywords content=" SFTP  IIS  Microsoft  Windows Server  Zertifikat  PowerShell  FileZilla  FTP  Troubleshooting  Server Konfiguration  Netzwerksicherheit "><link rel=stylesheet href=/css/katex.min.css><script defer src=/js/katex.min.js></script><script defer src=/js/auto-render.min.js></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"\\[",right:"\\]",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1}],ignoredTags:["script","noscript","style","textarea","pre","code","option"],throwOnError:!1})})</script><meta property="og:url" content="https://nickyreinert.de/2015/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten/"><meta property="og:site_name" content="Nicky Reinert"><meta property="og:title" content="SFTP auf Microsoft IIS korrekt einrichten"><meta property="og:description" content="Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:
+Keine Sorge. Mit diesen drei Problemen durfte auch ich schon kämpfen, und ich habe die Lösungen hier zusammengetragen. Also&hellip; eins nach dem anderen.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
+
+  
+  
+  <meta name="keywords" content=" SFTP  IIS  Microsoft  Windows Server  Zertifikat  PowerShell  FileZilla  FTP  Troubleshooting  Server Konfiguration  Netzwerksicherheit ">
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/css/katex.min.css">
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '\\[', right: '\\]', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false }
+      ],
+      ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'option'],
+      throwOnError: false
+    });
+  });
+</script>
+
+
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/2015/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="SFTP auf Microsoft IIS korrekt einrichten">
+  <meta property="og:description" content="Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:
 Ungültiges Server-Zertifikat: Die Verbindung zum Server schlägt fehl, weil das Server-Zertifikat ungültig ist. Die Fehlermeldung in FileZilla lautet dann z. B.:
 GnuTLS error -48: Key usage violation in certificate has been detected. Could not connect to server. Probleme mit passiven Verbindungen: Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast, kann die Verbindung nicht vollendet werden. FileZilla bleibt dann z. B. bei der folgenden Zeile stehen:
-150 Opening BINARY mode data connection. Fehlende Zugriffsrechte: Der Benutzer hat nicht die nötigen Zugriffsrechte für den Ordner, den du in den Einstellungen des FTP-Servers angegeben hast. Keine Sorge. Mit diesen drei Problemen durfte auch ich schon kämpfen, und ich habe die Lösungen hier zusammengetragen. Also… eins nach dem anderen."><meta property="og:locale" content="de_DE"><meta property="og:type" content="article"><meta property="article:section" content="2015"><meta property="article:published_time" content="2015-10-14T00:00:00+00:00"><meta property="article:modified_time" content="2026-05-07T15:36:59+02:00"><meta property="article:tag" content="Sftp"><meta property="article:tag" content="IIS"><meta property="article:tag" content="Windows-Server"><meta property="article:tag" content="Anleitung"><meta property="article:tag" content="Troubleshooting"><meta property="article:tag" content="Netzwerk"><link rel=canonical href=https://nickyreinert.de/2015/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten/><meta itemprop=name content="SFTP auf Microsoft IIS korrekt einrichten"><meta itemprop=description content="Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:
+150 Opening BINARY mode data connection. Fehlende Zugriffsrechte: Der Benutzer hat nicht die nötigen Zugriffsrechte für den Ordner, den du in den Einstellungen des FTP-Servers angegeben hast. Keine Sorge. Mit diesen drei Problemen durfte auch ich schon kämpfen, und ich habe die Lösungen hier zusammengetragen. Also… eins nach dem anderen.">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2015">
+    <meta property="article:published_time" content="2015-10-14T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-05-07T15:36:59+02:00">
+    <meta property="article:tag" content="Sftp">
+    <meta property="article:tag" content="IIS">
+    <meta property="article:tag" content="Windows-Server">
+    <meta property="article:tag" content="Anleitung">
+    <meta property="article:tag" content="Troubleshooting">
+    <meta property="article:tag" content="Netzwerk">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/2015/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten/">
+
+  
+  
+  
+  <meta itemprop="name" content="SFTP auf Microsoft IIS korrekt einrichten">
+  <meta itemprop="description" content="Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:
 Ungültiges Server-Zertifikat: Die Verbindung zum Server schlägt fehl, weil das Server-Zertifikat ungültig ist. Die Fehlermeldung in FileZilla lautet dann z. B.:
 GnuTLS error -48: Key usage violation in certificate has been detected. Could not connect to server. Probleme mit passiven Verbindungen: Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast, kann die Verbindung nicht vollendet werden. FileZilla bleibt dann z. B. bei der folgenden Zeile stehen:
-150 Opening BINARY mode data connection. Fehlende Zugriffsrechte: Der Benutzer hat nicht die nötigen Zugriffsrechte für den Ordner, den du in den Einstellungen des FTP-Servers angegeben hast. Keine Sorge. Mit diesen drei Problemen durfte auch ich schon kämpfen, und ich habe die Lösungen hier zusammengetragen. Also… eins nach dem anderen."><meta itemprop=datePublished content="2015-10-14T00:00:00+00:00"><meta itemprop=dateModified content="2026-05-07T15:36:59+02:00"><meta itemprop=wordCount content="348"><meta itemprop=keywords content="SFTP,IIS,Microsoft,Windows Server,Zertifikat,PowerShell,FileZilla,FTP,Troubleshooting,Server Konfiguration,Netzwerksicherheit"><link media=screen rel=stylesheet href=https://nickyreinert.de/css/common.css><link media=screen rel=stylesheet href=https://nickyreinert.de/css/content.css><title>SFTP auf Microsoft IIS korrekt einrichten - Nicky Reinert</title><meta name=twitter:card content="summary"><meta name=twitter:title content="SFTP auf Microsoft IIS korrekt einrichten"><meta name=twitter:description content="Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:
+150 Opening BINARY mode data connection. Fehlende Zugriffsrechte: Der Benutzer hat nicht die nötigen Zugriffsrechte für den Ordner, den du in den Einstellungen des FTP-Servers angegeben hast. Keine Sorge. Mit diesen drei Problemen durfte auch ich schon kämpfen, und ich habe die Lösungen hier zusammengetragen. Also… eins nach dem anderen.">
+  <meta itemprop="datePublished" content="2015-10-14T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-05-07T15:36:59+02:00">
+  <meta itemprop="wordCount" content="348">
+  <meta itemprop="keywords" content="SFTP,IIS,Microsoft,Windows Server,Zertifikat,PowerShell,FileZilla,FTP,Troubleshooting,Server Konfiguration,Netzwerksicherheit">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>SFTP auf Microsoft IIS korrekt einrichten - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="SFTP auf Microsoft IIS korrekt einrichten">
+  <meta name="twitter:description" content="Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:
 Ungültiges Server-Zertifikat: Die Verbindung zum Server schlägt fehl, weil das Server-Zertifikat ungültig ist. Die Fehlermeldung in FileZilla lautet dann z. B.:
 GnuTLS error -48: Key usage violation in certificate has been detected. Could not connect to server. Probleme mit passiven Verbindungen: Obwohl du in der Firewall die passiven Ports für den Server freigeschaltet hast, kann die Verbindung nicht vollendet werden. FileZilla bleibt dann z. B. bei der folgenden Zeile stehen:
-150 Opening BINARY mode data connection. Fehlende Zugriffsrechte: Der Benutzer hat nicht die nötigen Zugriffsrechte für den Ordner, den du in den Einstellungen des FTP-Servers angegeben hast. Keine Sorge. Mit diesen drei Problemen durfte auch ich schon kämpfen, und ich habe die Lösungen hier zusammengetragen. Also… eins nach dem anderen."><script type=application/ld+json>[{"@context":"https://schema.org","@type":"BlogPosting","headline":"SFTP auf Microsoft IIS korrekt einrichten","description":"Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:\nUngültiges Server-Zertifikat: …","datePublished":"2015-10-14T00:00:00Z","dateModified":"2026-05-07T15:36:59\u002b02:00","author":{"@type":"Person","name":"","url":"https:\/\/nickyreinert.de\/"},"publisher":{"@type":"Organization","name":"Nicky Reinert","url":"https:\/\/nickyreinert.de\/","logo":{"@type":"ImageObject","url":"https:\/\/nickyreinert.de\/images\/logo.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/nickyreinert.de\/2015\/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten\/"},"image":{"@type":"ImageObject","url":"https:\/\/nickyreinert.de\/images\/posts\/sftp-iis-setup.jpg","width":1200,"height":630},"url":"https:\/\/nickyreinert.de\/2015\/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten\/","wordCount":348,"timeRequired":"PT5M","keywords":["SFTP","IIS","Windows Server","Anleitung","Troubleshooting","Netzwerk"],"articleSection":["hosting","anleitungen"],"abstract":"Dieser Artikel behandelt häufige Probleme bei der Einrichtung eines SFTP-Servers auf Microsoft IIS, darunter Zertifikatsfehler, Probleme mit passiven Verbindungen und Benutzerberechtigungen. Er bietet Lösungen, wie die korrekte Generierung von Server-Zertifikaten mittels PowerShell und die Behebung von Verbindungsschwierigkeiten.","genre":"troubleshooting_guide","educationalLevel":"advanced","inLanguage":"de"},{"@context":"https://schema.org","@type":"TechArticle","headline":"SFTP auf Microsoft IIS korrekt einrichten","description":"Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:\nUngültiges Server-Zertifikat: …","proficiencyLevel":"advanced","dependencies":["Grundkenntnisse in Windows Server und IIS","Verständnis von Netzwerkprotokollen (FTP, SFTP)","Erfahrung mit PowerShell"],"about":[{"@type":"Thing","name":"SFTP"},{"@type":"Thing","name":"Microsoft IIS"},{"@type":"Thing","name":"Server Konfiguration"},{"@type":"Thing","name":"Netzwerksicherheit"},{"@type":"Thing","name":"Zertifikate"},{"@type":"Thing","name":"PowerShell"},{"@type":"Thing","name":"Troubleshooting"},{"@type":"Thing","name":"Windows Server"}],"datePublished":"2015-10-14T00:00:00Z","dateModified":"2026-05-07T15:36:59\u002b02:00","author":{"@type":"Person","name":""}},{"@context":"https://schema.org","@type":"WebSite","name":"Nicky Reinert","url":"https:\/\/nickyreinert.de\/","description":"Blog \u0026 Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung \u0026 Software Development, KI, SEO \u0026 Analytics, Hosting \u0026 DevOps, WordPress \u0026 Hugo, Tools \u0026 Projekte, Datenschutz und digitale Kultur","inLanguage":"de","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https:\/\/nickyreinert.de\/search/?q={search_term_string}"},"query-input":"required name=search_term_string"}}]</script><link rel=stylesheet href=https://nickyreinert.de/css/single.css><script defer src=/js/alpine.min.js></script></head><body><div id=wrapper><header id=header><span class=header-content><p class=left><a id=site-title href=https://nickyreinert.de/>Nicky Reinert</a></p><p class=center>//</p><p class=right>Institut für digitale Herausforderungen</p></span><br><div class=footnote><span class=nav-bar-item><b>extern</b>
-<a target=_blank class=link href=https://www.linkedin.com/in/nickyreinert/>LinkedIn</a>
-<a target=_blank class=link href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
-<a target=_blank class=link href=https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA>YouTube</a>
-<a target=_blank class=link href=https://github.com/nickyreinert>GitHub</a>
-<a target=_blank class=link href=https://not-a-brand.myspreadshop.de/>"Merch"</a>
-<a target=_blank class=link href=https://ministerium-für-digitale-herausforderungen.de>ministerium</a>
-<a target=_blank class=link href=https://institut-fdh.de//>institut</a>
-<a target=_blank class=link href=https://fantastokrat.de/>fantastokrat</a>
-<a target=_blank class=link href=https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5>random knowledge</a></span><br><span class=nav-bar-item><b>literatur</b>
-<a target=_blank class=link href=https://amzn.eu/d/5LYXyUu>Dit is Berlin - B.N.H.K.</a>
-<a target=_blank class=link href=https://amzn.eu/d/3hWCrK1>Geometrische Gottheiten</a></span><nav><b>intern</b>
-<span class=nav-bar-item><a class=link href=/categories/blog/>blog</a>
-</span><span class=nav-bar-item><a class=link href=/categories/analysen/>analysen</a>
-</span><span class=nav-bar-item><a class=link href=/categories/nerdenz/>nerdenz</a>
-</span><span class=nav-bar-item><a class=link href=/categories/anleitungen/>anleitungen</a>
-</span><span class=nav-bar-item><a class=link href=/categories/wordpress/>wordpress</a>
-</span><span class=nav-bar-item><a class=link href=/categories/hosting/>hosting</a>
-</span><span class=nav-bar-item><a class=link href=/categories/tools/>tools</a>
-</span><span class=nav-bar-item><a class=link href=/categories/development/>development</a>
-</span><span class=nav-bar-item><a class=link href=/categories/projekte/>projekte</a>
-</span><span class=nav-bar-item><a class=link href=/categories/autismus/>autismus</a></span></nav></div><br></header><main id=main class=post><div class=post-header><div class=navigation style=align-items:center><div style=flex-shrink:0;width:50px></div><h1 style="flex:1;text-align:center;min-width:0;padding:0 .5rem" itemprop=headline>SFTP auf Microsoft IIS korrekt einrichten</h1><div style=flex-shrink:0;width:50px;text-align:right></div></div></div><div class=post-meta style=font-size:.9rem;margin-top:.5rem;text-align:center;color:#878787>October 14, 2015 &nbsp;|&nbsp; Kategorie:
-<a class=link href=https://nickyreinert.de/categories/hosting style=text-decoration:none>hosting</a>
-<a class=link href=https://nickyreinert.de/categories/anleitungen style=text-decoration:none>anleitungen</a></div><details style="margin-top:.5rem;margin-bottom:2rem;font-size:.9rem;color:#878787;background:0 0;border:none"><summary><b>Table of Contents</b></summary><div class=toc style=margin-left:1rem><nav id=TableOfContents><ul><li><ul><li><a href=#problem-1-ungültiges-server-zertifikat>Problem 1: Ungültiges Server-Zertifikat</a></li><li><a href=#problem-2-passive-ports-und-firewall>Problem 2: Passive Ports und Firewall</a></li><li><a href=#problem-3-benutzerberechtigungen>Problem 3: Benutzerberechtigungen</a></li></ul></li></ul></nav></div></details><article style="border-top:2px solid #878787" class=content><p>Das Einrichten eines <strong>SFTP-Servers</strong> klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:</p><ol><li><strong>Ungültiges Server-Zertifikat:</strong> Die Verbindung zum Server schlägt fehl, weil das Server-Zertifikat ungültig ist. Die Fehlermeldung in FileZilla lautet dann z. B.:<br><em>GnuTLS error -48: Key usage violation in certificate has been detected. Could not connect to server.</em></li><li><strong>Probleme mit passiven Verbindungen:</strong> Obwohl du in der Firewall die <strong>passiven Ports</strong> für den Server freigeschaltet hast, kann die Verbindung nicht vollendet werden. FileZilla bleibt dann z. B. bei der folgenden Zeile stehen:<br><em>150 Opening BINARY mode data connection.</em></li><li><strong>Fehlende Zugriffsrechte:</strong> Der Benutzer hat nicht die nötigen Zugriffsrechte für den Ordner, den du in den Einstellungen des FTP-Servers angegeben hast.</li></ol><p>Keine Sorge. Mit diesen drei Problemen durfte auch ich schon kämpfen, und ich habe die Lösungen hier zusammengetragen. Also&mldr; eins nach dem anderen.</p><h3 id=problem-1-ungültiges-server-zertifikat>Problem 1: Ungültiges Server-Zertifikat</h3><p>Die Ursache des ersten Problems ist der Assistent, mit dem man im IIS das Server-Zertifikat erstellt. Auf den Punkt gebracht, nutzt dieser ein paar falsche Parameter. Aus diesem Grund muss das Zertifikat per Hand in der <strong>PowerShell</strong> erstellt werden. Wichtig: In der normalen Konsole funktioniert das nicht.</p><p>Lösung: Laut einem Beitrag in den
-<a href="https://forums.iis.net/t/1234970.aspx?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target=_blank rel="noopener noreferrer">IIS-Foren</a>
-kannst du das Zertifikat mit PowerShell generieren:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-powershell data-lang=powershell><span class=line><span class=ln>1</span><span class=cl><span class=nb>New-SelfSignedCertificate</span> <span class=n>-CertStoreLocation</span> <span class=n>cert</span><span class=err>:</span><span class=p>\</span><span class=n>LocalMachine</span><span class=p>\</span><span class=n>My</span> <span class=n>-dnsname</span> <span class=n>ftp</span><span class=p>.</span><span class=py>example</span><span class=p>.</span><span class=py>com</span>
-</span></span></code></pre></div><p>Ersetze <code>ftp.example.com</code> durch den Hostnamen deines Servers.</p><p>Du erhältst einen Fingerabdruck (Fingerprint). Kopiere diesen und setze ein Passwort für den privaten Schlüssel:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-powershell data-lang=powershell><span class=line><span class=ln>1</span><span class=cl><span class=nv>$password</span> <span class=p>=</span> <span class=nb>ConvertTo-SecureString</span> <span class=n>-String</span> <span class=s2>&#34;password goes here&#34;</span> <span class=n>-Force</span> <span class=n>-AsPlainText</span>
-</span></span></code></pre></div><p>Exportiere das Zertifikat (ändere <code>C:\cert.pfx</code> auf den gewünschten Speicherort, die Datei muss mit <code>.pfx</code> enden):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-powershell data-lang=powershell><span class=line><span class=ln>1</span><span class=cl><span class=nb>Export-PfxCertificate</span> <span class=n>-cert</span> <span class=n>cert</span><span class=err>:</span><span class=p>\</span><span class=n>LocalMachine</span><span class=p>\</span><span class=n>My</span><span class=p>\</span><span class=n>FINGERPRINT</span> <span class=n>-FilePath</span> <span class=n>C:</span><span class=p>\</span><span class=n>cert</span><span class=p>.</span><span class=py>pfx</span> <span class=n>-Password</span> <span class=nv>$password</span>
-</span></span></code></pre></div><h3 id=problem-2-passive-ports-und-firewall>Problem 2: Passive Ports und Firewall</h3><p>Stelle sicher, dass die <strong>passiven Ports</strong> in der Firewall freigegeben sind. Dies geschieht in den IIS-Einstellungen unter <strong>FTP-Firewall-Unterstützung</strong>. Trage dort den Portbereich ein, den du verwenden möchtest, und öffne diese Ports in der Windows-Firewall.</p><h3 id=problem-3-benutzerberechtigungen>Problem 3: Benutzerberechtigungen</h3><p>Überprüfe, ob der Benutzer die richtigen Berechtigungen für den angegebenen Ordner hat. Dies kannst du in den <strong>Sicherheitseinstellungen</strong> des Ordners anpassen.</p><figure><a href=/images/posts/sftp-iis-setup.jpg target=_blank class=image-link title="Click to view full size"><img src=/images/posts/sftp-iis-setup.jpg alt="SFTP auf Microsoft IIS korrekt einrichten - Beispiel für Zertifikate" loading=lazy></a><figcaption>Beispiel für die Einrichtung eines SFTP-Servers auf Microsoft IIS</figcaption></figure><p><strong>Weitere Ressourcen:</strong></p><ul><li><a href="https://www.visualsvn.com/support/topic/00056/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target=_blank rel="noopener noreferrer">VisualSVN: Zertifikate korrekt zuweisen</a></li><li><a href="http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target=_blank rel="noopener noreferrer">FileZilla und IIS hinter NAT</a></li><li><a href="http://ekiwi-blog.de/?p=3465&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target=_blank rel="noopener noreferrer">Ekiwi-Blog: Troubleshooting</a></li></ul></article><div style="width:100%;margin-top:2rem;border-top:2px solid #9a9a9a;padding:1rem;color:#878787"><h2 style=font-size:1.3rem;margin-bottom:1rem>Zusammenfassung</h2><div style=font-size:1rem><p>Dieser Artikel behandelt häufige Probleme bei der Einrichtung eines SFTP-Servers auf Microsoft IIS, darunter Zertifikatsfehler, Probleme mit passiven Verbindungen und Benutzerberechtigungen. Er bietet Lösungen, wie die korrekte Generierung von Server-Zertifikaten mittels PowerShell und die Behebung von Verbindungsschwierigkeiten.</p><br><p><strong>Hauptthemen:</strong>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">SFTP</span>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">Microsoft IIS</span>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">Server Konfiguration</span>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">Netzwerksicherheit</span>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">Zertifikate</span>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">PowerShell</span>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">Troubleshooting</span>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">Windows Server</span></p><p><strong>Schwierigkeitsgrad:</strong> advanced</p><p><strong>Lesezeit:</strong> ca. 5 Minuten</p></div></div><div class=paginator><a></a><a></a></div></main><footer id=footer><div><span>© 1979 Nicky Reinert</span> // <span>Powered by </span><a class=link href=https://gohugo.io/>Hugo</a> //
-<span>kontakt: nickyreinert -at- gmail -dot- com</span> //
-<a class=link href=privacy.html>Datenschutzerklärung</a> //
-<bold><a class="link lang-btn" href=# data-lang=de><svg width="16" height="12" viewBox="0 0 5 3" style="display:inline-block;vertical-align:middle;margin-right:8px;flex-shrink:0"><rect width="5" height="3" fill="#FFCE00"/><rect width="5" height="2" fill="#D00"/><rect width="5" height="1" fill="#000"/></svg>Deutsch</a> //
-<a class="link lang-btn" href=# data-lang=en><svg width="16" height="12" viewBox="0 0 60 30" style="display:inline-block;vertical-align:middle;margin-right:8px;flex-shrink:0"><clipPath id="s-v2"><path d="M0 0v30h60V0z"/></clipPath><clipPath id="s-v1"><path d="M30 15h30v15z 15H0z 0V0z 0h30z"/></clipPath><g clip-path="url(#s-v2)"><path d="M0 0v30h60V0z" fill="#00247d"/><g clip-path="url(#s-v1)"><path d="M0 0l60 30M60 0 0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30M60 0 0 30" stroke="#cf142b" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#cf142b" stroke-width="6"/></g></g></svg>English</a> //
-<a class="link lang-btn" href=# data-lang=*>All(e)</a></bold><br><footer><center><a class=default-link href=https://uberblogr.de/prev/nickyreinert title="Zurück im Ring">&lt; Zurück im Ring</a> //
-Mitglied im <a class=default-link href=https://uberblogr.de/home/nickyreinert title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
-<a class=default-link href=https://uberblogr.de/next/nickyreinert title="Vor im Ring">Weiter im Ring ></a></center><script>document.addEventListener("DOMContentLoaded",function(){var e=document.querySelectorAll(".lang-btn");e.forEach(function(e){e.addEventListener("click",function(t){t.preventDefault();var n=e.getAttribute("data-lang"),s=document.querySelectorAll("[data-lang]");s.forEach(function(e){var t=e.getAttribute("data-lang");t===n||n==="*"?e.classList.remove("hidden"):e.classList.add("hidden")})})})})</script></footer></div></body></html>
+150 Opening BINARY mode data connection. Fehlende Zugriffsrechte: Der Benutzer hat nicht die nötigen Zugriffsrechte für den Ordner, den du in den Einstellungen des FTP-Servers angegeben hast. Keine Sorge. Mit diesen drei Problemen durfte auch ich schon kämpfen, und ich habe die Lösungen hier zusammengetragen. Also… eins nach dem anderen.">
+
+
+  
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "SFTP auf Microsoft IIS korrekt einrichten",
+    "description": "Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:\nUngültiges Server-Zertifikat: …",
+    "datePublished": "2015-10-14T00:00:00Z",
+    "dateModified": "2026-05-07T15:36:59\u002b02:00",
+    "author": {
+      "@type": "Person",
+      "name": "",
+      "url": "https:\/\/nickyreinert.de\/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Nicky Reinert",
+      "url": "https:\/\/nickyreinert.de\/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https:\/\/nickyreinert.de\/images\/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/nickyreinert.de\/2015\/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten\/"
+    },
+    
+    "image": {
+      "@type": "ImageObject",
+      "url": "https:\/\/nickyreinert.de\/images\/posts\/sftp-iis-setup.jpg",
+      "width": 1200,
+      "height": 630
+    },
+    
+    "url": "https:\/\/nickyreinert.de\/2015\/2015-10-14-sftp-auf-microsoft-iis-korrekt-einrichten\/",
+    "wordCount":  348 ,
+    
+    "timeRequired": "PT5M",
+    
+    
+    "keywords": ["SFTP", "IIS", "Windows Server", "Anleitung", "Troubleshooting", "Netzwerk"],
+    
+    
+    "articleSection": ["hosting", "anleitungen"],
+    
+    
+    "abstract": "Dieser Artikel behandelt häufige Probleme bei der Einrichtung eines SFTP-Servers auf Microsoft IIS, darunter Zertifikatsfehler, Probleme mit passiven Verbindungen und Benutzerberechtigungen. Er bietet Lösungen, wie die korrekte Generierung von Server-Zertifikaten mittels PowerShell und die Behebung von Verbindungsschwierigkeiten.",
+    
+    
+    "genre": "troubleshooting_guide",
+    
+    
+    "educationalLevel": "advanced",
+    
+    "inLanguage": "de"
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "SFTP auf Microsoft IIS korrekt einrichten",
+    "description": "Das Einrichten eines SFTP-Servers klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:\nUngültiges Server-Zertifikat: …",
+    
+    "proficiencyLevel": "advanced",
+    
+    
+    "dependencies": ["Grundkenntnisse in Windows Server und IIS", "Verständnis von Netzwerkprotokollen (FTP, SFTP)", "Erfahrung mit PowerShell"],
+    
+    
+    "about": [
+      
+      
+      {
+        "@type": "Thing",
+        "name": "SFTP"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Microsoft IIS"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Server Konfiguration"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Netzwerksicherheit"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Zertifikate"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "PowerShell"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Troubleshooting"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Windows Server"
+      }
+      
+    ],
+    
+    "datePublished": "2015-10-14T00:00:00Z",
+    "dateModified": "2026-05-07T15:36:59\u002b02:00",
+    "author": {
+      "@type": "Person",
+      "name": ""
+    }
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Nicky Reinert",
+    "url": "https:\/\/nickyreinert.de\/",
+    "description": "Blog \u0026 Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung \u0026 Software Development, KI, SEO \u0026 Analytics, Hosting \u0026 DevOps, WordPress \u0026 Hugo, Tools \u0026 Projekte, Datenschutz und digitale Kultur",
+    "inLanguage": "de",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https:\/\/nickyreinert.de\/search/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+]
+</script>
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+  
+
+<script defer src="/js/alpine.min.js"></script>
+
+
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institut für digitale Herausforderungen</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://not-a-brand.myspreadshop.de/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/analysen/">analysen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+
+
+    
+<main id="main" class="post">
+  
+  
+  <div class="post-header">
+    <div class="navigation" style="align-items: center;">
+      <div style="flex-shrink: 0; width: 50px;">
+        
+      </div>
+      
+      <h1 style="flex: 1; text-align: center; min-width: 0; padding: 0 0.5rem;" itemprop="headline">SFTP auf Microsoft IIS korrekt einrichten</h1>
+      
+      <div style="flex-shrink: 0; width: 50px; text-align: right;">
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="post-meta" style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; color: #878787;">
+    October 14, 2015 &nbsp;|&nbsp; Kategorie: 
+    
+    <a class="link" href='https://nickyreinert.de/categories/hosting' style="text-decoration: none;">hosting</a>
+    
+    <a class="link" href='https://nickyreinert.de/categories/anleitungen' style="text-decoration: none;">anleitungen</a>
+    
+  </div>
+    
+  
+  
+  
+  <details style="margin-top: 0.5rem; margin-bottom: 2rem; font-size: 0.9rem; color: #878787; background: none; border: none;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc" style="margin-left: 1rem;">
+      <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#problem-1-ungültiges-server-zertifikat">Problem 1: Ungültiges Server-Zertifikat</a></li>
+        <li><a href="#problem-2-passive-ports-und-firewall">Problem 2: Passive Ports und Firewall</a></li>
+        <li><a href="#problem-3-benutzerberechtigungen">Problem 3: Benutzerberechtigungen</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
+    <p>Das Einrichten eines <strong>SFTP-Servers</strong> klingt einfach, ist es aber nicht. Es gibt mindestens drei Probleme, denen du begegnen wirst:</p>
+<ol>
+<li><strong>Ungültiges Server-Zertifikat:</strong> Die Verbindung zum Server schlägt fehl, weil das Server-Zertifikat ungültig ist. Die Fehlermeldung in FileZilla lautet dann z. B.:<br>
+<em>GnuTLS error -48: Key usage violation in certificate has been detected. Could not connect to server.</em></li>
+<li><strong>Probleme mit passiven Verbindungen:</strong> Obwohl du in der Firewall die <strong>passiven Ports</strong> für den Server freigeschaltet hast, kann die Verbindung nicht vollendet werden. FileZilla bleibt dann z. B. bei der folgenden Zeile stehen:<br>
+<em>150 Opening BINARY mode data connection.</em></li>
+<li><strong>Fehlende Zugriffsrechte:</strong> Der Benutzer hat nicht die nötigen Zugriffsrechte für den Ordner, den du in den Einstellungen des FTP-Servers angegeben hast.</li>
+</ol>
+<p>Keine Sorge. Mit diesen drei Problemen durfte auch ich schon kämpfen, und ich habe die Lösungen hier zusammengetragen. Also&hellip; eins nach dem anderen.</p>
+<h3 id="problem-1-ungültiges-server-zertifikat">Problem 1: Ungültiges Server-Zertifikat</h3>
+<p>Die Ursache des ersten Problems ist der Assistent, mit dem man im IIS das Server-Zertifikat erstellt. Auf den Punkt gebracht, nutzt dieser ein paar falsche Parameter. Aus diesem Grund muss das Zertifikat per Hand in der <strong>PowerShell</strong> erstellt werden. Wichtig: In der normalen Konsole funktioniert das nicht.</p>
+<p>Lösung: Laut einem Beitrag in den 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://forums.iis.net/t/1234970.aspx?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">IIS-Foren</a>
+
+
+ kannst du das Zertifikat mit PowerShell generieren:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">New-SelfSignedCertificate</span> <span class="n">-CertStoreLocation</span> <span class="n">cert</span><span class="err">:</span><span class="p">\</span><span class="n">LocalMachine</span><span class="p">\</span><span class="n">My</span> <span class="n">-dnsname</span> <span class="n">ftp</span><span class="p">.</span><span class="py">example</span><span class="p">.</span><span class="py">com</span>
+</span></span></code></pre></div><p>Ersetze <code>ftp.example.com</code> durch den Hostnamen deines Servers.</p>
+<p>Du erhältst einen Fingerabdruck (Fingerprint). Kopiere diesen und setze ein Passwort für den privaten Schlüssel:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="ln">1</span><span class="cl"><span class="nv">$password</span> <span class="p">=</span> <span class="nb">ConvertTo-SecureString</span> <span class="n">-String</span> <span class="s2">&#34;password goes here&#34;</span> <span class="n">-Force</span> <span class="n">-AsPlainText</span>
+</span></span></code></pre></div><p>Exportiere das Zertifikat (ändere <code>C:\cert.pfx</code> auf den gewünschten Speicherort, die Datei muss mit <code>.pfx</code> enden):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">Export-PfxCertificate</span> <span class="n">-cert</span> <span class="n">cert</span><span class="err">:</span><span class="p">\</span><span class="n">LocalMachine</span><span class="p">\</span><span class="n">My</span><span class="p">\</span><span class="n">FINGERPRINT</span> <span class="n">-FilePath</span> <span class="n">C:</span><span class="p">\</span><span class="n">cert</span><span class="p">.</span><span class="py">pfx</span> <span class="n">-Password</span> <span class="nv">$password</span>
+</span></span></code></pre></div><h3 id="problem-2-passive-ports-und-firewall">Problem 2: Passive Ports und Firewall</h3>
+<p>Stelle sicher, dass die <strong>passiven Ports</strong> in der Firewall freigegeben sind. Dies geschieht in den IIS-Einstellungen unter <strong>FTP-Firewall-Unterstützung</strong>. Trage dort den Portbereich ein, den du verwenden möchtest, und öffne diese Ports in der Windows-Firewall.</p>
+<h3 id="problem-3-benutzerberechtigungen">Problem 3: Benutzerberechtigungen</h3>
+<p>Überprüfe, ob der Benutzer die richtigen Berechtigungen für den angegebenen Ordner hat. Dies kannst du in den <strong>Sicherheitseinstellungen</strong> des Ordners anpassen.</p>
+<figure>
+  <a href="/images/posts/sftp-iis-setup.jpg" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="/images/posts/sftp-iis-setup.jpg" 
+      alt="SFTP auf Microsoft IIS korrekt einrichten - Beispiel für Zertifikate"
+      
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Beispiel für die Einrichtung eines SFTP-Servers auf Microsoft IIS</figcaption>
+</figure>
+
+<p><strong>Weitere Ressourcen:</strong></p>
+<ul>
+<li>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.visualsvn.com/support/topic/00056/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">VisualSVN: Zertifikate korrekt zuweisen</a>
+
+
+</li>
+<li>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://grantcurell.com/2013/12/31/failed-to-retrieve-directory-listing-filezilla-connecting-to-iis-behind-nat/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">FileZilla und IIS hinter NAT</a>
+
+
+</li>
+<li>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://ekiwi-blog.de/?p=3465&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Ekiwi-Blog: Troubleshooting</a>
+
+
+</li>
+</ul>
+
+    
+  </article>
+
+
+  
+  
+  <div style="width: 100%; margin-top: 2rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
+
+      <p>Dieser Artikel behandelt häufige Probleme bei der Einrichtung eines SFTP-Servers auf Microsoft IIS, darunter Zertifikatsfehler, Probleme mit passiven Verbindungen und Benutzerberechtigungen. Er bietet Lösungen, wie die korrekte Generierung von Server-Zertifikaten mittels PowerShell und die Behebung von Verbindungsschwierigkeiten.</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">SFTP</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Microsoft IIS</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Server Konfiguration</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Netzwerksicherheit</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Zertifikate</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">PowerShell</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Troubleshooting</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Windows Server</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 5 Minuten</p>
+      
+    </div>
+  </div>
+  
+
+  
+  <div class="paginator">
+    
+    <a></a>
+    
+    
+    <a></a>
+    
+  </div>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="privacy.html">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>

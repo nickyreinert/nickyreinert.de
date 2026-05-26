@@ -1,52 +1,650 @@
-<!doctype html><html lang=de-DE><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="ie=edge"><meta name=author content><meta name=description content="Wenn mal als alleiniger Nutzer die kostenlose Warenwirtschaft JTL-Wawi einsetzen möchte, kommt man zunächst auf die Idee, sich einfach per Remote-Desktop (RDP) auf dem Windows-Rechner anzumelden, um so JTL zu nutzen. Doch diese JTL-Wawi Fernsteuerung hat zwei entscheidende Haken:
+<!DOCTYPE html>
+<html lang="de-DE">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="Wenn mal als alleiniger Nutzer die kostenlose Warenwirtschaft JTL-Wawi einsetzen möchte, kommt man zunächst auf die Idee, sich einfach per Remote-Desktop (RDP) auf dem Windows-Rechner anzumelden, um so JTL zu nutzen. Doch diese JTL-Wawi Fernsteuerung hat zwei entscheidende Haken:
 Warum JTL-Wawi auf einem gehosteten Windows-Server problematisch sein könnten?
-Erstens ist die Verbindung per RDP  auf einen Windows-Server per Microsoft-Lizenzbedingung für gewöhnlich nur für administrative Zwecke erlaubt. Es sei denn, man installiert einen Terminal-Server und die notwendigen Zugriffslizenzen. Das Problem ist aber, dass die Verwendung eines Terminal Servers auf Virtuellen Servern von Microsoft ebenfalls untersagt ist. Entweder man hat den Windows-Server also zuhause unter dem Tisch stehen oder man nutzt beim Hoster seiner Wahl die weitaus teureren Dedicated Root Server."><link rel=icon href=https://nickyreinert.de/images/favicon.svg><meta name=keywords content=" JTL-Wawi  SQL Server  Windows Server  Fernzugriff  RDP  Firewall  Datenbank  ERP  Warenwirtschaft  Anleitung  Troubleshooting  Netzwerk "><link rel=stylesheet href=/css/katex.min.css><script defer src=/js/katex.min.js></script><script defer src=/js/auto-render.min.js></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"\\[",right:"\\]",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1}],ignoredTags:["script","noscript","style","textarea","pre","code","option"],throwOnError:!1})})</script><meta property="og:url" content="https://nickyreinert.de/2017/2017-09-28-jtl-wawi-fernsteuerung-auf-windows-server-einrichten/"><meta property="og:site_name" content="Nicky Reinert"><meta property="og:title" content="JTL-Wawi Fernsteuerung auf Windows-Server einrichten"><meta property="og:description" content="Wenn mal als alleiniger Nutzer die kostenlose Warenwirtschaft JTL-Wawi einsetzen möchte, kommt man zunächst auf die Idee, sich einfach per Remote-Desktop (RDP) auf dem Windows-Rechner anzumelden, um so JTL zu nutzen. Doch diese JTL-Wawi Fernsteuerung hat zwei entscheidende Haken:
-Warum JTL-Wawi auf einem gehosteten Windows-Server problematisch sein könnten? Erstens ist die Verbindung per RDP auf einen Windows-Server per Microsoft-Lizenzbedingung für gewöhnlich nur für administrative Zwecke erlaubt. Es sei denn, man installiert einen Terminal-Server und die notwendigen Zugriffslizenzen. Das Problem ist aber, dass die Verwendung eines Terminal Servers auf Virtuellen Servern von Microsoft ebenfalls untersagt ist. Entweder man hat den Windows-Server also zuhause unter dem Tisch stehen oder man nutzt beim Hoster seiner Wahl die weitaus teureren Dedicated Root Server."><meta property="og:locale" content="de_DE"><meta property="og:type" content="article"><meta property="article:section" content="2017"><meta property="article:published_time" content="2017-09-28T00:00:00+00:00"><meta property="article:modified_time" content="2026-05-07T15:36:59+02:00"><meta property="article:tag" content="Jtl"><meta property="article:tag" content="Jtl-Wawi"><meta property="article:tag" content="Microsoft-Sql-Server"><meta property="article:tag" content="Rdp"><meta property="article:tag" content="Remote-Desktop"><meta property="article:tag" content="SQL"><link rel=canonical href=https://nickyreinert.de/2017/2017-09-28-jtl-wawi-fernsteuerung-auf-windows-server-einrichten/><meta itemprop=name content="JTL-Wawi Fernsteuerung auf Windows-Server einrichten"><meta itemprop=description content="Wenn mal als alleiniger Nutzer die kostenlose Warenwirtschaft JTL-Wawi einsetzen möchte, kommt man zunächst auf die Idee, sich einfach per Remote-Desktop (RDP) auf dem Windows-Rechner anzumelden, um so JTL zu nutzen. Doch diese JTL-Wawi Fernsteuerung hat zwei entscheidende Haken:
-Warum JTL-Wawi auf einem gehosteten Windows-Server problematisch sein könnten? Erstens ist die Verbindung per RDP auf einen Windows-Server per Microsoft-Lizenzbedingung für gewöhnlich nur für administrative Zwecke erlaubt. Es sei denn, man installiert einen Terminal-Server und die notwendigen Zugriffslizenzen. Das Problem ist aber, dass die Verwendung eines Terminal Servers auf Virtuellen Servern von Microsoft ebenfalls untersagt ist. Entweder man hat den Windows-Server also zuhause unter dem Tisch stehen oder man nutzt beim Hoster seiner Wahl die weitaus teureren Dedicated Root Server."><meta itemprop=datePublished content="2017-09-28T00:00:00+00:00"><meta itemprop=dateModified content="2026-05-07T15:36:59+02:00"><meta itemprop=wordCount content="870"><meta itemprop=keywords content="JTL-Wawi,SQL Server,Windows Server,Fernzugriff,RDP,Firewall,Datenbank,ERP,Warenwirtschaft,Anleitung,Troubleshooting,Netzwerk"><link media=screen rel=stylesheet href=https://nickyreinert.de/css/common.css><link media=screen rel=stylesheet href=https://nickyreinert.de/css/content.css><title>JTL-Wawi Fernsteuerung auf Windows-Server einrichten - Nicky Reinert</title><meta name=twitter:card content="summary"><meta name=twitter:title content="JTL-Wawi Fernsteuerung auf Windows-Server einrichten"><meta name=twitter:description content="Wenn mal als alleiniger Nutzer die kostenlose Warenwirtschaft JTL-Wawi einsetzen möchte, kommt man zunächst auf die Idee, sich einfach per Remote-Desktop (RDP) auf dem Windows-Rechner anzumelden, um so JTL zu nutzen. Doch diese JTL-Wawi Fernsteuerung hat zwei entscheidende Haken:
-Warum JTL-Wawi auf einem gehosteten Windows-Server problematisch sein könnten? Erstens ist die Verbindung per RDP auf einen Windows-Server per Microsoft-Lizenzbedingung für gewöhnlich nur für administrative Zwecke erlaubt. Es sei denn, man installiert einen Terminal-Server und die notwendigen Zugriffslizenzen. Das Problem ist aber, dass die Verwendung eines Terminal Servers auf Virtuellen Servern von Microsoft ebenfalls untersagt ist. Entweder man hat den Windows-Server also zuhause unter dem Tisch stehen oder man nutzt beim Hoster seiner Wahl die weitaus teureren Dedicated Root Server."><script type=application/ld+json>[{"@context":"https://schema.org","@type":"BlogPosting","headline":"JTL-Wawi Fernsteuerung auf Windows-Server einrichten","description":"Wenn mal als alleiniger Nutzer die kostenlose Warenwirtschaft JTL-Wawi einsetzen möchte, kommt man zunächst auf die Idee, sich einfach per Remote-Desktop (RDP) …","datePublished":"2017-09-28T00:00:00Z","dateModified":"2026-05-07T15:36:59\u002b02:00","author":{"@type":"Person","name":"","url":"https:\/\/nickyreinert.de\/"},"publisher":{"@type":"Organization","name":"Nicky Reinert","url":"https:\/\/nickyreinert.de\/","logo":{"@type":"ImageObject","url":"https:\/\/nickyreinert.de\/images\/logo.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/nickyreinert.de\/2017\/2017-09-28-jtl-wawi-fernsteuerung-auf-windows-server-einrichten\/"},"image":{"@type":"ImageObject","url":"https:\/\/nickyreinert.de\/images\/posts\/placeholder.jpg","width":1200,"height":630},"url":"https:\/\/nickyreinert.de\/2017\/2017-09-28-jtl-wawi-fernsteuerung-auf-windows-server-einrichten\/","wordCount":870,"timeRequired":"PT5M","keywords":["jtl","jtl-wawi","microsoft-sql-server","rdp","remote-desktop","sql","warenwirtschaft","windows-server","ERP"],"articleSection":["hosting","anleitungen"],"abstract":"Diese Anleitung beschreibt die Einrichtung der JTL-Wawi Warenwirtschaft für den Fernzugriff auf einen Microsoft SQL Server unter Windows. Sie behandelt die Konfiguration des SQL Servers (Porteinstellungen, Benutzerverwaltung), der Windows Firewall und des JTL-Wawi Clients, um eine externe Verbindung zu ermöglichen, und diskutiert dabei auch Sicherheitsaspekte und Alternativen wie VPN-Tunnel.","genre":"how-to_guide","educationalLevel":"advanced","inLanguage":"de"},{"@context":"https://schema.org","@type":"TechArticle","headline":"JTL-Wawi Fernsteuerung auf Windows-Server einrichten","description":"Wenn mal als alleiniger Nutzer die kostenlose Warenwirtschaft JTL-Wawi einsetzen möchte, kommt man zunächst auf die Idee, sich einfach per Remote-Desktop (RDP) …","proficiencyLevel":"advanced","dependencies":["Grundkenntnisse in Windows Server Administration","Verständnis von SQL Server","Netzwerkgrundlagen"],"about":[{"@type":"Thing","name":"JTL-Wawi"},{"@type":"Thing","name":"Microsoft SQL Server"},{"@type":"Thing","name":"Windows Server"},{"@type":"Thing","name":"Remote Access"},{"@type":"Thing","name":"Netzwerkkonfiguration"},{"@type":"Thing","name":"Firewall"},{"@type":"Thing","name":"Datenbanken"},{"@type":"Thing","name":"ERP Systeme"},{"@type":"Thing","name":"IT Sicherheit"}],"datePublished":"2017-09-28T00:00:00Z","dateModified":"2026-05-07T15:36:59\u002b02:00","author":{"@type":"Person","name":""}},{"@context":"https://schema.org","@type":"WebSite","name":"Nicky Reinert","url":"https:\/\/nickyreinert.de\/","description":"Blog \u0026 Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung \u0026 Software Development, KI, SEO \u0026 Analytics, Hosting \u0026 DevOps, WordPress \u0026 Hugo, Tools \u0026 Projekte, Datenschutz und digitale Kultur","inLanguage":"de","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https:\/\/nickyreinert.de\/search/?q={search_term_string}"},"query-input":"required name=search_term_string"}}]</script><link rel=stylesheet href=https://nickyreinert.de/css/single.css><script defer src=/js/alpine.min.js></script></head><body><div id=wrapper><header id=header><span class=header-content><p class=left><a id=site-title href=https://nickyreinert.de/>Nicky Reinert</a></p><p class=center>//</p><p class=right>Institut für digitale Herausforderungen</p></span><br><div class=footnote><span class=nav-bar-item><b>extern</b>
-<a target=_blank class=link href=https://www.linkedin.com/in/nickyreinert/>LinkedIn</a>
-<a target=_blank class=link href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
-<a target=_blank class=link href=https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA>YouTube</a>
-<a target=_blank class=link href=https://github.com/nickyreinert>GitHub</a>
-<a target=_blank class=link href=https://not-a-brand.myspreadshop.de/>"Merch"</a>
-<a target=_blank class=link href=https://ministerium-für-digitale-herausforderungen.de>ministerium</a>
-<a target=_blank class=link href=https://institut-fdh.de//>institut</a>
-<a target=_blank class=link href=https://fantastokrat.de/>fantastokrat</a>
-<a target=_blank class=link href=https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5>random knowledge</a></span><br><span class=nav-bar-item><b>literatur</b>
-<a target=_blank class=link href=https://amzn.eu/d/5LYXyUu>Dit is Berlin - B.N.H.K.</a>
-<a target=_blank class=link href=https://amzn.eu/d/3hWCrK1>Geometrische Gottheiten</a></span><nav><b>intern</b>
-<span class=nav-bar-item><a class=link href=/categories/blog/>blog</a>
-</span><span class=nav-bar-item><a class=link href=/categories/analysen/>analysen</a>
-</span><span class=nav-bar-item><a class=link href=/categories/nerdenz/>nerdenz</a>
-</span><span class=nav-bar-item><a class=link href=/categories/anleitungen/>anleitungen</a>
-</span><span class=nav-bar-item><a class=link href=/categories/wordpress/>wordpress</a>
-</span><span class=nav-bar-item><a class=link href=/categories/hosting/>hosting</a>
-</span><span class=nav-bar-item><a class=link href=/categories/tools/>tools</a>
-</span><span class=nav-bar-item><a class=link href=/categories/development/>development</a>
-</span><span class=nav-bar-item><a class=link href=/categories/projekte/>projekte</a>
-</span><span class=nav-bar-item><a class=link href=/categories/autismus/>autismus</a></span></nav></div><br></header><main id=main class=post><div class=post-header><div class=navigation style=align-items:center><div style=flex-shrink:0;width:50px><a class="link prev" href=/2017/2017-09-26-excel-vorlage-fuer-iso-toleranzen/ style=font-size:1.2rem>&lt;&lt;&lt;</a></div><h1 style="flex:1;text-align:center;min-width:0;padding:0 .5rem" itemprop=headline>JTL-Wawi Fernsteuerung auf Windows-Server einrichten</h1><div style=flex-shrink:0;width:50px;text-align:right><a class="link next" href=/2017/2017-09-29-total-commander-als-sftp-client-einrichten/ style=font-size:1.2rem>>>></a></div></div></div><div class=post-meta style=font-size:.9rem;margin-top:.5rem;text-align:center;color:#878787>September 28, 2017 &nbsp;|&nbsp; Kategorie:
-<a class=link href=https://nickyreinert.de/categories/hosting style=text-decoration:none>hosting</a>
-<a class=link href=https://nickyreinert.de/categories/anleitungen style=text-decoration:none>anleitungen</a></div><details style="margin-top:.5rem;margin-bottom:2rem;font-size:.9rem;color:#878787;background:0 0;border:none"><summary><b>Table of Contents</b></summary><div class=toc style=margin-left:1rem><nav id=TableOfContents><ul><li><a href=#warum-jtl-wawi-auf-einem-gehosteten-windows-server-problematisch-sein-könnten>Warum JTL-Wawi auf einem gehosteten Windows-Server problematisch sein könnten?</a></li><li><a href=#wie-kann-der-windows-server-eingerichtet-werden-um-jtl-wawi-den-zugriff-von-außen-zu-ermöglichen>Wie kann der Windows-Server eingerichtet werden, um JTL-Wawi den Zugriff von außen zu ermöglichen?</a><ul><li><a href=#porteinstellungen>Porteinstellungen</a></li><li><a href=#benutzereinrichtung>Benutzereinrichtung</a></li><li><a href=#firewall-einstellung>Firewall-Einstellung</a></li><li><a href=#jtl-wawi-einrichten>JTL-Wawi einrichten</a></li></ul></li><li><a href=#nachteile-der-jtl-wawi-fernsteuerung>Nachteile der JTL-Wawi Fernsteuerung</a></li></ul></nav></div></details><article style="border-top:2px solid #878787" class=content><p>Wenn mal als alleiniger Nutzer die kostenlose Warenwirtschaft JTL-Wawi einsetzen möchte, kommt man zunächst auf die Idee, sich einfach per Remote-Desktop (RDP) auf dem Windows-Rechner anzumelden, um so JTL zu nutzen. Doch diese JTL-Wawi Fernsteuerung hat zwei entscheidende Haken:</p><h2 id=warum-jtl-wawi-auf-einem-gehosteten-windows-server-problematisch-sein-könnten>Warum JTL-Wawi auf einem gehosteten Windows-Server problematisch sein könnten?</h2><p>Erstens ist die Verbindung per RDP  auf einen Windows-Server per Microsoft-Lizenzbedingung für gewöhnlich nur für administrative Zwecke erlaubt. Es sei denn, man installiert einen Terminal-Server und die notwendigen Zugriffslizenzen. Das Problem ist aber, dass die Verwendung eines Terminal Servers auf Virtuellen Servern von Microsoft ebenfalls untersagt ist. Entweder man hat den Windows-Server also zuhause unter dem Tisch stehen oder man nutzt beim Hoster seiner Wahl die weitaus teureren Dedicated Root Server.</p><p>Zweitens ist die Verbindung per Remote-Desktop auf zwei gleichzeitige Zugriffe bzw. Administratoren beschränkt. Selbst wenn man also die Lizenzbedingungen ignoriert: Wer die Warenwirtschaft mit mehreren Anwendern nutzen will, wird ziemlich schnell ein Problem bekommen.</p><p>Die Lösung ist es, JTL Wawi lokal zu installieren und für den Zugriff auf den Windows-Server vorzubereiten. Im Folgenden werde ich die dazu notwendigen Einstellungen beschreiben.</p><h2 id=wie-kann-der-windows-server-eingerichtet-werden-um-jtl-wawi-den-zugriff-von-außen-zu-ermöglichen>Wie kann der Windows-Server eingerichtet werden, um JTL-Wawi den Zugriff von außen zu ermöglichen?</h2><p>Auf einem gehosteten Windows-Server läuft ein Microsoft SQL Server. Die Anwender sollen auf ihren lokalen Windows-Rechnern die JTL Wawi nutzen, die sich mit dem entfernten Microsoft SQL-Server verbindet.</p><h3 id=porteinstellungen>Porteinstellungen</h3><p>Zunächst einmal bringen wir dem SQL Server bei, dass er auch auf der öffentlichen IP-Adresse erreichbar ist und welchen Port er dafür benutzen soll. Im SQL-Server-Configuration-Manager (SQLServerManager13.msc) muss dazu unterhalb der Netzwerk-Konfiguration &ldquo;Protokolle für JTL-WAWI&rdquo; ausgewählt werden. Dort befinden sich die Einstellungen für das Protokoll TCP/IP, die wir nun anpassen. Erstmal muss natürlich das Protokoll unter aktiviert werden: &ldquo;Enabled: Ja&rdquo;. Danach wird mit &ldquo;Listen all: Ja&rdquo; festgelegt, dass der SQL-Server über alle verfügbaren Netzwerkschnittstellen ansprechbar ist (
-<a href="https://docs.microsoft.com/de-de/sql/tools/configuration-manager/tcp-ip-properties-protocols-tab?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target=_blank rel="noopener noreferrer">siehe Microsoft-Doks</a>
-). Wer den Server nur lokal verwendet, sollte diesen Schalter auf &ldquo;Nein&rdquo; setzen und die Einstellungen nur für die private, lokale IP-Adresse vornehmen.</p><p>Die entscheidende Einstellung befindet sich im Reiter &ldquo;IP-Adressen&rdquo;. Wenn zuvor &ldquo;Listen all: Ja&rdquo; eingestellt wurde, muss hier am Ende der Liste die Einstellung für &ldquo;IPALL&rdquo; angepasst werden. Hier genügt es, für TCP-Port einen beliebigen Port anzugeben. Der Standard-Port für Microsoft SQL ist 1433. Es empfiehlt sich, einen anderen Port zu wählen, damit der einfache Port-Scan nicht sofort auf die Idee kommt, dass hier ein MS-SQL-Dienst erreichbar ist.</p><p>[gallery ids=&ldquo;1514,1512,1513&rdquo;]</p><p> </p><h3 id=benutzereinrichtung>Benutzereinrichtung</h3><p>Als nächstes geht es an die Einrichtung der Benutzer, für die JTL-Wawi Fernsteuerung erlaubt werden soll. Dazu wird im Microsoft SQL Management Studio (ssms.exe)  entsprechende JTL-Datenbank geöffnet und unter Sicherheit per Rechtsklick auf Anmeldungen eine neue Anmeldung erstellt. Der Name ist natürlich frei wählbar. Das Passwort für die Anmeldung kann man eingeben, wenn man &ldquo;SQL Server-Authentifizierung&rdquo; auswählt. Natürlich empfiehlt es sich, entsprechend strenge Kennwort-Richtlinien zu verwenden. Unter &ldquo;Benutzerrollen&rdquo; muss der neue Benutzer nun noch der entsprechenden Datenbank zugewiesen und darauf Schreib- und Leserechte zugewiesen werden. Im Beispiel heißen diese Rollen  db_reader und db_writer.</p><p>[gallery ids=&ldquo;1516,1515&rdquo;]</p><h3 id=firewall-einstellung>Firewall-Einstellung</h3><p>Nun, da die Datenbank korrekt eingerichtet ist, muss die Firewall entsprechend geöffnet werden, um den Zugriff von außen zu ermöglichen. Die Windows-Firewall-Einstellungen erreichen wir über wf.msc. Dort wird eine neue eingehende Regel angelegt. Hier gibt es zwei Möglichkeiten: Entweder dem Microsoft SQL-Server wird generell der Kontakt zur Außenwelt genehmigt, oder wir öffnen nur den entsprechenden Port. Aus Sicherheitsgründen sollte die Einstellung allerdings so eng wie möglich gewählt werden. Wir wählen als Regeltyp also &ldquo;Port&rdquo; und geben dann den Port ein, den wir zu Beginn festgelegt haben. Unter &ldquo;Aktion&rdquo; muss natürlich &ldquo;Verbindung zulassen&rdquo; ausgewählt werden. Im nächsten Fenster &ldquo;Profil&rdquo; können alle Felder aktiviert bleiben. Die Regel soll ja vor allem für öffentliche Kommunikation erlauben. Abschließend kann noch ein Name für die Regel vergeben werden. Fertig.</p><p>[gallery ids=&ldquo;1518,1517&rdquo;]</p><p> </p><p>Auf der Serverseite ist nun alles fertig eingerichtet. Als nächstes folgt die Einrichtung der JTL-Wawi auf dem lokalen Rechner.</p><h3 id=jtl-wawi-einrichten>JTL-Wawi einrichten</h3><p>Nach dem
-<a href="https://www.jtl-software.de/JTL-Wawi-Download?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target=_blank rel="noopener noreferrer">Download</a>
-und der Installation der Software wird uns diese beim ersten Start zur Datenbankverwaltung führen. Hier legen wir ein neues Profil mit einem wohlklingenden Namen an tragen die Adresse zu unserem Windows-Server ein, auf dem der Microsoft SQL-Server läuft.  Wichtig ist, dass wir den oben konfigurierten Port hier mit einem Komma getrennt hinter die Server-Adresse eintragen. Als nächstes will das Programm von uns die vorher angelegten Zugangsdaten wissen. Wenn diese korrekt sind, erhalten wir nun eine Liste der Mandanten zur Auswahl und die Einrichtung der Software ist abgeschlossen.</p><p>[gallery ids=&ldquo;1520,1519,1521&rdquo;]</p><p>Fertig. Nun  kann man die JTL-Wawi Fernsteuerung so nutzen, als würde man direkt auf dem Server arbeiten.</p><p>[caption id=&ldquo;attachment_1527&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;150&rdquo;]
-<a href="https://www.nickyreinert.de/files/jtl-wawi-fernsteuerung-mit-windows-server-ermoeglichen/jtl-wawi-fernsteuerung.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target=_blank rel="noopener noreferrer"><img src=/2017/2017-09-28-jtl-wawi-fernsteuerung-auf-windows-server-einrichten/images/jtl-wawi-fernsteuerung-150x150.png alt="Die JTL-Wawi Fernsteuerung ist komplett eingerichtet"></a>
-Die JTL-Wawi Fernsteuerung ist komplett eingerichtet[/caption]</p><h2 id=nachteile-der-jtl-wawi-fernsteuerung>Nachteile der JTL-Wawi Fernsteuerung</h2><p>Die hier vorgestellte Konfiguration für die JTL-Wawi Fernsteuerung hat einen großen, entscheidenden Nachteil: Sie ist relativ unsicher. Zwar ist der Zugriff auf die Datenbank mit Benutzernamen und Passwort geschützt, dennoch gehört es nicht gerade zum guten Ton, die Datenbank öffentlich über das Internet erreichbar zu machen. Hier gibt es einige Möglichkeiten, sich besser zu schützen.</p><p>Entweder man richtet einen  VPN-Tunnel ein, über den auf die Datenbank zugegriffen wird. Oder man hat die Möglichkeit, feste IP-Adressen zu vergeben, für den der Zugriff in der Windows-Firewall eingeschränkt werden kann. Ist auch das nicht möglich, sollte man wenigstens den IP-Adressbereich in der Windows-Firewall einrichten, dass er nur Zugriffe des jeweiligen Internet-Service-Providers (ISP) zulässt.</p></article><div style="width:100%;margin-top:2rem;border-top:2px solid #9a9a9a;padding:1rem;color:#878787"><h2 style=font-size:1.3rem;margin-bottom:1rem>Zusammenfassung</h2><div style=font-size:1rem><p>Diese Anleitung beschreibt die Einrichtung der JTL-Wawi Warenwirtschaft für den Fernzugriff auf einen Microsoft SQL Server unter Windows. Sie behandelt die Konfiguration des SQL Servers (Porteinstellungen, Benutzerverwaltung), der Windows Firewall und des JTL-Wawi Clients, um eine externe Verbindung zu ermöglichen, und diskutiert dabei auch Sicherheitsaspekte und Alternativen wie VPN-Tunnel.</p><br><p><strong>Hauptthemen:</strong>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">JTL-Wawi</span>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">Microsoft SQL Server</span>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">Windows Server</span>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">Remote Access</span>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">Netzwerkkonfiguration</span>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">Firewall</span>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">Datenbanken</span>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">ERP Systeme</span>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">IT Sicherheit</span></p><p><strong>Schwierigkeitsgrad:</strong> advanced</p><p><strong>Lesezeit:</strong> ca. 5 Minuten</p></div></div><div class=paginator><a class=link href=https://nickyreinert.de/2017/2017-09-26-excel-vorlage-fuer-iso-toleranzen/>← prev</a>
-<a class=link href=https://nickyreinert.de/2017/2017-09-29-total-commander-als-sftp-client-einrichten/>next →</a></div></main><footer id=footer><div><span>© 1979 Nicky Reinert</span> // <span>Powered by </span><a class=link href=https://gohugo.io/>Hugo</a> //
-<span>kontakt: nickyreinert -at- gmail -dot- com</span> //
-<a class=link href=privacy.html>Datenschutzerklärung</a> //
-<bold><a class="link lang-btn" href=# data-lang=de><svg width="16" height="12" viewBox="0 0 5 3" style="display:inline-block;vertical-align:middle;margin-right:8px;flex-shrink:0"><rect width="5" height="3" fill="#FFCE00"/><rect width="5" height="2" fill="#D00"/><rect width="5" height="1" fill="#000"/></svg>Deutsch</a> //
-<a class="link lang-btn" href=# data-lang=en><svg width="16" height="12" viewBox="0 0 60 30" style="display:inline-block;vertical-align:middle;margin-right:8px;flex-shrink:0"><clipPath id="s-v2"><path d="M0 0v30h60V0z"/></clipPath><clipPath id="s-v1"><path d="M30 15h30v15z 15H0z 0V0z 0h30z"/></clipPath><g clip-path="url(#s-v2)"><path d="M0 0v30h60V0z" fill="#00247d"/><g clip-path="url(#s-v1)"><path d="M0 0l60 30M60 0 0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30M60 0 0 30" stroke="#cf142b" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#cf142b" stroke-width="6"/></g></g></svg>English</a> //
-<a class="link lang-btn" href=# data-lang=*>All(e)</a></bold><br><footer><center><a class=default-link href=https://uberblogr.de/prev/nickyreinert title="Zurück im Ring">&lt; Zurück im Ring</a> //
-Mitglied im <a class=default-link href=https://uberblogr.de/home/nickyreinert title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
-<a class=default-link href=https://uberblogr.de/next/nickyreinert title="Vor im Ring">Weiter im Ring ></a></center><script>document.addEventListener("DOMContentLoaded",function(){var e=document.querySelectorAll(".lang-btn");e.forEach(function(e){e.addEventListener("click",function(t){t.preventDefault();var n=e.getAttribute("data-lang"),s=document.querySelectorAll("[data-lang]");s.forEach(function(e){var t=e.getAttribute("data-lang");t===n||n==="*"?e.classList.remove("hidden"):e.classList.add("hidden")})})})})</script></footer></div></body></html>
+Erstens ist die Verbindung per RDP  auf einen Windows-Server per Microsoft-Lizenzbedingung für gewöhnlich nur für administrative Zwecke erlaubt. Es sei denn, man installiert einen Terminal-Server und die notwendigen Zugriffslizenzen. Das Problem ist aber, dass die Verwendung eines Terminal Servers auf Virtuellen Servern von Microsoft ebenfalls untersagt ist. Entweder man hat den Windows-Server also zuhause unter dem Tisch stehen oder man nutzt beim Hoster seiner Wahl die weitaus teureren Dedicated Root Server.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
+
+  
+  
+  <meta name="keywords" content=" JTL-Wawi  SQL Server  Windows Server  Fernzugriff  RDP  Firewall  Datenbank  ERP  Warenwirtschaft  Anleitung  Troubleshooting  Netzwerk ">
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/css/katex.min.css">
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '\\[', right: '\\]', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false }
+      ],
+      ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'option'],
+      throwOnError: false
+    });
+  });
+</script>
+
+
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/2017/2017-09-28-jtl-wawi-fernsteuerung-auf-windows-server-einrichten/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="JTL-Wawi Fernsteuerung auf Windows-Server einrichten">
+  <meta property="og:description" content="Wenn mal als alleiniger Nutzer die kostenlose Warenwirtschaft JTL-Wawi einsetzen möchte, kommt man zunächst auf die Idee, sich einfach per Remote-Desktop (RDP) auf dem Windows-Rechner anzumelden, um so JTL zu nutzen. Doch diese JTL-Wawi Fernsteuerung hat zwei entscheidende Haken:
+Warum JTL-Wawi auf einem gehosteten Windows-Server problematisch sein könnten? Erstens ist die Verbindung per RDP auf einen Windows-Server per Microsoft-Lizenzbedingung für gewöhnlich nur für administrative Zwecke erlaubt. Es sei denn, man installiert einen Terminal-Server und die notwendigen Zugriffslizenzen. Das Problem ist aber, dass die Verwendung eines Terminal Servers auf Virtuellen Servern von Microsoft ebenfalls untersagt ist. Entweder man hat den Windows-Server also zuhause unter dem Tisch stehen oder man nutzt beim Hoster seiner Wahl die weitaus teureren Dedicated Root Server.">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2017">
+    <meta property="article:published_time" content="2017-09-28T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-05-07T15:36:59+02:00">
+    <meta property="article:tag" content="Jtl">
+    <meta property="article:tag" content="Jtl-Wawi">
+    <meta property="article:tag" content="Microsoft-Sql-Server">
+    <meta property="article:tag" content="Rdp">
+    <meta property="article:tag" content="Remote-Desktop">
+    <meta property="article:tag" content="SQL">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/2017/2017-09-28-jtl-wawi-fernsteuerung-auf-windows-server-einrichten/">
+
+  
+  
+  
+  <meta itemprop="name" content="JTL-Wawi Fernsteuerung auf Windows-Server einrichten">
+  <meta itemprop="description" content="Wenn mal als alleiniger Nutzer die kostenlose Warenwirtschaft JTL-Wawi einsetzen möchte, kommt man zunächst auf die Idee, sich einfach per Remote-Desktop (RDP) auf dem Windows-Rechner anzumelden, um so JTL zu nutzen. Doch diese JTL-Wawi Fernsteuerung hat zwei entscheidende Haken:
+Warum JTL-Wawi auf einem gehosteten Windows-Server problematisch sein könnten? Erstens ist die Verbindung per RDP auf einen Windows-Server per Microsoft-Lizenzbedingung für gewöhnlich nur für administrative Zwecke erlaubt. Es sei denn, man installiert einen Terminal-Server und die notwendigen Zugriffslizenzen. Das Problem ist aber, dass die Verwendung eines Terminal Servers auf Virtuellen Servern von Microsoft ebenfalls untersagt ist. Entweder man hat den Windows-Server also zuhause unter dem Tisch stehen oder man nutzt beim Hoster seiner Wahl die weitaus teureren Dedicated Root Server.">
+  <meta itemprop="datePublished" content="2017-09-28T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-05-07T15:36:59+02:00">
+  <meta itemprop="wordCount" content="870">
+  <meta itemprop="keywords" content="JTL-Wawi,SQL Server,Windows Server,Fernzugriff,RDP,Firewall,Datenbank,ERP,Warenwirtschaft,Anleitung,Troubleshooting,Netzwerk">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>JTL-Wawi Fernsteuerung auf Windows-Server einrichten - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="JTL-Wawi Fernsteuerung auf Windows-Server einrichten">
+  <meta name="twitter:description" content="Wenn mal als alleiniger Nutzer die kostenlose Warenwirtschaft JTL-Wawi einsetzen möchte, kommt man zunächst auf die Idee, sich einfach per Remote-Desktop (RDP) auf dem Windows-Rechner anzumelden, um so JTL zu nutzen. Doch diese JTL-Wawi Fernsteuerung hat zwei entscheidende Haken:
+Warum JTL-Wawi auf einem gehosteten Windows-Server problematisch sein könnten? Erstens ist die Verbindung per RDP auf einen Windows-Server per Microsoft-Lizenzbedingung für gewöhnlich nur für administrative Zwecke erlaubt. Es sei denn, man installiert einen Terminal-Server und die notwendigen Zugriffslizenzen. Das Problem ist aber, dass die Verwendung eines Terminal Servers auf Virtuellen Servern von Microsoft ebenfalls untersagt ist. Entweder man hat den Windows-Server also zuhause unter dem Tisch stehen oder man nutzt beim Hoster seiner Wahl die weitaus teureren Dedicated Root Server.">
+
+
+  
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "JTL-Wawi Fernsteuerung auf Windows-Server einrichten",
+    "description": "Wenn mal als alleiniger Nutzer die kostenlose Warenwirtschaft JTL-Wawi einsetzen möchte, kommt man zunächst auf die Idee, sich einfach per Remote-Desktop (RDP) …",
+    "datePublished": "2017-09-28T00:00:00Z",
+    "dateModified": "2026-05-07T15:36:59\u002b02:00",
+    "author": {
+      "@type": "Person",
+      "name": "",
+      "url": "https:\/\/nickyreinert.de\/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Nicky Reinert",
+      "url": "https:\/\/nickyreinert.de\/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https:\/\/nickyreinert.de\/images\/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/nickyreinert.de\/2017\/2017-09-28-jtl-wawi-fernsteuerung-auf-windows-server-einrichten\/"
+    },
+    
+    "image": {
+      "@type": "ImageObject",
+      "url": "https:\/\/nickyreinert.de\/images\/posts\/placeholder.jpg",
+      "width": 1200,
+      "height": 630
+    },
+    
+    "url": "https:\/\/nickyreinert.de\/2017\/2017-09-28-jtl-wawi-fernsteuerung-auf-windows-server-einrichten\/",
+    "wordCount":  870 ,
+    
+    "timeRequired": "PT5M",
+    
+    
+    "keywords": ["jtl", "jtl-wawi", "microsoft-sql-server", "rdp", "remote-desktop", "sql", "warenwirtschaft", "windows-server", "ERP"],
+    
+    
+    "articleSection": ["hosting", "anleitungen"],
+    
+    
+    "abstract": "Diese Anleitung beschreibt die Einrichtung der JTL-Wawi Warenwirtschaft für den Fernzugriff auf einen Microsoft SQL Server unter Windows. Sie behandelt die Konfiguration des SQL Servers (Porteinstellungen, Benutzerverwaltung), der Windows Firewall und des JTL-Wawi Clients, um eine externe Verbindung zu ermöglichen, und diskutiert dabei auch Sicherheitsaspekte und Alternativen wie VPN-Tunnel.",
+    
+    
+    "genre": "how-to_guide",
+    
+    
+    "educationalLevel": "advanced",
+    
+    "inLanguage": "de"
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "JTL-Wawi Fernsteuerung auf Windows-Server einrichten",
+    "description": "Wenn mal als alleiniger Nutzer die kostenlose Warenwirtschaft JTL-Wawi einsetzen möchte, kommt man zunächst auf die Idee, sich einfach per Remote-Desktop (RDP) …",
+    
+    "proficiencyLevel": "advanced",
+    
+    
+    "dependencies": ["Grundkenntnisse in Windows Server Administration", "Verständnis von SQL Server", "Netzwerkgrundlagen"],
+    
+    
+    "about": [
+      
+      
+      {
+        "@type": "Thing",
+        "name": "JTL-Wawi"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Microsoft SQL Server"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Windows Server"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Remote Access"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Netzwerkkonfiguration"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Firewall"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Datenbanken"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "ERP Systeme"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "IT Sicherheit"
+      }
+      
+    ],
+    
+    "datePublished": "2017-09-28T00:00:00Z",
+    "dateModified": "2026-05-07T15:36:59\u002b02:00",
+    "author": {
+      "@type": "Person",
+      "name": ""
+    }
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Nicky Reinert",
+    "url": "https:\/\/nickyreinert.de\/",
+    "description": "Blog \u0026 Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung \u0026 Software Development, KI, SEO \u0026 Analytics, Hosting \u0026 DevOps, WordPress \u0026 Hugo, Tools \u0026 Projekte, Datenschutz und digitale Kultur",
+    "inLanguage": "de",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https:\/\/nickyreinert.de\/search/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+]
+</script>
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+  
+
+<script defer src="/js/alpine.min.js"></script>
+
+
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institut für digitale Herausforderungen</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://not-a-brand.myspreadshop.de/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/analysen/">analysen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+
+
+    
+<main id="main" class="post">
+  
+  
+  <div class="post-header">
+    <div class="navigation" style="align-items: center;">
+      <div style="flex-shrink: 0; width: 50px;">
+        
+        <a class="link prev" href="/2017/2017-09-26-excel-vorlage-fuer-iso-toleranzen/" style="font-size: 1.2rem;">&lt;&lt;&lt;</a>
+        
+      </div>
+      
+      <h1 style="flex: 1; text-align: center; min-width: 0; padding: 0 0.5rem;" itemprop="headline">JTL-Wawi Fernsteuerung auf Windows-Server einrichten</h1>
+      
+      <div style="flex-shrink: 0; width: 50px; text-align: right;">
+        
+        <a class="link next" href="/2017/2017-09-29-total-commander-als-sftp-client-einrichten/" style="font-size: 1.2rem;">>>></a>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="post-meta" style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; color: #878787;">
+    September 28, 2017 &nbsp;|&nbsp; Kategorie: 
+    
+    <a class="link" href='https://nickyreinert.de/categories/hosting' style="text-decoration: none;">hosting</a>
+    
+    <a class="link" href='https://nickyreinert.de/categories/anleitungen' style="text-decoration: none;">anleitungen</a>
+    
+  </div>
+    
+  
+  
+  
+  <details style="margin-top: 0.5rem; margin-bottom: 2rem; font-size: 0.9rem; color: #878787; background: none; border: none;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc" style="margin-left: 1rem;">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#warum-jtl-wawi-auf-einem-gehosteten-windows-server-problematisch-sein-könnten">Warum JTL-Wawi auf einem gehosteten Windows-Server problematisch sein könnten?</a></li>
+    <li><a href="#wie-kann-der-windows-server-eingerichtet-werden-um-jtl-wawi-den-zugriff-von-außen-zu-ermöglichen">Wie kann der Windows-Server eingerichtet werden, um JTL-Wawi den Zugriff von außen zu ermöglichen?</a>
+      <ul>
+        <li><a href="#porteinstellungen">Porteinstellungen</a></li>
+        <li><a href="#benutzereinrichtung">Benutzereinrichtung</a></li>
+        <li><a href="#firewall-einstellung">Firewall-Einstellung</a></li>
+        <li><a href="#jtl-wawi-einrichten">JTL-Wawi einrichten</a></li>
+      </ul>
+    </li>
+    <li><a href="#nachteile-der-jtl-wawi-fernsteuerung">Nachteile der JTL-Wawi Fernsteuerung</a></li>
+  </ul>
+</nav>
+    </div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
+    <p>Wenn mal als alleiniger Nutzer die kostenlose Warenwirtschaft JTL-Wawi einsetzen möchte, kommt man zunächst auf die Idee, sich einfach per Remote-Desktop (RDP) auf dem Windows-Rechner anzumelden, um so JTL zu nutzen. Doch diese JTL-Wawi Fernsteuerung hat zwei entscheidende Haken:</p>
+<h2 id="warum-jtl-wawi-auf-einem-gehosteten-windows-server-problematisch-sein-könnten">Warum JTL-Wawi auf einem gehosteten Windows-Server problematisch sein könnten?</h2>
+<p>Erstens ist die Verbindung per RDP  auf einen Windows-Server per Microsoft-Lizenzbedingung für gewöhnlich nur für administrative Zwecke erlaubt. Es sei denn, man installiert einen Terminal-Server und die notwendigen Zugriffslizenzen. Das Problem ist aber, dass die Verwendung eines Terminal Servers auf Virtuellen Servern von Microsoft ebenfalls untersagt ist. Entweder man hat den Windows-Server also zuhause unter dem Tisch stehen oder man nutzt beim Hoster seiner Wahl die weitaus teureren Dedicated Root Server.</p>
+<p>Zweitens ist die Verbindung per Remote-Desktop auf zwei gleichzeitige Zugriffe bzw. Administratoren beschränkt. Selbst wenn man also die Lizenzbedingungen ignoriert: Wer die Warenwirtschaft mit mehreren Anwendern nutzen will, wird ziemlich schnell ein Problem bekommen.</p>
+<p>Die Lösung ist es, JTL Wawi lokal zu installieren und für den Zugriff auf den Windows-Server vorzubereiten. Im Folgenden werde ich die dazu notwendigen Einstellungen beschreiben.</p>
+<h2 id="wie-kann-der-windows-server-eingerichtet-werden-um-jtl-wawi-den-zugriff-von-außen-zu-ermöglichen">Wie kann der Windows-Server eingerichtet werden, um JTL-Wawi den Zugriff von außen zu ermöglichen?</h2>
+<p>Auf einem gehosteten Windows-Server läuft ein Microsoft SQL Server. Die Anwender sollen auf ihren lokalen Windows-Rechnern die JTL Wawi nutzen, die sich mit dem entfernten Microsoft SQL-Server verbindet.</p>
+<h3 id="porteinstellungen">Porteinstellungen</h3>
+<p>Zunächst einmal bringen wir dem SQL Server bei, dass er auch auf der öffentlichen IP-Adresse erreichbar ist und welchen Port er dafür benutzen soll. Im SQL-Server-Configuration-Manager (SQLServerManager13.msc) muss dazu unterhalb der Netzwerk-Konfiguration &ldquo;Protokolle für JTL-WAWI&rdquo; ausgewählt werden. Dort befinden sich die Einstellungen für das Protokoll TCP/IP, die wir nun anpassen. Erstmal muss natürlich das Protokoll unter aktiviert werden: &ldquo;Enabled: Ja&rdquo;. Danach wird mit &ldquo;Listen all: Ja&rdquo; festgelegt, dass der SQL-Server über alle verfügbaren Netzwerkschnittstellen ansprechbar ist (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://docs.microsoft.com/de-de/sql/tools/configuration-manager/tcp-ip-properties-protocols-tab?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">siehe Microsoft-Doks</a>
+
+
+). Wer den Server nur lokal verwendet, sollte diesen Schalter auf &ldquo;Nein&rdquo; setzen und die Einstellungen nur für die private, lokale IP-Adresse vornehmen.</p>
+<p>Die entscheidende Einstellung befindet sich im Reiter &ldquo;IP-Adressen&rdquo;. Wenn zuvor &ldquo;Listen all: Ja&rdquo; eingestellt wurde, muss hier am Ende der Liste die Einstellung für &ldquo;IPALL&rdquo; angepasst werden. Hier genügt es, für TCP-Port einen beliebigen Port anzugeben. Der Standard-Port für Microsoft SQL ist 1433. Es empfiehlt sich, einen anderen Port zu wählen, damit der einfache Port-Scan nicht sofort auf die Idee kommt, dass hier ein MS-SQL-Dienst erreichbar ist.</p>
+<p>[gallery ids=&ldquo;1514,1512,1513&rdquo;]</p>
+<p> </p>
+<h3 id="benutzereinrichtung">Benutzereinrichtung</h3>
+<p>Als nächstes geht es an die Einrichtung der Benutzer, für die JTL-Wawi Fernsteuerung erlaubt werden soll. Dazu wird im Microsoft SQL Management Studio (ssms.exe)  entsprechende JTL-Datenbank geöffnet und unter Sicherheit per Rechtsklick auf Anmeldungen eine neue Anmeldung erstellt. Der Name ist natürlich frei wählbar. Das Passwort für die Anmeldung kann man eingeben, wenn man &ldquo;SQL Server-Authentifizierung&rdquo; auswählt. Natürlich empfiehlt es sich, entsprechend strenge Kennwort-Richtlinien zu verwenden. Unter &ldquo;Benutzerrollen&rdquo; muss der neue Benutzer nun noch der entsprechenden Datenbank zugewiesen und darauf Schreib- und Leserechte zugewiesen werden. Im Beispiel heißen diese Rollen  db_reader und db_writer.</p>
+<p>[gallery ids=&ldquo;1516,1515&rdquo;]</p>
+<h3 id="firewall-einstellung">Firewall-Einstellung</h3>
+<p>Nun, da die Datenbank korrekt eingerichtet ist, muss die Firewall entsprechend geöffnet werden, um den Zugriff von außen zu ermöglichen. Die Windows-Firewall-Einstellungen erreichen wir über wf.msc. Dort wird eine neue eingehende Regel angelegt. Hier gibt es zwei Möglichkeiten: Entweder dem Microsoft SQL-Server wird generell der Kontakt zur Außenwelt genehmigt, oder wir öffnen nur den entsprechenden Port. Aus Sicherheitsgründen sollte die Einstellung allerdings so eng wie möglich gewählt werden. Wir wählen als Regeltyp also &ldquo;Port&rdquo; und geben dann den Port ein, den wir zu Beginn festgelegt haben. Unter &ldquo;Aktion&rdquo; muss natürlich &ldquo;Verbindung zulassen&rdquo; ausgewählt werden. Im nächsten Fenster &ldquo;Profil&rdquo; können alle Felder aktiviert bleiben. Die Regel soll ja vor allem für öffentliche Kommunikation erlauben. Abschließend kann noch ein Name für die Regel vergeben werden. Fertig.</p>
+<p>[gallery ids=&ldquo;1518,1517&rdquo;]</p>
+<p> </p>
+<p>Auf der Serverseite ist nun alles fertig eingerichtet. Als nächstes folgt die Einrichtung der JTL-Wawi auf dem lokalen Rechner.</p>
+<h3 id="jtl-wawi-einrichten">JTL-Wawi einrichten</h3>
+<p>Nach dem 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.jtl-software.de/JTL-Wawi-Download?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Download</a>
+
+
+ und der Installation der Software wird uns diese beim ersten Start zur Datenbankverwaltung führen. Hier legen wir ein neues Profil mit einem wohlklingenden Namen an tragen die Adresse zu unserem Windows-Server ein, auf dem der Microsoft SQL-Server läuft.  Wichtig ist, dass wir den oben konfigurierten Port hier mit einem Komma getrennt hinter die Server-Adresse eintragen. Als nächstes will das Programm von uns die vorher angelegten Zugangsdaten wissen. Wenn diese korrekt sind, erhalten wir nun eine Liste der Mandanten zur Auswahl und die Einrichtung der Software ist abgeschlossen.</p>
+<p>[gallery ids=&ldquo;1520,1519,1521&rdquo;]</p>
+<p>Fertig. Nun  kann man die JTL-Wawi Fernsteuerung so nutzen, als würde man direkt auf dem Server arbeiten.</p>
+<p>[caption id=&ldquo;attachment_1527&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;150&rdquo;]
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/jtl-wawi-fernsteuerung-mit-windows-server-ermoeglichen/jtl-wawi-fernsteuerung.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="/2017/2017-09-28-jtl-wawi-fernsteuerung-auf-windows-server-einrichten/images/jtl-wawi-fernsteuerung-150x150.png" alt="Die JTL-Wawi Fernsteuerung ist komplett eingerichtet"></a>
+
+
+ Die JTL-Wawi Fernsteuerung ist komplett eingerichtet[/caption]</p>
+<h2 id="nachteile-der-jtl-wawi-fernsteuerung">Nachteile der JTL-Wawi Fernsteuerung</h2>
+<p>Die hier vorgestellte Konfiguration für die JTL-Wawi Fernsteuerung hat einen großen, entscheidenden Nachteil: Sie ist relativ unsicher. Zwar ist der Zugriff auf die Datenbank mit Benutzernamen und Passwort geschützt, dennoch gehört es nicht gerade zum guten Ton, die Datenbank öffentlich über das Internet erreichbar zu machen. Hier gibt es einige Möglichkeiten, sich besser zu schützen.</p>
+<p>Entweder man richtet einen  VPN-Tunnel ein, über den auf die Datenbank zugegriffen wird. Oder man hat die Möglichkeit, feste IP-Adressen zu vergeben, für den der Zugriff in der Windows-Firewall eingeschränkt werden kann. Ist auch das nicht möglich, sollte man wenigstens den IP-Adressbereich in der Windows-Firewall einrichten, dass er nur Zugriffe des jeweiligen Internet-Service-Providers (ISP) zulässt.</p>
+
+    
+  </article>
+
+
+  
+  
+  <div style="width: 100%; margin-top: 2rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
+
+      <p>Diese Anleitung beschreibt die Einrichtung der JTL-Wawi Warenwirtschaft für den Fernzugriff auf einen Microsoft SQL Server unter Windows. Sie behandelt die Konfiguration des SQL Servers (Porteinstellungen, Benutzerverwaltung), der Windows Firewall und des JTL-Wawi Clients, um eine externe Verbindung zu ermöglichen, und diskutiert dabei auch Sicherheitsaspekte und Alternativen wie VPN-Tunnel.</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">JTL-Wawi</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Microsoft SQL Server</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Windows Server</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Remote Access</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Netzwerkkonfiguration</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Firewall</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Datenbanken</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">ERP Systeme</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">IT Sicherheit</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> advanced</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 5 Minuten</p>
+      
+    </div>
+  </div>
+  
+
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/2017/2017-09-26-excel-vorlage-fuer-iso-toleranzen/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/2017/2017-09-29-total-commander-als-sftp-client-einrichten/">next →</a>
+    
+  </div>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="privacy.html">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>

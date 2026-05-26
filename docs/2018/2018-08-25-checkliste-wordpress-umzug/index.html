@@ -1,52 +1,837 @@
-<!doctype html><html lang=de-DE><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="ie=edge"><meta name=author content><meta name=description content="Du hast Wordpress auf eine neue Domain oder einen neuen Hoster umgezogen und der Blog ist noch nicht erreichbar oder die Adresse verweist noch auf eine alte Installation, obwohl du an alles gedacht hast? Da fragst du dich zurecht: Wo hängt&rsquo;s? Oder du hast den Umzug erst vor dir und willst wissen, woran du denken musst?
-Dafür habe ich dir hier eine Checkliste der gängigen Fehlerquellen aufgestellt, die dir beim nächsten Mal helfen soll."><link rel=icon href=https://nickyreinert.de/images/favicon.svg><meta name=keywords content=" WordPress  Umzug  Migration  Checkliste  DNS  Cache  Hoster  Domain  wp-config.php  Better Search Replace  Troubleshooting  all-inkl  Strato "><link rel=stylesheet href=/css/katex.min.css><script defer src=/js/katex.min.js></script><script defer src=/js/auto-render.min.js></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"\\[",right:"\\]",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1}],ignoredTags:["script","noscript","style","textarea","pre","code","option"],throwOnError:!1})})</script><meta property="og:url" content="https://nickyreinert.de/2018/2018-08-25-checkliste-wordpress-umzug/"><meta property="og:site_name" content="Nicky Reinert"><meta property="og:title" content="Checkliste - Wordpress Umzug"><meta property="og:description" content="Du hast Wordpress auf eine neue Domain oder einen neuen Hoster umgezogen und der Blog ist noch nicht erreichbar oder die Adresse verweist noch auf eine alte Installation, obwohl du an alles gedacht hast? Da fragst du dich zurecht: Wo hängt’s? Oder du hast den Umzug erst vor dir und willst wissen, woran du denken musst?
-Dafür habe ich dir hier eine Checkliste der gängigen Fehlerquellen aufgestellt, die dir beim nächsten Mal helfen soll."><meta property="og:locale" content="de_DE"><meta property="og:type" content="article"><meta property="article:section" content="2018"><meta property="article:published_time" content="2018-08-25T00:00:00+00:00"><meta property="article:modified_time" content="2025-08-20T21:05:13+02:00"><meta property="article:tag" content="Checkliste"><meta property="article:tag" content="Domains"><meta property="article:tag" content="Hosting"><meta property="article:tag" content="Umzug"><meta property="article:tag" content="Wordpress"><link rel=canonical href=https://nickyreinert.de/2018/2018-08-25-checkliste-wordpress-umzug/><meta itemprop=name content="Checkliste - Wordpress Umzug"><meta itemprop=description content="Du hast Wordpress auf eine neue Domain oder einen neuen Hoster umgezogen und der Blog ist noch nicht erreichbar oder die Adresse verweist noch auf eine alte Installation, obwohl du an alles gedacht hast? Da fragst du dich zurecht: Wo hängt’s? Oder du hast den Umzug erst vor dir und willst wissen, woran du denken musst?
-Dafür habe ich dir hier eine Checkliste der gängigen Fehlerquellen aufgestellt, die dir beim nächsten Mal helfen soll."><meta itemprop=datePublished content="2018-08-25T00:00:00+00:00"><meta itemprop=dateModified content="2025-08-20T21:05:13+02:00"><meta itemprop=wordCount content="1053"><meta itemprop=keywords content="WordPress,Umzug,Migration,Checkliste,DNS,Cache,Hoster,Domain,wp-config.php,Better Search Replace,Troubleshooting,all-inkl,Strato"><link media=screen rel=stylesheet href=https://nickyreinert.de/css/common.css><link media=screen rel=stylesheet href=https://nickyreinert.de/css/content.css><title>Checkliste - Wordpress Umzug - Nicky Reinert</title><meta name=twitter:card content="summary"><meta name=twitter:title content="Checkliste - Wordpress Umzug"><meta name=twitter:description content="Du hast Wordpress auf eine neue Domain oder einen neuen Hoster umgezogen und der Blog ist noch nicht erreichbar oder die Adresse verweist noch auf eine alte Installation, obwohl du an alles gedacht hast? Da fragst du dich zurecht: Wo hängt’s? Oder du hast den Umzug erst vor dir und willst wissen, woran du denken musst?
-Dafür habe ich dir hier eine Checkliste der gängigen Fehlerquellen aufgestellt, die dir beim nächsten Mal helfen soll."><script type=application/ld+json>[{"@context":"https://schema.org","@type":"BlogPosting","headline":"Checkliste - Wordpress Umzug","description":"Du hast Wordpress auf eine neue Domain oder einen neuen Hoster umgezogen und der Blog ist noch nicht erreichbar oder die Adresse verweist noch auf eine alte …","datePublished":"2018-08-25T00:00:00Z","dateModified":"2025-08-20T21:05:13\u002b02:00","author":{"@type":"Person","name":"","url":"https:\/\/nickyreinert.de\/"},"publisher":{"@type":"Organization","name":"Nicky Reinert","url":"https:\/\/nickyreinert.de\/","logo":{"@type":"ImageObject","url":"https:\/\/nickyreinert.de\/images\/logo.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/nickyreinert.de\/2018\/2018-08-25-checkliste-wordpress-umzug\/"},"image":{"@type":"ImageObject","url":"https:\/\/nickyreinert.de\/images\/posts\/placeholder.jpg","width":1200,"height":630},"url":"https:\/\/nickyreinert.de\/2018\/2018-08-25-checkliste-wordpress-umzug\/","wordCount":1053,"timeRequired":"PT5M","keywords":["checkliste","domains","hosting","umzug","wordpress"],"articleSection":["wordpress"],"abstract":"Eine detaillierte Checkliste und Anleitung zur Fehlerbehebung bei einem WordPress-Umzug. Der Artikel führt schrittweise durch potenzielle Fehlerquellen, von lokalen DNS-Cache-Problemen im Browser und Betriebssystem über die korrekte Domain- und Hoster-Konfiguration bis hin zu den notwendigen Anpassungen in der WordPress-Datenbank und der \u0027wp-config.php\u0027.","genre":"checklist","educationalLevel":"intermediate","inLanguage":"de"},{"@context":"https://schema.org","@type":"TechArticle","headline":"Checkliste - Wordpress Umzug","description":"Du hast Wordpress auf eine neue Domain oder einen neuen Hoster umgezogen und der Blog ist noch nicht erreichbar oder die Adresse verweist noch auf eine alte …","proficiencyLevel":"intermediate","dependencies":["Erfahrung mit WordPress","Grundlegendes Verständnis von DNS und Webhosting"],"about":[{"@type":"Thing","name":"WordPress"},{"@type":"Thing","name":"Website-Migration"},{"@type":"Thing","name":"DNS"},{"@type":"Thing","name":"Webhosting"},{"@type":"Thing","name":"Troubleshooting"},{"@type":"Thing","name":"Server-Administration"}],"datePublished":"2018-08-25T00:00:00Z","dateModified":"2025-08-20T21:05:13\u002b02:00","author":{"@type":"Person","name":""}},{"@context":"https://schema.org","@type":"WebSite","name":"Nicky Reinert","url":"https:\/\/nickyreinert.de\/","description":"Blog \u0026 Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung \u0026 Software Development, KI, SEO \u0026 Analytics, Hosting \u0026 DevOps, WordPress \u0026 Hugo, Tools \u0026 Projekte, Datenschutz und digitale Kultur","inLanguage":"de","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https:\/\/nickyreinert.de\/search/?q={search_term_string}"},"query-input":"required name=search_term_string"}}]</script><link rel=stylesheet href=https://nickyreinert.de/css/single.css><script defer src=/js/alpine.min.js></script></head><body><div id=wrapper><header id=header><span class=header-content><p class=left><a id=site-title href=https://nickyreinert.de/>Nicky Reinert</a></p><p class=center>//</p><p class=right>Institut für digitale Herausforderungen</p></span><br><div class=footnote><span class=nav-bar-item><b>extern</b>
-<a target=_blank class=link href=https://www.linkedin.com/in/nickyreinert/>LinkedIn</a>
-<a target=_blank class=link href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
-<a target=_blank class=link href=https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA>YouTube</a>
-<a target=_blank class=link href=https://github.com/nickyreinert>GitHub</a>
-<a target=_blank class=link href=https://not-a-brand.myspreadshop.de/>"Merch"</a>
-<a target=_blank class=link href=https://ministerium-für-digitale-herausforderungen.de>ministerium</a>
-<a target=_blank class=link href=https://institut-fdh.de//>institut</a>
-<a target=_blank class=link href=https://fantastokrat.de/>fantastokrat</a>
-<a target=_blank class=link href=https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5>random knowledge</a></span><br><span class=nav-bar-item><b>literatur</b>
-<a target=_blank class=link href=https://amzn.eu/d/5LYXyUu>Dit is Berlin - B.N.H.K.</a>
-<a target=_blank class=link href=https://amzn.eu/d/3hWCrK1>Geometrische Gottheiten</a></span><nav><b>intern</b>
-<span class=nav-bar-item><a class=link href=/categories/blog/>blog</a>
-</span><span class=nav-bar-item><a class=link href=/categories/analysen/>analysen</a>
-</span><span class=nav-bar-item><a class=link href=/categories/nerdenz/>nerdenz</a>
-</span><span class=nav-bar-item><a class=link href=/categories/anleitungen/>anleitungen</a>
-</span><span class=nav-bar-item><a class=link href=/categories/wordpress/>wordpress</a>
-</span><span class=nav-bar-item><a class=link href=/categories/hosting/>hosting</a>
-</span><span class=nav-bar-item><a class=link href=/categories/tools/>tools</a>
-</span><span class=nav-bar-item><a class=link href=/categories/development/>development</a>
-</span><span class=nav-bar-item><a class=link href=/categories/projekte/>projekte</a>
-</span><span class=nav-bar-item><a class=link href=/categories/autismus/>autismus</a></span></nav></div><br></header><main id=main class=post><div class=post-header><div class=navigation style=align-items:center><div style=flex-shrink:0;width:50px><a class="link prev" href=/2018/2018-08-24-die-os-x-bash/ style=font-size:1.2rem>&lt;&lt;&lt;</a></div><h1 style="flex:1;text-align:center;min-width:0;padding:0 .5rem" itemprop=headline>Checkliste - Wordpress Umzug</h1><div style=flex-shrink:0;width:50px;text-align:right><a class="link next" href=/2018/2018-09-16-willkommen-in-berlin/ style=font-size:1.2rem>>>></a></div></div></div><div class=post-meta style=font-size:.9rem;margin-top:.5rem;text-align:center;color:#878787>August 25, 2018 &nbsp;|&nbsp; Kategorie:
-<a class=link href=https://nickyreinert.de/categories/wordpress style=text-decoration:none>wordpress</a></div><details style="margin-top:.5rem;margin-bottom:2rem;font-size:.9rem;color:#878787;background:0 0;border:none"><summary><b>Table of Contents</b></summary><div class=toc style=margin-left:1rem><nav id=TableOfContents><ul><li><ul><li><a href=#vom-browser-zum-server>Vom Browser zum Server</a></li></ul></li><li><a href=#potentielle-fehlerquellen>Potentielle Fehlerquellen</a><ul><li><a href=#dein-computer-und-der-dns-cache>Dein Computer und der DNS-Cache</a></li><li><a href=#dein-router-und-dein-internetanbieter>Dein Router und dein Internetanbieter</a></li><li><a href=#der-hoster>Der Hoster</a></li><li><a href=#die-wordpress-konfiguration>Die Wordpress-Konfiguration</a></li><li><a href=#fazit>Fazit</a></li></ul></li></ul></nav></div></details><article style="border-top:2px solid #878787" class=content><p>Du hast Wordpress auf eine neue Domain oder einen neuen Hoster umgezogen und der Blog ist noch nicht erreichbar oder die Adresse verweist noch auf eine alte Installation, obwohl du an alles gedacht hast? Da fragst du dich zurecht: Wo hängt&rsquo;s? Oder du hast den Umzug erst vor dir und willst wissen, woran du denken musst?</p><p>Dafür habe ich dir hier eine Checkliste der gängigen Fehlerquellen aufgestellt, die dir beim nächsten Mal helfen soll.</p><h3 id=vom-browser-zum-server>Vom Browser zum Server</h3><p>Um die potentiellen Fehler zu erkennen und zu verstehen ist es sehr hilfreich, den <strong>groben Ablauf</strong> zu kennen: Was passiert, wenn du deine Domain in den Browser eingibst? Denn meistens steckt der Fehler im Detail und man hat nur vergessen, an einer Stelle die nötigen Anpassungen vorzunehmen. Was passiert also, wenn ein Benutzer deine Website im Browser aufruft? Ich habe das ganze einmal sehr laienhaft und stark reduziert in einer Grafik zusammengefasst. Wenn du weißt, worum es geht, überspringe diesen Absatz oder schlage danach einmal die Hände über dem Kopf zusammen.</p><p><a href="https://www.nickyreinert.de/files/aufruf-einer-website-vereinfacht.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target=_blank rel="noopener noreferrer"><img src=/2018/2018-08-25-checkliste-wordpress-umzug/images/aufruf-einer-website-vereinfacht-300x132.png alt></a></p><p>Was passiert beim Aufruf einer Webseite im Browser</p><p>Der Browser, oder vielmehr der Computer, muss die Adresse der Website zunächst in die sogenannte IP-Adresse übersetzen lassen - durch einen <strong>DNS-Server</strong>. Anhand der <strong>IP-Adresse</strong> findet der Browser dann den Weg zum eigentlich <strong>Webserver</strong>. Dieser muss dann  wissen, dass die Website bei ihm existiert und kann deshalb auch auf den entsprechenden <strong>Ordner</strong> im Dateisystem verweisen. Dort wird die <strong>Web-Anwendung</strong>, also z.B. <strong>Wordpress</strong>, ausgeführt. Hier erfolgen auch die Zugriffe auf die Datenbank. Die <em>index.php</em> ist der zentrale <strong>Einstiegspunkt</strong>, von dem aus noch viele andere, vornehmlich PHP-Dateien, eingebunden werden.</p><h2 id=potentielle-fehlerquellen>Potentielle Fehlerquellen</h2><h3 id=dein-computer-und-der-dns-cache>Dein Computer und der DNS-Cache</h3><p>Damit dein Computer und der Browser nicht jedes mal beim DNS-Server nachfragen müssen, welche IP-Adresse zu einer Website gehört, gibt es hier sog. <strong>Zwischenspeicher</strong>, auch <strong>Cache</strong> genannt. In <strong>Chrome</strong> kannst du diesen folgendermaßen deaktivieren.</p><ol><li>Rufe diese Adresse auf: chrome://net-internals/#dns</li><li>Klicke dort den Button &ldquo;Clear host cache&rdquo;</li></ol><p>In <strong>Firefox</strong> löschst du den DNS-Cache über die Datenschutz-Optionen in den Einstellung.</p><p>In beiden Browsern gibt es übrigens die Möglichkeit, den Cache permanent zu deaktivieren. Dazu musst du die <strong>Entwicklerkonsole</strong> öffnen (ALT+F12 oder Alt+Apfel+I) und die Checkbox &ldquo;<em>Cache deaktivieren</em>&rdquo; aktivieren. Diese Funktion ist aber nur so lange aktiv, bis die Entwicklerkonsole wieder geschlossen wird:</p><p><a href="https://www.nickyreinert.de/files/image-2.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target=_blank rel="noopener noreferrer"><img src=/2018/2018-08-25-checkliste-wordpress-umzug/images/image-2-700x232.png alt></a></p><p>Außerdem legt auch dein <strong>Betriebssystem</strong> einen Cache an. In Windows wird dieser folgendermaßen geleert:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln>1</span><span class=cl>ipconfig /flushdns
-</span></span></code></pre></div><p>Auch in Apples Betriebssystem OS X kann man den Cache per Hand leeren (ab 10.12 Sierra):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln>1</span><span class=cl>sudo killall -HUP mDNSResponder
-</span></span></code></pre></div><h3 id=dein-router-und-dein-internetanbieter>Dein Router und dein Internetanbieter</h3><p>Bestimmte <strong>Router-Modelle</strong> und mit Sicherheit auch dein <strong>Internet-Anbieter</strong> (ISP) speichern ebenfalls die Kombination aus Domain Name und IP-Adresse. Den DNS-Cache des Routers kannst du ggf. leeren, indem du ihn neu startest. Den deines ISP kannst du mit Sicherheit nicht beeinflussen. Du kannst aber in den Netzwerkeinstellungen einen anderen <strong>DNS-Server</strong> einrichten, wie z.B. den von Google (8.8.8.8). Wenn dir das zu aufwendig ist, rufe die Seite über dein Handy auf, wenn es <strong>nicht mit deinem WLAN verbunden</strong> ist. Dann nutzt du den Internetzugang deines Handy-Anbieters, der vielleicht schon einen anderen DNS-Eintrag kennt. Jeder DNS-Eintrag ist übrigens für gewöhnlich mit einem sog. TTL versehen - einem Eintrag für das <strong>Time-To-Live.</strong> Dieser beträgt z.B. 24 Stunden und besagt, wie lange ein entsprechender Eintrag gültig ist. Willst du wissen, wie groß dieser Wert ist, hilft dir die
-<a href="https://mxtoolbox.com/SuperTool.aspx?action=a%3awww.example.com&amp;run=toolpage&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target=_blank rel="noopener noreferrer">mxtoolbox</a>
-weiter.</p><h3 id=der-hoster>Der Hoster</h3><p>Das ist der schwierigste Punkt, da es hier erstmal zwei Möglichkeiten gibt:</p><p><strong>Grundsätzlich</strong> gilt: Damit ein Domain-Name auf (d)einen Web-Server zeigt, sind mindestens <strong>zwei Schritte</strong> nötig:</p><ol><li>die Domain muss registriert und einer IP-Adresse zugeordnet werden</li><li>die Domain muss dem Web-Server &ldquo;mitgeteilt&rdquo; werden</li></ol><p>Nun gibt es allerdings mindestens <strong>drei Szenarien</strong>, wie das umgesetzt wird:</p><ol><li>Dein Hoster stellt den Webspace unter einer Hosting-Domain zur Verfügung (<em>c123123.hoster.com</em>) und die &ldquo;echte&rdquo; Domain (<em>example.com</em>) wird bei einem anderen Anbieter verwaltet. Die Hosting-Domain zeigt hier bereits direkt auf deinen Webspace. Wenn deine Anwendung dort in einem anderen Ordner liegt, musst die &ldquo;echte&rdquo; Domain direkt darauf zeigen, also z.B: <em>example.com -> c123123.hoster.com/wordpress</em>_/_.</li><li> Dein Hoster stellt den Webspace unter einer IP-Adresse zur Verfügung (bzw. du nutzt einen Managed- oder Root-Server) und die Domain wird bei einem anderen Anbieter verwaltet. In diesem Fall muss der Hoster wissen, welche Domain auf die IP-Adresse deines Webspaces zeigt. Er kann diese Domain dann einem Ordner auf dem Webspace zuordnen.</li><li>Das <strong>Gesamtpaket</strong>: Dein Hoster stellt den Webspace und verwaltet deine Domain.</li></ol><p><a href="https://www.nickyreinert.de/files/image-6.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target=_blank rel="noopener noreferrer"><img src=/2018/2018-08-25-checkliste-wordpress-umzug/images/image-6-700x493.png alt></a></p><p>Hosting-Varianten im Vergleich</p><p>Bei den Gesamt-Paketen wird das ganze Konstrukt wie gesagt sehr simpel zusammengefasst. Bei <strong>all-inkl.com</strong> erfolgt das z.B. über das KAS über den Menüpunkt <strong>Domains</strong>, wo der Ort im Dateisystem angegeben werden kann. Der Verweis zu einem anderen, fremden Webspace erfolgt über die Option &ldquo;Redirect&rdquo;. Dann wird diese Domain mit einem HTTP-Statuscode 301, 302 oder 307 an einen anderen Server weitergeleitet.</p><p><a href="https://www.nickyreinert.de/files/domain-ziel-bei-all-inkl.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target=_blank rel="noopener noreferrer"><img src=/2018/2018-08-25-checkliste-wordpress-umzug/images/domain-ziel-bei-all-inkl-700x344.png alt></a></p><p>Domain-Ziel bei all-inkl.com einrichten</p><p>Bei Strato ist das Formular etwas anders aufgebaut, hat aber natürlich die gleiche Funktion. Im Menü <strong>Domain / Domainverwaltung</strong> legst du fest, auf welchen Ordner deine Domain zeigen soll. Über die DNS-Einstellungen kannst du auch hier auf einen anderen Server zeigen lassen:</p><p><a href="https://www.nickyreinert.de/files/image.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target=_blank rel="noopener noreferrer"><img src=/2018/2018-08-25-checkliste-wordpress-umzug/images/image-281x300.png alt></a></p><p>Domain-Ziel bei Strato einrichten</p><p>Wenn du Zugriff auf die <strong>Konsole</strong> hast (z.B. mit SSH), kannst du mit folgendem Befehl prüfen, ob der Server deine Domain überhaupt &ldquo;kennt&rdquo;:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln>1</span><span class=cl>apache2ctl -S
-</span></span></code></pre></div><p>Die Ausgabe sollte in etwa folgenden Aufbau haben und mindestens deine Domain enthalten und auch auf den korrekten Ordner Grundsätzlich hilft auch hier erstmal die
-<a href="https://mxtoolbox.com/SuperTool.aspx?action=a%3awww.example.com&amp;run=toolpage&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target=_blank rel="noopener noreferrer">mxtoolbox</a>
-weiter, um zu erkennen, ob der Eintrag schon existiert:</p><p><a href="https://www.nickyreinert.de/files/apachectl-ausgabe.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target=_blank rel="noopener noreferrer"><img src=/2018/2018-08-25-checkliste-wordpress-umzug/images/apachectl-ausgabe-700x298.png alt="Ausgabe von apachectl , Liste der virtuellen Hosts in Apache"></a></p><h3 id=die-wordpress-konfiguration>Die Wordpress-Konfiguration</h3><p>Und schließlich muss natürlich auch die Wordpress-Installation vollständig und korrekt eingerichtet und angepasst sein. Hier gibt es zwei Stellen, an denen der Domain-Name eingerichtet werden kann. Der einfachste Weg ist über das Backend von Wordpress. Damit wird deine Adresse direkt in der Datenbank abgelegt:</p><p><a href="https://www.nickyreinert.de/files/image-3.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target=_blank rel="noopener noreferrer"><img src=/2018/2018-08-25-checkliste-wordpress-umzug/images/image-3-300x61.png alt></a></p><p>Wenn du auf das Backend keinen Zugriff hast, wählst du den direkten Weg über die <em>wp-config.php</em>. Die Änderungen hier überschreiben die Einstellungen im Backend.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=ln>1</span><span class=cl>define(&#39;WP_HOME&#39;,&#39;https://www.nickyreinert.de&#39;);
-</span></span><span class=line><span class=ln>2</span><span class=cl>define(&#39;WP_SITEURL&#39;,&#39;https://www.nickyreinert.de&#39;);
+<!DOCTYPE html>
+<html lang="de-DE">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+  <meta name="author" content="">
+
+  
+  
+  <meta name="description" content="Du hast Wordpress auf eine neue Domain oder einen neuen Hoster umgezogen und der Blog ist noch nicht erreichbar oder die Adresse verweist noch auf eine alte Installation, obwohl du an alles gedacht hast? Da fragst du dich zurecht: Wo hängt&rsquo;s? Oder du hast den Umzug erst vor dir und willst wissen, woran du denken musst?
+Dafür habe ich dir hier eine Checkliste der gängigen Fehlerquellen aufgestellt, die dir beim nächsten Mal helfen soll.">
+  
+
+  
+  <link rel="icon" href="https://nickyreinert.de/images/favicon.svg">
+
+  
+  
+  <meta name="keywords" content=" WordPress  Umzug  Migration  Checkliste  DNS  Cache  Hoster  Domain  wp-config.php  Better Search Replace  Troubleshooting  all-inkl  Strato ">
+  
+
+  
+  
+  
+<link rel="stylesheet" href="/css/katex.min.css">
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '\\[', right: '\\]', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false }
+      ],
+      ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'option'],
+      throwOnError: false
+    });
+  });
+</script>
+
+
+  
+
+  
+  <meta property="og:url" content="https://nickyreinert.de/2018/2018-08-25-checkliste-wordpress-umzug/">
+  <meta property="og:site_name" content="Nicky Reinert">
+  <meta property="og:title" content="Checkliste - Wordpress Umzug">
+  <meta property="og:description" content="Du hast Wordpress auf eine neue Domain oder einen neuen Hoster umgezogen und der Blog ist noch nicht erreichbar oder die Adresse verweist noch auf eine alte Installation, obwohl du an alles gedacht hast? Da fragst du dich zurecht: Wo hängt’s? Oder du hast den Umzug erst vor dir und willst wissen, woran du denken musst?
+Dafür habe ich dir hier eine Checkliste der gängigen Fehlerquellen aufgestellt, die dir beim nächsten Mal helfen soll.">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="2018">
+    <meta property="article:published_time" content="2018-08-25T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-08-20T21:05:13+02:00">
+    <meta property="article:tag" content="Checkliste">
+    <meta property="article:tag" content="Domains">
+    <meta property="article:tag" content="Hosting">
+    <meta property="article:tag" content="Umzug">
+    <meta property="article:tag" content="Wordpress">
+
+
+  
+  <link rel="canonical" href="https://nickyreinert.de/2018/2018-08-25-checkliste-wordpress-umzug/">
+
+  
+  
+  
+  <meta itemprop="name" content="Checkliste - Wordpress Umzug">
+  <meta itemprop="description" content="Du hast Wordpress auf eine neue Domain oder einen neuen Hoster umgezogen und der Blog ist noch nicht erreichbar oder die Adresse verweist noch auf eine alte Installation, obwohl du an alles gedacht hast? Da fragst du dich zurecht: Wo hängt’s? Oder du hast den Umzug erst vor dir und willst wissen, woran du denken musst?
+Dafür habe ich dir hier eine Checkliste der gängigen Fehlerquellen aufgestellt, die dir beim nächsten Mal helfen soll.">
+  <meta itemprop="datePublished" content="2018-08-25T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-08-20T21:05:13+02:00">
+  <meta itemprop="wordCount" content="1053">
+  <meta itemprop="keywords" content="WordPress,Umzug,Migration,Checkliste,DNS,Cache,Hoster,Domain,wp-config.php,Better Search Replace,Troubleshooting,all-inkl,Strato">
+
+  
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/common.css'>
+  <link media="screen" rel="stylesheet" href='https://nickyreinert.de/css/content.css'>
+
+  
+  
+  <title>Checkliste - Wordpress Umzug - Nicky Reinert</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Checkliste - Wordpress Umzug">
+  <meta name="twitter:description" content="Du hast Wordpress auf eine neue Domain oder einen neuen Hoster umgezogen und der Blog ist noch nicht erreichbar oder die Adresse verweist noch auf eine alte Installation, obwohl du an alles gedacht hast? Da fragst du dich zurecht: Wo hängt’s? Oder du hast den Umzug erst vor dir und willst wissen, woran du denken musst?
+Dafür habe ich dir hier eine Checkliste der gängigen Fehlerquellen aufgestellt, die dir beim nächsten Mal helfen soll.">
+
+
+  
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Checkliste - Wordpress Umzug",
+    "description": "Du hast Wordpress auf eine neue Domain oder einen neuen Hoster umgezogen und der Blog ist noch nicht erreichbar oder die Adresse verweist noch auf eine alte …",
+    "datePublished": "2018-08-25T00:00:00Z",
+    "dateModified": "2025-08-20T21:05:13\u002b02:00",
+    "author": {
+      "@type": "Person",
+      "name": "",
+      "url": "https:\/\/nickyreinert.de\/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Nicky Reinert",
+      "url": "https:\/\/nickyreinert.de\/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https:\/\/nickyreinert.de\/images\/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/nickyreinert.de\/2018\/2018-08-25-checkliste-wordpress-umzug\/"
+    },
+    
+    "image": {
+      "@type": "ImageObject",
+      "url": "https:\/\/nickyreinert.de\/images\/posts\/placeholder.jpg",
+      "width": 1200,
+      "height": 630
+    },
+    
+    "url": "https:\/\/nickyreinert.de\/2018\/2018-08-25-checkliste-wordpress-umzug\/",
+    "wordCount":  1053 ,
+    
+    "timeRequired": "PT5M",
+    
+    
+    "keywords": ["checkliste", "domains", "hosting", "umzug", "wordpress"],
+    
+    
+    "articleSection": ["wordpress"],
+    
+    
+    "abstract": "Eine detaillierte Checkliste und Anleitung zur Fehlerbehebung bei einem WordPress-Umzug. Der Artikel führt schrittweise durch potenzielle Fehlerquellen, von lokalen DNS-Cache-Problemen im Browser und Betriebssystem über die korrekte Domain- und Hoster-Konfiguration bis hin zu den notwendigen Anpassungen in der WordPress-Datenbank und der \u0027wp-config.php\u0027.",
+    
+    
+    "genre": "checklist",
+    
+    
+    "educationalLevel": "intermediate",
+    
+    "inLanguage": "de"
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Checkliste - Wordpress Umzug",
+    "description": "Du hast Wordpress auf eine neue Domain oder einen neuen Hoster umgezogen und der Blog ist noch nicht erreichbar oder die Adresse verweist noch auf eine alte …",
+    
+    "proficiencyLevel": "intermediate",
+    
+    
+    "dependencies": ["Erfahrung mit WordPress", "Grundlegendes Verständnis von DNS und Webhosting"],
+    
+    
+    "about": [
+      
+      
+      {
+        "@type": "Thing",
+        "name": "WordPress"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Website-Migration"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "DNS"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Webhosting"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Troubleshooting"
+      }
+      
+      , 
+      {
+        "@type": "Thing",
+        "name": "Server-Administration"
+      }
+      
+    ],
+    
+    "datePublished": "2018-08-25T00:00:00Z",
+    "dateModified": "2025-08-20T21:05:13\u002b02:00",
+    "author": {
+      "@type": "Person",
+      "name": ""
+    }
+  },
+  
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Nicky Reinert",
+    "url": "https:\/\/nickyreinert.de\/",
+    "description": "Blog \u0026 Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung \u0026 Software Development, KI, SEO \u0026 Analytics, Hosting \u0026 DevOps, WordPress \u0026 Hugo, Tools \u0026 Projekte, Datenschutz und digitale Kultur",
+    "inLanguage": "de",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https:\/\/nickyreinert.de\/search/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+]
+</script>
+
+  
+<link rel="stylesheet" href='https://nickyreinert.de/css/single.css'>
+
+  
+
+<script defer src="/js/alpine.min.js"></script>
+
+
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <span class="header-content">
+    <p class="left"><a id="site-title" href="https://nickyreinert.de/">Nicky Reinert</a></p>
+    <p class="center">//</p>
+    <p class="right">Institut für digitale Herausforderungen</p>
+  </span>
+
+  <br />
+  
+  <div class="footnote">
+    <span class="nav-bar-item"><b>extern</b>
+      <a target="_blank" class="link" href="https://www.linkedin.com/in/nickyreinert/">LinkedIn</a>
+      <a target="_blank" class="link" href="https://www.instagram.com/nickyreinert/?hl=de">Instagram</a>
+      <a target="_blank" class="link" href="https://www.youtube.com/channel/UC832c48LxmzLd5nIL_Ny7sA">YouTube</a>
+      <a target="_blank" class="link" href="https://github.com/nickyreinert">GitHub</a>
+      <a target="_blank" class="link" href="https://not-a-brand.myspreadshop.de/">"Merch"</a>
+      <a target="_blank" class="link" href="https://ministerium-für-digitale-herausforderungen.de">ministerium</a>
+      <a target="_blank" class="link" href="https://institut-fdh.de//">institut</a>
+      <a target="_blank" class="link" href="https://fantastokrat.de/">fantastokrat</a>
+      <a target="_blank" class="link" href="https://open.spotify.com/show/3383SHVRGTvJ9cEXU3UuE5">random knowledge</a>
+    </span>
+
+    <br />
+
+    <span class="nav-bar-item"><b>literatur</b>
+      <a target="_blank" class="link" href="https://amzn.eu/d/5LYXyUu">Dit is Berlin - B.N.H.K.</a>
+      <a target="_blank" class="link" href="https://amzn.eu/d/3hWCrK1">Geometrische Gottheiten</a>
+    </span>
+    
+    <nav><b>intern</b>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/blog/">blog</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/analysen/">analysen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/nerdenz/">nerdenz</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/anleitungen/">anleitungen</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/wordpress/">wordpress</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/hosting/">hosting</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/tools/">tools</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/development/">development</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/projekte/">projekte</a>
+      </span>
+      
+      <span class="nav-bar-item">
+        <a class="link" href="/categories/autismus/">autismus</a>
+      </span>
+      
+    </nav>
+    
+  </div>
+
+  <br />
+
+</header>
+
+
+
+    
+<main id="main" class="post">
+  
+  
+  <div class="post-header">
+    <div class="navigation" style="align-items: center;">
+      <div style="flex-shrink: 0; width: 50px;">
+        
+        <a class="link prev" href="/2018/2018-08-24-die-os-x-bash/" style="font-size: 1.2rem;">&lt;&lt;&lt;</a>
+        
+      </div>
+      
+      <h1 style="flex: 1; text-align: center; min-width: 0; padding: 0 0.5rem;" itemprop="headline">Checkliste - Wordpress Umzug</h1>
+      
+      <div style="flex-shrink: 0; width: 50px; text-align: right;">
+        
+        <a class="link next" href="/2018/2018-09-16-willkommen-in-berlin/" style="font-size: 1.2rem;">>>></a>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="post-meta" style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; color: #878787;">
+    August 25, 2018 &nbsp;|&nbsp; Kategorie: 
+    
+    <a class="link" href='https://nickyreinert.de/categories/wordpress' style="text-decoration: none;">wordpress</a>
+    
+  </div>
+    
+  
+  
+  
+  <details style="margin-top: 0.5rem; margin-bottom: 2rem; font-size: 0.9rem; color: #878787; background: none; border: none;">
+    <summary>
+      <b>Table of Contents</b>
+    </summary>
+    <div class="toc" style="margin-left: 1rem;">
+      <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#vom-browser-zum-server">Vom Browser zum Server</a></li>
+      </ul>
+    </li>
+    <li><a href="#potentielle-fehlerquellen">Potentielle Fehlerquellen</a>
+      <ul>
+        <li><a href="#dein-computer-und-der-dns-cache">Dein Computer und der DNS-Cache</a></li>
+        <li><a href="#dein-router-und-dein-internetanbieter">Dein Router und dein Internetanbieter</a></li>
+        <li><a href="#der-hoster">Der Hoster</a></li>
+        <li><a href="#die-wordpress-konfiguration">Die Wordpress-Konfiguration</a></li>
+        <li><a href="#fazit">Fazit</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+  </details>
+  
+  
+  
+  
+  <article style="border-top: 2px solid #878787;" class="content">
+    
+    <p>Du hast Wordpress auf eine neue Domain oder einen neuen Hoster umgezogen und der Blog ist noch nicht erreichbar oder die Adresse verweist noch auf eine alte Installation, obwohl du an alles gedacht hast? Da fragst du dich zurecht: Wo hängt&rsquo;s? Oder du hast den Umzug erst vor dir und willst wissen, woran du denken musst?</p>
+<p>Dafür habe ich dir hier eine Checkliste der gängigen Fehlerquellen aufgestellt, die dir beim nächsten Mal helfen soll.</p>
+<h3 id="vom-browser-zum-server">Vom Browser zum Server</h3>
+<p>Um die potentiellen Fehler zu erkennen und zu verstehen ist es sehr hilfreich, den <strong>groben Ablauf</strong> zu kennen: Was passiert, wenn du deine Domain in den Browser eingibst? Denn meistens steckt der Fehler im Detail und man hat nur vergessen, an einer Stelle die nötigen Anpassungen vorzunehmen. Was passiert also, wenn ein Benutzer deine Website im Browser aufruft? Ich habe das ganze einmal sehr laienhaft und stark reduziert in einer Grafik zusammengefasst. Wenn du weißt, worum es geht, überspringe diesen Absatz oder schlage danach einmal die Hände über dem Kopf zusammen.</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/aufruf-einer-website-vereinfacht.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="/2018/2018-08-25-checkliste-wordpress-umzug/images/aufruf-einer-website-vereinfacht-300x132.png" alt=""></a>
+
+
+</p>
+<p>Was passiert beim Aufruf einer Webseite im Browser</p>
+<p>Der Browser, oder vielmehr der Computer, muss die Adresse der Website zunächst in die sogenannte IP-Adresse übersetzen lassen - durch einen <strong>DNS-Server</strong>. Anhand der <strong>IP-Adresse</strong> findet der Browser dann den Weg zum eigentlich <strong>Webserver</strong>. Dieser muss dann  wissen, dass die Website bei ihm existiert und kann deshalb auch auf den entsprechenden <strong>Ordner</strong> im Dateisystem verweisen. Dort wird die <strong>Web-Anwendung</strong>, also z.B. <strong>Wordpress</strong>, ausgeführt. Hier erfolgen auch die Zugriffe auf die Datenbank. Die <em>index.php</em> ist der zentrale <strong>Einstiegspunkt</strong>, von dem aus noch viele andere, vornehmlich PHP-Dateien, eingebunden werden.</p>
+<h2 id="potentielle-fehlerquellen">Potentielle Fehlerquellen</h2>
+<h3 id="dein-computer-und-der-dns-cache">Dein Computer und der DNS-Cache</h3>
+<p>Damit dein Computer und der Browser nicht jedes mal beim DNS-Server nachfragen müssen, welche IP-Adresse zu einer Website gehört, gibt es hier sog. <strong>Zwischenspeicher</strong>, auch <strong>Cache</strong> genannt. In <strong>Chrome</strong> kannst du diesen folgendermaßen deaktivieren.</p>
+<ol>
+<li>Rufe diese Adresse auf: chrome://net-internals/#dns</li>
+<li>Klicke dort den Button &ldquo;Clear host cache&rdquo;</li>
+</ol>
+<p>In <strong>Firefox</strong> löschst du den DNS-Cache über die Datenschutz-Optionen in den Einstellung.</p>
+<p>In beiden Browsern gibt es übrigens die Möglichkeit, den Cache permanent zu deaktivieren. Dazu musst du die <strong>Entwicklerkonsole</strong> öffnen (ALT+F12 oder Alt+Apfel+I) und die Checkbox &ldquo;<em>Cache deaktivieren</em>&rdquo; aktivieren. Diese Funktion ist aber nur so lange aktiv, bis die Entwicklerkonsole wieder geschlossen wird:</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/image-2.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="/2018/2018-08-25-checkliste-wordpress-umzug/images/image-2-700x232.png" alt=""></a>
+
+
+</p>
+<p>Außerdem legt auch dein <strong>Betriebssystem</strong> einen Cache an. In Windows wird dieser folgendermaßen geleert:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">ipconfig /flushdns
+</span></span></code></pre></div><p>Auch in Apples Betriebssystem OS X kann man den Cache per Hand leeren (ab 10.12 Sierra):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">sudo killall -HUP mDNSResponder
+</span></span></code></pre></div><h3 id="dein-router-und-dein-internetanbieter">Dein Router und dein Internetanbieter</h3>
+<p>Bestimmte <strong>Router-Modelle</strong> und mit Sicherheit auch dein <strong>Internet-Anbieter</strong> (ISP) speichern ebenfalls die Kombination aus Domain Name und IP-Adresse. Den DNS-Cache des Routers kannst du ggf. leeren, indem du ihn neu startest. Den deines ISP kannst du mit Sicherheit nicht beeinflussen. Du kannst aber in den Netzwerkeinstellungen einen anderen <strong>DNS-Server</strong> einrichten, wie z.B. den von Google (8.8.8.8). Wenn dir das zu aufwendig ist, rufe die Seite über dein Handy auf, wenn es <strong>nicht mit deinem WLAN verbunden</strong> ist. Dann nutzt du den Internetzugang deines Handy-Anbieters, der vielleicht schon einen anderen DNS-Eintrag kennt. Jeder DNS-Eintrag ist übrigens für gewöhnlich mit einem sog. TTL versehen - einem Eintrag für das <strong>Time-To-Live.</strong> Dieser beträgt z.B. 24 Stunden und besagt, wie lange ein entsprechender Eintrag gültig ist. Willst du wissen, wie groß dieser Wert ist, hilft dir die 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://mxtoolbox.com/SuperTool.aspx?action=a%3awww.example.com&amp;run=toolpage&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">mxtoolbox</a>
+
+
+ weiter.</p>
+<h3 id="der-hoster">Der Hoster</h3>
+<p>Das ist der schwierigste Punkt, da es hier erstmal zwei Möglichkeiten gibt:</p>
+<p><strong>Grundsätzlich</strong> gilt: Damit ein Domain-Name auf (d)einen Web-Server zeigt, sind mindestens <strong>zwei Schritte</strong> nötig:</p>
+<ol>
+<li>die Domain muss registriert und einer IP-Adresse zugeordnet werden</li>
+<li>die Domain muss dem Web-Server &ldquo;mitgeteilt&rdquo; werden</li>
+</ol>
+<p>Nun gibt es allerdings mindestens <strong>drei Szenarien</strong>, wie das umgesetzt wird:</p>
+<ol>
+<li>Dein Hoster stellt den Webspace unter einer Hosting-Domain zur Verfügung (<em>c123123.hoster.com</em>) und die &ldquo;echte&rdquo; Domain (<em>example.com</em>) wird bei einem anderen Anbieter verwaltet. Die Hosting-Domain zeigt hier bereits direkt auf deinen Webspace. Wenn deine Anwendung dort in einem anderen Ordner liegt, musst die &ldquo;echte&rdquo; Domain direkt darauf zeigen, also z.B: <em>example.com -&gt; c123123.hoster.com/wordpress</em>_/_.</li>
+<li> Dein Hoster stellt den Webspace unter einer IP-Adresse zur Verfügung (bzw. du nutzt einen Managed- oder Root-Server) und die Domain wird bei einem anderen Anbieter verwaltet. In diesem Fall muss der Hoster wissen, welche Domain auf die IP-Adresse deines Webspaces zeigt. Er kann diese Domain dann einem Ordner auf dem Webspace zuordnen.</li>
+<li>Das <strong>Gesamtpaket</strong>: Dein Hoster stellt den Webspace und verwaltet deine Domain.</li>
+</ol>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/image-6.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="/2018/2018-08-25-checkliste-wordpress-umzug/images/image-6-700x493.png" alt=""></a>
+
+
+</p>
+<p>Hosting-Varianten im Vergleich</p>
+<p>Bei den Gesamt-Paketen wird das ganze Konstrukt wie gesagt sehr simpel zusammengefasst. Bei <strong>all-inkl.com</strong> erfolgt das z.B. über das KAS über den Menüpunkt <strong>Domains</strong>, wo der Ort im Dateisystem angegeben werden kann. Der Verweis zu einem anderen, fremden Webspace erfolgt über die Option &ldquo;Redirect&rdquo;. Dann wird diese Domain mit einem HTTP-Statuscode 301, 302 oder 307 an einen anderen Server weitergeleitet.</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/domain-ziel-bei-all-inkl.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="/2018/2018-08-25-checkliste-wordpress-umzug/images/domain-ziel-bei-all-inkl-700x344.png" alt=""></a>
+
+
+</p>
+<p>Domain-Ziel bei all-inkl.com einrichten</p>
+<p>Bei Strato ist das Formular etwas anders aufgebaut, hat aber natürlich die gleiche Funktion. Im Menü <strong>Domain / Domainverwaltung</strong> legst du fest, auf welchen Ordner deine Domain zeigen soll. Über die DNS-Einstellungen kannst du auch hier auf einen anderen Server zeigen lassen:</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/image.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="/2018/2018-08-25-checkliste-wordpress-umzug/images/image-281x300.png" alt=""></a>
+
+
+</p>
+<p>Domain-Ziel bei Strato einrichten</p>
+<p>Wenn du Zugriff auf die <strong>Konsole</strong> hast (z.B. mit SSH), kannst du mit folgendem Befehl prüfen, ob der Server deine Domain überhaupt &ldquo;kennt&rdquo;:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">apache2ctl -S
+</span></span></code></pre></div><p>Die Ausgabe sollte in etwa folgenden Aufbau haben und mindestens deine Domain enthalten und auch auf den korrekten Ordner Grundsätzlich hilft auch hier erstmal die 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://mxtoolbox.com/SuperTool.aspx?action=a%3awww.example.com&amp;run=toolpage&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">mxtoolbox</a>
+
+
+ weiter, um zu erkennen, ob der Eintrag schon existiert:</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/apachectl-ausgabe.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="/2018/2018-08-25-checkliste-wordpress-umzug/images/apachectl-ausgabe-700x298.png" alt="Ausgabe von apachectl , Liste der virtuellen Hosts in Apache"></a>
+
+
+</p>
+<h3 id="die-wordpress-konfiguration">Die Wordpress-Konfiguration</h3>
+<p>Und schließlich muss natürlich auch die Wordpress-Installation vollständig und korrekt eingerichtet und angepasst sein. Hier gibt es zwei Stellen, an denen der Domain-Name eingerichtet werden kann. Der einfachste Weg ist über das Backend von Wordpress. Damit wird deine Adresse direkt in der Datenbank abgelegt:</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/image-3.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="/2018/2018-08-25-checkliste-wordpress-umzug/images/image-3-300x61.png" alt=""></a>
+
+
+</p>
+<p>Wenn du auf das Backend keinen Zugriff hast, wählst du den direkten Weg über die <em>wp-config.php</em>. Die Änderungen hier überschreiben die Einstellungen im Backend.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">define(&#39;WP_HOME&#39;,&#39;https://www.nickyreinert.de&#39;);
+</span></span><span class="line"><span class="ln">2</span><span class="cl">define(&#39;WP_SITEURL&#39;,&#39;https://www.nickyreinert.de&#39;);
 </span></span></code></pre></div><p>In der Datenbank befinden sich sehr oft noch andere Verweise auf deine Domain. Bei einem Umzug müssen auch diese angepasst werden. Da das aber ein sehr umfangreicher Prozess ist, empfehle ich dazu das Wordpress-Plugin &ldquo;
-<a href="https://de.wordpress.org/plugins/better-search-replace/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target=_blank rel="noopener noreferrer">Better Search Replace</a>
-&rdquo;.</p><h3 id=fazit>Fazit</h3><p>Wenn du die hier genannten Punkte berücksichtigt hast, hast du eigentlich an alles gedacht. Oft ist es der lokale Cache, der die neue Adresse noch nicht kennt und dann die Sorgenfalten auf die Stirn treibt. Wenn ich einen Punkt vergessen haben sollte oder etwas unklar ist, hinterlasse mir gerne ein Kommentar.</p></article><div style="width:100%;margin-top:2rem;border-top:2px solid #9a9a9a;padding:1rem;color:#878787"><h2 style=font-size:1.3rem;margin-bottom:1rem>Zusammenfassung</h2><div style=font-size:1rem><p>Eine detaillierte Checkliste und Anleitung zur Fehlerbehebung bei einem WordPress-Umzug. Der Artikel führt schrittweise durch potenzielle Fehlerquellen, von lokalen DNS-Cache-Problemen im Browser und Betriebssystem über die korrekte Domain- und Hoster-Konfiguration bis hin zu den notwendigen Anpassungen in der WordPress-Datenbank und der 'wp-config.php'.</p><br><p><strong>Hauptthemen:</strong>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">WordPress</span>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">Website-Migration</span>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">DNS</span>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">Webhosting</span>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">Troubleshooting</span>
-<span style="background:#e0e0e0;padding:.2rem .5rem;margin:.1rem;border-radius:3px">Server-Administration</span></p><p><strong>Schwierigkeitsgrad:</strong> intermediate</p><p><strong>Lesezeit:</strong> ca. 5 Minuten</p></div></div><div class=paginator><a class=link href=https://nickyreinert.de/2018/2018-08-24-die-os-x-bash/>← prev</a>
-<a class=link href=https://nickyreinert.de/2018/2018-09-16-willkommen-in-berlin/>next →</a></div></main><footer id=footer><div><span>© 1979 Nicky Reinert</span> // <span>Powered by </span><a class=link href=https://gohugo.io/>Hugo</a> //
-<span>kontakt: nickyreinert -at- gmail -dot- com</span> //
-<a class=link href=privacy.html>Datenschutzerklärung</a> //
-<bold><a class="link lang-btn" href=# data-lang=de><svg width="16" height="12" viewBox="0 0 5 3" style="display:inline-block;vertical-align:middle;margin-right:8px;flex-shrink:0"><rect width="5" height="3" fill="#FFCE00"/><rect width="5" height="2" fill="#D00"/><rect width="5" height="1" fill="#000"/></svg>Deutsch</a> //
-<a class="link lang-btn" href=# data-lang=en><svg width="16" height="12" viewBox="0 0 60 30" style="display:inline-block;vertical-align:middle;margin-right:8px;flex-shrink:0"><clipPath id="s-v2"><path d="M0 0v30h60V0z"/></clipPath><clipPath id="s-v1"><path d="M30 15h30v15z 15H0z 0V0z 0h30z"/></clipPath><g clip-path="url(#s-v2)"><path d="M0 0v30h60V0z" fill="#00247d"/><g clip-path="url(#s-v1)"><path d="M0 0l60 30M60 0 0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30M60 0 0 30" stroke="#cf142b" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#cf142b" stroke-width="6"/></g></g></svg>English</a> //
-<a class="link lang-btn" href=# data-lang=*>All(e)</a></bold><br><footer><center><a class=default-link href=https://uberblogr.de/prev/nickyreinert title="Zurück im Ring">&lt; Zurück im Ring</a> //
-Mitglied im <a class=default-link href=https://uberblogr.de/home/nickyreinert title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
-<a class=default-link href=https://uberblogr.de/next/nickyreinert title="Vor im Ring">Weiter im Ring ></a></center><script>document.addEventListener("DOMContentLoaded",function(){var e=document.querySelectorAll(".lang-btn");e.forEach(function(e){e.addEventListener("click",function(t){t.preventDefault();var n=e.getAttribute("data-lang"),s=document.querySelectorAll("[data-lang]");s.forEach(function(e){var t=e.getAttribute("data-lang");t===n||n==="*"?e.classList.remove("hidden"):e.classList.add("hidden")})})})})</script></footer></div></body></html>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://de.wordpress.org/plugins/better-search-replace/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Better Search Replace</a>
+
+
+&rdquo;.</p>
+<h3 id="fazit">Fazit</h3>
+<p>Wenn du die hier genannten Punkte berücksichtigt hast, hast du eigentlich an alles gedacht. Oft ist es der lokale Cache, der die neue Adresse noch nicht kennt und dann die Sorgenfalten auf die Stirn treibt. Wenn ich einen Punkt vergessen haben sollte oder etwas unklar ist, hinterlasse mir gerne ein Kommentar.</p>
+
+    
+  </article>
+
+
+  
+  
+  <div style="width: 100%; margin-top: 2rem; border-top: 2px solid #9a9a9a; padding: 1rem; color: #878787;">
+    <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Zusammenfassung</h2>
+    <div style="font-size: 1rem;">
+
+      <p>Eine detaillierte Checkliste und Anleitung zur Fehlerbehebung bei einem WordPress-Umzug. Der Artikel führt schrittweise durch potenzielle Fehlerquellen, von lokalen DNS-Cache-Problemen im Browser und Betriebssystem über die korrekte Domain- und Hoster-Konfiguration bis hin zu den notwendigen Anpassungen in der WordPress-Datenbank und der &#39;wp-config.php&#39;.</p>
+      <br />
+      
+      <p><strong>Hauptthemen:</strong>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">WordPress</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Website-Migration</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">DNS</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Webhosting</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Troubleshooting</span>
+        
+        <span style="background: #e0e0e0; padding: 0.2rem 0.5rem; margin: 0.1rem; border-radius: 3px;">Server-Administration</span>
+        
+      </p>
+      
+      
+      
+      <p><strong>Schwierigkeitsgrad:</strong> intermediate</p>
+      
+      
+      
+      <p><strong>Lesezeit:</strong> ca. 5 Minuten</p>
+      
+    </div>
+  </div>
+  
+
+  
+  <div class="paginator">
+    
+    <a class="link" href="https://nickyreinert.de/2018/2018-08-24-die-os-x-bash/">← prev</a>
+    
+    
+    <a class="link" href="https://nickyreinert.de/2018/2018-09-16-willkommen-in-berlin/">next →</a>
+    
+  </div>
+  
+</main>
+
+    <footer id="footer">
+  <div>
+    <span>© 1979 Nicky Reinert</span> // <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a> // 
+    <span>kontakt: nickyreinert -at- gmail -dot- com</span> // 
+    <a class="link" href="privacy.html">Datenschutzerklärung</a> // 
+    <bold>
+      <a class="link lang-btn" href="#" data-lang="de" >
+                    <svg width="16" height="12" viewBox="0 0 5 3" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <rect width="5" height="3" fill="#FFCE00"/>
+                    <rect width="5" height="2" fill="#DD0000"/>
+                    <rect width="5" height="1" fill="#000000"/>
+                  </svg>Deutsch</a> // 
+      <a class="link lang-btn" href="#" data-lang="en" >
+                          <svg width="16" height="12" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 8px; flex-shrink: 0;">
+                    <clipPath id="s-v2">
+                      <path d="M0,0 v30 h60 v-30 z"/>
+                    </clipPath>
+                    <clipPath id="s-v1">
+                      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+                    </clipPath>
+                    <g clip-path="url(#s-v2)">
+                      <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+                      <g clip-path="url(#s-v1)">
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 l60,30 M60,0 l-60,30" stroke="#cf142b" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+                      </g>
+                    </g>
+                  </svg>English</a> // 
+      <a class="link lang-btn" href="#" data-lang="*" >All(e)</a>
+    </bold>
+    <br />
+<footer>
+  <center>
+    <a class="default-link" href="https://uberblogr.de/prev/nickyreinert" title="Zurück im Ring">&lt; Zurück im Ring</a> //
+    Mitglied im <a class="default-link" href="https://uberblogr.de/home/nickyreinert" title="Mitglied im UberBlogr Webring">UberBlogr Webring</a> //
+    <a class="default-link" href="https://uberblogr.de/next/nickyreinert" title="Vor im Ring">Weiter im Ring &gt;</a>
+  </center>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var langButtons = document.querySelectorAll('.lang-btn');
+      langButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+          event.preventDefault();
+          var lang = btn.getAttribute('data-lang');
+          var posts = document.querySelectorAll('[data-lang]');
+            posts.forEach(function(post) {
+              var postLang = post.getAttribute('data-lang');
+              if (postLang === lang || lang === '*') {
+                post.classList.remove('hidden');
+              } else {
+                post.classList.add('hidden');
+              }
+            });
+          });
+        });
+      });
+  </script>
+</footer>
+  </div>
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>
