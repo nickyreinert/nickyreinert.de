@@ -244,16 +244,40 @@
 .content table {
     display: block;
     overflow-x: auto;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.85rem;
 }
 
 .content td, .content th {
-    border: #575C61 1px solid;
-    padding: .1rem .5rem;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    padding: .4rem .6rem;
+    text-align: left;
 }
 
-.content th {
-    background-color: #575C61;
+.content thead th {
+    background-color: #000;
     color: #FAFAFA;
+    font-family: 'Courier New', monospace;
+    font-size: 0.7rem;
+    font-weight: bold;
+    letter-spacing: 0.02em;
+    border-bottom: 2px solid #000;
+}
+
+.content tbody tr:nth-child(even) {
+    background-color: #F5F5F5;
+}
+
+.content tbody tr:hover {
+    background-color: #FBEAEA;
+}
+
+.content tbody tr:last-child td {
+    border-bottom: none;
 }
 
 .content ol, .content ul {
