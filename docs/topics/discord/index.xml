@@ -1,2 +1,98 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Discord auf Nicky Reinert</title><link>https://nickyreinert.de/topics/discord/</link><description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, KI, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur</description><generator>Hugo 0.162.0</generator><language>de</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sat, 28 Mar 2026 00:23:45 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/discord/index.xml" rel="self" type="application/rss+xml"/><item><title>Claude mit Channels per Telegram/Slack/Discord steuern</title><link>https://nickyreinert.de/2026/2026-03-28-claude-channels/</link><pubDate>Sat, 28 Mar 2026 00:23:45 +0000</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/2026/2026-03-28-claude-channels/</guid><description>Kurzer “Produktivitäts-Hack” für Claude: Fernsteuern per Telegram/Slack/Discord, um Aufgaben zu bestimmten Zeiten auszuführen oder aus der Ferne zu starten (Claude nennt das Feature “Channels”).
-0. Der Schritt ist optional aber wichtig, wenn du Claude unbeaufsichtigt auf deiner Maschine zum Laufen …</description><category>blog</category><category>projekte</category><media:content url="https://nickyreinert.de/image.png" type="image/jpeg"><media:title>Claude mit Channels per Telegram/Slack/Discord steuern</media:title></media:content><dc:subject>Lesezeit: 3 Minuten</dc:subject><dc:type>blog</dc:type></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Discord auf Nicky Reinert</title><link>https://nickyreinert.de/topics/discord/</link><description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, KI, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur</description><generator>Hugo 0.162.0</generator><language>de</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sat, 28 Mar 2026 00:23:45 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/discord/index.xml" rel="self" type="application/rss+xml"/><item><title>Claude mit Channels per Telegram/Slack/Discord steuern</title><link>https://nickyreinert.de/2026/2026-03-28-claude-channels/</link><pubDate>Sat, 28 Mar 2026 00:23:45 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-03-28-claude-channels/</guid><description>Kurzer “Produktivitäts-Hack” für Claude: Fernsteuern per Telegram/Slack/Discord, um Aufgaben zu bestimmten Zeiten auszuführen oder aus der Ferne zu starten (Claude nennt das Feature “Channels”).
+0. Der Schritt ist optional aber wichtig, wenn du Claude unbeaufsichtigt auf deiner Maschine zum Laufen …</description><content:encoded><![CDATA[<p>Kurzer &ldquo;Produktivitäts-Hack&rdquo; für <strong>Claude</strong>: <strong>Fernsteuern</strong> per <strong>Telegram/Slack/Discord</strong>, um Aufgaben zu bestimmten Zeiten auszuführen oder aus der Ferne zu starten (Claude nennt das Feature &ldquo;<strong>Channels</strong>&rdquo;).</p>
+<p><em>0. Der Schritt ist optional aber wichtig, wenn du Claude unbeaufsichtigt auf deiner Maschine zum Laufen bringen willst, weil du z.B. über SSH auf einem Headless-Server arbeitest. Entweder du nutzt dafür <code>screen</code> oder - was noch stabiler ist: Du installierst Claude als Service über <code>systemd</code>. Dann wird die Sitzung auch nach einem Neustart automatisch wieder gestartet. Ich beschreib das jetzt nicht im Detail - frag einfach Claude!</em> <code>(⌐■_■)</code></p>
+<ol>
+<li>Claude CLI App installieren</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">curl -fsSL https://claude.ai/install.sh <span class="p">|</span> bash
+</span></span></code></pre></div><p>Shell-Scripte von irgendeiner Webseite installieren. Was soll schon schief gehen. Einfach machen. <code>⊂(◉‿◉)つ</code></p>
+<ol start="2">
+<li>
+<p>Erstell deinen Bot. Bei Telegram geht das recht einfach mit dem 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://t.me/BotFather?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">BotFather</a>
+
+
+. Am Ende bekommst du einen Token, den du später brauchst.</p>
+</li>
+<li>
+<p>Das Plugin für deinen bevorzugten Messenger installieren - dazu Claude CLI einmal starten und erstmal das Plugin installieren.</p>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">/plugin install telegram@claude-plugins-official
+</span></span></code></pre></div><p>(Eine Liste unterstützter offizieller Plugins findest du übrigens hier: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/anthropics/claude-plugins-official?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://github.com/anthropics/claude-plugins-official</a>
+
+
+ - wenn dein Messenger nicht dabei ist, lässt du dir den von Claude einfach selber bauen oder greifst auf inoffizielle Plugins zurück)</p>
+<p>Die CLI-App danach wieder schließen.</p>
+<ol start="4">
+<li><strong>Bun</strong> installieren (ein Packagemanager inkl. JavaScript-Runtime, über den Claude CLI mit deinem Chatbot verbunden wird)</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">curl -fsSL https://bun.sh/install <span class="p">|</span> bash
+</span></span></code></pre></div><ol start="5">
+<li>Den <strong>Channel</strong> einrichten - hier wird das Auth-Token vom Messenger benötigt (<strong>Schritt 1</strong>). Wo du das genau einträgst, siehst du, wenn du <strong>Bun</strong> einmal startest - hier das Beispiel für <strong>Telegram</strong>:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">bun run --cwd ~/.claude/plugins/marketplaces/claude-plugins-official/external_plugins/telegram --shell<span class="o">=</span>bun start
+</span></span></code></pre></div><p>In der Regel handelte es sich um eine Datei wie diese hier: <code>~/.claude/channels/telegram/.env</code> - dort trägst du den Token ein, den du von deinem Bot bekommen hast. Claude kann nun Nachrichten zu deinem Messenger schicken. Uni-direktional - wenn man so will.</p>
+<ol start="6">
+<li>Claude CLI wieder starten - diesmal aber mit dem Verweis auf Channels:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">claude --channels plugin:telegram@claude-plugins-official
+</span></span></code></pre></div><p>Und einmal prüfen, ob die <strong>MCP-Verbindung</strong> zu <strong>Bun</strong> steht, das Kommando heißt schlicht <code>/mcp</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">    Built-in MCPs <span class="o">(</span>always available<span class="o">)</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  ❯ plugin:telegram:telegram · ✔ connected
+</span></span></code></pre></div><ol>
+<li>Jetzt erlauben wir dem Messenger noch, Claude Anweisungen zu geben.  Dazu einfach eine beliebige Nachricht schicken. Die Antwort sollte in etwa so aussehen:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">Pairing required — run in Claude Code:
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">/telegram:access pair ABCD123
+</span></span></code></pre></div><p>Also zurück zur Claude CLI und ggenau diesen Befehl ausführen. Claude wird dich dann fragen, ob die Zugriffs-Richtlinien in <code>access.json</code> angepasst werden dürfen und das am Ende in etwa so bestätigen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">Approved. Sender <span class="m">1234567</span> has been added to the allowlist and the approval notification has been queued.
+</span></span></code></pre></div><p>Dein Chat-Bot wird das ebenfalls bestätigen. Und damit sind beide Endpunkt nun verbunden. Zack fertig.</p>
+<p>Du kannst Claude nun über Telegram steuern, so als würdest du die CLI App selber bedienen. Klar, kannst du dazu auch die Claude App auf deinem Handy benutzen. Aber mit Telegram kannst du z.B. auch Nachrichten planen und so Aufgaben zu bestimmten Zeiten auführen lassen, um dein Token-Kontingent optimal zu nutzen, z.B. nachts.</p>
+]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>blog</category><category>projekte</category><dc:subject>Lesezeit: 3 Minuten</dc:subject><dc:type>blog</dc:type></item></channel></rss>

@@ -1,3 +1,280 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Web-Performance auf Nicky Reinert</title><link>https://nickyreinert.de/topics/web-performance/</link><description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, KI, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur</description><generator>Hugo 0.162.0</generator><language>de</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Tue, 13 Nov 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/web-performance/index.xml" rel="self" type="application/rss+xml"/><item><title>Was ist HTTP/3 bzw. HTTP over QUIC oder kurz QUIC?</title><link>https://nickyreinert.de/2018/2018-11-13-was-ist-http-3-bzw-http-over-quic-oder-kurz-quic/</link><pubDate>Tue, 13 Nov 2018 00:00:00 +0000</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/2018/2018-11-13-was-ist-http-3-bzw-http-over-quic-oder-kurz-quic/</guid><description>UPDATE: Eine ausführliche Version dieses Artikels erschien im August 2019 im Entwickler-Magazin .
-Die meisten wissen noch nicht einmal, was HTTP/2 eigentlich ist, geschweige denn, dass es überall eingesetzt wird, da bahnt sich schon der Nachfolger an, genannt HTTP/3. Vor ein paar Jahren hat Google …</description><category>blog</category><category>projekte</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Was ist HTTP/3 bzw. HTTP over QUIC oder kurz QUIC? - Titelbild</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>technical_explainer</dc:type></item><item><title>Wie wirken sich viele 301 Weiterleitungen auf die Performance aus?</title><link>https://nickyreinert.de/2017/2017-10-26-wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/</link><pubDate>Thu, 26 Oct 2017 00:00:00 +0000</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/2017/2017-10-26-wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/</guid><description>Um Weiterleitungen kommt man fast nicht herum. Vor allem im Bereich der Suchmaschinenoptimierung (SEO) sollte man vermeiden, dass es auf der Website zu 404-Fehlern kommt - also Ressourcen, die nicht (mehr) vorhanden sind.
-Ein Weg, um das zu beheben, ist die Einrichtung einer Weiterleitung von der …</description><category>hosting</category><category>anleitungen</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Wie wirken sich viele 301 Weiterleitungen auf die Performance aus? - Titelbild</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>performance_analysis</dc:type></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Web-Performance auf Nicky Reinert</title><link>https://nickyreinert.de/topics/web-performance/</link><description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, KI, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur</description><generator>Hugo 0.162.0</generator><language>de</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Tue, 13 Nov 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/web-performance/index.xml" rel="self" type="application/rss+xml"/><item><title>Was ist HTTP/3 bzw. HTTP over QUIC oder kurz QUIC?</title><link>https://nickyreinert.de/2018/2018-11-13-was-ist-http-3-bzw-http-over-quic-oder-kurz-quic/</link><pubDate>Tue, 13 Nov 2018 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2018/2018-11-13-was-ist-http-3-bzw-http-over-quic-oder-kurz-quic/</guid><description>UPDATE: Eine ausführliche Version dieses Artikels erschien im August 2019 im Entwickler-Magazin .
+Die meisten wissen noch nicht einmal, was HTTP/2 eigentlich ist, geschweige denn, dass es überall eingesetzt wird, da bahnt sich schon der Nachfolger an, genannt HTTP/3. Vor ein paar Jahren hat Google …</description><content:encoded><![CDATA[<p><strong>UPDATE</strong>: Eine ausführliche Version dieses Artikels erschien im August 2019 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://entwickler.de/online/web/http3-quic-einfuehrung-579902482.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">im Entwickler-Magazin</a>
+
+
+.</p>
+<p>Die meisten wissen noch nicht einmal, was <strong>HTTP/2</strong> eigentlich ist, geschweige denn, dass es überall eingesetzt wird, da bahnt sich schon der Nachfolger an, genannt <strong>HTTP/3</strong>. Vor ein paar Jahren hat Google sich mit der Optimierung der Kommunikation im Internet beschäftigen. Früher ging daraus <strong>SPDY</strong> hervor, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://en.wikipedia.org/wiki/HTTP/2?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">aus dem schließlich HTTP/2 hervorging.</a>
+
+
+ Das nächste Entwicklungs-Projekt aus dem Google-Labor hört nun auf den Namen 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.golem.de/news/internet-protokoll-quic-soll-der-neue-kick-fuer-sicheres-surfen-werden-1611-123738.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">QUIC</a>
+
+
+ - was ausgesprochen für 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://de.wikipedia.org/wiki/Quick_UDP_Internet_Connections?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Quick UDP Internet Connections</a>
+
+
+ steht.</p>
+<h2 id="das-schichten-modell">Das Schichten-Modell</h2>
+<p>Bevor man das ganze verstehen kann, möchte ich ganz grob noch mal auf eine wichtige Grundlage eingehen, dem [OSI-Schichten-Modell](Das klingt kompliziert, ist es auch. Es reicht allerdings völlig aus, wenn man das Prinzip dahinter versteht: Die Webseite, die dir dein Browser hier anzeigt, kommt aus dem Netzwerk-Kabel in deinem Laptop (oder über dein WLAN&hellip;). Das sind allerdings nur ein paar elektronische Signale, die dein Browser so sicher nicht verstehen kann. Dieses ziemlich einfache elektronische Signal muss deshalb erst auf verschiedenen Stufen bzw. Schichten verarbeitet werden, bis daraus das berühmte HTML extrahiert wird, mit dem auch dein Browser arbeiten kann.</p>
+<p>Das OSI-Schichten-Modell besteht aus 7 dieser Schichten. Die ersten 6 Schichten dürften dich nicht weiter interessieren, die ursprünglich elektronischen Daten werden hier nach immer weiter &ldquo;ausgepackt&rdquo;. Dabei werden immer mehr Informationen und Daten extrahiert und an die darüber liegende Schicht weitergegeben. Jede Schicht erfüllt so eine spezielle Aufgabe, angefangen bei der eigentlichen physikalischen Übertragung, über die Qualitätssicherung bis hin zur Darstellung in einer Anwendung, wie dem Browser.</p>
+<p>Genau das passiert in der 7. Schicht, über die der HTML-Code für deinen Browser zur Verfügung gestellt wird. Eine dieser Schichten nun, nämlich die 4., ist für den Transport zuständig. Dort wird u.a. das schon ziemlich in die Jahre gekommene TCP - Transmission Control Protokoll - eingesetzt. Eine Alternative dazu ist UDP, das etwas schneller aber auch ungesichert funktioniert. Soviel zu den langweiligen und verzwickten technischen Einzelheiten.</p>
+<h2 id="quic">QUIC</h2>
+<p>Google hat nun auf Basis von UDP ein eigenes Protokoll für diese Schicht entwickelt: QUIC. QUIC kombiniert, ganz stark reduziert, die Vorteile von TLS, HTTP/2, TCP und UDP und bietet so z.B. schnelle, verschlüsselte Verbindungen an. Google nutzt QUIC bereits 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.golem.de/news/google-auf-spdy-folgt-quic-1306-100077.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">seit 2013</a>
+
+
+ auf den eigenen Servern, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.heise.de/newsticker/meldung/Google-will-neues-Netzwerk-Protokoll-fuers-Web-2614437.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">seit Version 29</a>
+
+
+ versteht auch der hauseigene Browser Chrome QUIC. Sogar Opera soll QUIC seit Version 16 unterstützen. Die Entwicklung steckt also lange nicht mehr in den Kinderschuhen.</p>
+<h2 id="http-over-quic">HTTP over QUIC</h2>
+<p>Mit HTTP hat das ganze freilich noch nicht viel zu tun, denn das liegt ja eine Schicht weiter oben. Die <strong>Internet Engineering Task Force</strong> hat sich aus diesem Grund in zwei Arbeitsgruppen mit QUIC beschäftigt. Daraus entstand einerseits eine standardisierte Fassung von QUIC, die inoffiziell den namen <strong>iQUIC</strong> trägt, als Abgrenzung zur inoffiziellen Bezeichnung <strong>gQUIC</strong> für Googles Original-Protokoll.</p>
+<p>Und außerdem arbeitet man am neuesten HTTP-Standard, HTTP over QUIC, bzw. HTTP/QUIC oder ganz offiziell: HTTP/3. Diese Entkopplung ermöglicht jetzt, dass neben HTTP auch andere Protokolle der oberen Anwendungsschicht, wie z.B. E-Mail, QUIC nutzen können.</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://blog.cloudflare.com/the-road-to-quic/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Laut Cloudfare</a>
+
+
+ soll noch dieses Jahr ein finaler offzieller Standard zu QUIC verabschiedet werden. Da aber wie gesagt HTTP/2 eher noch ein Exot zu sein scheint, wird es vermutlich noch eine Weile dauern, bis HTTP/3 entsprechend weit verbreitet ist.</p>
+]]></content:encoded><atom:updated>2026-06-16T20:56:44+02:00</atom:updated><category>blog</category><category>projekte</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Web-Performance</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>technical_explainer</dc:type></item><item><title>Wie wirken sich viele 301 Weiterleitungen auf die Performance aus?</title><link>https://nickyreinert.de/2017/2017-10-26-wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/</link><pubDate>Thu, 26 Oct 2017 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2017/2017-10-26-wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/</guid><description>Um Weiterleitungen kommt man fast nicht herum. Vor allem im Bereich der Suchmaschinenoptimierung (SEO) sollte man vermeiden, dass es auf der Website zu 404-Fehlern kommt - also Ressourcen, die nicht (mehr) vorhanden sind.
+Ein Weg, um das zu beheben, ist die Einrichtung einer Weiterleitung von der …</description><content:encoded><![CDATA[<p>Um Weiterleitungen kommt man fast nicht herum. Vor allem im Bereich der Suchmaschinenoptimierung (SEO) sollte man vermeiden, dass es auf der Website zu 404-Fehlern kommt - also Ressourcen, die nicht (mehr) vorhanden sind.</p>
+<p>Ein Weg, um das zu beheben, ist die Einrichtung einer Weiterleitung von der alten, nicht mehr vorhandenen Ressource auf die neue Ressource.  Der HTTP-Statuscode dafür ist entweder 301 (temporär) oder 302 (für eine dauerhafte Weiterleitung). Weiterleitungen können z.B. mit einer .htaccess Datei eingerichtet werden. Dazu aktiviert man zunächst die sogenannte RewriteEngine, um eine URL zu einer anderen URL &ldquo;weiterzuleiten&rdquo;. Dann kann man beliebig viele, Regeln nach folgendem Prinzip festlegen (freilich gibt es noch weitaus mehr Möglichkeiten, wie z.B. reguläre Ausdrücke):</p>
+<p>RewriteEngine On
+Redirect 302 /redirect0r/foobar/1/ /redirect0r/foobar/index.php
+Redirect 302 /redirect0r/foobar/2/ /redirect0r/foobar/index.php</p>
+<p>Wenn man nun von einem System (z.B. Joomla) auf ein anderes System (z.B. Wordpress) umzieht und dabei nicht nur auf eine veraltete URL sondern auf 100 URLs stößt, die im neuen System nicht mehr existieren, stellt sich oft die Frage: Was mache ich mit all den alten URLs, die ich im neuen System nicht exakt abbilden kann? Macht es Sinn, die htaccess-Datei mit zahllosen Weiterleitungen zu überfluten? Es kommen zu ersten Zweifeln: Die htaccess-Datei wird bei jedem Aufruf der Website geladen. Kann eine große htaccess-Datei sich also negativ auf die Performance der Seite auswirken?</p>
+<p>Die Frage hat auch mich beschäftigt und deshalb habe ich ein kleines PHP-Script geschrieben, dass helfen soll, die Antwort zu finden.</p>
+<h2 id="funktion">Funktion</h2>
+<p>Der Quellcode für das PHP-Script ist über 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/redirect0r?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">github</a>
+
+
+ verfügbar. Das Script kann im Browser oder über die Kommandozeile aufgerufen werden. Sämtliche Einstellungen werden in einer JSON-Datei vorgenommen.</p>
+<p>Der Ablauf des Scripts ist relativ einfach. In einer Schleife schreibt es eine beliebige Anzahl von Weiterleitungs-Regeln in eine htaccess-Datei. Diese Regeln haben folgenden Aufbau:</p>
+<p>Redirect 302 /foobar/<strong><em>i</em></strong>/ /foobar/index.php</p>
+<p>/foobar ist der Ordner, der für die Messung verwendet wird. In diesem Ordner befindet sich auch die htaccess-Datei. i ist eine fortlaufende Ziffer, die mit jedem Schleifendurchlauf inkrementiert wird. Schließlich wird das Ziel der Weiterleitung mit /foobar/index.php angegeben. Der Ordner und die Zieldatei sowie der Inhalt der Zieldatei können angepasst werden.</p>
+<p>Nicht jeder Schleifendurchlauf schreibt in die htaccess-Datei und ruft Test-URL sofort auf. Das geschieht in definierbaren Abschnitten. Diese Schrittweite ist definierbar. Die Zeit für den Aufruf wird schließlich gemessen .</p>
+<p>Weiterhin ist es möglich, die Aufrufe innerhalb einer Schrittweite zu wiederholen, also mehrere Abfragen nacheinander, um z.B. in der späteren Auswertung aus den Ergebnissen einen Mittelwert zu errechnen. Nach jeder Abfrage kann außerdem eine cool-down-Phase stattfinden, bevor der nächste Abruf stattfindet…</p>
+<h2 id="messergebnisse">Messergebnisse</h2>
+<p>Die Messergebnisse offenbaren keine Überraschung. Je größer die Datei, desto größer die Antwortzeiten.  Im Detail heißt das:</p>
+<p>Gemessen wurden mit drei verschiedenen Methoden:</p>
+<ul>
+<li>auf einem lokalen Webserver (MacBook Pro mit 16 GByte RAM und 2,7 GHz i5) per Aufruf im Browser (local server)</li>
+<li>auf einem gehosteten Webserver (unbekannte Hardware) per Aufruf im Browser (remote server)</li>
+<li>auf einem gehosteten Webserver per Aufruf auf der Kommandozeile (remote server CLI)</li>
+</ul>
+<p>Als Zeilenlimitin der htaccess-Datei wurden 100.000 Zeilen gewählt. Die Schrittweite beträgt 5.000. Nach jedem Aufruf gab es eine Pause von 3 Sekunden. Insgesamt gab es drei Aufrufe je Zeilenanzahl. Über diese 3 Aufrufe zu einer bestimmten Zeilenanzahl wurde schließlich der Mittelwert errechnet.</p>
+<p>Bei 10.000 Zeilen wurde bei allen Methoden ca. 90 ms gemessen. Bei 20.000 Zeilen in der htaccess-Datei beträgt die Reaktionszeiten knapp das doppelte, aber immer noch recht unauffällige 185 ms. Ab da gehen die gemessenen Zeit leicht auseinander, der lokale Server scheint die schlechtere Performance zu haben.</p>
+<p>Bei 60.000 Zeilen wird bei allen Methoden die &ldquo;magische&rdquo; Grenze von 1 Sekunde überschritten. Die Antwortzeiten steigen jetzt nicht mehr proportional. Bei 100.000 Zeilen benötigt der lokale Server schon über 4 Sekunden für die Antwort. Der gehostete Webserver braucht dafür über knapp 3 Sekunden.</p>
+<p>[caption id=&ldquo;attachment_1580&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/htaccess-geschwindigkeit.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/2017/2017-10-26-wie-wirken-sich-viele-301-weiterleitungen-auf-die-performance-aus/images/htaccess-geschwindigkeit-300x186.png" alt="Geschwindigkeit bei wachsender htaccess-Datei"></a>
+
+
+ Geschwindigkeit bei wachsender htaccess-Datei[/caption]</p>
+<h2 id="fazit">Fazit</h2>
+<p>Natürlich wirkt sich eine große htaccess-Datei auf die Performance des Servers auf. Denn wie bereits bemerkt, muss der Webserver diese Datei bei jeder Anfrage öffnen und verarbeiten. Allerdings ist der negative Einfluss ziemlich gering und macht sich erst bei einer sehr großen Anzahl von Zeilen bemerkbar.</p>
+<p>Eine htaccess-Datei mit 10.000 Zeilen verringert die Antwortzeit kaum. Allerdings steigt die Antwortzeit überproportional an. Bei 100.000 Zeilen ist sie bereits 50 mal langsamer.</p>
+<p>Im Bereich ab 40.000 Zeilen dürfte der Einfluss auch nach außen hin spürbar sein. Natürlich hängt auch diese Erkenntnis stark von der verwendeten Hardware ab: Der lokale Webserver ist bei meinen Messungen etwas langsamer als der Server des Hosters.</p>
+<p>Wer eine htaccess-Datei mit 10.000 Weiterleitungen pflegt sollte grundsätzlich sein Konzept überdenken. Oft lässt sich das entweder durch einen sauberen Umzug bzw. eine Anpassung des neuen Systems oder durch Weiterleitungen mit regulären Ausdrücken besser lösen. Am besten ist es natürlich, wenn man gar nicht erst in die Verlegenheit kommt, Weiterleitungen nutzen zu müssen.</p>
+]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>hosting</category><category>anleitungen</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Web-Performance</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>performance_analysis</dc:type></item></channel></rss>

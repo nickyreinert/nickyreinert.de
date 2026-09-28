@@ -1,3 +1,671 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>2023s auf Nicky Reinert</title><link>https://nickyreinert.de/en/2023/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Tue, 12 Dec 2023 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/2023/index.xml" rel="self" type="application/rss+xml"/><item><title>How to predict prime numbers in JavaScript</title><link>https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/</link><pubDate>Tue, 12 Dec 2023 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/</guid><description>There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated formulas — but it will hopefully show you, how thoughtful thinking and tinkering will help you with optimising your code.
-Nota bene: Think Python is faster? Try …</description><category>blog</category><media:content url="https://nickyreinert.de/prime_numbers_comparison.png" type="image/jpeg"><media:title>JavaScript vs Python Prime Number Algorithm Performance Comparison</media:title></media:content><dc:subject>Lesezeit: 8 Minuten</dc:subject><dc:type>tutorial</dc:type></item><item><title>How to find prime numbers in Python. Feat. Cython.</title><link>https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/</link><pubDate>Sat, 11 Nov 2023 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/</guid><description>[PYTHON] How to find Prime Numbers. Fast. Feat. Cython. There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated prime solving formulas — but it will show you, how thoughtful thinking and tinkering will help you with …</description><category>blog</category><media:content url="https://nickyreinert.de/primes.png" type="image/jpeg"><media:title>Prime Numbers Python Tutorial</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item><item><title>How to develop a balanced card game with Python</title><link>https://nickyreinert.de/en/2023/2023-01-28-card-game-development/</link><pubDate>Sat, 28 Jan 2023 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2023/2023-01-28-card-game-development/</guid><description>Join me on my journey from drawing for fun, to Excel, over Python to a, probably working and good balanced card game.
-But why? Shameless bragging: I own a Remarkable2 and from time to time I’m drawing random stuff on it. Just for the sake of recreation. I’m not a good painter. It’s no serious art, …</description><category>blog</category><media:content url="https://nickyreinert.de/image.png" type="image/jpeg"><media:title>Card Game Balancing Simulation</media:title></media:content><dc:subject>Lesezeit: 8 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>2023s auf Nicky Reinert</title><link>https://nickyreinert.de/en/2023/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Tue, 12 Dec 2023 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/2023/index.xml" rel="self" type="application/rss+xml"/><item><title>How to predict prime numbers in JavaScript</title><link>https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/</link><pubDate>Tue, 12 Dec 2023 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/</guid><description>There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated formulas — but it will hopefully show you, how thoughtful thinking and tinkering will help you with optimising your code.
+Nota bene: Think Python is faster? Try …</description><content:encoded><![CDATA[<p>There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated formulas — but it will hopefully show you, how thoughtful thinking and tinkering will help you with optimising your code.</p>
+<blockquote>
+<p>Nota bene: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/how-to-find-prime-numbers-fast-8d0f7e8bd80f?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Think Python is faster? Try it!</a>
+
+
+</p>
+</blockquote>
+<p>What’s a prime number? All of you know that: It’s a number with only two divider natural divisors: 1 and the number itself.</p>
+<p>And when you ask someone for a prime number algorithm, you get two answers: A mathematican will 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://en.wikipedia.org/wiki/Formula_for_primes?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">throw out a complex formula,</a>
+
+
+ like <strong>Mill’s formula:</strong></p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image.png" alt="alt text"><p>Wait, what? Ok. The other answer is just a simple loop that checks if there is another number, lower than the number in question, where the operation <strong>modulo</strong> returns 0. The so called “trial division”. In other words: The number in question divided by the other number returns a third number and all numbers are natural, not factorized.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">function isPrime(number) {
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    for (let i = 2; i &lt; number; i++) {
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        if (number % i === 0) {
+</span></span><span class="line"><span class="ln">4</span><span class="cl">            return false;
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        }
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    return true;
+</span></span><span class="line"><span class="ln">8</span><span class="cl">}
+</span></span></code></pre></div><p>Let’s run this loop to find primes up to 50.000:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">let startTime = performance.now();
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">let count = 0;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">for (let number = 2; number &lt; 50000; number++) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    if (isPrime(number)) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        count++;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">}
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">let endTime = performance.now();
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">let executionTime = endTime - startTime;
+</span></span><span class="line"><span class="ln">10</span><span class="cl">console.log(`found ${count} primes`);
+</span></span><span class="line"><span class="ln">11</span><span class="cl">console.log(`Execution time: ${executionTime} milliseconds`);
+</span></span></code></pre></div><blockquote>
+<p>Did you know? You can run JavaScript inside Visual Studio Code. Just hit Ctrl+F5. Don’t know where to click. I’m a shortcut-nerd.</p>
+</blockquote>
+<p>On my machine this will take 212 milliseconds and find 5.133 primes (your results may differ on a different machine):</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-1.png" alt="alt text"><p>Wait a minute! JavaScript is dozens of time faster than… Python?</p>
+<p>Jepp. Let’s see if we could add another level of disgrace:</p>
+<p>Let’s start with some obvious things: We don’t need to test all numbers in our “test division”. In fact we can skip every divisor lower than “number / 2”. Why is that? Because if the divisor is greater than “number / 2” the result must be lower than 2 and a faction.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">function isPrime2(number) {
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    let limit = Math.floor(number / 2);
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    for (let i = 2; i &lt;= limit; i++) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        if (number % i === 0) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            return false;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    return true;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">}
+</span></span><span class="line"><span class="ln">10</span><span class="cl">let startTime = performance.now();
+</span></span><span class="line"><span class="ln">11</span><span class="cl">let count = 0;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">for (let number = 2; number &lt; 50000; number++) {
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    if (isPrime2(number)) {
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        count++;
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">16</span><span class="cl">}
+</span></span><span class="line"><span class="ln">17</span><span class="cl">let endTime = performance.now();
+</span></span><span class="line"><span class="ln">18</span><span class="cl">let executionTime = endTime - startTime;
+</span></span><span class="line"><span class="ln">19</span><span class="cl">console.log(`found ${count} primes`);
+</span></span><span class="line"><span class="ln">20</span><span class="cl">console.log(`Execution time: ${executionTime} milliseconds`);
+</span></span></code></pre></div><p>Again, similar to the Python solution, this halves the calculation time to, but not to 100 milliseconds</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-2.png" alt="alt text"><p>But there’s even more in this limit declaration: We can reduce it to the square root <strong>(sqrt)</strong> of our target number. Because if one divisor is greater than <strong>sqrt(number)</strong> the other divisor must be lower than <strong>sqrt</strong>(divisor). Meaning: They have already been checked. Let’s do it:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">function isPrime3(number) {
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    let limit = Math.floor(Math.sqrt(number));
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    for (let i = 2; i &lt;= limit; i++) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        if (number % i === 0) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            return false;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    return true;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">}
+</span></span><span class="line"><span class="ln">10</span><span class="cl">let startTime = performance.now();
+</span></span><span class="line"><span class="ln">11</span><span class="cl">let count = 0;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">for (let number = 2; number &lt; 50000; number++) {
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    if (isPrime3(number)) {
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        count++;
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">16</span><span class="cl">}
+</span></span><span class="line"><span class="ln">17</span><span class="cl">let endTime = performance.now();
+</span></span><span class="line"><span class="ln">18</span><span class="cl">let executionTime = endTime - startTime;
+</span></span><span class="line"><span class="ln">19</span><span class="cl">console.log(`found ${count} primes`);
+</span></span><span class="line"><span class="ln">20</span><span class="cl">console.log(`Execution time: ${executionTime} milliseconds`);
+</span></span></code></pre></div><p>WHAT THE ACTUAL HECK-IDDI-HECK! 4 Milliseconds? Remember Python and 72 Milliseconds?</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-3.png" alt="alt text"><p>What’s next?</p>
+<p>Why do we check even numbers at all? It’s “natural law” that an even number cannot be a prime (except the magic number 2).</p>
+<p>We can safely skip them in our main loop. But not only there, we can also safely skip them in the “test division”. An even factor always leads to an even product in a multiplication. This leads to the assumption, that an even number always leads to a modulo unequal 0 when thrown against a prime!</p>
+<p>In JavaScript it is a little trickier to check for the last digit of a number (aka last char of a string).</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">function isPrime4(number) {
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    let limit = Math.floor(Math.sqrt(number));
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    for (let i = 2; i &lt;= limit; i++) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        if ([0, 2, 4, 5, 6, 8].includes(parseInt(i.toString().slice(-1)))) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            continue;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        if (number % i === 0) {
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">            return false;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">        }
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    return true;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">}
+</span></span></code></pre></div><p>Let’s add this logic to both loops:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">let startTime = performance.now();
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">let count = 0;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">for (let number = 2; number &lt; 50000; number++) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    if ([0, 2, 4, 5, 6, 8].includes(parseInt(number.toString().slice(-1)))) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        continue;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    if (isPrime4(number)) {
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        count++;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">10</span><span class="cl">}
+</span></span><span class="line"><span class="ln">11</span><span class="cl">let endTime = performance.now();
+</span></span><span class="line"><span class="ln">12</span><span class="cl">let executionTime = endTime - startTime;
+</span></span><span class="line"><span class="ln">13</span><span class="cl">console.log(`found ${count} primes`);
+</span></span><span class="line"><span class="ln">14</span><span class="cl">console.log(`Execution time: ${executionTime} milliseconds`);
+</span></span></code></pre></div><p>Remember Python? This “silly” approach took a lot time. Same in JavaScript, it increases running time to 47 Milliseconds:</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-4.png" alt="alt text"><p>Again — We should implement the last test a little smarter. Right now we are using some string operations and apparently they are slow as heck.</p>
+<p>Python allows us to change the step rate of the <strong>range()</strong> function. This way we could just skip even numbers in the loop itself. Way easier. Heads up: As we will start at 3 now, we increment the counter integer beforehand:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">function isPrime5(number) {
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    let limit = Math.floor(Math.sqrt(number));
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    for (let i = 3; i &lt;= limit; i += 2) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        if (number % i === 0) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            return false;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    return true;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">}
+</span></span><span class="line"><span class="ln">10</span><span class="cl">let startTime = performance.now();
+</span></span><span class="line"><span class="ln">11</span><span class="cl">let count = 1;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">for (let number = 3; number &lt; 50000; number += 2) {
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    if (isPrime5(number)) {
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        count++;
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">16</span><span class="cl">}
+</span></span><span class="line"><span class="ln">17</span><span class="cl">let endTime = performance.now();
+</span></span><span class="line"><span class="ln">18</span><span class="cl">let executionTime = endTime - startTime;
+</span></span><span class="line"><span class="ln">19</span><span class="cl">console.log(`found ${count} primes`);
+</span></span><span class="line"><span class="ln">20</span><span class="cl">console.log(`Execution time: ${executionTime} milliseconds`);
+</span></span></code></pre></div><img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-5.png" alt="alt text"><p>It’s not way faster than our initial approach, but it still beats Python by lengths.</p>
+<p>Now, as JavaScript is this fast, let’s increase the numbers a little and see how the improved algorithm performs against Python: How long does it take to find all primes up to… wait for it… it’s gonna be legendary… 100 Million!</p>
+<p>This is JavaScript performance:</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-6.png" alt="alt text"><p>And this is Python:</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-7.png" alt="alt text"><p>I stopped the script after 10 Minutes. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/how-to-find-prime-numbers-fast-8d0f7e8bd80f?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Check the other post</a>
+
+
+ to find out how to improve Python even more!</p>
+<blockquote>
+<p>According to 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://t5k.org/howmany.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://t5k.org/howmany.html</a>
+
+
+ we have 5.761.455 prime numbers lower than 100.000.000.</p>
+</blockquote>
+<h2 id="update--what-about-rust-and-c">Update — What about Rust and C++?</h2>
+<p>The story does not end here. I tried the same algorithm with Rust. Implementing a progress bar here led to a desaster, I stopped the search after 5 minutes. Without the progress bar it took <strong>400 seconds</strong>. A lot of room for improvement.</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-8.png" alt="alt text"><p>And even C++ surprised me in the beginning. The first run took 70 seconds, that’s almost twice the time JavaScript needed. Why that? After a little research I found out, that <strong>-O3</strong> and <strong>-ffast-math</strong> arguments for the compiler are recommended. Now the algorithm is done after 40 seconds:</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-9.png" alt="alt text"><p>So… JavaScript is as fast as C++, when it comes to simple calculations. Disclaimer: I’m not a C++ or Rust developer. Leave a comment, if you can explain this!</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-10.png" alt="alt text">]]></content:encoded><atom:updated>2026-04-24T17:43:54+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 8 Minuten</dc:subject><dc:type>tutorial</dc:type></item><item><title>How to find prime numbers in Python. Feat. Cython.</title><link>https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/</link><pubDate>Sat, 11 Nov 2023 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/</guid><description>[PYTHON] How to find Prime Numbers. Fast. Feat. Cython. There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated prime solving formulas — but it will show you, how thoughtful thinking and tinkering will help you with …</description><content:encoded><![CDATA[<h1 id="python-how-to-find-prime-numbers-fast-feat-cython">[PYTHON] How to find Prime Numbers. Fast. Feat. Cython.</h1>
+<p>There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated prime solving formulas — but it will show you, how thoughtful thinking and tinkering will help you with optimising your code.</p>
+<blockquote>
+<p>Nota bene: Do you need the JavaScript version? 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/javascript-how-to-find-prime-numbers-fast-cbcf6bd62e3d?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Check it out here!</a>
+
+
+</p>
+</blockquote>
+<p>What’s a prime number? All of you know that: It’s a number with only two divider natural divisors: 1 and the number itself.</p>
+<p>And when you ask someone for a prime number algorithm, you get two answers: A mathematican will 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://en.wikipedia.org/wiki/Formula_for_primes?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">throw out a complex formula,</a>
+
+
+ like <strong>Mill’s formula:</strong></p>
+<img src="https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/image.png" alt="alt text"><p>Wait, what? Ok. The other answer is just a simple loop that checks if there is another number, lower than the number in question, where the operation <strong>modulo</strong> returns 0. The so called “trial division”. In other words: The number in question divided by the other number returns a third number and all numbers are natural, not factorized.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">def isPrime(number):
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    for i in range(2, number):
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        if (number % i) == 0:
+</span></span><span class="line"><span class="ln">4</span><span class="cl">            return False
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    return True
+</span></span></code></pre></div><p>Let’s run this loop to find primes up to 50.000:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">%%time
+</span></span><span class="line"><span class="ln">2</span><span class="cl">count = 0
+</span></span><span class="line"><span class="ln">3</span><span class="cl">for number in range(2, 50000):
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    if isPrime1(number):
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        count += 1
+</span></span><span class="line"><span class="ln">6</span><span class="cl">print(f&#39;found {count} primes&#39;)
+</span></span></code></pre></div><p>On my machine this will take <strong>6 seconds</strong> and find <strong>5.133 primes</strong> (your results may differ on a different machine):</p>
+<img src="https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/image-1.png" alt="alt text"><p>So, if you are not that much into number theory, what options do we have to improve this algorithm, with some simple tricks?</p>
+<p>Let’s start with some obvious things: We don’t need to test all numbers in our “test division”. In fact we can skip every divisor lower than “number / 2”. Why is that? Because if the divisor is greater than “number / 2” the result must be lower than 2 and a faction.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">def isPrime(number):
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    limit = int(number / 2)
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    for i in range(2, limit + 1):
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        if (number % i) == 0:
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            return False
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    return True
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">count = 0
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">for number in range(2, 50000):
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    if isPrime(number):
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        count += 1
+</span></span><span class="line"><span class="ln">12</span><span class="cl">print(f&#39;found {count} primes&#39;)
+</span></span></code></pre></div><p>Actually, this halves the caluclation time to 3 seconds!</p>
+<img src="https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/image-2.png" alt="alt text"><p>But there’s even more in this limit declaration: We can reduce it to the square root <strong>(sqrt)</strong> of our target number. Because if one divisor is greater than <strong>sqrt(number)</strong> the other divisor must be lower than <strong>sqrt</strong>(divisor). Meaning: They have already been checked. Let’s do it:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">%%time
+</span></span><span class="line"><span class="ln">2</span><span class="cl">import math
+</span></span><span class="line"><span class="ln">3</span><span class="cl">def isPrime(number):
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    limit = int(math.sqrt(number))
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    for i in range(2, limit + 1):
+</span></span><span class="line"><span class="ln">6</span><span class="cl">        if (number % i) == 0:
+</span></span><span class="line"><span class="ln">7</span><span class="cl">            return False
+</span></span><span class="line"><span class="ln">8</span><span class="cl">    
+</span></span><span class="line"><span class="ln">9</span><span class="cl">    return True
+</span></span></code></pre></div><p>Wooohoo — this leads to an impressive reduction to some milliseconds:</p>
+<img src="https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/image-3.png" alt="alt text"><p>What’s next?</p>
+<p>Why do we check even numbers at all? It’s “natural law” that an even number cannot be a prime (except the magic number 2).</p>
+<p>We can safely skip them in our main loop. But not only there, we can also safely skip them in the “test division”. An even factor always leads to an even product in a multiplication. This leads to the assumption, that an even number always leads to a modulo unequal 0 when thrown against a prime!</p>
+<p>In Python there is a simple trick to identify even or odd numbers: We can just check the last digit:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">str(integer)[-1]
+</span></span></code></pre></div><p>Let’s add this logic to both loops:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">%%time
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">def isPrime(number):
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    limit = int(math.sqrt(number))
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    for i in range(2, limit + 1):
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        if str(i)[-1] in [0,2,4,5,6,8]:
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">            continue
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        if (number % i) == 0:
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">            return False
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    return True
+</span></span><span class="line"><span class="ln">11</span><span class="cl">for number in range(2, 50000):
+</span></span><span class="line"><span class="ln">12</span><span class="cl">    if str(number)[-1] in [0,2,4,5,6,8]:
+</span></span><span class="line"><span class="ln">13</span><span class="cl">        continue
+</span></span><span class="line"><span class="ln">14</span><span class="cl">    if isPrime(number):
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        count += 1
+</span></span><span class="line"><span class="ln">16</span><span class="cl">print(f&#39;found {count} primes&#39;)
+</span></span></code></pre></div><p>Something strange happend:</p>
+<img src="https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/image-4.png" alt="alt text"><p>The processing time just increased tremendously. Why that? We should implement the last test a little smarter. Right now we are using some string operations and apparently they are slow as heck.</p>
+<p>Python allows us to change the step rate of the <strong>range()</strong> function. This way we could just skip even numbers in the loop itself. Way easier. Heads up: As we will start at 3 now, we increment the counter integer beforehand:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">%%time
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">def isPrime(number):
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    limit = int(math.sqrt(number))
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    for i in range(3, limit + 1, 2):
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        if (number % i) == 0:
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">            return False
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    return True
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">count = 1
+</span></span><span class="line"><span class="ln">10</span><span class="cl">for number in range(3, 50000, 2):
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    if isPrime(number):
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        count += 1
+</span></span><span class="line"><span class="ln">13</span><span class="cl">print(f&#39;found {count} primes&#39;)
+</span></span></code></pre></div><img src="https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/image-5.png" alt="alt text"><p>Waaaay faster — We are back on track. This solution halves the best result from above.</p>
+<p>But wait… have you checked 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/javascript-how-to-find-prime-numbers-fast-cbcf6bd62e3d?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">the JavaScript version of this script</a>
+
+
+? Our script is quick bu JavaSript is above and beyond. It found all primes up to 100 Mio. in around 40 seconds… The Python script took 10 Minutes when I interrupted it — with no result. This is devastating, so let’s get back the crown.</p>
+<p>There is a way to <strong>make</strong> <strong>Python</strong> scripts <strong>faster</strong>, not by improving the algorithm but the way of running the script. Python is a <strong>versatile</strong>, <strong>high</strong>-<strong>level</strong> <strong>language</strong>, probably easy to learn and with a huge <strong>community</strong>. But it’s slow because of several facts, one of them is the “<strong>dynamic variable</strong> <strong>typing</strong>”. The quick explanation: A variable can be a string, integer or float. Python doesn’t care. Thats why, for example, a division always returns a float, if you not use the double slash (//):</p>
+<img src="https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/image-6.png" alt="alt text"><p>A float is much more complex than an integer. An integer is just a couple of activated bits, while a float… ok, I don’t want to fall into that rabbit hole. It’s complex and therefore slow.</p>
+<p>The answer is “Cython”, bascially also a programming language, but with more C-like features. That’s why it’s call Cython. The trick is now to change our Python code to make it work with Cython.</p>
+<p>First make sure that you have the Cython module installed:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">pip install cython
+</span></span></code></pre></div><p>This is not too difficult, we just declare our variables upfront:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="k">def</span> <span class="nf">isPrime5</span><span class="p">(</span><span class="ne">int</span> <span class="n">number</span><span class="p">):</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="n">cdef</span> <span class="ne">int</span> <span class="n">limit</span> <span class="c1"># our limit is always an integer</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="n">limit</span> <span class="o">=</span> <span class="o">&lt;</span><span class="ne">int</span><span class="o">&gt;</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">number</span><span class="p">)</span> <span class="c1"># the result is always an integer</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="n">cdef</span> <span class="ne">int</span> <span class="n">i</span> <span class="c1"># the loop variable is always an integer</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">limit</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">number</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">            <span class="k">return</span> <span class="n">False</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="k">return</span> <span class="n">True</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="c1"># additionally, we organize the code a little</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="k">def</span> <span class="nf">countPrimes</span><span class="p">():</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="c1"># and again some upfront declarations</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">    <span class="n">cdef</span> <span class="ne">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    <span class="n">cdef</span> <span class="ne">int</span> <span class="n">number</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="n">cdef</span> <span class="ne">float</span> <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">100000000</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">        <span class="k">if</span> <span class="n">isPrime5</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;found {count} primes after {time.time()- start} seconds&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    <span class="n">countPrimes</span><span class="p">()</span>
+</span></span></code></pre></div><p>Name this file primesC.pyx and safe it.</p>
+<p>Now we need an additional file called “setup.py” that tells Cython how our script works:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">from</span> <span class="n">setuptools</span> <span class="n">import</span> <span class="n">setup</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">from</span> <span class="n">Cython</span><span class="o">.</span><span class="n">Build</span> <span class="n">import</span> <span class="n">cythonize</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="n">setup</span><span class="p">(</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    <span class="n">ext_modules</span> <span class="o">=</span> <span class="n">cythonize</span><span class="p">(</span><span class="s2">&#34;primesC.pyx&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="p">)</span>
+</span></span></code></pre></div><p>Now you compile your script using this command:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">python setup.py build_ext --inplace
+</span></span></code></pre></div><p>This will create a (binary) file named <strong>primesC.cpython-311-darwin.so</strong> which is bascially just a Python module. You can now quickly reference it on the command line like this (or use it in your Python code):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">python -c &#34;import primesC; primesC.count_primes()&#34;
+</span></span></code></pre></div><p>And there you go: Instead of waiting Ten minutes, the script now returns a result after almost 79 seconds:</p>
+<img src="https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/image-7.png" alt="alt text"><p>Well, this is still way slower than JavaScript (40 seconds), but it also improves the initial script tremendously.</p>
+<img src="https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/image-8.png" alt="alt text"><p>Mandatory Preview Image</p>
+]]></content:encoded><atom:updated>2026-05-07T15:36:59+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item><item><title>How to develop a balanced card game with Python</title><link>https://nickyreinert.de/en/2023/2023-01-28-card-game-development/</link><pubDate>Sat, 28 Jan 2023 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2023/2023-01-28-card-game-development/</guid><description>Join me on my journey from drawing for fun, to Excel, over Python to a, probably working and good balanced card game.
+But why? Shameless bragging: I own a Remarkable2 and from time to time I’m drawing random stuff on it. Just for the sake of recreation. I’m not a good painter. It’s no serious art, …</description><content:encoded><![CDATA[<p>Join me on my journey from drawing for fun, to Excel, over Python to a, probably working and good balanced card game.</p>
+<h2 id="but-why">But why?</h2>
+<p>Shameless bragging: I own a Remarkable2 and from time to time I’m drawing random stuff on it. Just for the sake of recreation. I’m not a good painter. It’s no serious art, but it’s fun.</p>
+<img src="https://nickyreinert.de/en/2023/2023-01-28-card-game-development/image.png" alt="Nope, I’m not"><p>One day I decided to draw a couple of figures based on geometric shapes and I thought: Why don’t make a card game out of it. And that’s where the story begins where I tried to figure out, how to develop a balanced card game.</p>
+<h2 id="the-game-setup">The game setup</h2>
+<p>First I equipped every figure, I call them characters, with four different attributes that are somehow related to <em>geometry</em>:</p>
+<ul>
+<li>amount of edges</li>
+<li>age</li>
+<li>symmetry bonus</li>
+<li>euclidean reciprocal</li>
+</ul>
+<p>If you look at the characters I drawed, the “amount of edges” and the “symmetry bonus” should make sense. Those values ought to be fixed. The “age” and the “euclidean reciprocal” are meant to be “fictive” values that could vary.</p>
+<img src="https://nickyreinert.de/en/2023/2023-01-28-card-game-development/image-1.png" alt="My set of characters"><p>I also created two simple formulas to calculate attacking and defense values:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Attack Value = (1 + amount of edges) * (1 + symmtry bonus)
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Defense Value = age * euclidean reciprocal
+</span></span></code></pre></div><p>Those are the game rules:</p>
+<ul>
+<li>every player gets a stack of cards, laying in front of the player, hidden</li>
+<li>the player whose turn it is draws the top card from the own stack</li>
+<li>this player has to chose an opponent from the other players</li>
+<li>now both players compare the attack and defense values of their characters, the winner gets both cards and puts them under the own stack</li>
+<li>now the player to the left of the last player draws a card from the own stack and the game proceeds</li>
+<li>if one player has all cards, this player wins the game</li>
+</ul>
+<p>That was my starting point. My first approach was to find out how each character would perform in a fight against it’s peers.</p>
+<h2 id="first-stop-excel">First stop: Excel</h2>
+<p>I’m in love with Excel, so I created a sheet with dozens of formulas. It’s not sophisticated, it’s complex and not worth complaining at — as this does not help achieving the goal.</p>
+<p>The idea was to iterate through the random values for each charachter to finaly get a “fair chance” for every character to win. The range for the random values is always based on the outcome of the current “fight”. This results in a couple of circle references. That’s the result:</p>
+<img src="https://nickyreinert.de/en/2023/2023-01-28-card-game-development/image-2.png" alt="alt text"><p><em>(If you don’t know it yet: Enabling “iterative calculations” in Excel allows you to use self referencing formulas, which sometimes help you to crunch numbers)</em></p>
+<p>My success indicator was the <strong>average chance of winning</strong> for all characters. Which is 87% in the screenshot. The problem with my setup was: This value does not come from the values you actually see, but from the previous ones. So I need to adapt my strategy and invest a little more time.</p>
+<h2 id="next-stop-python">Next stop: Python</h2>
+<p>As I am also in love with Python, I switched to Jupyter. The algorithm was quite easy, I’m not going to post it here. Again: It does not help achieving the gol. Let me just give you some pseudo code:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># n sets of 27 characters, where each set contains different values </span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"># for &#39;age&#39; and &#39;euclidean reciprocal&#39; </span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="n">character_variations</span> <span class="o">=</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="k">for</span> <span class="n">charachters</span> <span class="ow">in</span> <span class="n">character_variations</span><span class="p">:</span> 
+</span></span><span class="line"><span class="ln">5</span><span class="cl">  <span class="k">for</span> <span class="n">character_1</span> <span class="ow">in</span> <span class="n">characters</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    <span class="k">for</span> <span class="n">character_2</span> <span class="ow">in</span> <span class="n">characters</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl">      <span class="n">fight</span><span class="p">(</span><span class="n">character_1</span><span class="p">,</span> <span class="n">character_2</span><span class="p">)</span>
+</span></span></code></pre></div><p>Running this code returns a table containing the win/lose rate for every character. Again I looked for a value to measure the “balance” of the set of characters. I played around using average values, standard deviation and so on and finally came to one conclusion: I am on the wrong track.</p>
+<h2 id="epiphany">Epiphany</h2>
+<p>I want to create a card game. In a card game you have <strong>n players</strong> with a <strong>random stack of cards</strong> to play with. I don’t need to calculate how powerful every character is. I don’t want to balance the power between each character. The playing mechanic of my card game is solely based on chance. If you play a game you need to come to an end, eventually.</p>
+<p>That’s why I took my simple algorithm to a new level. I’m just showing you how to call it, the full script is on Github (see bottom of page).</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="n">variable_attributes</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="s1">&#39;attribute_2&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="c1"># min, max</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="s1">&#39;attribute_4&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="c1"># min, max</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="n">gameEngine</span> <span class="o">=</span> <span class="n">GameEngine</span><span class="p">(</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="n">debug</span><span class="o">=</span><span class="n">False</span><span class="p">,</span> 
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="n">bonus_attack_activator</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="n">bonus_defense_activator</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="n">escape_activator</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> 
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="n">dice_range</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="n">variable_attributes</span><span class="o">=</span><span class="n">variable_attributes</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="n">gameEngine</span><span class="o">.</span><span class="n">randomizeCharacterAttributes</span><span class="p">(</span><span class="n">variations</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="n">gameEngine</span><span class="o">.</span><span class="n">simulateRealGames</span><span class="p">(</span><span class="n">games</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">round_limit</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">players</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">characters_per_stack</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">sibblings_per_character</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="n">gameEngine</span><span class="o">.</span><span class="n">simulateAllvsAll</span><span class="p">(</span><span class="n">games</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="n">gameEngine</span><span class="o">.</span><span class="n">exportGameStatsToCsv</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="n">gameEngine</span><span class="o">.</span><span class="n">showSummary</span><span class="p">()</span>
+</span></span></code></pre></div><h2 id="changes-to-the-game-mechanic">Changes to the game mechanic</h2>
+<p>First I added a new rule: Characters should have either an attack or defense bonus capability. This means: Before two players fight against each other, they roll a dice to improve their attack or defense values or even escape from the fight. This adds more dynamic to the game and probably some kind of strategic moment.</p>
+<p>I hard-coded those rules into the code and will explain them briefly:</p>
+<h3 id="parameters">Parameters</h3>
+<p>Let’s start with the <strong>attack bonus</strong> that e.g. needs to be activated by throwing a 2 or 6:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">bonus_attack_activator=[1, 6]
+</span></span></code></pre></div><p>On success, the attacker may roll the dice two times. The greater value can be used as an <strong>attack multiplicator</strong>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">    def calculateAttackValue(self, character):
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">        
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">        attack_value = (1 + character[&#39;attributes&#39;][&#39;attribute_1&#39;]) * (1 + character[&#39;attributes&#39;][&#39;attribute_3&#39;])
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        eleveated_attack_value = attack_value
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        # roll the attack dice
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        if &#39;attack&#39; in character[&#39;bonus&#39;]:
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">            if random.choice(self.dice_range) in self.bonus_attack_activator:
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">                dice_1 = random.choice(self.dice_range)
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">                dice_2 = random.choice(self.dice_range)
+</span></span><span class="line"><span class="ln">10</span><span class="cl">            
+</span></span><span class="line"><span class="ln">11</span><span class="cl">                if dice_1 &gt; dice_2:
+</span></span><span class="line"><span class="ln">12</span><span class="cl">                    eleveated_attack_value *= dice_1
+</span></span><span class="line"><span class="ln">13</span><span class="cl">                else:
+</span></span><span class="line"><span class="ln">14</span><span class="cl">                    eleveated_attack_value *= dice_2
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        if self.debug : print(f&#39;\tbase attack: {attack_value}, elevated attack {eleveated_attack_value}&#39;)
+</span></span><span class="line"><span class="ln">16</span><span class="cl">        return eleveated_attack_value
+</span></span><span class="line"><span class="ln">17</span><span class="cl">     bonus_defense_activator=[1, 2, 3, 4, 5, 6],
+</span></span></code></pre></div><p>The same logic applies to the <strong>defense bonus</strong>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">bonus_defense_activator=[1, 2, 3, 4, 5, 6]
+</span></span></code></pre></div><p>If you define the full dice range the defending player does not need to activate the defense bonus. This player simply throws the dice two times to get the multiplicator.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">    def calculateDefenseValue(self, character):
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">        defense_value = character[&#39;attributes&#39;][&#39;attribute_2&#39;] + character[&#39;attributes&#39;][&#39;attribute_4&#39;]
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">        elevated_defense_value = defense_value
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        # roll the defense dice
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        if &#39;defense&#39; in character[&#39;bonus&#39;]:
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">            if random.choice(self.dice_range) in self.bonus_defense_activator:
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">                
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">                dice_1 = random.choice(self.dice_range)
+</span></span><span class="line"><span class="ln">10</span><span class="cl">                dice_2 = random.choice(self.dice_range)
+</span></span><span class="line"><span class="ln">11</span><span class="cl">            
+</span></span><span class="line"><span class="ln">12</span><span class="cl">                if dice_1 &gt; dice_2:
+</span></span><span class="line"><span class="ln">13</span><span class="cl">                    elevated_defense_value += dice_1
+</span></span><span class="line"><span class="ln">14</span><span class="cl">                else:
+</span></span><span class="line"><span class="ln">15</span><span class="cl">                    elevated_defense_value += dice_2
+</span></span><span class="line"><span class="ln">16</span><span class="cl">        if self.debug : print(f&#39;\tbase defense: {defense_value}, elevated defense {elevated_defense_value}&#39;)
+</span></span><span class="line"><span class="ln">17</span><span class="cl">        return elevated_defense_value
+</span></span></code></pre></div><p>Finally the <strong>escape bonus</strong>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">escape_activator=[3]
+</span></span></code></pre></div><p>And the logic behind it:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">    def calculateEscapeValue(self, character):
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">        # roll the escape dice
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">        escape_success = False
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        if &#39;escape&#39; in character[&#39;bonus&#39;]:
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            if random.choice(self.dice_range) in self.bonus_attack_activator:
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">                escape_bonus = random.choice(self.dice_range)
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">                if escape_bonus in self.escape_activator:
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">                    escape_success = True   
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">                else:
+</span></span><span class="line"><span class="ln">10</span><span class="cl">                    escape_success = False
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        if self.debug : print(f&#39;\tescape success: {escape_success}&#39;)
+</span></span><span class="line"><span class="ln">13</span><span class="cl">        return escape_success
+</span></span></code></pre></div><p>There’s not much to explain here: The player can pull back from a fight, if the dice shows the required number.</p>
+<p>As mentioned above, the “age” (attribute_2) and “euclidean reciprocal” (attribute_4) are the <strong>attributes that I want to optimize</strong>. I’m just defining a range for those attributes:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">variable_attributes</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="s1">&#39;attribute_2&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="c1"># min, max</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="s1">&#39;attribute_4&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="c1"># min, max</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>The algorithm will now choose random values between 1 and 50 respectively 1 and 30 for every character variation it creates.</p>
+<p><strong>Completion</strong></p>
+<p>Now, with every starting parameter set, I <strong>initalize</strong> the “<strong>game engine</strong>”:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">gameEngine</span> <span class="o">=</span> <span class="n">GameEngine</span><span class="p">(</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="n">debug</span><span class="o">=</span><span class="n">False</span><span class="p">,</span> 
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="n">bonus_attack_activator</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    <span class="n">bonus_defense_activator</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    <span class="n">escape_activator</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> 
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    <span class="n">dice_range</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    <span class="n">variable_attributes</span><span class="o">=</span><span class="n">variable_attributes</span><span class="p">)</span>
+</span></span></code></pre></div><p>This will also load a “<strong>base set of attributes</strong>” for all 27 characters from a JSON-file. It contains attributes I defined from the scratch, as a starting point. It looks like that:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">{
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    &#34;character_1&#34;: {
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">        &#34;attributes&#34;: {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">            &#34;attribute_1&#34;: 0, # remember, this is the amount of edges, fixed
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            &#34;attribute_2&#34;: 42, # the age, this can be randomized
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">            &#34;attribute_3&#34;: 1, # the symmetry bonus, fixed
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">            &#34;attribute_4&#34;: 2 # the euclidean reciprocal, can be randomized
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        },
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">        &#34;bonus&#34;: [&#34;escape&#34;]
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    },
+</span></span><span class="line"><span class="ln">11</span><span class="cl">...
+</span></span><span class="line"><span class="ln">12</span><span class="cl">}
+</span></span></code></pre></div><p>The first step now is to find <strong>n random variations</strong> for the base set of all characters to randomize <strong>attribute_2</strong> and <strong>attribute_4</strong>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">gameEngine</span><span class="o">.</span><span class="n">randomizeCharacterAttributes</span><span class="p">(</span><span class="n">variations</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</span></span></code></pre></div><p>No magic here. The higher the number of variations is, the more iterations the full process will do.</p>
+<h2 id="starting-the-simulation">Starting the simulation</h2>
+<h3 id="real-games">Real games</h3>
+<p>After that I will start the simulation for <em>real games:</em></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">gameEngine.simulateRealGames(
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  games=1, 
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  round_limit=100, 
+</span></span><span class="line"><span class="ln">4</span><span class="cl">  players=4, 
+</span></span><span class="line"><span class="ln">5</span><span class="cl">  characters_per_stack=3, 
+</span></span><span class="line"><span class="ln">6</span><span class="cl">  sibblings_per_character=1)
+</span></span></code></pre></div><p>The <strong>amount of games</strong> I want to simulate should be clear. The round limit is a threshold to prevent a single game from running endlessly. The limit of 100 is pretty high. Imagine you’re playing a card game with your friends and after 100 rounds you’re still playing. Motivating, right? The amount of players should be clear, too.</p>
+<p>The amount of characters per stack simply defines with how many cards every player starts initially. I have 27 different characters, so 4 players allows 6 cards which leaves 3 character cards in the pool.</p>
+<p>The sibblings per character parameter allows to increase the pool size. If set to 2, you have 27 * 2 cards to play with and therefore more cards per every player’s stack.</p>
+<p>Be warned: The amount of iterations comes from the formular <strong>games</strong> times <strong>variations</strong> and 1 <strong>base varation</strong> for 27 <strong>characters</strong> and <strong>maximum</strong> 1.000 rounds:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">27 * 27 * 11 * 100 * 100 = 80.190.000 iterations max
+</span></span></code></pre></div><p>That’s quite high. But it should give you a statistical useful result. I kept it simple and only simulated 1 game right now.</p>
+<h3 id="all-vs-all">All vs all</h3>
+<p>I also migrated the inital approach which allows me to find out how powerful every character is. This simply initiates a fight of every character against every other character.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">gameEngine.simulateAllvsAll(games=100)
+</span></span></code></pre></div><p>There’s not much to explain here. This will loop through every variation created above. Be warned again: 100 games for 10 variations and 1 base variation for 27 characters means:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">27 * 27 * 11 * 100 = 801.900 iterations
+</span></span></code></pre></div><h2 id="the-statistics">The statistics</h2>
+<p>Those two lines, or at least the last one, will finally return the desired results:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">gameEngine</span><span class="o">.</span><span class="n">exportGameStatsToCsv</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">gameEngine</span><span class="o">.</span><span class="n">showSummary</span><span class="p">()</span>
+</span></span></code></pre></div><p>The first method creates three CSV-files. One file called “<strong>stats.csv</strong>” contains all stats from both simulation for every variation, game and round. For the above mentioned run this file has over 7 MBytes. One line for each “fight”. A lot of data to analyze. Luv it.</p>
+<p>The second file “<strong>stats_per_character.csv”</strong> contains stats for each charachter. This will help to understand, how the “power” is being distributed amongst all characters.</p>
+<p>The third file “<strong>stats_summary.csv</strong>” contains a summery of all simulated “real games.” The method showSummary() will also return this information, which is right now the most important one:</p>
+<img src="https://nickyreinert.de/en/2023/2023-01-28-card-game-development/image-3.png" alt="alt text"><p>The first column contains all variations. Keep in mind: variation 0 is the one I defined in advance and 1 to 10 are the ones containing random values for attribute_2 (age) and attribut_4 (euclidean reciprocal) for each character.</p>
+<p>As mentioned above, I only simulated 1 game per variation for the real game simulator. The third column shows how long it took until the game ended and a player wins. And finally the last column showing what player wins.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>Let’s look at the statistics for varation no. 10, where it only takes 15 rounds to finish the game. Which seems a good limit for a casual card game — but remember that I only “played” 1 game. Remember, when I first tried to find a good balance for the characters, to give them a fair chance? This is how the stats look now:</p>
+<img src="https://nickyreinert.de/en/2023/2023-01-28-card-game-development/image-4.png" alt="alt text"><p>As you can see, character_24 is clearly the most powerful character in the set. 49 wins and only 3 loses lead to a win/lose rate of over 16, which outperforms the others with no doubt.</p>
+<p>Retrospectively I can say, that it is pretty obvious that a balanced game does not require the same strength for all characters. This could work, but then I must add more strategic options to the game.</p>
+<p>Well, I am far away from being a game designer. And this script does not return the perfect definition for my card game, but it helps me finding one and also gives a good understanding of the game mechanic. It allows me to easily fine tune the parameters of the game to find a perfect setup for a…hopefully… satisfying game.</p>
+<p>If you are a game designer or have some knowledge in this field, I’d happy to get a comment on how I am performing in this area.</p>
+<h2 id="source">Source</h2>
+<p>You can find the Jupyter notbook on 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gist.github.com/nickyreinert/05dc269fc5091d9ecc7b03836970cab0?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://gist.github.com/nickyreinert/05dc269fc5091d9ecc7b03836970cab0</a>
+
+
+</p>
+]]></content:encoded><atom:updated>2026-05-07T15:36:59+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 8 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>

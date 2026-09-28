@@ -1,2 +1,249 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Performance Optimization auf Nicky Reinert</title><link>https://nickyreinert.de/en/topics/performance-optimization/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Tue, 12 Dec 2023 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/performance-optimization/index.xml" rel="self" type="application/rss+xml"/><item><title>How to predict prime numbers in JavaScript</title><link>https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/</link><pubDate>Tue, 12 Dec 2023 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/</guid><description>There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated formulas — but it will hopefully show you, how thoughtful thinking and tinkering will help you with optimising your code.
-Nota bene: Think Python is faster? Try …</description><category>blog</category><media:content url="https://nickyreinert.de/prime_numbers_comparison.png" type="image/jpeg"><media:title>JavaScript vs Python Prime Number Algorithm Performance Comparison</media:title></media:content><dc:subject>Lesezeit: 8 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Performance Optimization auf Nicky Reinert</title><link>https://nickyreinert.de/en/topics/performance-optimization/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Tue, 12 Dec 2023 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/performance-optimization/index.xml" rel="self" type="application/rss+xml"/><item><title>How to predict prime numbers in JavaScript</title><link>https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/</link><pubDate>Tue, 12 Dec 2023 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/</guid><description>There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated formulas — but it will hopefully show you, how thoughtful thinking and tinkering will help you with optimising your code.
+Nota bene: Think Python is faster? Try …</description><content:encoded><![CDATA[<p>There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated formulas — but it will hopefully show you, how thoughtful thinking and tinkering will help you with optimising your code.</p>
+<blockquote>
+<p>Nota bene: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/how-to-find-prime-numbers-fast-8d0f7e8bd80f?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Think Python is faster? Try it!</a>
+
+
+</p>
+</blockquote>
+<p>What’s a prime number? All of you know that: It’s a number with only two divider natural divisors: 1 and the number itself.</p>
+<p>And when you ask someone for a prime number algorithm, you get two answers: A mathematican will 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://en.wikipedia.org/wiki/Formula_for_primes?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">throw out a complex formula,</a>
+
+
+ like <strong>Mill’s formula:</strong></p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image.png" alt="alt text"><p>Wait, what? Ok. The other answer is just a simple loop that checks if there is another number, lower than the number in question, where the operation <strong>modulo</strong> returns 0. The so called “trial division”. In other words: The number in question divided by the other number returns a third number and all numbers are natural, not factorized.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">function isPrime(number) {
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    for (let i = 2; i &lt; number; i++) {
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        if (number % i === 0) {
+</span></span><span class="line"><span class="ln">4</span><span class="cl">            return false;
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        }
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    return true;
+</span></span><span class="line"><span class="ln">8</span><span class="cl">}
+</span></span></code></pre></div><p>Let’s run this loop to find primes up to 50.000:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">let startTime = performance.now();
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">let count = 0;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">for (let number = 2; number &lt; 50000; number++) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    if (isPrime(number)) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        count++;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">}
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">let endTime = performance.now();
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">let executionTime = endTime - startTime;
+</span></span><span class="line"><span class="ln">10</span><span class="cl">console.log(`found ${count} primes`);
+</span></span><span class="line"><span class="ln">11</span><span class="cl">console.log(`Execution time: ${executionTime} milliseconds`);
+</span></span></code></pre></div><blockquote>
+<p>Did you know? You can run JavaScript inside Visual Studio Code. Just hit Ctrl+F5. Don’t know where to click. I’m a shortcut-nerd.</p>
+</blockquote>
+<p>On my machine this will take 212 milliseconds and find 5.133 primes (your results may differ on a different machine):</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-1.png" alt="alt text"><p>Wait a minute! JavaScript is dozens of time faster than… Python?</p>
+<p>Jepp. Let’s see if we could add another level of disgrace:</p>
+<p>Let’s start with some obvious things: We don’t need to test all numbers in our “test division”. In fact we can skip every divisor lower than “number / 2”. Why is that? Because if the divisor is greater than “number / 2” the result must be lower than 2 and a faction.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">function isPrime2(number) {
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    let limit = Math.floor(number / 2);
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    for (let i = 2; i &lt;= limit; i++) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        if (number % i === 0) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            return false;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    return true;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">}
+</span></span><span class="line"><span class="ln">10</span><span class="cl">let startTime = performance.now();
+</span></span><span class="line"><span class="ln">11</span><span class="cl">let count = 0;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">for (let number = 2; number &lt; 50000; number++) {
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    if (isPrime2(number)) {
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        count++;
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">16</span><span class="cl">}
+</span></span><span class="line"><span class="ln">17</span><span class="cl">let endTime = performance.now();
+</span></span><span class="line"><span class="ln">18</span><span class="cl">let executionTime = endTime - startTime;
+</span></span><span class="line"><span class="ln">19</span><span class="cl">console.log(`found ${count} primes`);
+</span></span><span class="line"><span class="ln">20</span><span class="cl">console.log(`Execution time: ${executionTime} milliseconds`);
+</span></span></code></pre></div><p>Again, similar to the Python solution, this halves the calculation time to, but not to 100 milliseconds</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-2.png" alt="alt text"><p>But there’s even more in this limit declaration: We can reduce it to the square root <strong>(sqrt)</strong> of our target number. Because if one divisor is greater than <strong>sqrt(number)</strong> the other divisor must be lower than <strong>sqrt</strong>(divisor). Meaning: They have already been checked. Let’s do it:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">function isPrime3(number) {
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    let limit = Math.floor(Math.sqrt(number));
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    for (let i = 2; i &lt;= limit; i++) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        if (number % i === 0) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            return false;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    return true;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">}
+</span></span><span class="line"><span class="ln">10</span><span class="cl">let startTime = performance.now();
+</span></span><span class="line"><span class="ln">11</span><span class="cl">let count = 0;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">for (let number = 2; number &lt; 50000; number++) {
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    if (isPrime3(number)) {
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        count++;
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">16</span><span class="cl">}
+</span></span><span class="line"><span class="ln">17</span><span class="cl">let endTime = performance.now();
+</span></span><span class="line"><span class="ln">18</span><span class="cl">let executionTime = endTime - startTime;
+</span></span><span class="line"><span class="ln">19</span><span class="cl">console.log(`found ${count} primes`);
+</span></span><span class="line"><span class="ln">20</span><span class="cl">console.log(`Execution time: ${executionTime} milliseconds`);
+</span></span></code></pre></div><p>WHAT THE ACTUAL HECK-IDDI-HECK! 4 Milliseconds? Remember Python and 72 Milliseconds?</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-3.png" alt="alt text"><p>What’s next?</p>
+<p>Why do we check even numbers at all? It’s “natural law” that an even number cannot be a prime (except the magic number 2).</p>
+<p>We can safely skip them in our main loop. But not only there, we can also safely skip them in the “test division”. An even factor always leads to an even product in a multiplication. This leads to the assumption, that an even number always leads to a modulo unequal 0 when thrown against a prime!</p>
+<p>In JavaScript it is a little trickier to check for the last digit of a number (aka last char of a string).</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">function isPrime4(number) {
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    let limit = Math.floor(Math.sqrt(number));
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    for (let i = 2; i &lt;= limit; i++) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        if ([0, 2, 4, 5, 6, 8].includes(parseInt(i.toString().slice(-1)))) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            continue;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        if (number % i === 0) {
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">            return false;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">        }
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    return true;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">}
+</span></span></code></pre></div><p>Let’s add this logic to both loops:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">let startTime = performance.now();
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">let count = 0;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">for (let number = 2; number &lt; 50000; number++) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    if ([0, 2, 4, 5, 6, 8].includes(parseInt(number.toString().slice(-1)))) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        continue;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    if (isPrime4(number)) {
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        count++;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">10</span><span class="cl">}
+</span></span><span class="line"><span class="ln">11</span><span class="cl">let endTime = performance.now();
+</span></span><span class="line"><span class="ln">12</span><span class="cl">let executionTime = endTime - startTime;
+</span></span><span class="line"><span class="ln">13</span><span class="cl">console.log(`found ${count} primes`);
+</span></span><span class="line"><span class="ln">14</span><span class="cl">console.log(`Execution time: ${executionTime} milliseconds`);
+</span></span></code></pre></div><p>Remember Python? This “silly” approach took a lot time. Same in JavaScript, it increases running time to 47 Milliseconds:</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-4.png" alt="alt text"><p>Again — We should implement the last test a little smarter. Right now we are using some string operations and apparently they are slow as heck.</p>
+<p>Python allows us to change the step rate of the <strong>range()</strong> function. This way we could just skip even numbers in the loop itself. Way easier. Heads up: As we will start at 3 now, we increment the counter integer beforehand:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">function isPrime5(number) {
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    let limit = Math.floor(Math.sqrt(number));
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    for (let i = 3; i &lt;= limit; i += 2) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        if (number % i === 0) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            return false;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    return true;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">}
+</span></span><span class="line"><span class="ln">10</span><span class="cl">let startTime = performance.now();
+</span></span><span class="line"><span class="ln">11</span><span class="cl">let count = 1;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">for (let number = 3; number &lt; 50000; number += 2) {
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    if (isPrime5(number)) {
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        count++;
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">16</span><span class="cl">}
+</span></span><span class="line"><span class="ln">17</span><span class="cl">let endTime = performance.now();
+</span></span><span class="line"><span class="ln">18</span><span class="cl">let executionTime = endTime - startTime;
+</span></span><span class="line"><span class="ln">19</span><span class="cl">console.log(`found ${count} primes`);
+</span></span><span class="line"><span class="ln">20</span><span class="cl">console.log(`Execution time: ${executionTime} milliseconds`);
+</span></span></code></pre></div><img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-5.png" alt="alt text"><p>It’s not way faster than our initial approach, but it still beats Python by lengths.</p>
+<p>Now, as JavaScript is this fast, let’s increase the numbers a little and see how the improved algorithm performs against Python: How long does it take to find all primes up to… wait for it… it’s gonna be legendary… 100 Million!</p>
+<p>This is JavaScript performance:</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-6.png" alt="alt text"><p>And this is Python:</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-7.png" alt="alt text"><p>I stopped the script after 10 Minutes. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/how-to-find-prime-numbers-fast-8d0f7e8bd80f?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Check the other post</a>
+
+
+ to find out how to improve Python even more!</p>
+<blockquote>
+<p>According to 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://t5k.org/howmany.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://t5k.org/howmany.html</a>
+
+
+ we have 5.761.455 prime numbers lower than 100.000.000.</p>
+</blockquote>
+<h2 id="update--what-about-rust-and-c">Update — What about Rust and C++?</h2>
+<p>The story does not end here. I tried the same algorithm with Rust. Implementing a progress bar here led to a desaster, I stopped the search after 5 minutes. Without the progress bar it took <strong>400 seconds</strong>. A lot of room for improvement.</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-8.png" alt="alt text"><p>And even C++ surprised me in the beginning. The first run took 70 seconds, that’s almost twice the time JavaScript needed. Why that? After a little research I found out, that <strong>-O3</strong> and <strong>-ffast-math</strong> arguments for the compiler are recommended. Now the algorithm is done after 40 seconds:</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-9.png" alt="alt text"><p>So… JavaScript is as fast as C++, when it comes to simple calculations. Disclaimer: I’m not a C++ or Rust developer. Leave a comment, if you can explain this!</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-10.png" alt="alt text">]]></content:encoded><atom:updated>2026-04-24T17:43:54+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 8 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>

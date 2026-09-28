@@ -1,1 +1,72 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Web-Development auf Nicky Reinert</title><link>https://nickyreinert.de/en/categories/web-development/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Wed, 17 Aug 2022 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/categories/web-development/index.xml" rel="self" type="application/rss+xml"/><item><title>Managing Adobe Launch Tags with Local Overrides in Chrome DevTools</title><link>https://nickyreinert.de/en/2022/2022-08-17-adobe-launch/</link><pubDate>Wed, 17 Aug 2022 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2022/2022-08-17-adobe-launch/</guid><description>POV: You need to maintain a website that implements Adobe Launch (or probably any tag manager). The tag is a huge mess and contains fragmented rules and no clear naming system. Adding features or fixing bugs can be a real pain in the ass: Finding the right rule, modifying the custom code in a not so …</description><category>blog</category><category>web-development</category><category>adobe-launch</category><media:content url="https://nickyreinert.de/chrome_devtools_overrides.png" type="image/jpeg"><media:title>Chrome DevTools Overrides panel showing local file selection for tag management</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Web-Development auf Nicky Reinert</title><link>https://nickyreinert.de/en/categories/web-development/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Wed, 17 Aug 2022 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/categories/web-development/index.xml" rel="self" type="application/rss+xml"/><item><title>Managing Adobe Launch Tags with Local Overrides in Chrome DevTools</title><link>https://nickyreinert.de/en/2022/2022-08-17-adobe-launch/</link><pubDate>Wed, 17 Aug 2022 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2022/2022-08-17-adobe-launch/</guid><description>POV: You need to maintain a website that implements Adobe Launch (or probably any tag manager). The tag is a huge mess and contains fragmented rules and no clear naming system. Adding features or fixing bugs can be a real pain in the ass: Finding the right rule, modifying the custom code in a not so …</description><content:encoded><![CDATA[<p>POV: You need to maintain a website that implements Adobe Launch (or probably any tag manager). The tag is a huge mess and contains fragmented rules and no clear naming system. Adding features or fixing bugs can be a real pain in the ass: Finding the right rule, modifying the custom code in a not so convenient code editor, saving the rule, re-building the library, re-loading the page, testing and seeing, that something is still missing, back to step 1. How can you improve that?</p>
+<p><strong>Disclaimer</strong>: If you are a web developer, this should be an old hat. If you are a developer and never heard about local overrides, you should continue reading.</p>
+<h2 id="have-you-met-local-overrides">Have you met “Local Overrides”?</h2>
+<p>Solution: Well, you could choose the sophisticated way: Host the tag manager for yourself, use some kind of version control system to synchronize the source code with your local development environment. If this is not possible the solution is “local overrides in Chrome”. 
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://developer.chrome.com/blog/new-in-devtools-65/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous#overrides" target="_blank" rel="noopener noreferrer">Chrome introduced this feature with Chrome 65 in 2018</a>
+
+
+ and it allows you to, surprise, override remote resources with local files.</p>
+<h2 id="cut-it-tell-me-how">Cut it, tell me how!</h2>
+<ol>
+<li>Go to site that contains your tag, open the DevTools of Chrome and go to the “Sources” area and then select the “Overrides” tab:</li>
+</ol>
+<img src="https://nickyreinert.de/en/2022/2022-08-17-adobe-launch/image.png" alt="alt text"><ol start="2">
+<li>
+<p>Click the area saying “+ Select folder for overrides” and choose your folder wisely. You probably need to confirm this with your operating system.</p>
+</li>
+<li>
+<p>Now select the “Page” tab to the left, which should show you all the resources this page uses. Look for a subfolder called “assets.adobetm.com” — the host where Adobe’s tags are comming from. Inside that folder you’ll find a resource like this:</p>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">launch-EN919758db9a654a17bac7d184b99c4820.min.js
+</span></span></code></pre></div><p>This is the tag Adobe uses on it’s own site. Right click this item and select “Save for overrides”:</p>
+<img src="https://nickyreinert.de/en/2022/2022-08-17-adobe-launch/image-1.png" alt="alt text"><ol start="4">
+<li>
+<p>Now switch back to the “Overrides” tab and open the folder you just added. You should see a sub folder with the host name and within that the resource you just “saved for override”.</p>
+</li>
+<li>
+<p>Now you may navigate to the folder in your file system and edit it with your preferred code editor, e.g. Visual Studio Code. But wait, there’s one step missing: You just saved the minimized version, which is kind of difficult to handle.</p>
+</li>
+<li>
+<p>Go back to the resource in the “Page” tab, right click it and select “Open in new tab”. From the address bar remove the “min” from the resource name and load the “un-minified” ressource.</p>
+</li>
+<li>
+<p>Copy the content to the clipboard, paste it into the locally saved, minimized version.</p>
+</li>
+<li>
+<p>You can now easily edit everything you need inside this file. If you reload the page, Chrome will not load this particular resource from Adobe’s server. Use the top breadcrumb navigation to browse between the different sections, like the rules or data elements:</p>
+</li>
+</ol>
+<img src="https://nickyreinert.de/en/2022/2022-08-17-adobe-launch/image-2.png" alt="alt text"><ol start="9">
+<li>If you are done with your modifications, copy the respective code section to your actual Adobe launch tag in the web interface and re-build the library.</li>
+</ol>
+<p><strong>Side effect:</strong> You can now utilize a version control system for this local file. This also enables you to use breakpoints.</p>
+<p>If you’re done with your local development and you re-built your Adobe Launch library, you should de-activate the feature — otherwise the browser will ignore the content from your updated tag.</p>
+<p>Enjoy.</p>
+]]></content:encoded><atom:updated>2026-04-24T17:43:54+02:00</atom:updated><category>blog</category><category>web-development</category><category>adobe-launch</category><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>

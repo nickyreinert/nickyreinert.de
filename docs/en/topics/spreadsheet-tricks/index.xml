@@ -1,1 +1,176 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Spreadsheet Tricks auf Nicky Reinert</title><link>https://nickyreinert.de/en/topics/spreadsheet-tricks/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sun, 26 Oct 2025 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/spreadsheet-tricks/index.xml" rel="self" type="application/rss+xml"/><item><title>How to create an animated ticker in Excel without VBA</title><link>https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/</link><pubDate>Sun, 26 Oct 2025 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/</guid><description>How to create an animated ticker in Excel without VBA? Last night, around 3 am, I woke up and thought: Wouldn’t it be nice to have an animated ticker in Excel? Like text that scrolls from right to left? With just one big formula? Welcome to the second episode of my series “How to create weird …</description><category>blog</category><category>howto</category><media:content url="https://nickyreinert.de/images/posts/excel-ticker.png" type="image/jpeg"><media:title>Animated text ticker in Excel (no VBA)</media:title></media:content><dc:subject>Lesezeit: 6 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Spreadsheet Tricks auf Nicky Reinert</title><link>https://nickyreinert.de/en/topics/spreadsheet-tricks/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sun, 26 Oct 2025 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/spreadsheet-tricks/index.xml" rel="self" type="application/rss+xml"/><item><title>How to create an animated ticker in Excel without VBA</title><link>https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/</link><pubDate>Sun, 26 Oct 2025 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/</guid><description>How to create an animated ticker in Excel without VBA? Last night, around 3 am, I woke up and thought: Wouldn’t it be nice to have an animated ticker in Excel? Like text that scrolls from right to left? With just one big formula? Welcome to the second episode of my series “How to create weird …</description><content:encoded><![CDATA[<h2 id="how-to-create-an-animated-ticker-in-excel-without-vba">How to create an animated ticker in Excel without VBA?</h2>
+<p>Last night, around 3 am, I woke up and thought: Wouldn’t it be nice to have an animated ticker in Excel? Like text that scrolls from right to left? With just one big formula? Welcome to the second episode of my series “How to create weird algorithms” First one was about 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/swlh/how-to-create-a-maze-with-javascript-36f3ad8eebc1?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">creating a maze in JavaScript</a>
+
+
+). In this article we will create a nested Excel formula to solve a problem that probably not knows exists. Until now.</p>
+<h3 id="tyl--today-youll-learn">TYL — Today You’ll Learn</h3>
+<ul>
+<li>How to build complex nested formulas from the scratch</li>
+<li>The MAP-formula to create an array and modify it’s values</li>
+<li>The LET-formula to declare variables to clean up nested formulas</li>
+<li>How self-referencing cells in Excel could be useful</li>
+<li>How to use INDIRECT and R/C referencing</li>
+</ul>
+<img src="https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/spoiler-code.png" alt="https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/spoiler-code.png" alt="Spoiler: Code" class="center" width="500"><h3 id="preparations">Preparations</h3>
+<p>First let me introduce you into an widely ignored feature in Excel: Iterative calculations. Excel tries to protect you from “<strong>circular references</strong>” and therefore disables this feature by default.</p>
+<p>Our ticker requires a formular that references itself. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://support.microsoft.com/en-us/office/change-formula-recalculation-iteration-or-precision-in-excel-73fc7dac-91cf-4d36-86e8-67124f6bcce4?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">So you need to enable “iterative calculations” in the settings and set “maximal iterations” to 1</a>
+
+
+:</p>
+<p align="center">
+  <a href="iterative-calc.png" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="iterative-calc.png" alt="Activate “Iterative Calculations” and limit the iteration count to 1" width="600"/>
+  </a>
+</p>
+<br />
+<p>Now let’s get back to your worksheet and start from the scratch:</p>
+<h3 id="how-to-draw-a-little-canvas-from-just-one-cell">How to draw a little canvas from just one cell?</h3>
+<p>In our case we need <strong>a one-dimensional array</strong> to use as a canvas. But how to create an array over multiple cells, just using one formula?</p>
+<p>Well, there are a couple of ways to do that, like <strong>SEQUENCE</strong>, <strong>MAKEARRAY</strong> or <strong>INDIRECT</strong> (and probably more). For our problem we will use <strong>MAP</strong> and <strong>SEQUENCE</strong>. <strong>MAP</strong> allows us to create an array and modify the values within this array. Let’s try a simple example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="o">=</span><span class="n">MAP</span><span class="p">({</span><span class="mi">1</span><span class="p">;</span><span class="mi">2</span><span class="p">;</span><span class="mi">3</span><span class="p">;</span><span class="mi">4</span><span class="p">;</span><span class="mi">5</span><span class="p">;</span><span class="mi">6</span><span class="p">;</span><span class="mi">7</span><span class="p">;</span><span class="mi">8</span><span class="p">;</span><span class="mi">9</span><span class="p">;</span><span class="mi">10</span><span class="p">};</span><span class="n">LAMBDA</span><span class="p">(</span><span class="k">var</span><span class="p">;</span><span class="k">var</span><span class="p">))</span>
+</span></span></code></pre></div><p>This will put the numbers from 1 to 10 to your worksheet. You could even add additional rows. For our case the one dimensional array is sufficient. The <strong>LAMBDA</strong> function allows you to modify the values. To make it more handy, let’s add <strong>SEQUENCE</strong> to construct the array and <strong>LET</strong> to define variables:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=LET(
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    length; 10; 
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    MAP(
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        SEQUENCE(1;length);
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        LAMBDA(val;val)
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    )
+</span></span><span class="line"><span class="ln">7</span><span class="cl">)
+</span></span></code></pre></div><p><strong>LET</strong> is a good way to declare variables that you may need in your nested formula.</p>
+<h3 id="how-to-simulate-an-animation">How to simulate an “animation”?</h3>
+<p>We’re not really going to animate something. We’re just going to create the <strong>impression of animated</strong> <strong>text</strong>. To achieve this we first need to add some momentum. That’s were rely on the self-referencing feature. We just add the value of the first cell to all the other cells:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=LET(
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    inc; INDIRECT(&#34;R&#34; &amp; ROW() &amp; &#34;C&#34; &amp; COL(); 0);
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    length; 10; 
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    MAP(
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        SEQUENCE(1;length);
+</span></span><span class="line"><span class="ln">6</span><span class="cl">        LAMBDA(val;val + inc)
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    )
+</span></span><span class="line"><span class="ln">8</span><span class="cl">)
+</span></span></code></pre></div><p>OK, this probably looks weird, so I’m gonna explain it. In the second row we are assigning a calculation to a variable called <strong>inc</strong>, this will be our “incrementor”. Instead of a fixed reference like <strong>A1</strong> we use an indirect reference. This makes it easier to use the final result everywhere we want. <strong>INDIRECT</strong> takes the <strong>value</strong> from the current row and current column: This is the 1 from the sequence. The second parameter of <strong>INDIRECT</strong> is a 0. This enables the R/C reference: referencing a cell by it’s row and column index instead of the “common” A1 notation.</p>
+<p>Now as we have this value from the first cell, we just add it to every cell of this range — which results in a row of incrementing numbers. Press and hold F9 and see what happens:</p>
+<p align="center">
+  <a href="https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/animation-1.gif" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/animation-1.gif" alt="Animated text ticker in Excel (no VBA)" width="400"/>
+  </a>
+</p>
+<br />
+<blockquote>
+<p>From now on, when I say “<strong>let it run</strong>”, you need to press and hold <strong>F9</strong> and see the result.</p>
+</blockquote>
+<p>Now let’s add the text. We want to display “<strong>hello, world</strong>” and therefore provide this as a variable named <strong>ticker</strong>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">=LET(
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    ticker; &#34;hello world&#34;;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    length; LEN(ticker);
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    inc; IF(
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        INDIRECT(&#34;Z&#34; &amp; ROW() &amp; &#34;S&#34; &amp; COL(); 0) &gt; length;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        1;
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        INDIRECT(&#34;Z&#34; &amp; ROW() &amp; &#34;S&#34; &amp; COL(); 0) 
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    );
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    MAP(
+</span></span><span class="line"><span class="ln">10</span><span class="cl">        SEQUENCE(1; length);
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        LAMBDA(val;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        IF(val = 1; 
+</span></span><span class="line"><span class="ln">13</span><span class="cl">            val +  inc;
+</span></span><span class="line"><span class="ln">14</span><span class="cl">            MID(&#34; &#34; &amp; ticker; val + inc; 1)
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        )
+</span></span><span class="line"><span class="ln">16</span><span class="cl">    )
+</span></span><span class="line"><span class="ln">17</span><span class="cl">)
+</span></span></code></pre></div><p>The ticker-declaration should be clear as well as the length-dependency. The length was set to 10 before, now it’s the length of the ticker-text.</p>
+<p>What looks a bit complicated is the improved declaration of the incrementing variable (<strong>inc</strong>): Actually we just check if the variable is greater than the amount of available letters. If so, reset it to 1 to start over.</p>
+<p>Before we look at the LAMBDA let’s be clear about the “canvas”: We need one cell that contains an incrementing value — the first cell. All the other cells are meant for “rendering”.</p>
+<p>The <strong>first IF-condition</strong> checks if the value of the particular cell equals 1. This would be our counting cell and that’s why we increase only this cell’s value.</p>
+<p>The <strong>MID-formula</strong> takes care of the rendering-part: The <strong>second cell</strong> in our one-dimensional array should start with the H, the <strong>first letter</strong> of our ticker. The <strong>third cell</strong> displays the <strong>second letter</strong> E and so on.</p>
+<p>You see the discrepancy? The second cell holds the value 2, but we need the first letter. We are one counter ahead, that’s why we add the empty char before the ticker text.</p>
+<p>What happens if your run it?</p>
+<p align="center">
+  <a href="https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/animation-2.gif" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/animation-2.gif" alt="Animated text ticker in Excel (no VBA)" width="400"/>
+  </a>
+</p>
+<br />
+<p>Well, we have a pretty good loop. It’s not that smooth, but we get to that in a second.</p>
+<h3 id="finish-the-animation">Finish the animation</h3>
+<p>The main work is done, but we still need some improvements. First let’s add a second variable to define the canvas width. It makes more sense to use a fixed value here. So we can render even long text on the small canvas.</p>
+<p>We just call it “width”. And we also want to start the ticker on the most-right position of the canvas. That’s why we take the width of the canvas we just declared and use it as a substractor.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">=LET(
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    ticker; &#34;hello world&#34;; 
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    width; 10;
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    length; LEN(ticker);
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    inc; IF(
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        INDIRECT(&#34;Z&#34; &amp; ROW() &amp; &#34;S&#34; &amp; COL(); 0)
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">            &gt; (length + width);
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        1;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">        INDIRECT(&#34;Z&#34; &amp; ROW() &amp; &#34;S&#34; &amp; COL(); 0)
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    );
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    MAP(
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        SEQUENCE(1; width);
+</span></span><span class="line"><span class="ln">13</span><span class="cl">        LAMBDA(val;
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        IF(val = 1; 
+</span></span><span class="line"><span class="ln">15</span><span class="cl">            val +  inc;
+</span></span><span class="line"><span class="ln">16</span><span class="cl">            IF((val + inc) &gt; (width - 1); 
+</span></span><span class="line"><span class="ln">17</span><span class="cl">                MID(&#34; &#34; &amp; ticker; val + inc - (width - 1); 1); 
+</span></span><span class="line"><span class="ln">18</span><span class="cl">                &#34;&#34;)
+</span></span><span class="line"><span class="ln">19</span><span class="cl">        )
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    )
+</span></span><span class="line"><span class="ln">21</span><span class="cl">)
+</span></span></code></pre></div><p>Please note how the width-variable replaces length as an argument for SEQUENCE. We also need to adapt the inc-part a little. We need to reset the incrementation a little later, because the animation should start at the most right column and therefore needs more steps to finish.</p>
+<p>The <strong>second</strong> and nested <strong>IF-condition</strong> checks if the current incremented value of the particular cell is greater than the width of the canvas. That ensures that we address a valid value from the ticker text when using MID.</p>
+<p>And that’s it. I adjusted the <strong>cell widths</strong> a little, <strong>hid grid lines</strong> and made the <strong>first cell invisible</strong> to make it look a little better. This is your ticker:</p>
+<p align="center">
+  <a href="https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/animation-3.gif" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/animation-3.gif" alt="Animated text ticker in Excel (no VBA)" width="400"/>
+  </a>
+</p>
+<br />
+<p>You can just copy and paste the formula to every sheet you want or you can create a LAMBDA function to get a handy formula. Do not forget to enable “iterative calculations” and change the ticker text.</p>
+<p>Have fun.</p>
+<h3 id="nota-bene">Nota bene</h3>
+<p>This does not work in Google Sheets, out of the box, because Google Sheets do not support the LET formula. You still could just fixed values or named ranges. But this makes it less fun.</p>
+]]></content:encoded><atom:updated>2025-10-27T07:59:13+01:00</atom:updated><category>blog</category><category>howto</category><media:content url="https://nickyreinert.de/images/posts/excel-ticker.png" type="image/jpeg"><media:title>Spreadsheet Tricks</media:title></media:content><dc:subject>Lesezeit: 6 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>

@@ -1,2 +1,217 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Card Game auf Nicky Reinert</title><link>https://nickyreinert.de/en/topics/card-game/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sat, 28 Jan 2023 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/card-game/index.xml" rel="self" type="application/rss+xml"/><item><title>How to develop a balanced card game with Python</title><link>https://nickyreinert.de/en/2023/2023-01-28-card-game-development/</link><pubDate>Sat, 28 Jan 2023 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2023/2023-01-28-card-game-development/</guid><description>Join me on my journey from drawing for fun, to Excel, over Python to a, probably working and good balanced card game.
-But why? Shameless bragging: I own a Remarkable2 and from time to time I’m drawing random stuff on it. Just for the sake of recreation. I’m not a good painter. It’s no serious art, …</description><category>blog</category><media:content url="https://nickyreinert.de/image.png" type="image/jpeg"><media:title>Card Game Balancing Simulation</media:title></media:content><dc:subject>Lesezeit: 8 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Card Game auf Nicky Reinert</title><link>https://nickyreinert.de/en/topics/card-game/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sat, 28 Jan 2023 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/card-game/index.xml" rel="self" type="application/rss+xml"/><item><title>How to develop a balanced card game with Python</title><link>https://nickyreinert.de/en/2023/2023-01-28-card-game-development/</link><pubDate>Sat, 28 Jan 2023 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2023/2023-01-28-card-game-development/</guid><description>Join me on my journey from drawing for fun, to Excel, over Python to a, probably working and good balanced card game.
+But why? Shameless bragging: I own a Remarkable2 and from time to time I’m drawing random stuff on it. Just for the sake of recreation. I’m not a good painter. It’s no serious art, …</description><content:encoded><![CDATA[<p>Join me on my journey from drawing for fun, to Excel, over Python to a, probably working and good balanced card game.</p>
+<h2 id="but-why">But why?</h2>
+<p>Shameless bragging: I own a Remarkable2 and from time to time I’m drawing random stuff on it. Just for the sake of recreation. I’m not a good painter. It’s no serious art, but it’s fun.</p>
+<img src="https://nickyreinert.de/en/2023/2023-01-28-card-game-development/image.png" alt="Nope, I’m not"><p>One day I decided to draw a couple of figures based on geometric shapes and I thought: Why don’t make a card game out of it. And that’s where the story begins where I tried to figure out, how to develop a balanced card game.</p>
+<h2 id="the-game-setup">The game setup</h2>
+<p>First I equipped every figure, I call them characters, with four different attributes that are somehow related to <em>geometry</em>:</p>
+<ul>
+<li>amount of edges</li>
+<li>age</li>
+<li>symmetry bonus</li>
+<li>euclidean reciprocal</li>
+</ul>
+<p>If you look at the characters I drawed, the “amount of edges” and the “symmetry bonus” should make sense. Those values ought to be fixed. The “age” and the “euclidean reciprocal” are meant to be “fictive” values that could vary.</p>
+<img src="https://nickyreinert.de/en/2023/2023-01-28-card-game-development/image-1.png" alt="My set of characters"><p>I also created two simple formulas to calculate attacking and defense values:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Attack Value = (1 + amount of edges) * (1 + symmtry bonus)
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Defense Value = age * euclidean reciprocal
+</span></span></code></pre></div><p>Those are the game rules:</p>
+<ul>
+<li>every player gets a stack of cards, laying in front of the player, hidden</li>
+<li>the player whose turn it is draws the top card from the own stack</li>
+<li>this player has to chose an opponent from the other players</li>
+<li>now both players compare the attack and defense values of their characters, the winner gets both cards and puts them under the own stack</li>
+<li>now the player to the left of the last player draws a card from the own stack and the game proceeds</li>
+<li>if one player has all cards, this player wins the game</li>
+</ul>
+<p>That was my starting point. My first approach was to find out how each character would perform in a fight against it’s peers.</p>
+<h2 id="first-stop-excel">First stop: Excel</h2>
+<p>I’m in love with Excel, so I created a sheet with dozens of formulas. It’s not sophisticated, it’s complex and not worth complaining at — as this does not help achieving the goal.</p>
+<p>The idea was to iterate through the random values for each charachter to finaly get a “fair chance” for every character to win. The range for the random values is always based on the outcome of the current “fight”. This results in a couple of circle references. That’s the result:</p>
+<img src="https://nickyreinert.de/en/2023/2023-01-28-card-game-development/image-2.png" alt="alt text"><p><em>(If you don’t know it yet: Enabling “iterative calculations” in Excel allows you to use self referencing formulas, which sometimes help you to crunch numbers)</em></p>
+<p>My success indicator was the <strong>average chance of winning</strong> for all characters. Which is 87% in the screenshot. The problem with my setup was: This value does not come from the values you actually see, but from the previous ones. So I need to adapt my strategy and invest a little more time.</p>
+<h2 id="next-stop-python">Next stop: Python</h2>
+<p>As I am also in love with Python, I switched to Jupyter. The algorithm was quite easy, I’m not going to post it here. Again: It does not help achieving the gol. Let me just give you some pseudo code:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># n sets of 27 characters, where each set contains different values </span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"># for &#39;age&#39; and &#39;euclidean reciprocal&#39; </span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="n">character_variations</span> <span class="o">=</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="k">for</span> <span class="n">charachters</span> <span class="ow">in</span> <span class="n">character_variations</span><span class="p">:</span> 
+</span></span><span class="line"><span class="ln">5</span><span class="cl">  <span class="k">for</span> <span class="n">character_1</span> <span class="ow">in</span> <span class="n">characters</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    <span class="k">for</span> <span class="n">character_2</span> <span class="ow">in</span> <span class="n">characters</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl">      <span class="n">fight</span><span class="p">(</span><span class="n">character_1</span><span class="p">,</span> <span class="n">character_2</span><span class="p">)</span>
+</span></span></code></pre></div><p>Running this code returns a table containing the win/lose rate for every character. Again I looked for a value to measure the “balance” of the set of characters. I played around using average values, standard deviation and so on and finally came to one conclusion: I am on the wrong track.</p>
+<h2 id="epiphany">Epiphany</h2>
+<p>I want to create a card game. In a card game you have <strong>n players</strong> with a <strong>random stack of cards</strong> to play with. I don’t need to calculate how powerful every character is. I don’t want to balance the power between each character. The playing mechanic of my card game is solely based on chance. If you play a game you need to come to an end, eventually.</p>
+<p>That’s why I took my simple algorithm to a new level. I’m just showing you how to call it, the full script is on Github (see bottom of page).</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="n">variable_attributes</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="s1">&#39;attribute_2&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="c1"># min, max</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="s1">&#39;attribute_4&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="c1"># min, max</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="n">gameEngine</span> <span class="o">=</span> <span class="n">GameEngine</span><span class="p">(</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="n">debug</span><span class="o">=</span><span class="n">False</span><span class="p">,</span> 
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="n">bonus_attack_activator</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="n">bonus_defense_activator</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="n">escape_activator</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> 
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="n">dice_range</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="n">variable_attributes</span><span class="o">=</span><span class="n">variable_attributes</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="n">gameEngine</span><span class="o">.</span><span class="n">randomizeCharacterAttributes</span><span class="p">(</span><span class="n">variations</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="n">gameEngine</span><span class="o">.</span><span class="n">simulateRealGames</span><span class="p">(</span><span class="n">games</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">round_limit</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">players</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">characters_per_stack</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">sibblings_per_character</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="n">gameEngine</span><span class="o">.</span><span class="n">simulateAllvsAll</span><span class="p">(</span><span class="n">games</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="n">gameEngine</span><span class="o">.</span><span class="n">exportGameStatsToCsv</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="n">gameEngine</span><span class="o">.</span><span class="n">showSummary</span><span class="p">()</span>
+</span></span></code></pre></div><h2 id="changes-to-the-game-mechanic">Changes to the game mechanic</h2>
+<p>First I added a new rule: Characters should have either an attack or defense bonus capability. This means: Before two players fight against each other, they roll a dice to improve their attack or defense values or even escape from the fight. This adds more dynamic to the game and probably some kind of strategic moment.</p>
+<p>I hard-coded those rules into the code and will explain them briefly:</p>
+<h3 id="parameters">Parameters</h3>
+<p>Let’s start with the <strong>attack bonus</strong> that e.g. needs to be activated by throwing a 2 or 6:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">bonus_attack_activator=[1, 6]
+</span></span></code></pre></div><p>On success, the attacker may roll the dice two times. The greater value can be used as an <strong>attack multiplicator</strong>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">    def calculateAttackValue(self, character):
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">        
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">        attack_value = (1 + character[&#39;attributes&#39;][&#39;attribute_1&#39;]) * (1 + character[&#39;attributes&#39;][&#39;attribute_3&#39;])
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        eleveated_attack_value = attack_value
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        # roll the attack dice
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        if &#39;attack&#39; in character[&#39;bonus&#39;]:
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">            if random.choice(self.dice_range) in self.bonus_attack_activator:
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">                dice_1 = random.choice(self.dice_range)
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">                dice_2 = random.choice(self.dice_range)
+</span></span><span class="line"><span class="ln">10</span><span class="cl">            
+</span></span><span class="line"><span class="ln">11</span><span class="cl">                if dice_1 &gt; dice_2:
+</span></span><span class="line"><span class="ln">12</span><span class="cl">                    eleveated_attack_value *= dice_1
+</span></span><span class="line"><span class="ln">13</span><span class="cl">                else:
+</span></span><span class="line"><span class="ln">14</span><span class="cl">                    eleveated_attack_value *= dice_2
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        if self.debug : print(f&#39;\tbase attack: {attack_value}, elevated attack {eleveated_attack_value}&#39;)
+</span></span><span class="line"><span class="ln">16</span><span class="cl">        return eleveated_attack_value
+</span></span><span class="line"><span class="ln">17</span><span class="cl">     bonus_defense_activator=[1, 2, 3, 4, 5, 6],
+</span></span></code></pre></div><p>The same logic applies to the <strong>defense bonus</strong>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">bonus_defense_activator=[1, 2, 3, 4, 5, 6]
+</span></span></code></pre></div><p>If you define the full dice range the defending player does not need to activate the defense bonus. This player simply throws the dice two times to get the multiplicator.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">    def calculateDefenseValue(self, character):
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">        defense_value = character[&#39;attributes&#39;][&#39;attribute_2&#39;] + character[&#39;attributes&#39;][&#39;attribute_4&#39;]
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">        elevated_defense_value = defense_value
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        # roll the defense dice
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        if &#39;defense&#39; in character[&#39;bonus&#39;]:
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">            if random.choice(self.dice_range) in self.bonus_defense_activator:
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">                
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">                dice_1 = random.choice(self.dice_range)
+</span></span><span class="line"><span class="ln">10</span><span class="cl">                dice_2 = random.choice(self.dice_range)
+</span></span><span class="line"><span class="ln">11</span><span class="cl">            
+</span></span><span class="line"><span class="ln">12</span><span class="cl">                if dice_1 &gt; dice_2:
+</span></span><span class="line"><span class="ln">13</span><span class="cl">                    elevated_defense_value += dice_1
+</span></span><span class="line"><span class="ln">14</span><span class="cl">                else:
+</span></span><span class="line"><span class="ln">15</span><span class="cl">                    elevated_defense_value += dice_2
+</span></span><span class="line"><span class="ln">16</span><span class="cl">        if self.debug : print(f&#39;\tbase defense: {defense_value}, elevated defense {elevated_defense_value}&#39;)
+</span></span><span class="line"><span class="ln">17</span><span class="cl">        return elevated_defense_value
+</span></span></code></pre></div><p>Finally the <strong>escape bonus</strong>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">escape_activator=[3]
+</span></span></code></pre></div><p>And the logic behind it:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">    def calculateEscapeValue(self, character):
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">        # roll the escape dice
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">        escape_success = False
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        if &#39;escape&#39; in character[&#39;bonus&#39;]:
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            if random.choice(self.dice_range) in self.bonus_attack_activator:
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">                escape_bonus = random.choice(self.dice_range)
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">                if escape_bonus in self.escape_activator:
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">                    escape_success = True   
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">                else:
+</span></span><span class="line"><span class="ln">10</span><span class="cl">                    escape_success = False
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        if self.debug : print(f&#39;\tescape success: {escape_success}&#39;)
+</span></span><span class="line"><span class="ln">13</span><span class="cl">        return escape_success
+</span></span></code></pre></div><p>There’s not much to explain here: The player can pull back from a fight, if the dice shows the required number.</p>
+<p>As mentioned above, the “age” (attribute_2) and “euclidean reciprocal” (attribute_4) are the <strong>attributes that I want to optimize</strong>. I’m just defining a range for those attributes:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">variable_attributes</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="s1">&#39;attribute_2&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="c1"># min, max</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="s1">&#39;attribute_4&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="c1"># min, max</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>The algorithm will now choose random values between 1 and 50 respectively 1 and 30 for every character variation it creates.</p>
+<p><strong>Completion</strong></p>
+<p>Now, with every starting parameter set, I <strong>initalize</strong> the “<strong>game engine</strong>”:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">gameEngine</span> <span class="o">=</span> <span class="n">GameEngine</span><span class="p">(</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="n">debug</span><span class="o">=</span><span class="n">False</span><span class="p">,</span> 
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="n">bonus_attack_activator</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    <span class="n">bonus_defense_activator</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    <span class="n">escape_activator</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> 
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    <span class="n">dice_range</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    <span class="n">variable_attributes</span><span class="o">=</span><span class="n">variable_attributes</span><span class="p">)</span>
+</span></span></code></pre></div><p>This will also load a “<strong>base set of attributes</strong>” for all 27 characters from a JSON-file. It contains attributes I defined from the scratch, as a starting point. It looks like that:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">{
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    &#34;character_1&#34;: {
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">        &#34;attributes&#34;: {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">            &#34;attribute_1&#34;: 0, # remember, this is the amount of edges, fixed
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            &#34;attribute_2&#34;: 42, # the age, this can be randomized
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">            &#34;attribute_3&#34;: 1, # the symmetry bonus, fixed
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">            &#34;attribute_4&#34;: 2 # the euclidean reciprocal, can be randomized
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        },
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">        &#34;bonus&#34;: [&#34;escape&#34;]
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    },
+</span></span><span class="line"><span class="ln">11</span><span class="cl">...
+</span></span><span class="line"><span class="ln">12</span><span class="cl">}
+</span></span></code></pre></div><p>The first step now is to find <strong>n random variations</strong> for the base set of all characters to randomize <strong>attribute_2</strong> and <strong>attribute_4</strong>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">gameEngine</span><span class="o">.</span><span class="n">randomizeCharacterAttributes</span><span class="p">(</span><span class="n">variations</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</span></span></code></pre></div><p>No magic here. The higher the number of variations is, the more iterations the full process will do.</p>
+<h2 id="starting-the-simulation">Starting the simulation</h2>
+<h3 id="real-games">Real games</h3>
+<p>After that I will start the simulation for <em>real games:</em></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">gameEngine.simulateRealGames(
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  games=1, 
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  round_limit=100, 
+</span></span><span class="line"><span class="ln">4</span><span class="cl">  players=4, 
+</span></span><span class="line"><span class="ln">5</span><span class="cl">  characters_per_stack=3, 
+</span></span><span class="line"><span class="ln">6</span><span class="cl">  sibblings_per_character=1)
+</span></span></code></pre></div><p>The <strong>amount of games</strong> I want to simulate should be clear. The round limit is a threshold to prevent a single game from running endlessly. The limit of 100 is pretty high. Imagine you’re playing a card game with your friends and after 100 rounds you’re still playing. Motivating, right? The amount of players should be clear, too.</p>
+<p>The amount of characters per stack simply defines with how many cards every player starts initially. I have 27 different characters, so 4 players allows 6 cards which leaves 3 character cards in the pool.</p>
+<p>The sibblings per character parameter allows to increase the pool size. If set to 2, you have 27 * 2 cards to play with and therefore more cards per every player’s stack.</p>
+<p>Be warned: The amount of iterations comes from the formular <strong>games</strong> times <strong>variations</strong> and 1 <strong>base varation</strong> for 27 <strong>characters</strong> and <strong>maximum</strong> 1.000 rounds:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">27 * 27 * 11 * 100 * 100 = 80.190.000 iterations max
+</span></span></code></pre></div><p>That’s quite high. But it should give you a statistical useful result. I kept it simple and only simulated 1 game right now.</p>
+<h3 id="all-vs-all">All vs all</h3>
+<p>I also migrated the inital approach which allows me to find out how powerful every character is. This simply initiates a fight of every character against every other character.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">gameEngine.simulateAllvsAll(games=100)
+</span></span></code></pre></div><p>There’s not much to explain here. This will loop through every variation created above. Be warned again: 100 games for 10 variations and 1 base variation for 27 characters means:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">27 * 27 * 11 * 100 = 801.900 iterations
+</span></span></code></pre></div><h2 id="the-statistics">The statistics</h2>
+<p>Those two lines, or at least the last one, will finally return the desired results:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">gameEngine</span><span class="o">.</span><span class="n">exportGameStatsToCsv</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">gameEngine</span><span class="o">.</span><span class="n">showSummary</span><span class="p">()</span>
+</span></span></code></pre></div><p>The first method creates three CSV-files. One file called “<strong>stats.csv</strong>” contains all stats from both simulation for every variation, game and round. For the above mentioned run this file has over 7 MBytes. One line for each “fight”. A lot of data to analyze. Luv it.</p>
+<p>The second file “<strong>stats_per_character.csv”</strong> contains stats for each charachter. This will help to understand, how the “power” is being distributed amongst all characters.</p>
+<p>The third file “<strong>stats_summary.csv</strong>” contains a summery of all simulated “real games.” The method showSummary() will also return this information, which is right now the most important one:</p>
+<img src="https://nickyreinert.de/en/2023/2023-01-28-card-game-development/image-3.png" alt="alt text"><p>The first column contains all variations. Keep in mind: variation 0 is the one I defined in advance and 1 to 10 are the ones containing random values for attribute_2 (age) and attribut_4 (euclidean reciprocal) for each character.</p>
+<p>As mentioned above, I only simulated 1 game per variation for the real game simulator. The third column shows how long it took until the game ended and a player wins. And finally the last column showing what player wins.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>Let’s look at the statistics for varation no. 10, where it only takes 15 rounds to finish the game. Which seems a good limit for a casual card game — but remember that I only “played” 1 game. Remember, when I first tried to find a good balance for the characters, to give them a fair chance? This is how the stats look now:</p>
+<img src="https://nickyreinert.de/en/2023/2023-01-28-card-game-development/image-4.png" alt="alt text"><p>As you can see, character_24 is clearly the most powerful character in the set. 49 wins and only 3 loses lead to a win/lose rate of over 16, which outperforms the others with no doubt.</p>
+<p>Retrospectively I can say, that it is pretty obvious that a balanced game does not require the same strength for all characters. This could work, but then I must add more strategic options to the game.</p>
+<p>Well, I am far away from being a game designer. And this script does not return the perfect definition for my card game, but it helps me finding one and also gives a good understanding of the game mechanic. It allows me to easily fine tune the parameters of the game to find a perfect setup for a…hopefully… satisfying game.</p>
+<p>If you are a game designer or have some knowledge in this field, I’d happy to get a comment on how I am performing in this area.</p>
+<h2 id="source">Source</h2>
+<p>You can find the Jupyter notbook on 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gist.github.com/nickyreinert/05dc269fc5091d9ecc7b03836970cab0?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://gist.github.com/nickyreinert/05dc269fc5091d9ecc7b03836970cab0</a>
+
+
+</p>
+]]></content:encoded><atom:updated>2026-05-07T15:36:59+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 8 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>

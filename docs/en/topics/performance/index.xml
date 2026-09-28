@@ -1,1 +1,207 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Performance auf Nicky Reinert</title><link>https://nickyreinert.de/en/topics/performance/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sat, 11 Nov 2023 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/performance/index.xml" rel="self" type="application/rss+xml"/><item><title>How to find prime numbers in Python. Feat. Cython.</title><link>https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/</link><pubDate>Sat, 11 Nov 2023 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/</guid><description>[PYTHON] How to find Prime Numbers. Fast. Feat. Cython. There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated prime solving formulas — but it will show you, how thoughtful thinking and tinkering will help you with …</description><category>blog</category><media:content url="https://nickyreinert.de/primes.png" type="image/jpeg"><media:title>Prime Numbers Python Tutorial</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Performance auf Nicky Reinert</title><link>https://nickyreinert.de/en/topics/performance/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sat, 11 Nov 2023 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/performance/index.xml" rel="self" type="application/rss+xml"/><item><title>How to find prime numbers in Python. Feat. Cython.</title><link>https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/</link><pubDate>Sat, 11 Nov 2023 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/</guid><description>[PYTHON] How to find Prime Numbers. Fast. Feat. Cython. There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated prime solving formulas — but it will show you, how thoughtful thinking and tinkering will help you with …</description><content:encoded><![CDATA[<h1 id="python-how-to-find-prime-numbers-fast-feat-cython">[PYTHON] How to find Prime Numbers. Fast. Feat. Cython.</h1>
+<p>There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated prime solving formulas — but it will show you, how thoughtful thinking and tinkering will help you with optimising your code.</p>
+<blockquote>
+<p>Nota bene: Do you need the JavaScript version? 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/javascript-how-to-find-prime-numbers-fast-cbcf6bd62e3d?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Check it out here!</a>
+
+
+</p>
+</blockquote>
+<p>What’s a prime number? All of you know that: It’s a number with only two divider natural divisors: 1 and the number itself.</p>
+<p>And when you ask someone for a prime number algorithm, you get two answers: A mathematican will 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://en.wikipedia.org/wiki/Formula_for_primes?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">throw out a complex formula,</a>
+
+
+ like <strong>Mill’s formula:</strong></p>
+<img src="https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/image.png" alt="alt text"><p>Wait, what? Ok. The other answer is just a simple loop that checks if there is another number, lower than the number in question, where the operation <strong>modulo</strong> returns 0. The so called “trial division”. In other words: The number in question divided by the other number returns a third number and all numbers are natural, not factorized.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">def isPrime(number):
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    for i in range(2, number):
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        if (number % i) == 0:
+</span></span><span class="line"><span class="ln">4</span><span class="cl">            return False
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    return True
+</span></span></code></pre></div><p>Let’s run this loop to find primes up to 50.000:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">%%time
+</span></span><span class="line"><span class="ln">2</span><span class="cl">count = 0
+</span></span><span class="line"><span class="ln">3</span><span class="cl">for number in range(2, 50000):
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    if isPrime1(number):
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        count += 1
+</span></span><span class="line"><span class="ln">6</span><span class="cl">print(f&#39;found {count} primes&#39;)
+</span></span></code></pre></div><p>On my machine this will take <strong>6 seconds</strong> and find <strong>5.133 primes</strong> (your results may differ on a different machine):</p>
+<img src="https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/image-1.png" alt="alt text"><p>So, if you are not that much into number theory, what options do we have to improve this algorithm, with some simple tricks?</p>
+<p>Let’s start with some obvious things: We don’t need to test all numbers in our “test division”. In fact we can skip every divisor lower than “number / 2”. Why is that? Because if the divisor is greater than “number / 2” the result must be lower than 2 and a faction.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">def isPrime(number):
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    limit = int(number / 2)
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    for i in range(2, limit + 1):
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        if (number % i) == 0:
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            return False
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    return True
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">count = 0
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">for number in range(2, 50000):
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    if isPrime(number):
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        count += 1
+</span></span><span class="line"><span class="ln">12</span><span class="cl">print(f&#39;found {count} primes&#39;)
+</span></span></code></pre></div><p>Actually, this halves the caluclation time to 3 seconds!</p>
+<img src="https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/image-2.png" alt="alt text"><p>But there’s even more in this limit declaration: We can reduce it to the square root <strong>(sqrt)</strong> of our target number. Because if one divisor is greater than <strong>sqrt(number)</strong> the other divisor must be lower than <strong>sqrt</strong>(divisor). Meaning: They have already been checked. Let’s do it:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">%%time
+</span></span><span class="line"><span class="ln">2</span><span class="cl">import math
+</span></span><span class="line"><span class="ln">3</span><span class="cl">def isPrime(number):
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    limit = int(math.sqrt(number))
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    for i in range(2, limit + 1):
+</span></span><span class="line"><span class="ln">6</span><span class="cl">        if (number % i) == 0:
+</span></span><span class="line"><span class="ln">7</span><span class="cl">            return False
+</span></span><span class="line"><span class="ln">8</span><span class="cl">    
+</span></span><span class="line"><span class="ln">9</span><span class="cl">    return True
+</span></span></code></pre></div><p>Wooohoo — this leads to an impressive reduction to some milliseconds:</p>
+<img src="https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/image-3.png" alt="alt text"><p>What’s next?</p>
+<p>Why do we check even numbers at all? It’s “natural law” that an even number cannot be a prime (except the magic number 2).</p>
+<p>We can safely skip them in our main loop. But not only there, we can also safely skip them in the “test division”. An even factor always leads to an even product in a multiplication. This leads to the assumption, that an even number always leads to a modulo unequal 0 when thrown against a prime!</p>
+<p>In Python there is a simple trick to identify even or odd numbers: We can just check the last digit:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">str(integer)[-1]
+</span></span></code></pre></div><p>Let’s add this logic to both loops:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">%%time
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">def isPrime(number):
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    limit = int(math.sqrt(number))
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    for i in range(2, limit + 1):
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        if str(i)[-1] in [0,2,4,5,6,8]:
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">            continue
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        if (number % i) == 0:
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">            return False
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    return True
+</span></span><span class="line"><span class="ln">11</span><span class="cl">for number in range(2, 50000):
+</span></span><span class="line"><span class="ln">12</span><span class="cl">    if str(number)[-1] in [0,2,4,5,6,8]:
+</span></span><span class="line"><span class="ln">13</span><span class="cl">        continue
+</span></span><span class="line"><span class="ln">14</span><span class="cl">    if isPrime(number):
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        count += 1
+</span></span><span class="line"><span class="ln">16</span><span class="cl">print(f&#39;found {count} primes&#39;)
+</span></span></code></pre></div><p>Something strange happend:</p>
+<img src="https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/image-4.png" alt="alt text"><p>The processing time just increased tremendously. Why that? We should implement the last test a little smarter. Right now we are using some string operations and apparently they are slow as heck.</p>
+<p>Python allows us to change the step rate of the <strong>range()</strong> function. This way we could just skip even numbers in the loop itself. Way easier. Heads up: As we will start at 3 now, we increment the counter integer beforehand:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">%%time
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">def isPrime(number):
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    limit = int(math.sqrt(number))
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    for i in range(3, limit + 1, 2):
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        if (number % i) == 0:
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">            return False
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    return True
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">count = 1
+</span></span><span class="line"><span class="ln">10</span><span class="cl">for number in range(3, 50000, 2):
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    if isPrime(number):
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        count += 1
+</span></span><span class="line"><span class="ln">13</span><span class="cl">print(f&#39;found {count} primes&#39;)
+</span></span></code></pre></div><img src="https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/image-5.png" alt="alt text"><p>Waaaay faster — We are back on track. This solution halves the best result from above.</p>
+<p>But wait… have you checked 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/javascript-how-to-find-prime-numbers-fast-cbcf6bd62e3d?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">the JavaScript version of this script</a>
+
+
+? Our script is quick bu JavaSript is above and beyond. It found all primes up to 100 Mio. in around 40 seconds… The Python script took 10 Minutes when I interrupted it — with no result. This is devastating, so let’s get back the crown.</p>
+<p>There is a way to <strong>make</strong> <strong>Python</strong> scripts <strong>faster</strong>, not by improving the algorithm but the way of running the script. Python is a <strong>versatile</strong>, <strong>high</strong>-<strong>level</strong> <strong>language</strong>, probably easy to learn and with a huge <strong>community</strong>. But it’s slow because of several facts, one of them is the “<strong>dynamic variable</strong> <strong>typing</strong>”. The quick explanation: A variable can be a string, integer or float. Python doesn’t care. Thats why, for example, a division always returns a float, if you not use the double slash (//):</p>
+<img src="https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/image-6.png" alt="alt text"><p>A float is much more complex than an integer. An integer is just a couple of activated bits, while a float… ok, I don’t want to fall into that rabbit hole. It’s complex and therefore slow.</p>
+<p>The answer is “Cython”, bascially also a programming language, but with more C-like features. That’s why it’s call Cython. The trick is now to change our Python code to make it work with Cython.</p>
+<p>First make sure that you have the Cython module installed:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">pip install cython
+</span></span></code></pre></div><p>This is not too difficult, we just declare our variables upfront:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="k">def</span> <span class="nf">isPrime5</span><span class="p">(</span><span class="ne">int</span> <span class="n">number</span><span class="p">):</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="n">cdef</span> <span class="ne">int</span> <span class="n">limit</span> <span class="c1"># our limit is always an integer</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="n">limit</span> <span class="o">=</span> <span class="o">&lt;</span><span class="ne">int</span><span class="o">&gt;</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">number</span><span class="p">)</span> <span class="c1"># the result is always an integer</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="n">cdef</span> <span class="ne">int</span> <span class="n">i</span> <span class="c1"># the loop variable is always an integer</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">limit</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">number</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">            <span class="k">return</span> <span class="n">False</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="k">return</span> <span class="n">True</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="c1"># additionally, we organize the code a little</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="k">def</span> <span class="nf">countPrimes</span><span class="p">():</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="c1"># and again some upfront declarations</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">    <span class="n">cdef</span> <span class="ne">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    <span class="n">cdef</span> <span class="ne">int</span> <span class="n">number</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="n">cdef</span> <span class="ne">float</span> <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">100000000</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">        <span class="k">if</span> <span class="n">isPrime5</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;found {count} primes after {time.time()- start} seconds&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    <span class="n">countPrimes</span><span class="p">()</span>
+</span></span></code></pre></div><p>Name this file primesC.pyx and safe it.</p>
+<p>Now we need an additional file called “setup.py” that tells Cython how our script works:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">from</span> <span class="n">setuptools</span> <span class="n">import</span> <span class="n">setup</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">from</span> <span class="n">Cython</span><span class="o">.</span><span class="n">Build</span> <span class="n">import</span> <span class="n">cythonize</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="n">setup</span><span class="p">(</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    <span class="n">ext_modules</span> <span class="o">=</span> <span class="n">cythonize</span><span class="p">(</span><span class="s2">&#34;primesC.pyx&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="p">)</span>
+</span></span></code></pre></div><p>Now you compile your script using this command:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">python setup.py build_ext --inplace
+</span></span></code></pre></div><p>This will create a (binary) file named <strong>primesC.cpython-311-darwin.so</strong> which is bascially just a Python module. You can now quickly reference it on the command line like this (or use it in your Python code):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">python -c &#34;import primesC; primesC.count_primes()&#34;
+</span></span></code></pre></div><p>And there you go: Instead of waiting Ten minutes, the script now returns a result after almost 79 seconds:</p>
+<img src="https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/image-7.png" alt="alt text"><p>Well, this is still way slower than JavaScript (40 seconds), but it also improves the initial script tremendously.</p>
+<img src="https://nickyreinert.de/en/2023/2023-11-11-prime-numbers-python/image-8.png" alt="alt text"><p>Mandatory Preview Image</p>
+]]></content:encoded><atom:updated>2026-05-07T15:36:59+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>

@@ -1,3 +1,749 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Discounter auf Nicky Reinert</title><link>https://nickyreinert.de/topics/discounter/</link><description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, KI, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur</description><generator>Hugo 0.162.0</generator><language>de</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Wed, 29 Oct 2025 11:34:56 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/discounter/index.xml" rel="self" type="application/rss+xml"/><item><title>Wo liegt die ALDI-Grenze?</title><link>https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/</link><pubDate>Wed, 29 Oct 2025 11:34:56 +0000</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/</guid><description>Ich hab ihn letzter Zeit viel zu viele rantige, übellaunige Blog-Beiträge in den Äther gepustet. Also dachte ich mir, es wird mal wieder Zeit, für eine spannende Daten-Analyse.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Discounter auf Nicky Reinert</title><link>https://nickyreinert.de/topics/discounter/</link><description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, KI, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur</description><generator>Hugo 0.162.0</generator><language>de</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Wed, 29 Oct 2025 11:34:56 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/discounter/index.xml" rel="self" type="application/rss+xml"/><item><title>Wo liegt die ALDI-Grenze?</title><link>https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/</link><pubDate>Wed, 29 Oct 2025 11:34:56 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/</guid><description>Ich hab ihn letzter Zeit viel zu viele rantige, übellaunige Blog-Beiträge in den Äther gepustet. Also dachte ich mir, es wird mal wieder Zeit, für eine spannende Daten-Analyse.
 Also, hingesetzt und den Kopf aufgesperrt - jetzt gibts was auf die Glupscher!
-Diesmal geht es um Supermärkte und die …</description><category>blog</category><category>analysen</category><media:content url="https://nickyreinert.de/aldi-grenze.png" type="image/jpeg"><media:title>Die ALDI Grenze</media:title></media:content><dc:subject>Lesezeit: 7 Minuten</dc:subject><dc:type>blog</dc:type></item></channel></rss>
+Diesmal geht es um Supermärkte und die …</description><content:encoded><![CDATA[<p>Ich hab ihn letzter Zeit viel zu viele <strong>rantige, übellaunige Blog-Beiträge</strong> in den Äther gepustet. Also dachte ich mir, es wird mal wieder Zeit, für eine spannende <strong>Daten-Analyse</strong>.</p>
+<p><em>Also, hingesetzt und den Kopf aufgesperrt - jetzt gibts was auf die Glupscher!</em></p>
+<p>Diesmal geht es um <strong>Supermärkte</strong> und die Frage: &ldquo;<strong>Wo veläuft die ALDI Grenze?</strong>&rdquo; Also, <strong>ALDI-Nord</strong> und <strong>ALDI-Süd</strong>. Wissen schon. Zumindest ich hab mich das schon immer gefragt! Zur Antwort kommen wir gleich. Erstmal zu den Daten:</p>
+<p>Ich nutze einen Datensatz, der &ldquo;so ziemlich&rdquo; alle Supermärkte in Deutschland enthält. Dazu je Supermarkt die Ortsangabe mit <strong>Latitude</strong> und <strong>Longitude</strong> (wer des Lateinischen nicht mächtig ist: <strong>Breitengrad</strong> und <strong>Längengrad</strong>). <em>Lat</em> komm vom lateinischen &ldquo;<em>Latus</em>&rdquo; - Breit. <em>Musculus latissimus dorsi</em> - der breiteste Rückenmuskel, schon mal gehört? Keine Ahnung warum der so heißt, bei mir ist der jedenfalls nicht breit. Daneben enthält der Datenatz auch die Anzahl der <strong>Rezensionen auf Google Maps</strong> sowie die von Google berechnete <strong>Durchschnittsbewertung</strong>. Das ist nicht sonderlich breit, aber dafür mit knapp <strong>70.000 Einträgen</strong> sehr lang! Nice.</p>
+<p>(˵ ͡° ͜ʖ ͡°˵)</p>
+<h2 id="datenqualität-und-methodische-hinweise">Datenqualität und methodische Hinweise</h2>
+<p>Der Datensatz stammt von <strong>Google Maps</strong>. Es gibt da draußen einen Haufen Anbieter, bei denen man solche Daten erwerben kann. Ein kurzer Überblick zeigt, dass die Zahlen vermutlich nicht vollständig sind - um das zu verifizieren habe ich <strong>ChatGPT</strong> gefragt (Kinder, bitte nicht zu Hause nachmachen oder wenigstens immer explizit nach Quellen fragen!).</p>
+<p>Sind die Zahlen zu niedrig, kann das mehrere Gründe haben: Vielleicht hat nicht jede Filiale einen Eintrag auf Google Maps hat - ungewöhnlich, aber denkbar.  Auch ist es möglich, dass Google Maps eine Filiale bei dem Filter &ldquo;<strong>Supermarkt</strong>&rdquo; nicht anzeigt.  Auch das eher ungewöhnlich, da Google den Filter eher weit interpretiert, so sind z.B. auch &ldquo;<strong>Tropical Islands</strong>&rdquo; oder &ldquo;<strong>Autogrill Raststätte Pratteln</strong>&rdquo; enthalten. Zwar klar gekennzeichnet als &ldquo;<strong>Raststätte</strong>&rdquo; oder &ldquo;<strong>Freizeitpark</strong>&rdquo;, aber eben doch im Datensatz.  Ein Grund für zu hohe Zahlen ist, dass der Datensatz auch Grenzregionen enthält. Bei &ldquo;<strong>Spar</strong>&rdquo; wird zum Beispiel deutlich, dass sehr viele Filialen in <strong>Österreich</strong> und der <strong>Schweiz</strong> liegen. Ich habe mir eine Bereinigung für nur deutsche Datenpunkte gespart. Warum? Weil es für die Auswertung nicht wichtig ist und ich faul bin. Das ist natürlich Quatsch, das hätte sowieso die KI übernommen. OK, dann bin ich ja erst recht faul. Egal, weiter im Text!</p>
+<table>
+	<thead>
+			<tr>
+					<th>Kette</th>
+					<th>Ist</th>
+					<th>Soll (?)</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>Aldi</strong></td>
+					<td>3.540</td>
+					<td>Aldi Nord ≈ 2.236 + Aldi Süd ≈ 2.034 → <strong>≈ 4.270 Filialen in Deutschland (2024)</strong><br>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+
+  
+  <a href="https://www.scrapehero.com/location-reports/Aldi%20North-Germany/?utm_source=all_your_base_are_belong_to_us" target="_blank" rel="noopener noreferrer">Quelle</a>
+
+
+</td>
+			</tr>
+			<tr>
+					<td><strong>Edeka</strong></td>
+					<td>4.529</td>
+					<td><strong>≈ 6.234 Filialen</strong> 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+
+  
+  <a href="https://www.scrapehero.com/location-reports/Edeka-Germany/?utm_source=all_your_base_are_belong_to_us" target="_blank" rel="noopener noreferrer">Quelle</a>
+
+
+</td>
+			</tr>
+			<tr>
+					<td><strong>Rewe</strong></td>
+					<td>4.546</td>
+					<td><strong>≈ 3.800 Filialen</strong> 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+
+  
+  <a href="https://www.rewe-group.com/en/company/structure-and-saleslines/?utm_source=all_your_base_are_belong_to_us" target="_blank" rel="noopener noreferrer">Quelle</a>
+
+
+</td>
+			</tr>
+			<tr>
+					<td><strong>Lidl</strong></td>
+					<td>3.447</td>
+					<td><strong>≈ 3.250 Filialen</strong> 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+
+  
+  <a href="https://jobs.lidl.de/lidl-als-arbeitgeber/standorte/lidl-regionen-logistikzentren?utm_source=all_your_base_are_belong_to_us" target="_blank" rel="noopener noreferrer">Quelle</a>
+
+
+</td>
+			</tr>
+			<tr>
+					<td><strong>Netto (Edeka)</strong></td>
+					<td>3.364</td>
+					<td><strong>≈ 4.400 Filialen</strong> 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+
+  
+  <a href="https://www.netto-online.de/Unternehmen/Netto-in-Zahlen.chtm?utm_source=all_your_base_are_belong_to_us" target="_blank" rel="noopener noreferrer">Quelle</a>
+
+
+</td>
+			</tr>
+			<tr>
+					<td><strong>Netto (DK)</strong></td>
+					<td>558</td>
+					<td><strong>≈ 344 Filialen</strong> 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+
+  
+  <a href="https://de.wikipedia.org/wiki/Netto_%28Handelskette%29?utm_source=all_your_base_are_belong_to_us" target="_blank" rel="noopener noreferrer">Quelle: Wikipedia</a>
+
+
+</td>
+			</tr>
+			<tr>
+					<td><strong>Norma</strong></td>
+					<td>1.178</td>
+					<td><strong>≈ 1.450 Filialen</strong> 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+
+  
+  <a href="https://www.esmmagazine.com/retail/top-10-supermarket-retail-chains-in-germany-236817?utm_source=all_your_base_are_belong_to_us" target="_blank" rel="noopener noreferrer">Quelle</a>
+
+
+</td>
+			</tr>
+			<tr>
+					<td><strong>Penny</strong></td>
+					<td>1.827</td>
+					<td><strong>≈ 2.130 Filialen</strong> 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+
+  
+  <a href="https://www.rewe-group.com/en/company/structure-and-saleslines/?utm_source=all_your_base_are_belong_to_us" target="_blank" rel="noopener noreferrer">Quelle</a>
+
+
+</td>
+			</tr>
+			<tr>
+					<td><strong>Spar</strong></td>
+					<td>1.315</td>
+					<td><strong>≈ &lt; 100</strong> 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+
+  
+  <a href="https://de.wikipedia.org/wiki/Spar_%28Kette%29?utm_source=all_your_base_are_belong_to_us" target="_blank" rel="noopener noreferrer">Quelle</a>
+
+
+</td>
+			</tr>
+	</tbody>
+</table>
+<h2 id="explorative-grobanalyse">Explorative Grobanalyse</h2>
+<p>Schauen wir erstmal ganz grob in die Daten rein - wie es sich für einen <strong>ausgewachsenen Data-Analysten</strong> gehört, nutzen wir dazu <strong>Excel</strong> und <strong>Pivot</strong>. Ich liebe es. Wer hier zu Python greift, ist kein Analyst, sondern ein Poser. (Ich will ehrlich sein: Bei 70k Datensätzen und einem halben Dutzend Spalten mit Formeln geht Excel dann doch in die Knie…(｡◕‿◕｡))</p>
+<p>Der Datensatz enthält eine Menge <strong>Noise</strong>; neben Supermärkten z.B. auch &ldquo;Tropical Islands&rdquo; - mit stolzen über <strong>59.000 Rezensionen</strong>! Wow. Oder etwa die &ldquo;Autogrill Raststätte Pratteln&rdquo; mit einem durchschnittlichen <strong>Rating von 3,9 von 5</strong> bei etwa <strong>10.000 Rezensionen</strong>. Ziemlich mies, geht aber auch mieser: Ein &ldquo;<strong>Postpartner 4673</strong>&rdquo; irgendwo in <strong>Österreich</strong> kommt auf <strong>1 Stern und 13 Bewertungen</strong>. Autsch.
+Und es gibt auch anders: &ldquo;<strong>AHO.bio</strong>&rdquo; - 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://maps.app.goo.gl/5irKX1Z8bqPLJj2g9?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">ein kleiner Laden südlich von Hannover, mitten auf dem Land</a>
+
+
+, kommt <strong>5 Sterne bei fast 1.000</strong> Bewertungen. Respekt.</p>
+<p>Eine Gegenüberstellung von Rating und Anzahl der Bewertung zeigt etwas, das in Studien schon bestätigt wurde - allerdings für Online-Bewertungen von Produkten: Der durchschnittliche Rating-Wert tendiert zu einem Bereich von 4,2 bis 4,5 (der Wert schwankt branchenabhängig, aber ich denke ihr wisst, was ich meine).</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/rating-vs-rating-count.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/rating-vs-rating-count.png" 
+      alt="Bewertung vs Anzahl der Bewertungen, nur Supermärkte"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Bewertung vs Anzahl der Bewertungen, nur Supermärkte</figcaption>
+</figure>
+
+<p>Wenn wir schon dabei sind, schauen wir uns noch die Histogramme für die Anzahl der Bewertungen und die durchschnittliche Bewertung an:</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/histogram-rating-count.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/histogram-rating-count.png" 
+      alt="Histogramm der Anzahl der Bewertungen"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Histogramm der Anzahl der Bewertungen</figcaption>
+</figure>
+
+<p>Die meisten Filialen bringen es auf <strong>300 - 400 Bewertungen</strong>; knapp 400 haben gar keine Rezension. Auch das gibt es (und demnach auch keine Sterne).</p>
+<p>Die Verteilung der durchschnittlichen Bewertungen zeigt noch einmal, wie sehr sich die Mehrzahl der Bewertungen um den Wert 4 gruppiert. Die meisten Bewertungen haben <strong>4,2 Sterne</strong>. Und es gibt <strong>259 Ausreißer mit 5 Sternen</strong>.</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/histogram-rating.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/histogram-rating.png" 
+      alt="Histogramm der durchschnittlichen Bewertungen"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Histogramm der durchschnittlichen Bewertungen</figcaption>
+</figure>
+
+<h2 id="explorative-feinanalyse">Explorative Feinanalyse</h2>
+<p>OK, so viel zur Einleitung. Wir wissen nun, was möglich ist. Aber wir sind ja wegen den <strong>Supermärkten und ihren Derivaten</strong> hier - wie sieht es denn damit aus und vor allem - wo verläuft denn nun die Grenze zwischen <strong>ALDI-Nord</strong> und <strong>ALDI-Süd</strong>?</p>
+<p>Ganz klar: Im Westen geht es einmal quer durch das <strong>Ruhrgebiet</strong> und dann etwas nördlich von <strong>Frankfurt</strong> fast horizontal nach Osten.</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/aldi-grenze.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/aldi-grenze.png" 
+      alt="Die ALDI Grenze"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Die Grenze zwischen ALDI-Nord und ALDI-Süd in Deutschland</figcaption>
+</figure>
+
+<p>Aber nicht nur bei Aldi gibt es Klärungsbedarf. Wusstest du, dass es zwei unterschiedliche Ketten mit einem ähnlichen Namen gibt? <strong>Netto mit Hund</strong> und <strong>Netto ohne Hund</strong> (vulgo <strong>Netto Marken-Discount</strong>). Netto mit Hund gehört zur dänischen <strong>Salling-Group</strong>. Netto ohne Hund ist Teil der <strong>Edeka-Gruppe</strong>. In Frankreich gibt es übrigens auch einen Discounter namens &ldquo;<strong>Netto</strong>&rdquo;, der sich selbst &ldquo;<strong>Soft-Discounter</strong>&rdquo; nennt und zur <strong>Les Mousquetaires</strong> gehört. Ganz schön kompliziert. Und so sieht das auf der Karte aus:</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/netto-grenze.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/netto-grenze.png" 
+      alt="Die Netto Grenze"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Die Grenze zwischen Netto mit Hund und Netto ohne Hund direkt nebeneinander - what a time to be alive!</figcaption>
+</figure>
+
+<p>Der <strong>Netto-Markendiscount</strong>, also ohne Hund, von Edeka, ist deutlich öfter vertreten als der Zwilling aus Dänemark. <strong>Netto mit Hund</strong> findet man vor allem im <strong>Nord-Osten</strong> der Republik. Und manchmal liegen beide auch direkt gegenüber, wie z.B in <strong>Burg auf Fehmarn</strong>:</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/netto-fehmarn.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/netto-fehmarn.png" 
+      alt="Netto mit Hund und Netto ohne Hund in Burg auf Fehmarn"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Netto mit Hund und Netto ohne Hund in Burg auf Fehmarn (Bild: Google Maps)</figcaption>
+</figure>
+
+<p>Aber es gibt ja nicht nur <strong>ALDI</strong> und <strong>Netto</strong>. Die folgenden Karten zeigen, wie es mit der restlichen Konkurrenz steht. Der Datensatz enthält weitaus mehr Ketten, ich betrachte hier aber die - aus meiner Sicht - bekanntesten und das sind neben <strong>ALDI</strong>: <strong>Edeka</strong>, <strong>Lidl</strong>, <strong>Rewe</strong>, <strong>Kaufland</strong>, <strong>Norma</strong>, <strong>Penny</strong>, <strong>Spar</strong> und <strong>Plus</strong>. (Ja, ich weiß: Discounter, Supermarkt, Verbrauchermarkt, Warenhaus und so weiter. Das sind doch bürgerliche Kategorien, <em>nich&rsquo; wah&rsquo;</em>?)</p>
+<div class="image-gallery" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+  
+  <figure>
+    <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/verteilung-aldi.png" target="_blank" class="image-link " title="Click to view full size">
+      <img 
+        src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/verteilung-aldi.png" 
+        alt="Verteilung Aldi"
+        
+        loading="lazy"
+      />
+    </a>
+    <figcaption>Aldi</figcaption>
+  </figure>
+
+  <figure>
+    <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/verteilung-edeka.png" target="_blank" class="image-link " title="Click to view full size">
+      <img 
+        src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/verteilung-edeka.png" 
+        alt="Verteilung Edeka"
+        
+        loading="lazy"
+      />
+    </a>
+    <figcaption>Edeka</figcaption>
+  </figure>
+
+  <figure>
+    <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/verteilung-lidl.png" target="_blank" class="image-link " title="Click to view full size">
+      <img 
+        src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/verteilung-lidl.png" 
+        alt="Verteilung Lidl"
+        
+        loading="lazy"
+      />
+    </a>
+    <figcaption>Lidl</figcaption>
+  </figure>
+
+  <figure>
+    <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/verteilung-rewe.png" target="_blank" class="image-link " title="Click to view full size">
+      <img 
+        src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/verteilung-rewe.png" 
+        alt="Verteilung Rewe"
+        
+        loading="lazy"
+      />
+    </a>
+    <figcaption>Rewe</figcaption>
+  </figure>
+
+  <figure>
+    <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/verteilung-kaufland.png" target="_blank" class="image-link " title="Click to view full size">
+      <img 
+        src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/verteilung-kaufland.png" 
+        alt="Verteilung Kaufland"
+        
+        loading="lazy"
+      />
+    </a>
+    <figcaption>Kaufland</figcaption>
+  </figure>
+
+  <figure>
+    <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/verteilung-norma.png" target="_blank" class="image-link " title="Click to view full size">
+      <img 
+        src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/verteilung-norma.png" 
+        alt="Verteilung Norma"
+        
+        loading="lazy"
+      />
+    </a>
+    <figcaption>Norma</figcaption>
+  </figure>
+
+  <figure>
+    <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/verteilung-penny.png" target="_blank" class="image-link " title="Click to view full size">
+      <img 
+        src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/verteilung-penny.png" 
+        alt="Verteilung Penny"
+        
+        loading="lazy"
+      />
+    </a>
+    <figcaption>Penny</figcaption>
+  </figure>
+
+  <figure>
+    <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/verteilung-netto-edeka.png" target="_blank" class="image-link " title="Click to view full size">
+      <img 
+        src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/verteilung-netto-edeka.png" 
+        alt="Verteilung Netto"
+        
+        loading="lazy"
+      />
+    </a>
+    <figcaption>Netto (Edeka)</figcaption>
+  </figure>
+
+  <figure>
+    <a href="verteilung-netto-d%c3%a4nemark.png" target="_blank" class="image-link " title="Click to view full size">
+      <img 
+        src="verteilung-netto-d%c3%a4nemark.png" 
+        alt="Verteilung Netto"
+        
+        loading="lazy"
+      />
+    </a>
+    <figcaption>Netto (Dänemark)</figcaption>
+  </figure>
+
+  <figure>
+    <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/verteilung-spar.png" target="_blank" class="image-link " title="Click to view full size">
+      <img 
+        src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/verteilung-spar.png" 
+        alt="Verteilung Spar"
+        
+        loading="lazy"
+      />
+    </a>
+    <figcaption>Spar</figcaption>
+  </figure>
+
+  <figure>
+    <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/verteilung-plus.png" target="_blank" class="image-link " title="Click to view full size">
+      <img 
+        src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/verteilung-plus.png" 
+        alt="Verteilung Plus"
+        
+        loading="lazy"
+      />
+    </a>
+    <figcaption>Plus</figcaption>
+  </figure>
+
+
+</div>
+
+<p><strong>ALDI</strong> und <strong>Edeka</strong> sind in etwa gleich gut über das Land verteilt. Erstaunlich ist die auffällige <strong>Rewe</strong>- und <strong>Lidl-Dichte</strong> im Westen. <strong>Kaufland</strong> ist kein klassischer Supermarkt sondern wohl eher Warenhaus und damit natürlich seltener vertreten. <strong>Norma</strong> konzentriert sich stark auf den Süden. <strong>Penny</strong> lässt Mitteldeutschland aus. <strong>Spar</strong> ist vor allem in den westlichen und südlichen Grenz-Regionen zu finden. <strong>Plus</strong> gibt es hierzulande nur noch selten und die beiden <strong>Nettos</strong> ist die einzge Marke, die halbwegs gleichmäßig über das Land verteilt ist.</p>
+<p>Das folgende Chart soll noch einmal einen ungefähren Überblick über die Verhältnisse geben - unter dem oben erwähnten Vorbehalt, dass die Zahlen nicht exakt sind (und das erwähne ich jetzt zum letzten Mal, es gilt aber auch für die weiteren Analysen - die Zahlen sind nur &ldquo;<strong>grob richtig</strong>&rdquo;, die Tendenz stimmt aber - diese Wort aus dem Munde eines Datenanalysten… wisst ihr Bescheid!):</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/supermarkt-vergleich.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/supermarkt-vergleich.png" 
+      alt="Supermarkt Vergleich"
+      
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Anzahl der Filialen je Supermarkt-Kette (Datenquelle: Google Maps)</figcaption>
+</figure>
+
+<h2 id="bewertungen-und-rezensionen">Bewertungen und Rezensionen</h2>
+<p>Das interessanteste an dem Datensatz sind natürlich die Rezensionen selber! Welche Kette schließt hier am besten ab? Wo gibt es die meisten Bewertungen?  (Eine Bewertung steht entweder für eine Rezension mit ohne die Vergabe von Sternen!)</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/rating-per-brand.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/rating-per-brand.png" 
+      alt="Anzahl der Bewertungen je Supermarkt-Kette"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Anzahl der Bewertungen je Supermarkt-Kette</figcaption>
+</figure>
+
+<p>Nicht nur in absoluten Zahlen, auch im Durchschnitt kann <strong>Lidl</strong> die meisten Bewertungen einsammeln! Beeindruckend! Die im Schnitt wenigsten Rezensionen gibt es für <strong>Spar</strong>. Hier kan die vergleichsweise kleine Stichprobe aber das Ergebnis verzerren.</p>
+<p>Bei den Sterne-Bewertungen liegt das gesamte Feld relativ nahe beeinander, wenngleich die beiden <strong>Netto-Ketten</strong> etwas abgeschlagen nur auf knapp <strong>3,9 Sterne</strong> kommen. <strong>Lidl</strong> glänzt mit <strong>4,24 Sternen.</strong> Ich habe hier auch das gewichtet Mittel berechnet, um grobe Abweichungen zu erkennen. Die Differenzen sind aber nicht erwähnenswert.</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/rating-and-weighted-rating-per-brand.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/rating-and-weighted-rating-per-brand.png" 
+      alt="Durchschnittliche Bewertung je Supermarkt-Kette"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Durchschnittliche Bewertung je Supermarkt-Kette</figcaption>
+</figure>
+
+<p>Kurzer Realitätsabgleich; der Datensatz enthält ja weitaus mehr Unternehmen als nur Supermärkte. Mit rund 4 Sternen spielen die Supermärkte durchaus in der oberen Liga mit. Der <strong>Europa-Park Salzburg</strong> und das <strong>Tuincentrum Leurs</strong> mit 4,5 und 4,6 sind nicht weit entfernt.</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/other-entries.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/other-entries.png" 
+      alt="Bewertung aller Unternehmen"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Durchschnittliche Bewertung aller Unternehmen im Datensatz</figcaption>
+</figure>
+
+<p>Wie sieht es mit den &ldquo;<strong>lokalen Helden</strong>&rdquo; aus - sprich: Welche Filiale der jeweiligen Kette sticht in Punkte Beliebtheit hervor? Dazu habe ich je Kette die Märkte herausgesucht, die am meisten Bewertungen gesammelt haben. Die folgende Grafik zeigt diese und die durchschnittliche Bewertung an.
+(An all die Excel-Hater, auch das ist mit der <strong>MAXWENNS</strong>-Funktion simpel umgesetzt, schreibts in die Kommentare, wenn ihr wollt, dass ich das mal erkläre!)</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/top-performer.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/top-performer.png" 
+      alt="Beliebteste Filialen je Kette"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Beliebteste Filialen je Kette</figcaption>
+</figure>
+
+<p>Spannend ist, wie sehr sich das Feld hier auseinander zieht! Eine <strong>dänische Netto-Filiale</strong> wird mit <strong>2.044 Rezensionen</strong> und nur <strong>3,4 Sternen</strong> nahezu abgestraft! Es handelt sich dabei um 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://maps.app.goo.gl/fHZr44dLC9rfkMxb8?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><strong>eine Filiale in Koserov auf Usedom</strong></a>
+
+
+:</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/netto-usedom.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/netto-usedom.png" 
+      alt="Unbeliebteste Filiale"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Unbeliebteste Filiale</figcaption>
+</figure>
+
+<p>Der absolute Kundenliebling ist die <strong>Edeka-Filiale</strong> &ldquo;
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://maps.app.goo.gl/6b5eK2ENaRCD7cig7?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Zurheide Feine Kost - EDEKA Frischecenter</a>
+
+
+&rdquo; in <strong>Düsseldorf</strong>! 4,5 Sterne bei über 5.000 Bewertungen - herzlichen Glückwunsch!</p>
+<p>Die lieben Lebensmittel offenbar wirklich! ⊂(◉‿◉)つ</p>
+<figure>
+  <a href="edeka-d%c3%bcsseldorf.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="edeka-d%c3%bcsseldorf.png" 
+      alt="Beliebteste Filiale"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Beliebteste Filiale</figcaption>
+</figure>
+
+<h2 id="geografische-analyse">Geografische Analyse</h2>
+<p>Was haben wir denn noch? <strong>Latitude</strong> und <strong>Longitude</strong>! Wenn es bis jetzt nicht spannend war - dann wird es das nun! Wir wissen ja schon, wie sich die einzelnen Ketten geografisch verteilen. Aber gibt es <strong>regionale Auffälligkeiten</strong> bei den <strong>Bewertungen</strong>? Der Datensatz enthält außerdem, mutmaßlich vollständig, die Information, ob die Filialen <strong>rollstuhlgerecht</strong> sind. Wie sieht es da aus?</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/geo-rating.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/geo-rating.png" 
+      alt="Durchschnittliche Bewertung aller Märkte"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Durchschnittliche Bewertung aller Supermärkte</figcaption>
+</figure>
+
+<p>Zwar gibt es hier und da einige rote Punkte - also schlecht bewertete Filialen - aber wie wir oben schon gesehen haben, gibt es eine recht <strong>stabile Konzentration</strong> um <strong>4 Sterne</strong> herum.</p>
+<p>Werfen wir noch einen Blick auf die Anzahl der Bewertungen. Die Darstellung findet hier auf einer <strong>logarithmischen Skala</strong> statt, um die Spannweite etwas besser zu erfassen.</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/geo-rating-count.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/geo-rating-count.png" 
+      alt="Anzahl der Bewertungen aller Märkte"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Anzahl der Bewertungen aller Supermärkte in Deutschland (logarithmische Skala)</figcaption>
+</figure>
+
+<p>So richtig lässt sich hier trotzdem <strong>kein Muster</strong> erkennen. Weder <strong>urbane Zentren</strong> noch <strong>ländliche Regionen</strong> stechen hervor. Wie kann das sein? Nun, auch hier zeigt sich, was oben die Betrachtung der Häufigkeiten gezeigt hat: Es gibt eine klare Tendenz und demnach zeigt auch die geografische Auswertung keine Überraschungen.</p>
+<h2 id="barrierefreiheit">Barrierefreiheit</h2>
+<p>Zu guter letzt noch ein Blick auf die <strong>Barrierefreiheit</strong> - diese Darstellung ist aber mit Vorsicht zu genießen, da sie - meine Vermutung - nicht auf offiziellen Daten beruht, sondern auf Nutzerangaben oder dem Willen des jeweiligen Unternehmens, die Daten zu pflegen.</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/geo-rollstuhl.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/geo-rollstuhl.png" 
+      alt="Barrierefreiheit aller Märkte"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Barrierefreiheit aller Supermärkte in Deutschland</figcaption>
+</figure>
+
+<p>Ein Blick auf die Verteilung je Kette lohnt sich indes:</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/rollstuhl-brand.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/rollstuhl-brand.png" 
+      alt="Barrierefreiheit je Supermarkt-Kette"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Barrierefreiheit je Supermarkt-Kette</figcaption>
+</figure>
+
+<p>Laut den Daten hat <strong>Penny</strong> die meisten Filialen ohne rollstuhlgerechten Zugang. Norma und <strong>Netto-Edeka</strong> glänzen mit einer fast vollständigen Abdeckung! Wirkt sich das vielleicht auch auf die Bewertungen aus?</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/rollstuhl-rating-brand.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/rollstuhl-rating-brand.png" 
+      alt="Bewertung nach Barrierefreiheit"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Durchschnittliche Bewertung nach Barrierefreiheit</figcaption>
+</figure>
+
+<p>Nicht wirklich! <strong>Barrierefreiheit scheint kein Bewertungskriterium</strong> zu sein.</p>
+<h2 id="wortwolken">Wortwolken</h2>
+<p>Zum Abschluss noch ein Blick auf die Rezensionen. Diese können wir nicht komplett erfassen; der Datensatz enthält jeweils nur die letzte Bewertung (damit ist übrigens auch eine Auswertung der Wörter und der Sentiments sinnfrei).</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/words.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-10-26-wo-liegt-die-aldi-grenze/words.png" 
+      alt="Häufigste Wörter der jeweils letzten Rezension"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Häufigste Wörter der jeweils letzten Rezension</figcaption>
+</figure>
+
+<p>Auch hier erwartet uns keine große Überraschung. Es lässt sich deutlich erkennen, dass neben dem <strong>Sortiment</strong> auch das <strong>Personal</strong> eine wichtige Rolle spielen.</p>
+<h2 id="fazit">Fazit</h2>
+<p><strong>Genug gelunzt</strong>! Ich würde sagen, wir haben alles gesehen, oder? Viel mehr gibt der Datensatz leider nicht her. Am spannensten ist aus meiner Sicht noch die Verteilung der Fialien über das Land. Wenig überraschend konzentrieren sich die Supermärkte in den Großstädten. Berlin, Hamburg, Dresden, München und so weiter. Im Osten Deutschlands gibt es sehr viele weiße Flecken - vor allem in Mecklenburg Vorpommern - wohingegen ein dichtes Band vom Rührgebiet über den Rhein-Neckar-Kreis bis nach Süd-Ost-Deutschland zieht.</p>
+]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>blog</category><category>analysen</category><dc:subject>Lesezeit: 7 Minuten</dc:subject><dc:type>blog</dc:type></item></channel></rss>

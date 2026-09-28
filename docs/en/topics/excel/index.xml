@@ -1,4 +1,356 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Excel auf Nicky Reinert</title><link>https://nickyreinert.de/en/topics/excel/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sun, 26 Oct 2025 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/excel/index.xml" rel="self" type="application/rss+xml"/><item><title>How to create an animated ticker in Excel without VBA</title><link>https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/</link><pubDate>Sun, 26 Oct 2025 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/</guid><description>How to create an animated ticker in Excel without VBA? Last night, around 3 am, I woke up and thought: Wouldn’t it be nice to have an animated ticker in Excel? Like text that scrolls from right to left? With just one big formula? Welcome to the second episode of my series “How to create weird …</description><category>blog</category><category>howto</category><media:content url="https://nickyreinert.de/images/posts/excel-ticker.png" type="image/jpeg"><media:title>Animated text ticker in Excel (no VBA)</media:title></media:content><dc:subject>Lesezeit: 6 Minuten</dc:subject><dc:type>tutorial</dc:type></item><item><title>Advent of Code - Day 4 - Finding patterns (Excel)</title><link>https://nickyreinert.de/en/2024/2024-12-04-aoc-day-4/</link><pubDate>Wed, 04 Dec 2024 12:34:56 +0200</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2024/2024-12-04-aoc-day-4/</guid><description>( task )
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Excel auf Nicky Reinert</title><link>https://nickyreinert.de/en/topics/excel/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sun, 26 Oct 2025 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/excel/index.xml" rel="self" type="application/rss+xml"/><item><title>How to create an animated ticker in Excel without VBA</title><link>https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/</link><pubDate>Sun, 26 Oct 2025 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/</guid><description>How to create an animated ticker in Excel without VBA? Last night, around 3 am, I woke up and thought: Wouldn’t it be nice to have an animated ticker in Excel? Like text that scrolls from right to left? With just one big formula? Welcome to the second episode of my series “How to create weird …</description><content:encoded><![CDATA[<h2 id="how-to-create-an-animated-ticker-in-excel-without-vba">How to create an animated ticker in Excel without VBA?</h2>
+<p>Last night, around 3 am, I woke up and thought: Wouldn’t it be nice to have an animated ticker in Excel? Like text that scrolls from right to left? With just one big formula? Welcome to the second episode of my series “How to create weird algorithms” First one was about 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/swlh/how-to-create-a-maze-with-javascript-36f3ad8eebc1?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">creating a maze in JavaScript</a>
+
+
+). In this article we will create a nested Excel formula to solve a problem that probably not knows exists. Until now.</p>
+<h3 id="tyl--today-youll-learn">TYL — Today You’ll Learn</h3>
+<ul>
+<li>How to build complex nested formulas from the scratch</li>
+<li>The MAP-formula to create an array and modify it’s values</li>
+<li>The LET-formula to declare variables to clean up nested formulas</li>
+<li>How self-referencing cells in Excel could be useful</li>
+<li>How to use INDIRECT and R/C referencing</li>
+</ul>
+<img src="https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/spoiler-code.png" alt="https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/spoiler-code.png" alt="Spoiler: Code" class="center" width="500"><h3 id="preparations">Preparations</h3>
+<p>First let me introduce you into an widely ignored feature in Excel: Iterative calculations. Excel tries to protect you from “<strong>circular references</strong>” and therefore disables this feature by default.</p>
+<p>Our ticker requires a formular that references itself. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://support.microsoft.com/en-us/office/change-formula-recalculation-iteration-or-precision-in-excel-73fc7dac-91cf-4d36-86e8-67124f6bcce4?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">So you need to enable “iterative calculations” in the settings and set “maximal iterations” to 1</a>
+
+
+:</p>
+<p align="center">
+  <a href="iterative-calc.png" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="iterative-calc.png" alt="Activate “Iterative Calculations” and limit the iteration count to 1" width="600"/>
+  </a>
+</p>
+<br />
+<p>Now let’s get back to your worksheet and start from the scratch:</p>
+<h3 id="how-to-draw-a-little-canvas-from-just-one-cell">How to draw a little canvas from just one cell?</h3>
+<p>In our case we need <strong>a one-dimensional array</strong> to use as a canvas. But how to create an array over multiple cells, just using one formula?</p>
+<p>Well, there are a couple of ways to do that, like <strong>SEQUENCE</strong>, <strong>MAKEARRAY</strong> or <strong>INDIRECT</strong> (and probably more). For our problem we will use <strong>MAP</strong> and <strong>SEQUENCE</strong>. <strong>MAP</strong> allows us to create an array and modify the values within this array. Let’s try a simple example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="o">=</span><span class="n">MAP</span><span class="p">({</span><span class="mi">1</span><span class="p">;</span><span class="mi">2</span><span class="p">;</span><span class="mi">3</span><span class="p">;</span><span class="mi">4</span><span class="p">;</span><span class="mi">5</span><span class="p">;</span><span class="mi">6</span><span class="p">;</span><span class="mi">7</span><span class="p">;</span><span class="mi">8</span><span class="p">;</span><span class="mi">9</span><span class="p">;</span><span class="mi">10</span><span class="p">};</span><span class="n">LAMBDA</span><span class="p">(</span><span class="k">var</span><span class="p">;</span><span class="k">var</span><span class="p">))</span>
+</span></span></code></pre></div><p>This will put the numbers from 1 to 10 to your worksheet. You could even add additional rows. For our case the one dimensional array is sufficient. The <strong>LAMBDA</strong> function allows you to modify the values. To make it more handy, let’s add <strong>SEQUENCE</strong> to construct the array and <strong>LET</strong> to define variables:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=LET(
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    length; 10; 
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    MAP(
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        SEQUENCE(1;length);
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        LAMBDA(val;val)
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    )
+</span></span><span class="line"><span class="ln">7</span><span class="cl">)
+</span></span></code></pre></div><p><strong>LET</strong> is a good way to declare variables that you may need in your nested formula.</p>
+<h3 id="how-to-simulate-an-animation">How to simulate an “animation”?</h3>
+<p>We’re not really going to animate something. We’re just going to create the <strong>impression of animated</strong> <strong>text</strong>. To achieve this we first need to add some momentum. That’s were rely on the self-referencing feature. We just add the value of the first cell to all the other cells:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=LET(
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    inc; INDIRECT(&#34;R&#34; &amp; ROW() &amp; &#34;C&#34; &amp; COL(); 0);
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    length; 10; 
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    MAP(
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        SEQUENCE(1;length);
+</span></span><span class="line"><span class="ln">6</span><span class="cl">        LAMBDA(val;val + inc)
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    )
+</span></span><span class="line"><span class="ln">8</span><span class="cl">)
+</span></span></code></pre></div><p>OK, this probably looks weird, so I’m gonna explain it. In the second row we are assigning a calculation to a variable called <strong>inc</strong>, this will be our “incrementor”. Instead of a fixed reference like <strong>A1</strong> we use an indirect reference. This makes it easier to use the final result everywhere we want. <strong>INDIRECT</strong> takes the <strong>value</strong> from the current row and current column: This is the 1 from the sequence. The second parameter of <strong>INDIRECT</strong> is a 0. This enables the R/C reference: referencing a cell by it’s row and column index instead of the “common” A1 notation.</p>
+<p>Now as we have this value from the first cell, we just add it to every cell of this range — which results in a row of incrementing numbers. Press and hold F9 and see what happens:</p>
+<p align="center">
+  <a href="https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/animation-1.gif" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/animation-1.gif" alt="Animated text ticker in Excel (no VBA)" width="400"/>
+  </a>
+</p>
+<br />
+<blockquote>
+<p>From now on, when I say “<strong>let it run</strong>”, you need to press and hold <strong>F9</strong> and see the result.</p>
+</blockquote>
+<p>Now let’s add the text. We want to display “<strong>hello, world</strong>” and therefore provide this as a variable named <strong>ticker</strong>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">=LET(
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    ticker; &#34;hello world&#34;;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    length; LEN(ticker);
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    inc; IF(
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        INDIRECT(&#34;Z&#34; &amp; ROW() &amp; &#34;S&#34; &amp; COL(); 0) &gt; length;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        1;
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        INDIRECT(&#34;Z&#34; &amp; ROW() &amp; &#34;S&#34; &amp; COL(); 0) 
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    );
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    MAP(
+</span></span><span class="line"><span class="ln">10</span><span class="cl">        SEQUENCE(1; length);
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        LAMBDA(val;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        IF(val = 1; 
+</span></span><span class="line"><span class="ln">13</span><span class="cl">            val +  inc;
+</span></span><span class="line"><span class="ln">14</span><span class="cl">            MID(&#34; &#34; &amp; ticker; val + inc; 1)
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        )
+</span></span><span class="line"><span class="ln">16</span><span class="cl">    )
+</span></span><span class="line"><span class="ln">17</span><span class="cl">)
+</span></span></code></pre></div><p>The ticker-declaration should be clear as well as the length-dependency. The length was set to 10 before, now it’s the length of the ticker-text.</p>
+<p>What looks a bit complicated is the improved declaration of the incrementing variable (<strong>inc</strong>): Actually we just check if the variable is greater than the amount of available letters. If so, reset it to 1 to start over.</p>
+<p>Before we look at the LAMBDA let’s be clear about the “canvas”: We need one cell that contains an incrementing value — the first cell. All the other cells are meant for “rendering”.</p>
+<p>The <strong>first IF-condition</strong> checks if the value of the particular cell equals 1. This would be our counting cell and that’s why we increase only this cell’s value.</p>
+<p>The <strong>MID-formula</strong> takes care of the rendering-part: The <strong>second cell</strong> in our one-dimensional array should start with the H, the <strong>first letter</strong> of our ticker. The <strong>third cell</strong> displays the <strong>second letter</strong> E and so on.</p>
+<p>You see the discrepancy? The second cell holds the value 2, but we need the first letter. We are one counter ahead, that’s why we add the empty char before the ticker text.</p>
+<p>What happens if your run it?</p>
+<p align="center">
+  <a href="https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/animation-2.gif" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/animation-2.gif" alt="Animated text ticker in Excel (no VBA)" width="400"/>
+  </a>
+</p>
+<br />
+<p>Well, we have a pretty good loop. It’s not that smooth, but we get to that in a second.</p>
+<h3 id="finish-the-animation">Finish the animation</h3>
+<p>The main work is done, but we still need some improvements. First let’s add a second variable to define the canvas width. It makes more sense to use a fixed value here. So we can render even long text on the small canvas.</p>
+<p>We just call it “width”. And we also want to start the ticker on the most-right position of the canvas. That’s why we take the width of the canvas we just declared and use it as a substractor.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">=LET(
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    ticker; &#34;hello world&#34;; 
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    width; 10;
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    length; LEN(ticker);
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    inc; IF(
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        INDIRECT(&#34;Z&#34; &amp; ROW() &amp; &#34;S&#34; &amp; COL(); 0)
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">            &gt; (length + width);
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        1;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">        INDIRECT(&#34;Z&#34; &amp; ROW() &amp; &#34;S&#34; &amp; COL(); 0)
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    );
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    MAP(
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        SEQUENCE(1; width);
+</span></span><span class="line"><span class="ln">13</span><span class="cl">        LAMBDA(val;
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        IF(val = 1; 
+</span></span><span class="line"><span class="ln">15</span><span class="cl">            val +  inc;
+</span></span><span class="line"><span class="ln">16</span><span class="cl">            IF((val + inc) &gt; (width - 1); 
+</span></span><span class="line"><span class="ln">17</span><span class="cl">                MID(&#34; &#34; &amp; ticker; val + inc - (width - 1); 1); 
+</span></span><span class="line"><span class="ln">18</span><span class="cl">                &#34;&#34;)
+</span></span><span class="line"><span class="ln">19</span><span class="cl">        )
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    )
+</span></span><span class="line"><span class="ln">21</span><span class="cl">)
+</span></span></code></pre></div><p>Please note how the width-variable replaces length as an argument for SEQUENCE. We also need to adapt the inc-part a little. We need to reset the incrementation a little later, because the animation should start at the most right column and therefore needs more steps to finish.</p>
+<p>The <strong>second</strong> and nested <strong>IF-condition</strong> checks if the current incremented value of the particular cell is greater than the width of the canvas. That ensures that we address a valid value from the ticker text when using MID.</p>
+<p>And that’s it. I adjusted the <strong>cell widths</strong> a little, <strong>hid grid lines</strong> and made the <strong>first cell invisible</strong> to make it look a little better. This is your ticker:</p>
+<p align="center">
+  <a href="https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/animation-3.gif" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="https://nickyreinert.de/en/2025/2025-10-26-how-to-create-excel-ticker/animation-3.gif" alt="Animated text ticker in Excel (no VBA)" width="400"/>
+  </a>
+</p>
+<br />
+<p>You can just copy and paste the formula to every sheet you want or you can create a LAMBDA function to get a handy formula. Do not forget to enable “iterative calculations” and change the ticker text.</p>
+<p>Have fun.</p>
+<h3 id="nota-bene">Nota bene</h3>
+<p>This does not work in Google Sheets, out of the box, because Google Sheets do not support the LET formula. You still could just fixed values or named ranges. But this makes it less fun.</p>
+]]></content:encoded><atom:updated>2025-10-27T07:59:13+01:00</atom:updated><category>blog</category><category>howto</category><media:content url="https://nickyreinert.de/images/posts/excel-ticker.png" type="image/jpeg"><media:title>Excel</media:title></media:content><dc:subject>Lesezeit: 6 Minuten</dc:subject><dc:type>tutorial</dc:type></item><item><title>Advent of Code - Day 4 - Finding patterns (Excel)</title><link>https://nickyreinert.de/en/2024/2024-12-04-aoc-day-4/</link><pubDate>Wed, 04 Dec 2024 12:34:56 +0200</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2024/2024-12-04-aoc-day-4/</guid><description>( task )
 I Made It to Day 4!
-And today’s task perfectly fits Excel. Some—if not most—people don’t like Excel and would never consider it a serious tool for data analytics, exploration, or even “engineering.” Well, you’re wrong about Excel. It’s quite powerful if you know how to use it. Let me show …</description><category>development</category><category>aoc2024</category><media:content url="https://nickyreinert.de/starting_matrix.png" type="image/jpeg"><media:title>Advent of Code - Day 4 - Finding patterns (Excel)</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>solution_writeup</dc:type></item><item><title>How to use the new LAMBDA-feature in Excel (e.g. to identify outliers)</title><link>https://nickyreinert.de/en/2021/2021-05-08-excel-lambda/</link><pubDate>Sat, 08 May 2021 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2021/2021-05-08-excel-lambda/</guid><description>Whait what, Excel? You call yourself a data engineer and you work with Excel? Sure. Excel is still the best tool for quick’n’dirty solutions, don’t let Tableau, Python or Alteryx tell you something different… ;)
-What’s LAMBDA? One sentence: LAMBDA allows you to combine common Excel functions into …</description><category>blog</category><media:content url="https://nickyreinert.de/image.png" type="image/jpeg"><media:title>Identifying outliers using Excel LAMBDA function</media:title></media:content><dc:subject>Lesezeit: 8 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>
+And today’s task perfectly fits Excel. Some—if not most—people don’t like Excel and would never consider it a serious tool for data analytics, exploration, or even “engineering.” Well, you’re wrong about Excel. It’s quite powerful if you know how to use it. Let me show …</description><content:encoded><![CDATA[<p>(
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://adventofcode.com/2024/day/4/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">task</a>
+
+
+)</p>
+<p>I Made It to Day 4!</p>
+<p>And today&rsquo;s task perfectly fits Excel. Some—if not most—people don&rsquo;t like Excel and would never consider it a serious tool for data analytics, exploration, or even &ldquo;engineering.&rdquo; Well, you&rsquo;re wrong about Excel. It&rsquo;s quite powerful if you know how to use it. Let me show you…</p>
+<p>The first part of the task is a kind of word riddle where we have to count occurrences of &ldquo;XMAS&rdquo; in a huge grid of letters. And actually, that&rsquo;s pretty easy with Excel. I&rsquo;d even say it&rsquo;s easier than using a fully-fledged scripting tool.</p>
+<h3 id="solution-to-the-first-part">Solution to the First Part</h3>
+<p>The input comes as a couple of lines. To make each character addressable, we first need to split each character into its own column. While I could use &ldquo;Text to Columns,&rdquo; the goal is to make this dynamic, so I will utilize a formula:</p>
+<p><em>_LENGTH refers to <code>[C2]</code></em></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[D1]=MID(B4;SEQUENCE(1;_LENGTH);1)
+</span></span></code></pre></div><p>If you pull this formula down, you get a matrix like this (referring to the example input):</p>
+<img src="https://nickyreinert.de/en/2024/2024-12-04-aoc-day-4/image-1.png" alt="alt text"><p>The following image shows all possible solutions:</p>
+<img src="https://nickyreinert.de/en/2024/2024-12-04-aoc-day-4/starting_matrix.png" alt="starting matrix"><p>We start with the most simple solution, where <code>XMAS</code> is <em>plotted</em> from the center to the right. The surrounding <code>if-condition</code> is temporary, only to make the result visible:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=IF(CONCAT(G21;H21;I21;J21)=&#34;XMAS&#34;;&#34;+&#34;;&#34;&#34;)
+</span></span></code></pre></div><p>It&rsquo;s quite easy, right? We copy the formula (not the result of the cell!) to a text editor and modify it to get the other seven directions.</p>
+<p>Eventually, you end up with eight lines looking like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=IF(CONCAT(G21;H21;I21;J21)=&#34;XMAS&#34;;&#34;+&#34;;&#34;&#34;)
+</span></span><span class="line"><span class="ln">2</span><span class="cl">=IF(CONCAT(G21;H22;I23;J24)=&#34;XMAS&#34;;&#34;+&#34;;&#34;&#34;)
+</span></span><span class="line"><span class="ln">3</span><span class="cl">=IF(CONCAT(G21;G22;G23;G24)=&#34;XMAS&#34;;&#34;+&#34;;&#34;&#34;)
+</span></span><span class="line"><span class="ln">4</span><span class="cl">=IF(CONCAT(G21;F22;E23;D24)=&#34;XMAS&#34;;&#34;+&#34;;&#34;&#34;)
+</span></span><span class="line"><span class="ln">5</span><span class="cl">=IF(CONCAT(G21;F22;E23;D24)=&#34;XMAS&#34;;&#34;+&#34;;&#34;&#34;)
+</span></span><span class="line"><span class="ln">6</span><span class="cl">=IF(CONCAT(G21;F20;E19;D18)=&#34;XMAS&#34;;&#34;+&#34;;&#34;&#34;)
+</span></span><span class="line"><span class="ln">7</span><span class="cl">=IF(CONCAT(G21;G20;G19;G18)=&#34;XMAS&#34;;&#34;+&#34;;&#34;&#34;)
+</span></span><span class="line"><span class="ln">8</span><span class="cl">=IF(CONCAT(G21;H20;I19;J18)=&#34;XMAS&#34;;&#34;+&#34;;&#34;&#34;)
+</span></span></code></pre></div><p>To count the occurrences of all existing solutions, we could either build some kind of <code>LAMBDA</code> function or use a simple trick: We just cast the <code>TRUE</code> or <code>FALSE</code> result to an integer:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=--(VERKETTEN(G21;H21;I21;J21)=&#34;XMAS&#34;)+
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    --(VERKETTEN(G21;H22;I23;J24)=&#34;XMAS&#34;)+
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    --(VERKETTEN(G21;G22;G23;G24)=&#34;XMAS&#34;)+
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    --(VERKETTEN(G21;F21;E21;D21)=&#34;XMAS&#34;)+
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    --(VERKETTEN(G21;F22;E23;D24)=&#34;XMAS&#34;)+
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    --(VERKETTEN(G21;F20;E19;D18)=&#34;XMAS&#34;)+
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    --(VERKETTEN(G21;G20;G19;G18)=&#34;XMAS&#34;)+
+</span></span><span class="line"><span class="ln">8</span><span class="cl">    --(VERKETTEN(G21;H20;I19;J18)=&#34;XMAS&#34;)
+</span></span></code></pre></div><p>And now apply it to our testing dataset. Copy the cell (not the formula!) next to our matrix. It should refer to the first column in the first row. Then drag it to the right and down to cover the whole area. You should end up with something like this:</p>
+<img src="https://nickyreinert.de/en/2024/2024-12-04-aoc-day-4/image-5.png" alt="alt text"><p>The sum of the matrix is 18 — which is exactly the number of <code>XMAS</code> hidden in the test dataset. Now take the actual puzzle input, copy it to your sheet, and apply your <em>magic formula</em> to it. If you want to avoid dragging the formula to the right and down, you could use <code>SEQUENCE</code> again, but we&rsquo;ll save that for later…</p>
+<p>The good thing about the Excel approach is that the second part doesn&rsquo;t make it more complicated. We stick with our strategy and now just look for all possible variations of <code>X-MAS</code>. There are four:</p>
+<img src="https://nickyreinert.de/en/2024/2024-12-04-aoc-day-4/image-6.png" alt="alt text"><p>And our formula changes a little. We know that <code>A</code> has to be in the middle. We concatenate the surrounding four cells and just test for all four possible combinations of <code>S</code> and <code>M</code>, which leads us to something like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=--(OR(CONCAT(F210;G209;G211;E211;E209)=&#34;AMSSM&#34;;
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    CONCAT(F210;G209;G211;E211;E209)=&#34;ASSMM&#34;;
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    CONCAT(F210;G209;G211;E211;E209)=&#34;ASMMS&#34;;
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    CONCAT(F210;G209;G211;E211;E209)=&#34;AMMSS&#34;))
+</span></span></code></pre></div><p>It&rsquo;s even simpler than the previous one! Again, just make it reference your dataset, and you get the correct result!</p>
+<h2 id="whats-up-excel">Whats up, Excel?</h2>
+<p><strong>Rating: 10/12 – understimated and powerful</strong></p>
+<p>I&rsquo;m not gonna lie: I really love Excel. Since a couple of years, Excel also supports <code>LAMBDA</code>, which allows for more complex calculations and even functional programming. [You can even build an animated ticker in Excel]((shameless self-promotion)!</p>
+<p>That said… see you next day!</p>]]></content:encoded><atom:updated>2026-06-16T20:56:44+02:00</atom:updated><category>development</category><category>aoc2024</category><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>solution_writeup</dc:type></item><item><title>How to use the new LAMBDA-feature in Excel (e.g. to identify outliers)</title><link>https://nickyreinert.de/en/2021/2021-05-08-excel-lambda/</link><pubDate>Sat, 08 May 2021 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2021/2021-05-08-excel-lambda/</guid><description>Whait what, Excel? You call yourself a data engineer and you work with Excel? Sure. Excel is still the best tool for quick’n’dirty solutions, don’t let Tableau, Python or Alteryx tell you something different… ;)
+What’s LAMBDA? One sentence: LAMBDA allows you to combine common Excel functions into …</description><content:encoded><![CDATA[<p>Whait what, Excel? You call yourself a data engineer and you work with Excel? Sure. Excel is still the best tool for quick’n’dirty solutions, don’t let Tableau, Python or Alteryx tell you something different… ;)</p>
+<h2 id="whats-lambda">What’s LAMBDA?</h2>
+<p>One sentence: <strong>LAMBDA</strong> allows you to combine common Excel functions into one new custom function (respectively formula) that is available all over your workbook. Back in the days you had to cope with VBA or multiple columns to implement special calculations. LAMBDA still does not cover one disadvantage: <strong>Building custom functions remains a mess</strong> and ends up with long, encapsulated formulas.</p>
+<p>Creating a LAMBDA function requires <strong>two steps</strong>. Let’s take an example challenge to demonstrate how that works: Find outliers by calculation <strong>quartiles</strong> and the upper and lower fence.</p>
+<img src="https://nickyreinert.de/en/2021/2021-05-08-excel-lambda/image.png" alt="being an outlier"><h2 id="what-are-fences">What are fences?</h2>
+<p>Upper and lower fences are borders, defined by 1,5 times the so called inter quartile range, which is just the area between two quartiles: the first and the third. The following formulas are used to find those borders for a given set of values.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Lower Fence = Q1 - (1,5 * IQR)
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Upper Fence = Q3 + (1,5 * IQR)
+</span></span></code></pre></div><p>Every value that’s outside this range can be considered as an outlier. That’s the short unprofessional explanation. Imagine you have a set of very important values:</p>
+<img src="https://nickyreinert.de/en/2021/2021-05-08-excel-lambda/image-1.png" alt="example set of very important numbers — where are the outliers"><p>A couple of steps are required to find the outliers with Excel. Every step requires one column (<em>the bold parts are the actual Excel formulas, you don’t need to fill your sheet, that’s just for showing the process).</em></p>
+<p>First you need to calculate the quartiles (I’m using the including quartile function, on the difference between including and excluding quartile 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://corporatefinanceinstitute.com/resources/excel/functions/quartile-inc-function/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">check this text out)</a>
+
+
+.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">1st Quartile = Q1 =&gt; **Column B: =QUARTILE.INKL(A:A;1)**
+</span></span><span class="line"><span class="ln">2</span><span class="cl">3rd Quartile = Q3 =&gt; **Column C: =QUARTILE.INKL(A:A;3)**
+</span></span></code></pre></div><p>The next column calculates the interquartile range — IQR:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">IQR = Q3 - Q1 =&gt; **Column D: =C2-B2**
+</span></span></code></pre></div><p>Another two columns are required to calculate the lower and upper fence:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Lower Fence = LF =&gt; **Column E: =B2-(1,5*D2)**
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Upper Fence = UP =&gt; **Column F: =C2+(1,5*D2)**
+</span></span></code></pre></div><p>Finally we need to check the actual value: Is it lower than the lower fence or greater than the upper fence? Is it inside our range?</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">Is outlier? =&gt; **Column G: =IF(OR(A2&lt;E2;A2&gt;F2);&#34;x&#34;;&#34;&#34;)**
+</span></span></code></pre></div><p>That’s how it would look like in Excel:</p>
+<img src="https://nickyreinert.de/en/2021/2021-05-08-excel-lambda/image-2.png" alt="Outlier identification (in case you’re wondering: There are no outliers below the lower fence"><p>Now you would tend to compress the six additional columns into one, like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=IF(
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    OR(
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        A2&lt;QUARTILE.INKL($A$2:$A$2670;1) - (1,5*QUARTILE.INKL($A$2:$A$2670;3) - QUARTILE.INKL($A$2:$A$2670;1));
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        A2&gt;QUARTILE.INKL($A$2:$A$2670;3) + (1,5*QUARTILE.INKL($A$2:$A$2670;3) - QUARTILE.INKL($A$2:$A$2670;1))
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    );
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    &#34;x&#34;;
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    &#34;&#34;)
+</span></span></code></pre></div><img src="https://nickyreinert.de/en/2021/2021-05-08-excel-lambda/image-3.png" alt="alt text"><p>Isn’t that beautiful? <strong>Welcome to Excel</strong>! Good news is: <strong>LAMBDA</strong> helps you to make this a little <strong>more readable</strong> and also <strong>portable</strong>. The bad news: It still looks a little chaotic.</p>
+<h2 id="step-1-build-the-custom-function-inside-a-cell">Step 1: Build the custom function inside a cell</h2>
+<p>The <strong>LAMBDA</strong> formula requires <strong>n parameters</strong>. You can add (almost) as many parameters as you want, the <strong>last parameter</strong> always contains the <strong>calculation</strong>, the <strong>ones before</strong> are <strong>parameters</strong> that can be used within the calculation. Example:</p>
+<p>This one expects one parameter and would increment it by 1:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=LAMBDA(x, x + 1)
+</span></span></code></pre></div><p>And this <strong>LAMBDA</strong> calculation just returns a 5 — it does not expect any parameters:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=LAMBDA(5)
+</span></span></code></pre></div><p>And another one that adds up to values:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=LAMBDA(x;y;x+y)
+</span></span></code></pre></div><p>If you just put those lines into a cell, Excel returns a <strong>#CALC-error</strong> because you’re not providing any references. The worksheet is only a place to <strong>create and test</strong> your LAMBDA function. You also need to add example values, according to the parameters your LAMBDA function, to make it work within your worksheet:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=LAMBDA(x;y;x+y)(5;9)
+</span></span></code></pre></div><p>This will actualy return a 14. Now let’s put our <strong>upper-lower-fence-drama</strong> into a LAMBDA-function. First we replace every reference with a distinct variable, I chose <strong>value</strong> and <strong>range:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=IF(
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    OR(
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        value &lt; QUARTILE.INKL(range;1) - (1,5 * QUARTILE.INKL(range;3) - QUARTILE.INKL(range;1));
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        value &gt; QUARTILE.INKL(range;3) + (1,5 * QUARTILE.INKL(range;3) - QUARTILE.INKL(range;1))
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    );
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    &#34;x&#34;;
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    &#34;&#34;)
+</span></span></code></pre></div><p>Now we wrap this up with LAMBDA and some brackets and register our two variables:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=LAMBDA(value;range;IF(
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    OR(
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        value &lt; QUARTILE.INKL(range;1) - (1,5 * QUARTILE.INKL(range;3) - QUARTILE.INKL(range;1));
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        value &gt; QUARTILE.INKL(range;3) + (1,5 * QUARTILE.INKL(range;3) - QUARTILE.INKL(range;1))
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    );
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    &#34;x&#34;;
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    &#34;&#34;)
+</span></span><span class="line"><span class="ln">8</span><span class="cl">)
+</span></span></code></pre></div><p>And last but not least, we need to add some testing values — we just referencing the cells, as we did before:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=LAMBDA(value;range;IF(
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    OR(
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        value &lt; QUARTILE.INKL(range;1) - (1,5 * QUARTILE.INKL(range;3) - QUARTILE.INKL(range;1));
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        value &gt; QUARTILE.INKL(range;3) + (1,5 * QUARTILE.INKL(range;3) - QUARTILE.INKL(range;1))
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    );
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    &#34;x&#34;;
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    &#34;&#34;)
+</span></span><span class="line"><span class="ln">8</span><span class="cl">)(A1;A$2:A$2670)
+</span></span></code></pre></div><p>Now let’s fill the column with this formula:</p>
+<img src="https://nickyreinert.de/en/2021/2021-05-08-excel-lambda/image-4.png" alt="alt text"><p>Unsurprisingly the result is the same.</p>
+<h2 id="step-2--actually-create-a-new-function--formula">Step 2 — Actually create a new function / formula</h2>
+<p>Of course we don’t want to copy the whole stuff every time we need to identify outliers. So let’s <strong>register this calculation</strong> as a new formula. Press either <strong>CMD+F3</strong> (CTRL+F3 on Windows) or select “<strong>define names</strong>” in the Formula-Area:</p>
+<img src="https://nickyreinert.de/en/2021/2021-05-08-excel-lambda/image-5.png" alt="alt text"><p>Add a name for your new function — lets call it <strong>IS_OUTLIER</strong> — and paste your LAMBDA-formular into the second text field — <strong>without the second pair</strong> of brackets containing your test values:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=LAMBDA(value;range;IF(
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    OR(
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        value &lt; QUARTILE.INKL(range;1) - (1,5 * QUARTILE.INKL(range;3) - QUARTILE.INKL(range;1));
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        value &gt; QUARTILE.INKL(range;3) + (1,5 * QUARTILE.INKL(range;3) - QUARTILE.INKL(range;1))
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    );
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    &#34;x&#34;;
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    &#34;&#34;))
+</span></span></code></pre></div><p><strong>Do not forget to press the plus-button</strong> to actually create the new formula. Confirm everything with OK and <strong>get ready to rumble</strong>. This is your new and simple outlier detection formula:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">=IS_OUTLIER(value;range)
+</span></span></code></pre></div><img src="https://nickyreinert.de/en/2021/2021-05-08-excel-lambda/image-6.png" alt="alt text"><p>And it works, apparently, like a charm. If you need this feature in another worksheet, just copy the name definition.</p>
+<p>That’s all. No epilog, but one word of advice: You have to subscribe to the <strong>Beta-channel</strong> (at least on MacOS), as the LAMBDA function is not yet provided in the official release candiate. Have fun! :)</p>
+]]></content:encoded><atom:updated>2026-04-19T20:27:26+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 8 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>

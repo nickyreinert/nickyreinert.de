@@ -1,1 +1,200 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>MCP Server auf Nicky Reinert</title><link>https://nickyreinert.de/en/topics/mcp-server/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sat, 30 Aug 2025 12:34:56 +0200</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/mcp-server/index.xml" rel="self" type="application/rss+xml"/><item><title>AI assisted coding - the plAIbook</title><link>https://nickyreinert.de/en/2025/2025-08-29-ai-assisted-coding/</link><pubDate>Sat, 30 Aug 2025 12:34:56 +0200</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2025/2025-08-29-ai-assisted-coding/</guid><description>Famous first words I work extensively with AI, and as it is a new tool that introduces an entirely different way of working, it sometimes takes time to adapt to these new circumstances. In this context, I am still exploring the best approach to integrate AI or agentic chatbots into my development …</description><category>blog</category><category>anleitungen</category><category>development</category><media:content url="https://nickyreinert.de/front-image.png" type="image/jpeg"><media:title>Screenshot of MCP server running in Visual Studio Code</media:title></media:content><dc:subject>Lesezeit: 8 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>MCP Server auf Nicky Reinert</title><link>https://nickyreinert.de/en/topics/mcp-server/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sat, 30 Aug 2025 12:34:56 +0200</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/mcp-server/index.xml" rel="self" type="application/rss+xml"/><item><title>AI assisted coding - the plAIbook</title><link>https://nickyreinert.de/en/2025/2025-08-29-ai-assisted-coding/</link><pubDate>Sat, 30 Aug 2025 12:34:56 +0200</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2025/2025-08-29-ai-assisted-coding/</guid><description>Famous first words I work extensively with AI, and as it is a new tool that introduces an entirely different way of working, it sometimes takes time to adapt to these new circumstances. In this context, I am still exploring the best approach to integrate AI or agentic chatbots into my development …</description><content:encoded><![CDATA[<h2 id="famous-first-words">Famous first words</h2>
+<p>I work extensively with AI, and as it is a new tool that introduces an entirely different way of working, it sometimes takes time to adapt to these new circumstances. In this context, I am still exploring the best approach to integrate AI or agentic chatbots into my development workflow. Recently, I reached another milestone that I’d like to share.</p>
+<p><strong>Preliminary notes:</strong>
+You may think that &ldquo;the <em>plAIbook</em> helps you to vibe code everything. You are wrong. You still need a profound understanding of architecture and design patterns. The more complex a project gets, the harder it is to maintain with AI only. This is not a <strong>fire-and-forget</strong> solution.</p>
+<p>Also, as this is not the only but main focus of my developing work: This is slightly focused on creating little PoC`s using Python and/or Flask. But I believe it&rsquo;s quite easy to adapt the process for other languages, frameworks or platforms.</p>
+<p>What are the landmarks here?</p>
+<ul>
+<li>a <strong>meta prompt</strong> that returns your necessary prompts for your actual coding Agent</li>
+<li>a fully fledged <strong>pre-prompt instruction</strong></li>
+<li>an environment that makes it easy to refactor or dive into the code on your own</li>
+<li>an <strong>MCP server</strong> (yeah, buzzwords are required here) that helps the Agent to supervise its own work</li>
+</ul>
+<p>You will find a more technical summary, all prompts and scripts there: 
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gist.github.com/nickyreinert/bbce96ea043bc73cb011066e8a8df673?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous#file-03-global-instructions-md" target="_blank" rel="noopener noreferrer">click me</a>
+
+
+</p>
+<p><em>This said, with no further ado, let&rsquo;s dive into the details.</em></p>
+<h2 id="the-process">The Process</h2>
+<p>The developing process is separated into <strong>three phases</strong>:</p>
+<h3 id="phase-1---prepping">Phase 1 - Prepping</h3>
+<p>First we need to prep our environment, means: Setup <strong>Visual Studio Code</strong>. I assume that you have a <strong>Copilot</strong> subscription. Though, the whole process will work without it and it should also work with one of the derivatives, like <strong>Windsurf</strong> or <strong>Cursor</strong>.</p>
+<h4 id="1-add-pre-prompt-instructions">1. Add pre-prompt instructions</h4>
+<p>Assumining you have created <strong>an empty folder</strong>, declared it as a <strong>workspace</strong> and <strong>inited a git repo</strong> there, this is how you proceed:</p>
+<p>Take the <strong>pre-prompt instruction</strong> (
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gist.github.com/nickyreinert/bbce96ea043bc73cb011066e8a8df673?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous#file-03-global-instructions-md" target="_blank" rel="noopener noreferrer">from here</a>
+
+
+) and put them to <code>.github/instructions/global.instructions.md</code>.</p>
+<blockquote>
+<p><strong>Hint #1</strong>: If you click the cog wheel at the top of Copilot&rsquo;s chat window and select <strong>instructions</strong> you can add even more specific instructions. They will be placed in the very same folder.</p>
+</blockquote>
+<blockquote>
+<p><strong>Hint #2</strong>: As these are global instructions, you may also want to place them to <code>copilot-instructions.md</code> - which is the native VSCode way - I prefer the first way, as this allows you to <strong>maintain multiple instruction</strong> sets.</p>
+</blockquote>
+<p>As you can see the pre prompt uses a lot of abbreviations and doesn&rsquo;t seem very natural. That&rsquo;s because it&rsquo;s sufficient enough for the machine to understand it&rsquo;s task. However, let me guide you through some benefits and features I built in:</p>
+<ul>
+<li><strong>functions</strong> are not bigger than <strong>20 lines</strong>, <strong>files</strong> don&rsquo;t exceed <strong>200 lines</strong></li>
+<li>I am pursuing a <strong>modular approach</strong> with features separated into files and <strong>subfolders</strong></li>
+<li>code must be human readable with appropriate <strong>inline documentation</strong>, files are structured and grouped into <strong>functional sections</strong></li>
+<li>common <strong>security</strong>, <strong>logging</strong> and <strong>error handling</strong> measures are implemented, like of course try/except blocks, rate limiting, sanitizing inputs and so on</li>
+<li>the agent creates <strong>commit messages</strong> on its own after every minor change</li>
+<li>extensive <strong>tests</strong> for functions and API endpoints</li>
+<li>lean environment with <strong>minimal dependencies</strong></li>
+<li>extensive but not bloated <strong>documentation</strong>, with a <code>PROCESS_MAP.md</code> showing the overall architecture and flow of the application or an <code>UNFINISHED.md</code> file outlining current work, which is quite helpful if the agent stopped working or you want to get back to the current state at a later point</li>
+<li><strong>Docker</strong> implementation which easily enables you to take everything and run it anywhere else</li>
+<li>utilizing <strong>MCP</strong> to maintain supervising tasks, cleaning up, testing and so on</li>
+<li>telling the agent to be <strong>sceptical</strong> and ask user for additional details</li>
+<li>trying to prevent &ldquo;<strong>bug looping</strong>&rdquo; where the agent implements the same fix multiple times without success (this is another reason why <code>UNFINISHED.md</code> exists)</li>
+<li>and last but not least but most important: No useless &ldquo;<strong>Sorry</strong>&rdquo; &amp; &ldquo;<strong>Apologies</strong>&rdquo; or offering &ldquo;This is the final solution&rdquo; - you know how annoying this is, when you read it the twelfth time and the app is still not running ;-)</li>
+</ul>
+<blockquote>
+<p><strong>Note</strong>: As already said: This has a strong focus on <em>Python</em> and <strong>Web app development</strong>, but most parts are also easily applicable if you want to, like, create a pure <strong>JavaScript</strong> app or even <strong>mobile apps</strong>.</p>
+</blockquote>
+<h4 id="2-enable-mcp">2. Enable MCP</h4>
+<p>The <code>model control protocol</code> (<strong>MCP</strong>) is a fancy name for an interface that the Agent can talk to. On one hand it may help you to control other programs, like imagine connecting the Agent via MCP to <strong>Adobe Premiere</strong> and telling it to cut your home videos. We are using it to allow the Agent to supervise and revise its own output!</p>
+<p>First create a new file <code>.vscode/mcp.json</code> with this content - I will explain it in a second:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="ln">1</span><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  <span class="nt">&#34;servers&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="nt">&#34;ai_coding_agent&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">      <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;stdio&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">      <span class="nt">&#34;command&#34;</span><span class="p">:</span> <span class="s2">&#34;python3&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">      <span class="nt">&#34;args&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;./.mcp_tools/mcp_server.py&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="ln">8</span><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="ln">9</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Now create a folder named <code>.mcp_tools</code> and put the following files into it:</p>
+<ul>
+<li><code>mcp_server.py</code> - the server itself</li>
+<li><code>load_context_files.py</code> - allows the agent to refresh its pre-prompt brain</li>
+<li><code>run_tests.py</code> - allows the agent to run tests against the app</li>
+<li><code>update_process_map.py</code> - allows the agent to update the process map</li>
+</ul>
+<p><em>(You may restart your Visual Studio Code)</em></p>
+<p>Now open the command palette to find our MCP server (<code>MCP: List Server</code>) and start it (or use the very handy inline-commmands VSCode is offering you). The output window should return something like that:</p>
+<p align="center">
+  <a href="https://nickyreinert.de/en/2025/2025-08-29-ai-assisted-coding/mcp-terminal-output.png" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="https://nickyreinert.de/en/2025/2025-08-29-ai-assisted-coding/mcp-terminal-output.png" alt="alt text" width="500"/>
+  </a>
+</p>
+<br />
+<br />
+<blockquote>
+<p>Hint: In some environments the command may need to be adjusted to <code>python</code> instead of <code>python3</code>, depending on your Python installation.</p>
+</blockquote>
+<p>Perfect, the server is running. You can conform that by clicking the little cog wheel at the top of your chat window, which opens the extension bar (usually on the left) - and as you can see, <strong>VSCode</strong> already offers a lot of different <strong>MCP</strong> solutions. At the very bottom is our own:</p>
+<p align="center">
+  <a href="https://nickyreinert.de/en/2025/2025-08-29-ai-assisted-coding/mcp-server-list.png" target="_blank" style="margin: 0 auto; display: block;">
+    <img src="https://nickyreinert.de/en/2025/2025-08-29-ai-assisted-coding/mcp-server-list.png" alt="alt text" width="500"/>
+  </a>
+</p>
+<p>Test your agent directly using this <strong>tool reference</strong>, which acts as a <strong>magic word</strong>, to reload pre prompt:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">#load_context_files</span>
+</span></span></code></pre></div><p>which should be confirmed properly by the bot (you can use natural language too, but I prefer calling <strong>tools</strong> directly).</p>
+<p>I suggest you checkout the <code>mcp_server.py</code> which is not too complex. It defines tools the MCP server offers to your bot, right now there are three: <strong>load_context_files</strong>, <strong>run_tests</strong> and <strong>update_process_map</strong></p>
+<blockquote>
+<p><strong>Hint</strong>: You may have noticed &ldquo;<strong>Toolset</strong>&rdquo; - You can combine sets of different MCP tools into one toolset to perform multiple actions. Also, if you look for more <strong>sophisticated interactions</strong>, of course you can feed information into your MCP server tools. Like not only telling it to run tests but actually provide data to run the tests with and submitting them as arguments.</p>
+</blockquote>
+<h3 id="phase-3---planning">Phase 3 - Planning</h3>
+<p>In this phase we will create <em>3 to 5 sequential</em>, self-contained <strong>prompts</strong>. I mean, not we, but the AI, apparently. For this I created a &ldquo;meta-prompt&rdquo;. Throw it against your most favorite AI agent and wait for the result. This is a strategy that I suggest to everyone. Don&rsquo;t try to wrap your head around writing the perfect prompt. Ask someone who should know it - better than you: the LLM!</p>
+<blockquote>
+<p><strong>Hint</strong>: There&rsquo;s one cruccial information that you should take with you at this point: Don&rsquo;t was time working on prompts on your own, manually. Utilize the power of AI to get the perfect prompt!</p>
+</blockquote>
+<p>So, we can keep this short: use the <code>meta prompt</code> to get a small handful of prompts for your actual developing progress. Those prompts are reflecting different phases of your developing process.</p>
+<p>You&rsquo;ll find my <code>meta prompt</code> 
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gist.github.com/nickyreinert/bbce96ea043bc73cb011066e8a8df673?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous#file-04-pre-prompt-md" target="_blank" rel="noopener noreferrer">here</a>
+
+
+. Just fill out the four required fields:</p>
+<ul>
+<li>[NAME] - of your application</li>
+<li>[GOAL] - what&rsquo;s this app about?</li>
+<li>[FEATURES] - what does it offer?</li>
+<li>[USERS] - who are the target users?</li>
+</ul>
+<p>Keep goal and features tight. Don&rsquo;t fall into the feature creep rabbit hole. Your goal should be a good working first draft of your app. Focus on that and then add features one at a time.</p>
+<p>Now run your <code>meta prompt</code> and collect your actual prompts for your Copilot agent.</p>
+<h3 id="phase-4---execution">Phase 4 - Execution</h3>
+<p>The rest should be a walk in the park. (Until it isn&rsquo;t (˵ ͡° ͜ʖ ͡°˵)). Apparently you start pasting your prompts to the agent and watch it working the task.</p>
+<p>You may leave it working like that, but I strongly suggest to keep watching. When it&rsquo;s done, don&rsquo;t just paste the next prompt. Try to understand what has been built here, not in detail, but for later troubleshooting and feature expanding, it&rsquo;s quite helpful to understand the architecture. You can always ask the machine, but it will probably not know the great picture.</p>
+<p>As mentioned above, the pre prompt covers a lot not only technical issues but also tactical directives that should improve how the agent works and talks to you.</p>
+]]></content:encoded><atom:updated>2025-08-31T11:24:18+02:00</atom:updated><category>blog</category><category>anleitungen</category><category>development</category><dc:subject>Lesezeit: 8 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>

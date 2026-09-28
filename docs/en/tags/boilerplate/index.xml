@@ -1,3 +1,166 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Boilerplate auf Nicky Reinert</title><link>https://nickyreinert.de/en/tags/boilerplate/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Wed, 24 Feb 2021 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/tags/boilerplate/index.xml" rel="self" type="application/rss+xml"/><item><title>My Python boilerplate and a little Python-Fu</title><link>https://nickyreinert.de/en/2021/2021-02-24-python-foo/</link><pubDate>Wed, 24 Feb 2021 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2021/2021-02-24-python-foo/</guid><description>Let me show you my Python boilerplate and some little nifty standard features I’m working with. You can download the full template from github . This post will probably be extended in the future.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Boilerplate auf Nicky Reinert</title><link>https://nickyreinert.de/en/tags/boilerplate/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Wed, 24 Feb 2021 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/tags/boilerplate/index.xml" rel="self" type="application/rss+xml"/><item><title>My Python boilerplate and a little Python-Fu</title><link>https://nickyreinert.de/en/2021/2021-02-24-python-foo/</link><pubDate>Wed, 24 Feb 2021 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2021/2021-02-24-python-foo/</guid><description>Let me show you my Python boilerplate and some little nifty standard features I’m working with. You can download the full template from github . This post will probably be extended in the future.
 Summary The boilerplate will help you with the following features:
-Use virtual environments manage …</description><category>blog</category><media:content url="https://nickyreinert.de/python-boilerplate-patterns.png" type="image/jpeg"><media:title>Python Boilerplate Patterns Tutorial</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>
+Use virtual environments manage …</description><content:encoded><![CDATA[<p>Let me show you my Python boilerplate and some little nifty standard features I’m working with. You can download the 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gist.github.com/nickyreinert/45c019f318fe7a10232327cdf8b119f4?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">full template from github</a>
+
+
+. This post will probably be extended in the future.</p>
+<h2 id="summary">Summary</h2>
+<p>The boilerplate will help you with the following features:</p>
+<ul>
+<li>Use virtual environments</li>
+<li>manage requirements</li>
+<li>notifications via Telegram</li>
+<li>manage command line arguments</li>
+<li>list comprehension</li>
+<li>print progress in loops</li>
+<li>measure time</li>
+<li>play a sound after a loop is finished</li>
+</ul>
+<h2 id="virtual-environment">Virtual environment</h2>
+<p>I like working with virtual environments. It helps me to work with individual clean development environments. How do you do that? Switch to your main development folder, create a subfolder for your new project and initiate it:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">cd /development/
+</span></span><span class="line"><span class="ln">2</span><span class="cl">mkdir project1
+</span></span><span class="line"><span class="ln">3</span><span class="cl">python3 -m venv project1
+</span></span><span class="line"><span class="ln">4</span><span class="cl">cd project1
+</span></span><span class="line"><span class="ln">5</span><span class="cl">source bin/activate
+</span></span></code></pre></div><p>There you go. If you install packages, they are located in this folder only. Wait, packages? Right, let’s get to the next step:</p>
+<img src="https://nickyreinert.de/en/2021/2021-02-24-python-foo/image.png" alt="This post comes without any images, that’s why I’m showing you this beautiful image that I took in Athens, a couple of years ago — a wonderful city!"><h2 id="manage-your-libraries">Manage your libraries</h2>
+<p>As your Python scripts grows, by the amount of lines but also by the amount of features, the amount of used libraries will grow, too. But how to run the script on a different machine, in a differente environment? How to easily share you script? The answer is pipreqs:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">pip install pipreqs
+</span></span></code></pre></div><p>After you installed this little tool, run it against your script (or a folder of scripts):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">pipreqs yourscript.py # one script only
+</span></span><span class="line"><span class="ln">2</span><span class="cl">pipreqs . # all scripts in the folder
+</span></span></code></pre></div><p>Pipreqs will scan your script for required libraries and list them in a file called requirements.txt (suprise!). You need to share this text file with your Python script. Everyone who wants to run the script needs to prepare the environment using this line of code:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">pip install -r requirements.txt
+</span></span></code></pre></div><p>Et voilà. All requirements met.</p>
+<h2 id="telegram-logging">Telegram logging</h2>
+<blockquote>
+<p>Please be adviced: Using a centralized messaging service like telegram, where your content is hosted on foreing computers, may be a risky plan. I’m fully aware of that, you should be too. That’s why I’m only sharing non-senstive information with telegram. It’s just my perfect notification service.</p>
+</blockquote>
+<p><em>How does telegram help?</em> You may ask. Well, imagine you have a script running hours or even days! Actually, you don’t really know. Wouldn’t it be nice to get a message, when the script is done, or about it’s progress.</p>
+<p>First let’s create your own bot for Telegram. Open the app and look for “BotFather”. He will allow you to create a new bot. Name doesn’t matter, what does matter is the secret(!) token. Take it and start a chat with your bot. Then browse to this url (replace the token part with your secret(!) token):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">https://api.telegram.org/bot&lt;bot token&gt;/getUpdates
+</span></span></code></pre></div><p>The page will return a JSON object with a couple of information, amongst it is your chat-id (it’s secret, too, everything is secret!). Grab it and put it with your secret (!!!) token into <strong>your telegram_notifier.py:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">import requestsbot_token = &#39;secret token&#39;
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">bot_chat_id = &#39;secret chat id&#39;def send_text_to_telegram(bot_message):
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">   bot_token = bot_token
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">   
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">   send_text = &#39;[https://api.telegram.org/bot&#39;](https://api.telegram.org/bot&#39;) + bot_token + &#39;/sendMessage?chat_id=&#39; + bot_chat_id + &#39;&amp;parse_mode=Markdown&amp;text=&#39; + bot_message   response = requests.get(send_text)
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"> 
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">   return response.json()def send_image_to_telegram(image):   bot_token = bot_token
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"> 
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">   data = {&#39;chat_id&#39;: bot_chat_id}
+</span></span><span class="line"><span class="ln">10</span><span class="cl">   
+</span></span><span class="line"><span class="ln">11</span><span class="cl">   url = &#39;[https://api.telegram.org/bot&#39;](https://api.telegram.org/bot&#39;) + bot_token + &#39;/sendPhoto?chat_id=&#39; + bot_chat_id + &#39;&amp;parse_mode=Markdown&#39;
+</span></span><span class="line"><span class="ln">12</span><span class="cl"> 
+</span></span><span class="line"><span class="ln">13</span><span class="cl">   with open(image, &#34;rb&#34;) as image_file:
+</span></span><span class="line"><span class="ln">14</span><span class="cl"> 
+</span></span><span class="line"><span class="ln">15</span><span class="cl">      response = requests.post(url, data=data, files={&#34;photo&#34;: image_file})
+</span></span><span class="line"><span class="ln">16</span><span class="cl">  
+</span></span><span class="line"><span class="ln">17</span><span class="cl">   return response.json()
+</span></span></code></pre></div><p><em>Please note, that there’s no error handling with this script.</em></p>
+<p>Congratulations, you now have two functions to send text and images to your telegram bot. This will help you to get a notification from your Python scripts. Import the two functions with this line in every of your actual scripts:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">from telegram_notifier import *
+</span></span></code></pre></div><h2 id="in-media-res">In media res</h2>
+<h3 id="command-line-parameters">Command line parameters</h3>
+<p>Enough prepping, let’s talk about the script itself. The first lines look like that:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">import time # for logging purposes
+</span></span><span class="line"><span class="ln">2</span><span class="cl">import argparse # for command line argumentsparser=argparse.ArgumentParser()parser.add_argument(&#39;--limit&#39;, help=&#39;Source files in CSV format&#39;, required=True, type=int)
+</span></span><span class="line"><span class="ln">3</span><span class="cl">parser.add_argument(&#39;--loop_length&#39;, help=&#39;Source files in CSV format&#39;, required=False, type=int)
+</span></span><span class="line"><span class="ln">4</span><span class="cl">parser.add_argument(&#39;--message&#39;, help=&#39;Give me a message&#39;, required=False, default=&#34;Hello World&#34;, type=str)args = parser.parse_args()
+</span></span></code></pre></div><p>You’ll find it helpful to pass arguments to your script from the command line. That’s what the <strong>argparse</strong> library is for. This library supports loads of other parameters and features, I’m just showing you some basic ones to read two parameters <strong>limit</strong> and <strong>loop_length</strong>. You can read those parameters using <strong>args.limit</strong> or <strong>args.loop_length.</strong> So easy. Example?</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">loop_length = 1000000 if args.loop_length == None else args.loop_length
+</span></span><span class="line"><span class="ln">2</span><span class="cl">limit = args.limit
+</span></span></code></pre></div><p>That’s the shortend version of a if-condition. If the loop-length is set, take it. Otherwise use the default value of 1.000.000. The limit is always set to the one passed by the user — because it’s a mandatory parameter and therefore always present. Next, please.</p>
+<h3 id="logging">Logging</h3>
+<p>Why is logging so important to me? Why sould it be important to you? You will get to that point, <strong>when a customer asks you</strong>:</p>
+<blockquote>
+<p><em>How long will it take to process this dataset with 2 Mio. rows? How much will it costs?</em></p>
+<p><em>~a customer, somewhen</em></p>
+</blockquote>
+<p>Or if you want to compare two different methods. And so on. I’m a huge fan of (extensive) logging. It’s very helpful. Trust me. So, how do we start?</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">feedback_frequency = 10                                               count = 1  
+</span></span><span class="line"><span class="ln">2</span><span class="cl">start = time.time()
+</span></span></code></pre></div><p>Frequency? Why? Imagine you have a script that crunches 1 Mio. rows. And depending on the surrounding parameters, it’s either pretty fast or pretty slow. When do you create a log message? With the feedback_frequency you define, how many times you want to see a log message. Set it to 10 to get a feedback every 1 Mio. / 10 rows. Increase it to get even more feedback.</p>
+<h3 id="colors">Colors</h3>
+<p>If you are sending a lot of information to the console, you may want to use colored output. First let’s define a custom class for that. As you can see, this also allows you to set the font style to bold or underline it.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">class bcolors:
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    HEADER = &#39;\033[95m&#39;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    OKBLUE = &#39;\033[94m&#39;
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    OKCYAN = &#39;\033[96m&#39;
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    OKGREEN = &#39;\033[92m&#39;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    WARNING = &#39;\033[93m&#39;
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    FAIL = &#39;\033[91m&#39;
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    ENDC = &#39;\033[0m&#39;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    BOLD = &#39;\033[1m&#39;
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    UNDERLINE = &#39;\033[4m&#39;
+</span></span></code></pre></div><p>Now you implement the class into your output like that:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">print(f&#39;{bcolors.FAIL}{bcolors.BOLD}Bold red text{bcolors.ENDC}&#39;)
+</span></span></code></pre></div><h3 id="a-simple-loop--comprehension">A simple loop — comprehension</h3>
+<p>The list or dict comprehension feature is a feature you either love or don’t understand. I’m not even sure if I really understand the feature. Nevertheless, here’s an example that hopefully explains it.</p>
+<p>List comprehension works for dictonaries, too. It allows you to loop through data without writing a fully fledged loop. And its supposed to be faster than a common loop.</p>
+<p>The following example goes through a range of numbers from 1 to loop_length=1.000.000 (<em>second last line</em>).</p>
+<p><em>The last line</em> in this comprehension says: Only process the current row, if index is greater than 10.</p>
+<p><em>The first line</em> just takes the index value. Work with it. Add it, round it, calculate it. That’s the value, that goes to our list “<strong>a_list</strong>”.</p>
+<p><em>The second line</em> is the second way to work with conditions: Depending on the acutal value of index, it defines an outcome. If index is less than 50, pass it on. Else pass on the value defined in <strong>default_value</strong>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">default_value = &#39;x&#39;
+</span></span><span class="line"><span class="ln">2</span><span class="cl">a_list = [    index
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    if index &lt; 50 else default_value
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    for index in range(1, loop_length)
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    if index &gt; 10
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    ]
+</span></span></code></pre></div><p>I know it’s tricky. You will get to it, as soon as you need it. ;P</p>
+<h3 id="logging-actually">Logging, actually</h3>
+<p>The next lines will send one message to telegram and to the standard output.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">duration = time.time() - start            message = &#39;\r\nDone with list comprehension after %s seconds &#39; % (      &#39;{:.2f}&#39;.format(duration) # two decimal places
+</span></span><span class="line"><span class="ln">2</span><span class="cl">)
+</span></span><span class="line"><span class="ln">3</span><span class="cl">                                               send_text_to_telegram(message)                                               print(message, flush=True)
+</span></span></code></pre></div><p>You should understand this one from the code, except the flush-Parameter? This one forces the Python-script to send the message to the output, without waiting for the script to end. That’s your real-time-update-guarantee!</p>
+<h3 id="the-fully-fledged-loop">The fully-fledged Loop</h3>
+<p>This is a full loop, that allows you to add as many conditions and calculations as you want.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">for i in range(1, loop_length):   if i &gt; limit - 1 and limit &gt; 0: break
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">   
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">   count += 1   if i % (limit / feedback_frequency) == 0 or i % (round(loop_length / feedback_frequency, 0)) == 0:
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">      progress = i / limit if limit &gt; 0 else i / loop_length      message = (
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">            &#39;%s%%...&#39; % 
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">            (&#39;{:.1f}&#39;.format(100 * progress))
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        )      print(
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">            message,            
+</span></span><span class="line"><span class="ln">10</span><span class="cl">            end = &#39;&#39;, # no line break
+</span></span><span class="line"><span class="ln">11</span><span class="cl">            flush=True # don&#39;t buffer output
+</span></span><span class="line"><span class="ln">12</span><span class="cl">      )
+</span></span></code></pre></div><p>The first lines are easy. Break the loop, if the limit is hit. The most exciting thing is the logging-feature. As mentioned above, it will only logg a message if it meets the frequency requirements. Also check out the <strong>end-Parameter</strong> of print. It removes the line break from the print-command.</p>
+<h3 id="final-message">Final message</h3>
+<p>Finally, after our script logic is finished, we send a message. This time to telegram, too.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">duration = time.time() - startmessage = &#39;\r\nDone with processing %s iterations after %s seconds &#39; % (
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    &#39;{:0,.0f}&#39;.format(count), # formatting integers with thousand separator
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    &#39;{:.2f}&#39;.format(duration) # formatting decimals with two decimals
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    )send_text_to_telegram(message)print(message)
+</span></span></code></pre></div><p>There’s nothing special happening here. The only interesting thing is, that Telegram also accepts images. This is good if you’re creating some sophisticated statistcial analysis and want to see the output. Again, a word of advise: Remember that Telegram is storing your messages on foreign servers. Keep that in mind.</p>
+<h2 id="last-words">Last words</h2>
+<p>I’m always learing, and I hope your learned something, too. I’m going to extend this post in the future. If you have further tricks for me, drop me a dove.</p>
+]]></content:encoded><atom:updated>2026-04-19T20:27:26+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>

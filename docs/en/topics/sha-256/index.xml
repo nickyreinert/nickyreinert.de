@@ -1,2 +1,673 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>SHA-256 auf Nicky Reinert</title><link>https://nickyreinert.de/en/topics/sha-256/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sun, 06 Oct 2024 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/sha-256/index.xml" rel="self" type="application/rss+xml"/><item><title>How does the SHA256 algorithm work…in detail? (part 2/2)</title><link>https://nickyreinert.de/en/2024/2024-10-06-sha256-part-2/</link><pubDate>Sun, 06 Oct 2024 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2024/2024-10-06-sha256-part-2/</guid><description>SHA-256 (Secure Hash Algorithm) is the name of a “cryptographic hash function”. SHA-256 is part of an , with the same goal: to create a hash that is resistant to collisions, the calculation of which only works in one direction and has a fixed length. In the following article, I describe the steps …</description><category>blog</category><media:content url="https://nickyreinert.de/image.png" type="image/jpeg"><media:title>SHA-256 Algorithm Diagram</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item><item><title>How does the SHA256 algorithm work…in detail? (part 2/2)</title><link>https://nickyreinert.de/en/2024/2024-10-04-sha256-part-1/</link><pubDate>Fri, 04 Oct 2024 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2024/2024-10-04-sha256-part-1/</guid><description>Once you have successfully processed the first part , you are well prepared to learn in this part how the individual components or. Now functions together.
-Pre-certificate Before starting, I would like to clarify the connections again: We will immediately create a message (message), the length of …</description><category>blog</category><media:content url="https://nickyreinert.de/image.png" type="image/jpeg"><media:title>SHA-256 Algorithm Diagram</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>SHA-256 auf Nicky Reinert</title><link>https://nickyreinert.de/en/topics/sha-256/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sun, 06 Oct 2024 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/sha-256/index.xml" rel="self" type="application/rss+xml"/><item><title>How does the SHA256 algorithm work…in detail? (part 2/2)</title><link>https://nickyreinert.de/en/2024/2024-10-06-sha256-part-2/</link><pubDate>Sun, 06 Oct 2024 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2024/2024-10-06-sha256-part-2/</guid><description>SHA-256 (Secure Hash Algorithm) is the name of a “cryptographic hash function”. SHA-256 is part of an , with the same goal: to create a hash that is resistant to collisions, the calculation of which only works in one direction and has a fixed length. In the following article, I describe the steps …</description><content:encoded><![CDATA[<p>SHA-256 (Secure Hash Algorithm) is the name of a “cryptographic hash function”. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://de.wikipedia.org/wiki/SHA-2?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">SHA-256 is part</a>
+
+
+ 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://de.wikipedia.org/wiki/SHA-2?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">of</a>
+
+
+ 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://de.wikipedia.org/wiki/SHA-2?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">an</a>
+
+
+ , with the same goal: to create a hash that is resistant to collisions, the calculation of which only works in one direction and has a fixed length. In the following article, I describe the steps the algorithm takes to create a hash.</p>
+<p><em>In the first part we take care of the preparations,</em> 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/wie-funktioniert-der-sha256-algorithmus-im-detail-teil-2-2-6afcd85f43b8?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><em>in the second part</em></a>
+
+
+ <em>it goes to the actual algorithm. The source code</em> 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gist.github.com/nickyreinert/00d631fe9a90108924b1df6e911c8cd5?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><em>is on Github</em></a>
+
+
+<em>.</em></p>
+<h2 id="what-will-you-learn">What will you learn?</h2>
+<p>In addition to creating a SHA-256, you will be familiar with the handling of binary numbers and binary arithmetic operations such as <strong>XOR</strong>, <strong>AND</strong>, etc. However, I assume that there is a basic understanding of binary numbers, the focus is on the algorithm. <strong>10</strong> should stand in your head either for the <strong>ten</strong> or one <strong>two</strong>. (Or also <strong>twelve</strong>, if you like the <strong>duo decimal system</strong>.)</p>
+<h2 id="foreword">Foreword</h2>
+<p>If you lower this to a maximum amateur description, the following happens with a crytological hash function: An output text of <strong>any</strong> length is processed in such a way that a result text (<em>the</em> <em>hash</em>) with the <strong>same</strong> length <strong>is always</strong> created. It is almost impossible to calculate the output text from the hash. In addition, you can almost certainly assume that each output text creates <strong>a different hash</strong>. If I change only one character, it affects the original text drastically. Such an algorithm is therefore predestined to be attached to texts, i.e. messages. This is why we also speak of a checksum.</p>
+<p>And that is the foundation of a technology that is making more and more talks in the recent past: the <strong>blockchain</strong>, the basis for cryptocurrencies such as <strong>Bitcoin</strong>. With the blockchain, and even that only amateurly broken down, the entries of the “cash book” are securely against manipulation, because the change of a historical value (e.g. booking process) would inevitably result in a drastic change in the checksums generated from it. To take the blockchain apologist out of the wind out of the sails, I quote Fefe, meaning: 
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://ptrace.fefe.de/Blockchain/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous#46" target="_blank" rel="noopener noreferrer">It is also easier</a>
+
+
+. I use Bitcoin here only as a buzzword, for marketing reasons. :]</p>
+<p>But to motivate you to read on, an important note:</p>
+<p>The algorithm is used to calculate the next records of the blockchain. Strictly speaking, a certain hash is setting, which is to be calculated (the notorious <em>mining</em>). The reward for the correct calculation is Bitcoins. The problem: This calculation is <strong>very,</strong> <strong>very complex</strong>, because as already written above: it only works in one direction. The <em>miners</em> therefore have to make unspeakable many calculations in order to calculate a target value. And the miner who carries out the calculation the fastest is also rewarded for it. So if you’re looking forward to optimizing the algorithm, you can get out big in the mining business. That sounds like a challenge, doesn’t it? ;)</p>
+<p><img src="https://nickyreinert.de/en/2024/2024-10-06-sha256-part-2/image.png" alt="alt text">
+Source: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://peakd.com/german/-marcus0alameda/dagobert-gold-bitcoin-perfect?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://peakd.com/german/-marcus0alameda/dagobert-gold-bitcoin-perfect</a>
+
+
+ assembly</p>
+<blockquote>
+<p><strong><em>Disclaimer</em></strong><em>: I have recreated the whole algorithm in Python. Python is certainly not the best option to calculate SHA-256 from performance view and dealing with binary or hexadecimal values is somewhat uncomfortable. Thanks to Jupyter, Python is most likely to describe a complex algorithm step-by-step.</em></p>
+</blockquote>
+<h2 id="introduction">Introduction</h2>
+<p>Before we get involved with the loops, we need to take care of a few functions that we will use later to mix <strong>through binary</strong> <strong>numbers</strong> a little.</p>
+<blockquote>
+<p><em>In the following, I renounce the prefixes of the number system, such as 0b binary, to keep the text clear. I assume that the following is known: 0 -&gt; False and 1</em></p>
+<p><em>Note 2: In the context of SHA-256, one word (dual word) corresponds to exactly 32 bits. In general, 1 Word corresponds to 2 bytes of 16 bits.</em></p>
+</blockquote>
+<h2 id="the-explicit-or-xor">The Explicit Or (XOR)</h2>
+<p>The explicit mean or (<strong>either-or</strong>) is an elementary logical, bitwise operator. The outcome of the operation is only true if exactly a state is true (in comparison, the result of the “simple” <strong>OR</strong> is true, by the way, if at least one operand is true or both).</p>
+<p>So two values are processed as follows:</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-06-sha256-part-2/image-1.png" alt="alt text"><p>XOR: only if exactly one value is true (1), the corresponding position is true in the result (1)</p>
+<p>The implementation in Python is done with the <strong>circumflex</strong> :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">110 to 100
+</span></span><span class="line"><span class="ln">2</span><span class="cl">010
+</span></span></code></pre></div><h2 id="the-logical-and-and">The logical and (AND)</h2>
+<p>The AND operator is also quite common and comparatively simple. Analogous to XOR, the result is true when exactly both (or all) operands are true.</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-06-sha256-part-2/image-2.png" alt="alt text"><p>AND: Only if both values of a single area are true, the passage is true in the result</p>
+<p>The implementation in Python is done with the <strong>commercial and</strong> :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">110 &amp; 100
+</span></span><span class="line"><span class="ln">2</span><span class="cl">100
+</span></span></code></pre></div><h2 id="the-negation-nope">The Negation (Nope?)</h2>
+<p>Now it becomes strange: There is also an operator for this: The bitwise operator <strong>negation revolves</strong> values around. 0 becomes 1, from 1 will be 0.</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-06-sha256-part-2/image-3.png" alt="alt text"><p>The negation reverses values bitwise. No more but no longer not less.</p>
+<p>The implementation in Python is done with the <strong>tilde Ã</strong> my favourite character!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">110
+</span></span><span class="line"><span class="ln">2</span><span class="cl">001
+</span></span></code></pre></div><h2 id="the-shift-operation">The Shift Operation</h2>
+<p>The shift function is an elementary binary computing operation in which the individual places of a binary value are <strong>moved to the left or right</strong>. The vacancies on the other side will be filled with 0.</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-06-sha256-part-2/image-4.png" alt="alt text"><p>Shift to the left around a place, from 6 to 12</p>
+<p>And now there is hopefully a positive kink in the learning curve: If you look closely, you will not notice something and let me assure you, it’s not a coincidence: 12 is the product of 6 and 2. This indicates an interesting side effect: A shift comes to a multiplication or. Division with 2 equal. A shift around several digits corresponds to a multiplication with a potency to the base 2 exists. Sounds complicated, therefore an example:</p>
+<p>Instead of 139 * 2, you can shift the binary representation of 139, so 10001011, to 17 digits to the left. The result: 1000101100000000000000000. Count after, right of 1 one there are now 17 zeros.</p>
+<p>In Python, the binary shift with the <strong>double arrow</strong> is implemented:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">110 &gt;&gt; 1 
+</span></span><span class="line"><span class="ln">2</span><span class="cl">011110 to 2
+</span></span><span class="line"><span class="ln">3</span><span class="cl">€ 000
+</span></span></code></pre></div><h2 id="the-rotate-function">The Rotate function</h2>
+<p><strong>Rotate</strong> means that one shifts the values of a (binary) number in one direction. And this is best explained by an example. The following number series should be rotated by one counter to the left. The number on the left side falls out and we turned on the right. The other numbers move one position to the left.</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-06-sha256-part-2/image-5.png" alt="alt text"><p>Rotate of a binary value by one place to the left, from 6will 5</p>
+<p>This works in both directions and with any number of places. The corresponding function ([Kudos an action](looks like this):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">def rotate(value, rotations, width Ã 32):    
+</span></span><span class="line"><span class="ln">2</span><span class="cl">if int(rotations) ! ! abs(int(rotations):        
+</span></span><span class="line"><span class="ln">3</span><span class="cl">rotations Ã width + int(rotations)    
+</span></span><span class="line"><span class="ln">4</span><span class="cl">return (int(value) - (width - (rotations%width)) | (int(value) &gt;&gt; (rotations % width))) &amp; ((1 Ã width) - 1)
+</span></span></code></pre></div><h2 id="the-sigma-functions">The Sigma Functions</h2>
+<p>A total of four so-called <strong>Sigma functions</strong> are used. <strong>0</strong> and <strong>1</strong> (the small sigma) respectively. <strong>(Σ1</strong>the large sigma, many known as the sum character). All functions are called with a binary value and return this binary value in a modified form.</p>
+<p>(<strong>sigma0</strong>) is as follows:</p>
+<ul>
+<li>the initial value is <strong>rotated</strong> by 7 <strong>digits</strong> to</li>
+<li>the initial value is <strong>rotated</strong> by <strong>18 digits</strong> to</li>
+<li>the initial value is <strong>shifted</strong> by <strong>3 digits</strong> to <strong>the right</strong></li>
+</ul>
+<p>This results in three different values, which are <strong>linked to</strong> each other. The function for this in Python:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">def sigma0(word):    
+</span></span><span class="line"><span class="ln">2</span><span class="cl">part1 Ã bin(rotate(int(word, 2), 7, 32))    
+</span></span><span class="line"><span class="ln">3</span><span class="cl">part2 Ã bin(rotate(int(word, 2), 18, 32))    
+</span></span><span class="line"><span class="ln">4</span><span class="cl">part3 - bin(int(word, 2) &gt;&gt; 3)    
+</span></span><span class="line"><span class="ln">5</span><span class="cl">return bin(int(part1, 2) Ã int(part2, 2) Ã int(part3, 2))[2:].zfill(32)
+</span></span></code></pre></div><blockquote>
+<p><strong><em>Important mote</em></strong> <em>: I work with bin() and in(s, 2), to make the output and input legible and above all comprehensible. I also ensure that the binary representation does not need</em> <strong><em>0b</em></strong><em>. This benefits the purpose of learning, since the binary operations on decimal values are more difficult to understand. With zfill(32) (</em><strong><em>zero fill</em></strong><em>) the binary value to the left is expanded by so many zeros to always comprise</em> <strong><em>32 digits</em></strong><em>. In some cases, this facilitates the overview, on the other hand, this also meets a length specification later. The upper function can also be simplified as follows:</em></p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">def rotate(value, rotations, width = 32):
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    if int(rotations) != abs(int(rotations)):
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        rotations = width + int(rotations)
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    return (int(value) &lt;&lt; (width - (rotations%width)) | (int(value) &gt;&gt; (rotations % width))) &amp; ((1 &lt;&lt; width) - 1)
+</span></span></code></pre></div><p>It looks very similar to Ã1 (<strong>sigma1)</strong>:</p>
+<ul>
+<li>the initial value is <strong>rotated</strong> by <strong>17 digits</strong> to <strong>the right</strong></li>
+<li>the initial value is <strong>rotated</strong> by <strong>19 digits</strong> to <strong>the right</strong></li>
+<li>the initial value is <strong>shifted</strong> by <strong>10</strong> <strong>digits</strong> to <strong>the right</strong></li>
+</ul>
+<p>This results in three different values, which are <strong>linked to</strong> each other. The function for this in Python:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">def sigma0(word):
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    part1 = bin(rotate(int(word, 2), 7, 32))
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    part2 = bin(rotate(int(word, 2), 18, 32))
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    part3 = bin(int(word, 2) &gt;&gt; 3)
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    return bin(int(part1, 2) ^ int(part2, 2) ^ int(part3, 2))[2:].zfill(32)
+</span></span></code></pre></div><p>Now to Ã0 (<strong>Sigma0</strong>). Here too, no great overshoots, here now without <strong>shift:</strong></p>
+<ul>
+<li>the initial value is <strong>rotated</strong> by <strong>2 digits</strong> to <strong>the right</strong></li>
+<li>the initial value is <strong>rotated</strong> by <strong>13 digits</strong> to <strong>the right</strong></li>
+<li>the initial value is <strong>rotated</strong> by <strong>22</strong> <strong>digits</strong> to <strong>the right</strong></li>
+</ul>
+<p>Here, too, the respective results are final <strong>XOR.</strong> So in Python:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">def upper_sigma0(word):
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    part1 = bin(rotate(int(word, 2), 2, 32))
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    part2 = bin(rotate(int(word, 2), 13, 32))
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    part3 = bin(rotate(int(word, 2), 22, 32))
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    return bin(int(part1, 2) ^ int(part2, 2) ^ int(part3, 2))[2:].zfill(32)
+</span></span></code></pre></div><p>Let’s come to the last participant in our illustrious Greek round: Ã1 (<strong>Sigma1</strong>Sigma1):</p>
+<ul>
+<li>the initial value is <strong>rotated</strong> by <strong>6</strong> <strong>digits</strong> to <strong>the right</strong></li>
+<li>the initial value is <strong>rotated</strong> by <strong>11 points</strong> to <strong>the right</strong></li>
+<li>the initial value is <strong>rotated</strong> by <strong>25</strong> <strong>digits</strong> to <strong>the right</strong></li>
+</ul>
+<p>And in the end the XOR link again. Python:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">def upper_sigma1(word):
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    part1 = bin(rotate(int(word, 2), 6, 32))
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    part2 = bin(rotate(int(word, 2), 11, 32))
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    part3 = bin(rotate(int(word, 2), 25, 32))
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    return bin(int(part1, 2) ^ int(part2, 2) ^ int(part3, 2))[2:].zfill(32)
+</span></span></code></pre></div><h2 id="election-and-majority">Election and majority</h2>
+<p>Let us stay with the Greeks and switch to politics: The election and the majority, English: <strong>choose</strong> and <strong>majority</strong>.</p>
+<p>Choose is a slightly more complex function that processes three binary values, bitwise. The function goes through the respective digits (x) of the first input value and checks:</p>
+<ul>
+<li>If <strong>x 1</strong> then take <strong>y</strong></li>
+<li>If <strong>x 0</strong> then take <strong>z</strong></li>
+</ul>
+<p>Y and z stand for the respective positions of the second and third input values. How can this be solved programmatically? So:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">def choose(word1, word2, word3):
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    bin_word1 = (int(word1, 2))
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    bin_word2 = (int(word2, 2))
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    bin_word3 = (int(word3, 2))
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    return bin((bin_word1 &amp; bin_word2) ^ (~bin_word1 &amp; bin_word3))[2:].zfill(32)
+</span></span></code></pre></div><p>First, value 1 and value 2 are logically linked AND-linked. Then the negation of value 1 is linked to a value of 3 AND-. The two subtotals are finally hunted by XOR.</p>
+<p>Majority simply checks for each location of the three input values, which is more common, 1 or 0. This looks like this in Python — here I can’t explain the logical operations again, it’s simply linked XOR and AND:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">def majority(word1, word2, word3):
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    bin_word1 = (int(word1, 2))
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    bin_word2 = (int(word2, 2))
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    bin_word3 = (int(word3, 2))
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    return bin((bin_word1 &amp; bin_word2) ^ (bin_word1 &amp; bin_word3) ^ (bin_word2 &amp; bin_word3))[2:].zfill(32)
+</span></span></code></pre></div><p><strong>Prime numbers?</strong></p>
+<p>To cover another popular field of arithmetic, let us talk about prime numbers briefly. Prime numbers are mystical. And thus just right for our earthly plan to optimize mining.</p>
+<p>SHA-256 uses prime numbers as the basis for the algorithm. Which does not mean that the result would be transparent.</p>
+<p>We start with the first 64 prime numbers and build a set of constants from it. Of course in bit form.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[2, 3, 5, 7, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 71, 71, 79, 83, 89, 97, 101, 103, 107, 107, 109, 127, 131, 137, 139, 149, 151, 157, 163, 163, 173, 179, 181, 191, 191, 191, 191, 197, 211, 191, 199257, 263, 269, 271, 277, 281, 283, 293, 307, 311]
+</span></span></code></pre></div><p>But these are now also properly taken by the lack. I cannot understand why this is necessary. From my point of view, it does not matter what constants one are used, since they are always the same (which is <strong>why constant</strong>, this time from the Latin one). So there is no big secret about that.</p>
+<p>The third root is drawn from the 64 prime numbers. Then the natural part is removed (proach everything before the decimal point) and the result is multiplied by 232 (aka 4,294,996,296, which by the way also corresponds to the number of available IPv4 addresses — the 2nd positive buckling in today’s learning curve?). As you have learned above and hopefully not forgotten yet, the multiplication with 2'32 is not really so complex in the bitu universe.</p>
+<p>In any case, the result is rounded off to a natural number, i.e. all decimal places removed. If you repeat this for the remaining 63 prime numbers, you get a well-formed list of 64 entries, which look something like this, using the example of the notorious prime number 2:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">010000101000100010111110011000
+</span></span></code></pre></div><p>Or as a hex value:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">0x428a2f98
+</span></span></code></pre></div><p>And in the decimal number system:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">1.116.352.408
+</span></span></code></pre></div><p>The function for this is as follows:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">result_constants</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="k">for</span> <span class="n">prime_number</span> <span class="ow">in</span> <span class="n">first_64_prime_numbers</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="n">cube_root</span> <span class="o">=</span> <span class="n">prime_number</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="mf">3.</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    <span class="n">frac_part</span> <span class="o">=</span> <span class="n">cube_root</span> <span class="o">-</span> <span class="nb">floor</span><span class="p">(</span><span class="n">cube_root</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    <span class="n">product</span> <span class="o">=</span> <span class="n">frac_part</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">32</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    <span class="n">floored_product</span> <span class="o">=</span> <span class="nb">floor</span><span class="p">(</span><span class="n">product</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    <span class="n">result_constants</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bin</span><span class="p">(</span><span class="n">floored_product</span><span class="p">)[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">32</span><span class="p">))</span>
+</span></span></code></pre></div><p>This is what we call <strong>result constant</strong>, because this list is the beginning of our final output. We pick up this list well and because the work with prime numbers is so liberating, we are organizing a similar circus for the first 8 prime numbers. With one difference: This time the square root serves as the basis:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">compression_constants</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="k">for</span> <span class="n">prime_number</span> <span class="ow">in</span> <span class="n">first_8_prime_numbers</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="n">square_root</span> <span class="o">=</span> <span class="n">prime_number</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    <span class="n">frac_part</span> <span class="o">=</span> <span class="n">square_root</span> <span class="o">-</span> <span class="nb">floor</span><span class="p">(</span><span class="n">square_root</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    <span class="n">product</span> <span class="o">=</span> <span class="n">frac_part</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">32</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    <span class="n">floored_product</span> <span class="o">=</span> <span class="nb">floor</span><span class="p">(</span><span class="n">product</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    <span class="n">compression_constants</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bin</span><span class="p">(</span><span class="n">floored_product</span><span class="p">)[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">32</span><span class="p">))</span>
+</span></span></code></pre></div><p>By the way, the names have a meaning, which I later add.</p>
+<h2 id="epilog">Epilog</h2>
+<p>The preparations are thus completed and we can devote ourselves 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/wie-funktioniert-der-sha256-algorithmus-im-detail-teil-2-2-6afcd85f43b8?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">to</a>
+
+
+ the actual algorithm 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/wie-funktioniert-der-sha256-algorithmus-im-detail-teil-2-2-6afcd85f43b8?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">in</a>
+
+
+ the 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/wie-funktioniert-der-sha256-algorithmus-im-detail-teil-2-2-6afcd85f43b8?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">second part</a>
+
+
+.</p>
+]]></content:encoded><atom:updated>2026-06-16T20:56:44+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item><item><title>How does the SHA256 algorithm work…in detail? (part 2/2)</title><link>https://nickyreinert.de/en/2024/2024-10-04-sha256-part-1/</link><pubDate>Fri, 04 Oct 2024 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2024/2024-10-04-sha256-part-1/</guid><description>Once you have successfully processed the first part , you are well prepared to learn in this part how the individual components or. Now functions together.
+Pre-certificate Before starting, I would like to clarify the connections again: We will immediately create a message (message), the length of …</description><content:encoded><![CDATA[<p>Once you have successfully processed 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/@nickyreinert/how-does-the-sha256-algorithm-in-detail-part-1-2-45154fab02d2?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">the first part</a>
+
+
+, you are well prepared to learn in this part how the individual components or. Now functions together.</p>
+<h2 id="pre-certificate">Pre-certificate</h2>
+<p>Before starting, I would like to clarify the connections again: We will immediately create a message (<strong>message</strong>), the length of which corresponds to a multiple of <strong>512</strong> bits; in the example, exactly <strong>512 bit</strong>. The message is broken down into <strong>message blocks</strong> that are exactly <strong>512 bit</strong> long. Each message block is in turn broken down into a <strong>message schedule</strong>, with <strong>16 words</strong> (Words) of <strong>32 bit</strong> length each. The length of the words must and will always be <strong>32</strong> bits! However, the message schedule is then extended to contain <strong>64 words</strong>. Its length then: <strong>2,048 bit</strong>. And graphically:</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-04-sha256-part-1/image.png" alt="alt text"><p>Important connections</p>
+<h2 id="decompressions">Decompressions</h2>
+<p>So we want to calculate a <strong>SHA-256</strong> -compliant checksum, the hash, from a message. To do this, the message, i.e. the string, must first be prepared. Our message is, clichéd:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">message = &#39;hello_world&#39;
+</span></span></code></pre></div><p>First we have to get the position in the character table for each letterd, i.e. convert the letters (or each character) into their numerical representation:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">dec_message = []
+</span></span><span class="line"><span class="ln">2</span><span class="cl">for char in message:
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    dec_message.append(ord(char))
+</span></span></code></pre></div><p>The achiedes is a list of integers:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[104, 101, 108, 108, 111, 95, 119, 111, 114, 108, 100]
+</span></span></code></pre></div><p>And since we had so much fun dealing with binary values in the first part, we convert the list into binary values that we simply link together:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">bin_message = &#39;&#39;
+</span></span><span class="line"><span class="ln">2</span><span class="cl">for decimal in dec_message:
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    bin_message += &#39;0&#39; + bin(decimal)[2:
+</span></span></code></pre></div><p>The result:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">0110100001100101011011000110110001111110110110110110110110100100100100100
+</span></span></code></pre></div><p>Here, however, there is a stumbling trap, and I am reluctant to leave it standing for, for which I have not yet found an explanation: in the transformation into the binary equivalent, we are putting ahead with every binary value ahead of everything. So <strong>104</strong> does not become <strong>1101000</strong> but <strong>01101000</strong>, etc.</p>
+<p>In addition, we attach 1 to this date, as a separator for what is now coming up.</p>
+<p>Next we calculate the length of this binary number:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">len_bin_message = len(bin_message)
+</span></span></code></pre></div><p>The length may or must be submitted exactly <strong>64 bits</strong>. So we also convert it into a binary number to hang a few zeros at the front to get exactly 64 digits:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">rest_to_64 = 64 - len(bin(len_bin_message)[2:])
+</span></span><span class="line"><span class="ln">2</span><span class="cl">bin_message_len = &#39;0&#39; * rest_to_64 + bin(len_bin_message)[2:]
+</span></span></code></pre></div><p>Now we not only have to connect this three binary information, message, separating one and longitude, but also fill it with so many zeros, so that the total length is a multiple of 512.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">payload</span> <span class="o">=</span> <span class="n">bin_message</span> <span class="o">+</span> <span class="s1">&#39;1&#39;</span> <span class="o">+</span> <span class="n">bin_message_len</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">len_payload</span> <span class="o">=</span> <span class="n">len</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="n">pad_string</span> <span class="o">=</span> <span class="ne">int</span><span class="p">(</span><span class="mi">512</span> <span class="o">-</span> <span class="p">(</span><span class="n">len_payload</span> <span class="o">%</span> <span class="mi">512</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="n">full_message</span> <span class="o">=</span> <span class="n">bin_message</span> <span class="o">+</span> <span class="s1">&#39;1&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;0&#39;</span> <span class="o">*</span> <span class="n">pad_string</span><span class="p">)</span> <span class="o">+</span> <span class="n">bin_message_len</span>
+</span></span></code></pre></div><p>In our example, the three information shows 153 bits. So we have to include 359 zeros. Strictly speaking, there are between message and length specification. The result is always <em><em>n</em> 512 bits</em>* long:</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-04-sha256-part-1/image-1.png" alt="alt text"><p>Setup of a pre-coded message</p>
+<p>Last but not least, we take these very, very, very, very…very, very large number (it is very large, you should not see it as a number, but as a !) and divide it into so-called message blocks with a length of <strong>512 bits</strong> each:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">message_block_length = 512
+</span></span><span class="line"><span class="ln">2</span><span class="cl">message_blocks = [full_message[i:i+message_block_length] for i in range(0, len(full_message), message_block_length)]
+</span></span></code></pre></div><p>Grab a coffee, go fresh air to get another shake out the chair. Now it starts.</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-04-sha256-part-1/image-3.png" alt="alt text"><h2 id="the-loop">The loop!</h2>
+<p>Since it is easier to explain the process without a loop, here is just a loop. You can still find the programmatic loop on 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gist.github.com/nickyreinert/00d631fe9a90108924b1df6e911c8cd5?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><strong>Github</strong></a>
+
+
+.</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-04-sha256-part-1/image-4.png" alt="alt text"><p>Since our message is exactly 512 bit tall and we work without loop, we can go straight to the full: The laboriously glued message is now included in the so-called. Message Schedule disassembled: Speak in <strong>16 words</strong> with 32 bit length each.</p>
+<p>In the first run we take four words and make the following modifications:</p>
+<ul>
+<li><strong>1</strong> is applied to <strong>word 1</strong> at position 14,</li>
+<li><strong>word 2</strong> of position 9 remains unchanged,</li>
+<li><strong>0</strong> is applied to <strong>word 3</strong> at position 1 and</li>
+<li><strong>Word 4</strong> at position 0 remains unaffected</li>
+</ul>
+<p>The values are added first and now there is <strong>another important point</strong> to consider: We must strictly ensure that the words are no longer than <strong>32 bits</strong>. Because only in this way can we ensure that the final hash is always the same. And at the latest now, when <strong>adding large values</strong>, we can exceed the <strong>32 bits</strong> quite quickly. From a technical point of view, this is also a hurdle. Therefore, here and for all additions we must finally use <strong>Modulo 2</strong> 32. And now the third hopefully positive kink comes in the learning curve: The binary universe also holds a nice simplification for Modulo: <strong>The</strong> <strong>logical And</strong> with 232–1 (or 4,494,967,295, that is a very large number, not as large as the one in the first part, but exactly one smaller counter) leads to the same result.</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-04-sha256-part-1/image-5.png" alt="alt text"><p>Calculation of the first step</p>
+<p>This would prepare the message schedule and now contains <strong>64 beautiful words</strong> of <strong>32 bits</strong> <strong>each</strong>. So we first paided up the information from the Message Block and extended from <strong>512 bit to 2,048 bit</strong> — but they are still readable:</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-04-sha256-part-1/image-6.png" alt="alt text"><p>The extended Message Schedule</p>
+<p>But that is now over, we are coming to the next and most important step:</p>
+<h2 id="the-compression">The Compression</h2>
+<p>In this step, the extended message schedule is not modified directly, but the words are used as the basis for modifying the <strong>compression constants</strong> initially created.</p>
+<p>In 64 loops runs we go through the message schedule. A new word is calculated from each word of the schedule (i.e. our original message) together with the <strong>64 result constants</strong> and the <strong>8 compression constants</strong>. The new word is then preceded by the compression constants, at the same time the last entry is deleted. This is how the list always contains exactly 8 entries.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="n">new_compression_constants</span> <span class="o">=</span> <span class="n">compression_constants</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">enumerate</span><span class="p">(</span><span class="n">message_schedule</span><span class="p">):</span>    <span class="n">term1</span> <span class="o">=</span> <span class="p">(</span><span class="ne">int</span><span class="p">(</span><span class="n">upper_sigma1</span><span class="p">(</span><span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">4</span><span class="p">]),</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> \
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">                <span class="ne">int</span><span class="p">(</span><span class="n">choose</span><span class="p">(</span><span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">6</span><span class="p">]),</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> \
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">                <span class="ne">int</span><span class="p">(</span><span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> \
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">                <span class="ne">int</span><span class="p">(</span><span class="n">result_constants</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> \
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">                <span class="ne">int</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> \
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">                <span class="o">&amp;</span> <span class="ne">int</span><span class="p">(</span><span class="s1">&#39;11111111111111111111111111111111&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>    <span class="n">term2</span> <span class="o">=</span> <span class="p">(</span><span class="ne">int</span><span class="p">(</span><span class="n">upper_sigma0</span><span class="p">(</span><span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> \
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">                <span class="ne">int</span><span class="p">(</span><span class="n">majority</span><span class="p">(</span><span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="mi">2</span><span class="p">))</span> <span class="o">&amp;</span> <span class="ne">int</span><span class="p">(</span><span class="s1">&#39;11111111111111111111111111111111&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>    <span class="n">new_compression_constants</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="n">new_compression_constants</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>    <span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">bin</span><span class="p">(</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">                <span class="p">(</span><span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="ne">int</span><span class="p">(</span><span class="s1">&#39;11111111111111111111111111111111&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">                <span class="p">)[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>    <span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">bin</span><span class="p">(</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">                <span class="p">(</span><span class="ne">int</span><span class="p">(</span><span class="n">new_compression_constants</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">term1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="ne">int</span><span class="p">(</span><span class="s1">&#39;11111111111111111111111111111111&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">                <span class="p">)[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+</span></span></code></pre></div><p>First, a few calculations:</p>
+<ul>
+<li><strong>Term 1</strong> is calculated from the compression constants, one of the result constants and the respective word. We use here at bit level and <strong>Ã1</strong> (upper sigma1) as well as <strong>choose</strong>.</li>
+<li><strong>Term 2</strong> is a sum of two other compression constants that are modified with the help of <strong>Ã0</strong> (upper sigma0) and <strong>majority</strong>.</li>
+</ul>
+<p>And now pay attention times that the original message part of the 1. Terms is marked in red in the picture:</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-04-sha256-part-1/image-7.png" alt="alt text"><p>In the first step, the calculation of two terms is performed</p>
+<p>The two terms are now added (and, as always, brought to 32 bit course with <strong>Modulo 232</strong>) and placed at the beginning of the compression constants. The first term will also be held with the 4th Position of this now 9 words long list sums up:</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-04-sha256-part-1/image-8.png" alt="alt text"><p>In the second step, the list of compression constants is updated</p>
+<p>Next, the last entry of the list is deleted, it now includes <strong>8 completely new compression constants</strong> (if you have paid carefully, you will not have missed that they are not even that constant).</p>
+<p>A part of the original message is now a portion <strong>of</strong> the original message as a <strong>summand of term 1</strong> and the <strong>positions 0 and 4.</strong> These will slide part of the same calculations and keep down in the next runs. This distributes the original, previously half-way readable message, over the entire list.</p>
+<p>This list is therefore the basis for the second run, which will “rotate” it again to create a completely new list for the third run. And so on until all 64 words of the message schedule are processed. The result should look something like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">11100010000000010111101011011001
+</span></span><span class="line"><span class="ln">2</span><span class="cl">0100011011010010100000110100100 
+</span></span><span class="line"><span class="ln">3</span><span class="cl">11100011111110010111100001001011 
+</span></span><span class="line"><span class="ln">4</span><span class="cl">0111000110001000100010000011110 
+</span></span><span class="line"><span class="ln">5</span><span class="cl">01001000000111100100000000011000100010001000
+</span></span><span class="line"><span class="ln">6</span><span class="cl">0001111111000110101100110101110101 
+</span></span><span class="line"><span class="ln">7</span><span class="cl">11101001110010001101110111010100 
+</span></span><span class="line"><span class="ln">8</span><span class="cl">0000100110110111100011011011
+</span></span></code></pre></div><p>Or in Hexadecimal:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">0xe2017ad9 0x46d28214 0xe3f9784b 0x7186041e 0x481e4018 0x1fc6b235 0xe9c8ddff4 0x96f0efb
+</span></span></code></pre></div><p>Finally, this list will go through exactly this list of 8. Compression constants and add each position with the corresponding word of the source list:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">result</span> <span class="o">=</span> <span class="p">[]</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span>    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">        <span class="n">bin</span><span class="p">(</span><span class="ne">int</span><span class="p">(</span><span class="n">compression_constants</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> 
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        <span class="ne">int</span><span class="p">(</span><span class="n">new_compression_constants</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>  <span class="o">&amp;</span>    
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        <span class="ne">int</span><span class="p">(</span><span class="s1">&#39;11111111111111111111111111111111&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">))[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">32</span><span class="p">))</span>
+</span></span></code></pre></div><p>And in plain text:</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-04-sha256-part-1/image-9.png" alt="alt text"><p>Last step: Adding the lists</p>
+<p>The new list is now the <strong>source list</strong> for the next message schedule. However, since we do not implement the loop here, it was the first. The following is an example summary of the steps:</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-04-sha256-part-1/image-10.png" alt="alt text"><p>Schematic representation of the SHA-256 algorithm</p>
+<h2 id="hashes-health-what">Hashes. Health. What?</h2>
+<p>We did it. You did it. Congratulations.</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-04-sha256-part-1/image-11.png" alt="Source: memecreator.org"><p>Now we can either output the hash as a hex value or display it again in binary notation, depending on the purpose of the application.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">for word in result:   
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  print(hex(int(word, 2))[2:].zfill(8) + &#39;&#39;, end = &#39;&#39;)
+</span></span></code></pre></div><p>The result is impressive in any case.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">35072c1ae546350e0bfa7ab11d49dc6f129e72cdec7eb671225bbd197c8f1
+</span></span></code></pre></div><p>Or</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">1101010000011100101101101100010101000100011101101100011111111110100111110110100111010100111011011110110110110111100100111001110110110110110111111101111111110111111111111110001001000100101101110110101110101110101101110101101110101101101110001110110111110101101101101101101101110110110110110110110101
+</span></span></code></pre></div><h2 id="epilog">Epilog</h2>
+<p>You can find a complete implementation, including a loop to process even large messages
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gist.github.com/nickyreinert/00d631fe9a90108924b1df6e911c8cd5?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">, in this guest.</a>
+
+
+</p>
+<p>Of course, Python is not suitable for optimizing the SHA-256 process, but it is around to understand the process and learn how to deal with elementary binary computing operation.</p>
+<p>If you want to understand the process in a more interactive 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.youtube.com/watch?v=f9EbD6iY9zI&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">way</a>
+
+
+, I would like to recommend 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.youtube.com/watch?v=f9EbD6iY9zI&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">this video</a>
+
+
+. There, the algorithm is reproduced in Ruby and the individual calculation steps are explained in more detail.</p>
+<p>And why is SHA-256 so important for cryptocurrencies mining now? In short: The hash validates the validity of the <em>cash book</em>. Mining is about calculating exactly a given target hash from a given message and a freely selectable addition. The algorithm therefore has to be mad attenuated. Since this is very complex, it takes time and will be rewarded accordingly.</p>
+]]></content:encoded><atom:updated>2026-05-07T15:36:59+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>

@@ -1,4 +1,826 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Backtracking auf Nicky Reinert</title><link>https://nickyreinert.de/en/topics/backtracking/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Thu, 17 Oct 2024 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/backtracking/index.xml" rel="self" type="application/rss+xml"/><item><title>sudoku</title><link>https://nickyreinert.de/en/2024/2024-10-18-sudoku/</link><pubDate>Thu, 17 Oct 2024 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2024/2024-10-18-sudoku/</guid><description>How to build a brute force Sudoku solver Follow my journey on how to build an algorithm that lets you create or solve Sudoku puzzles!
-Follow my steps or jump ahead — this is the Jupyter notebook: https://gist.github.com/nickyreinert/966299333429ef685338e5feb5056126 Warmup — introduction Before we …</description><category>projekte</category><media:content url="https://nickyreinert.de/sudoku_positions.png" type="image/jpeg"><media:title>Sudoku Solver Tutorial</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item><item><title>My Python boilerplate and a little Python-Fu</title><link>https://nickyreinert.de/en/2021/2021-02-24-python-foo/</link><pubDate>Wed, 24 Feb 2021 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2021/2021-02-24-python-foo/</guid><description>Let me show you my Python boilerplate and some little nifty standard features I’m working with. You can download the full template from github . This post will probably be extended in the future.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Backtracking auf Nicky Reinert</title><link>https://nickyreinert.de/en/topics/backtracking/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Thu, 17 Oct 2024 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/backtracking/index.xml" rel="self" type="application/rss+xml"/><item><title>sudoku</title><link>https://nickyreinert.de/en/2024/2024-10-18-sudoku/</link><pubDate>Thu, 17 Oct 2024 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2024/2024-10-18-sudoku/</guid><description>How to build a brute force Sudoku solver Follow my journey on how to build an algorithm that lets you create or solve Sudoku puzzles!
+Follow my steps or jump ahead — this is the Jupyter notebook: https://gist.github.com/nickyreinert/966299333429ef685338e5feb5056126 Warmup — introduction Before we …</description><content:encoded><![CDATA[<h3 id="how-to-build-a-brute-force-sudoku-solver">How to build a brute force Sudoku solver</h3>
+<p>Follow my journey on how to build an algorithm that lets you create or solve Sudoku puzzles!</p>
+<blockquote>
+<p>Follow my steps or jump ahead — this is the Jupyter notebook: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gist.github.com/nickyreinert/966299333429ef685338e5feb5056126?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://gist.github.com/nickyreinert/966299333429ef685338e5feb5056126</a>
+
+
+</p>
+</blockquote>
+<h1 id="warmup--introduction"><strong>Warmup — introduction</strong></h1>
+<p>Before we start, we need to get familiar with how <strong>Sudoku</strong> works. I suggest we number each cell in the giant grid from <code>1</code> to <code>81</code>. This way, we can programmatically loop <strong>from the top-left to the bottom-right</strong> to find valid solutions:</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-18-sudoku/sudoku_positions.png" alt="sudoku positions"><p><strong>Sudoku</strong> has three rules: a number can’t exist twice in the same <strong>column</strong>, <strong>row</strong>, or <strong>section</strong>. So, first, we need a way to identify the column, row, and section for each position.</p>
+<p>Every row contains <code>9</code> cells, so the row index is simply:</p>
+<pre><code>ceil(position / 9)
+</code></pre>
+<p>Or if you prefer double slash (<code>//</code>), which works like a “floor” function:</p>
+<pre><code>((position — 1) // 9) + 1
+</code></pre>
+<p>Columns probably also have something to do with <code>9</code> (because <code>9</code> is kind of a big deal in Sudoku). The first nine cells are exactly addressing their corresponding columns, obviously. So, in the upcoming rows (positions <code>10</code> and onward), we just need to reduce it back to <code>1</code> to <code>9</code>. We can use <strong>modulo</strong> for that!</p>
+<pre><code>((position — 1) % 9) + 1
+</code></pre>
+<p>The section index is a little trickier. It’s a combo of the row and column index and some tweaks. There’s probably a clever mathematical approach, or you can just trial-and-error your way through (my usual strategy). Here’s a starting point:</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-18-sudoku/sudoku_cols_and_rows.png" alt="sudoku columns and rows"><p>We take the floor of a third of each position now. It seems like we could just sum them to get the fitting section index, with a little adjustment. Here’s the magic:</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-18-sudoku/sudouku_from_cols_and_rows_to_sections.png" alt="sudouku from cols and rows to sections"><p>And that’s the formula to get the section index:</p>
+<pre><code>(col // 3) + (((row // 3) — 1) * 3)
+</code></pre>
+<h1 id="first-steps">First steps</h1>
+<p>Well, now that we know how to address each row, column, and section, let’s dive into the actual algorithm.</p>
+<h2 id="solution-approach">Solution approach</h2>
+<p>The basic idea is to <strong>iterate through the positions</strong> up to <code>81</code>. At every step, we choose a number from <code>1</code> to <code>9</code> and check if it already exists in the corresponding row, column, or section (we’ll call these <strong>containers</strong>). If it does, the number is <strong>blocked</strong> for the current position, and we have to check the next number. If we can’t find a valid number for the current position, we need to <strong>roll back</strong> to the previous one and choose a <strong>different number</strong>. We repeat this process until we either reach position <code>81</code> — meaning we’ve found a valid Sudoku — or have to backtrack more.</p>
+<h2 id="implementation-in-python">Implementation in Python</h2>
+<p>We start by initializing four dictionaries to keep track of the numbers in each <strong>container</strong>. The <code>solutions</code> dictionary holds (surprise!) the valid numbers for the entire grid.</p>
+<pre><code>def reset_containers():  
+    global rows, cols, sections, solutions  
+    rows = {i: [] for i in range(1, 10)}  
+    cols = {i: [] for i in range(1, 10)}  
+    sections = {i: [] for i in range(1, 10)}  
+    solutions = {}  
+
+reset_containers()  
+
+print(sections, '\n', rows, '\n', cols)
+</code></pre>
+<p>Result:</p>
+<pre><code>{1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: []}   
+{1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: []}   
+{1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: []}
+</code></pre>
+<p>The <code>visualize</code> function takes the solution dictionary and returns a nice grid, displaying the numbers — you&rsquo;ll find it in the notebook I referenced at the top!</p>
+<pre><code>def visualize(solution):  
+    # see Jupyter notebook referenced on the top
+</code></pre>
+<p>We’ve already figured out how to get the actual <strong>row</strong>, <strong>column</strong>, or <strong>section</strong> from a given position. Now, let’s translate into Python and check if we’re on the right track:</p>
+<pre><code>print('pos', '\t', 'row', '\t', 'col', '\t', 'section')  
+for position in range(1, 82):  
+    idx_row = math.ceil(position / 9)  
+    idx_col = ((position - 1) % 9) + 1  
+    idx_section = math.ceil(idx_col/3) + ((math.ceil(idx_row/3) - 1) * 3)  
+    print(position, '\t', idx_row, '\t', idx_col, '\t', idx_section)
+</code></pre>
+<p>Output:</p>
+<pre><code>pos   row   col   section  
+1   1   1   1  
+2   1   2   1  
+3   1   3   1  
+4   1   4   2  
+5   1   5   2  
+6   1   6   2  
+7   1   7   3  
+8   1   8   3  
+9   1   9   3  
+10   2   1   1  
+…
+</code></pre>
+<p>Yes, we are! Every position is correctly mapped to the correct <strong>container</strong>!</p>
+<h2 id="solution-checking-and-iterating">Solution checking and iterating</h2>
+<p>The first version is quite simple: We iterate through the positions and add a number that does not exist in one of the corresponding containers.</p>
+<pre><code>reset_containers()  
+
+number = 1  
+
+for position in range(1, 82):  
+    idx_row = math.ceil(position / 9)  
+    idx_col = ((position - 1) % 9) + 1  
+    idx_section = math.ceil(idx_col/3) + ((math.ceil(idx_row/3) - 1) * 3)  
+    if (number not in rows[idx_row] and number not in cols[idx_col] and number not in sections[idx_section]):  
+        solutions[position] = number  
+        rows[idx_row].append(number)  
+        cols[idx_col].append(number)  
+        sections[idx_section].append(number)  
+        number += 1  
+
+visualize(solutions)
+</code></pre>
+<p>Seems like our basic loop is working fine. Let’s add some fine-tuning and limit it to the numbers from 1 to 9. We can just introduce an inner loop to keep things simple:</p>
+<p>Output:</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-18-sudoku/suduko_first_attempt.png" alt="suduko first attempt"><p>Seems like our basic loop is working fine. Let’s add some fine-tuning and limit it to the numbers from 1 to 9. We can just introduce an inner loop to keep things simple:</p>
+<pre><code>reset_containers()  
+
+number = 1  
+
+for position in range(1, 82):  
+    idx_row = math.ceil(position / 9)  
+    idx_col = ((position - 1) % 9) + 1  
+    idx_section = math.ceil(idx_col/3) + ((math.ceil(idx_row/3) - 1) * 3)  
+    for number in range(1, 10):  
+        if (number not in rows[idx_row] and number not in cols[idx_col] and number not in sections[idx_section]):  
+            solutions[position] = number  
+            rows[idx_row].append(number)  
+            cols[idx_col].append(number)  
+            sections[idx_section].append(number)  
+            break  
+
+visualize(solutions)
+</code></pre>
+<p>Output:</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-18-sudoku/sudoku_second_attempt.png" alt="sudoku second attempt"><p>There are a lot of empty spots in the grid, what are we missing? Let’s introduce a conditional that stops when there’s no solution:</p>
+<pre><code>reset_containers()  
+
+number = 1  
+
+for position in range(1, 82):  
+    idx_row = math.ceil(position / 9)  
+    idx_col = ((position - 1) % 9) + 1  
+    idx_section = math.ceil(idx_col/3) + ((math.ceil(idx_row/3) - 1) * 3)  
+    for number in range(1, 10):  
+        if (number not in rows[idx_row] and number not in cols[idx_col] and number not in sections[idx_section]):  
+            solutions[position] = number  
+            rows[idx_row].append(number)  
+            cols[idx_col].append(number)  
+            sections[idx_section].append(number)  
+            break  
+
+    if not position in solutions:  
+        break  
+
+visualize(solutions)
+</code></pre>
+<p>Output:</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-18-sudoku/sudoku_third_attempt.png" alt="sudoku third attempt"><p>Quite good, but just stopping the loop when we hit a dead end probably won’t get us to a solution. We need to keep track of dead ends, and we need the ability to go back, choose another path, and try again. Let’s start with a container that holds “impossible” paths for each of our 81 positions.</p>
+<p>We’ll also switch from a limited <code>for-loop</code> to an &ldquo;infinite&rdquo; <code>while-loop</code> because now we’re not just incrementing from 1 to 81 — we’ll be going back and forth. Of course, it’s always a good idea to use a stop condition, like <code>max_iterations</code>, so we don’t accidentally run into an actual endless loop when using <code>while</code>.</p>
+<p>Let’s put all of that into a new “big” init function!</p>
+<pre><code>def reset_containers():  
+    global rows, cols, sections, solutions, dead_ends  
+    rows = {i: [] for i in range(1, 10)}  
+    cols = {i: [] for i in range(1, 10)}  
+    sections = {i: [] for i in range(1, 10)}  
+    solutions = {}  
+    dead_ends = {i: [] for i in range(1, 82)}
+</code></pre>
+<p>Now, if the current iteration doesn’t result in a solution, we don’t just stop processing. We go back one step:</p>
+<pre><code>position -= 1
+</code></pre>
+<p>And we archive the solution from the previous position as a “dead end solution”:</p>
+<pre><code>dead_ends[position].append(solutions[position])
+</code></pre>
+<p>Then we have to update our containers, as the solution is no longer valid:</p>
+<pre><code>rows[idx_row].remove(solutions[position])  
+    cols[idx_col].remove(solutions[position])  
+    sections[idx_section].remove(solutions[position])  
+    del solutions[position]
+</code></pre>
+<p>Let’s see how this performs!</p>
+<p>reset_containers()</p>
+<pre><code>print('iter', '\t', 'pos', '\t', 'row', '\t', 'col', '\t', 'section', '\t\t', 'number')  
+
+iteration = 1  
+position = 1  
+max_iterations = 10_000  
+stop = False  
+
+while True:  
+    idx_row = math.ceil(position / 9)  
+    idx_col = ((position - 1) % 9) + 1  
+    idx_section = math.ceil(idx_col/3) + ((math.ceil(idx_row/3) - 1) * 3)  
+    for number in range(1, 10):  
+        print(iteration, '\t', position, '\t', idx_row, '\t', idx_col, '\t', idx_section, '\t\t', number)  
+
+        iteration += 1  
+        if (iteration &gt; max_iterations): stop = True; break  
+
+        if (number not in rows[idx_row] and \  
+            number not in cols[idx_col] and \  
+            number not in sections[idx_section] and \  
+            number not in dead_ends[position]):  
+            solutions[position] = number  
+            rows[idx_row].append(number)  
+            cols[idx_col].append(number)  
+            sections[idx_section].append(number)  
+            break  
+
+    if stop: break  
+
+    if not position in solutions:  
+
+        position -= 1  
+        if (position &lt;= 0): stop = True; break  
+
+        dead_ends[position].append(solutions[position])  
+
+        print(f'rolling back {solutions[position]}')  
+
+        idx_row = math.ceil(position / 9)  
+        idx_col = ((position - 1) % 9) + 1  
+        idx_section = math.ceil(idx_col/3) + ((math.ceil(idx_row/3) - 1) * 3)  
+
+        rows[idx_row].remove(solutions[position])  
+        cols[idx_col].remove(solutions[position])  
+        sections[idx_section].remove(solutions[position])  
+        del solutions[position]  
+    
+    else:  
+        position += 1  
+
+    if (position &gt; 81): break  
+
+print(f'Done after {iteration - 1:,.0f} iterations.')  
+
+visualize(solutions)
+</code></pre>
+<p>Output:</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-18-sudoku/sudoku_fail.png" alt="sudoku fail"><p>An empty grid? Why for flux sake? Well, our housekeeping is incomplete — we didn’t properly clean up the dead end container:</p>
+<pre><code>dead_ends[position] = []
+</code></pre>
+<p>Let’s take this chance to adjust our container reset function. It will now reset all containers or just the ones for a given position only:</p>
+<pre><code>def reset_containers(position = None):  
+    global rows, cols, sections, solutions, dead_ends  
+
+    if position is None:  
+        rows = {i: [] for i in range(1, 10)}  
+        cols = {i: [] for i in range(1, 10)}  
+        sections = {i: [] for i in range(1, 10)}  
+        solutions = {}  
+        dead_ends = {i: [] for i in range(1, 82)}  
+    else:  
+        idx_row = math.ceil(position / 9)  
+        idx_col = ((position - 1) % 9) + 1  
+        idx_section = math.ceil(idx_col/3) + ((math.ceil(idx_row/3) - 1) * 3)  
+
+        dead_ends[position].append(solutions[position])  
+        rows[idx_row].remove(solutions[position])  
+        cols[idx_col].remove(solutions[position])  
+        sections[idx_section].remove(solutions[position])  
+        del solutions[position]
+</code></pre>
+<p>And now the main loop:</p>
+<pre><code>def solve_game(max_iterations = 10_000):  
+
+    global rows, cols, sections, solutions, dead_ends  
+    
+    reset_containers()  
+
+    iteration = 1  
+    position = 1  
+    stop = False  
+
+    # print('iter', '\t', 'pos', '\t', 'row', '\t', 'col', '\t', 'section', '\t\t', 'number')  
+
+    while True:  
+        idx_row = math.ceil(position / 9)  
+        idx_col = ((position - 1) % 9) + 1  
+        idx_section = math.ceil(idx_col/3) + ((math.ceil(idx_row/3) - 1) * 3)  
+        for number in range(1, 10):  
+            # print(iteration, '\t', position, '\t', idx_row, '\t', idx_col, '\t', idx_section, '\t\t', number)  
+
+            iteration += 1  
+            if (iteration &gt; max_iterations): stop = True; break  
+
+            if (number not in rows[idx_row] and \  
+                number not in cols[idx_col] and \  
+                number not in sections[idx_section] and \  
+                number not in dead_ends[position]):  
+                solutions[position] = number  
+                rows[idx_row].append(number)  
+                cols[idx_col].append(number)  
+                sections[idx_section].append(number)  
+                break  
+
+        if stop: break  
+
+        if not position in solutions:  
+
+            dead_ends[position] = [] # if there were any dead ends on this position, remove them now, because we roll back  
+
+            position -= 1  
+            if (position &lt;= 0): break  
+
+            reset_containers(position) # and clean up containers for the previous position  
+
+        else:  
+            position += 1  
+
+        if (position &gt; 81): break  
+
+    print(f'Done after {iteration - 1:,.0f} iterations.')  
+
+solve_game(max_iterations=10_000)  
+
+visualize(solutions)
+</code></pre>
+<p>Output:</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-18-sudoku/sudoku_finally_solved.png" alt="sudoku finally solved"><p>Wohaa! Looks like our little loop is already producing a valid result. But how does it perform when we add some numbers to the solution?</p>
+<p>To work with a pre-filled grid, we need to implement another container — let’s call it <code>target</code>. We’ll add a simple check: If the target contains the current position, we’ll treat it as a constant. Copy it over to the other containers and skip to the next position:</p>
+<pre><code>if position in target:   
+        number = grid[position]  
+        rows[idx_row].append(number)  
+        cols[idx_col].append(number)  
+        sections[idx_section].append(number)  
+        position += 1  
+        continue
+</code></pre>
+<p>We also need to adapt the part where we move back one step when no solution can be found. If we move back from a regular position to a pre-filled one, we should instantly jump back to the last regular position. Otherwise, we’d get stuck in a loop. So, let’s declare <code>last_regular_position</code>, which points to the last regular cell before a pre-filled one, and handle the backtracking that way.</p>
+<p>This should help avoid unnecessary loops and keep things running smoothly.</p>
+<p>Our loop is growing:</p>
+<pre><code>def solve_game(debug = False, max_iterations = 10_000, target = {}):  
+
+    global rows, cols, sections, solutions, dead_ends  
+
+    reset_containers()  
+
+    iteration = 1  
+    position = 1  
+    stop = False  
+    start_of_occupied_area = 82  
+
+    if debug: print('iter', '\t', 'pos', '\t', 'row', '\t', 'col', '\t', 'section', '\t\t', 'number')  
+
+    # mandatroy: register all target position with our containers  
+    for target_position in target:  
+        idx_row = math.ceil(target_position / 9)  
+        idx_col = ((target_position - 1) % 9) + 1  
+        idx_section = math.ceil(idx_col/3) + ((math.ceil(idx_row/3) - 1) * 3)  
+        rows[idx_row].append(target[target_position])  
+        cols[idx_col].append(target[target_position])  
+        sections[idx_section].append(target[target_position])  
+        
+    while True:  
+        idx_row = math.ceil(position / 9)  
+        idx_col = ((position - 1) % 9) + 1  
+        idx_section = math.ceil(idx_col/3) + ((math.ceil(idx_row/3) - 1) * 3)  
+
+        if (position in target):   
+            number = target[position]  
+            solutions[position] = number  
+            rows[idx_row].append(number)  
+            cols[idx_col].append(number)  
+            sections[idx_section].append(number)  
+
+            if position &lt; start_of_occupied_area: start_of_occupied_area = position  
+
+            position +=1  
+            continue  
+
+        start_at = 1  
+        if len(dead_ends[position]) &gt; 0:  
+            start_at = max(dead_ends[position]) + 1  
+
+        for number in range(start_at, 10):  
+            if debug: print(iteration, '\t', position, '\t', idx_row, '\t', idx_col, '\t', idx_section, '\t\t', number)  
+
+            iteration += 1  
+            if (iteration &gt; max_iterations): stop = True; break  
+
+            if (number not in rows[idx_row] and \  
+                number not in cols[idx_col] and \  
+                number not in sections[idx_section] and \  
+                number not in dead_ends[position]):  
+                solutions[position] = number  
+                rows[idx_row].append(number)  
+                cols[idx_col].append(number)  
+                sections[idx_section].append(number)  
+
+                break  
+
+        if stop: break  
+
+        if not position in solutions:  
+            
+            dead_ends[position] = []  
+            
+            if (position - 1) in target:  
+
+                position = start_of_occupied_area - 1  
+
+            else:  
+                
+                position -= 1  
+
+            reset_containers(position)   
+
+        else:  
+
+            position += 1  
+
+        if (position &gt; 81): break  
+
+    print(f'Done after {iteration - 1:,.0f} iterations.')  
+
+solve_game(debug = False, max_iterations = 5_000, target = {16: 2})  
+
+visualize(solutions)
+</code></pre>
+<p>Output:</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-18-sudoku/sudoku_finally_working.png" alt="sudoku finally working"><p>Farn-tastic! But don’t get too hyped, we’re not there yet. What about different solutions, variations? When we reach the last cell at position 81, in row 9 and column 9, we find exactly one solution for each previous cell. But how do we check for other options? To understand our next approach, imagine the solution as a huge 81-digit number, with all possible solutions branching out like a massive tree. The leftmost branch is the smallest number, and we’re going to find “higher” numbers, which are also valid solutions.</p>
+<p>Let’s start with a simple idea: What if, as soon as we reach the end of the grid, we:</p>
+<ul>
+<li>Go back to the first item</li>
+<li>Store all numbers from the current solution to ignore them in the next iteration</li>
+<li>Switch to a new, empty solutions container</li>
+<li>And start over from the first position?</li>
+</ul>
+<p>Well, I’ll spare us the effort of implementing it and instead ask you to think it over for yourself. You’ve got 5 milliseconds until the next paragraph starts…</p>
+<p>Ka-ching! (Do you remember [Lockerz from 2009](Why did I invest my time into that scam instead of Bitcoin? Whatever…)</p>
+<p>It wouldn’t work! The first cell accepts 1 to 9 as possible options — our main branches of a tree. At the second level, which is the second cell, again we have 1 to 9 as possible values. Solution 1 already gave us this path:</p>
+<pre><code>1 - 2 - …
+</code></pre>
+<p>But if we ruled out the 1 when iterating through the second solution, we’d also rule out another possible path:</p>
+<pre><code>1 - 3 - …
+</code></pre>
+<p>So, instead of resetting to the first cell, the top of the tree, we just move back to the last cell — or the last node in the path or branch, however you want to call it. Right now, it looks like this:</p>
+<pre><code>… - 6 - 4 - 2
+</code></pre>
+<p>Think of the solution as a big number:</p>
+<pre><code>…642
+</code></pre>
+<p>From the previous run, we know that the following paths (or numbers) aren’t possible:</p>
+<pre><code>…611  
+…621  
+…631  
+…641  
+…642 - ka-ching!
+</code></pre>
+<p>Because, for some reason, the loop always took us back until we eventually hit the 4 and the 2. Now, what happens if we search for the next solution by going back to 81 again, but this time adding the 2 to our list of “dead ends”? The loop will run as it has before:</p>
+<pre><code>…643 - not possible, step back  
+…65 - not possible, step back  
+…7 - not possible, step back
+</code></pre>
+<p>It will keep doing that until — spoiler alert — it reaches position 66 (row 8, col 3):</p>
+<pre><code>…642
+</code></pre>
+<p>And it will try again, testing all possible numbers until it eventually hits:</p>
+<pre><code>…648
+</code></pre>
+<p>Which is the start of a new possible solution!</p>
+<p>Sounds about right, doesn’t it?</p>
+<p>Let’s implement it! First, a small adjustment to our init methods and our solutions container, which now holds multiple solutions:</p>
+<pre><code>solutions[solution_index][position]
+</code></pre>
+<p>Of course, we also need to adjust the function’s signature and how we reset our solution container. The way we address positions in the solution deck changes, too. It’s a list now, which makes it easier to slice the first <em>n</em> items of it (honestly, I don’t know why we didn’t do that from the beginning — it’s not really harder to handle. Guess that’s what they call “learning by doing” ;) ).</p>
+<pre><code>def reset_containers(solution_index, position = None):  
+    global rows, cols, sections, solutions, dead_ends, burned_numbers  
+
+
+    if position is None and solution_index == 1:  
+        rows = {i: [] for i in range(1, 10)}  
+        cols = {i: [] for i in range(1, 10)}  
+        sections = {i: [] for i in range(1, 10)}  
+        solutions[solution_index] = {}  
+        dead_ends = {i: [] for i in range(1, 82)}  
+    else:  
+        idx_row = math.ceil(position / 9)  
+        idx_col = ((position - 1) % 9) + 1  
+        idx_section = math.ceil(idx_col/3) + ((math.ceil(idx_row/3) - 1) * 3)  
+
+        if position in solutions[solution_index]:  
+            number = solutions[solution_index][position]  
+            del solutions[solution_index][position]  
+        elif position in burned_numbers:  
+            number = burned_numbers[position]  
+            
+        dead_ends[position].append(number)  
+        rows[idx_row].remove(number)  
+        cols[idx_col].remove(number)  
+        sections[idx_section].remove(number)
+</code></pre>
+<p>Our solution method changes a little. Instead of stopping the loop when <code>position &gt; 81</code>, we add the current solution to our &ldquo;dead end&rdquo; container and then go back to <code>position 81</code>.</p>
+<pre><code>def solve_game(debug = False, max_iterations = 10_000, target = {}):  
+
+    global rows, cols, sections, solutions, dead_ends, burned_numbers  
+
+    solution_index = 1  
+    solutions = {solution_index: {}}  
+    reset_containers(solution_index)  
+
+    report_success = False  
+
+    iteration = 1  
+    position = 1  
+    stop = False  
+    burned_numbers = {} # keeps the previous solution  
+
+    start_of_occupied_area = 82  
+
+    if debug: print('solution', '\t', 'iter', '\t', 'pos', '\t', 'row', '\t', 'col', '\t', 'section', '\t\t', 'number')  
+
+    for target_position in target:  
+        idx_row = math.ceil(target_position / 9)  
+        idx_col = ((target_position - 1) % 9) + 1  
+        idx_section = math.ceil(idx_col/3) + ((math.ceil(idx_row/3) - 1) * 3)  
+        rows[idx_row].append(target[target_position])  
+        cols[idx_col].append(target[target_position])  
+        sections[idx_section].append(target[target_position])  
+        
+    while True:  
+
+        if position &lt;= 81:  
+
+            idx_row = math.ceil(position / 9)  
+            idx_col = ((position - 1) % 9) + 1  
+            idx_section = math.ceil(idx_col/3) + ((math.ceil(idx_row/3) - 1) * 3)  
+
+            if (position in target):   
+                solutions[solution_index][position] = target[position]  
+
+                if position &gt; 1 and position &lt; start_of_occupied_area: start_of_occupied_area = position  
+
+                position +=1;   
+                continue  
+
+            # if the current position has a burned number from the previous solution  
+            # we can take this + 1 as the next starting point  
+            # this should only happens once for each run when move backwards  
+            start_at = 1  
+            if position in burned_numbers:  
+                last_found_number = burned_numbers[position]  
+                start_at = last_found_number + 1  
+                # note how we clean or contains only, not the actual burned_numbers record  
+                # because if this iteration is not succesful, we need a reference!  
+                del burned_numbers[position]  
+
+            elif len(dead_ends[position]) &gt; 0:  
+                start_at = max(dead_ends[position]) + 1  
+
+            for number in range(start_at, 10):  
+                if debug: print(solution_index, '\t\t', iteration, '\t', position, '\t', idx_row, '\t', idx_col, '\t', idx_section, '\t\t', number)  
+
+                iteration += 1  
+                if iteration % (max_iterations // 10) == 0: report_success = True  
+                if (iteration &gt; max_iterations): stop = True; break  
+
+                if (number not in rows[idx_row] and \  
+                    number not in cols[idx_col] and \  
+                    number not in sections[idx_section] and \  
+                    number not in dead_ends[position]):  
+
+                    solutions[solution_index][position] = number  
+                    
+                    rows[idx_row].append(number)  
+                    cols[idx_col].append(number)  
+                    sections[idx_section].append(number)  
+                    break  
+
+            if stop: break  
+        
+            if not position in solutions[solution_index]:  
+        
+                dead_ends[position] = []  
+
+                # this is also very important: when we are at this point  
+                # we couldn't find a solution for the current position  
+                # so we step back to the next &quot;free&quot; cell  
+                # that is not blocked by a &quot;target&quot;  
+
+                if (position - 1) in target:  
+
+                    position = start_of_occupied_area - 1  
+
+                else:  
+                    
+                    position -= 1  
+
+                # and then we clear the containers for this position, to have a fresh start  
+                reset_containers(solution_index, position)  
+
+            else:  
+
+                position += 1  
+
+        else:             
+
+            idx_row = math.ceil((position - 1) / 9)  
+            idx_col = ((position - 2) % 9) + 1  
+            idx_section = math.ceil(idx_col/3) + ((math.ceil(idx_row/3) - 1) * 3)  
+
+            # we found a complete solution, now record the numbers as &quot;burned&quot; for the next run  
+            # for the next solution  
+            
+            if report_success == True: print(f'{solution_index} solutions completed after {iteration - 1:,.0f} iterations.'); report_success = False  
+
+            # take over previous solutions as &quot;burned numbers&quot;  
+            dead_ends = {i: [] for i in range(1, 82)}  
+
+            # and also some house keeping, as   
+            # we crawl back when trying additional solutions  
+            # we only fill the part of the tree  
+            # that actually changes, that's why we need to take over  
+            # everything that did not change:  
+            if solution_index &gt;= 2:  
+                solutions[solution_index] = {pos: solutions[solution_index][pos] if pos in solutions[solution_index] else solutions[solution_index - 1].get(pos) for pos in solutions[solution_index - 1]}  
+                
+            burned_numbers = solutions[solution_index].copy()  
+
+            # it took me some time to find that out:   
+            # basically we are telling the script to rewind   
+            # as we do when we don't find a solution  
+            # so we also need to remove the current number from our  
+            # containers  
+            number = solutions[solution_index][81]  
+            rows[idx_row].remove(number)  
+            cols[idx_col].remove(number)  
+            sections[idx_section].remove(number)  
+
+            position = 81  
+            solution_index += 1  
+            solutions[solution_index] = {}  
+
+    print(f'Done after {iteration - 1:,.0f} iterationsm found at least {solution_index - 1} solutions')  
+
+solve_game(debug=False, max_iterations=1_000_000, target = {80: 7})  
+
+visualize(solutions[len(solutions) - 1])
+</code></pre>
+<p>And that’s our achievment:</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-18-sudoku/sudoku_multiple_solutions.png" alt="sudoku multiple solutions"><p>Our brute-force Sudoku solving algorithm is ready! Well, I bet there are a couple of steps to optimize — not only code-style-wise, but also to make it run faster. I’d say that’s your homework. There are <strong>6,670,903,752,021,072,936,960</strong> possible paths (that’s 6 sextillion and a bit more, it can be writte as ~6 x 10^21, which is a reference to Blade Runner: Dr. Ana Stelline was born on the 10/6/21). Can you catch them all? How long does it take on your machine to get 1 million solutions?</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-18-sudoku/blade_runner_stelline.png" alt="blade runner stelline"><center><i>Blade Runner's `Dr. Ana Stelline` (c) Warner Bros https://www.warnerbros.com/movies/blade-runner-2049</i></center>
+<p>Just one more thing… I asked ChatGPT to build a small function that checks if all solutions are valid. Wait, what? ChatGPT? Why haven’t we asked it earlier?</p>
+<p>Because developing algorithms is fun?</p>
+<p>You got it! Whatever, here we go:</p>
+<pre><code>def check_sudoku(solutions):  
+
+    print('All good!')
+</code></pre>
+<p>Just kidding — you’ll find the actual implementation in the notebook. Before I send you off into your well-deserved time off, let’s quickly go over some visualizations. I “discovered” 295,295 solutions (took me 100 million iterations and roughly 45 seconds), and this is how they look like in an image:</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-18-sudoku/sudoku_solutions_visualized.png" alt="sudoku solutions visualized"><p>Finding <strong>300,000 solutions</strong> out of <strong>6 sextillion possibilities</strong> is like picking a single grain of sand from all the sand on Earth.</p>
+<p>For the following visualization, I calculated the difference between each solution — remember, they’re all essentially enormous numbers!</p>
+<img src="https://nickyreinert.de/en/2024/2024-10-18-sudoku/sudoku_solutions_difference.png" alt="sudoku solutions difference"><p>There are some interesting points to observe. On the symlog scale of outliers, you can clearly see bands of numbers. There’s also one outlier way out of the region, meaning that from solution <strong>149,652</strong> to <strong>149,653</strong>, the loop has to revert to a very high position in our “solution tree.”</p>
+<p>Can you find any more salient features? Let me know!</p>
+]]></content:encoded><atom:updated>2026-06-16T20:56:44+02:00</atom:updated><category>projekte</category><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item><item><title>My Python boilerplate and a little Python-Fu</title><link>https://nickyreinert.de/en/2021/2021-02-24-python-foo/</link><pubDate>Wed, 24 Feb 2021 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2021/2021-02-24-python-foo/</guid><description>Let me show you my Python boilerplate and some little nifty standard features I’m working with. You can download the full template from github . This post will probably be extended in the future.
 Summary The boilerplate will help you with the following features:
-Use virtual environments manage …</description><category>blog</category><media:content url="https://nickyreinert.de/python-boilerplate-patterns.png" type="image/jpeg"><media:title>Python Boilerplate Patterns Tutorial</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>
+Use virtual environments manage …</description><content:encoded><![CDATA[<p>Let me show you my Python boilerplate and some little nifty standard features I’m working with. You can download the 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gist.github.com/nickyreinert/45c019f318fe7a10232327cdf8b119f4?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">full template from github</a>
+
+
+. This post will probably be extended in the future.</p>
+<h2 id="summary">Summary</h2>
+<p>The boilerplate will help you with the following features:</p>
+<ul>
+<li>Use virtual environments</li>
+<li>manage requirements</li>
+<li>notifications via Telegram</li>
+<li>manage command line arguments</li>
+<li>list comprehension</li>
+<li>print progress in loops</li>
+<li>measure time</li>
+<li>play a sound after a loop is finished</li>
+</ul>
+<h2 id="virtual-environment">Virtual environment</h2>
+<p>I like working with virtual environments. It helps me to work with individual clean development environments. How do you do that? Switch to your main development folder, create a subfolder for your new project and initiate it:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">cd /development/
+</span></span><span class="line"><span class="ln">2</span><span class="cl">mkdir project1
+</span></span><span class="line"><span class="ln">3</span><span class="cl">python3 -m venv project1
+</span></span><span class="line"><span class="ln">4</span><span class="cl">cd project1
+</span></span><span class="line"><span class="ln">5</span><span class="cl">source bin/activate
+</span></span></code></pre></div><p>There you go. If you install packages, they are located in this folder only. Wait, packages? Right, let’s get to the next step:</p>
+<img src="https://nickyreinert.de/en/2021/2021-02-24-python-foo/image.png" alt="This post comes without any images, that’s why I’m showing you this beautiful image that I took in Athens, a couple of years ago — a wonderful city!"><h2 id="manage-your-libraries">Manage your libraries</h2>
+<p>As your Python scripts grows, by the amount of lines but also by the amount of features, the amount of used libraries will grow, too. But how to run the script on a different machine, in a differente environment? How to easily share you script? The answer is pipreqs:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">pip install pipreqs
+</span></span></code></pre></div><p>After you installed this little tool, run it against your script (or a folder of scripts):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">pipreqs yourscript.py # one script only
+</span></span><span class="line"><span class="ln">2</span><span class="cl">pipreqs . # all scripts in the folder
+</span></span></code></pre></div><p>Pipreqs will scan your script for required libraries and list them in a file called requirements.txt (suprise!). You need to share this text file with your Python script. Everyone who wants to run the script needs to prepare the environment using this line of code:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">pip install -r requirements.txt
+</span></span></code></pre></div><p>Et voilà. All requirements met.</p>
+<h2 id="telegram-logging">Telegram logging</h2>
+<blockquote>
+<p>Please be adviced: Using a centralized messaging service like telegram, where your content is hosted on foreing computers, may be a risky plan. I’m fully aware of that, you should be too. That’s why I’m only sharing non-senstive information with telegram. It’s just my perfect notification service.</p>
+</blockquote>
+<p><em>How does telegram help?</em> You may ask. Well, imagine you have a script running hours or even days! Actually, you don’t really know. Wouldn’t it be nice to get a message, when the script is done, or about it’s progress.</p>
+<p>First let’s create your own bot for Telegram. Open the app and look for “BotFather”. He will allow you to create a new bot. Name doesn’t matter, what does matter is the secret(!) token. Take it and start a chat with your bot. Then browse to this url (replace the token part with your secret(!) token):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">https://api.telegram.org/bot&lt;bot token&gt;/getUpdates
+</span></span></code></pre></div><p>The page will return a JSON object with a couple of information, amongst it is your chat-id (it’s secret, too, everything is secret!). Grab it and put it with your secret (!!!) token into <strong>your telegram_notifier.py:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">import requestsbot_token = &#39;secret token&#39;
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">bot_chat_id = &#39;secret chat id&#39;def send_text_to_telegram(bot_message):
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">   bot_token = bot_token
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">   
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">   send_text = &#39;[https://api.telegram.org/bot&#39;](https://api.telegram.org/bot&#39;) + bot_token + &#39;/sendMessage?chat_id=&#39; + bot_chat_id + &#39;&amp;parse_mode=Markdown&amp;text=&#39; + bot_message   response = requests.get(send_text)
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"> 
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">   return response.json()def send_image_to_telegram(image):   bot_token = bot_token
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"> 
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">   data = {&#39;chat_id&#39;: bot_chat_id}
+</span></span><span class="line"><span class="ln">10</span><span class="cl">   
+</span></span><span class="line"><span class="ln">11</span><span class="cl">   url = &#39;[https://api.telegram.org/bot&#39;](https://api.telegram.org/bot&#39;) + bot_token + &#39;/sendPhoto?chat_id=&#39; + bot_chat_id + &#39;&amp;parse_mode=Markdown&#39;
+</span></span><span class="line"><span class="ln">12</span><span class="cl"> 
+</span></span><span class="line"><span class="ln">13</span><span class="cl">   with open(image, &#34;rb&#34;) as image_file:
+</span></span><span class="line"><span class="ln">14</span><span class="cl"> 
+</span></span><span class="line"><span class="ln">15</span><span class="cl">      response = requests.post(url, data=data, files={&#34;photo&#34;: image_file})
+</span></span><span class="line"><span class="ln">16</span><span class="cl">  
+</span></span><span class="line"><span class="ln">17</span><span class="cl">   return response.json()
+</span></span></code></pre></div><p><em>Please note, that there’s no error handling with this script.</em></p>
+<p>Congratulations, you now have two functions to send text and images to your telegram bot. This will help you to get a notification from your Python scripts. Import the two functions with this line in every of your actual scripts:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">from telegram_notifier import *
+</span></span></code></pre></div><h2 id="in-media-res">In media res</h2>
+<h3 id="command-line-parameters">Command line parameters</h3>
+<p>Enough prepping, let’s talk about the script itself. The first lines look like that:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">import time # for logging purposes
+</span></span><span class="line"><span class="ln">2</span><span class="cl">import argparse # for command line argumentsparser=argparse.ArgumentParser()parser.add_argument(&#39;--limit&#39;, help=&#39;Source files in CSV format&#39;, required=True, type=int)
+</span></span><span class="line"><span class="ln">3</span><span class="cl">parser.add_argument(&#39;--loop_length&#39;, help=&#39;Source files in CSV format&#39;, required=False, type=int)
+</span></span><span class="line"><span class="ln">4</span><span class="cl">parser.add_argument(&#39;--message&#39;, help=&#39;Give me a message&#39;, required=False, default=&#34;Hello World&#34;, type=str)args = parser.parse_args()
+</span></span></code></pre></div><p>You’ll find it helpful to pass arguments to your script from the command line. That’s what the <strong>argparse</strong> library is for. This library supports loads of other parameters and features, I’m just showing you some basic ones to read two parameters <strong>limit</strong> and <strong>loop_length</strong>. You can read those parameters using <strong>args.limit</strong> or <strong>args.loop_length.</strong> So easy. Example?</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">loop_length = 1000000 if args.loop_length == None else args.loop_length
+</span></span><span class="line"><span class="ln">2</span><span class="cl">limit = args.limit
+</span></span></code></pre></div><p>That’s the shortend version of a if-condition. If the loop-length is set, take it. Otherwise use the default value of 1.000.000. The limit is always set to the one passed by the user — because it’s a mandatory parameter and therefore always present. Next, please.</p>
+<h3 id="logging">Logging</h3>
+<p>Why is logging so important to me? Why sould it be important to you? You will get to that point, <strong>when a customer asks you</strong>:</p>
+<blockquote>
+<p><em>How long will it take to process this dataset with 2 Mio. rows? How much will it costs?</em></p>
+<p><em>~a customer, somewhen</em></p>
+</blockquote>
+<p>Or if you want to compare two different methods. And so on. I’m a huge fan of (extensive) logging. It’s very helpful. Trust me. So, how do we start?</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">feedback_frequency = 10                                               count = 1  
+</span></span><span class="line"><span class="ln">2</span><span class="cl">start = time.time()
+</span></span></code></pre></div><p>Frequency? Why? Imagine you have a script that crunches 1 Mio. rows. And depending on the surrounding parameters, it’s either pretty fast or pretty slow. When do you create a log message? With the feedback_frequency you define, how many times you want to see a log message. Set it to 10 to get a feedback every 1 Mio. / 10 rows. Increase it to get even more feedback.</p>
+<h3 id="colors">Colors</h3>
+<p>If you are sending a lot of information to the console, you may want to use colored output. First let’s define a custom class for that. As you can see, this also allows you to set the font style to bold or underline it.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">class bcolors:
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    HEADER = &#39;\033[95m&#39;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    OKBLUE = &#39;\033[94m&#39;
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    OKCYAN = &#39;\033[96m&#39;
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    OKGREEN = &#39;\033[92m&#39;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    WARNING = &#39;\033[93m&#39;
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    FAIL = &#39;\033[91m&#39;
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    ENDC = &#39;\033[0m&#39;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    BOLD = &#39;\033[1m&#39;
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    UNDERLINE = &#39;\033[4m&#39;
+</span></span></code></pre></div><p>Now you implement the class into your output like that:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">print(f&#39;{bcolors.FAIL}{bcolors.BOLD}Bold red text{bcolors.ENDC}&#39;)
+</span></span></code></pre></div><h3 id="a-simple-loop--comprehension">A simple loop — comprehension</h3>
+<p>The list or dict comprehension feature is a feature you either love or don’t understand. I’m not even sure if I really understand the feature. Nevertheless, here’s an example that hopefully explains it.</p>
+<p>List comprehension works for dictonaries, too. It allows you to loop through data without writing a fully fledged loop. And its supposed to be faster than a common loop.</p>
+<p>The following example goes through a range of numbers from 1 to loop_length=1.000.000 (<em>second last line</em>).</p>
+<p><em>The last line</em> in this comprehension says: Only process the current row, if index is greater than 10.</p>
+<p><em>The first line</em> just takes the index value. Work with it. Add it, round it, calculate it. That’s the value, that goes to our list “<strong>a_list</strong>”.</p>
+<p><em>The second line</em> is the second way to work with conditions: Depending on the acutal value of index, it defines an outcome. If index is less than 50, pass it on. Else pass on the value defined in <strong>default_value</strong>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">default_value = &#39;x&#39;
+</span></span><span class="line"><span class="ln">2</span><span class="cl">a_list = [    index
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    if index &lt; 50 else default_value
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    for index in range(1, loop_length)
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    if index &gt; 10
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    ]
+</span></span></code></pre></div><p>I know it’s tricky. You will get to it, as soon as you need it. ;P</p>
+<h3 id="logging-actually">Logging, actually</h3>
+<p>The next lines will send one message to telegram and to the standard output.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">duration = time.time() - start            message = &#39;\r\nDone with list comprehension after %s seconds &#39; % (      &#39;{:.2f}&#39;.format(duration) # two decimal places
+</span></span><span class="line"><span class="ln">2</span><span class="cl">)
+</span></span><span class="line"><span class="ln">3</span><span class="cl">                                               send_text_to_telegram(message)                                               print(message, flush=True)
+</span></span></code></pre></div><p>You should understand this one from the code, except the flush-Parameter? This one forces the Python-script to send the message to the output, without waiting for the script to end. That’s your real-time-update-guarantee!</p>
+<h3 id="the-fully-fledged-loop">The fully-fledged Loop</h3>
+<p>This is a full loop, that allows you to add as many conditions and calculations as you want.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">for i in range(1, loop_length):   if i &gt; limit - 1 and limit &gt; 0: break
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">   
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">   count += 1   if i % (limit / feedback_frequency) == 0 or i % (round(loop_length / feedback_frequency, 0)) == 0:
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">      progress = i / limit if limit &gt; 0 else i / loop_length      message = (
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">            &#39;%s%%...&#39; % 
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">            (&#39;{:.1f}&#39;.format(100 * progress))
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        )      print(
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">            message,            
+</span></span><span class="line"><span class="ln">10</span><span class="cl">            end = &#39;&#39;, # no line break
+</span></span><span class="line"><span class="ln">11</span><span class="cl">            flush=True # don&#39;t buffer output
+</span></span><span class="line"><span class="ln">12</span><span class="cl">      )
+</span></span></code></pre></div><p>The first lines are easy. Break the loop, if the limit is hit. The most exciting thing is the logging-feature. As mentioned above, it will only logg a message if it meets the frequency requirements. Also check out the <strong>end-Parameter</strong> of print. It removes the line break from the print-command.</p>
+<h3 id="final-message">Final message</h3>
+<p>Finally, after our script logic is finished, we send a message. This time to telegram, too.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">duration = time.time() - startmessage = &#39;\r\nDone with processing %s iterations after %s seconds &#39; % (
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    &#39;{:0,.0f}&#39;.format(count), # formatting integers with thousand separator
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    &#39;{:.2f}&#39;.format(duration) # formatting decimals with two decimals
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    )send_text_to_telegram(message)print(message)
+</span></span></code></pre></div><p>There’s nothing special happening here. The only interesting thing is, that Telegram also accepts images. This is good if you’re creating some sophisticated statistcial analysis and want to see the output. Again, a word of advise: Remember that Telegram is storing your messages on foreign servers. Keep that in mind.</p>
+<h2 id="last-words">Last words</h2>
+<p>I’m always learing, and I hope your learned something, too. I’m going to extend this post in the future. If you have further tricks for me, drop me a dove.</p>
+]]></content:encoded><atom:updated>2026-04-19T20:27:26+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>

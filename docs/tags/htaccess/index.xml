@@ -1,1 +1,266 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Htaccess auf Nicky Reinert</title><link>https://nickyreinert.de/tags/htaccess/</link><description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, KI, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur</description><generator>Hugo 0.162.0</generator><language>de</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sun, 25 Sep 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/htaccess/index.xml" rel="self" type="application/rss+xml"/><item><title>Welche Möglichkeiten habe ich, um Weiterleitungen anzulegen?</title><link>https://nickyreinert.de/2016/2016-09-25-welche-moeglichkeiten-habe-ich-um-weiterleitungen-anzulegen/</link><pubDate>Sun, 25 Sep 2016 00:00:00 +0000</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/2016/2016-09-25-welche-moeglichkeiten-habe-ich-um-weiterleitungen-anzulegen/</guid><description>Was sind Weiterleitungen? Du hast von einem alten Shop oder Content-Management-System auf ein neues System gewechselt, willst eine neue Permalink-Struktur einführen oder hast einfach nur Inhalte verschoben? Das Problem in solchen Szenarien ist, dass die Verzeichnisstruktur nicht exakt übernommen …</description><category>hosting</category><category>anleitungen</category><media:content url="https://nickyreinert.de/images/posts/redirect-guide.jpg" type="image/jpeg"><media:title>Weiterleitungen anlegen - Beispiel für Redirects</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>guide</dc:type></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Htaccess auf Nicky Reinert</title><link>https://nickyreinert.de/tags/htaccess/</link><description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, KI, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur</description><generator>Hugo 0.162.0</generator><language>de</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sun, 25 Sep 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/tags/htaccess/index.xml" rel="self" type="application/rss+xml"/><item><title>Welche Möglichkeiten habe ich, um Weiterleitungen anzulegen?</title><link>https://nickyreinert.de/2016/2016-09-25-welche-moeglichkeiten-habe-ich-um-weiterleitungen-anzulegen/</link><pubDate>Sun, 25 Sep 2016 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2016/2016-09-25-welche-moeglichkeiten-habe-ich-um-weiterleitungen-anzulegen/</guid><description>Was sind Weiterleitungen? Du hast von einem alten Shop oder Content-Management-System auf ein neues System gewechselt, willst eine neue Permalink-Struktur einführen oder hast einfach nur Inhalte verschoben? Das Problem in solchen Szenarien ist, dass die Verzeichnisstruktur nicht exakt übernommen …</description><content:encoded><![CDATA[<h2 id="was-sind-weiterleitungen">Was sind Weiterleitungen?</h2>
+<p>Du hast von einem alten Shop oder Content-Management-System auf ein neues System gewechselt, willst eine neue Permalink-Struktur einführen oder hast einfach nur Inhalte verschoben? Das Problem in solchen Szenarien ist, dass die Verzeichnisstruktur nicht exakt übernommen werden kann. Doch keine Panik. Dass sich Inhalte und Verlinkungen im Internet ändern, gehört zum Konzept des WWW dazu. Wichtig ist, dass man diese Dynamik entsprechend berücksichtigt und dafür sorgt, dass eingehender Traffic auf die eigene Seite nicht auf nicht-vorhandene Seiten stößt – mit sogenannten <strong>Weiterleitungen</strong>.</p>
+<h2 id="suchmaschinen-index-und-backlinks">Suchmaschinen-Index und Backlinks</h2>
+<p>Zwei Arten von eingehendem Traffic kann man grundsätzlich unterscheiden: Erstens gibt es den Traffic, der von einer Suchmaschine (<strong>organischer Traffic</strong>) kommt. Die Suchmaschine nutzt dafür einen Index, der sich aber nach bestimmten Regeln aktualisiert. Daneben gibt es Traffic über <strong>Backlinks</strong> von externen Seiten, die keine Suchmaschinen sind. Diese Backlinks sind natürlich auch veränderbar, aber, wenn man es so nennen will, redaktionell gepflegt. Streng genommen könnte man natürlich noch anderen Traffic unterscheiden, wie z. B. den aus der Suchmaschinen-Werbung (<strong>SEA</strong>). Doch da dieser Teil der eigenen Online-Marketing-Kampagne ist, versteht es sich von selbst, dass die Links dort ordentlich gepflegt werden müssen.</p>
+<h2 id="wann-benötige-ich-eine-weiterleitung">Wann benötige ich eine Weiterleitung?</h2>
+<p>Die Suchmaschinen lassen sich eigentlich relativ unkompliziert mit einer aktuellen Sitemap befriedigen, die ja als aktuelles Verzeichnis der eigenen Seite dient. Google bietet in der Search Console sogar an, die Seite 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.google.com/webmasters/tools/home?hl=de&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">neu zu indizieren</a>
+
+
+.</p>
+<p>Doch was ist mit den anderen Suchmaschinen und vor allem all den wertvollen Backlinks, die nicht mehr gültig sind? Nicht jeder eingehende Link lässt sich so einfach aktualisieren und führt im ungünstigen Fall zum HTTP-Fehlercode <strong>404 &ldquo;not found&rdquo;</strong>. Dieser sollte aus SEO-Sicht unbedingt vermieden werden – mit eben jenen erwähnten Weiterleitungen.</p>
+<p>Um diese zu implementieren, gibt es freilich mehrere Möglichkeiten. Zunächst sollte man prüfen, welche Backlinks auf die eigene Seite überhaupt existieren. Je nachdem, wie viele Backlinks es gibt und wie die URL-Struktur der eigenen Seite beschaffen ist, bieten sich andere Möglichkeiten an. Man unterscheidet übrigens zwischen der <strong>temporären</strong> (HTTP-Statuscode <strong>302</strong>) und der <strong>permanenten Weiterleitung</strong> (HTTP-Statuscode <strong>301</strong>). Die temporäre Weiterleitung kommt für unseren Fall nicht unbedingt infrage, da wir ja einen Umzug vor uns haben.</p>
+<h2 id="weiterleitung-per-header-in-einer-php-datei">Weiterleitung per <code>header()</code> in einer PHP-Datei</h2>
+<p>Eine ziemlich pragmatische und wenngleich effektive Methode ist es, die alte Ordner-Struktur per Hand nachzubilden und entsprechend PHP-Dateien anzulegen, die jeweils eine <strong>301-Weiterleitung</strong> auf die neue URL enthalten (&quot;
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://php.net/manual/de/function.header.php?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">header()</a>
+
+
+&quot;). Das kann man machen, wird bei größeren Systemen aber sehr schnell sehr aufwendig. Die PHP-Datei sollte unter dem Namen <code>index.php</code> in den jeweiligen Ordnern abgelegt werden und folgenden Code enthalten. Es folgt ein Beispiel für eine PHP-Datei, die unter <em>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.deine-seite.de/altes-ziel/index.php?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://www.deine-seite.de/altes-ziel/index.php</a>
+
+
+</em> abgelegt ist. Diese enthält folgenden Code:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="ln">1</span><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">   <span class="nx">header</span><span class="p">(</span><span class="s2">&#34;Location:https://www.deine-seite.de/neues-ziel/&#34;</span><span class="p">,</span> <span class="k">true</span><span class="p">,</span> <span class="mi">301</span><span class="p">);</span> 
+</span></span><span class="line"><span class="ln">3</span><span class="cl">   <span class="k">exit</span><span class="p">;</span>
+</span></span></code></pre></div><ul>
+<li>Der erste Parameter verweist auf die neue Seite.</li>
+<li>Der zweite Parameter (<code>true</code>) legt lediglich fest, ob ein vorheriger Header ersetzt werden soll.</li>
+<li>Der letzte Parameter schließlich ist der HTTP-Statuscode, der übermittelt werden soll – also <strong>301</strong>.</li>
+<li>Das <code>exit</code> am Schluss sorgt dafür, dass das PHP-Skript am Ende auch wirklich abgeschlossen wird und dient hier nur als doppelter Boden.</li>
+</ul>
+<p>Ein schließendes <code>?&gt;</code> 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://developer.sugarcrm.com/2011/05/06/why-we-dont-using-closing-php-tags/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">wird nicht benötigt</a>
+
+
+.</p>
+<p>Das ist nicht nur mühsam, sondern auch nicht dynamisch. Die nächste Variante nutzt eine Weiterleitung mit <code>.htaccess</code>.</p>
+<h2 id="weiterleitung-per-htaccess">Weiterleitung per <code>.htaccess</code></h2>
+<p>In einer <code>.htaccess</code>-Datei gibt es erstmal zwei Möglichkeiten, eine Weiterleitung einzurichten. Nutzt man einen <strong>regulären Ausdruck</strong>, wird entsprechend jeder passende eingehende Traffic abgefangen und an die gewünschte Hauptseite weitergeleitet.</p>
+<p>Eine andere, etwas ausgefeiltere Möglichkeit ist es, die alten Unterverzeichnisse bei Abfrage durch den Browser abzufangen und deren Namen als Suchparameter an das neue System weiterzuleiten.</p>
+<p>Hier zum Beispiel der Unterordner <code>foobar</code>, der als Suchparameter genutzt werden soll:</p>
+<ul>
+<li><strong>Alt:</strong> 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.deine-seite.de/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">www.deine-seite.de/</a>
+
+
+<strong>foobar</strong></li>
+<li><strong>Neu:</strong> 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.deine-seite.de/index.php?search=&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">www.deine-seite.de/index.php?search=</a>
+
+
+<strong>foobar</strong></li>
+</ul>
+<p>So sieht die dafür notwendige <code>.htaccess</code>-Datei aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-apache" data-lang="apache"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">RewriteEngine</span> <span class="k">On</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="nb">RewriteRule</span> ^(/?)([a-zA-Z0-9]+)?([\.html]+)?/?$ <span class="sx">/index.php</span>?search=$2 [R=301,NC]
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="nb">RewriteRule</span> ^(/?)([a-zA-Z0-9]+)?/([a-zA-Z0-9]+)?([\.html]+)?/?$ <span class="sx">/index.php</span>?search=$2 $3 [L,R=301,NC]
+</span></span></code></pre></div><ul>
+<li>Die erste Regel fängt Aufrufe der ersten Pfad-Ebene ab.</li>
+<li>Die zweite Regel kann auch die Namen der darunter liegenden Pfade abgreifen und daraus einen kombinierten Suchbegriff erzeugen. Das ist z. B. hilfreich, wenn man die Pfade eines Shop-Systems nutzen will, um daraus im neuen Shop die Suche zu erzeugen.</li>
+</ul>
+<p><strong>Beispiel:</strong></p>
+<ul>
+<li><strong>Alt:</strong> 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.shop.de/foobar/hello_world.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">www.shop.de/foobar/hello_world.html</a>
+
+
+</li>
+<li><strong>Neu:</strong> 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.shop.de/index.php?search=foobar%20hello_world&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">www.shop.de/index.php?search=foobar%20hello_world</a>
+
+
+</li>
+</ul>
+<p>Die <code>.htaccess</code>-Datei muss sich im Unterordner <code>/foobar</code> befinden, der auch physisch vorhanden sein muss. Man könnte die Weiterleitung auch im Root-Verzeichnis anlegen und bräuchte dann den Unterordner nicht. So vermeidet man aber unnötigen Overhead, da die Regel nicht bei den regulären Aufrufen aktiviert wird.</p>
+<figure>
+  <a href="https://nickyreinert.de/images/posts/redirect-guide.jpg" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/images/posts/redirect-guide.jpg" 
+      alt="Weiterleitungen anlegen - Beispiel für Redirects"
+      
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Beispiel für die Einrichtung von Weiterleitungen</figcaption>
+</figure>
+
+]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>hosting</category><category>anleitungen</category><media:content url="https://nickyreinert.de/images/posts/redirect-guide.jpg" type="image/jpeg"><media:title>Htaccess</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>guide</dc:type></item></channel></rss>

@@ -1,2 +1,125 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Cookies auf Nicky Reinert</title><link>https://nickyreinert.de/en/tags/cookies/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sun, 05 May 2024 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/tags/cookies/index.xml" rel="self" type="application/rss+xml"/><item><title>How to Persist User Configuration in a Gradio App with Cookies</title><link>https://nickyreinert.de/en/2024/2024-05-05-gradio-app/</link><pubDate>Sun, 05 May 2024 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2024/2024-05-05-gradio-app/</guid><description>I am currently building some kind of playground for Huggingface’s text-2-image models. This app offers more than a dozen configuration parameters. The problem: Every time the user reloads the page, all parameters are gone. Here’s my solution to cope with that.
-Gradio has a gr.Stateobject that allows …</description><category>blog</category><media:content url="https://nickyreinert.de/gradio-cookies.png" type="image/jpeg"><media:title>Gradio App Configuration Persistence</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Cookies auf Nicky Reinert</title><link>https://nickyreinert.de/en/tags/cookies/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sun, 05 May 2024 12:34:56 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/en/tags/cookies/index.xml" rel="self" type="application/rss+xml"/><item><title>How to Persist User Configuration in a Gradio App with Cookies</title><link>https://nickyreinert.de/en/2024/2024-05-05-gradio-app/</link><pubDate>Sun, 05 May 2024 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2024/2024-05-05-gradio-app/</guid><description>I am currently building some kind of playground for Huggingface’s text-2-image models. This app offers more than a dozen configuration parameters. The problem: Every time the user reloads the page, all parameters are gone. Here’s my solution to cope with that.
+Gradio has a gr.Stateobject that allows …</description><content:encoded><![CDATA[<p>I am currently building some kind of playground for Huggingface’s text-2-image models. This app offers more than a dozen configuration parameters. The problem: Every time the user reloads the page, all parameters are gone. Here’s my solution to cope with that.</p>
+<p><strong>Gradio</strong> has a <code>gr.State</code>object that allows you to persist values for the current user in the current tab. But as soon as you open another tab or even reload the page, your user’s setup is gone. While there’s also a <code>gr.Request</code> oject that allows you to access cookies, this only read cookies.</p>
+<img src="https://nickyreinert.de/en/2024/2024-05-05-gradio-app/image-1.png" alt="alt text"><p>So right now there’s no easy way to achieve some kind of “persistent config” for your Gradio demo. But there’s a workaround: Gradio allows you to add custom <strong>JavaScript</strong> to your app, which 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.gradio.app/guides/custom-CSS-and-JS?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">is “barely” documented</a>
+
+
+. As the implementation is not easy and it took me a while to find the solution, I’d like to share my findings:</p>
+<ol>
+<li>The Javascript</li>
+</ol>
+<hr>
+<p>Let’s start with the JavaScript that takes care of writing the cookie. Put it into a variable and place it before your block definition to make it globally accessible:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">js = &#39;&#39;&#39;function js(){window.set_cookie = function(key, value){document.cookie = key+&#39;=&#39;+value+&#39;; Path=/; SameSite=Strict&#39;;return [value]}}&#39;&#39;&#39;
+</span></span></code></pre></div><p>There’s one <strong>heads up</strong>! here: You have to wrap the actual function inside another function. You also need to make it globally available by attaching it to window. Let’s have a closer look at the important parts. The function head apparently requires the key and the value for your cookie:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">function(key, value){
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    document.cookie = key+&#39;=&#39;+value+&#39;; Path=/; SameSite=Strict&#39;;
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    return [value]
+</span></span><span class="line"><span class="ln">4</span><span class="cl">}
+</span></span></code></pre></div><p>You need those variables to properly set the cookie. The function must return values according to your Gradio element and event handler. In this case it expects one output variable only.</p>
+<p>Done that, load your JavaScript into your demo using the <strong>js-argument</strong> this. The <strong>fn-argument</strong> refers to a Python function that later loads values from your cookies to assign them to your Gradio elements — wich needs to be addressed in <code>outputs</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl">    <span class="n">demo</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fn</span><span class="o">=</span><span class="n">get_config</span><span class="p">,</span> <span class="n">js</span><span class="o">=</span><span class="n">js</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">element1</span><span class="p">])</span>
+</span></span></code></pre></div><ol start="2">
+<li>The event handler</li>
+</ol>
+<hr>
+<p>Now you are ready to reference the cookie mechanism in your event handler:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">element1.change(fn=element1_change inputs=[element1], outputs=[], js=&#34;(value) =&gt; set_cookie(&#39;element1&#39;, value)&#34;)
+</span></span></code></pre></div><p>Again, let’s go through it step by step:</p>
+<p>The <strong>fn-argument</strong> simply refers to a Python function that somehow handles the value of <code>element1</code>. You don’t necessarily need it, depending on your setup. The <strong>inputs-argument</strong> is important, as it defines what values are moved through our <em>pipeline</em>. In this case just the value from <code>element1</code>. The <strong>js-argument</strong> now refers to your <strong>JavaScript function</strong>. <code>(value)</code> takes the value from the <strong>inputs-argument</strong> and gives it a name. I am passing this variable to my function and I also need to pass the <code>element1</code> as a string which will be used as the key for the cookie, to identify it later —see <code>set_cookie()</code> requires a key and a value argument?</p>
+<ol start="3">
+<li>Getting back the value</li>
+</ol>
+<hr>
+<p>We now successfully wrote the value of an element to a cookie. Now we need to read this value when the user reloads the page or open it in another tab:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">def get_config(request: Request):
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  config = {&#34;element1&#34;: &#34;value1&#34;}
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  for key in initial_config.keys():
+</span></span><span class="line"><span class="ln">4</span><span class="cl">      if key in request.cookies:
+</span></span><span class="line"><span class="ln">5</span><span class="cl">          config[key] = request.cookies[key]
+</span></span><span class="line"><span class="ln">6</span><span class="cl">  return config[&#34;element&#34;]
+</span></span></code></pre></div><p>Again — step by step: In the function’s head we refer to Gradio’s Request object which allows us to read the cookies for this request. We then simply loop through all our config parameters, you may define as many as you want, according to your interface. If we find the particular cookie, we can set it’s value.</p>
+<p>Finally we return the values. According to the outputs-argument from our <code>demo.load(</code> function (see above), we only return one value for one element.</p>
+<ol start="4">
+<li>Final Thoughts</li>
+</ol>
+<hr>
+<p>If you want to see the process in action, check out my text-2-image playground at Hugging face either directly via 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://huggingface.co/spaces/n42/pictero?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://huggingface.co/spaces/n42/pictero</a>
+
+
+ or using the easier-to-remember-domain: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://pictero.com?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://pictero.com</a>
+
+
+ (yes, you can use your own custom domains on Huggingface’s spaces — it’s a simply frame-redir in my DNS configuration).</p>
+<p>I am not only using the aboved described workaround to persist users’s configuration: I also implemented a sharing feature reading the configuration from the URL GET-parameter <code>config</code> and put it into my interface.</p>
+<p>Have fun and leave your thoughts!</p>
+]]></content:encoded><atom:updated>2026-05-07T15:36:59+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>

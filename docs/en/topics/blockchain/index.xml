@@ -1,3 +1,889 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Blockchain auf Nicky Reinert</title><link>https://nickyreinert.de/en/topics/blockchain/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Fri, 15 Aug 2025 12:34:56 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/blockchain/index.xml" rel="self" type="application/rss+xml"/><item><title>How to simulate proof of work in SQL and BigQuery</title><link>https://nickyreinert.de/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/</link><pubDate>Fri, 15 Aug 2025 12:34:56 +0000</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/</guid><description>(or: How does blockchain mining work?)
-A miner has to solve a mathematical problem to validate a block for the Blockhain. The so called Proof of Work requires a lot of computing power aka energy and therefore is quite expensive. Googles BigQuery has a price model, that charges you for the …</description><category>blog</category><category>anleitungen</category><media:content url="https://nickyreinert.de/assets/image1.png" type="image/jpeg"><media:title>How to simulate proof of work in SQL and BigQuery - Title Image</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item><item><title>Web 3.0 explained, without the hype</title><link>https://nickyreinert.de/en/2022/2022-08-01-web3-withouth-the-hype/</link><pubDate>Mon, 01 Aug 2022 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2022/2022-08-01-web3-withouth-the-hype/</guid><description>Everyone is talking about Web 3.0 and it’s “driving technologies” Blockchain, Bitcoin, NFT or the Metaverse. Terms that belongs to every company’s roadmap if it’s want to be innovative. But if you try to find information about — let’s take Bitcoin — you’ll quickly find yourself on some …</description><category>blog</category><media:content url="https://nickyreinert.de/blockchain_explained.png" type="image/jpeg"><media:title>Blockchain visualization showing connected blocks with hashes</media:title></media:content><dc:subject>Lesezeit: 20 Minuten</dc:subject><dc:type>article</dc:type></item><item><title>How to sell your NFT — step by step, pros and cons</title><link>https://nickyreinert.de/en/2022/2022-02-19-nft-selling/</link><pubDate>Sat, 19 Feb 2022 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2022/2022-02-19-nft-selling/</guid><description>What is NFT? NFT is short for Non-Fungible Token. In fact it’s a reference to a (digital) asset. And that asset can be everything from a poem to a software. You also may reference to a physical asset. In short: A NFT can be understand as an evidence of ownership.
-The token aka the reference is saved …</description><category>blog</category><media:content url="https://nickyreinert.de/image.png" type="image/jpeg"><media:title>Cryptocurrency wallet providers supported by OpenSea</media:title></media:content><dc:subject>Lesezeit: 15 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Blockchain auf Nicky Reinert</title><link>https://nickyreinert.de/en/topics/blockchain/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Fri, 15 Aug 2025 12:34:56 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/blockchain/index.xml" rel="self" type="application/rss+xml"/><item><title>How to simulate proof of work in SQL and BigQuery</title><link>https://nickyreinert.de/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/</link><pubDate>Fri, 15 Aug 2025 12:34:56 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/</guid><description>(or: How does blockchain mining work?)
+A miner has to solve a mathematical problem to validate a block for the Blockhain. The so called Proof of Work requires a lot of computing power aka energy and therefore is quite expensive. Googles BigQuery has a price model, that charges you for the …</description><content:encoded><![CDATA[<p><em>(or: How does blockchain mining work?)</em></p>
+<p>A miner has to solve a mathematical problem to validate a block for the Blockhain. The so called <strong>Proof of Work</strong> requires a lot of computing power aka energy and therefore is quite expensive. <strong>Googles BigQuery</strong> has a price model, that charges you for the transferred data and not the computing power. Meaning: You can utilize a lot of computing power for free. If you are able to reproduce the mining algorithm in SQL.</p>
+<p>In this article I first will explain how the mining process works. This is the main concept for a couple of <strong>Blockchain</strong> technologies. My explanation is based on Bitcoin’s blockchain. If you are already familiar with that, you may skip to <strong>part 2</strong>, where I present an SQL query that does the job.</p>
+<h1 id="part-1-the-mathematical-problem-aka-mining-a-block">Part 1: The mathematical problem aka: Mining a block</h1>
+<h2 id="whats-a-hash-again">What’s a hash again?</h2>
+<p>A hash is a kind of unique piece of information calculated from any given input (
+
+
+
+
+  <a href="https://nickyreinert.de/wie-funktioniert-der-sha256-algorithmus-im-detail-teil-1-2-7a0023cf562a">I wrote about that earlier</a>
+
+). There are a lot of hashing algorithms. The blockchain we are talking about uses <strong>SHA256</strong>. It’s important to understand, that a hash is basically just a really large number with always the same length: <strong>256 bit</strong>.</p>
+<p><strong>If you change the input, even just a little, the hash changes</strong>. This makes the hash a pretty good indicator to check if the input data has been tampered: If you know the original hash and you re-calculate the hash for a given information, and both hashes are different, the initial information has been changed.</p>
+<h2 id="why-does-the-blockchain-rely-on-hashes">Why does the blockchain rely on hashes?</h2>
+<p>Every block in a blockchain contains two kind of information: A couple of <strong>transactions details</strong> and a <strong>block header</strong>. Among other details the header contains <strong>two</strong> important <strong>hashes</strong>: One hash for all the transactions of the current block and one hash for the header of the previous block.</p>
+<p>If you would tamper the transaction data of lets say block <strong>#1337</strong>, the hash of this block’s header would change. But as the next block’s header contains a hash for the original block #1337, you could simply compare both hashes and come to the conclusion, that the data in block #1337 has changed.</p>
+<img src="https://nickyreinert.de/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/assets/image7.png" alt="How hashes ensure data integrity in a blockchain"><p>This sounds easy, because calculating one hash only takes milliseconds, even on slow computers. That’s why the blockchain protocol defines a very special requirement that every header’s hash has to meet: The hash of a block header has to be lower than a given number, the target.</p>
+<blockquote>
+<p>S ide note: Besides that there are some other rules that make the calculation even more difficult: For example you need to double-hash the information and you need to calculate the Merkle root of all transactions of the current block.</p>
+</blockquote>
+<p>You can meet this requirement by simply adding an incrementing number to the header information, re-calculate the hash, and see if the new hash is below the target.</p>
+<p>The whole process is so complicated, that even powerful computers will take around 10 minutes to find a solution. That’s by the way a reason why Bitcoin is not the payment method: If you’d like to buy a <strong>coffee</strong>, you may have to wait around 10 minutes until your transaction is confirmed.</p>
+<h2 id="the-block-header">The block header</h2>
+<p>Let’s see what kind of information a block header contains. This is the header of 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://learnmeabitcoin.com/explorer/block/00000000000000000006b9bf976b004581c19d800948d2eab77c8f9e07b9f088?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">block number 727938</a>
+
+
+:</p>
+<img src="https://nickyreinert.de/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/assets/image4.png" alt=""><p>You will find six important fields here:</p>
+<ul>
+<li>a <strong>version</strong> field,</li>
+<li>the hash for the <strong>previous block’s header,</strong></li>
+<li>the <strong>Merkle root,</strong></li>
+<li>a <strong>timestamp,</strong></li>
+<li>a <strong>bits</strong> field, that defines the target and</li>
+<li>a <strong>nonce</strong></li>
+</ul>
+<p>Let me describe those fields in detail:</p>
+<p><strong>The nonce field</strong></p>
+<p>If you take all header fields <strong>except the nonce field</strong>, you get the block message:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">04c04d34702a058fee2c141a685dfc3d18c4f0efc0464d625057060000000000000000005e578fe5fe001059710edbf9f78c1bd15b110faf574723cafde35667633c18084ac23462c0400a17
+</span></span></code></pre></div><p>The SHA256 hash for this looks like that:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">5c96f247d3c6a48b244be859d888dd1ee2a80dd6378cc7e10f31b9d14b78660b
+</span></span></code></pre></div><p>As mentioned above, the protocol requires you to add a specific kind of information to the block message, that leads to a hash below a given value. For starters lets make that easy: Find a number that leads to a hash starting with a zero. What if we add a 1 to the block message? (Remember: This is a hexadecimal number, so I need to add two digits):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">04c04d34702a058fee2c141a685dfc3d18c4f0efc0464d625057060000000000000000005e578fe5fe001059710edbf9f78c1bd15b110faf574723cafde35667633c18084ac23462c0400a17**01**
+</span></span></code></pre></div><p>That’s the resulting hash:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">855ccd41ef49272ab633eff0cf5abed6d543ed5183eaf9f8a32e12a57b7419a9
+</span></span></code></pre></div><p>No leading zeros? You may get a picture of how difficult it is. The actual target value for this block was a hash with <strong>19 leading zeros</strong>. The miner need to (find and) add the number 1.396.904.612 (in hexadecimal 0x534312a4) to the block message to find a fitting hash. And that number is called **nonce **— short for <strong>number used once</strong>. That’s the resulting hash:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">00000000000000000006b9bf976b004581c19d800948d2eab77c8f9e07b9f088
+</span></span></code></pre></div><p>While calculation one hash seems pretty simple, imagine how long it would take for 1 Billion calculations, or even more? Even more? Yes, you heard right: The nonce is a four byte number meaning you have <strong>2³²</strong> possible numbers (<strong>4,294,967,296</strong>) to check (the so called <strong>search space</strong>). And sometimes that’s not enough.</p>
+<h2 id="the-previous-blocks-header-hash">The previous block’s header hash</h2>
+<p>This is just the hash of the header of the previous block. Not much to say here: You cannot change it.</p>
+<h2 id="the-bit-field">The bit field</h2>
+<p>This field defines the above mentioned target. It’s a 4 byte number, too:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">0x170a40c0
+</span></span></code></pre></div><p>A hash is a number with 32 bytes. And that’s strange: How can you limit a 32 byte number using only 4 bytes? Here it is: The first byte of the bit field defines an <strong>exponent</strong>: 0x17. The remaining 3 bytes define the <strong>mantissa</strong>: 0x0a40c0. The base is 256 and you need to substract 3 (length of the mantissa) from the exponent. So this is the formula to calculate the target:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">target = 0x0a40c0 × 256⁽⁰ˣ¹⁷ ⁻ ³⁾⁾
+</span></span></code></pre></div><img src="https://nickyreinert.de/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/assets/image1.png" alt="The bit field"><p>The target will be adjusted every <strong>2,016 blocks</strong>, which is roughly two weeks (6 blocks per hour × 24 hours × 7 days x 2 = 2,016). Why? The mathematical problem needs to be difficult enough to keep the chain safe but it must not be to difficult, because you do not want to wait more than 10 minutes for a transaction to be confirmed. As computing power changes or miners joining and leaving the network, the target and therefore the difficulty as to be adjusted.</p>
+<h2 id="the-merkle-root">The Merkle root</h2>
+<p>The Merkle root is a hash of all transactions of **the current block **(and a little more, I’m not going to much into detail here). Basically it’s pretty easy: You take two transactions and hash them to get Hash #1. Then you take two more transactions, hash them and get Hash #2. Now you take Hash #1 and Hash #2, hash it and get: Hash #3. You’re building an upside tree, where the transactions are on the bottom and the branches are dozens of hashes eventually leading to the root hash.</p>
+<img src="https://nickyreinert.de/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/assets/image3.png" alt="a simple Merkle root"><p>If the search space is not enough, the miner can change the order of the transactions to create a different Merkle root. This would change the block message and therefore lead to a different hash.</p>
+<h2 id="the-timestamp">The timestamp</h2>
+<p>The timestamp, well, shows at what time the block was validated. In fact there is a lot more to tell about the timestamp, but not in a mathematical way.</p>
+<p>The protocol uses the timestamp to see, how fast blocks are mined. As already explained, the network uses this value to adjust the difficulty.</p>
+<img src="https://nickyreinert.de/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/assets/image6.png" alt="The date field"><p>A miner can use the timestamp field to increase the search space. A valid timestamp has to be <strong>greater</strong> than the median timestamp of the last 11 blocks and lower than the network-time plus <strong>2 hours</strong>. Eventually this gives you a <strong>3 hour</strong> window where you can adjust the timestamp to gain extra search space. 3 hours are 10,800 seconds (which is roughly 2¹³).</p>
+<h2 id="the-version-field">The version field</h2>
+<p>Last but definitely not least: The version field contains a lot more than you would expect. The version field is 4 bytes long and it</p>
+<ul>
+<li>contains the current protocol version,</li>
+<li>signals readiness for soft fork proposals and</li>
+<li>offers additional search space.</li>
+</ul>
+<p>That’s a lot of information and it’s not that easy to pull it out of those 4 bytes. The current protocol version requires the **first 3 bits **(!) to be at least <strong>0b001</strong> (2 in decimal):</p>
+<img src="https://nickyreinert.de/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/assets/image8.png" alt=""><p>Besides that, the last 13 bits are used for soft forks signaling. This simply means, if a miner is ready for a particular soft fork, he flips on of those bits to 1. Imagine there’s a soft fork BIPx that requires the 1 bit to be flipped, that’s how the miner signals readiness for BIPx:</p>
+<img src="https://nickyreinert.de/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/assets/image10.png" alt=""><p>This would lead to a version field like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">0x20000001
+</span></span></code></pre></div><p>As you may have noticed, this leaves 16 bits open (32 bits at all, mins 3 bits for the version and 13 bits for soft forks = 16 bits left). This gives the miner 2¹⁶ more options to find a good hash! That technique is called overt ASIC boost. Lets take the version field from 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://blockstream.info/block/00000000000000000006b9bf976b004581c19d800948d2eab77c8f9e07b9f088?expand=&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">block #727938</a>
+
+
+ for example: 0x344dc004</p>
+<p>This is the bit representation of the hexadecimal value:</p>
+<img src="https://nickyreinert.de/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/assets/image9.png" alt=""><p>So apparently the miner took 0b1010001001101110 (0d41582) as an additional resource to finally find the fitting nonce 0xa4124353.</p>
+<img src="https://nickyreinert.de/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/assets/image5.png" alt="The version field"><h2 id="block-header-summary">Block header summary</h2>
+<p>So after all you have <strong>six fields</strong> in your header, where only <strong>two fields</strong> are fixed and <strong>cannot</strong> be changed in order to find a hash below the given target: The <strong>bit</strong> field, that describes the <strong>target</strong> itself and the hash for the **previous header — **the vital element of the Blockchain concept…</p>
+<p>Besides that you may change the <strong>nonce</strong>, the one field actually designed to change. The <strong>Merkle</strong> <strong>root</strong>, by re-arranging or considering different transactions. The <strong>version</strong> field and the <strong>timestamp</strong> by exploiting the 3 hour time window.</p>
+<p>To give you an idea how complex it is to utilize at least the <strong>nonce</strong> and the <strong>version</strong> field, I created a Python script that does that for you:</p>
+<h1 id="part-2-using-sql-and-bigquery-to-validate-a-block">Part 2: Using SQL and BigQuery to validate a block</h1>
+<p>Now as you are an expert in mining, let’s try to find a way to mine for free. I will implement a mining algorithm in SQL that iterates through the nonce and the additional version bits to find a hash below a required target. I’m not re-arranging the Merkle root and I will take the timestamp as a given value.</p>
+<p>To make the whole process understandable, I will start from within the inner loop and calculate the hash from a given header, that already contains all the correct “answers”. I’m using the header for 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://blockstream.info/block/000000000000000000078c7ad45ab182796bbb419c361aa3eaffaa8ddd00d4f0?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">block #727155</a>
+
+
+ with all the information already in the right format. After we understand the hashing process in BigQuery, we will build the header field by field and finally add the two loops.</p>
+<p>And here they are — the variables for my <strong>six header fields.</strong> Remember that the version field contains the actual version as well as the soft fork signals.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"># header for block 727155DECLARE hash_prev_block STRING DEFAULT &#34;00000000000000000004136135b2e0cd367b56ea6c0dd5b8f79964a4cd7d2718&#34;;DECLARE merkle_root STRING DEFAULT &#34;0d14fac91555d6337b10b2f20de231858fb5225f2ff685cd9b487c235d6e8307&#34;;DECLARE header_datetime STRING DEFAULT &#34;622defb9&#34;;DECLARE bits STRING DEFAULT &#34;170a3773&#34;;DECLARE nonce STRING DEFAULT &#34;c8f05860&#34;;DECLARE version STRING DEFAULT &#34;20002000&#34;;
+</span></span></code></pre></div><p>We simply need to concatenate everything into one string before we hash it. Simply? Wait…there’s one pitfall called Little Endian. Bitcoin wants you to work with values in Little Endian. This is the way how you can write a number. In one sentence: Little Endian starts with the lowest value on the left. Basically you just switch the order of the single digits in your number. Instead of 23 you write 32. The value though remains the same. You achieve that using the REVERSE() function in SQL.</p>
+<p>But beware — there’s more: What would you expect if you <em>reverse</em> the following hexadecimal value to Little Endian?</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">ABCDEF
+</span></span></code></pre></div><p>Is it FEDCBA? No. We are working with bytes. One byte is 8 bits which is enough space for 255 values or in hexadecimal: FF. Two digits. That means we have to see all them values in pairs of two and the correct Little Endian representation is:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">EFCDAB
+</span></span></code></pre></div><p>To get this result you need to read the incoming value in bytes format and afterwards transfer it back to hexadecimal string. So this is how we create the actual header:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">DECLARE header STRING;SET header =    TO_HEX(REVERSE(FROM_HEX(version))) ||    TO_HEX(REVERSE(FROM_HEX(hash_prev_block))) ||    TO_HEX(REVERSE(FROM_HEX(merkle_root))) ||    TO_HEX(REVERSE(FROM_HEX(header_datetime))) ||    TO_HEX(REVERSE(FROM_HEX(bits))) ||    TO_HEX(REVERSE(FROM_HEX(nonce)));
+</span></span></code></pre></div><p>And that’s the header containing all relevant fields in Little Endian:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">0020002018277dcda46499f7b8d50d6cea567b36cde0b23561130400000000000000000007836e5d237c489bcd85f62f5f22b58f8531e20df2b2107b33d65515c9fa140db9ef2d6273370a176058f0c8
+</span></span></code></pre></div><h2 id="the-hashing">The Hashing</h2>
+<p>BigQuerys build-it SHA256 expects a string or a byte but the header is made of hexadecimal values. So first we need to prepare the header, meaning: convert the hexadecimal string to the bytes format:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">DECLARE b_header BYTES;SET b_header = FROM_HEX(header);
+</span></span></code></pre></div><p>Now we can apply SHA256. And as mentioned above, we need to do it two times. The result of SHA256 comes in bytes, o we have to convert it back to a hexadecimal string:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">SELECT TO_HEX(SHA256(SHA256(b_header)))
+</span></span></code></pre></div><p>That finally leads to this result:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">f0d400dd8daaffeaa31a369c41bb6b7982b15ad47a8c07000000000000000000
+</span></span></code></pre></div><p>And now you hopefully remember that we were running everything in Little Endian. To finalize the process we need to convert it back to Big Endian and finally get to this hexadecimal number:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">SELECT TO_HEX(REVERSE(SHA256(SHA256(b_header))));
+</span></span></code></pre></div><p>And that’s the result:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">000000000000000000078c7ad45ab182796bbb419c361aa3eaffaa8ddd00d4f0
+</span></span></code></pre></div><p>that you now may compare to 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://blockstream.info/block/000000000000000000078c7ad45ab182796bbb419c361aa3eaffaa8ddd00d4f0?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">the actual header hash the next block refers to</a>
+
+
+:</p>
+<img src="https://nickyreinert.de/en/2025/2025-08-15-proof-of-work-in-bigquery-and-sql/assets/image2.png" alt=""><h2 id="prepare-the-inner-loop">Prepare the inner loop</h2>
+<p>We’re going to wrap everything into a while-loop, add a break-out condition for safety reasons and start with a comparison of the just found hash and a target. Because that’s what it’s all about: Find a “number” (hash) that is lower than another “number” (target).</p>
+<p>The target value is hidden in the bits field. And as already mentioned, we need to do the math to get the numeric target. The mantissa comes from the last 3 bytes, the exponent is the first byte. And the target comes from this equation:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">target = mantissa * 256 ^ exponent
+</span></span></code></pre></div><p>And this, well, leads to a pretty big number. Actually to big to fit into an INT64. We have to store it into a FLOAT64 and to make it comparable against the previously calculated hash, we need to cast the hash to FLOAT64, too.</p>
+<p>Here’s the loop containing the condition, that returns the nonce — that we are looking for and a little break-out-statement, because we’re just testing how it’s working:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"># skipping previous declarations from above# [...]DECLARE mantissa INT64DECLARE exponent INT64DECLARE target FLOAT64;DECLARE max_iterations INT64 DEFAULT 100;DECLARE iteration INT64 DEFAULT 0;SET exponent = CAST(CONCAT(&#34;0x&#34;, SUBSTRING(bits, 0, 2)) AS INT64)SET mantissa = CAST(CONCAT(&#34;0x&#34;, SUBSTRING(bits, 2, 4)) AS INT64);SET target = mantissa * POWER(256, exponent);WHILE true DO    SET header         TO_HEX(REVERSE(FROM_HEX(version))) ||        TO_HEX(REVERSE(FROM_HEX(hash_prev_block))) ||        TO_HEX(REVERSE(FROM_HEX(merkle_root))) ||        TO_HEX(REVERSE(FROM_HEX(header_datetime))) ||        TO_HEX(REVERSE(FROM_HEX(bits))) ||        TO_HEX(REVERSE(FROM_HEX(nonce)));    SET b_header = FROM_HEX(header);    SET header_hash = TO_HEX(REVERSE(SHA256(SHA256(b_header))));    IF CAST(CONCAT(&#34;0x&#34;, header_hash) AS FLOAT64) &lt; target THEN        SELECT nonce;        BREAK;    END IF;    IF iteration &gt; max_iterations THEN        SELECT &#34;No nonce found&#34;;        BREAK;    END IF;    SET iteration = iteration + 1;END WHILE;
+</span></span></code></pre></div><h2 id="complete-the-loop">Complete the loop</h2>
+<p>Yeah well — isn’t that something? The only thing we need to do now is to actually iterate through the nonce to let the query find the correct value. To have an iterable variable we need one of the type FLOAT64. I will set the value a little bit under the expected target, to speed up the testing:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">DECLARE nonce_dec FLOAT64 DEFAULT 3371190464; 
+</span></span></code></pre></div><p>Now, after the loop starts and before we collect all header details,we need to get the hexadecimal nonce. And at the end of the loop, we increment the decimal nonce:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">WHILE true DO    SET nonce = FORMAT(&#34;%X&#34;, nonce_dec);    SET header =        [....]    SET nonce_dec = nonce_dec + 1;END WHILE;
+</span></span></code></pre></div><h2 id="adding-the-second-loop">Adding the second loop</h2>
+<p>Now as we already learned, it may not be enough to test 2⁶⁴ possible numbers to find a fitting nonce. That’s why we’re going to add another loop to use the <strong>version field</strong> for some additional search space. Unfortunately this is a little more complicated. So, what do we need? Binary numbers!</p>
+<p>This is the version for our famous block # 727155. Again we’re using this as an example. If you’d like to mine a new block, you need to adjust at least the soft fork part.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">0x20002000
+</span></span></code></pre></div><p>In binary that is:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">00110100010011011100000000000100
+</span></span></code></pre></div><p>The last 13 bits are representing the soft work readiness. That’s a given value. The version is pre-defined to be (at least) 001 for the first 3 bits. We’re taking the easy route here and are going to declare this in binary already. The remaining 16 bits are up and ready to be iterated through:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">DECLARE soft_forks STRING DEFAULT &#34;0000000000000&#34;;DECLARE version_roller INT64 DEFAULT 1;DECLARE version_roller_bin STRING;DECLARE version_bits STRING DEFAULT &#34;001&#34;;
+</span></span></code></pre></div><blockquote>
+<p>Please note, that I’m setting the version_roller to 1— that’s the one used in the block we are working on. Again, this is to speed up the demonstration here.</p>
+</blockquote>
+<p>We will use an additional outer loop to iterate over the version roller. The iteration comes at the end, at the beginning of the loop we need to process the decimal value to get 16 bits out from it and press it into the hexadecimal format:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">main_loop: WHILE true DO        SET version_roller_bin = SUBSTR(bqutil.fn.to_binary(version_roller), -16);    SET version = FORMAT(&#34;%X&#34;, bqutil.fn.from_binary(CONCAT(version_bits, version_roller_bin, soft_forks)));WHILE true DO        [....]    END WHILE;    SET version_roller = version_roller + 1;END WHILE;
+</span></span></code></pre></div><p>Take care of the label I set here to address the loop: <strong>MAIN_LOOP</strong>. I <strong>have to reference</strong> the outer loop when breaking from inside the inner loop:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">    [...]    BREAK main_loop;    [...]
+</span></span></code></pre></div><p>Check out the full script in final part.</p>
+<h2 id="congratulations-and-conclusion">Congratulations and Conclusion</h2>
+<p>Basically that’s it. That’s how the full script should look like this (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gist.github.com/nickyreinert/2d0936922bbf242429c21af3c5b6866b?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">gist.github.com</a>
+
+
+). Feel free to increase the value for <strong>max_iterations</strong> and set the starting value for <strong>nonce_dec</strong> to 0 and see how long it will take Google to find the correct nonce.</p>
+<p>This is a lot of weird SQL stuff and far away from SELECT * FROM table. Is it worth it? Well, I set the starting nonce to 3370194460 and executed the script.</p>
+<p>Spoiler Alert: After 10 minutes I stopped the query. Another approach (see below) seems way faster, though it’s a cheating with the actual calculations.</p>
+<h2 id="disclaimer">Disclaimer</h2>
+<p>I will not loose much words about <strong>Proof of Work.</strong> The process itself is sophisticated and somehow thoughtfull… as well as a little weird. But above all it’s also a huge wast of energy and there are better ways to achieve the same outcome. I’d like to end with a quote from another author on Medium who said:</p>
+<blockquote>
+<p>You’ve got to wonder what we’d achieve if we used even a fraction of this computing power for medical research instead…</p>
+</blockquote>
+<h1 id="additional-ressources">Additional ressources</h1>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/fcats-blockchain-incubator/understanding-the-bitcoin-blockchain-header-a2b0db06b515?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">This is a pretty good and helpful medium article</a>
+
+
+ about the Blockchain header by RJ Rybarczyk. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://learnmeabitcoin.com/explorer/block/bits/170a40c0?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">This is a website</a>
+
+
+ that provides a lot of technical background information as well as tools to calculate hashes or browse the Blockchain.</p>
+<p>A couple of years ago Uri Shaked also [wrote about this topic](I stumbled over his article while doing research. But he was pursuing a different approach. First of all he was using a <strong>random feature</strong> to find a fitting nonce. I also considered this before, but as you cannot ensure to ge the same random value twice, you will waste a lot of time (he actually calculated the same nonce within 20 seconds, which still is faster than my approach). Besides that he was using sub-queries to create temporary tables filled with the nonce.</p>
+]]></content:encoded><atom:updated>2026-06-16T20:56:44+02:00</atom:updated><category>blog</category><category>anleitungen</category><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item><item><title>Web 3.0 explained, without the hype</title><link>https://nickyreinert.de/en/2022/2022-08-01-web3-withouth-the-hype/</link><pubDate>Mon, 01 Aug 2022 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2022/2022-08-01-web3-withouth-the-hype/</guid><description>Everyone is talking about Web 3.0 and it’s “driving technologies” Blockchain, Bitcoin, NFT or the Metaverse. Terms that belongs to every company’s roadmap if it’s want to be innovative. But if you try to find information about — let’s take Bitcoin — you’ll quickly find yourself on some …</description><content:encoded><![CDATA[<p>Everyone is talking about <strong>Web 3.0</strong> and it’s “driving technologies” <strong>Blockchain</strong>, <strong>Bitcoin</strong>, <strong>NFT</strong> or the <strong>Metaverse</strong>. Terms that belongs to every company’s roadmap if it’s want to be innovative. But if you try to find information about — let’s take Bitcoin — you’ll quickly find yourself on some cryptocurrency site that is celebrating the technology, declaring a growth of 1.000 % and then trying to sell you something. That’s where I’m jumping in: Let me try to describe those four main technologies as simple as possible, without the hype. And at the end you’ll kindly buy 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://opensea.io/assets/matic/0x2953399124f0cbb46d2cbacd8a89cf0599974963/85924082302081312152251891657020775129690493546484874721949341267311034630145?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">my very arty NFT</a>
+
+
+.</p>
+<blockquote>
+<p>Disclaimer: I’m pretty sure there are some details missing, maybe even important facts. Tell me, I will add it. This article is under permanent construction.</p>
+</blockquote>
+<h2 id="the-metaverse">The Metaverse</h2>
+<h3 id="what-is-the-metaverse">What is the Metaverse?</h3>
+<p>The term itself comes from the science fiction author <strong>Neal Stephenson</strong>. He “invented” it for his 1992 story “Snow Crash”. The concept of the <strong>Metaverse</strong> is quite similar to the well-known <strong>Cyberspace</strong>, a term first used in 1982 by author <strong>William Gibson</strong>. While “cyber” comes from the greek word “kybernetes”, meaning “steersman”, meta comes from the greek word for “beyond”.</p>
+<p>The suffix <em>verse</em> will probably remind you of the word <em>universe</em> which comes from the Latin word for “all things”. And the suffix <em>space,</em> yeah well I guess you get it, is not so far away from <em>the universe</em>.</p>
+<img src="https://nickyreinert.de/en/2022/2022-08-01-web3-withouth-the-hype/image.png" alt="alt text"><p>Basically both terms, <strong>Metaverse</strong> and <strong>Cyberspace</strong>, could stand for a virtual reality where you can do everything you want to do — respectively the “owner” allows you to do.</p>
+<p>The main idea is to use the <strong>Metaverse</strong> not only to play games, but also to do everyday stuff: to buy shoes, operate machines, visit your lawyer and cut the hair of your virtual avatar. And if you like abbreviations, here are some: You can enjoy the <strong>Metaverse</strong> as a virtual reality (<strong>VR)</strong> but also <strong>augmented</strong> or <strong>mixed reality (AR, MR)</strong>.</p>
+<p>The idea of the <strong>Metaverse</strong> holds room for philosophical discussion. It sounds tempting to do everything online. What if you don’t need the real world anymore? Imagine you will be connected to the <strong>Metaverse</strong> from the very beginning of your life. Imagine that every sense will be simulated and your needs are satisfied by stimulation of particular parts of your brain and youl’ll be fed by nutrition infusions. Imagine that you will start using a <strong>Metaverse</strong> inside the <strong>Metaverse</strong>! Are we already living in a <strong>Metaverse</strong>?</p>
+<h3 id="is-the-metaverse-new">Is the Metaverse new?</h3>
+<p>No. As already mentioned, the term itself is around 30 years old. And also the technical idea is not new: In 2003 a platform called “<strong>Second Life</strong>” was launched. Second Life was not only about gaming, it was also about socializing or establishing a virtual Alter Ego. The current media circus around the <strong>Metaverse</strong> becomes a hype driven by improved technical possibilities.</p>
+<p><strong>Facebook</strong>, looking for new areas of operation, pulled this pretty smart marketing move by naming themself “<strong>Meta</strong>”, which could lead to the assumption that they invented the <strong>Metaverse</strong> — in fact they just trying to hook on this trend.</p>
+<h3 id="does-the-metaverse-requires-nft-or-blockchain">Does the Metaverse requires NFT or Blockchain?</h3>
+<p>No. It may rely on the Internet, that’s all. It relies on someone who is hosting the software and take care of it and it’s users. There is no reason that the <strong>Metaverse</strong> will only work because of and with <strong>Blockchain</strong>, <strong>Bitcoin</strong> and <strong>NFT</strong>.</p>
+<p>Sure you could say, that you need some kind of currency. But that would mean that the Metaverse is focussed on consumption. We don’t want that. Right? Even then, why shouldn’t you use your good old PayPal account with 2FA?Because a Bitcoin transaction is safe? In general: Right. But if you use an intermediate — and that’s what you do — you create a weak point.</p>
+<h3 id="how-can-i-enter-the-metaverse">How can I enter the Metaverse?</h3>
+<p>There is not this one “<strong>Metaverse</strong>”. Right now there are a couple of virtual worlds out there, hosted by different companies. If you for example search the <strong>Oculus</strong> store for “metaverse” you will find a couple of apps claiming to take you into the <strong>Metaverse</strong>. If you search the web for <strong>Metaverse</strong>, you will find a couple of providers offering you access to “their interpretation” of the <strong>Metaverse</strong>, and they are not even connected.</p>
+<p>Compared to the <strong>World Wide Web</strong> — which simply describes all conected web sites, the <strong>Metaverse</strong> is a term not covered by one single solution. Maybe sometime in the future someone develops a protocol or a standardized system like <strong>Tim Berner Lee</strong> once did for the World Wide Web. Although there is not “one Metaverse”, I will stick to this term, because “Metaverses” just sounds strange.</p>
+<p>If you want to enter one of those <strong>Metaverses</strong> (sounds strange, right?), a virtual head set is the most common way. This will give you the full experience. But you could also just open a <strong>browser</strong> and go to sandbox.game or decentraland — two quite populare but separated virtual worlds — and walk through the virtual landscapes there, purchase land, talk to people. Even a smart <strong>Smart TV</strong> could take you into the <strong>Metaverse</strong>. In the far future it’s maybe an USB interface in the back of your head. Then the <strong>Metaverse</strong> will probably be more than an audio-visual simulation; it will probably feed all other senses.</p>
+<h2 id="the-blockchain">The Blockchain</h2>
+<h3 id="what-is-the-blockchain">What is the Blockchain?</h3>
+<p>A <strong>blockchain</strong> is kind of a database, but please don’t call it that. A block is a container for data and therefore information. As all blocks are connected they eventually form a chain: The <strong>blockchain</strong>. How the blocks are connected is one of the most important selling points: Every block comes with a block header that contains, among other fields, two important fields: One field holds a hash for all the information of the current block’s payload, another field contains the hash for the previous block’s header. This makes the information within the blockchain secure: If you tamper the data of one block, you need to re-create all the hashes of the following blocks.</p>
+<img src="https://nickyreinert.de/en/2022/2022-08-01-web3-withouth-the-hype/image-1.png" alt="Now you know"><h3 id="is-there-one-blockchain">Is there <code>one</code> Blockchain?</h3>
+<p>No. As more and more, in fact thousands, new application areas emerged, there are all kind of <strong>blockchains</strong> out there in the wild. There are public and private <strong>blockchains</strong>, there are different confirmation processes (describing how a new block is considered to be valid) and there are <strong>blockchains</strong> holding cryptocurrencies, contracts, applications and everything else that could possibly be digitalized.</p>
+<h3 id="is-the-blockchain-new">Is the Blockchain new?</h3>
+<p>The first mentions of this concept can be found in the early 1980s. In 2008 the main idea was improved by a yet not know individual (or group?), who proposed some additional features, like decentralization and hashing. The fact that this mechanism is at least 14 years old, which is a lot in information technology, should show that a <strong>blockchain</strong> is an old hat.</p>
+<h3 id="is-the-blockchain-decentralized">Is the Blockchain decentralized?</h3>
+<p>Yes. The concept itself is based on a network of connected hosts. Every host holds a full copy of a <strong>blockchain</strong> and every host can confirm new blocks. A <strong>blockchain</strong> is fully decentralized by design.</p>
+<p>But…</p>
+<p>The service based on a <strong>blockchain</strong> are not necessarily decentralized. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://bitcoin.org/en/full-node?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Setting up the Bitcoin blockchain is not a simple thing</a>
+
+
+. And that’s the documentation of one of the most popular Blockchain projects, don’t try to get your head around installing the more niche ones.</p>
+<p>The concept is totally decentralized, but to make it usable by the public and therefore use it in a commercial way, a lot of companies arised in this field of business. They are offering access to several services hosted on the Blockchain. And if there’s a single company, it’s not centralized anymore. Now you have a single point of failure.</p>
+<p>Besides that, from a technical perspective this “decentralisation” is not a big deal. Modern databases are able hold up with this feature. A lot of popular databases support replication across several locations, like MongoDB and its replica set architecture. Not peer-2-peer enough for you? There are even real peer-2-peer databases, like OrbitDB.</p>
+<h3 id="is-a-blockchain-secure">Is a Blockchain secure?</h3>
+<p>The mechanism itself is pretty secure and safe against tampering or manipulating existing information. That is a big win. Though this does not mean that all applications based on the blockchain are secure. First of all: Security is not inheritable. As just mentioned above, the <strong>blockchain</strong> comes to you via a provider — the vulnerable point.</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.ftc.gov/news-events/data-visualizations/data-spotlight/2022/06/reports-show-scammers-cashing-crypto-craze?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">It happens on a regular base</a>
+
+
+, that people get scammed or loose money when dealing with <strong>blockchain</strong> based services. Besides that, the current implementation with <strong>SHA256</strong> may loose it’s weight as soon as we are able to use Quantum computers. And that only describe two weak spots, there are way more, starting with “social engineering” and up to the 51% percent attack.</p>
+<h3 id="is-a-blockchain-the-better-database">Is a Blockchain the better database?</h3>
+<p>While it’s arguable that a <strong>blockchain</strong> is a database at all, I would never consider a <strong>blockchain</strong> the <em>better</em> database. As always it depends on the use case. A Blockchain is an option to store data in safe way, but you cannot — like it’s just not possible — change the data in a <strong>blockchain</strong>. You would need to add a new block. Besides that, a <strong>blockchain</strong> is probably too slow o be a good database.</p>
+<h3 id="is-the-blockchain-useless">Is the Blockchain useless?</h3>
+<p>A blockchain has three main features: It’s <strong>transparent</strong>, it’s <strong>secure</strong> and it’s running <strong>decentralized</strong>. It’s not useless, it’s a nice piece of technology. But it’s not the answer to everything. It’s best known use case is the transaction ledger. You can also use it to store security relevant source code in it or contracts (see → <strong>NFT</strong>). But that does not mean, that you must implement it into your business processes. It’s just another option if your looking for solutions.</p>
+<h2 id="the-bitcoin--the-cryptocurrency">The Bitcoin / the Cryptocurrency</h2>
+<h3 id="what-is-the-bitcoin-what-is-a-cryptocurrency">What is the Bitcoin? What is a Cryptocurrency?</h3>
+<p>The Bitcoin is the oldest cryptocurrency, “found” in 2008 by the mysterious <strong>Nakamato</strong> — if this is his real name. <strong>Bitcoin</strong> is using a <strong>blockchain</strong> as it’s ledger. And that’s why it’s called a <strong>Cryptocurrency</strong>: A blockchain uses cryptographic algorithms to protect it’s integrity. While <strong>Bitcoin</strong> is the mother of all cryptocurrencies, all her successors are called <strong>Altcoins</strong> — alternative coins. Except maybe <strong>Ethererum</strong> , another quite old and important cryptocurrency.</p>
+<img src="https://nickyreinert.de/en/2022/2022-08-01-web3-withouth-the-hype/image-2.png" alt="Mother Bitcoin"><p>The term currency however is a little misleading for two reasons. First: As everyone could set up a cryptocurrency this kind of contradicts the concept of a classical currency, controlled by a governmental entity. Still it allows interesting new concepts within our economic system: Theoretically everyone is able to create a currency to exchange values.</p>
+<p>Second cryptocurrencies implement dozens of different concepts and follow different goals; they are not only for payment: Some of the <strong>Altcoins</strong> are used for payment, some for voting in a network, some of them are just for fun, like the notorious <strong>Dogecoin</strong>.</p>
+<p>Right now there exist more than <strong>10.000</strong> so called <strong>cryptocurrencies</strong>; compared to <strong>160 official classical currencies</strong>.</p>
+<h3 id="are-cryptocurrencies-anonymous">Are cryptocurrencies anonymous?</h3>
+<p>Yes. The underlying concept supports privacy and anonymity — but it’s hard to maintain for several reasons.</p>
+<p>How to get your hands on <strong>Bitcoin</strong>? You can either try to participate in the high competitive market of mining or you need something in exchange, like a real currency. There are some <strong>Bitcoin</strong> ATMs where you exchange real money into <strong>Bitcoin</strong>. But this is quite a limited service. You could also purchase vouchers or cash cards, like <strong>PaySafe</strong>, to buy <strong>Bitcoin</strong> online.</p>
+<p>That are your options. For the typical user this may be to complicated and he or shee will just create an account with an exchange and buy some <strong>Bitcoin</strong> with his credit card. Anonymity: Gone.</p>
+<p>And that’s not even all: Most governments try to regulate and control cryptocurrencies to prevent criminal use or financial “gambling”. Anonymity: Gone, now for sure.</p>
+<p>In fact there are <strong>Altcoins</strong> focussed on privacy, the so called <strong>PrivacyCoins</strong>, like <strong>Monero</strong>. Still the problem occurs, that you need to get your hand on those currencies.</p>
+<p>You could maintain anonymity but it requires some efforts. Paying your <strong>Pornhub</strong> account to hide it from your wife is maybe not worth the effort. Setting up an anonymous payment channel to support an endangered informant? Totally worth it. To support illegal weapon trades? Morally not acceptable, but probably your best option.</p>
+<p>Anonymity is in the DNA of Cryptocurrencies but it’s not a guaranteed feature.</p>
+<h3 id="are-cryptocurrencies-decentralized">Are cryptocurrencies decentralized?</h3>
+<p>The same answer applies here: It depends! The underlying technology, the blockchain, is per definition based on a decentralized network of nodes. But again the reality kicks in: Imagine you want to buy something online and want to pay using Bitcoin. You need to set up a Wallet or even a Full Node. That’s not “plug-and-play”.</p>
+<p>That’s why third party payment provider emerged. They enable the common user to access the cryptocurrency space. No matter if it’s a cryptocurrency exchange or a payment provider: It’s a platform. And platforms contradict the idea of a decentralized payment system. Again.</p>
+<p>And that’s not all. The confirmation of new blocks via the so called “<strong>Proof Of Work</strong>” requires a lot of computing power. Currently a few big players in this mining business hold the “
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://finance.yahoo.com/news/does-bitcoin-mining-monopoly-problem-181528719.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">computing monopoly</a>
+
+
+” for this process for the <strong>Bitcoin Blockchain</strong>.</p>
+<p>Of course there are alternative methods of block confirmation, like the <strong>Proof of Authority</strong>. Meaning: Only a chosen authority is allowed to confirm — do you see the conflict between “decentralization” and “authority”?</p>
+<p>What about “<strong>Proof of Stake</strong>”? This allows a conformation by participating parties with a given amount of staked value. This is probably the most “decentralization” we could get.</p>
+<p>Decentralization is in the DNA of Cryptocurrencies but it’s not a guaranteed feature.</p>
+<h3 id="are-cryptocurrencies-the-future-of-payment">Are cryptocurrencies the future of payment?</h3>
+<p>This is actually hard to imagine.</p>
+<p>Let’s start with the speed of processing: Bitcoin relies on the “<strong>Proof of Work</strong>” concept. And this literally dictates a 10 minute time-frame before a transaction will be confirmed. That does not sound like a convenient payment replacement when you’re just about to get a coffee at Starbucks, right?</p>
+<p>There are approaches to solve this problem. One promising idea is the “<strong>Lightning network</strong>”: a network that connects two payment participants with a payment channel and allows immediate payments. But you need to consider two things: The payment channel has to be initialized on the Blockchain: Meaning: It’s not something that you set up ad hoc. Also the <strong>Lightning</strong> <strong>network</strong> is disconnected from the Blockchain. You loose all the advantages the Blockchain offers. That does not mean that the Lightning Network is insecure. It has some sophisticated implementations to grant secure transactions. But it’s not the Blockchain. You want to secure financial transactions on the Blockchain, but you need to implement an additional layer as an intermediate ledger? You see the irony.</p>
+<p>The next thing is the <strong>volatility</strong> of most cryptocurrencies. In 2010 you could buy 1 Bitcoin for 0,08 USD. Ten years later Bitcoin hit the 50.000 USD mark. If you want to sell goods for Bitcoin it requires a completely different price calculation system for the whole supply chain. Money needs to meet two requirements: It has to work as an <strong>exchange medium</strong> and as a <strong>value storage</strong>. Something that a cryptocurrency hardly can cover, at least the “value-part”.</p>
+<p><img src="https://nickyreinert.de/en/2022/2022-08-01-web3-withouth-the-hype/image-3.png" alt="alt text">
+Source: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.reddit.com/r/bitcoinmemes/comments/wq6abz/because_bitcoin_leads_to_bosslessness/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://www.reddit.com/r/bitcoinmemes/comments/wq6abz/because_bitcoin_leads_to_bosslessness/</a>
+
+
+</p>
+<h2 id="the-nft">The NFT</h2>
+<h3 id="what-is-a-nft">What is a NFT?</h3>
+<p>NFT is short for <strong>Non-Fungible Token</strong> and is one famous application based on the blockchain technology. The token is like a contract containing a reference to a (digital) asset. And that asset can be everything from a piece of art to a software. You also may reference to a physical asset. In short: A <strong>NFT</strong> can be understand as an <strong>evidence of ownership.</strong> The token respectively the contract is saved on a blockchain and therefore the contract ought to inherit all the blockchains advantages: It cannot be tampered.</p>
+<h3 id="is-a-nft-secure">Is a NFT secure?</h3>
+<p>This depends on how you define “secure” and what do you want to achieve.</p>
+<p>The <strong>proof of ownership is secure,</strong> as it’s written to a blockchain.</p>
+<p>But…</p>
+<p><strong>…the resource itself is not secure.</strong> The token is referring to a resource that has to be hosted somewhere. If the resource is lost, the token has no value. Remember 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://opensea.io/assets/matic/0x2953399124f0cbb46d2cbacd8a89cf0599974963/85924082302081312152251891657020775129690493546484874721949341267311034630145/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">my very arty NFT</a>
+
+
+ I advertised at the top of this article? Well, you don’t need to buy it. You can download it from here:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[https://lh3.googleusercontent.com/fcjOKIviiAaHM9Qzjj6QM8YFs_ALfBlan4CdJcI24jPl49VlGdjz-dQwMx5gVbHsFpY9tw3Hih43Ts7vkiCND8zaUG3OQkREbfIM4Ck=s0](https://lh3.googleusercontent.com/fcjOKIviiAaHM9Qzjj6QM8YFs_ALfBlan4CdJcI24jPl49VlGdjz-dQwMx5gVbHsFpY9tw3Hih43Ts7vkiCND8zaUG3OQkREbfIM4Ck=s0)
+</span></span></code></pre></div><p>(And that’s why I’m giving it away for free, it’s public, anyway)</p>
+<p>As you can see from the host — <strong>googleusercontent</strong> —the NFT exchange OpenSea does not even host the file on it’s own. If google takes the file down, it’s gone.</p>
+<p>Of course there exists solutions where the resource is stored inside the blockchain and therefore uses the advantage of decentralization — but it’s not a granted feature. Ask for it.</p>
+<p><strong>And finally:</strong> The resource is not secured against unwanted duplication. Everyone could download 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://img.seadn.io/files/abb825f65f440dea6d492d6872c36fcd.png?fit=max&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">the very precious bored ape</a>
+
+
+.</p>
+<p>Let’s sum it up: <strong>NFT have an</strong> <strong>ideational value</strong>.</p>
+<img src="https://nickyreinert.de/en/2022/2022-08-01-web3-withouth-the-hype/image-4.png" alt="Adam Sacks (https://twitter.com/adamsacks/status/1450162259733491715?)"><h3 id="is-nft-a-good-investment-like-rare-art">Is NFT a good investment, like rare art?</h3>
+<p>The previous paragraph explained the background, let’s emphasize it: If you want to speculate: Buy NFT. But don’t spend your hard earned money on NFT. Remember this trade from 2021? <strong>Sina Estavi</strong> bought the first Tweet by <strong>Jack Dorsey</strong> for <strong>2.9 Mio. USD</strong>. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.theguardian.com/technology/2022/apr/14/twitter-nft-jack-dorsey-sina-estavi?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">In 2022 he tried to sell it</a>
+
+
+. The highest bid was around 7,000 USD. This is the Tweet in question, you can read it for free and you can even print it out and put it on your wall:</p>
+<blockquote>
+<p>just setting up my twttr (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://twitter.com/jack/status/20?lang=de&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Jack Dorsay, 2006 on Twitter</a>
+
+
+)</p>
+</blockquote>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://cointelegraph.com/news/how-do-you-assess-the-value-of-an-nft?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Cointelegraph said that there are nine factors determining the value of a NFT</a>
+
+
+: Rarity, Utility, Tangibility, Interoperability, Social proof, Ownership history, Liquidity premium, Speculation, Continual change in the NFT ecosystem.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.youtube.com/watch?v=g_KeXPTJeCk&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Don’t let the hype delude you</a>
+
+
+. The <strong>Blockchain</strong> is an interesting technical concept, but it’s not the solution to everything. It most likely solves a problem. A problem that you most likely do not have.</p>
+<p><strong>NFT</strong> and <strong>cryptocurrencies</strong> are interesting concepts based on the <strong>blockchains</strong>. Cryptocurrencies undoubtedly will have a future. At least a billion dollar industry emerged around those products, but there’s also a pretty good portion of scam.</p>
+<p>And the “Metaverse”? Did you see the screenshot from inside it? Does this look like the future to you?</p>
+<img src="https://nickyreinert.de/en/2022/2022-08-01-web3-withouth-the-hype/image-5.png" alt="Mark Zuckerberg inside the Metaverse, colorized, around 1895"><p>The whole story could use some buzz-diet. When the <strong>World Wide Web</strong> entered the stage it was not driven by profit. Look who’s behind the <strong>Metaverse</strong>. Meta’s main source if income is <strong>digital advertising</strong>.</p>
+<p>As a good read I suggest you this collection of dozens of critical articles about all those new technologies 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/life-itself/web3?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://github.com/life-itself/web3</a>
+
+
+.</p>
+<p><strong>Stay sharp - but don’t be to pessimistic.</strong> You could miss the next big thing.</p>
+]]></content:encoded><atom:updated>2026-04-19T20:27:26+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 20 Minuten</dc:subject><dc:type>article</dc:type></item><item><title>How to sell your NFT — step by step, pros and cons</title><link>https://nickyreinert.de/en/2022/2022-02-19-nft-selling/</link><pubDate>Sat, 19 Feb 2022 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2022/2022-02-19-nft-selling/</guid><description>What is NFT? NFT is short for Non-Fungible Token. In fact it’s a reference to a (digital) asset. And that asset can be everything from a poem to a software. You also may reference to a physical asset. In short: A NFT can be understand as an evidence of ownership.
+The token aka the reference is saved …</description><content:encoded><![CDATA[<h2 id="what-is-nft">What is NFT?</h2>
+<p>NFT is short for <strong>Non-Fungible Token</strong>. In fact it’s a reference to a (digital) asset. And that asset can be everything from a poem to a software. You also may reference to a physical asset. In short: A NFT can be understand as an <strong>evidence of ownership.</strong></p>
+<p>The token aka the reference is saved on a blockchain. Not every blockchain supports non-fungible tokens. One of the most popular blockchains is Ethereum. You can trade this token using a NFT exchange and the trade will also be saved to the blockchain.</p>
+<h3 id="advantages">Advantages</h3>
+<p>The blockchain is a pretty safe place. Usually there’s no way to manipulate the token or the trade.</p>
+<p>Another essential aspect of blockchains is the anonymity. You may just create an account at an exchange, mint your asset (I’ll come to that later) and sell it to some Jane Doe.</p>
+<h3 id="disadvantages">Disadvantages</h3>
+<p>The token is only a reference to a good, e.g. a file that has to be hosted somewhere. If the server is down, the token is kind of worthless.</p>
+<p>Depending on the blockchain’s verification mechanism, any operations such as minting or selling requires computing power and therefore energy. The exchange could charge you with a transaction or minting fee. Though you have to mention, that any conventional market place has operational costs or wants to create revenue.</p>
+<p>Also the ownership of the token does not necessarily mean that the asset can be sold again. If it’s an digital image, and if not forbidden in the terms of sales, the seller of the NFT can sell as many copies as he want.</p>
+<h3 id="how-to-start-with-nft">How to start with NFT</h3>
+<p>First you have to choose an exchange. The most popular one is <strong>OpenSea</strong>. When selecting your exchange, you should consider the transaction fee as well as the cost of <strong>minting.</strong> That’s the initial process of putting the NFT to the blockchain. OpenSea allows you to <strong>mint free of charge.</strong></p>
+<p>Second you need to select a wallet to manage your financials. Depending on the exchange you are using, you can connect different wallets. OpenSea for example currently supports the following wallet providers:</p>
+<img src="https://nickyreinert.de/en/2022/2022-02-19-nft-selling/image.png" alt="Cryptocurrency wallet providers supported by OpenSea"><p>As stated in the screenshot, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://metamask.io/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><strong>MetaMask</strong></a>
+
+
+ is one of the most popular wallets. MetaMask comes as a plugin for the <strong>Firefox</strong> browser as well as an app for <strong>iOS</strong> and <strong>Android</strong>. I will not dive into the important security topic here. But IMHO a browser is not the safest place to manage your wallet. For the sake of convenience we will stick to this simple solution.</p>
+<h3 id="install-the-metamask-wallet-as-a-firefox-plugin-and-add-a-polygon-wallet">Install the MetaMask wallet as a Firefox plugin and add a Polygon wallet</h3>
+<p>After you downloaded the MetaMask plugin and added it to Firefox the plugin will guide you through the initial setup where you create a password protected wallet. Do not forget to write down the password recovery phrase, a combination of several English words.</p>
+<p>The initial setup creates a wallet for the well known Ethereum network. OpenSea supports the Ethereum and the Polygon network. Polygon is also using the Ethereum blockchain, but has no gas fee, the according currency is called <strong>MATIC</strong>. To also add a Polygon wallet to MetaMask just click on “Ethereum Mainnet” in the upper right and select “Add network” to open the “Add network” form.</p>
+<img src="https://nickyreinert.de/en/2022/2022-02-19-nft-selling/image-1.png" alt="Click the “Ethereum Mainnet” element and select"><p>Now you need to provide some technical details that are also listed [in the official documentation]((make sure you do not enter credentials from some fishy website, like medium.com):</p>
+<p>Networkname: <code>Polygon Mainnet</code></p>
+<p>RPC URL: <code>[https://polygon-rpc.com/](https://polygon-rpc.com/)</code></p>
+<p>Chain ID: <code>137</code></p>
+<p>Currency Symbol: <code>MATIC</code></p>
+<p>Block Explorer URL: <code>https://polygonscan.com/</code></p>
+<p>Hit the save button and you are done!</p>
+<h3 id="create-an-opensea-account">Create an OpenSea account</h3>
+<p>Now change over to 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://opensea.io/login?referrer=%2Faccount&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">OpenSea</a>
+
+
+ to connect your Polgyon wallet. Before you click on the MetaMask button, make sure that MetaMask is currently running in the Polygon network by just clicking the icon in the upper right — this is how it should look like:</p>
+<img src="https://nickyreinert.de/en/2022/2022-02-19-nft-selling/image-2.png" alt="alt text"><p>Now head back to OpenSea and click the MetaMask button. A popup should open showing your Polygon account with a <strong>balance of 0 Matic</strong>. Continue and confirm the connection request. When you’re done you should see the account overview like that:</p>
+<img src="https://nickyreinert.de/en/2022/2022-02-19-nft-selling/image-3.png" alt="alt text"><h3 id="optional-add-a-balance-to-your-wallet">Optional: Add a balance to your wallet</h3>
+<p>Creating a NFT means putting a piece of information to the blockchain which requires some <strong>computing efforts</strong>, which leads to <strong>energy consumption</strong> thus <strong>costs money</strong>. OpenSea currently does not charge you for the minting process. Just for the case let me quickly go through the top up-process to get some MATIC into your wallet.</p>
+<p>There are several ways to top up your Polygon wallet with MATIC but unfortunately there’s no simple “checkout with PayPal” button. I’m using 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.binance.com?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Binance</a>
+
+
+, one of the better known exchanges, that also supports MATIC. I’m not leading you through the Binance account creation process.</p>
+<p>You can buy MATIC via the “Buy Crypto” menu on the top and your favorite payment method — just <strong>make sure you select MATIC</strong> as the desired currency.</p>
+<img src="https://nickyreinert.de/en/2022/2022-02-19-nft-selling/image-4.png" alt="alt text"><p>Binance has a bottom limit of <strong>15 EUR</strong> for a trade. This is by fare enough, as you will see later. After you bought some MATIC, the transaction should not take more than a couple of seconds, you need to send the MATIC to your MetaMask wallet. Click on the MetaMask icon in your browser and then on account name — that copies your <strong>wallet address</strong> to the clipboard. <em>Always make sure you selected the Polygon network!</em> It should look like that:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">0x1db3fgEc712347C312B28ADa94bC1afb7Dd170A01
+</span></span></code></pre></div><p>In case you are wondering where Binance hides the transfer function: Clicking “Wallet” in the upper menu and then selecting “Fiat and Spot” leads you to [your asset overview](Now look for the MATIC row and click “Withdraw”. The following form wants your <strong>wallet address</strong>, the required <strong>amount</strong> and of course the <strong>currency</strong> (MATIC) and the <strong>network</strong> (Polygon). As you can see you will be charged with a network fee.</p>
+<img src="https://nickyreinert.de/en/2022/2022-02-19-nft-selling/image-5.png" alt="alt text"><p><strong>Always double check the receiving address</strong>! There is no such thing as undo and as a wallet owner is usually anonymous, you will not be able to get in touch with the beneficiary in case of a wrong transaction.</p>
+<p>The transaction itself should not take more then a couple of seconds. Get back to your MetaMask plugin and celebrate your first successful crypto transaction as it now should show a balance for your Polygon wallet!</p>
+<h3 id="mint-your-asset-and-create-a-token">Mint your asset and create a token</h3>
+<p>From your account overview click <strong>Create.</strong> The first time you do this, it will open a MetaMask popup asking for your confirmation. This step will not trigger any costs. Done that you should see a form where you can upload your asset and provide some meta information that are self explaining. You just need the asset, a name and I suggest a description. Also make sure that you change the <strong>Polygon network</strong> at the bottom of the form. That’s all, you may leave the other settings unchanged.</p>
+<p>I uploaded this image I recently drew:</p>
+<img src="https://nickyreinert.de/en/2022/2022-02-19-nft-selling/image-6.png" alt="The thing"><p>After clicking “Create” OpenSea should confirm the process with a little popup.</p>
+<h3 id="sell-the-nft">Sell the NFT</h3>
+<p>This step is quite simple: Click the sell button and set a price and how long you want to offer your piece of art. The confirmation requires you to sign it again with MetaMask.</p>
+<p>And then you’re done. Your NFT is online and up for sale. Copy the sharing link, write something to gain attention and hope that beyond millions of other items yours will draw a little more attention and eventually a buyer.</p>
+<p>Good luck!</p>
+<p>And there’s the <strong>final</strong> product :)</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://opensea.io/assets/matic/0x2953399124f0cbb46d2cbacd8a89cf0599974963/85924082302081312152251891657020775129690493546484874721949341267311034630145/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://opensea.io/assets/matic/0x2953399124f0cbb46d2cbacd8a89cf0599974963/85924082302081312152251891657020775129690493546484874721949341267311034630145/</a>
+
+
+</p>
+]]></content:encoded><atom:updated>2026-06-16T20:56:44+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 15 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>

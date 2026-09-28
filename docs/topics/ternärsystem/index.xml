@@ -1,2 +1,152 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Ternärsystem auf Nicky Reinert</title><link>https://nickyreinert.de/topics/tern%C3%A4rsystem/</link><description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, KI, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur</description><generator>Hugo 0.162.0</generator><language>de</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sat, 14 Mar 2026 11:34:56 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/tern%C3%A4rsystem/index.xml" rel="self" type="application/rss+xml"/><item><title>BitNet RTR - Und ein kurzer, flacher Ausflug in die Welt der 1-Bit-LLMs</title><link>https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/</link><pubDate>Sat, 14 Mar 2026 11:34:56 +0000</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/</guid><description>BitNet ist ein Framework von Microsoft ( OpenSource! ), das die Nutzung von 1-Bit-LLMs relativ unkompliziert ermöglicht, und zwar auch auf günstiger Consumer-Hardware.
-Der technische Hintergrund Was sind 1-Bit-LLMs? LLMs bestehen im Prinzip auf Millionen von Zahlen - die sogenannten Parameter und …</description><category>blog</category><category>projekte</category><media:content url="https://nickyreinert.de/image.png" type="image/jpeg"><media:title>BitNet RTR - Und ein kurzer, flacher Ausflug in die Welt der 1-Bit-LLMs</media:title></media:content><dc:subject>Lesezeit: 3 Minuten</dc:subject><dc:type>blog</dc:type></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Ternärsystem auf Nicky Reinert</title><link>https://nickyreinert.de/topics/tern%C3%A4rsystem/</link><description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, KI, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur</description><generator>Hugo 0.162.0</generator><language>de</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sat, 14 Mar 2026 11:34:56 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/tern%C3%A4rsystem/index.xml" rel="self" type="application/rss+xml"/><item><title>BitNet RTR - Und ein kurzer, flacher Ausflug in die Welt der 1-Bit-LLMs</title><link>https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/</link><pubDate>Sat, 14 Mar 2026 11:34:56 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/</guid><description>BitNet ist ein Framework von Microsoft ( OpenSource! ), das die Nutzung von 1-Bit-LLMs relativ unkompliziert ermöglicht, und zwar auch auf günstiger Consumer-Hardware.
+Der technische Hintergrund Was sind 1-Bit-LLMs? LLMs bestehen im Prinzip auf Millionen von Zahlen - die sogenannten Parameter und …</description><content:encoded><![CDATA[<p>BitNet ist ein Framework von Microsoft (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/microsoft/BitNet?tab=readme-ov-file&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">OpenSource!</a>
+
+
+), das die Nutzung von 1-Bit-LLMs relativ unkompliziert ermöglicht, und zwar auch auf günstiger Consumer-Hardware.</p>
+<h2 id="der-technische-hintergrund">Der technische Hintergrund</h2>
+<p>Was sind 1-Bit-LLMs? LLMs bestehen im Prinzip auf Millionen von Zahlen - die sogenannten Parameter und genauer genommen: Kommazahlen - vulgo <em>Floats</em>! Diese haben in der Regel eine Genaugkeit von 16-Bit oder eigentlich sogar 32-Bit. 32 Bit erlauben 7 Stellen nach dem Komma. Stell dir also mal Pi vor (weil heuteg ja World-Pi-Day ist): In 32 Bit könntest du Pi mit 7 Nachkommastellen speichern: 3.1415926. (Wie das ganze mit den Kommazahlen und binären Zahlen funktioniert, mit Exponenten und Mantissen, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://nickyreinert.de/2024/2024-01-01-nerd-enzyklop%C3%A4die-43---0x5f3759df/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">habe ich hier genauer erklärt</a>
+
+
+).</p>
+<p>Bei 1-Bit-LLMs werden die Parameter &ldquo;gerundet&rdquo; (bzw. eher quantisiert). Und damit gibt es nur noch -1, 0 oder 1. Anstatt 0.0280101 oder -0.259384 und so weiter.</p>
+<p>Das spart erstmal Speicherplatz. Zwei Zustände lassen sich in einem Bit speichern - also 0 oder 1. Kennen wir alle. Dahinter steckt eine Formel und die lautet:</p>
+<p>$\text{Anzahl der Bits} = \log_2(\text{Anzahl der möglichen Werte})$</p>
+<p>Da wir nun aber drei Werte abbilden (-1, 0 und 1), sieht die Formel so aus:</p>
+<p>$\text{Anzahl der Bits} = \log_2(3) \approx 1.58$</p>
+<p>Und daher rührt auch der Name 1,58-Bit-LLM. Eine theoretische Genauigkeit, den natürlich kann man nicht 1,58 Bit speichern. Aber man kann mehrere Parameter in einem Byte speichern. Das nennt man <strong>Packing</strong>.</p>
+<p>OK. Wenn du bis hierhin durchgehalten hast, stellst du dir sicher jetzt die Frage, warum man denn überhaupt 3 Werte braucht (Ternärsystem)? Weil 0 für unwichtig und 1 für wichtig in einem LLM nicht die erforderliche &ldquo;Qualität&rdquo; liefern würden. Im Ternärsystem kann -1 als &ldquo;total unwichtig&rdquo;, 1 als &ldquo;total wichtig&rdquo; und 0 als &ldquo;völlig egal&rdquo; interpretiert werden. Das ist ein wichtiger Erkenntnisgewinn, wenn es um Sprache geht.</p>
+<p>Deswegen gibt es also 1-Bit-LLMs, die auf diesem Ternärsystem basieren. Und das BitNet Framework erleichtert die Nutzung solcher Modelle.</p>
+<h2 id="bitnet-rtr">BitNet RTR</h2>
+<p>Worum geht es eigentlich? Um einen leicht zu installierenden Wrapper für das BitNet-Framework, den ich gebastelt habe, um es direkt mal auf meinem kleinen, sparsamen NAS zu testen. Das Repo dazu findest du dort:</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/bitNetRTR?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://github.com/nickyreinert/bitNetRTR</a>
+
+
+</p>
+<p>Und die Installation kannst du relativ einfach anstoßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">curl -fsSL https://raw.githubusercontent.com/nickyreinert/bitNetRTR/main/install.sh <span class="p">|</span> bash
+</span></span></code></pre></div><p>Was passiert hier?</p>
+<p>Zunächst mal ziehst du dir das Repo auf deinen Computer, inklusive der Abhängigkeit (nämlich dem BitNet-Framework von Microsoft). Du erhälst dazu einen Docker-Container, in dem der ganze Spaß installiert wird - dein System bleibt sauber. Von draußen kannst du das ganze System steuern:</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/image-0.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/image-0.png" 
+      alt="BbtnetRTR.sh - Management Script"
+      width="200"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>BbtnetRTR.sh - Management Script</figcaption>
+</figure>
+
+<p>Und im Browser sieht das dann so aus:</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/image.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/image.png" 
+      alt="BitNet RTR - Webinterface"
+      width="200"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>BitNet RTR - Webinterface</figcaption>
+</figure>
+
+<p>Der ganze Trödel ist dafür ausgelegt, lokal zu laufen. Das Backend ist zwar per API-Key geschützt, aber ausgefeilte Sicherheitsmaßnahmen wurden nicht implementiert. Für lokale Zwecke ist das völlig ausreichend.</p>
+<p>In der linken Sidebar kannst du ein anderes Modell auswählen und ein paar Conversation-spezifische Parameter anpassen. Nichts besonderes:</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/image-1.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/image-1.png" 
+      alt="BitNet RTR - Webinterface"
+      width="200"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>BitNet RTR - Webinterface</figcaption>
+</figure>
+
+<p>Und dann gibt es noch einen kleinen Statistik-Bereich auf der rechten Seite. Wie du siehst, habe ich nicht zu viel versprochen: Auf der Kiste läuft eine alte 11th Gen Intel CPU - die für einen kleinen Chat aber trotzdem noch zu haben ist:</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/image-2.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/image-2.png" 
+      alt="BitNet RTR - Webinterface"
+      width="200"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>BitNet RTR - Webinterface</figcaption>
+</figure>
+
+<p>Mehr gibt es hier eigentlich auch nicht zu sehen. Ich habe den Spaß &ldquo;Open VVPP&rdquo; genannt. Keine Ahnung warum. <code>( ͡° ͜ʖ ͡°)</code></p>
+<p>Viel Spaß!</p>
+]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>blog</category><category>projekte</category><dc:subject>Lesezeit: 3 Minuten</dc:subject><dc:type>blog</dc:type></item></channel></rss>

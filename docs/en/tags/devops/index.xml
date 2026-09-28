@@ -1,3 +1,499 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>DevOps auf Nicky Reinert</title><link>https://nickyreinert.de/en/tags/devops/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Wed, 19 Mar 2025 12:34:56 +0200</lastBuildDate><atom:link href="https://nickyreinert.de/en/tags/devops/index.xml" rel="self" type="application/rss+xml"/><item><title>How to develop in 2025: Improve your Workflow with VS Code, GitHub &amp; Copilot</title><link>https://nickyreinert.de/en/2025/2025-03-19-developing-vscode/</link><pubDate>Wed, 19 Mar 2025 12:34:56 +0200</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2025/2025-03-19-developing-vscode/</guid><description>VS Code Workspace Settings Shortcuts First of all, I strongly suggest adding some custom shortcuts because the default ones are a bit unintuitive. For example, CTRL + SHIFT + ' gets you to the terminal, while SHIFT + FN + F6 brings you back to the editor, andSHIFT + B opens the sidebar. What a mess! …</description><category>blog</category><media:content url="https://nickyreinert.de/image.png" type="image/jpeg"><media:title>How to develop in 2025: Improve your Workflow with VS Code, GitHub &amp; Copilot - Title Image</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>guide</dc:type></item><item><title>My Python boilerplate and a little Python-Fu</title><link>https://nickyreinert.de/en/2021/2021-02-24-python-foo/</link><pubDate>Wed, 24 Feb 2021 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2021/2021-02-24-python-foo/</guid><description>Let me show you my Python boilerplate and some little nifty standard features I’m working with. You can download the full template from github . This post will probably be extended in the future.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>DevOps auf Nicky Reinert</title><link>https://nickyreinert.de/en/tags/devops/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Wed, 19 Mar 2025 12:34:56 +0200</lastBuildDate><atom:link href="https://nickyreinert.de/en/tags/devops/index.xml" rel="self" type="application/rss+xml"/><item><title>How to develop in 2025: Improve your Workflow with VS Code, GitHub &amp; Copilot</title><link>https://nickyreinert.de/en/2025/2025-03-19-developing-vscode/</link><pubDate>Wed, 19 Mar 2025 12:34:56 +0200</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2025/2025-03-19-developing-vscode/</guid><description>VS Code Workspace Settings Shortcuts First of all, I strongly suggest adding some custom shortcuts because the default ones are a bit unintuitive. For example, CTRL + SHIFT + ' gets you to the terminal, while SHIFT + FN + F6 brings you back to the editor, andSHIFT + B opens the sidebar. What a mess! …</description><content:encoded><![CDATA[<h2 id="vs-code-workspace-settings">VS Code Workspace Settings</h2>
+<h3 id="shortcuts">Shortcuts</h3>
+<p>First of all, I strongly suggest adding some custom shortcuts because the default ones are a bit unintuitive. For example, <code>CTRL + SHIFT + '</code> gets you to the terminal, while <code> SHIFT + FN + F6</code> brings you back to the editor, and<code>SHIFT + B</code> opens the sidebar. What a mess! A more consistent setup can definitely improve your workflow.</p>
+<p>To customize your shortcuts, press <code>CMD + K</code> followed by <code>CMD + S</code> or look up &ldquo;Keybindings&rdquo; in the command palette (<code>SHIFT + CMD + P</code>). There&rsquo;s a small icon on the right to open the actual JSON file, which makes configuration much easier. What about  jumpin between the sidebar, editor, and terminal using the arrow keys while holding <code>CTRL + SHIFT</code>?</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="p">[</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">        <span class="nt">&#34;key&#34;</span><span class="p">:</span> <span class="s2">&#34;ctrl+shift+down&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        <span class="nt">&#34;command&#34;</span><span class="p">:</span> <span class="s2">&#34;workbench.action.terminal.focus&#34;</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        <span class="nt">&#34;key&#34;</span><span class="p">:</span> <span class="s2">&#34;ctrl+shift+up&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        <span class="nt">&#34;command&#34;</span><span class="p">:</span> <span class="s2">&#34;workbench.action.focusActiveEditorGroup&#34;</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        <span class="nt">&#34;key&#34;</span><span class="p">:</span> <span class="s2">&#34;ctrl+shift+left&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        <span class="nt">&#34;command&#34;</span><span class="p">:</span> <span class="s2">&#34;workbench.action.focusActivityBar&#34;</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="p">]</span>
+</span></span></code></pre></div><p>Add more shortcuts to make your mouse-less life easier. But thats not all, I also suggest to use a tool like 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://espanso.org/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Espanso</a>
+
+
+! It&rsquo;s a very powerfull <em>text expander</em> with two main interesting features:</p>
+<ul>
+<li>if you start typing certin chars, it will automaticall expand them to something you configured</li>
+<li>it also provides a quick search feature that you can trigger with <code>OPTION + SPACE</code></li>
+</ul>
+<p>So here&rsquo;s my strategy, let&rsquo;s take some Python commands for example. I am not using unique trigger keywords, but the same one to define particular categories (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gist.github.com/nickyreinert/91e67a7d054878338d1f1dc9fc592ae5?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">see a full example at this Gist</a>
+
+
+)</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln">1</span><span class="cl"><span class="nt">matches</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="w">  </span>- <span class="nt">trigger</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;#p1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="w">    </span><span class="nt">replace</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;source .venv/bin/activate&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="w">  </span>- <span class="nt">trigger</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;#p&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="w">    </span><span class="nt">replace</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;python3 -m venv ./.venv&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="w">  </span>- <span class="nt">trigger</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;#p&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="w">    </span><span class="nt">replace</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;pip3 install -r requirements.txt&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="w">  </span>- <span class="nt">trigger</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;#p&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="ln">9</span><span class="cl"><span class="w">    </span><span class="nt">replace</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;pip3 freeze &gt; requirements.tx&#34;</span><span class="w">
+</span></span></span></code></pre></div><p>When I open the quick search bar, I type <code>#p</code> to get all Python commands. Ofcourse you could also add unique trigger keywords, I prefer it like that because I don&rsquo;t remember all those keywords anywawys. Now I can just show quickly browse through commands for a given category, like JavaScript, Python, C# - you name it!</p>
+<h3 id="containers">Containers</h3>
+<blockquote>
+<p>Warning: Requires Docker!</p>
+</blockquote>
+<p>Next, let&rsquo;s talk about containers! I strongly recommend using containers for your projects. Not all of them, of course, sometimes a virtual environment is totally sufficient. But containers! Oh boy! They are quick, easy, and help keep your system clean. VS Code allows you to set up dev containers—a closed ecosystem where you can configure your development environment. This is especially useful when switching between different languages, frameworks, or systems.</p>
+<p>For example, if you want to test Ruby without installing all the dependencies on your system, create a <code>.devcontainer</code> folder within your workspace and place two files in it: <code>devcontainer.json</code> and <code>Dockerfile</code>.</p>
+<h4 id="example-setup-for-ruby">Example Setup for Ruby:</h4>
+<h5 id="dockerfile"><code>Dockerfile</code></h5>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Dockerfile" data-lang="Dockerfile"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="k">FROM</span><span class="w"> </span><span class="s">ruby:3.2</span><span class="err">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="k">ENV</span> <span class="nv">LANG</span><span class="o">=</span>C.UTF-8<span class="err">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="k">ENV</span> <span class="nv">DEBIAN_FRONTEND</span><span class="o">=</span>noninteractive
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="k">RUN</span> apt-get update <span class="o">&amp;&amp;</span> apt-get install -y build-essential git curl zlib1g-dev <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl">    libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 nodejs <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl">    rm -rf /var/lib/apt/lists/*<span class="err">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="k">ARG</span> <span class="nv">USERNAME</span><span class="o">=</span>vscode
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="k">ARG</span> <span class="nv">USER_UID</span><span class="o">=</span><span class="m">1000</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="k">ARG</span> <span class="nv">USER_GID</span><span class="o">=</span><span class="nv">$USER_UID</span><span class="err">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="k">RUN</span> groupadd --gid <span class="nv">$USER_GID</span> <span class="nv">$USERNAME</span><span class="err">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="k">RUN</span> useradd --uid <span class="nv">$USER_UID</span> --gid <span class="nv">$USER_GID</span> -m <span class="nv">$USERNAME</span><span class="err">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="k">USER</span><span class="w"> </span><span class="s">$USERNAME</span><span class="err">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/workspace</span><span class="err">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="k">RUN</span> gem install bundler<span class="err">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="k">EXPOSE</span><span class="w"> </span><span class="s">3000</span><span class="err">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;irb&#34;</span><span class="p">]</span><span class="err">
+</span></span></span></code></pre></div><h5 id="devcontainerjson"><code>devcontainer.json</code></h5>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Ruby Development&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="nt">&#34;build&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        <span class="nt">&#34;dockerfile&#34;</span><span class="p">:</span> <span class="s2">&#34;Dockerfile&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        <span class="nt">&#34;args&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">            <span class="nt">&#34;USER_GID&#34;</span><span class="p">:</span> <span class="s2">&#34;1000&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">            <span class="nt">&#34;USER_UID&#34;</span><span class="p">:</span> <span class="s2">&#34;1000&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">            <span class="nt">&#34;USERNAME&#34;</span><span class="p">:</span> <span class="s2">&#34;vscode&#34;</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="nt">&#34;settings&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        <span class="nt">&#34;terminal.integrated.defaultProfile.linux&#34;</span><span class="p">:</span> <span class="s2">&#34;bash&#34;</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="nt">&#34;extensions&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        <span class="s2">&#34;rebornix.ruby&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">        <span class="s2">&#34;castwide.solargraph&#34;</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">    <span class="p">],</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">    <span class="nt">&#34;postCreateCommand&#34;</span><span class="p">:</span> <span class="s2">&#34;bundle install&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">    <span class="nt">&#34;remoteUser&#34;</span><span class="p">:</span> <span class="s2">&#34;vscode&#34;</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Save everything, and VS Code will prompt you to create and open the dev container—no need to manage Docker manually! If you don&rsquo;t see the message, open the &ldquo;Remote&rdquo; container manually by clicking the blue icon in the bottom left corner or using the shortcut <code>OPT + COMMAND + O</code>.</p>
+<hr>
+<h3 id="git">Git</h3>
+<p>You don&rsquo;t necessarily need a GitHub account to store repositories remotely, but I encourage initializing a repository locally. This helps you track changes and maintain your work efficiently.</p>
+<h4 id="configuring-multiple-github-accounts">Configuring Multiple GitHub Accounts</h4>
+<p>If you use different GitHub accounts (e.g., for personal and professional projects), modify your Git config file:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">[user]</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="na">name</span> <span class="o">=</span> <span class="s">John Doe
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="s">    email = john.doe@example.com</span>
+</span></span></code></pre></div><h4 id="branching-strategy">Branching Strategy</h4>
+<p>If you don&rsquo;t use Git daily, consider a simple branch strategy:</p>
+<ol>
+<li>Use the <code>main</code> branch for stable code.</li>
+<li>Use a <code>debug</code> branch for hotfixes or minor fixes.</li>
+<li>Use a <code>dev</code> branch for new features.</li>
+</ol>
+<h5 id="example-workflow">Example Workflow:</h5>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">git checkout dev
+</span></span><span class="line"><span class="ln">2</span><span class="cl">git pull origin main
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"># Make changes</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">git commit -m <span class="s2">&#34;Your commit message&#34;</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">git push origin dev
+</span></span></code></pre></div><p>Once you&rsquo;re ready to merge changes:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">git checkout main
+</span></span><span class="line"><span class="ln">2</span><span class="cl">git merge dev
+</span></span><span class="line"><span class="ln">3</span><span class="cl">git push origin main
+</span></span></code></pre></div><p>This keeps your codebase organized and reduces conflicts. If needed, Copilot can assist with Git commands!</p>
+<hr>
+<h3 id="copilot">Copilot</h3>
+<p>Copilot enhances your workflow with:</p>
+<ul>
+<li>Inline code completion</li>
+<li>Inline chat (<code>CMD + I</code>)</li>
+<li>An editor that handles multiple files (<code>CMD + SHIFT + I</code>)</li>
+<li>General assistance via chat</li>
+<li>Commit message suggestions</li>
+</ul>
+<h4 id="improving-copilots-effectiveness">Improving Copilot&rsquo;s Effectiveness</h4>
+<p>To help Copilot assist you better:</p>
+<ul>
+<li>Use meaningful function names.</li>
+<li>Add inline comments.</li>
+<li>Write clean, structured code.</li>
+</ul>
+<h4 id="customizing-copilot">Customizing Copilot</h4>
+<p>You can fine-tune Copilot&rsquo;s behavior by modifying your workspace settings. Create a <code>settings.json</code> file inside the <code>.vscode</code> folder and add custom configurations.</p>
+<h5 id="example-settings">Example Settings:</h5>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="ln">1</span><span class="cl"><span class="s2">&#34;github.copilot.chat.localeOverride&#34;</span><span class="err">:</span> <span class="s2">&#34;fr&#34;</span><span class="err">,</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="s2">&#34;github.copilot.chat.commitMessageGeneration.instructions&#34;</span><span class="err">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="p">{</span><span class="nt">&#34;instruction&#34;</span><span class="p">:</span> <span class="s2">&#34;Start every commit message with FOOBAR&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="p">]</span><span class="err">,</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="s2">&#34;github.copilot.chat.codeGeneration.useInstructionFiles&#34;</span><span class="err">:</span> <span class="kc">true</span>
+</span></span></code></pre></div><p>Now, create a <code>./.github/copilot-instructions.md</code> file with your custom instructions. Example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-md" data-lang="md"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">-</span> My project goal is a simple and performant API interface.
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="k">-</span> Code must follow modern coding standards.
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="k">-</span> Functions should have a maximum of 20 lines.
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="k">-</span> No redundant functions.
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="k">-</span> Each function must have a corresponding test function.
+</span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="k">-</span> Include example data for testing.
+</span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="k">-</span> Use multiple files, grouping functions logically.
+</span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="k">-</span> Prefer class-based structures over standalone functions.
+</span></span></code></pre></div><h4 id="finding-more-rule-sets">Finding More Rule Sets</h4>
+<p>For additional guidance, check these resources:</p>
+<ul>
+<li>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/PatrickJS/awesome-cursorrules/tree/main/rules?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Awesome Cursor Rules</a>
+
+
+</li>
+<li>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/Mawla/cursor_rules?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Mawla Cursor Rules</a>
+
+
+</li>
+<li>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/instructa/ai-prompts?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Instructa AI Prompts</a>
+
+
+</li>
+</ul>
+<hr>
+<h3 id="claude-chatgpt-gemini-and-probably-even-v0">Claude, ChatGPT, Gemini, and Probably Even v0!</h3>
+<p>It doesn’t end with <strong>Copilot</strong>. And again: <strong>You can achieve a lot with free plans!</strong> But if you really want to improve your process and build big things, consider using LLMs.</p>
+<p>Before diving in, heads up: <strong>Don’t make the same mistake</strong> 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://x.com/leojr94_/status/1901560276488511759?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">as this poor guy</a>
+
+
+:</p>
+<blockquote>
+<p><em>Guys, I&rsquo;m under attack ever since I started sharing how I built my SaaS using Cursor. Random things are happening—maxed-out usage on API keys, people bypassing the subscription, creating random stuff in the database.</em></p>
+</blockquote>
+<p>Don’t expect an LLM to generate a perfect app if you just throw some poorly written sentences at it. <strong>Garbage in, garbage out.</strong>  So, what should you do instead? <strong>Chain it!</strong>, baby.</p>
+<ul>
+<li><strong>Start simple.</strong></li>
+<li><strong>Iterate.</strong></li>
+<li><strong>Split your project into independent parts.</strong></li>
+</ul>
+<p>Think about developing an Android App for example. How would a human developer approach the task, what information would be required?</p>
+<ol>
+<li>The overall concept: What is the app about? What language is it written in?  Let&rsquo;s call it the &ldquo;soul&rdquo;</li>
+<li>The UI/UX concept: How should it look and feel?  The &ldquo;body&rdquo;!</li>
+<li>And, to stick to the image: The &ldquo;viscera&rdquo;:  The architecture, functions, features and internal structure.</li>
+</ol>
+<p>Now, ask ChatGPT to consider this <strong>&ldquo;trinity&rdquo;</strong> and generate <strong>three structured pre-prompt instructions</strong> for you.</p>
+<ol>
+<li>In <strong>Copilot</strong>, use the <strong>soul</strong> prompt in your pre-prompt instructions, as mentioned above.</li>
+<li>Then, feed the <strong>body</strong> and <strong>viscera</strong> prompts into Copilot, Claude, or v0 to refine the results further.</li>
+</ol>
+<p>Of course, this isn’t a cut into stone,but it should give you a <strong>structured approach</strong> to leveraging AI effectively.</p>
+<p>But do not forget this: AI Is a Tool, Not a Magic Wand. Don’t take AI-generated results for granted. The golden rule from the early internet days still applies:</p>
+<blockquote>
+<p><strong>&ldquo;A computer is only as smart as the person using it.&rdquo;</strong></p>
+</blockquote>
+<p>Always <strong>question and understand</strong> the output.  Don’t expect AI to <strong>perfectly execute any task instantly and without errors</strong>.  Because: The developer is still you.</p>
+]]></content:encoded><atom:updated>2026-06-03T13:14:29+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>guide</dc:type></item><item><title>My Python boilerplate and a little Python-Fu</title><link>https://nickyreinert.de/en/2021/2021-02-24-python-foo/</link><pubDate>Wed, 24 Feb 2021 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2021/2021-02-24-python-foo/</guid><description>Let me show you my Python boilerplate and some little nifty standard features I’m working with. You can download the full template from github . This post will probably be extended in the future.
 Summary The boilerplate will help you with the following features:
-Use virtual environments manage …</description><category>blog</category><media:content url="https://nickyreinert.de/python-boilerplate-patterns.png" type="image/jpeg"><media:title>Python Boilerplate Patterns Tutorial</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>
+Use virtual environments manage …</description><content:encoded><![CDATA[<p>Let me show you my Python boilerplate and some little nifty standard features I’m working with. You can download the 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gist.github.com/nickyreinert/45c019f318fe7a10232327cdf8b119f4?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">full template from github</a>
+
+
+. This post will probably be extended in the future.</p>
+<h2 id="summary">Summary</h2>
+<p>The boilerplate will help you with the following features:</p>
+<ul>
+<li>Use virtual environments</li>
+<li>manage requirements</li>
+<li>notifications via Telegram</li>
+<li>manage command line arguments</li>
+<li>list comprehension</li>
+<li>print progress in loops</li>
+<li>measure time</li>
+<li>play a sound after a loop is finished</li>
+</ul>
+<h2 id="virtual-environment">Virtual environment</h2>
+<p>I like working with virtual environments. It helps me to work with individual clean development environments. How do you do that? Switch to your main development folder, create a subfolder for your new project and initiate it:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">cd /development/
+</span></span><span class="line"><span class="ln">2</span><span class="cl">mkdir project1
+</span></span><span class="line"><span class="ln">3</span><span class="cl">python3 -m venv project1
+</span></span><span class="line"><span class="ln">4</span><span class="cl">cd project1
+</span></span><span class="line"><span class="ln">5</span><span class="cl">source bin/activate
+</span></span></code></pre></div><p>There you go. If you install packages, they are located in this folder only. Wait, packages? Right, let’s get to the next step:</p>
+<img src="https://nickyreinert.de/en/2021/2021-02-24-python-foo/image.png" alt="This post comes without any images, that’s why I’m showing you this beautiful image that I took in Athens, a couple of years ago — a wonderful city!"><h2 id="manage-your-libraries">Manage your libraries</h2>
+<p>As your Python scripts grows, by the amount of lines but also by the amount of features, the amount of used libraries will grow, too. But how to run the script on a different machine, in a differente environment? How to easily share you script? The answer is pipreqs:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">pip install pipreqs
+</span></span></code></pre></div><p>After you installed this little tool, run it against your script (or a folder of scripts):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">pipreqs yourscript.py # one script only
+</span></span><span class="line"><span class="ln">2</span><span class="cl">pipreqs . # all scripts in the folder
+</span></span></code></pre></div><p>Pipreqs will scan your script for required libraries and list them in a file called requirements.txt (suprise!). You need to share this text file with your Python script. Everyone who wants to run the script needs to prepare the environment using this line of code:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">pip install -r requirements.txt
+</span></span></code></pre></div><p>Et voilà. All requirements met.</p>
+<h2 id="telegram-logging">Telegram logging</h2>
+<blockquote>
+<p>Please be adviced: Using a centralized messaging service like telegram, where your content is hosted on foreing computers, may be a risky plan. I’m fully aware of that, you should be too. That’s why I’m only sharing non-senstive information with telegram. It’s just my perfect notification service.</p>
+</blockquote>
+<p><em>How does telegram help?</em> You may ask. Well, imagine you have a script running hours or even days! Actually, you don’t really know. Wouldn’t it be nice to get a message, when the script is done, or about it’s progress.</p>
+<p>First let’s create your own bot for Telegram. Open the app and look for “BotFather”. He will allow you to create a new bot. Name doesn’t matter, what does matter is the secret(!) token. Take it and start a chat with your bot. Then browse to this url (replace the token part with your secret(!) token):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">https://api.telegram.org/bot&lt;bot token&gt;/getUpdates
+</span></span></code></pre></div><p>The page will return a JSON object with a couple of information, amongst it is your chat-id (it’s secret, too, everything is secret!). Grab it and put it with your secret (!!!) token into <strong>your telegram_notifier.py:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">import requestsbot_token = &#39;secret token&#39;
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">bot_chat_id = &#39;secret chat id&#39;def send_text_to_telegram(bot_message):
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">   bot_token = bot_token
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">   
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">   send_text = &#39;[https://api.telegram.org/bot&#39;](https://api.telegram.org/bot&#39;) + bot_token + &#39;/sendMessage?chat_id=&#39; + bot_chat_id + &#39;&amp;parse_mode=Markdown&amp;text=&#39; + bot_message   response = requests.get(send_text)
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"> 
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">   return response.json()def send_image_to_telegram(image):   bot_token = bot_token
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"> 
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">   data = {&#39;chat_id&#39;: bot_chat_id}
+</span></span><span class="line"><span class="ln">10</span><span class="cl">   
+</span></span><span class="line"><span class="ln">11</span><span class="cl">   url = &#39;[https://api.telegram.org/bot&#39;](https://api.telegram.org/bot&#39;) + bot_token + &#39;/sendPhoto?chat_id=&#39; + bot_chat_id + &#39;&amp;parse_mode=Markdown&#39;
+</span></span><span class="line"><span class="ln">12</span><span class="cl"> 
+</span></span><span class="line"><span class="ln">13</span><span class="cl">   with open(image, &#34;rb&#34;) as image_file:
+</span></span><span class="line"><span class="ln">14</span><span class="cl"> 
+</span></span><span class="line"><span class="ln">15</span><span class="cl">      response = requests.post(url, data=data, files={&#34;photo&#34;: image_file})
+</span></span><span class="line"><span class="ln">16</span><span class="cl">  
+</span></span><span class="line"><span class="ln">17</span><span class="cl">   return response.json()
+</span></span></code></pre></div><p><em>Please note, that there’s no error handling with this script.</em></p>
+<p>Congratulations, you now have two functions to send text and images to your telegram bot. This will help you to get a notification from your Python scripts. Import the two functions with this line in every of your actual scripts:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">from telegram_notifier import *
+</span></span></code></pre></div><h2 id="in-media-res">In media res</h2>
+<h3 id="command-line-parameters">Command line parameters</h3>
+<p>Enough prepping, let’s talk about the script itself. The first lines look like that:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">import time # for logging purposes
+</span></span><span class="line"><span class="ln">2</span><span class="cl">import argparse # for command line argumentsparser=argparse.ArgumentParser()parser.add_argument(&#39;--limit&#39;, help=&#39;Source files in CSV format&#39;, required=True, type=int)
+</span></span><span class="line"><span class="ln">3</span><span class="cl">parser.add_argument(&#39;--loop_length&#39;, help=&#39;Source files in CSV format&#39;, required=False, type=int)
+</span></span><span class="line"><span class="ln">4</span><span class="cl">parser.add_argument(&#39;--message&#39;, help=&#39;Give me a message&#39;, required=False, default=&#34;Hello World&#34;, type=str)args = parser.parse_args()
+</span></span></code></pre></div><p>You’ll find it helpful to pass arguments to your script from the command line. That’s what the <strong>argparse</strong> library is for. This library supports loads of other parameters and features, I’m just showing you some basic ones to read two parameters <strong>limit</strong> and <strong>loop_length</strong>. You can read those parameters using <strong>args.limit</strong> or <strong>args.loop_length.</strong> So easy. Example?</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">loop_length = 1000000 if args.loop_length == None else args.loop_length
+</span></span><span class="line"><span class="ln">2</span><span class="cl">limit = args.limit
+</span></span></code></pre></div><p>That’s the shortend version of a if-condition. If the loop-length is set, take it. Otherwise use the default value of 1.000.000. The limit is always set to the one passed by the user — because it’s a mandatory parameter and therefore always present. Next, please.</p>
+<h3 id="logging">Logging</h3>
+<p>Why is logging so important to me? Why sould it be important to you? You will get to that point, <strong>when a customer asks you</strong>:</p>
+<blockquote>
+<p><em>How long will it take to process this dataset with 2 Mio. rows? How much will it costs?</em></p>
+<p><em>~a customer, somewhen</em></p>
+</blockquote>
+<p>Or if you want to compare two different methods. And so on. I’m a huge fan of (extensive) logging. It’s very helpful. Trust me. So, how do we start?</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">feedback_frequency = 10                                               count = 1  
+</span></span><span class="line"><span class="ln">2</span><span class="cl">start = time.time()
+</span></span></code></pre></div><p>Frequency? Why? Imagine you have a script that crunches 1 Mio. rows. And depending on the surrounding parameters, it’s either pretty fast or pretty slow. When do you create a log message? With the feedback_frequency you define, how many times you want to see a log message. Set it to 10 to get a feedback every 1 Mio. / 10 rows. Increase it to get even more feedback.</p>
+<h3 id="colors">Colors</h3>
+<p>If you are sending a lot of information to the console, you may want to use colored output. First let’s define a custom class for that. As you can see, this also allows you to set the font style to bold or underline it.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">class bcolors:
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    HEADER = &#39;\033[95m&#39;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    OKBLUE = &#39;\033[94m&#39;
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    OKCYAN = &#39;\033[96m&#39;
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    OKGREEN = &#39;\033[92m&#39;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    WARNING = &#39;\033[93m&#39;
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    FAIL = &#39;\033[91m&#39;
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    ENDC = &#39;\033[0m&#39;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    BOLD = &#39;\033[1m&#39;
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    UNDERLINE = &#39;\033[4m&#39;
+</span></span></code></pre></div><p>Now you implement the class into your output like that:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">print(f&#39;{bcolors.FAIL}{bcolors.BOLD}Bold red text{bcolors.ENDC}&#39;)
+</span></span></code></pre></div><h3 id="a-simple-loop--comprehension">A simple loop — comprehension</h3>
+<p>The list or dict comprehension feature is a feature you either love or don’t understand. I’m not even sure if I really understand the feature. Nevertheless, here’s an example that hopefully explains it.</p>
+<p>List comprehension works for dictonaries, too. It allows you to loop through data without writing a fully fledged loop. And its supposed to be faster than a common loop.</p>
+<p>The following example goes through a range of numbers from 1 to loop_length=1.000.000 (<em>second last line</em>).</p>
+<p><em>The last line</em> in this comprehension says: Only process the current row, if index is greater than 10.</p>
+<p><em>The first line</em> just takes the index value. Work with it. Add it, round it, calculate it. That’s the value, that goes to our list “<strong>a_list</strong>”.</p>
+<p><em>The second line</em> is the second way to work with conditions: Depending on the acutal value of index, it defines an outcome. If index is less than 50, pass it on. Else pass on the value defined in <strong>default_value</strong>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">default_value = &#39;x&#39;
+</span></span><span class="line"><span class="ln">2</span><span class="cl">a_list = [    index
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    if index &lt; 50 else default_value
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    for index in range(1, loop_length)
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    if index &gt; 10
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    ]
+</span></span></code></pre></div><p>I know it’s tricky. You will get to it, as soon as you need it. ;P</p>
+<h3 id="logging-actually">Logging, actually</h3>
+<p>The next lines will send one message to telegram and to the standard output.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">duration = time.time() - start            message = &#39;\r\nDone with list comprehension after %s seconds &#39; % (      &#39;{:.2f}&#39;.format(duration) # two decimal places
+</span></span><span class="line"><span class="ln">2</span><span class="cl">)
+</span></span><span class="line"><span class="ln">3</span><span class="cl">                                               send_text_to_telegram(message)                                               print(message, flush=True)
+</span></span></code></pre></div><p>You should understand this one from the code, except the flush-Parameter? This one forces the Python-script to send the message to the output, without waiting for the script to end. That’s your real-time-update-guarantee!</p>
+<h3 id="the-fully-fledged-loop">The fully-fledged Loop</h3>
+<p>This is a full loop, that allows you to add as many conditions and calculations as you want.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">for i in range(1, loop_length):   if i &gt; limit - 1 and limit &gt; 0: break
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">   
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">   count += 1   if i % (limit / feedback_frequency) == 0 or i % (round(loop_length / feedback_frequency, 0)) == 0:
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">      progress = i / limit if limit &gt; 0 else i / loop_length      message = (
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">            &#39;%s%%...&#39; % 
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">            (&#39;{:.1f}&#39;.format(100 * progress))
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        )      print(
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">            message,            
+</span></span><span class="line"><span class="ln">10</span><span class="cl">            end = &#39;&#39;, # no line break
+</span></span><span class="line"><span class="ln">11</span><span class="cl">            flush=True # don&#39;t buffer output
+</span></span><span class="line"><span class="ln">12</span><span class="cl">      )
+</span></span></code></pre></div><p>The first lines are easy. Break the loop, if the limit is hit. The most exciting thing is the logging-feature. As mentioned above, it will only logg a message if it meets the frequency requirements. Also check out the <strong>end-Parameter</strong> of print. It removes the line break from the print-command.</p>
+<h3 id="final-message">Final message</h3>
+<p>Finally, after our script logic is finished, we send a message. This time to telegram, too.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">duration = time.time() - startmessage = &#39;\r\nDone with processing %s iterations after %s seconds &#39; % (
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    &#39;{:0,.0f}&#39;.format(count), # formatting integers with thousand separator
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    &#39;{:.2f}&#39;.format(duration) # formatting decimals with two decimals
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    )send_text_to_telegram(message)print(message)
+</span></span></code></pre></div><p>There’s nothing special happening here. The only interesting thing is, that Telegram also accepts images. This is good if you’re creating some sophisticated statistcial analysis and want to see the output. Again, a word of advise: Remember that Telegram is storing your messages on foreign servers. Keep that in mind.</p>
+<h2 id="last-words">Last words</h2>
+<p>I’m always learing, and I hope your learned something, too. I’m going to extend this post in the future. If you have further tricks for me, drop me a dove.</p>
+]]></content:encoded><atom:updated>2026-04-19T20:27:26+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>

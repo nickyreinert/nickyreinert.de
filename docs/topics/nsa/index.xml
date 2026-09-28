@@ -1,3 +1,197 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>NSA auf Nicky Reinert</title><link>https://nickyreinert.de/topics/nsa/</link><description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, KI, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur</description><generator>Hugo 0.162.0</generator><language>de</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sun, 29 Mar 2026 23:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/nsa/index.xml" rel="self" type="application/rss+xml"/><item><title>Die Nerd Enzyklopädie 49 - POPCOUNT</title><link>https://nickyreinert.de/2026/2026-03-30-popcount/</link><pubDate>Sun, 29 Mar 2026 23:00:00 +0000</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/2026/2026-03-30-popcount/</guid><description>Der Befehlssatz einer CPU ist so etwas wie die natürliche Sprache der Maschinen:
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>NSA auf Nicky Reinert</title><link>https://nickyreinert.de/topics/nsa/</link><description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, KI, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur</description><generator>Hugo 0.162.0</generator><language>de</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Sun, 29 Mar 2026 23:00:00 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/topics/nsa/index.xml" rel="self" type="application/rss+xml"/><item><title>Die Nerd Enzyklopädie 49 - POPCOUNT</title><link>https://nickyreinert.de/2026/2026-03-30-popcount/</link><pubDate>Sun, 29 Mar 2026 23:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-03-30-popcount/</guid><description>Der Befehlssatz einer CPU ist so etwas wie die natürliche Sprache der Maschinen:
 Die - ehrfürchtiger Trommelwirbel - Maschinensprache!
-Sie besteht aus sehr einfachen Instruktionen, die CPU direkt verarbeiten kann. Die sogenannten operation codes, OpCodes, sind Hexadezimal-Werte, die als Verweis auf …</description><category>blog</category><category>nerdenz</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Die Nerd Enzyklopädie - POPCOUNT - Titelbild</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>historical_anecdote</dc:type></item></channel></rss>
+Sie besteht aus sehr einfachen Instruktionen, die CPU direkt verarbeiten kann. Die sogenannten operation codes, OpCodes, sind Hexadezimal-Werte, die als Verweis auf …</description><content:encoded><![CDATA[<p>Der Befehlssatz einer CPU ist so etwas wie die natürliche Sprache der Maschinen:</p>
+<p>Die - <em>ehrfürchtiger Trommelwirbel</em> - <strong>Maschinensprache</strong>!</p>
+<p>Sie besteht aus sehr einfachen Instruktionen, die CPU direkt verarbeiten kann. Die sogenannten <strong>operation codes</strong>, OpCodes, sind Hexadezimal-Werte, die als Verweis auf diese Instruktionen dienen.</p>
+<p>OpCodes werden wiederum durch <strong>Mnemonics</strong> repräsentiert, eine etwas besser lesbare Beschreibung des Befehls. Die Menge der Mnemonics ergibt die Assemblersprache.</p>
+<p>Für den 8-Bit-Prozessor Z80 gibt es z. B. den OpCode <code>0x04</code>, der durch den Mnemonic <code>INC</code> beschrieben wird. Damit wird der Wert des Registers B um 1 erhöht &mdash; also eine sehr einfache Addition.</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-03-30-popcount/opcodes-table.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-03-30-popcount/opcodes-table.png" 
+      alt="Tabelle mit OpCodes, Mnemonics und deren Beschreibungen"
+      width="600"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>OpCode-Tabelle: Hexadezimalwerte, Mnemonics und Beschreibungen im Überblick</figcaption>
+</figure>
+
+<p>(OpCodes dürfen nicht nur durch hexadezimale Werte repräsentiert werden, aber das geht jetzt zu weit…)</p>
+<p><strong>Mnemonics</strong> erhöhen zwar die Lesbarkeit, aber effizientes Programmieren, Fehlersuche und Codepflege sind auch in Assembler nicht die oberste Priorität. Dafür gibt es höhere Programmiersprachen, die den Assembler-Code in noch lesbarere Funktionen übersetzen und zusammenfassen und so ein strukturiertes Programmieren ermöglichen.</p>
+<p>Eine native Instruktion im Maschinencode ist weitaus performanter als die zusammengesetzte Funktion einer höheren Programmiersprache. Ein OpCode wird von der CPU ohne Übersetzung verstanden. Eine JavaScript-Funktion muss erst interpretiert und in verschiedene OpCodes aufgelöst werden.</p>
+<p>Das heißt aber auch: Operationen, von denen man schnelle Ergebnisse benötigt, werden direkt im Maschinencode implementiert. Dazu gehören die Klassiker unter den logischen und mathematischen Operationen, wie <code>XOR</code>, <code>INC</code>, <code>AND</code> sowie… <strong>POPCOUNT</strong>.</p>
+<p>…POPCOUNT? Nie gehört!</p>
+<p><strong>POPCOUNT</strong> steht für „<strong>population count</strong>&quot; - und population meint Bits. Damit lässt sich die Anzahl der gesetzten Bits zählen. Bei dem folgenden Wert ist die Anzahl der gesetzten Bits <strong>3</strong>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">00100110
+</span></span></code></pre></div><h2 id="warum-als-maschinencode-instruktion">Warum als Maschinencode-Instruktion?</h2>
+<p>Bereits <strong>1952</strong> erwähnte niemand geringeres als <strong>Alan Turing</strong> eine Funktion mit dem Symbol <strong>/R</strong> (&ldquo;sideway adders&rdquo;). Turing verfasste damals das Handbuch für den <strong>Ferranti Mark 1</strong>, nach dem Zuse Z4 dem zweiten kommerziell verfügbaren &ldquo;Universal-Computer&rdquo;. Er beschrieb die Anweisung knapp mit:</p>
+<blockquote>
+<p><em>This function determines t (s), the number of 1&rsquo;s in [s] (it has no relation to the interpretation of [s] as a number) and adds it to M.</em></p>
+<p>~ Alan Turing in Programmers&rsquo; Handbook for the 
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://curation.cs.manchester.ac.uk/digital60/www.digital60.org/birth/manchestercomputers/mark1/documents/progman.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous#sa" target="_blank" rel="noopener noreferrer">Manchester Electronic Computer Mark II</a>
+
+
+</p>
+</blockquote>
+<p>(Der Ferranti Mark I wurde vom britischen Unternehmen <strong>Ferranti Limited</strong> gebaut.)</p>
+<p>In den USA lässt sich eine vergleichbare Funktion erst im Jahr <strong>1961</strong> nachweisen &mdash; damals noch unter dem Mnemonic <strong>AOC</strong>: <em>all ones count</em>. AOC war Teil des Befehlssatzes des 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://vaibhavsagar.com/blog/2019/09/08/popcount/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><strong>IBM 7030 &ldquo;Stretch&rdquo;</strong></a>
+
+
+, IBMs erstem Supercomputer auf Transistorbasis. Auch AOC ermöglichte, alle Einsen im Ergebnis einer logischen Operation zu zählen (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://www.bitsavers.org/pdf/ibm/7030/C28-6129_STRAP-II_with_update_Apr63.pdf?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Quelle: IBM 7030 STRAP-II Handbuch, bitsavers.org</a>
+
+
+).</p>
+<p><strong>Stretch</strong> war bis <strong>1964</strong> der schnellste Computer der Welt und wurde dann vom <strong>CDC 6600</strong> abgelöst, der POPCOUNT über den <strong>OpCode <code>CXi</code></strong> implementierte. Seit 1992 geistert die Legende durch das Internet, dass diese Funktion auf Geheiß der NSA eingeführt wurde &mdash; angefacht durch eine 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://groups.google.com/g/comp.arch/c/UXEi7G6WHuU/m/Z2z7fC7Xhr8J?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Diskussion auf comp.arch</a>
+
+
+.</p>
+<h2 id="die-nsa-legende">Die NSA-Legende</h2>
+<p>Angeblich war es Tradition, dass eines der ersten Geräte einer neuen, schnelleren Computer-Generation immer zuerst an einen ganz besonderen Kunden geliefert wurde:</p>
+<blockquote>
+<p><em>It was almost a tradition that one of the first of any new faster CDC machine was delivered to a &ldquo;good customer&rdquo; &mdash; picked up at the factory by an anonymous truck, and never heard from again.</em></p>
+<p>~ Jitze Couperus, 1999 (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://cryptome.org/jya/sadd.htm?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">cryptome.org</a>
+
+
+)</p>
+</blockquote>
+<p>Gerüchten zufolge handelte es sich bei diesem &ldquo;guten Kunden&rdquo; um die <strong>NSA</strong>. Dort nutzte man die Funktion angeblich zur <strong>Kryptoanalyse</strong> von abgefangenen Nachrichten. POPCOUNT spielt nämlich bei der Berechnung des <strong>Hamming-Gewichts</strong> eine gewichtige Rolle &mdash; <em>pun intended</em>. Mit dem Hamming-Gewicht bzw. <strong>Hamming-Abstand</strong> lässt sich die Ähnlichkeit zweier Zeichenketten bestimmen. So soll die NSA in der Lage gewesen sein, abgefangene diplomatische Kabel maschinell auf ähnliche Muster zu überprüfen.</p>
+<p>Eindeutig belegen lässt sich diese schöne Geheimdienst-Räuberpistole naturgemäß nicht. Zwischen <strong>1975</strong> und <strong>2005</strong> tauchte <strong>POPCOUNT</strong> auch nicht mehr in den Instruktionen der CPUs auf.</p>
+<h2 id="weitere-anwendungsgebiete">Weitere Anwendungsgebiete</h2>
+<p>Tatsächlich gibt es noch andere Einsatzgebiete für POPCOUNT:</p>
+<ul>
+<li><strong>Fehlererkennung</strong> in Übertragungsprotokollen</li>
+<li><strong>Untersuchung von Molekülen</strong> in der Bioinformatik</li>
+<li>Komplexe Berechnungen für <strong>neuronale Netzwerke</strong> &mdash; ein wichtiger Baustein von Machine Learning und KI</li>
+</ul>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-03-30-popcount/popcount-cartoon.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-03-30-popcount/popcount-cartoon.png" 
+      alt="Cartoon zum Thema POPCOUNT"
+      width="200"
+      loading="lazy"
+    />
+  </a>
+  
+</figure>
+
+]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>blog</category><category>nerdenz</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>NSA</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>historical_anecdote</dc:type></item></channel></rss>

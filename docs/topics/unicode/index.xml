@@ -1,1 +1,90 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Unicode auf Nicky Reinert</title><link>https://nickyreinert.de/topics/unicode/</link><description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, KI, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur</description><generator>Hugo 0.162.0</generator><language>de</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Fri, 19 May 2023 12:19:31 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/topics/unicode/index.xml" rel="self" type="application/rss+xml"/><item><title>Die Nerd Enzyklopädie 29 - Programmieren mit Emojis</title><link>https://nickyreinert.de/2023/2023-05-19-nerd-enzyklop%C3%A4die-29---programmieren-mit-emojis/</link><pubDate>Fri, 19 May 2023 12:19:31 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/2023/2023-05-19-nerd-enzyklop%C3%A4die-29---programmieren-mit-emojis/</guid><description>Texte bestehen aus Sätzen, Sätze bestehen aus Wörtern und Wörter bestehen aus Buchstaben bzw. genauer Schriftzeichen. Wir alle kennen es, das lateinische Alphabet, arabische Ziffern aber auch kyrillische Schriftzeichen oder die Sinogramme der chinesischen Schrift. All diese Symbole versteht der …</description><category>nerdenz</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Die Nerd Enzyklopädie 29 - Programmieren mit Emojis - Titelbild</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>technical_explainer</dc:type></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Unicode auf Nicky Reinert</title><link>https://nickyreinert.de/topics/unicode/</link><description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, KI, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur</description><generator>Hugo 0.162.0</generator><language>de</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Fri, 19 May 2023 12:19:31 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/topics/unicode/index.xml" rel="self" type="application/rss+xml"/><item><title>Die Nerd Enzyklopädie 29 - Programmieren mit Emojis</title><link>https://nickyreinert.de/2023/2023-05-19-nerd-enzyklop%C3%A4die-29---programmieren-mit-emojis/</link><pubDate>Fri, 19 May 2023 12:19:31 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2023/2023-05-19-nerd-enzyklop%C3%A4die-29---programmieren-mit-emojis/</guid><description>Texte bestehen aus Sätzen, Sätze bestehen aus Wörtern und Wörter bestehen aus Buchstaben bzw. genauer Schriftzeichen. Wir alle kennen es, das lateinische Alphabet, arabische Ziffern aber auch kyrillische Schriftzeichen oder die Sinogramme der chinesischen Schrift. All diese Symbole versteht der …</description><content:encoded><![CDATA[<img src="https://nickyreinert.de/2023/2023-05-19-nerd-enzyklop%C3%A4die-29---programmieren-mit-emojis/image1.png" alt=""><p>Texte bestehen aus Sätzen, Sätze bestehen aus Wörtern und Wörter bestehen aus Buchstaben bzw. genauer Schriftzeichen. Wir alle kennen es, das lateinische Alphabet, arabische Ziffern aber auch kyrillische Schriftzeichen oder die Sinogramme der chinesischen Schrift. All diese Symbole versteht der Computer dank einer großen Tabelle oder auch „ Zeichensatz“. Als Quasi-Standard hat sich in den letzten Jahren <strong>Unicode</strong> etabliert.</p>
+<h2 id="hefte-raus-lerneinheit">Hefte raus, Lerneinheit!</h2>
+<p>Ein <strong>Zeichensatz</strong> (engl. „<strong>character set</strong>“) beschreibt die Menge aller verfügbaren Zeichen. Das wäre z.B. ein sehr kleiner Zeichensatz, der nur die Großbuchstaben des lateinischen Alphabets darstellen kann:</p>
+<pre><code>[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z]
+</code></pre>
+<p>Wird jedem Zeichen eine numerische Position zugeordnet, der sogenannte. „<strong>codepoint</strong>“, spricht man von einem <strong>kodierten Zeichensatz</strong> („<strong>coded character set</strong>“). Uns kleines Biespiel sieht dann so aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">  1 -&gt; A  
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  2 -&gt; B  
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  3 -&gt; C  
+</span></span><span class="line"><span class="ln">4</span><span class="cl">  …  
+</span></span><span class="line"><span class="ln">5</span><span class="cl">  26 -&gt; Z
+</span></span></code></pre></div><p>Sehr weit verbreitet ist der Zeichensatz <strong>UCS</strong> (<strong>Universal Coded Character Set</strong>), besser bekannt <strong>Unicode,</strong> der in der <strong>ISO 10646</strong> definiert ist. Theoretisch umfasst Unicode einen Bereich von <strong>1.114.112</strong> codepoints. Diese sind in <strong>17 Ebenen</strong> (<strong>planes</strong>) zu je <strong>16 Bit</strong> aufgeteilt, also 65.536 codepoints pro Ebene. Aufgrund verschiedener technischer Vorgaben sind effektiv <strong>1.111.998</strong> codepoints nutzbar. Unicode enthält nicht nur die uns bekannten Buchstaben von A bis Z, Zahlen und Schriftzeichen anderer Sprachen, sondern mittlerweile auch Emojis:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">😆🫠😇
+</span></span></code></pre></div><p>Um jedes der über 1 Mio. Zeichen ansprechen zu können, kann man auf <strong>UTF-32</strong> (<strong>Unicode Transformation Format</strong>) nutzen. UTF-32 besitzt einen 32 Bit (4 Byte) großen Adress-Bereich, um damit jedes beliebige Zeichen in Unicode zu kodieren. Das ist simpel, aber auch eine irrsinnige Platzverschwendung. Der häufigste deutsche Buchstabe „e“ wird wie folgt in UTF-32 kodiert:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">    00 00 00 65
+</span></span></code></pre></div><p>In binär:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">    00000000000000000000000001100101
+</span></span></code></pre></div><p>Ein Adress-Bereich mit 4 Byte um ein Zeichen abzubilden, für das 1 Byte ausreicht? Um Platz zu sparen, wurden Algorithmen entwickelt, die zwar etwas aufwendiger codieren, dafür aber weniger Platz verbrauchen. Sehr weit verbreitet ist <strong>UTF-8</strong>, eine — wenn man so will — „dynamische“ Kodierung.</p>
+<p>UTF-8 wurde <strong>1992</strong> von <strong>Ken Thompson</strong> und <strong>Rob Pike</strong> entwickelt, zwei Programmierern des Betriebssystems <strong>Plan9</strong> (benannt nach dem gleichnamigen Film „<strong>Plan9 from outer Space</strong>“ von <strong>Ed Wood</strong>, dem angeblich „schlechtesten Science Fiction Film aller Zeiten“) [
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://de.wikipedia.org/wiki/Plan_9_%28Betriebssystem%29?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">WIKI14</a>
+
+
+].</p>
+<p>UTF-8 kodiert den ersten Bereich von Unicode mit 7 Bit — das erste Bit bzw. höchstwertige Bit ist immer 0. Das „e“ wird also folgendermaßen kodiert:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">    65
+</span></span></code></pre></div><p>In binär:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">    01100101
+</span></span></code></pre></div><p>Man belegt also nur noch 1 Byte anstatt 4. Will man exotische, also höherwertige Zeichen aus Unicode kodieren, hängt UTF-8 weitere Bytes an, bei denen die höchstwertigen Bits ebenfalls fest gesetzt werden. Das Euro-Zeichen wird in UTF-8 mit 3 Bytes dargestellt:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">    E2 82 AC
+</span></span></code></pre></div><p>In binär:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">    11100010 10000010 10101100
+</span></span></code></pre></div><h2 id="zurück-zum-thema">Zurück zum Thema</h2>
+<p>Wie du siehst, sind Buchstaben für den Computer auch nur bestimmte Orte in einer großen Tabelle. Da die Unicode-Tabelle auch Emojis umfasst, sollte es doch eigentlich möglich sein, Emojis als Bezeichner für Funktionen und Variablen zu nutzen?</p>
+<p>Ganz so leicht ist es leider nicht. Die gängigen Programmiersprachen haben einen festgelegten Bereich von Zeichen, die für derartige Deklarationen zulässig sind. Ein Ausweg sind <strong>Emoticons</strong>, also Zeichen, die als Emoji interpretiert werden können. Vor allem nicht-lateinische Schriften bieten eine Menge Möglichkeiten. In <strong>JavaScript</strong> ist z.B. folgendes möglich:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl">    <span class="k">var</span> <span class="err">ツ</span> <span class="o">=</span> <span class="err">„</span><span class="n">smile</span><span class="err">“</span><span class="p">;</span>  
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="k">var</span> <span class="err">ൠ</span> <span class="o">=</span> <span class="err">„</span><span class="n">alien</span><span class="err">“</span><span class="p">;</span>  
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="n">function</span> <span class="err">ಠ</span><span class="n">_ಠ</span> <span class="p">(){</span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="err">“</span><span class="n">Viel</span> <span class="n">Spaß</span> <span class="n">beim</span> <span class="n">Refactoring</span><span class="o">!</span><span class="err">”</span><span class="p">);}</span>
+</span></span></code></pre></div><p>Es gibt allerdings auch eine Programmiersprache, die ausschließlich auf Emojis basiert: Emojicode [
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.emojicode.org/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">EMOJI1</a>
+
+
+]. Erfunden wurde die Sprache von <strong>Theo Weidmann</strong>. Und so sieht „<strong>Hello World</strong>“ in Emojicode aus:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">    🏁 🍇  
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    😀 🔤Hello World!🔤❗️  
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    🍉
+</span></span></code></pre></div>]]></content:encoded><atom:updated>2023-05-19T12:19:31+01:00</atom:updated><category>nerdenz</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Unicode</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>technical_explainer</dc:type></item></channel></rss>

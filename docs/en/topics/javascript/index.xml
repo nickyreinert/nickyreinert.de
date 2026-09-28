@@ -1,5 +1,494 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>JavaScript auf Nicky Reinert</title><link>https://nickyreinert.de/en/topics/javascript/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Fri, 06 Dec 2024 12:34:56 +0200</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/javascript/index.xml" rel="self" type="application/rss+xml"/><item><title>Advent of Code - Day 6 - Walking the map (JavaScript)</title><link>https://nickyreinert.de/en/2024/2024-12-06-aoc-day-6/</link><pubDate>Fri, 06 Dec 2024 12:34:56 +0200</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2024/2024-12-06-aoc-day-6/</guid><description>( task | solution )
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>JavaScript auf Nicky Reinert</title><link>https://nickyreinert.de/en/topics/javascript/</link><description>Blog &amp; projects by Nicky Reinert (Institute for Digital Challenges): web development &amp; software development, SEO &amp; analytics, hosting &amp; DevOps, WordPress &amp; Hugo, tools &amp; projects, data protection &amp; digital culture — plus content on AI and autism &amp; society.</description><generator>Hugo 0.162.0</generator><language>en</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Fri, 06 Dec 2024 12:34:56 +0200</lastBuildDate><atom:link href="https://nickyreinert.de/en/topics/javascript/index.xml" rel="self" type="application/rss+xml"/><item><title>Advent of Code - Day 6 - Walking the map (JavaScript)</title><link>https://nickyreinert.de/en/2024/2024-12-06-aoc-day-6/</link><pubDate>Fri, 06 Dec 2024 12:34:56 +0200</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2024/2024-12-06-aoc-day-6/</guid><description>( task | solution )
 This task looks tricky, so I am once again choosing a simple language that I am familiar with: JavaScript ( which, by the way, was developed in just 10 days ).
-With no further ado…</description><category>development</category><category>aoc2024</category><media:content url="https://nickyreinert.de/image.png" type="image/jpeg"><media:title>Advent of Code - Day 6 - Walking the map (JavaScript)</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>solution_writeup</dc:type></item><item><title>How to Persist User Configuration in a Gradio App with Cookies</title><link>https://nickyreinert.de/en/2024/2024-05-05-gradio-app/</link><pubDate>Sun, 05 May 2024 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2024/2024-05-05-gradio-app/</guid><description>I am currently building some kind of playground for Huggingface’s text-2-image models. This app offers more than a dozen configuration parameters. The problem: Every time the user reloads the page, all parameters are gone. Here’s my solution to cope with that.
-Gradio has a gr.Stateobject that allows …</description><category>blog</category><media:content url="https://nickyreinert.de/gradio-cookies.png" type="image/jpeg"><media:title>Gradio App Configuration Persistence</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item><item><title>How to predict prime numbers in JavaScript</title><link>https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/</link><pubDate>Tue, 12 Dec 2023 12:34:56 +0100</pubDate><author>Nicky Reinert</author><guid>https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/</guid><description>There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated formulas — but it will hopefully show you, how thoughtful thinking and tinkering will help you with optimising your code.
-Nota bene: Think Python is faster? Try …</description><category>blog</category><media:content url="https://nickyreinert.de/prime_numbers_comparison.png" type="image/jpeg"><media:title>JavaScript vs Python Prime Number Algorithm Performance Comparison</media:title></media:content><dc:subject>Lesezeit: 8 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>
+With no further ado…</description><content:encoded><![CDATA[<p>(
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://adventofcode.com/2024/day/6/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">task</a>
+
+
+ | 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/aoc2024/tree/main/solutions/day6%20-%20javascript?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">solution</a>
+
+
+)</p>
+<p>This task looks tricky, so I am once again choosing a simple language that I am familiar with: JavaScript (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://nickyreinert.medium.com/ne-34-javascript-was-developed-within-10-days-0116b32a38b6?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">which, by the way, was developed in just 10 days</a>
+
+
+).</p>
+<p>With no further ado…</p>
+<h3 id="solution-to-the-first-part">Solution to the First Part</h3>
+<p>There&rsquo;s not much to explain. As expected, I just need to move the <code>guard</code> through the maze by increasing and decreasing rows and columns. When I hit an obstacle, I change direction. When I hit the border of the maze, I’ve solved the task. Easy peasy…</p>
+<h3 id="solution-to-the-second-part">Solution to the Second Part</h3>
+<p>The second part is kind of tricky. They want us to find positions of additional obstacles that make the maze unsolvable.</p>
+<p>Well, there&rsquo;s an easy pattern behind it. You will see it if you visualize it:</p>
+<p>An infinite loop occurs when you have four obstacles on each edge of a rectangle, like this:</p>
+<img src="https://nickyreinert.de/en/2024/2024-12-06-aoc-day-6/image.png" alt="alt text"><p>So, all we need to do at every step on our path is to try to draw a rectangle. If it has three existing obstacles, we get one potential solution for an &ldquo;artificial obstacle.</p>
+<p>In case you&rsquo;re wondering: I didn&rsquo;t finish the second part. I know the solution approach, but seeing that I am three days behind already, I stopped working on it.</p>
+<h2 id="whats-up-javascript">Whats up, JavaScript?</h2>
+<p><strong>Rating: 9/12 – god ol&rsquo; frien&rsquo;</strong></p>
+<p>Fun Fact: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://nickyreinert.medium.com/javascript-how-to-find-prime-numbers-fast-cbcf6bd62e3d?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">I was writing an algorithm</a>
+
+
+ to find prime numbers and found out that JavaScript is way faster than Python.</p>
+<p>However, I really like JavaScript and often use it when I want to build small <em>proof of concepts</em>. It&rsquo;s quick, runs everywhere (like in every browser), and is quite straightforward.</p>
+<p>Despite the second bump in the journey to endless glory, I hope to see you again tomorrow!</p>]]></content:encoded><atom:updated>2026-06-16T20:56:44+02:00</atom:updated><category>development</category><category>aoc2024</category><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>solution_writeup</dc:type></item><item><title>How to Persist User Configuration in a Gradio App with Cookies</title><link>https://nickyreinert.de/en/2024/2024-05-05-gradio-app/</link><pubDate>Sun, 05 May 2024 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2024/2024-05-05-gradio-app/</guid><description>I am currently building some kind of playground for Huggingface’s text-2-image models. This app offers more than a dozen configuration parameters. The problem: Every time the user reloads the page, all parameters are gone. Here’s my solution to cope with that.
+Gradio has a gr.Stateobject that allows …</description><content:encoded><![CDATA[<p>I am currently building some kind of playground for Huggingface’s text-2-image models. This app offers more than a dozen configuration parameters. The problem: Every time the user reloads the page, all parameters are gone. Here’s my solution to cope with that.</p>
+<p><strong>Gradio</strong> has a <code>gr.State</code>object that allows you to persist values for the current user in the current tab. But as soon as you open another tab or even reload the page, your user’s setup is gone. While there’s also a <code>gr.Request</code> oject that allows you to access cookies, this only read cookies.</p>
+<img src="https://nickyreinert.de/en/2024/2024-05-05-gradio-app/image-1.png" alt="alt text"><p>So right now there’s no easy way to achieve some kind of “persistent config” for your Gradio demo. But there’s a workaround: Gradio allows you to add custom <strong>JavaScript</strong> to your app, which 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.gradio.app/guides/custom-CSS-and-JS?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">is “barely” documented</a>
+
+
+. As the implementation is not easy and it took me a while to find the solution, I’d like to share my findings:</p>
+<ol>
+<li>The Javascript</li>
+</ol>
+<hr>
+<p>Let’s start with the JavaScript that takes care of writing the cookie. Put it into a variable and place it before your block definition to make it globally accessible:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">js = &#39;&#39;&#39;function js(){window.set_cookie = function(key, value){document.cookie = key+&#39;=&#39;+value+&#39;; Path=/; SameSite=Strict&#39;;return [value]}}&#39;&#39;&#39;
+</span></span></code></pre></div><p>There’s one <strong>heads up</strong>! here: You have to wrap the actual function inside another function. You also need to make it globally available by attaching it to window. Let’s have a closer look at the important parts. The function head apparently requires the key and the value for your cookie:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">function(key, value){
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    document.cookie = key+&#39;=&#39;+value+&#39;; Path=/; SameSite=Strict&#39;;
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    return [value]
+</span></span><span class="line"><span class="ln">4</span><span class="cl">}
+</span></span></code></pre></div><p>You need those variables to properly set the cookie. The function must return values according to your Gradio element and event handler. In this case it expects one output variable only.</p>
+<p>Done that, load your JavaScript into your demo using the <strong>js-argument</strong> this. The <strong>fn-argument</strong> refers to a Python function that later loads values from your cookies to assign them to your Gradio elements — wich needs to be addressed in <code>outputs</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl">    <span class="n">demo</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fn</span><span class="o">=</span><span class="n">get_config</span><span class="p">,</span> <span class="n">js</span><span class="o">=</span><span class="n">js</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">element1</span><span class="p">])</span>
+</span></span></code></pre></div><ol start="2">
+<li>The event handler</li>
+</ol>
+<hr>
+<p>Now you are ready to reference the cookie mechanism in your event handler:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">element1.change(fn=element1_change inputs=[element1], outputs=[], js=&#34;(value) =&gt; set_cookie(&#39;element1&#39;, value)&#34;)
+</span></span></code></pre></div><p>Again, let’s go through it step by step:</p>
+<p>The <strong>fn-argument</strong> simply refers to a Python function that somehow handles the value of <code>element1</code>. You don’t necessarily need it, depending on your setup. The <strong>inputs-argument</strong> is important, as it defines what values are moved through our <em>pipeline</em>. In this case just the value from <code>element1</code>. The <strong>js-argument</strong> now refers to your <strong>JavaScript function</strong>. <code>(value)</code> takes the value from the <strong>inputs-argument</strong> and gives it a name. I am passing this variable to my function and I also need to pass the <code>element1</code> as a string which will be used as the key for the cookie, to identify it later —see <code>set_cookie()</code> requires a key and a value argument?</p>
+<ol start="3">
+<li>Getting back the value</li>
+</ol>
+<hr>
+<p>We now successfully wrote the value of an element to a cookie. Now we need to read this value when the user reloads the page or open it in another tab:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">def get_config(request: Request):
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  config = {&#34;element1&#34;: &#34;value1&#34;}
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  for key in initial_config.keys():
+</span></span><span class="line"><span class="ln">4</span><span class="cl">      if key in request.cookies:
+</span></span><span class="line"><span class="ln">5</span><span class="cl">          config[key] = request.cookies[key]
+</span></span><span class="line"><span class="ln">6</span><span class="cl">  return config[&#34;element&#34;]
+</span></span></code></pre></div><p>Again — step by step: In the function’s head we refer to Gradio’s Request object which allows us to read the cookies for this request. We then simply loop through all our config parameters, you may define as many as you want, according to your interface. If we find the particular cookie, we can set it’s value.</p>
+<p>Finally we return the values. According to the outputs-argument from our <code>demo.load(</code> function (see above), we only return one value for one element.</p>
+<ol start="4">
+<li>Final Thoughts</li>
+</ol>
+<hr>
+<p>If you want to see the process in action, check out my text-2-image playground at Hugging face either directly via 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://huggingface.co/spaces/n42/pictero?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://huggingface.co/spaces/n42/pictero</a>
+
+
+ or using the easier-to-remember-domain: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://pictero.com?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://pictero.com</a>
+
+
+ (yes, you can use your own custom domains on Huggingface’s spaces — it’s a simply frame-redir in my DNS configuration).</p>
+<p>I am not only using the aboved described workaround to persist users’s configuration: I also implemented a sharing feature reading the configuration from the URL GET-parameter <code>config</code> and put it into my interface.</p>
+<p>Have fun and leave your thoughts!</p>
+]]></content:encoded><atom:updated>2026-05-07T15:36:59+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tutorial</dc:type></item><item><title>How to predict prime numbers in JavaScript</title><link>https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/</link><pubDate>Tue, 12 Dec 2023 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/</guid><description>There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated formulas — but it will hopefully show you, how thoughtful thinking and tinkering will help you with optimising your code.
+Nota bene: Think Python is faster? Try …</description><content:encoded><![CDATA[<p>There is only one thing that I love more than algorithms: Improving algorithms! This article will not explain one of those sophisticated formulas — but it will hopefully show you, how thoughtful thinking and tinkering will help you with optimising your code.</p>
+<blockquote>
+<p>Nota bene: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/how-to-find-prime-numbers-fast-8d0f7e8bd80f?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Think Python is faster? Try it!</a>
+
+
+</p>
+</blockquote>
+<p>What’s a prime number? All of you know that: It’s a number with only two divider natural divisors: 1 and the number itself.</p>
+<p>And when you ask someone for a prime number algorithm, you get two answers: A mathematican will 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://en.wikipedia.org/wiki/Formula_for_primes?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">throw out a complex formula,</a>
+
+
+ like <strong>Mill’s formula:</strong></p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image.png" alt="alt text"><p>Wait, what? Ok. The other answer is just a simple loop that checks if there is another number, lower than the number in question, where the operation <strong>modulo</strong> returns 0. The so called “trial division”. In other words: The number in question divided by the other number returns a third number and all numbers are natural, not factorized.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">function isPrime(number) {
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    for (let i = 2; i &lt; number; i++) {
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        if (number % i === 0) {
+</span></span><span class="line"><span class="ln">4</span><span class="cl">            return false;
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        }
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    return true;
+</span></span><span class="line"><span class="ln">8</span><span class="cl">}
+</span></span></code></pre></div><p>Let’s run this loop to find primes up to 50.000:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">let startTime = performance.now();
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">let count = 0;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">for (let number = 2; number &lt; 50000; number++) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    if (isPrime(number)) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        count++;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">}
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">let endTime = performance.now();
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">let executionTime = endTime - startTime;
+</span></span><span class="line"><span class="ln">10</span><span class="cl">console.log(`found ${count} primes`);
+</span></span><span class="line"><span class="ln">11</span><span class="cl">console.log(`Execution time: ${executionTime} milliseconds`);
+</span></span></code></pre></div><blockquote>
+<p>Did you know? You can run JavaScript inside Visual Studio Code. Just hit Ctrl+F5. Don’t know where to click. I’m a shortcut-nerd.</p>
+</blockquote>
+<p>On my machine this will take 212 milliseconds and find 5.133 primes (your results may differ on a different machine):</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-1.png" alt="alt text"><p>Wait a minute! JavaScript is dozens of time faster than… Python?</p>
+<p>Jepp. Let’s see if we could add another level of disgrace:</p>
+<p>Let’s start with some obvious things: We don’t need to test all numbers in our “test division”. In fact we can skip every divisor lower than “number / 2”. Why is that? Because if the divisor is greater than “number / 2” the result must be lower than 2 and a faction.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">function isPrime2(number) {
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    let limit = Math.floor(number / 2);
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    for (let i = 2; i &lt;= limit; i++) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        if (number % i === 0) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            return false;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    return true;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">}
+</span></span><span class="line"><span class="ln">10</span><span class="cl">let startTime = performance.now();
+</span></span><span class="line"><span class="ln">11</span><span class="cl">let count = 0;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">for (let number = 2; number &lt; 50000; number++) {
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    if (isPrime2(number)) {
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        count++;
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">16</span><span class="cl">}
+</span></span><span class="line"><span class="ln">17</span><span class="cl">let endTime = performance.now();
+</span></span><span class="line"><span class="ln">18</span><span class="cl">let executionTime = endTime - startTime;
+</span></span><span class="line"><span class="ln">19</span><span class="cl">console.log(`found ${count} primes`);
+</span></span><span class="line"><span class="ln">20</span><span class="cl">console.log(`Execution time: ${executionTime} milliseconds`);
+</span></span></code></pre></div><p>Again, similar to the Python solution, this halves the calculation time to, but not to 100 milliseconds</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-2.png" alt="alt text"><p>But there’s even more in this limit declaration: We can reduce it to the square root <strong>(sqrt)</strong> of our target number. Because if one divisor is greater than <strong>sqrt(number)</strong> the other divisor must be lower than <strong>sqrt</strong>(divisor). Meaning: They have already been checked. Let’s do it:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">function isPrime3(number) {
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    let limit = Math.floor(Math.sqrt(number));
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    for (let i = 2; i &lt;= limit; i++) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        if (number % i === 0) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            return false;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    return true;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">}
+</span></span><span class="line"><span class="ln">10</span><span class="cl">let startTime = performance.now();
+</span></span><span class="line"><span class="ln">11</span><span class="cl">let count = 0;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">for (let number = 2; number &lt; 50000; number++) {
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    if (isPrime3(number)) {
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        count++;
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">16</span><span class="cl">}
+</span></span><span class="line"><span class="ln">17</span><span class="cl">let endTime = performance.now();
+</span></span><span class="line"><span class="ln">18</span><span class="cl">let executionTime = endTime - startTime;
+</span></span><span class="line"><span class="ln">19</span><span class="cl">console.log(`found ${count} primes`);
+</span></span><span class="line"><span class="ln">20</span><span class="cl">console.log(`Execution time: ${executionTime} milliseconds`);
+</span></span></code></pre></div><p>WHAT THE ACTUAL HECK-IDDI-HECK! 4 Milliseconds? Remember Python and 72 Milliseconds?</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-3.png" alt="alt text"><p>What’s next?</p>
+<p>Why do we check even numbers at all? It’s “natural law” that an even number cannot be a prime (except the magic number 2).</p>
+<p>We can safely skip them in our main loop. But not only there, we can also safely skip them in the “test division”. An even factor always leads to an even product in a multiplication. This leads to the assumption, that an even number always leads to a modulo unequal 0 when thrown against a prime!</p>
+<p>In JavaScript it is a little trickier to check for the last digit of a number (aka last char of a string).</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">function isPrime4(number) {
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    let limit = Math.floor(Math.sqrt(number));
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    for (let i = 2; i &lt;= limit; i++) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        if ([0, 2, 4, 5, 6, 8].includes(parseInt(i.toString().slice(-1)))) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            continue;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        if (number % i === 0) {
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">            return false;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">        }
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    return true;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">}
+</span></span></code></pre></div><p>Let’s add this logic to both loops:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">let startTime = performance.now();
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">let count = 0;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">for (let number = 2; number &lt; 50000; number++) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    if ([0, 2, 4, 5, 6, 8].includes(parseInt(number.toString().slice(-1)))) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">        continue;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    if (isPrime4(number)) {
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">        count++;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">10</span><span class="cl">}
+</span></span><span class="line"><span class="ln">11</span><span class="cl">let endTime = performance.now();
+</span></span><span class="line"><span class="ln">12</span><span class="cl">let executionTime = endTime - startTime;
+</span></span><span class="line"><span class="ln">13</span><span class="cl">console.log(`found ${count} primes`);
+</span></span><span class="line"><span class="ln">14</span><span class="cl">console.log(`Execution time: ${executionTime} milliseconds`);
+</span></span></code></pre></div><p>Remember Python? This “silly” approach took a lot time. Same in JavaScript, it increases running time to 47 Milliseconds:</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-4.png" alt="alt text"><p>Again — We should implement the last test a little smarter. Right now we are using some string operations and apparently they are slow as heck.</p>
+<p>Python allows us to change the step rate of the <strong>range()</strong> function. This way we could just skip even numbers in the loop itself. Way easier. Heads up: As we will start at 3 now, we increment the counter integer beforehand:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">function isPrime5(number) {
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    let limit = Math.floor(Math.sqrt(number));
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    for (let i = 3; i &lt;= limit; i += 2) {
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">        if (number % i === 0) {
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">            return false;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">        }
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    }
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    return true;
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">}
+</span></span><span class="line"><span class="ln">10</span><span class="cl">let startTime = performance.now();
+</span></span><span class="line"><span class="ln">11</span><span class="cl">let count = 1;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">for (let number = 3; number &lt; 50000; number += 2) {
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    if (isPrime5(number)) {
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        count++;
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    }
+</span></span><span class="line"><span class="ln">16</span><span class="cl">}
+</span></span><span class="line"><span class="ln">17</span><span class="cl">let endTime = performance.now();
+</span></span><span class="line"><span class="ln">18</span><span class="cl">let executionTime = endTime - startTime;
+</span></span><span class="line"><span class="ln">19</span><span class="cl">console.log(`found ${count} primes`);
+</span></span><span class="line"><span class="ln">20</span><span class="cl">console.log(`Execution time: ${executionTime} milliseconds`);
+</span></span></code></pre></div><img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-5.png" alt="alt text"><p>It’s not way faster than our initial approach, but it still beats Python by lengths.</p>
+<p>Now, as JavaScript is this fast, let’s increase the numbers a little and see how the improved algorithm performs against Python: How long does it take to find all primes up to… wait for it… it’s gonna be legendary… 100 Million!</p>
+<p>This is JavaScript performance:</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-6.png" alt="alt text"><p>And this is Python:</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-7.png" alt="alt text"><p>I stopped the script after 10 Minutes. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://medium.com/how-to-find-prime-numbers-fast-8d0f7e8bd80f?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Check the other post</a>
+
+
+ to find out how to improve Python even more!</p>
+<blockquote>
+<p>According to 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://t5k.org/howmany.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://t5k.org/howmany.html</a>
+
+
+ we have 5.761.455 prime numbers lower than 100.000.000.</p>
+</blockquote>
+<h2 id="update--what-about-rust-and-c">Update — What about Rust and C++?</h2>
+<p>The story does not end here. I tried the same algorithm with Rust. Implementing a progress bar here led to a desaster, I stopped the search after 5 minutes. Without the progress bar it took <strong>400 seconds</strong>. A lot of room for improvement.</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-8.png" alt="alt text"><p>And even C++ surprised me in the beginning. The first run took 70 seconds, that’s almost twice the time JavaScript needed. Why that? After a little research I found out, that <strong>-O3</strong> and <strong>-ffast-math</strong> arguments for the compiler are recommended. Now the algorithm is done after 40 seconds:</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-9.png" alt="alt text"><p>So… JavaScript is as fast as C++, when it comes to simple calculations. Disclaimer: I’m not a C++ or Rust developer. Leave a comment, if you can explain this!</p>
+<img src="https://nickyreinert.de/en/2023/2023-12-12-prime-numbers-javascript/image-10.png" alt="alt text">]]></content:encoded><atom:updated>2026-04-24T17:43:54+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 8 Minuten</dc:subject><dc:type>tutorial</dc:type></item></channel></rss>
