@@ -1,0 +1,1140 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Bundestag auf Nicky Reinert</title><link>https://nickyreinert.de/tags/bundestag/</link><description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, KI, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur</description><generator>Hugo 0.167.0</generator><language>de</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Tue, 06 Oct 2026 01:23:45 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/tags/bundestag/index.xml" rel="self" type="application/rss+xml"/><item><title/><link>https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/</link><pubDate>Tue, 06 Oct 2026 01:23:45 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/</guid><description>Strukturierte Analyse von über 77 Jahren Plenarsitzungen des Bundestags: Datenextraktion, Statistiken zu Sitzungsdauern und methodische Erkenntnisse.</description><content:encoded><![CDATA[<blockquote>
+<p>Obligatorisches begleitendes WebInterface: Hier kannst du dich durch die strukturierten und extrahierten Plenarprotokolle wühlen:
+
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://pp.nickyreinert.de?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://pp.nickyreinert.de</a>
+
+
+</p>
+</blockquote>
+<p>In über <strong>77 Jahren Plenarsitzungen</strong> sind unfassbar viele Daten angefallen. Dementsprechend gibt es sehr viel zu erzählen. In diesem <strong>ersten Teil</strong> geht es um viel methodisches Geplänkel und einen Einblick in die <strong>Anzahl</strong> und <strong>Dauer der Sitzungen</strong>. Im <strong>zweiten Teil</strong> geht es um <strong>Zwischenrufe</strong>, <strong>Redebeiträge</strong> und <strong>SprecherInnen</strong>.</p>
+<h2 id="obligatorische-prosa">Obligatorische Prosa</h2>
+<p>Vor etwa zwei Jahren bin ich auf eine interessante Datenquelle gestoßen. Der Bundestag protokolliert seine <strong>Plenarsitzungen</strong> seit <strong>1949</strong> und stellt sie als XML-Datei zur Verfügung. Moment mal&hellip; XML? Strukturierte Daten? In dieser Menge? Aus einer offiziellen Quelle! Das lässt jedes Analsytenherz sofort höher springen! Aber keine Sorge&hellip; Die anfängliche Euphorie wird sehr schnell gedämpft.</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/images/meme-xml-format.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/images/meme-xml-format.png" 
+      alt="Meme: XML-Format geht auch für nicht-strukturierte Daten"
+      width="400"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>XML-Format als Container für strukturierte Daten? Wo denkst du hin!</figcaption>
+</figure>
+
+<p><strong>Sitzungsort</strong>, <strong>Datum</strong> und <strong>Nummer der Sitzung</strong> ließen sich explizit herauslesen. Aber der Inhalt der Sitzungen, also der spannende Teil, verbarg sich hinter einer schier endlosen Textwand.</p>
+<p>Egal, mein <strong>Forscherdrang</strong> war geweckt. Denn die Protokolle versprachen durchaus interessante Einblicke: So werden <strong>SprecherInnen</strong> und ihre <strong>Wortmeldungen</strong> aufgelistet, also auch <strong>Zwischenrufe</strong>, <strong>Applaus</strong>, <strong>Buhrufe</strong> und so weiter! Eine fast lückenlose Dokumentation der Stimmung im Zentrum der deutschen Politik seit 1949!</p>
+<p>Aber wie komme ich an die Daten ran? Die XML-Dateien sind scheinbar nur das Produkt eines mit <strong>OCR</strong> digitalisierten schriftlichen Protokolls, das aber System hat - <strong>deutsche Gründlichkeit</strong>: Auf die <strong>Liste der Tagesordnungspunkte</strong> folgen <strong>Reden</strong> und dann <strong>Anhänge</strong>. Die Reden bestehen aus tausenden von Zeilen, die meist mit dem Namen der SprecherIn beginnen. In runden Klammern wurden dann &ldquo;Zwischenrufe&rdquo; erfasst.</p>
+<p>Klingt einfach, war es dann aber doch nicht. Also, wirklich überhaupt gar nicht.</p>
+<p>Erstens wechselte das System im Laufe der Zeit mehrmals. Anfangs waren die Zeilen länger, später kamen zusätzliche Blöcke im Anhang hinzu (<strong>Abwesenheitslisten</strong>) und so weiter. Zwar gibt es eindeutige, wiederkehrende Muster - wie die runden Klammern für Zwischenrufe - aber es kommt immer wieder zu Abweichungen. Mal fehlt eine schließende Klammer, mal ein Doppelpunkt, der Person und Rede voneinander trennt. Personen werden nie durchgehend nach dem gleichen System erwähnt. Mal fehlt der Titel, mal der Vorname. Die Nutzung von OCR führte zu Typos und so weiter. Eine einfache Schleifen, die durch jede Zeile und jede Datei läuft, würde hier an ihre Grenzen stoßen. Wie gesagt&hellip; Euphorie: Gebremst.</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/images/image.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/images/image.png" 
+      alt="Meme: Society if data was structured"
+      width="400"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Society if data was structured</figcaption>
+</figure>
+
+<p>Ich entschied mich dazu, eine <strong>Statemachine</strong> zu entwickeln. Das ist im Prinzip auch nichts anderes als eine Schleife, aber mit viel mehr Logik. Zudem ist die gesamte Mustererkennung in Konfigurations-Dateien ausgelagert. Der Code selber ist nur ein paar Zeilen lang. Das macht den Prozess reproduzierbar und anpassbar. Im Prinzip funktioniert es so:</p>
+<p>Die <strong>Statemachine</strong> geht Zeile für Zeile durch und klassifiziert diese anhand einer Mustererkennung (<strong>regex ftw</strong>). Diese Klassifizierung basiert auf Kategorien, die ich in einer bestimten Reihenfolge erwarte. Ich weiß, dass jedes Protokoll mit dem <strong>Ort</strong> und <strong>Datum</strong> beginnt. Erst wenn dieser Status erreicht wurde, darf der nächste Status folgen: <strong>Liste der Tagesordnungspunkte</strong>. Erst dann kommt das eigentliche Protokoll - intern heißt der Status dann <code>speeches</code>.</p>
+<p><code>speeches</code> enthält &ldquo;Sub-Status&rdquo; (FYI: Plural von Status ist Status! Tjaha! Damit mal das Auditorium beim nächsten All Hands verwirren!). Wie dem auch sei: Sub-Status also: Jede durch eine Person eingeleitete Wortmeldung entspricht einem eigenen Status. Befindet sich die <strong>Statemachine</strong> im Status <code>speeches</code>, weiß sie, dass sie nach Mustern für die <strong>Person</strong>, die <strong>Rede</strong> oder <strong>Zwischenrufe</strong> schauen muss.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">TOC
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">  toc1
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">  toc2
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">  ...
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">speeches
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">  speaker A: speech (interjection) speech
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">  speaker A: speech (interjection) speech
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">  ...
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">attachment
+</span></span><span class="line"><span class="ln">10</span><span class="cl">  attachment A
+</span></span><span class="line"><span class="ln">11</span><span class="cl">  attachment B
+</span></span><span class="line"><span class="ln">12</span><span class="cl">  ...
+</span></span></code></pre></div><p>Die Mustererkennung basiert auf zahlreichen regulären Ausdrücken. Stell dir vor, ich erzeuge Muster, die die Dokumente der ersten Sitzung perfekt erfassen. Dann parse ich die zweite Sitzung und muss die Mustererkennung erweitern. Das Risiko: Die Muster funktionieren danach bei der ersten Sitzung nicht mehr. Bei tausenden von Dateien und wechselnder Syntax führt das sehr schnell zu einer <strong>Degeneration</strong> der Qualität. Um das zu verhindern, gibt es nicht nur Metriken (<em>n</em> erkannte SprecherInnen, <em>n</em> erkannte Zwischenrufe) sondern auch <strong>positive Checklisten</strong> und <strong>negative Checklisten</strong>. Das Muster wird nach jeder Anpassung wird gegen diesen Listen von Beispielen geprüft.</p>
+<p>Vor knapp zwei Jahren war das noch ein unfassbarer aufwendiger Prozess. Ich musste Datei für Datei durchgehen, die Pipeline anstoßen und das Ergebnis prüfen. Richtige Handarbeit. An KI-gestützte Entwicklung war damals noch nicht zu denken. Ich verlor recht schnell die Lust.</p>
+<p>Vor knapp einem Jahr habe ich das Projekt dann wieder aus der Versenkung geholt: KI war jetzt deutlich leistungsfähiger. Den kompletten <strong>stochastischen Ansatz</strong> wollte ich aber nicht wählen. Also die KI einfach auf die Dokumente loslassen um sie zu strukturieren. Der hohe Aufwand wäre zwar überschaubar gewesen, gleichzeitig hätte das Ergebnis - machen wir uns nichts vor - selbst mit heutigen Modellen nicht überzeugt.</p>
+<p>Meine Statemachine beruht ja durchaus auf einem ausgefeilten Modell. Die Tatsache, dass ich nicht dröflzig Zeilen Schleifen-Logik sondern eine relativ einfache Schleife und ausgelagerte Konfiguration für die Mustererkennung nutzte, ist sehr nützlich. Ich musste das Konzept nur weiter ausschreiben und vor allem <strong>Plausibilitätsprüfungen</strong> und <strong>Testfälle</strong> noch ausführlicher definieren.</p>
+<p>Trotzdem war die Extraktion ein sehr, sehr steiniger Weg. Sehr steinig. Hab ich schon steinig gesagt? Er war steinig. Der Weg. Ein Weg aus Steinen, mit Steinen garniert. Richtige Brocken waren dabei. Aber auch kleine Steine, große Steine. Spitze Steine. Steinige Steine, sandige Steine. Einsteine, Zweisteine. Sogar Pflaumensteine und Apfelkerne. Dies das. Ok, reicht.</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/images/einstein.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/images/einstein.png" 
+      alt="Meme: Einstein"
+      width="400"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Es ist kein Weg, wenn dort keine Steine liegen</figcaption>
+</figure>
+
+<p>Wie dem auch sei: Zahlreiche Iterationen, Plausibilitätsprüfen und Millionen Token später scheine ich mein Ziel erreicht zu haben. Und ja, was soll ich sagen: Es kam, wie es kommen musste: Mittlerweile liefert das Archiv des Bundestages die Protokolle in strukturierter Form aus. Zumindest für die <strong>Legislaturperioden 20</strong> und <strong>21</strong>. Egal, weiter im Text, denn:</p>
+<p><strong>Nur der steinige Weg kann das Ziel sein.</strong></p>
+<h2 id="unsagbar-spannende-und-notwendige-methodische-hinweise">Unsagbar spannende und notwendige methodische Hinweise</h2>
+<p>Los geht es mit den <strong>Kopfdaten</strong>! Jede Sitzung enthält sie. Dazu gehören:</p>
+<ul>
+<li><strong>Wahl- bzw. Legislaturperiode</strong> (ab sofort nur noch kurz <strong>LP</strong>)</li>
+<li><strong>Sitzungsnummer</strong> (SN, in Kombination dann 9/42 für LP 9, Sitzung 42)</li>
+<li><strong>Sitzungsort</strong></li>
+<li><strong>Datum</strong></li>
+<li><strong>Start- und Endzeitpunkt der Sitzung</strong></li>
+</ul>
+<p>Die folgenden Kategorien wurden aus dem Rohtext extrahiert:</p>
+<ul>
+<li>
+<p><strong>Tagesordnungspunkte</strong> - Jede Sitzung folgt einer Tagesordnung. Aus meiner Sicht eher ein Hygiene-Datum der nicht sonderlich spannend ist und außerdem vom Bundestag offizielle halbwegs gut sortiert angeboten wird</p>
+</li>
+<li>
+<p><strong>Redebeiträge</strong> -  Eine Person erhebt das Wort im deutschen Bundestag! Ich habe das in drei Gruppen unterteilt: <strong>Sitzungsleitung</strong>, <strong>Zwischenfrage</strong> und <strong>Rede</strong>. Zu jedem Redebeitrag gibt es den Namen der sprechenden Person.</p>
+</li>
+<li>
+<p><strong>Zwischenrufe</strong> - Das Protokoll erfasst sehr detailliert, was im Saal so vorgeht und zwar für jeden Redebeitrag seit Anbeginn des Parlaments! Ich nennen es grob &ldquo;<strong>Zwischenrufe</strong>&rdquo;, unterteile aber in <strong>Beifall</strong>, <strong>Zuruf</strong>, <strong>Zustimmung</strong> und mehr. Die Einordnung erfolgt nicht sonderlich strikt: <em>Beifall</em> kann also auch sein: &ldquo;<strong>Bravorufe und Händeklatschen</strong>&rdquo; oder &ldquo;<strong>Erneuter lebhafter Beifall</strong>&rdquo;. Inhaltlich aber irgendwie das gleiche. Zu jedem Zwischenruf gibt es - wenn überliefert - den Namen der &ldquo;störenden&rdquo; <strong>Person</strong> bzw. der <strong>Fraktion</strong> oder <strong>Partei</strong>. Es gibt aber auch Reaktionen des gesamten Saales.</p>
+</li>
+<li>
+<p><strong>Abstimmungen</strong> - <em>nicht immer aber öfter</em> werden Abstimmungen durchgeführt. Hier habe ich versucht, die namentlichen Abstimmungen zu erfassen, also auch ob mit <strong>Ja</strong>, <strong>Nein</strong> oder <strong>Enthalten</strong> gestimmt wurde. Auch diese Kategorie wird aber vom Bundestag mittlerweile digital erfasst und bereitgestellt.</p>
+</li>
+<li>
+<p><strong>Anhänge</strong> - Jedes Protokoll endet mit Anhängen. So auch hier. Darauf gehe ich aber nicht weiter ein, da das eigentlich nur langweilie bürokratische Prosa ist, bis auf:</p>
+</li>
+<li>
+<p>Die <strong>Fehlliste</strong> - eine in der Öffentlichkeit oft und gerne diskutierte Erkenntnis: Abgeordnete fehlen!  Ab Ende der Legislaturperiode 2 tauchen diese sogenannten &ldquo;<strong>Listen der beurlaubten Abgeordneten</strong>&rdquo; auf, in immer wieder wechselnden Formaten. In der Regel ist das der erste Anhang eines jeden Protokolls.</p>
+</li>
+<li>
+<p><strong>Personen</strong> - Und natürlich habe ich versucht, ein kanonisches Verzeichnes aller Personen anzulegen. Zwar liefert der Bundestag ein eigenes Verzeichnis mit, aber das umfasst nicht alle SprecherInnen - denn natürlich treten auch mal Gäste auf, die nicht zum Bundestag gehören. Gleichzeitig habe ich auf die &ldquo;Wikipedia-Datenbank&rdquo; zurückgegriffen, die für jede Legislaturperiode eine Liste der Abgeordneten bereitstellt.</p>
+</li>
+</ul>
+<p>Zudem habe ich jede Sitzung mit der <strong>Sitzverteilung</strong> des Bundestages für jede Partei in der entsprechenden Wahlperiode angereichert:</p>
+<ul>
+<li><strong>Sitzerverteilung</strong> - Dabei handelt es sich um Zahlen aus anderen offiziellen Quellen. Diese sind nützlich, um Verhältnisse und Gewichte zu berechnen. Übrigens: Die Sitzverteilung im Plenum kann sich im Laufe einer Legislaturperiode ändern, durch Überhangsmandate und Ausgleichsmandate aber auch Versterben. Die Abweichung ist aber minimal. Ich beziehe mich immer auf den &ldquo;Mittelwert&rdquo;.</li>
+</ul>
+<p>Insgesamt haben wir (<em>Stand 24.09.2026</em>):</p>
+<ul>
+<li><strong>4.653 Sitzungsprotokolle</strong> (was nicht gleichzusetzen ist mit Sitzungen <code>;)</code>&hellip;)</li>
+<li><strong>1.033.939 Redebeiträge</strong></li>
+<li><strong>2.367.322 Zwischenrufe</strong></li>
+<li><strong>2.551 Abstimmungen</strong> und dazu <strong>1.270.268 abgegebene Stimmen</strong></li>
+<li><strong>5.437 Sprecher und Sprecherinnen</strong></li>
+<li><strong>32 Parteien</strong></li>
+<li><strong>21 Wahlperioden</strong></li>
+</ul>
+<p>Es könnten durchaus zehn Zwischenrufe mehr sein oder 42 weniger Redebeiträge. Die Zahlen muss man als Tendenzen verstehen, die nur ziemlich nah an der Wahrheit dran sind. Soweit ich das beurteilen kann. <code>(⊙＿⊙')</code></p>
+<h2 id="über-fehlerquellen-ungenauigkeiten-und-unschärfen">Über Fehlerquellen, Ungenauigkeiten und Unschärfen</h2>
+<p>Wie eingangs erwähnt, handelt es sich um &ldquo;<strong>OCR-Daten</strong>&rdquo;. Ich wühle mich also durch einen prinzipiell zwar stabilen Datenstrom, der trotzdem an vielen Ecken Lücken aufweist. Erschwerend hinzu kommen gewollte Anpassungen. So gibt es z.B. signifikante Änderungen in der Struktur in den Wahlperioden 2, 3, 14, 17 und 19. Der 
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://pp.nickyreinert.de/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous#overview" target="_blank" rel="noopener noreferrer">Überblick</a>
+
+
+ dokumentiert fein säuberlich die erkannten <strong>Deviationen</strong> und <strong>Sonderfälle</strong>.</p>
+<p>Neben zahlreichen Mustern und Tests nutze ich auch einfache <strong>Ignorlisten</strong>. Die regulären Ausdrücke sind mitunter schon komplex genug. Mit fixen Ignorlisten kann die Statemachine zuverlässiger auf Sonderfälle reagieren, ohne die Konfiguration zu überladen.</p>
+<p>Der Bundestag führt natürlich selbst sehr genau Buch und veröffentlicht seine Plenarsitzungsstatistik im sogenannten <strong>Datenhandbuch</strong> (<em>dhb</em>) - davon gibt es zwei: Einmal für die Zeit von <strong>1949-1999</strong> und dann von <strong>1990-2022</strong> Beide Bücher umfassen knapp <strong>10.000 Seiten.</strong> Ich habe einige Kernkennzahlen extrahiert und meinen Zahlen gegenübergestellt. Die Anzahl der Sitzungen passt ganz gut überein, das ist ja schon mal was. Die Genauigkeit der Summen der Sitzungsdauer liegt zwischen <strong>96 bis 101 Prozent</strong> für neuere Ären, bis zur 11. Wahlperiode liegt der Median bei <strong>93 Prozent</strong>. Das ist auf <strong>OCR-Ungenauigkeiten</strong> oder sowas wie fehlende Endzeiten in den Protokollen zurückzuführen.</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: right">WP</th>
+					<th style="text-align: left">Jahre</th>
+					<th style="text-align: right">Sitzungen DHB (#)</th>
+					<th style="text-align: right">Sitzungen Extrakt (#)</th>
+					<th style="text-align: right">Sitzungen delta (#)</th>
+					<th style="text-align: right">Sitzungs-Zeit DHB (h)</th>
+					<th style="text-align: right">Situngs-Zeit Extrakt (h)</th>
+					<th style="text-align: right">Sitzungs-Zeit delta (%)</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: right">1</td>
+					<td style="text-align: left">1949-1953</td>
+					<td style="text-align: right">282</td>
+					<td style="text-align: right">282</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">1801</td>
+					<td style="text-align: right">1622</td>
+					<td style="text-align: right">10</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">2</td>
+					<td style="text-align: left">1953-1957</td>
+					<td style="text-align: right">227</td>
+					<td style="text-align: right">227</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">1581</td>
+					<td style="text-align: right">1565</td>
+					<td style="text-align: right">1</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">3</td>
+					<td style="text-align: left">1957-1961</td>
+					<td style="text-align: right">168</td>
+					<td style="text-align: right">168</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">1134</td>
+					<td style="text-align: right">1022</td>
+					<td style="text-align: right">10</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">4</td>
+					<td style="text-align: left">1961-1965</td>
+					<td style="text-align: right">198</td>
+					<td style="text-align: right">198</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">1091</td>
+					<td style="text-align: right">1045</td>
+					<td style="text-align: right">4</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">5</td>
+					<td style="text-align: left">1965-1969</td>
+					<td style="text-align: right">247</td>
+					<td style="text-align: right">247</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">1392</td>
+					<td style="text-align: right">1373</td>
+					<td style="text-align: right">1</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">6</td>
+					<td style="text-align: left">1969-1972</td>
+					<td style="text-align: right">199</td>
+					<td style="text-align: right">199</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">1091</td>
+					<td style="text-align: right">1072</td>
+					<td style="text-align: right">2</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">7</td>
+					<td style="text-align: left">1972-1976</td>
+					<td style="text-align: right">259</td>
+					<td style="text-align: right">259</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">1565</td>
+					<td style="text-align: right">1542</td>
+					<td style="text-align: right">1</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">8</td>
+					<td style="text-align: left">1976-1980</td>
+					<td style="text-align: right">230</td>
+					<td style="text-align: right">230</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">1411</td>
+					<td style="text-align: right">1473</td>
+					<td style="text-align: right">-4</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">9</td>
+					<td style="text-align: left">1980-1983</td>
+					<td style="text-align: right">142</td>
+					<td style="text-align: right">142</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">859</td>
+					<td style="text-align: right">862</td>
+					<td style="text-align: right">0</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">10</td>
+					<td style="text-align: left">1983-1987</td>
+					<td style="text-align: right">256</td>
+					<td style="text-align: right">256</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">1789</td>
+					<td style="text-align: right">1797</td>
+					<td style="text-align: right">0</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">11</td>
+					<td style="text-align: left">1987-1990</td>
+					<td style="text-align: right">236</td>
+					<td style="text-align: right">236</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">1730</td>
+					<td style="text-align: right">1717</td>
+					<td style="text-align: right">1</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">12</td>
+					<td style="text-align: left">1990-1994</td>
+					<td style="text-align: right">243</td>
+					<td style="text-align: right">243</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">1835</td>
+					<td style="text-align: right">1844</td>
+					<td style="text-align: right">0</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">13</td>
+					<td style="text-align: left">1994-1998</td>
+					<td style="text-align: right">248</td>
+					<td style="text-align: right">248</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">1864</td>
+					<td style="text-align: right">1864</td>
+					<td style="text-align: right">0</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">14</td>
+					<td style="text-align: left">1998-2002</td>
+					<td style="text-align: right">253</td>
+					<td style="text-align: right">253</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">1999</td>
+					<td style="text-align: right">1991</td>
+					<td style="text-align: right">0</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">15</td>
+					<td style="text-align: left">2002-2005</td>
+					<td style="text-align: right">187</td>
+					<td style="text-align: right">187</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">1354</td>
+					<td style="text-align: right">1340</td>
+					<td style="text-align: right">1</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">16</td>
+					<td style="text-align: left">2005-2009</td>
+					<td style="text-align: right">233</td>
+					<td style="text-align: right">233</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">1806</td>
+					<td style="text-align: right">1806</td>
+					<td style="text-align: right">0</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">17</td>
+					<td style="text-align: left">2009-2013</td>
+					<td style="text-align: right">253</td>
+					<td style="text-align: right">253</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">2010</td>
+					<td style="text-align: right">2014</td>
+					<td style="text-align: right">0</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">18</td>
+					<td style="text-align: left">2013-2017</td>
+					<td style="text-align: right">245</td>
+					<td style="text-align: right">245</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">1861</td>
+					<td style="text-align: right">1872</td>
+					<td style="text-align: right">-1</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">19</td>
+					<td style="text-align: left">2017-2021</td>
+					<td style="text-align: right">239</td>
+					<td style="text-align: right">239</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">2151</td>
+					<td style="text-align: right">2084</td>
+					<td style="text-align: right">3</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">20</td>
+					<td style="text-align: left">2021-2025</td>
+					<td style="text-align: right">-</td>
+					<td style="text-align: right">214</td>
+					<td style="text-align: right">-</td>
+					<td style="text-align: right">-</td>
+					<td style="text-align: right">1882</td>
+					<td style="text-align: right">-</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">21</td>
+					<td style="text-align: left">2025-2026</td>
+					<td style="text-align: right">-</td>
+					<td style="text-align: right">90</td>
+					<td style="text-align: right">-</td>
+					<td style="text-align: right">-</td>
+					<td style="text-align: right">769</td>
+					<td style="text-align: right">-</td>
+			</tr>
+	</tbody>
+</table>
+<p>Irgendwann musste ich eine gewisse Fehlerquote akzeptieren. Man wird z.B. bei den Personen unweigerlich auf offensichtliche Fehler stoßen. Das sieht dramatisch aus, die Auswirkung ist aber meist harmlos. Wie z.B. &ldquo;Bundespräsidenten Gustav Heinemann&rdquo;, angeblich nicht korrekt zugeordet. Momentmal - warum ist das so schwierig? Der Kollege dürfte landläufig bekannt sein! Nun, das ist Teil einer Rede:</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/images/pp17s94-gustave-heinemann.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/images/pp17s94-gustave-heinemann.png" 
+      alt="PP17/S94: Kein Redebeitrag von Heinemann"
+      width="400"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>PP17/S94: Kein Redebeitrag von Heinemann</figcaption>
+</figure>
+
+<p>Und damit genau die Ungenauigkeit, mit der man leben muss. Diese Fälle kommen leider immer wieder vor. Die meisten lassen sich durch feste <strong>Edge-Case-Regeln</strong> abfangen, die aber die Konfiguration aufblähen. Das ist die erwähnte zu erwartende Unschärfe.</p>
+<p>Es gibt einen &ldquo;<strong>Plausibilitäts-Check</strong>&rdquo;, den ich immer wieder über den Korpus und meinen Extrakt laufen lassen. Der schnappt sich zufällige Datenpunkte und überlässt kleinen und günstigen LLMs (meist <em>Claude Haiku</em>) die Prüfung.</p>
+<p>Die Übersicht auf 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://pp.nickyreinert.de?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://pp.nickyreinert.de</a>
+
+
+ habe ich für die explorative Analyse gebaut und um auffällige Fehler leichter entdecken zu können. Da die Zuordnung von Personen zu Parteien und Redebeiträgen fehleranfällig aber auch wichtig ist, habe ich dort die Möglichkeit eine Art &ldquo;Fehlermeldung&rdquo; zu kopieren, mit dem ein LLM eine entsprechende Korrektur vornehmen kann.</p>
+<h3 id="akzeptierte-abweichungen">Akzeptierte Abweichungen</h3>
+<p>Abschließend bleibt mir nur ernüchternd festzustellen: An der einen oder anderen Stelle gibt es <strong>Ungenauigkeiten</strong>. Egal wie oft ich meine ganzen <strong>Tests</strong> darüber laufen lasse oder die Plausibilität per Hand prüfe. Das Problem: Die Fehlerquote ist nicht mal genau bezifferbar. Damit muss ich leben, auch wenn es mir Bauschmerzen bereitet. Es ist trotzdem eine gute Grundlage, um von Tendenzen zu sprechen. Letztlich ist es egal, ob die durchschnittliche Sitzungsdauer 6 Stunden oder 6 Stunden und 1 Minute beträgt oder das Plenum 736 oder 737 Sitze umfasst. Wenn eine Abweichung oder Ungenauigkeit bezifferbar ist, gebe ich das im Text an.</p>
+<p>Aber jetzt: viel Spaß mit <strong>Balken</strong>, <strong>bunten Farben</strong> und einem kleinen Einblick in die Geschichte des <strong>deutschen Parlaments</strong>!</p>
+<p>(Wie unspannend das klingt, aber warte ab! <code>\_(^_^)_/</code> &hellip;)</p>
+<h2 id="wahlperioden">Wahlperioden</h2>
+<h3 id="sitzverteilung">Sitzverteilung</h3>
+<p>Wir starten mit einem groben Überblick über die Wahlperioden und der Verteilung der Sitze im Plenum:</p>
+<div class="chart">
+  <img class="chart-image" src="https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/seats_per_year.png" alt="Diagramm: seats_per_year" loading="lazy">
+  <div class="chart-interactive" data-plotly-chart data-chart-json="/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/seats_per_year.json"></div>
+</div>
+
+<p>Die Anzahl der Sitze varriert im Laufe der Zeit mitunter stark, dafür gab es viele Gründe, allem voran natürlich Änderungen des Wahlgesetzes. Mit der Wiedervereinigung während der <strong>11. Wahlperiode</strong> stieg die Anzahl der Sitze sprunghaft - 144 Mitglieder der frei gewählten DDR-Volkskammer wurden in den Bundestag entsandt, in der 12. Wahlperiode wurde die Größe des Plenums grundsätzlich erhöht. Wenig später erfolgte eine Reduzierung der Sitze. Dann gab es aber einen starken Anstieg in der 19. LP. Dafür gab es zwei Ursachen, und dazu muss man das Wahlsystem verstehen, genau: das <strong>personalisierte Verhältniswahlrecht</strong>&hellip; <strong>Bildungsauftrag!</strong> (<em>stark vereinfacht!</em> <code>(͡• ͜ʖ ͡•)</code>):</p>
+<p>Für jeden Wahlkreis gibt es im Bundestag einen Sitz. <strong>299 Wahlkreise -&gt; 299 Sitze</strong>. Die Belegung der Sitze kannst du mit deiner Erststimme direkt bestimmen.</p>
+<p>Warum belässt man es nicht dabei? Im Grunde könnte unser Parlament doch wunderbar so funktionieren! Nein, das System hat einen entscheidenden Nachteil: Stell dir vor, in jedem der 299. Wahlkreise gewinnt <strong>Partei A</strong> mit einer knappen Mehrheit, vielleicht gerade mal 21%. Es gibt noch vier andere Parteien, die aber nur auf 19,9% kommen, die so aber nicht in den Bundestag kämen. Das Parlament würde komplett von einer Partei dominiert werden, die nur ein Fünftel aller Stimmen erhalten hat und es gäbe nicht mal eine Opposition. Also führt man eine <strong>zweite Stimme</strong> ein, die das <strong>Verhältnis</strong> im Bundestag bestimmt. Für jede Wahlkreis gibt es einen weiteren Sitz und diese werden entsprechend der Zweitstimmen verteilt. <strong>Partei A</strong> erhält 21% der zusätzlichen 299 Sitze, die anderen Parteien können mit jeweils fast 60 Sitzen auch in den Bundestag einziehen.</p>
+<p>Mit der <strong>Erststimme</strong> bestimmst du also, wer dich aus deinem Wahlkreis im Bundestag vertritt. 299 direkt gewählte Abgeordnete. Deine <strong>Zweitstimme</strong> bestimmt die Besetzung der zusätzlichen 299 Sitze im Bundestag durch eine Partei. Diese werden mit den Abgeordneten der Landesliste besetzt, eine Art Warteschlange (die oft nach Prominenz sortiert ist&hellip;). Wer seinen Wahlkreis verliert, kann so immer noch ein Ticket nach Berlin ziehen.</p>
+<p>Ein ziemlich geniales Konzept, das aber auch seine Tücken hat:</p>
+<p>Wenn eine Partei viele Erststimmen gewinnt, aber deutlich weniger Zweitstimmen, gibt es ein Problem: Es werden mehr Wahlleute in das Parlament geschickt, als durch das Verhältnis der Zweitstimme zulässig wären. Man nennt das <strong>Überhangsmandate</strong>. Bis zur 17. Legislaturperiode kam das immer wieder vor und deswegen gab es 2013 eine Reform des Wahlrechts, mit dem die <strong>Ausgleichsmandate</strong> eingeführt wurden: Der Rechenweg ist ziemlich kompliziert, man kann es aber sehr einfach am Beispiel der 19. Legislaturperiode beschreiben, weil die Auswirkung hier am deutlichsten sind:</p>
+<p>Damals war vor allem die CDU/CSU von den Überhangsmandaten betroffen: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://de.statista.com/statistik/daten/studie/37814/umfrage/direktmandate-bei-der-bundestagswahl-2009/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">231 Direktmandate aus den Erststimmen</a>
+
+
+ - das sind über 77% - aber 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://de.statista.com/statistik/daten/studie/753306/umfrage/ergebnis-der-bundestagswahl/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">nur knapp 33% Zweitstimmen</a>
+
+
+.</p>
+<p>Das ist unfair gegenüber den anderen Parteien, die mehr Zweitstimmen erhalten haben, aber weniger Direktmandate und damit durch weniger Wahlleute im Parlament vertreten sind. Diese Diskrepanz wird durch <strong>Ausgleichsmandate</strong> teilweise korrigiert.</p>
+<blockquote>
+<p>Achtung: Der Wahlleiter betrachtet CDU und CSU getrennt, weil es sich de facto um andere Wahlkreise handelt - der Einfachhheit halber hab ich sie hier zusammengefasst.</p>
+</blockquote>
+<p>Man passt nun die Zahl der Sitze an, so dass die 33% der Zweitstimmen die gesamte Sitzverteilung besser wiedergeben. 77% entsprechen knapp 230 Sitzen. Damit das etwa den 33% der Zweitstimmen entspricht, müsste das Parlament aus 696 Sitzen bestehen - also muss es 98 <strong>Ausgleichsmandate</strong> geben. Diese werden entsprechend der Zweitstimmen an die Parteien verteilt. (Ich habe das sehr stark vereinfacht, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.bundeswahlleiterin.de/dam/jcr/992a9841-b869-49a6-b7b9-0b1366bf2589/btw17_erl_sitzzuteilung.pdf?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">die tatsächliche ordnungsgemäße Berechnung führte letztlich zu 709 Sitzen</a>
+
+
+ und ist weitaus komplizierter)</p>
+<p>Jetzt aber zurück zu den eigentlich Zahlen. <strong>Vier Phasen</strong> lassen sich aus der endgültigen Sitzverteilung ablesen:</p>
+<ul>
+<li>Wahlperiode 1 bis 3 (<strong>1949 bis 1961</strong>) kann man als &ldquo;<strong>Findungsphase</strong>&rdquo; beschreiben: Neben den großen Dreien (SPD, FDP und CDU, die damals noch nicht mit der CSU zusammengefasst wurde) - gab es sehr viele Splitterparteien.</li>
+<li>Dann folgte die &ldquo;<strong>konsolidierte Phase</strong>: Wahlperiode 4 bis 9 (<strong>1961 bis 1983</strong>) war geprägt durch eben jene drei großen Parteien.</li>
+<li>In der 10. Wahlperiode (1983) betraten die &ldquo;Grünen&rdquo; das Parket des Plenums und mit der 12. Wahlperiode - als Folge der Vereinigung - nun auch offiziell die &ldquo;PDS&rdquo; (die Nachfolgepartei der SED) - diese &ldquo;<strong>Phase der Pluralisierung</strong>&rdquo; (<strong>1983 bis 2013</strong>) dauerte bis zur 17. Legislaturperiode.</li>
+<li>Nun folgt die &ldquo;<strong>Turbulente Phase</strong>&rdquo;: 2013 bis heute andauernd: In der 18. Wahlperiode scheiterte die <strong>FDP</strong> an der 5%-Hürde, schhaffte es aber in der 19. und 20. Wahlperiode noch einmal in den Bundestag. Seit der 19. Wahlperiode ist auch die <strong>AfD</strong> Teil des Parlaments und die Parteienlandschaft hat sich stark verändert. In der 19. und 20. Legislaturperiode debattierten 6 Parteien im Plenum - ein deutlicher Kontrast zu der 3-Parteinlandschaft der frühren Jahre.</li>
+</ul>
+<p>Eine Sache muss jetzt aber noch klargestellt werden: In der 20. LP gab es <strong>736 Sitze</strong> im Bundestag! Das stieß auf eine Menge Kritik, also wurde das Wahlrecht <strong>2023</strong> erneut angepasst. Die Formel &ldquo;299 Sitze für die Direktmandate und 299 Sitze entsprechend der Zweitstimme&rdquo; gibt es so nun nicht mehr. Die Anzahl der Sitze beträgt fest 630. Wenn das Verhältnis Erst- zu Zweitstimmen halbwegs gleich ist, kann man die Sitze ganz normal verteilen. Ist der Unterschied größer, bestimmen die Zweitstimmen zunächst, wie viele Sitze die Partei bekommt. Danach erfolgt die Verteilung der Sitze auf die Erststimmen und zwar nach einem Ranking, z.B. welcher Wahlkreis prozentual die meisten Stimmen für das Direktmandat erzielt hat.</p>
+<h3 id="sitzungen">Sitzungen</h3>
+<p>Wie viele Sitzungen gab es im Laufe der Zeit?</p>
+<div class="chart">
+  <img class="chart-image" src="https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/sessions_per_period.png" alt="Diagramm: sessions_per_period" loading="lazy">
+  <div class="chart-interactive" data-plotly-chart data-chart-json="/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/sessions_per_period.json"></div>
+</div>
+
+<p>Die erste Legislaturperiode hält seit 1949 den Rekord: <strong>282 Sitzungen</strong> - das historisch kleinste Plenum war gleichzeitig das eifrigste! Besonders auffallend sind die Perioden 3, 9 und 15 mit vergleichsweise wenigen Sitzungen. Was war da los?</p>
+<ul>
+<li>
+<p><strong>Wahlperiode 3</strong> dauert ganz regulär von 1957 bis 1961. 424 Gesetze wurden in dieser Legislaturperiode verabschiedet und eine Regel eingeführt: Die Redezeit ist nun begrenzt und wird anhand der Fraktionsstärke verteilt (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.bundestag.de/dokumente/textarchiv/wahlperioden-03-199868?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">bundestag.de</a>
+
+
+). In den beiden vorherigen Wahlperioden wurden 1.052 Gesetze eingeführt (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.bundestag.de/dokumente/textarchiv/wahlperioden-02-199554?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">bundestag.de</a>
+
+
+) - alles keine Erklärung. Vielleicht war in der 3. Legislaturperiode also einfach die Luft raus?</p>
+</li>
+<li>
+<p><strong>Wahlperiode 9</strong> war eine kurze Legislaturperiode - 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.bundestag.de/dokumente/textarchiv/2025/kw09-wahlkreis-unbesetzt-1055568?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Die zunehmenden Konflikte der beiden Regierungsparteien SPD und FDP führten zu einer politischen Krise</a>
+
+
+. Spannend hierbei: Wie schon 2017 spielte die FDP eine wichtige Rolle: Zusammen mit der CDU/CSU plante man Schmidt durch ein Misstrauensvotum zu stürzen. Es kam zu Neuwahlen und Helmut Kohl wurde Bundeskanzler - für die nächsten <strong>16 Jahre</strong>!</p>
+</li>
+<li>
+<p><strong>Wahlperiode 15</strong> war ebenfalls besonders kurz - 2005 stellte Bundeskanzler <strong>Gerhard Schröder (SPD)</strong> die Vertrauensfrage, nach nur knapp 3 Jahren wurden im selben Jahr Neuwahlen durchgeführt</p>
+</li>
+</ul>
+<p>Übrigens, wusstest du, dass der Bundestag für jede Legislaturperiode 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.bundestag.de/parlament/geschichte/75jahre/wahlperioden?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">einen schmissigen Titel</a>
+
+
+ bereithält? Hier sind sie:</p>
+<ul>
+<li>LP 1: Neubeginn auf Trümmern (1949 bis 1953)</li>
+<li>LP 2: Zurück auf die Weltbühne (1953 bis 1957)</li>
+<li>LP 3: Stabilität und Teilung (1957 bis 1961)</li>
+<li>LP 4: Ost-West-Konflikt und Ende einer Ära (1961 bis 1965)</li>
+<li>LP 5: Zwischen Flaute und Revolte (1965 bis 1969)</li>
+<li>LP 6: Machtwechsel und Vertrauensfrage (1969 bis 1972)</li>
+<li>LP 7: Zähe Gesetzgebung (1972 bis 1976)</li>
+<li>LP 8: Wettrüsten und Umweltbewegung (1976 bis 1980)</li>
+<li>LP 9: Ende der sozialliberalen Ära (1980 bis 1983)</li>
+<li>LP 10: Umwelt und Aufschwung (1983 bis 1987)</li>
+<li>LP 11: Der Weg zur deutschen Einheit (1987 bis 1990)</li>
+<li>LP 12: Die Einheit als Aufgabe (1990 bis 1994)</li>
+<li>LP 13: Neue globale Verpflichtungen (1994 bis 1998)</li>
+<li>LP 14: Herausforderung Terrorismus (1998 bis 2002)</li>
+<li>LP 15: Rot-Grün und die Agenda 2010 (2002 bis 2005)</li>
+<li>LP 16: Föderalismusreform und Finanzkrise (2005 bis 2009)</li>
+<li>LP 17: Im Zeichen der Euro-Rettung (2009 bis 2013)</li>
+<li>LP 18: Schwar­ze Null und Flücht­lingskrise (2013 bis 2017)</li>
+<li>LP 19: Im Kampfmodus gegen die Corona-Pandemie (2017 bis 2021)</li>
+<li>LP 20: Zeitenwende und Haushaltsprobleme (2021 bis 2025)</li>
+</ul>
+<h3 id="sommerpausen">Sommerpausen!?</h3>
+<p>Landläufig bekannt ist, dass das Parlament in eine Sommerpause geht - es sei ihm gegönnt? Aber naja&hellip; &ldquo;Sommerpause&rdquo; ist ein heftiger Euphemismus - Natürlich geht es auch mal in den Urlaub, trotzdem gibt es viel zu tun in dieser <strong>sitzungsfreien</strong> Zeit: Die Abgeordneten planen Gesetzesentwürfe, bereiten Reden vor oder sind in ihrem Wahlkreis aktiv. Aber das nur am Rande.</p>
+<div class="chart">
+  <img class="chart-image" src="https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/sessions_per_day_and_year.png" alt="Diagramm: sessions_per_day_and_year" loading="lazy">
+  <div class="chart-interactive" data-plotly-chart data-chart-json="/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/sessions_per_day_and_year.json"></div>
+</div>
+
+<p>Und natürlich muss die Pause für <strong>Sondersitzungen</strong> auch mal unterbrochen werden, was sich an diesem Plot sehr gut ablesen lässt. Diese dürfen übrigens per 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.gesetze-im-internet.de/gg/art_39.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Artikel 39 Absatz 3 des Grundgesetzes</a>
+
+
+ durch den Präsidenten des Bundestages einberufen werden oder wenn 1/3 der Mitglieder des Bundestages dies verlangen.</p>
+<p>In akuten Fällen trifft man sich also im Plenum. So z.B. am <strong>18.08.1961</strong> anlässlich des Baus der Berliner Mauer, der 5 Tage vorher begann. Bundespräsident Adenauer und Berlins Bürgermeister Willy Brandt 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.bundestag.de/dokumente/textarchiv/mauerbau-199864?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">hielten flammende Reden vor dem Bundestag</a>
+
+
+. Am <strong>31.07.1984</strong> traf man sich, weil es massive Proteste gegen die Inbetriebnahme des <strong>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://de.wikipedia.org/wiki/Kraftwerk_Buschhaus?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Braunkohlekraftwerkes Buschhaus</a>
+
+
+</strong> gab. Grund war das Fehlen wichtiger Schadstofffilter. Die 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.bundestag.de/dokumente/textarchiv/2s021/kw34-de-pandemie-855304?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Sondersitzung</a>
+
+
+ am <strong>25. August 2021</strong> fiel in eine ereignisreiche Zeit: Die Lage in <strong>Afghanistan</strong> eskalierte,  <strong>COVID-19</strong> hielt die Welt in Atem und es kam zu einem verherenden Hochwaser in <strong>Rheinland-Pfalz</strong> und <strong>Nordrhein-Westfalen</strong>.</p>
+<h3 id="sitzungen-pro-jahr-und-legislaturperiode">Sitzungen pro Jahr und Legislaturperiode</h3>
+<div class="chart">
+  <img class="chart-image" src="https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/sessions_per_year_and_period.png" alt="Diagramm: sessions_per_year_and_period" loading="lazy">
+  <div class="chart-interactive" data-plotly-chart data-chart-json="/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/sessions_per_year_and_period.json"></div>
+</div>
+
+<p>Betrachtet man die Sitzungen über die Jahre verteilt, offenbart sich ein interessanter Zyklus: Im Wahljahr bzw. während eines Regierungswechsels gibt es - mit wenigen Ausnahmen - im Parlament deutlich weniger Sitzungen.</p>
+<h3 id="sitzungsdauer">Sitzungsdauer</h3>
+<p><em><strong>Qualitätshinweis</strong>: 197 of 4653 ohne Sitzungsdauerangabe (~4%)</em></p>
+<p>Im Durchschnitt beträgt die Sitzungsdauer <strong>427 Minuten</strong>, also <strong>knapp 7 1/4 Stunden</strong>. Weniger als der durchschnittliche Arbeitstag Aber warte ab: Erstens ist das nur die Dauer der Sitzung - ohne die Vor- und Nachbereitung, Ausschussarbeit und so weiter. <em>(Zweitens: siehe Histogramm weiter unten)</em></p>
+<div class="chart">
+  <img class="chart-image" src="https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/avg_session_duration_per_period.png" alt="Diagramm: avg_session_duration_per_period" loading="lazy">
+  <div class="chart-interactive" data-plotly-chart data-chart-json="/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/avg_session_duration_per_period.json"></div>
+</div>
+
+<div class="chart">
+  <img class="chart-image" src="https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/total_session_duration_per_period.png" alt="Diagramm: total_session_duration_per_period" loading="lazy">
+  <div class="chart-interactive" data-plotly-chart data-chart-json="/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/total_session_duration_per_period.json"></div>
+</div>
+
+<p>Die durchschnittliche Sitzungsdauer zeigt eine steigende Tendenz. Die Gesamtsitzungsdauer erscheint auf den ersten Blick fragmentiert zu sein (bei der 9. und 15. LP handelt es sich um Ausreißer, die wir oben schon betrachtet haben). Insgesamt nimmt die Gesamtsitzungsdauer über die Legislaturperioden aber auch zu.</p>
+<p>Ich war kurz davor, in einem <strong>Rabbithole</strong> zu verschwinden, denn hinter der Sitzungsdauer verbirgt sich ein großer Dschungel politikwissenschaftlicher Erkenntnisse. Man unterscheide nämlich <strong>Rede</strong>- und <strong>Arbeitsparlamente</strong>. Das deutsche Parlament ist eine Mischung aus beiden, mit stabiler Tendenz zu letzterem. Ein Arbeitsparlament wird als besonders effizient betrachtet, aber durchaus weniger transparent. Das britische Unterhaus ist z.B. ein Redeparlament, während der US-Senat auch als Arbeitsparlament funktioniert [
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.bpb.de/shop/zeitschriften/apuz/archiv/528054/zur-transparenz-der-politischen-ordnung-der-bundesrepublik/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">vgl.</a>
+
+
+].</p>
+<p>Im Prinzip heißt das in Deutschland: Das Plenum ist eher dafür da, Ergebnisse zu diskutieren und zu beschließen. Die Arbeit an den Gesetzen erfolgt hauptsächlich in Ausschüssen, Arbeitsgruppen und so weiter.</p>
+<p>Zurück zu den Zahlen:</p>
+<p>Die ersten Perioden waren von einer Aufbruchstimmung geprägt. Es gab viel zu tun, der Staat musste institutionell und rechtlich komplett neu aufgebaut werden. Das erklärt die deutlich höhere Sitzungsdauer in der Zeit. Der Bruch in der 3. und 4. Periode - also die deutlich geringere Gesamtsitzungszeit, könnte darauf hindeuten, dass immer mehr Arbeit in die Ausschüsse verlagert wurde. Dass die durchschnittliche und gesamte Sitzungsdauer danach sukuzessive ansteigt, lässt sich mit der wachsenden Komplexität von Problemen und zunehmenden globalen Herausforderungen erklären.</p>
+<p>Ein weiterer Grund dürfte die Fragmentierung der Fraktionen sein. Mit Einzug der AfD in den Bundestag in der <strong>19. Legislaturperiode</strong> befinden sich nun <strong>5</strong> (zwischenzeitlich sogar 6) größere Fraktionen im Plenum. Im Diagramm wird das sehr gut deutlich. Wir erinnern uns: Die Anzahl der Sitze erreichte hier auch fast eine Rekordhöhe! Während der Frühzeiten waren es mit der CDU/CSU und SPD zwei große Blöcke (und die FDP als kleinerer Partner). Natürlich wirkt sich das auf die Dauer und Intensität der Debatten aus.</p>
+<p>Das Histogramm der Verteilung der Sitzungsdauer zeigt, warum ein Blick auf den Mittelwert nicht immer ausreicht:</p>
+<div class="chart">
+  <img class="chart-image" src="https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/dist_total_session_duration_per_period.png" alt="Diagramm: dist_total_session_duration_per_period" loading="lazy">
+  <div class="chart-interactive" data-plotly-chart data-chart-json="/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/dist_total_session_duration_per_period.json"></div>
+</div>
+
+<p>Hier sieht man: Viele Sitzungen dauern 10 und mehr Stunden. Nehmen wir den typischen 8 Stunden Tag als Maßstab zeigt sich: Knapp 35% aller Sitzungen (1.691) dauer länger als 8 Stunden. Überstunden gehören also zur Regel.</p>
+<p>Zwei Sonderfälle fallen besonders auf. Am <strong>13.03.1974</strong> (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://dserver.bundestag.de/btp/07/07083.pdf?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><strong>WP 7, Sitzung 83</strong></a>
+
+
+) gab es eine besonders kurze Sitzung, die nach nur 1 Minute endete.  Der <strong>Vizepräsident Dr. Schmitt-Vockenhausen</strong> beendete die Sitzung um 09:01 Uhr mit den Worten:</p>
+<blockquote>
+<p>&ldquo;eine der kürzesten Sitzungen dieses Hauses ist damit zu Ende [&hellip;]&rdquo;.</p>
+</blockquote>
+<p>Was war passiert? Es gab nur einen Tagesordnungspunkt über die Nachfolge für einen verstorbenen Abgeordneten, über die sich die Fraktion bereits im Vorfeld geeinigt hatten. Die Sitzunge konnte also sofort wieder beendet werden.</p>
+<p>Am <strong>06.07.1956</strong> startete eine besonders lange Sitzung (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://dserver.bundestag.de/btp/02/02159.pdf?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><strong>WP2/159</strong></a>
+
+
+): Erst nach <strong>18 Stunden und 41 Minuten</strong> beendete der damalige Präsident <strong>Präsident Dr. Dr. Gerstenmaier</strong> die Sitzung. Thema der Besprechnung war das Wehrpflichtgesetz, dass damals auch in der Öffentlichkeit breit diskutiert wurde. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.bpb.de/kurz-knapp/hintergrund-aktuell/231388/1956-das-wehrpflichtgesetz-tritt-in-kraft/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Nach der 143. und 157. folgte nun in der 159. Sitzung</a>
+
+
+ die finale Abstimmung über das Gesetz.</p>
+<div class="chart">
+  <img class="chart-image" src="https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/avg_session_duration_per_month.png" alt="Diagramm: avg_session_duration_per_month" loading="lazy">
+  <div class="chart-interactive" data-plotly-chart data-chart-json="/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/avg_session_duration_per_month.json"></div>
+</div>
+
+<p>Im Jahresverlauf zeigen sich deutlich <strong>saisonale Unterschiede</strong>. Wie oben schon erkannt, fällt die Sommerpause auf den Monat August. Dementsprechend gibt es hier deutlich weniger und kürzere Sitzungen. Im Juni erreicht die durchschnittliche Sitzungsdauer ihren Höhepunkt, gleichzeitig finden hier die meisten Sitzungen statt. Da die meisten Legislatur-Wechsel auf den <strong>Oktober</strong> fallen, beobachten wir in diesem Monat die wenigsten und kürzesten Sitzungen.</p>
+<h3 id="exurs-der-lieblings-wahlmonat">Exurs: Der Lieblings-Wahlmonat!</h3>
+<p>Aber ist das wirklich so? Durch vorgezogene Neuwahlen hat sich der Monat der ersten Sitzung zwar immer wieder verschoben:</p>
+<div class="chart">
+  <img class="chart-image" src="https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/session_start_month.png" alt="Diagramm: session_start_month" loading="lazy">
+  <div class="chart-interactive" data-plotly-chart data-chart-json="/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/session_start_month.json"></div>
+</div>
+
+<p>Nach der Wiedervereinigung gab es aber keine besonderen Ereignisse, trotzdem landete man einige Jahre später wieder beim September-Wahlmonat. Warum? 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.gesetze-im-internet.de/gg/art_39.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Erstens erlaubt das Grundgesetz</a>
+
+
+, den Termin für die Neuwahl zwischen <strong>46 und 48 Monaten</strong> nach der letzten Wahl festzulegen. Juristisch also fein. Und warum der September? Die Gründen liegen zwar auf der Hand, es gibt aber keinen legalen Zwang: Der September ist der &ldquo;Wunschmonat&rdquo; für Wahlen. Das Wetter ist schön, die Ferien sind vorbei und so weiter. Aus organisatorischer Sicht der beste Zeitpunkt.</p>
+<p>Die letzte vorgezogene Neuwahl bringt das System übrigens ordentlich durcheinander. Die nächste Wahl wird im Januar stattfinden, es gibt also einen <strong>Winterwahlkampf</strong>. Regulär wird es wohl erst in <strong>2036</strong> wieder eine September-Wahl geben.</p>
+<h3 id="durchschnittliche-sitzungsdauer-pro-wochentag">Durchschnittliche Sitzungsdauer pro Wochentag</h3>
+<p>Der Blick auf die durchschnittliche Sitzungsdauer pro Wochentag zeigt eine weitere &ldquo;parlamentarische Organisationsregel&rdquo;:</p>
+<div class="chart">
+  <img class="chart-image" src="https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/avg_session_duration_per_day_of_week.png" alt="Diagramm: avg_session_duration_per_day_of_week" loading="lazy">
+  <div class="chart-interactive" data-plotly-chart data-chart-json="/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/avg_session_duration_per_day_of_week.json"></div>
+</div>
+
+<p>Die Erklärung steckt in 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.bundestag.de/services/glossar/sitzungswochen-247330?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">der Beschreibung der Sitzungswoche</a>
+
+
+:</p>
+<p>Am <strong>Montag</strong> und <strong>Dienstag</strong> trifft man sich in Ausschüssen oder Fraktionssitzungen. Hier wird sozusagen die Vorarbeit geleistet.</p>
+<p>Der <strong>Donnerstag</strong> ist der klassische <strong>Sitzungstag</strong>. Die meisten Sitzungen, die im Schnitt über 10 Stunden dauern.  Am <strong>Mittwoch</strong> trifft man sich vormittags noch außerhalb des Plenarsaals. Die Sitzungen starten erst danach im Plenum. Dementsprechend gibt es ähnlich viele Sitzungen, die im Schnitt aber deutlich kürzer sind.</p>
+<p>Am <strong>Freitag</strong> gibt es kaum weniger Sitzungen, die aber auch nur bis in den Nachmittag dauern, dann geht es für die Abgeordneten in der Regeln in die Wahlkreise.</p>
+<h3 id="durchschnittliche-sitzungsdauer-pro-stunde-des-tages">Durchschnittliche Sitzungsdauer pro Stunde des Tages</h3>
+<p>Und wann geht es los, im deutschen Parlament? Der typische Arbeitstag beginnt um <strong>9 Uhr</strong>. Aber es gibt auch Sitzungen, die erst sehr spät beginnen und auch nicht lange dauern. Was hat es mit den beiden kurzen Sitzungen um <strong>20 und 22 Uhr</strong> und den beiden extrem langen Sitzungen um <strong>7 Uhr</strong> auf sich? Schauen wir mal genauer rein:</p>
+<div class="chart">
+  <img class="chart-image" src="https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/avg_session_duration_per_hour_of_day.png" alt="Diagramm: avg_session_duration_per_hour_of_day" loading="lazy">
+  <div class="chart-interactive" data-plotly-chart data-chart-json="/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/charts/avg_session_duration_per_hour_of_day.json"></div>
+</div>
+
+<p>Am Donnerstag, dem <strong>04.10.1984</strong>, startete 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://dserver.bundestag.de/btp/10/10088.pdf?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">die 88. Sitzung der 10. Legislaturperiode</a>
+
+
+ um 7:00 Uhr und endete um 23:07 Uhr. Die Sitzung fand in einer turbulenten Zeit statt. <strong>Helmut Kohl</strong> war Bundeskanzler. Während eines <strong>Manövers der Bundeswehr</strong> kam es zu Übergriffen durch Demonstranten. Es ging um Waffenlieferungen und einen havarierten Atommüllfrachter im Ärmelkanal. Es gab also viel zu besprechen. Bei 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://dserver.bundestag.de/btp/16/16037.pdf?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">der 37. Sitzung der 16. Legislaturperiode</a>
+
+
+ war es kaum anders: Es gab schlicht viel zu besprechen am 1. Juni 2006, weshalb die Sitzung ebenfalls sehr lang war.</p>
+<p>Die beiden späten Sitzungen gehören zur 1. Wahlperiode und waren wirklich ganz besonders. Am <strong>2. Dezember 1949</strong> - ein Freitag - fanden an einem Tag gleich 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://dserver.bundestag.de/btp/01/01020.pdf?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">zwei Sitzungen</a>
+
+
+ statt. Die <strong>20. Sitzung</strong> startet um <strong>17:36 Uhr</strong> und im Anschluss ging es um <strong>20:58 Uhr</strong> mit der <strong>21. Sitzung</strong> gleich weiter. An diesem Nachmittag kommt es zu unterhaltsamen Szenen. &ldquo;<strong>Krause geh nach Hause</strong>&rdquo; heißt es einmal aus Reihen der <strong>KPD</strong> - auf die <strong>Reaktion von Dr. Köhler</strong> recht jovial reagiert:</p>
+<blockquote>
+<p>&ldquo;Poesie bitte immer am rechten Platz!&rdquo;</p>
+</blockquote>
+<p>Dann geht es um die Abstimmung für <strong>Wartegeld</strong> und <strong>Pensionen der ostvertriebenen Beamten</strong>. <strong>Kahn (CDU)</strong> bezweifelt die Geschäftsfähigkeit des Parlaments. Es geht um die Abstimmung  Es kommt zu Unruhen im Saal. <strong>Renner (SPD)</strong> ruft dazwischen. <strong>Dr. Köhler</strong> greift erneut durch:</p>
+<blockquote>
+<p>&ldquo;Wenn der Präsident spricht, spricht auch der Kollege Renner nicht</p>
+</blockquote>
+<p>Woraufhin <strong>Renner</strong> erwidert:</p>
+<blockquote>
+<p>(Abg. Renner: Entschuldigen Sie! Ich habe gar nicht gemerkt, daß Sie sprachen!)&rdquo;</p>
+</blockquote>
+<p>Tat er ja auch tatsächlich nicht in dem Augenblick! <strong>Köhler</strong> beendet schließlich die Sitzung und beruft eine neue ein: Angesetzt auf <strong>20:30 Uhr</strong>. Und dann geht es relativ schnell: Der Beschluss wird angenommen und die Sitzung beendet.</p>
+<p>Bei der <strong>224. Sitzung</strong> war es ähnlich. Nach einem sogenannten <strong>Hammelsprung</strong> (bei dem die Zählung der Stimmen erfolgt, indem die Abgeordneten den Saal verlassen und wieder betreten) wird die Beschlussunfähigkeit festgestellt. Der <strong>Vizepräsident Dr. Schmid</strong> beraumt daraufhin eine neue Sitzung an, die um <strong>22.45 Uhr</strong> starten soll und recht schnell wieder beendet wird.</p>
+<h3 id="zwischenfazit">Zwischenfazit</h3>
+<p>Ich würde jetzt einen spannenden Teaser für den zweiten Teil droppen. Aber ich schreibe die Beiträge so, wie ich mich durch die Daten kämpfe. Ich weiß nur, was uns grob erwarten wird: <strong>Zwischenrufe</strong>! Wer stört am meisten? Verändert sich das im Laufe der Zeit? Wird in der Sommerhitze öfter <strong>Applaus</strong> gegeben als im Winter? Fallen bestimmte Parteien besonders auf? Welche PolitikerInnen reden am längsten und am häufigsten? Was geben die <strong>Fehllisten</strong> her? Schaffe ich es, eine grobe <strong>Sentimentanalyse</strong> über die Reden laufen zu lassen? Oder mein Lieblings-Plot: <strong>Eine Word-Cloud</strong>?</p>
+<p>Wir werden sehen&hellip; jetzt erstmal durchatmen.</p>
+]]></content:encoded><atom:updated>2026-10-06T08:53:45+02:00</atom:updated><category>blog</category><category>analysen</category><dc:subject>Lesezeit: 27 Minuten</dc:subject><dc:type>technical_explainer</dc:type></item></channel></rss>
