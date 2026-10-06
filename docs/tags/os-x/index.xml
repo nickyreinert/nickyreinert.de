@@ -141,4 +141,232 @@
 </span></span><span class="line"><span class="ln">40</span><span class="cl"><span class="n">alias</span> <span class="n">lsocks</span><span class="o">=</span><span class="s1">&#39;sudo /usr/sbin/lsof -nP | grep TCP&#39;</span>
 </span></span><span class="line"><span class="ln">41</span><span class="cl"><span class="n">alias</span> <span class="n">net</span><span class="o">=</span><span class="s1">&#39;ipconfig getpacket en0&#39;</span>
 </span></span><span class="line"><span class="ln">42</span><span class="cl"><span class="n">alias</span> <span class="n">cleardns</span><span class="o">=</span><span class="s1">&#39;dscacheutil -flushcache&#39;</span>
-</span></span></code></pre></div>]]></content:encoded><atom:updated>2026-06-16T20:56:44+02:00</atom:updated><category>development</category><category>os-x</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Os-X</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>guide</dc:type></item></channel></rss>
+</span></span></code></pre></div>]]></content:encoded><atom:updated>2026-06-16T20:56:44+02:00</atom:updated><category>anleitungen</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Os-X</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>guide</dc:type></item><item><title>MacOS Finder und die SMB / Windows - Netzwerkfreigaben</title><link>https://nickyreinert.de/2013/2013-02-24-macos-finder-und-die-smb-windows-netzwerkfreigaben/</link><pubDate>Sun, 24 Feb 2013 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2013/2013-02-24-macos-finder-und-die-smb-windows-netzwerkfreigaben/</guid><description>Immer wenn ich die Verbindung zu meinem Heimnetz hergestellt habe, sei es über WLAN oder Kabel, dauerte es eine gefühlte Ewigkeit, bis der Finder (sic!) mein NAS gefunden hat, obwohl beide am gleichen Switch hängen. Es half dabei auch nichts, wenn ich direkt zum NAS verbinden wollte, weil ich die …</description><content:encoded><![CDATA[<p>Immer wenn ich die Verbindung zu meinem Heimnetz hergestellt habe, sei es über WLAN oder Kabel, dauerte es eine gefühlte Ewigkeit, bis der Finder (sic!) mein NAS gefunden hat, obwohl beide am gleichen Switch hängen. Es half dabei auch nichts, wenn ich direkt zum NAS verbinden wollte, weil ich die IP-Adresse kenne (Apfel + K). Das hab ich eine Weile ignoriert, dann akzeptiert, aber irgendwann konnte ich die Geduld nicht mehr aufbringen und habe mich auf die Suche nach einer Lösung gemacht.</p>
+<p>Diese fand ich in den 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://discussions.apple.com/thread/2172049?start=15&amp;tstart=0&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Apple Support Foren.</a>
+
+
+ Ein langer Beitrag kurz zusammengefasst:</p>
+<p>1. Erstelle ein Textdatei mit dem Inhalt</p>
+<blockquote>
+<p>[default]
+minauth=none
+streams=no
+soft=yes
+notify_off=yes
+domain=DOMAIN_NAME_DEINER_NETZWERKFREIGABE
+port445=no_netbios
+[NAME_DEINER_NETZWERKFREIGABE]
+addr=IP-ADRESSE_DEINER_FREIGABE</p>
+</blockquote>
+<p>2. Speichere die Datei mit dem Namen &ldquo;nsmb.conf&rdquo; unter /etc ab. (Ggf.mit der Konsole / dem Terminal arbeiten). 3. Starte dein Mac(Book) neu.</p>
+<p>Danach dauerte es nur noch Bruchteile von Sekunden, bis die Netzwerkfreigabe im Finder sichtbar war.</p>
+<p> </p>
+<p>Update: Mit dem kostenfrei erhältlichen 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://www.apple.com/de/osx/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Update auf MacOS 10.9 Mavericks</a>
+
+
+ scheint dieses Problem behoben zu sein!</p>
+]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>anleitungen</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Os-X</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>troubleshooting_guide</dc:type></item><item><title>DOS-Spiele auf dem Mac spielen</title><link>https://nickyreinert.de/2012/2012-09-24-dos-spiele-auf-dem-mac-spielen/</link><pubDate>Mon, 24 Sep 2012 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2012/2012-09-24-dos-spiele-auf-dem-mac-spielen/</guid><description>Alte DOS-Spiele auf dem Mac zu spielen ist mit Boxer relativ einfach. Nach der Installation und dem Start der Boxer-App kann man vorhandene Spiele starten, ein neues Spiel importieren oder einfach die DOS-Oberfläche aufrufen.
+Boxer zeigt eine benutzerfreundliche Oberfläche für DOS-Spiele. Der Import …</description><content:encoded><![CDATA[<p><strong>Alte DOS-Spiele</strong> auf dem Mac zu spielen ist mit 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://boxerapp.com/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Boxer</a>
+
+
+ relativ einfach. Nach der Installation und dem Start der <strong>Boxer-App</strong> kann man vorhandene Spiele starten, ein neues Spiel importieren oder einfach die DOS-Oberfläche aufrufen.</p>
+<figure>
+  <a href="https://nickyreinert.de/2012/2012-09-24-dos-spiele-auf-dem-mac-spielen/images/Welcome-to-Boxer-150x150.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2012/2012-09-24-dos-spiele-auf-dem-mac-spielen/images/Welcome-to-Boxer-150x150.png" 
+      alt="Welcome to Boxer"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Boxer zeigt eine benutzerfreundliche Oberfläche für DOS-Spiele.</figcaption>
+</figure>
+
+<p>Der <strong>Import von Spielen</strong> gestaltet sich sehr einfach: Man kann das Spiel als Ordner oder ausführbare <code>.exe</code>-Datei einfach in die Boxer-App ziehen. Entweder muss das Spiel nun noch installiert werden oder es kann gleich angespielt werden. Der Ordner, in dem Boxer die Spiele ablegt, wird als kleines Regal angezeigt.</p>
+<figure>
+  <a href="https://nickyreinert.de/2012/2012-09-24-dos-spiele-auf-dem-mac-spielen/images/Drop-your-game-here-150x150.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2012/2012-09-24-dos-spiele-auf-dem-mac-spielen/images/Drop-your-game-here-150x150.png" 
+      alt="Drop your game here - Boxer Startbildschirm"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Spiele können einfach per Drag-and-Drop importiert werden.</figcaption>
+</figure>
+
+<p>Die Spiele laufen auf einem <strong>MacBook Air der 2. Generation</strong> sehr flüssig. Die Boxer-App ist stabil und intuitiv bedienbar.</p>
+]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>anleitungen</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Os-X</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>how-to_guide</dc:type></item><item><title>NTFS unter Mac OS / OS X</title><link>https://nickyreinert.de/2010/2010-06-24-ntfs-unter-mac-os-os-x/</link><pubDate>Thu, 24 Jun 2010 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2010/2010-06-24-ntfs-unter-mac-os-os-x/</guid><description> Eine Anleitung zur Aktivierung von NTFS-Lese- und Schreibzugriff unter Mac OS X. NTFS und MacOS gehören nicht unbedingt zusammen. Man kommt also nicht um 3rd-Party-Software herum, um NTFS unter MacOS nachzurüsten. Hier hilft ein Tool namens MacFuse weiter, das auf dem Mac verschiedene Dateisysteme …</description><content:encoded><![CDATA[<figure>
+  <a href="https://nickyreinert.de/2010/2010-06-24-ntfs-unter-mac-os-os-x/ntfs-macos.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2010/2010-06-24-ntfs-unter-mac-os-os-x/ntfs-macos.png" 
+      alt="NTFS unter Mac OS / OS X - Titelbild"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Eine Anleitung zur Aktivierung von NTFS-Lese- und Schreibzugriff unter Mac OS X.</figcaption>
+</figure>
+
+<p><strong>NTFS</strong> und <strong>MacOS</strong> gehören nicht unbedingt zusammen. Man kommt also nicht um <strong>3rd-Party-Software</strong> herum, um NTFS unter MacOS nachzurüsten. Hier hilft ein Tool namens <strong>MacFuse</strong> weiter, das auf dem Mac verschiedene Dateisysteme implementieren kann, sowie <strong>NTFS-3G</strong>, der passende Treiber für NTFS-Laufwerke.</p>
+<p>Beide Programme (bzw. Treiber) stehen als <strong>DMG-Datei</strong> zur Verfügung. Von NTFS-3G existiert auch eine <strong>kommerzielle Variante</strong>, die 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://macntfs-3g.blogspot.com/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">von Tuxera vertrieben</a>
+
+
+ wird. Die kostenlose Variante fällt unter den &ldquo;Verantwortungsbereich&rdquo; von <strong>catacombae</strong> und reicht für unsere Zwecke eigentlich völlig aus.</p>
+<ul>
+<li>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://code.google.com/p/macfuse/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">MacFuse auf code.google.com</a>
+
+
+</li>
+<li>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://sourceforge.net/projects/catacombae/files/NTFS-3G%20for%20Mac%20OS%20X/2010.10.2/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">NTFS-3G auf sourceforge.net</a>
+
+
+</li>
+</ul>
+<h3 id="schritte-zur-installation">Schritte zur Installation:</h3>
+<ol>
+<li><strong>MacFuse</strong> herunterladen und installieren.</li>
+<li>Neustart.</li>
+<li><strong>NTFS-3G</strong> herunterladen und installieren.</li>
+<li>Neustart.</li>
+</ol>
+<p><strong>Fertig.</strong> Der Rest funktioniert automatisch. Viel Spaß!</p>
+]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>anleitungen</category><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>how-to_guide</dc:type></item></channel></rss>

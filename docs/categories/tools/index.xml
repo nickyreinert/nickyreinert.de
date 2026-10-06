@@ -80,14 +80,1034 @@
 
 </p>
 <p>Der ganze Bums wird auf <strong>netfliy</strong> gehostet. Im Prinzip funktioniert aber auch <strong>Github Pages</strong>, dann aber ohne Synchronisierung, weil die Authentifizierung für <strong>Firebase</strong> über Secret Keys läuft (und die müssen irgendwo sicher hinterlegt werden). Wenn du es selbst hosten willst, kannst du auch andere Authentifizierungsanbieter verwenden, z.B. über Apple oder Facebook.</p>
-]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>blog</category><category>tools</category><category>projekte</category><dc:subject>Lesezeit: 5 Minuten Minuten</dc:subject><dc:type>blog</dc:type></item><item><title>Automatisierte WordPress Installation</title><link>https://nickyreinert.de/2020/2020-10-08-automatisierte-wordpress-installation/</link><pubDate>Thu, 08 Oct 2020 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2020/2020-10-08-automatisierte-wordpress-installation/</guid><description>Et voilá. Ein BASH Script, um WordPress automatisiert über die Kommandozeile zu installieren, inklusive Theme und beliebigen Plugins sowie - wenn benötigt - zufälligen Beiträgen, Kategorien, Tags und Bildern.
-Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und unbedingt …</description><content:encoded><![CDATA[<p>Et voilá. Ein BASH Script, um WordPress automatisiert über die Kommandozeile zu installieren, inklusive Theme und beliebigen Plugins sowie - wenn benötigt - zufälligen Beiträgen, Kategorien, Tags und Bildern.</p>
-<h2 id="warnung">Warnung!</h2>
-<p>Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und unbedingt <strong>Backups</strong> nutzen. Das Script verwendet, wenn der entsprechende Parameter gesetzt ist, den Befehl &ldquo;rm -rf&rdquo;, um einen Ordner komplett zu <strong>löschen</strong>. Dieser Schritt lässt sich nicht widerrufen. Außerdem wird, sofern per Parameter gefordert, eine Datenbank mit &ldquo;DROP DATABASE&rdquo; komplett entfernt. Wenn du das Script auf eine existierende WordPress-Installation oder Datenbank anwendest, können existierende Daten <strong>überschrieben</strong> werden!</p>
-<h2 id="funktionsweise">Funktionsweise</h2>
-<p>Das Script wird über die Kommandozeile aufgerufen und nutzt die [WordPress Kommandozeilen-Benutzeroberfläche,](um <strong>WordPress</strong> zu installieren sowie samt <strong>Themes</strong> und <strong>Plugins</strong> einzurichten. Du kannst außerdem beliebig viele <strong>Beiträge</strong> anlegen. Die Inhalte für die Beiträge stammen von einem Online-Dienst für zufällige englische Texte: [metaphorpsum.com/paragraphs](Außerdem werden zufällige <strong>Textauszüge</strong> (Excerpts) sowie <strong>Schlagwörter</strong> (Tags) und sogar <strong>Bilder</strong> jedem Beitrag hinzugefügt. Beiträge werden außerdem Kategorien zugeordnet. Diese werden ebenfalls <strong>zufällig</strong> bis zu einer Tiefe von 2 Ebenen erzeugt.</p>
+]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>tools</category><dc:subject>Lesezeit: 5 Minuten Minuten</dc:subject><dc:type>blog</dc:type></item><item><title>DB Orakel - kommt dein Zug zu spät?</title><link>https://nickyreinert.de/2026/2026-04-19-db-orakel/</link><pubDate>Sun, 19 Apr 2026 11:34:56 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-04-19-db-orakel/</guid><description>Mich hat neulich jemand auf https://bahn.bet/ gestoßen, eine Webseite, auf der man auf die Ankunftgszeiten von Zügen der Deutschen Bahn wetten kann.
+“Genial” - dachte ich mir! Warum bin ich nicht selbst darauf gekommen? Und dann hab ich mal ein bisschen recherchiert und herausgefunden, dass Piet …</description><content:encoded><![CDATA[<p>Mich hat neulich jemand auf 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://bahn.bet/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://bahn.bet/</a>
+
+
+ gestoßen, eine Webseite, auf der man auf die Ankunftgszeiten von Zügen der Deutschen Bahn wetten kann.</p>
+<p>&ldquo;Genial&rdquo; - dachte ich mir! Warum bin ich nicht selbst darauf gekommen? Und dann hab ich mal ein bisschen recherchiert und herausgefunden, dass 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://piebro.github.io/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Piet Brömmel</a>
+
+
+ die Verspätungen von Zügen der Deutschen Bahn fein säuberlich dokumentiert. Auf 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://huggingface.co/datasets/piebro/deutsche-bahn-data/tree/main/raw_data?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">huggingface</a>
+
+
+ gibt es dazu die passende Zeitreihe!</p>
+<p>Und da ich ausgewiesener DB-Fan bin (unironisch tatsächlich sogar, erinnert sich noch jemand an 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://nickyreinert.de/2020/2020-09-09-das-ticket-preis-system-der-deutschen-bahn-oder-wie-findest-du-den-optimalen-fahrschein-preis/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">nickets.de</a>
+
+
+?), hab ich überlegt, ob ich da nicht anknüpfen kann.</p>
+<p>Herausgekommen ist das &ldquo;
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://db-orakel.de?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">DB Orakel</a>
+
+
+&rdquo;:</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-04-19-db-orakel/image.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-04-19-db-orakel/image.png" 
+      alt="DB Orakel visualisierung zeigt Zugverspätungen"
+      width="600"
+      loading="lazy"
+    />
+  </a>
+  
+</figure>
+
+<p>Im Prinzip ist die Seite schnell erklärt: Du suchst dir einen Bahnhof heraus und einen Zug, der an diesem Bahnhof zu einem bestimmten Datum anhält und erhältst eine Wahrscheinlichkeit, wie pünktlich der Zug wohl sein wird.</p>
+<p>Das Ganze nutzt nicht nur die historischen <strong>Ankunftszeiten</strong>, sondern auch <strong>Wetterdaten</strong>, Preise für Kraftstoffe, Tageszeit und Wochentag sowie die Ferienzeiten. Und als Bonus wird dir angezeigt, ob in der jeweiligen Stadt gerade ein größeres Event stattfindet:</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-04-19-db-orakel/image-1.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-04-19-db-orakel/image-1.png" 
+      alt="DB Orakel visualisierung zeigt Zugverspätungen"
+      width="600"
+      loading="lazy"
+    />
+  </a>
+  
+</figure>
+
+]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>tools</category><dc:subject>Lesezeit: 20 Minuten</dc:subject><dc:type>article</dc:type></item><item><title>Mein kleiner, eigener OpenClaw-Klon mit Claude, Obsidian und Google Anbindung</title><link>https://nickyreinert.de/2026/2026-03-29-ai-butler/</link><pubDate>Sun, 29 Mar 2026 00:23:45 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-03-29-ai-butler/</guid><description>Also, pass auf: Vor ein paar Tagen habe ich ja Claude Channels eingerichtet. Ich kann nun also per Telegramm mit Claude reden und programmieren. Aber da geht noch mehr! Erstmal bauen wir uns einen kleinen Wissenspeicher auf, mit dem Claude interagieren kann und dann lassen wir Claude noch einen …</description><content:encoded><![CDATA[<p>Also, pass auf: Vor ein paar Tagen habe ich ja Claude Channels eingerichtet. Ich kann nun also per Telegramm mit Claude reden und programmieren. Aber da geht noch mehr! Erstmal bauen wir uns einen kleinen Wissenspeicher auf, mit dem Claude interagieren kann und dann lassen wir Claude noch einen Skill bauen, um Ereignisse im Google Kalender zu erstellen. Und Zack-Fertig ist unserer kleiner KI-Assistent… also im Prinzip OpenClaw - nur eben selbst gebaut.</p>
+<p>Kurz die Funkionsweise:</p>
+<ol>
+<li>wir nutzen <strong>Obsidian</strong> als Wissenspeicher, der Sync über verschiedne Geräte hinweg ermöglicht <strong>OneDrive</strong></li>
+<li><strong>Claude</strong> läuft als Service im Hintergrund und übernimmt die Organisation</li>
+<li>über einen Messenger wie <strong>Telegram</strong> geben wir Claude Anweisungen und können natürlich auch auf die Daten zugreifen</li>
+<li><strong>Claude</strong> kann eigenständig Kalendar-Einträge erstellen, auf die wir mit unserem Google Assistenten Zugriff haben</li>
+</ol>
+<p>Kurzer Einwurf zu 4: Es gibt durchaus andere Möglichkeiten, wie z.B. <strong>Home Assistant</strong> auf dem NAS oder <strong>Tasker</strong> auf dem Handy, um mit Telegram um damit Claude zu kommunizieren. Das Problem ist dieses: Abgesehen davon, dass der <strong>Google Assistent/Google Home</strong> ein ziemliches Labyrinth von Einstellungen ist, sind die Möglichkeiten auch stark eingeschränkt. So schlau ist der ganze Kram nämlich leider nicht. Du kannst damit zwar Lampen steuern, die WLAN-Jalousie hochfahren oder Nachrichten abzuspielen - und da endet es dann auch. Ich habe lange rumgebastelt und z.B. probiert, Tasker-Ereignisse aufzurufen. Ohne Erfolg. Deswegen der &ldquo;Umweg&rdquo; über den Kalendar, der ja auch irgendwie ganz charmant ist.</p>
+<h2 id="obligatorische-warnung">Obligatorische Warnung</h2>
+<p>BPf - <strong>Backup &amp; Privacy first</strong>. Du lässt einen KI-Agenten im Hintergrund permanent aktiv laufen und gibst Zugriff auf die Dateien in dem entsprechenden Verzeichnis. Sei dir bewusst, dass alle informationen mit dem Anbieter des KI-Agenten geteilt werden. Ist dir das zu viel, nutze einen lokalen Ollama-Server, der allerdings entsprechende Hardware-Ressourcen benötigt.</p>
+<h2 id="der-wissenspeicher">Der Wissenspeicher</h2>
+<p>Ich nutze <strong>Obsidian</strong> als Wissensspeicher. Vorteil: <strong>Markdown</strong>-Dateien lassen sich ohne spezielles Zubehör von überall aus bearbeiten, über <strong>Frontmatter</strong> kannst du bequem Metadaten pflegen.</p>
+<p>Die Synchronisierung läuft über die Erweiterung &ldquo;<strong>Remotely Save</strong>&rdquo; (alternativ wäre auch eine Kombination aus <strong>Tailscale</strong> und <strong>CouchDB</strong> denkbar, das ist aber etwas instabiler und öffnet mit Tailscale das NAS in das Internet - wenn auch &ldquo;nur&rdquo; als VPN. Also nutze ich einfach die vorhandene <strong>OneDrive</strong>-Infrastruktur Mit CouchDB verliere ich außerdem den Markdown-Vorteil.)</p>
+<p>Auf dem NAS nutze ich den 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/abraunegg/onedrive?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">OneDrive-client von abraunegg</a>
+
+
+. Der läuft zuverlässig im Hintergrund.</p>
+<p>Damit steht der <strong>Wissenspeicher</strong> und ist überall verfügbar: Smartphone &lt;-&gt; PC oder MacBook &lt;-&gt; NAS.</p>
+<h2 id="die-ki">Die KI</h2>
+<p><strong>Claude</strong> läuft als CLI-App und <strong>systemd</strong>-Service auf dem NAS. Das ist ein bisschen kompliziert, weil die CLI-App interaktiv ist und auf deine Eingaben wartet, selbst wenn diese über einen Channel wie <strong>Telegram</strong> oder <strong>Slack</strong> kommen. Wir nutzen <code>tmux</code> um das zu umgehen (Wenn noch nicht vorhanden, dann mit <code>sudo apt update &amp;&amp; sudo apt install tmux -y</code>) installieren.</p>
+<p>Bevor wir loslegen, muss die Verbindung mit deinem Channel, wie Telegram, Slack oder Discord, stehen. Wie das funktioniert, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://nickyreinert.de/2026/2026-03-28-claude-channels/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">habe ich hier beschrieben</a>
+
+
+. Achte darau, das System schon in dem Ordner einzurichten, der auch deinen Obsidian-Wissensspeicher enthält, damit die Berechtigungen für den Zugriff auf die Dateien stimmen.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">sudo nano /etc/systemd/system/claude-telegram.service
+</span></span></code></pre></div><p>Und jetzt sagen wir dem Service, dass er Claude&rsquo;s <strong>Haiku</strong> in dem <strong>Obsidian-Verzeichnis</strong> starten soll. Die Executable von Claude findest du über <code>which claude</code> heraus. Wichtig ist hier, Claude den Zugriff auf <strong>Bun</strong> zu ermöglichen, da darüber der MCP-Server läuft.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="k">[Unit]</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="na">Description</span><span class="o">=</span><span class="s">Claude Telegram Channel Service</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="na">After</span><span class="o">=</span><span class="s">network.target</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="k">[Service]</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="na">User</span><span class="o">=</span><span class="s">ICKE_ODER_WER_SONST</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="na">Type</span><span class="o">=</span><span class="s">forking</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="na">WorkingDirectory</span><span class="o">=</span><span class="s">/dein-one-drive-pfad/obsidian</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="na">Environment</span><span class="o">=</span><span class="s">PATH=/home/ICKE_ODER_WER_SONST/.bun/bin:/home/ICKE_ODER_WER_SONST/.local/bin:/usr/local/bin:/usr/bin:/bin</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="na">Environment</span><span class="o">=</span><span class="s">HOME=/home/ICKE_ODER_WER_SONST</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/bin/tmux new-session -d -s claude-bot &#39;/home/ICKE_ODER_WER_SONST/.local/bin/claude --channels plugin:telegram@claude-plugins-official --model haiku&#39;</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="na">ExecStop</span><span class="o">=</span><span class="s">/usr/bin/tmux kill-session -t claude-bot</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="na">Restart</span><span class="o">=</span><span class="s">always</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="na">RestartSec</span><span class="o">=</span><span class="s">10</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="na">StandardOutput</span><span class="o">=</span><span class="s">journal</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="na">StandardError</span><span class="o">=</span><span class="s">journal</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">
+</span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="k">[Install]</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+</span></span></code></pre></div><p>Abschließend startest du den Service einmal und prüfst, ob er läuft:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">sudo systemctl daemon-reload
+</span></span><span class="line"><span class="ln">2</span><span class="cl">sudo systemctl <span class="nb">enable</span> claude-telegram.service
+</span></span><span class="line"><span class="ln">3</span><span class="cl">sudo systemctl start claude-telegram.service
+</span></span><span class="line"><span class="ln">4</span><span class="cl">journalctl -u claude-telegram.service  -f
+</span></span></code></pre></div><p>Am Ende sollte das in etwa so aussehen:</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-03-29-ai-butler/image.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-03-29-ai-butler/image.png" 
+      alt="Journal"
+      width="400"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Service läuft</figcaption>
+</figure>
+
+<img src="https://nickyreinert.de/2026/2026-03-29-ai-butler/image-1.png" alt="alt text"><p>Oder wenn du den Status des Services mit <code>sudo systemctl status claude-telegram.service</code> abfragst:</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-03-29-ai-butler/image.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-03-29-ai-butler/image.png" 
+      alt="Service-Status"
+      width="400"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Service-Status</figcaption>
+</figure>
+
+<h3 id="wie-du-mit-tmux-arbeitest">Wie du mit tmux arbeitest:</h3>
+<p>Wenn du wissen willst, was innerhalb der <code>tmux</code>-Session passiert, dann nimm diesen Befehl:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">watch -n <span class="m">1</span> <span class="s2">&#34;tmux capture-pane -pt claude-bot&#34;</span>
+</span></span></code></pre></div><p>Du kannst dich auch direkt in die Session einklinken - das ist wichtig, wenn Claude zusätzliche Berechtigungen benötigt:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">tmux attach -t claude-bot
+</span></span></code></pre></div><p>Und so beendest du die Session von außerhalb:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">/usr/bin/tmux kill-session -t claude-bot
+</span></span></code></pre></div><p>(Aber Achtung - der Systemd-Service wird die Session sofort wieder starten, weil wir ja <code>Restart=always</code> eingestellt haben.)</p>
+<h3 id="mit-der-ki-sprechen">Mit der KI sprechen?</h3>
+<p>Du kannst nun zwar per Text-Nachricht mit Claude kommunizieren. Aber so richtig Spaß macht es erst, wenn du auch per Spracheingabe Befehle übermittelnt kannst. Im Prinzip kann Claude dir das nötige Script dazu selber schreiben, dafür ist es ja gedacht. Du benötigst nur ein paar Abghängigkeiten, wie <code>ffmpeg</code> oder <code>whisper</code> von OpenAI, um die Audiodateien zu konvertieren. Claude führt dich da durch und schreibt dann z.B. ein kleines Python-Script - weshalb ich das hier nicht weiter ausführe. Nutze die Macht deines KI-Butlers.</p>
+<h3 id="zack-fertig">Zack-Fertig?</h3>
+<p>Wenn du alles korrekt eingerichtet hast, kannst du jetzt über deinen Messenger mit Claude reden und hast schon direkt Zugriff auf deine Wissensdatenbank - lesend und schreibend. Weiter gehts mit der Anbindung an Kalender…</p>
+<h2 id="google-kalender">Google Kalender</h2>
+<p>…und auch das werde ich im Detail nicht weiter ausführen. Denn Claude kann dir hier nicht nur den Python-Wrapper bauen sondern auch den Skill erstellen. Es geht hier also nur um die Architektur. Die Programmierung - willkommen in 2026 - übernimmt die KI und Claude kann das eigentlich ganz gut.</p>
+<p>Du benötigst dafür nur einen OAuth-Zugang zur Calendar-API und das bekommst du hier: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://console.cloud.google.com/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://console.cloud.google.com/</a>
+
+
+</p>
+<ol>
+<li>Projekt erstellen</li>
+<li>Calendar-API aktivieren: APIs &amp; Dienste -&gt; Bibliothek -&gt; Calendar API -&gt; Aktivieren</li>
+<li>APIs &amp; Dienste -&gt; Anmeldedaten -&gt; Anmeldedaten erstellen -&gt; OAuth-Client-ID -&gt; Desktop-App -&gt; Erstellen (du musst ggf. vorher einen Consent-Screen einrichten, das ist aber selbsterklärend)</li>
+<li>Claude bzw. der Python-Wrapper benötigt die <code>client_secret.json</code> und kann dann die Authenfizierung übernehmen um ein Token zu erstellen - beide Dateien sollten nicht im Obsiadian-Verzeichnis liegen, damit sie nicht mitgesynct werden. Nutze z.B. <code>~/.claude/gcal</code>.</li>
+</ol>
+<p>Dann lässt du Claude einen eigenen Skill entwerfen, der den Python-Wrapper nutzt um auf den Kalender zuzugreifen. Claude wird dafür vermutlich so etwas wie <code>~/.claude/skills/calendar.md</code> erstellen. Du solltest dir die Datei vorher einmal anschauen und nach deinen Bedürfnissen einrichten.</p>
+<h2 id="fazit">Fazit</h2>
+<p>Fertig - du hast deinen eigenen kleinen KI-Agent-Assistenten gebaut! Könntest du nicht einfach <strong>OpenClaw</strong> nutzen? Klar - der ist sicherlich auchh weitaus mächtiger - aber eben das ist das Problem: Für meine Zwecke ist das zuviel und vor allem zu undurchsichtig. Das Setup hier ist klein genug, um zu sehen was passiert. Und außerdem ging es natürlich auch ein bisschen darum, das selber zu bauen.</p>
+]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>tools</category><dc:subject>Lesezeit: 3 Minuten</dc:subject><dc:type>blog</dc:type></item><item><title>BitNet RTR - Und ein kurzer, flacher Ausflug in die Welt der 1-Bit-LLMs</title><link>https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/</link><pubDate>Sat, 14 Mar 2026 11:34:56 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/</guid><description>BitNet ist ein Framework von Microsoft ( OpenSource! ), das die Nutzung von 1-Bit-LLMs relativ unkompliziert ermöglicht, und zwar auch auf günstiger Consumer-Hardware.
+Der technische Hintergrund Was sind 1-Bit-LLMs? LLMs bestehen im Prinzip auf Millionen von Zahlen - die sogenannten Parameter und …</description><content:encoded><![CDATA[<p>BitNet ist ein Framework von Microsoft (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/microsoft/BitNet?tab=readme-ov-file&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">OpenSource!</a>
+
+
+), das die Nutzung von 1-Bit-LLMs relativ unkompliziert ermöglicht, und zwar auch auf günstiger Consumer-Hardware.</p>
+<h2 id="der-technische-hintergrund">Der technische Hintergrund</h2>
+<p>Was sind 1-Bit-LLMs? LLMs bestehen im Prinzip auf Millionen von Zahlen - die sogenannten Parameter und genauer genommen: Kommazahlen - vulgo <em>Floats</em>! Diese haben in der Regel eine Genaugkeit von 16-Bit oder eigentlich sogar 32-Bit. 32 Bit erlauben 7 Stellen nach dem Komma. Stell dir also mal Pi vor (weil heuteg ja World-Pi-Day ist): In 32 Bit könntest du Pi mit 7 Nachkommastellen speichern: 3.1415926. (Wie das ganze mit den Kommazahlen und binären Zahlen funktioniert, mit Exponenten und Mantissen, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://nickyreinert.de/2024/2024-01-01-nerd-enzyklop%C3%A4die-43---0x5f3759df/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">habe ich hier genauer erklärt</a>
+
+
+).</p>
+<p>Bei 1-Bit-LLMs werden die Parameter &ldquo;gerundet&rdquo; (bzw. eher quantisiert). Und damit gibt es nur noch -1, 0 oder 1. Anstatt 0.0280101 oder -0.259384 und so weiter.</p>
+<p>Das spart erstmal Speicherplatz. Zwei Zustände lassen sich in einem Bit speichern - also 0 oder 1. Kennen wir alle. Dahinter steckt eine Formel und die lautet:</p>
+<p>$\text{Anzahl der Bits} = \log_2(\text{Anzahl der möglichen Werte})$</p>
+<p>Da wir nun aber drei Werte abbilden (-1, 0 und 1), sieht die Formel so aus:</p>
+<p>$\text{Anzahl der Bits} = \log_2(3) \approx 1.58$</p>
+<p>Und daher rührt auch der Name 1,58-Bit-LLM. Eine theoretische Genauigkeit, den natürlich kann man nicht 1,58 Bit speichern. Aber man kann mehrere Parameter in einem Byte speichern. Das nennt man <strong>Packing</strong>.</p>
+<p>OK. Wenn du bis hierhin durchgehalten hast, stellst du dir sicher jetzt die Frage, warum man denn überhaupt 3 Werte braucht (Ternärsystem)? Weil 0 für unwichtig und 1 für wichtig in einem LLM nicht die erforderliche &ldquo;Qualität&rdquo; liefern würden. Im Ternärsystem kann -1 als &ldquo;total unwichtig&rdquo;, 1 als &ldquo;total wichtig&rdquo; und 0 als &ldquo;völlig egal&rdquo; interpretiert werden. Das ist ein wichtiger Erkenntnisgewinn, wenn es um Sprache geht.</p>
+<p>Deswegen gibt es also 1-Bit-LLMs, die auf diesem Ternärsystem basieren. Und das BitNet Framework erleichtert die Nutzung solcher Modelle.</p>
+<h2 id="bitnet-rtr">BitNet RTR</h2>
+<p>Worum geht es eigentlich? Um einen leicht zu installierenden Wrapper für das BitNet-Framework, den ich gebastelt habe, um es direkt mal auf meinem kleinen, sparsamen NAS zu testen. Das Repo dazu findest du dort:</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/bitNetRTR?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://github.com/nickyreinert/bitNetRTR</a>
+
+
+</p>
+<p>Und die Installation kannst du relativ einfach anstoßen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">curl -fsSL https://raw.githubusercontent.com/nickyreinert/bitNetRTR/main/install.sh <span class="p">|</span> bash
+</span></span></code></pre></div><p>Was passiert hier?</p>
+<p>Zunächst mal ziehst du dir das Repo auf deinen Computer, inklusive der Abhängigkeit (nämlich dem BitNet-Framework von Microsoft). Du erhälst dazu einen Docker-Container, in dem der ganze Spaß installiert wird - dein System bleibt sauber. Von draußen kannst du das ganze System steuern:</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/image-0.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/image-0.png" 
+      alt="BbtnetRTR.sh - Management Script"
+      width="200"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>BbtnetRTR.sh - Management Script</figcaption>
+</figure>
+
+<p>Und im Browser sieht das dann so aus:</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/image.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/image.png" 
+      alt="BitNet RTR - Webinterface"
+      width="200"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>BitNet RTR - Webinterface</figcaption>
+</figure>
+
+<p>Der ganze Trödel ist dafür ausgelegt, lokal zu laufen. Das Backend ist zwar per API-Key geschützt, aber ausgefeilte Sicherheitsmaßnahmen wurden nicht implementiert. Für lokale Zwecke ist das völlig ausreichend.</p>
+<p>In der linken Sidebar kannst du ein anderes Modell auswählen und ein paar Conversation-spezifische Parameter anpassen. Nichts besonderes:</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/image-1.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/image-1.png" 
+      alt="BitNet RTR - Webinterface"
+      width="200"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>BitNet RTR - Webinterface</figcaption>
+</figure>
+
+<p>Und dann gibt es noch einen kleinen Statistik-Bereich auf der rechten Seite. Wie du siehst, habe ich nicht zu viel versprochen: Auf der Kiste läuft eine alte 11th Gen Intel CPU - die für einen kleinen Chat aber trotzdem noch zu haben ist:</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/image-2.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-03-14-bitnet-rtr/image-2.png" 
+      alt="BitNet RTR - Webinterface"
+      width="200"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>BitNet RTR - Webinterface</figcaption>
+</figure>
+
+<p>Mehr gibt es hier eigentlich auch nicht zu sehen. Ich habe den Spaß &ldquo;Open VVPP&rdquo; genannt. Keine Ahnung warum. <code>( ͡° ͜ʖ ͡°)</code></p>
+<p>Viel Spaß!</p>
+]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>tools</category><dc:subject>Lesezeit: 3 Minuten</dc:subject><dc:type>blog</dc:type></item><item><title>MoneyMoney Dashboard</title><link>https://nickyreinert.de/2025/2025-11-20-moneymoney-analyzer/</link><pubDate>Thu, 20 Nov 2025 11:34:56 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2025/2025-11-20-moneymoney-analyzer/</guid><description> MoneyMoney ist eine Finanzverwaltungsapp für den Mac. Ich nutze die App jetzt schon seit einigen Jahren. Ein solides Tool mit durchdachter Oberfläche. Allerdings hat mich schon immer gestört, dass die App keine sinnvollen Dashboards mitliefert. Auf der Seite heißt es selbstbewusst:
+MoneyMoney …</description><content:encoded><![CDATA[<p><strong>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://moneymoney.app/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">MoneyMoney</a>
+
+
+</strong> ist eine <strong>Finanzverwaltungsapp</strong> für den Mac. Ich nutze die App jetzt schon seit einigen Jahren. Ein solides Tool mit <strong>durchdachter Oberfläche</strong>. Allerdings hat mich schon immer gestört, dass die App keine sinnvollen <strong>Dashboards</strong> mitliefert. Auf der Seite heißt es selbstbewusst:</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-11-20-moneymoney-analyzer/moneymoney-dashboard.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-11-20-moneymoney-analyzer/moneymoney-dashboard.png" 
+      alt="MoneyMoney Dashboards &amp; Visualisierungen"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>MoneyMoney Dashboards &amp; Visualisierungen (Quelle: moneymoney.app)</figcaption>
+</figure>
+
+<p>Wirklich hilfreich sind die beiden Diagramm-Typen, Säulen- und Tortendiagramm, aber <strong>nicht wirklich</strong>. Und das ist insofern verwunderlich, da das Plotten von ein paar Charts eigentlich nicht sonderlich schwer ist. Jaja, ich hab leicht reden – in meiner <strong>Data-Analysten-Bubble</strong> mache ich sowas ja tagtäglich (was gar nicht stimmt!).</p>
+<p>Also habe ich mich an einem Wochenende hingesetzt, mir ein <strong>Konzept überlegt</strong> (manchmal denke ich nach, bevor es an die Umsetzung geht – es lohnt sich) und <strong>Gemini</strong> angeworfen. Und das Ergebnis sieht so aus:</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://money.nickyreinert.de/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">http://money.nickyreinert.de/</a>
+
+
+</p>
+<p>Das Tool ist auf [GitHub](gehostet und läuft komplett <strong>im Browser</strong>. Es werden <strong>keine Daten</strong> an einen Server übermittelt. Alles, was du tun musst, ist die <strong>Umsätze deines Kontos</strong> zu exportieren und in das Tool zu laden (die Daten werden im <strong>Browser-Speicher</strong> gehalten und so kannst du jederzeit zurückkehren, ohne die Daten erneut hochladen zu müssen).</p>
+<h2 id="einnahmen-und-ausgaben-im-zeitverlauf">Einnahmen und Ausgaben im Zeitverlauf</h2>
+<p>Danach siehst du in etwa das (mit einer hoffentlich besseren Bilanz…):</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-11-20-moneymoney-analyzer/overview.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-11-20-moneymoney-analyzer/overview.png" 
+      alt="Überblick"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Überblick</figcaption>
+</figure>
+
+<p>Die <strong>grüne Linie</strong> zeigt die Entwicklung aller <strong>eingehenden Transaktionen</strong>, also in der Regel dein <strong>Gehalt</strong>. Die <strong>gelben Säulen</strong> zeigen deine <strong>Ausgaben</strong>. Für diese Darstellung liest das Tool die <strong>Kategorien</strong> von MoneyMoney aus, die per <strong>&quot;-&quot;</strong> miteinander verknüpft sind. Du kannst per Klick auf die Säule bzw. Säulen-Segmente immer weiter in die Kategorie &ldquo;hinein zoomen&rdquo; – über die <strong>Breadcrumb-Navigation</strong> oberhalb des Charts gelangst du jederzeit wieder zurück.</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-11-20-moneymoney-analyzer/categories.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-11-20-moneymoney-analyzer/categories.png" 
+      alt="Kategorien"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Kategorien</figcaption>
+</figure>
+
+<p>Die <strong>rote Linie</strong> zeigt deine &ldquo;<strong>wiederkehrenden Ausgaben</strong>&rdquo;, aber als <strong>Monatsmittel</strong>. Also <strong>Miete</strong>, <strong>Versicherung</strong> und so weiter. Diese Daten musst du aber selbst pflegen (Button &ldquo;<strong>Configure Rules</strong>&rdquo;). Es handelt sich dabei um <strong>übergeordnete Kategorien</strong>, die du vorher definieren musst:</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-11-20-moneymoney-analyzer/rules.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-11-20-moneymoney-analyzer/rules.png" 
+      alt="Regeln konfigurieren"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Regeln konfigurieren</figcaption>
+</figure>
+
+<p>Die Regeln bestehen aus <strong>regulären Ausdrücken</strong>, mit denen du den <strong>Empfänger</strong> oder den <strong>Verwendungszweck</strong> von Transaktionen matchen kannst.</p>
+<p>Du kannst diese übergeordneten Kategorien auch über die <strong>Kategorien von MoneyMoney</strong> legen, indem du &ldquo;<strong>Show Base Costs</strong>&rdquo; aktivierst. Dann wechselt das Chart die Ansicht und du kannst nun, übergeordnet, zwischen <strong>wiederkehrenden Kosten</strong> und den anderen <strong>Ausgaben</strong> unterscheiden – mit der gleichen Möglichkeit der Navigation durch die Kategorien:</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-11-20-moneymoney-analyzer/recurring-costs.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-11-20-moneymoney-analyzer/recurring-costs.png" 
+      alt="Wiederkehrende Kosten"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Wiederkehrende Kosten</figcaption>
+</figure>
+
+<p>So ist es möglich, auf einen Blick zu sehen, wie hoch der <strong>Anteil der wiederkehrenden Kosten</strong> an den <strong>Gesamtausgaben</strong> ist. Einmal tatsächlich – über die <strong>Säulen</strong> – und einmal im <strong>Monatsmittel</strong>, über die <strong>rote Linie</strong>.</p>
+<h2 id="veränderung-der-ausgaben">Veränderung der Ausgaben</h2>
+<p>Das rechte Chart zeigt, wie sich die <strong>Kosten der aktuellen Kategorie</strong> im Vergleich zum <strong>Vormonat</strong> verändern. So lassen sich relativ schnell <strong>Ausreißer</strong> erkennen, wie z. B. <strong>Urlaube</strong> im Sommer, die Ausgaben in der Kategorie &ldquo;<strong>Reisen</strong>&rdquo; in einem Monat in die Höhe getrieben haben.</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-11-20-moneymoney-analyzer/growth-rate.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-11-20-moneymoney-analyzer/growth-rate.png" 
+      alt="Veränderung der Ausgaben"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Veränderung der Ausgaben</figcaption>
+</figure>
+
+<p>Du kannst hier aber auch den <strong>Jahr-zu-Jahr-Vergleich</strong> bemühen, indem du oberhalb des Charts auf &ldquo;<strong>YoY</strong>&rdquo; wechselst. Die <strong>Line-Chart-Darstellung</strong> kann manchmal etwas unübersichtlich werden; über den Wechsler oben kannst du zwischen <strong>Line Chart</strong> und <strong>Bar Chart</strong> für diese Darstellung wechseln.</p>
+<h2 id="übersicht-aller-transaktionen">Übersicht aller Transaktionen</h2>
+<p>Am unteren Rand schließlich gibt es die <strong>Übersicht aller Transaktionen</strong>. Diese aktualisiert sich entsprechend deiner Auswahl des <strong>Zeitraums</strong> aber auch der <strong>Kategorie</strong>, in der du dich befindest!</p>
+<figure>
+  <a href="https://nickyreinert.de/2025/2025-11-20-moneymoney-analyzer/transactions.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2025/2025-11-20-moneymoney-analyzer/transactions.png" 
+      alt="Transaktionen"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Transaktionen</figcaption>
+</figure>
+
+<p>Per Klick auf die <strong>Spalten-Köpfe</strong> kannst du die Tabelle sortieren. Jede Spalte lässt sich außerdem <strong>filtern</strong>.</p>
+<p>Wenn du dich also z. B. bis in die Kategorie &ldquo;<strong>Freizeit</strong>&rdquo; hineingeklickt hast, siehst du auf einen Blick alle <strong>Transaktionen</strong> und kannst relativ schnell identifizieren, wo dein ganzes <strong>Geld</strong> geblieben ist.</p>
+<p>Viel Spaß beim Ausprobieren!</p>
+<p>(Am oberen Rand befindet sich ein Button &ldquo;<strong>Load Sample Data</strong>&rdquo;, mit dem du das Tool auch ohne eigene Daten ausprobieren kannst)</p>
+]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>tools</category><dc:subject>Lesezeit: 6 Minuten</dc:subject><dc:type>blog</dc:type></item><item><title>Die Unvollendeten - Beindruckend</title><link>https://nickyreinert.de/2025/2025-10-17-die-unvollendeten---beindruckend/</link><pubDate>Fri, 17 Oct 2025 11:34:56 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2025/2025-10-17-die-unvollendeten---beindruckend/</guid><description>Neue Jahreszeit - Neue Kategorie. Heute: Die Unvollendeten.
+Ich stampfe immer wieder irgendwelche Projekte aus dem fruchtbaren Boden meines wirren Geistes. Dann verliere ich mich in einer energiereichen Phase des initialen Enthusiasmus, nur um nach einer kurzen aber intensiven Zeit der totalen …</description><content:encoded><![CDATA[<p>Neue Jahreszeit - Neue Kategorie. Heute: <strong>Die Unvollendeten</strong>.</p>
+<p>Ich stampfe immer wieder irgendwelche Projekte aus dem fruchtbaren Boden meines wirren Geistes. Dann verliere ich mich in einer energiereichen Phase des initialen Enthusiasmus, nur um nach einer kurzen aber intensiven Zeit der totalen Aufopferung das Ende der umgekehrten Glockenkurve zu erreichen: Das Projekt verschwindet hinter einem Schleier des Vergessens. Und fehlender Motivation.</p>
+<p>Den Anfang macht: Das Instagram-Projekt <strong>&ldquo;Beindruckend&rdquo;</strong> - oder auch: <strong>Die Abenteuer von Einbein und Keinbein</strong>.</p>
+<p>Die Idee? Absurde Web-Comics über ein kurzes und ein langes Bein. Dazu ein paar Dialoge mit… naja… Wortspielen und flachen Witzen.</p>
+<p align="center">
+  <a href="https://nickyreinert.de/2025/2025-10-17-die-unvollendeten---beindruckend/einbein-keinbein.png"><img src="https://nickyreinert.de/2025/2025-10-17-die-unvollendeten---beindruckend/einbein-keinbein.png" alt="Einbein Keinbein" width="400"/></a>
+</p>
+<br />
+<p>Warum ist das Projekt eingeschlafen?</p>
+<p>Ich habe den Aufwand massiv unterschätzt. Die Texte waren schnell ausgedacht, aber die Bilder habe ich in PowerPoint erzeugt.Und ich hatte den Anspruch, in jedem Bild kleine Details zu verstecken. Eine Kettensäge die im Hintergrund über den Hügel fegt. Wald. Eine fliegende Ente und so weiter. Dazu mussten auch die Figuren jedes mal neu gestaltet werden, auch wenn es wiederkehrende Elemente gab. Und dann kam das nächste Projekt, das meine ganze Aufmerksamkeit forderte. Und <strong>Beindruckend</strong> verschwand in der Versenkung.</p>
+<p><a href="https://www.instagram.com/beindruckend?utm_source=all_your_base_are_belong_to_us&igsh=ZDNlZDc0MzIxNw==">@beindruckend</a></p>
+]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>tools</category><dc:subject>Lesezeit: 2 Minuten</dc:subject><dc:type>blog</dc:type></item><item><title>PoneyHot - frisst Clickbait und Fake News</title><link>https://nickyreinert.de/2025/2025-02-16-poney-hot/</link><pubDate>Sun, 16 Feb 2025 12:34:56 +0200</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2025/2025-02-16-poney-hot/</guid><description> Das Internet ist voll von Fake News und Clickbait, was es schwierig macht, vertrauenswürdige Informationen zu finden. PoneyHot hilft Ihnen, den Lärm zu durchbrechen, indem es Inhalte zusammenfasst und Behauptungen überprüft—schnell und einfach.
+Was ist PoneyHot? PoneyHot ist ein Tool, das Ihnen …</description><content:encoded><![CDATA[<a href="" target="_blank" class="image-link" title="Click to view full size">
+  <img 
+    src="" 
+    alt=""
+    
+    loading="lazy"
+  />
+</a>
+
+<p>Das Internet ist voll von <strong>Fake News</strong> und <strong>Clickbait</strong>, was es schwierig macht, vertrauenswürdige Informationen zu finden. <strong>PoneyHot</strong> hilft Ihnen, den Lärm zu durchbrechen, indem es <strong>Inhalte zusammenfasst</strong> und <strong>Behauptungen überprüft</strong>—schnell und einfach.</p>
+<h2 id="was-ist-poneyhot">Was ist PoneyHot?</h2>
+<p>PoneyHot ist ein Tool, das Ihnen hilft, <strong>direkt zu den Fakten zu kommen</strong>. Egal, ob Sie Online-Artikel durchsuchen oder virale Behauptungen überprüfen, PoneyHot macht es mühelos, Fakten von Fiktion zu trennen.</p>
+<p>Es funktioniert auf zwei einfache Arten:</p>
+<ul>
+<li><strong>Zusammenfassung</strong>: Fasst Artikel schnell zusammen, sodass Sie keine Zeit mit unnötigem Ballast verschwenden.</li>
+<li><strong>Faktenprüfung</strong>: Überprüft Behauptungen sofort, sodass Sie Fehlinformationen erkennen können.</li>
+</ul>
+<h2 id="wie-benutzt-man-poneyhot">Wie benutzt man PoneyHot?</h2>
+<h3 id="firefox-erweiterung"><strong>Firefox-Erweiterung</strong></h3>
+<ul>
+<li><strong>Artikel zusammenfassen</strong>: Klicken Sie mit der rechten Maustaste auf einen Link und wählen Sie <strong>&ldquo;Zusammenfassen&rdquo;</strong>—PoneyHot erstellt eine kurze, klare Zusammenfassung.</li>
+</ul>
+<a href="" target="_blank" class="image-link" title="Click to view full size">
+  <img 
+    src="" 
+    alt=""
+    
+    loading="lazy"
+  />
+</a>
+
+<ul>
+<li><strong>Behauptungen überprüfen</strong>: Markieren Sie eine Aussage, klicken Sie mit der rechten Maustaste und wählen Sie <strong>&ldquo;Fakten prüfen&rdquo;</strong>, um sie sofort zu überprüfen.</li>
+</ul>
+<a href="" target="_blank" class="image-link" title="Click to view full size">
+  <img 
+    src="" 
+    alt=""
+    
+    loading="lazy"
+  />
+</a>
+
+<h3 id="telegram-bot"><strong>Telegram-Bot</strong></h3>
+<ul>
+<li>Senden Sie dem Bot eine <strong>URL</strong>, und er gibt eine Zusammenfassung zurück.</li>
+<li>Präfixen Sie eine Nachricht mit <code>???</code> für eine <strong>Faktenprüfung</strong> oder <code>!!!</code> für eine <strong>Zusammenfassung</strong>.</li>
+<li>Teilen Sie Links direkt von Ihrem Mobilgerät für eine sofortige Analyse.</li>
+</ul>
+<h2 id="warum-poneyhot-verwenden">Warum PoneyHot verwenden?</h2>
+<ul>
+<li><strong>Zeit sparen</strong>: Überspringen Sie lange Artikel und kommen Sie direkt zu den wichtigsten Punkten.</li>
+<li><strong>Clickbait vermeiden</strong>: Erfahren Sie, worum es in einem Artikel wirklich geht, bevor Sie klicken.</li>
+<li><strong>Informationen überprüfen</strong>: Fallen Sie nicht auf Fake News herein—überprüfen Sie sie mühelos.</li>
+</ul>
+<h2 id="übernehmen-sie-die-kontrolle-über-ihr-online-erlebnis">Übernehmen Sie die Kontrolle über Ihr Online-Erlebnis</h2>
+<p>PoneyHot hilft Ihnen, <strong>informiert zu bleiben, ohne den Lärm</strong>. Egal, ob Sie Nachrichten lesen, Themen recherchieren oder Behauptungen überprüfen, PoneyHot sorgt dafür, dass Sie <strong>klare, zuverlässige und überprüfte Informationen</strong> schnell erhalten.</p>
+<p>Probieren Sie PoneyHot noch heute aus und surfen Sie mit Vertrauen!</p>
+<hr>
+<p>📌 <strong>Folgen Sie uns für Updates und tragen Sie auf GitHub bei:</strong> 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/poneyHot?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">github.com/nickyreinert/poneyHot</a>
+
+
+</p>
+]]></content:encoded><atom:updated>2025-08-21T18:08:54+02:00</atom:updated><category>tools</category><dc:subject>Lesezeit: 3 Minuten</dc:subject><dc:type>project</dc:type></item><item><title>hidey</title><link>https://nickyreinert.de/2024/2024-02-01-hidey/</link><pubDate>Thu, 01 Feb 2024 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2024/2024-02-01-hidey/</guid><description>Hidey ist nichts anderes als eine extrem nützliche Fingerübung in JavaScript. Hidey versteckt eine Botschaft in einem Text, in dem die Botschaft zunächst in binäre Werte umgewandelt wird. Anstatt Nullen und Einsen werden aber nicht sichtbare Zeichen verwendet.
+Viel Spaß.
+hidey.nickyreinert.de …</description><content:encoded><![CDATA[<p>Hidey ist nichts anderes als eine extrem nützliche Fingerübung in JavaScript. Hidey versteckt eine Botschaft in einem Text, in dem die Botschaft zunächst in binäre Werte umgewandelt wird. Anstatt Nullen und Einsen werden aber nicht sichtbare Zeichen verwendet.</p>
+<p>Viel Spaß.</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://hidey.nickyreinert.de/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">hidey.nickyreinert.de</a>
+
+
+</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/hidey/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">github.com</a>
+
+
+</p>
+]]></content:encoded><atom:updated>2025-08-20T21:05:13+02:00</atom:updated><category>tools</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>project_showcase</dc:type></item><item><title>Primes - Animations-Engine</title><link>https://nickyreinert.de/2023/2023-02-24-primes/</link><pubDate>Fri, 24 Feb 2023 08:04:44 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2023/2023-02-24-primes/</guid><description>“Primes” ist eine in JavaScript geschriebene Web-App, die Primzahlen auf einer Spirale visualisiert. Die Darstellung lässt sich durch zahlreiche Paramater anpasen, viele Parameter lassen sich animieren.
+https://primes.nickyreinert.de</description><content:encoded><![CDATA[<p>&ldquo;Primes&rdquo; ist eine in JavaScript geschriebene Web-App, die Primzahlen auf einer Spirale visualisiert. Die Darstellung lässt sich durch zahlreiche Paramater anpasen, viele Parameter lassen sich animieren.</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://primes.nickyreinert.de?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://primes.nickyreinert.de</a>
+
+
+</p>
+]]></content:encoded><atom:updated>2026-06-02T14:47:51+02:00</atom:updated><category>tools</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>project_showcase</dc:type></item><item><title>Freecoffee - Der Stullen-Generator</title><link>https://nickyreinert.de/2023/2023-02-24-freecoffee/</link><pubDate>Fri, 24 Feb 2023 07:44:21 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2023/2023-02-24-freecoffee/</guid><description> https://freecoffee.de Eine in JavaScript geschriebene Oberfläche, um belegte Brote (vulgo Stullen) randomisiert zu belegen.</description><content:encoded><![CDATA[<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://freecoffee.de?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://freecoffee.de</a>
+
+
+</p>
+<p>Eine in JavaScript geschriebene Oberfläche, um belegte Brote (vulgo Stullen) randomisiert zu belegen.</p>
+]]></content:encoded><atom:updated>2026-05-28T15:46:21+02:00</atom:updated><category>tools</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>project_showcase</dc:type></item><item><title>Random Knowledge</title><link>https://nickyreinert.de/2022/2022-10-21-random-knowledge/</link><pubDate>Fri, 21 Oct 2022 07:51:37 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2022/2022-10-21-random-knowledge/</guid><description>“Random Knowledge” ist ein automatisierter Podcast, bei dem eine computer-generierte Stimme zufällige Artikel der Wikipedia vorliest.
+Dazu wird in Python ein zufälliger Artikel der englischen Wikipedia abgerufen und vorbereitet. Der gesamte Artikel wird in Abschnitte getrennt, Bereiche, die nicht …</description><content:encoded><![CDATA[<p>&ldquo;Random Knowledge&rdquo; ist ein automatisierter Podcast, bei dem eine computer-generierte Stimme zufällige Artikel der Wikipedia vorliest.</p>
+<p>Dazu wird in Python ein zufälliger Artikel der englischen Wikipedia abgerufen und vorbereitet. Der gesamte Artikel wird in Abschnitte getrennt, Bereiche, die nicht vorlesbar sind, wie z.B. Tabellen, werden entfernt. Über die Text-to-Speech-API von Google wird der Text in Sprache umgewandelt und als Audio-Datei abgelegt. Die Dateien werden über eine undokumentierte Schnittstelle zu anchor.fm hochgeladen und von dort an die gängigen Portale verteilt (Spotify, Deezer, Google, Amazon, Apple, …)</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://spotifyanchor-web.app.link/e/zjG3R1ANFxb?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://spotifyanchor-web.app.link/e/zjG3R1ANFxb</a>
+
+
+</p>
+]]></content:encoded><atom:updated>2026-06-16T20:56:44+02:00</atom:updated><category>tools</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>project_showcase</dc:type></item><item><title>Maze!</title><link>https://nickyreinert.de/2021/2021-04-21-maze-game/</link><pubDate>Wed, 21 Apr 2021 08:01:31 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2021/2021-04-21-maze-game/</guid><description>“Maze” ist ein in JavaScript geschriebenes Browser-Spiel, bei dem es darum geht, in möglichst kurzer Zeit ein Labyrinth zu lösen. Das Labyrinth lässt sich mit verschiedenen Parameter steuern und sogar exportieren.
+https://nickyreinert.github.io/maze/</description><content:encoded><![CDATA[<p>&ldquo;Maze&rdquo; ist ein in JavaScript geschriebenes Browser-Spiel, bei dem es darum geht, in möglichst kurzer Zeit ein Labyrinth zu lösen. Das Labyrinth lässt sich mit verschiedenen Parameter steuern und sogar exportieren.</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://nickyreinert.github.io/maze/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://nickyreinert.github.io/maze/</a>
+
+
+</p>
+]]></content:encoded><atom:updated>2026-05-28T15:46:21+02:00</atom:updated><category>tools</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>project_showcase</dc:type></item><item><title>WordPress Word Cloud 2.0</title><link>https://nickyreinert.de/2020/2020-06-09-wordpress-word-cloud-2-0/</link><pubDate>Tue, 09 Jun 2020 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2020/2020-06-09-wordpress-word-cloud-2-0/</guid><description>Mein Word Cloud Plugin für WordPress liegt in einer neuen Version vor! Die Word Cloud unterstützt nun OCR, Tags, interne und externe Quellen und vieles mehr. Da ich also sehr viele grundlegende Änderungen vorgenommen habe, gibt es an dieser Stelle eine komplett neue Dokumentation. Viel Spass.
+Was …</description><content:encoded><![CDATA[<p>Mein Word Cloud Plugin für WordPress liegt in einer neuen Version vor! Die Word Cloud unterstützt nun <strong>OCR</strong>, <strong>Tags</strong>, <strong>interne</strong> und <strong>externe Quellen</strong> und vieles mehr. Da ich also sehr viele grundlegende Änderungen vorgenommen habe, gibt es an dieser Stelle eine komplett neue Dokumentation. Viel Spass.</p>
+<h2 id="was-ist-eine-word-cloud">Was ist eine Word Cloud?</h2>
+<p>Eine <strong>Word Cloud</strong>, auch <strong>Schlagwortwolke</strong>, <strong>Wortwolke</strong> usw., dient der besseren Visualisierung von Texten. Um eine Word Cloud zu erstellen, werden die Vorkommen von Wörtern eines Textes gezählt. Die Wörter mit der größten <strong>Häufigkeit</strong> werden groß dargestellt, Wörter mit geringerer Häufigkeit weniger groß. Und das ganze wird dann in einer <strong>Wolkenform</strong> dargestellt, mit den größten Wörtern in der Mitte.</p>
+<p>So ist es möglich auf einen Blick zu erkennen, welche Wörter in einem Text am häufigsten vorkommen. Das ist nicht nur bei der Analyse von Texten sondern auch von Webseiten nützlich. So kannst du z.B. bei WordPress eine Word Cloud aus Tags erstellen (<strong>Tag Cloud</strong>), anhand der man sehen kann, welche Tags auf einer Seite am meisten verwendet wurden.</p>
+<p>Die folgende Word Cloud zeigt auf einen Artikel, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/wie-erstelle-ich-ein-labyrinth-mit-javascript/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">in dem ich einen Algorithmus beschreibe, um in JavaScript ein Labyrinth zu erstellen</a>
+
+
+:</p>
+<p>[wp-word-cloud source-type=&ldquo;id&rdquo; id=&ldquo;demo1&rdquo; size-factor=50 min-alpha=0.5 count-words=1]3334[/wp-word-cloud]</p>
+<h2 id="was-kann-dieses-plugin">Was kann dieses Plugin?</h2>
+<p><strong>WP Word Cloud</strong> stellt einen Shortcode zur Verfügung, mit dem du beliebig viele <strong>Word Clouds</strong> auf deinen Seiten einfügen kannst. Du kannst verschiedene Quellen nutzen, um dort die Wörter zu zählen und in einer <strong>Word Cloud</strong> darstellen zu lassen.</p>
+<ul>
+<li>inline - du gibst den Text direkt im Shortcode im Beitrag an</li>
+<li>url - ein Verweis auf eine Internetadresse</li>
+<li>id - der Verweis auf eine Seite / einen Beitrag</li>
+<li>sql - eine SQL-Abfrage um Text aus der Datenbank zu lesen</li>
+<li>custom-field - Text aus einem custom field des Beitrages / der Seite</li>
+<li>Text, den der Besucher der Webseite selber eingeben kann</li>
+<li>Text von einem Bild, das der Besucher der Website hochlädt</li>
+</ul>
+<p>Das Plugin greift auf zwei sehr großartige Bibliotheken zurück: WodCloud2.js von TimDream (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/timdream/wordcloud2.js/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">github.com</a>
+
+
+). Sowie die Offline-Implementierung von Tesseract in JavaScript (<strong>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/jeromewu/tesseract.js-offline?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">github.com</a>
+
+
+</strong>).</p>
 <h2 id="installation">Installation</h2>
-<p>Du findest den Sourcecode auf github: 
+<h3 id="über-die-kommandozeile">Über die Kommandozeile</h3>
+<p>Wenn du Zugriff auf deinen Server über SSH hast, kannst du das Plugin folgendermaßen installieren:</p>
+<p>Wechsle in den Plugin-Ordner deiner WordPress-Installation und lege dort einen neuen Ordner an: WP-Word-Cloud, wechsle danach in diesen Ordner:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">mkdir /htdocs/wp-content/plugins/WP-Word-Cloud
+</span></span><span class="line"><span class="ln">2</span><span class="cl">cd /htdocs/wp-content/plugins/WP-Word-Cloud
+</span></span></code></pre></div><p>Danach kannst du das Plugin-Repository mit git klonen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">git clone https://github.com/nickyreinert/wordCloud-for-Wordpress.git .
+</span></span></code></pre></div><p>Wenn du git nicht benutzen möchtest oder kannst, kannst du das Plugin auch mit wget herunterladen und dann entpacken. Dann musst du den Plugin-Ordner allerdings nicht selber erstellen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">cd /htdocs/wp-content/plugins/
+</span></span><span class="line"><span class="ln">2</span><span class="cl">wget https://github.com/nickyreinert/wordCloud-for-Wordpress/archive/wordCloud-for-wordPress-2.zip --no-check-certificate
+</span></span><span class="line"><span class="ln">3</span><span class="cl">unzip wordCloud-for-wordPress-2.zip -d WP-Word-Cloud
+</span></span></code></pre></div><h3 id="mit-einem-ftp-programm">Mit einem FTP-Programm</h3>
+<p>Wenn du keinen Zugriff auf die Kommandozeile hast, kannst du das Plugin von dieser Adresse herunterladen:</p>
+<p>
 
 
 
@@ -110,16 +1130,794 @@ Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und
   
 
   
-  <a href="https://github.com/nickyreinert/AutomatedWordPressInstallation?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://github.com/nickyreinert/AutomatedWordPressInstallation</a>
+  <a href="https://github.com/nickyreinert/wordCloud-for-Wordpress/archive/wordCloud-for-wordPress-2.zip?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://github.com/nickyreinert/wordCloud-for-Wordpress/archive/wordCloud-for-wordPress-2.zip</a>
+
+
+</p>
+<p>Danach entpackst du das Archiv und lädst den kompletten Ordner in das Plugin-Verzeichnis deiner WordPress-Installation. Du kannst den Ordner mit dem FTP-Programm dann umbenennen:</p>
+<img src="https://nickyreinert.de/2020/2020-06-09-wordpress-word-cloud-2-0/images/grafik.png" alt=""><p>Der Order für das Word Cloud Plugin</p>
+<h2 id="abschluss-der-installation">Abschluss der Installation</h2>
+<p>Abschließend muss das Plugin noch im Backend von WordPress aktiviert werden. Dazu suchst du im Plugin-Bereich nach dem Eintrag &ldquo;WP Word Cloud&rdquo; und klickst auf &ldquo;aktivieren&rdquo;. Fertig.</p>
+<img src="https://nickyreinert.de/2020/2020-06-09-wordpress-word-cloud-2-0/images/grafik-1-700x70.png" alt=""><p>Aktiviere das Plugin in der Plugin-Übersicht von WordPress</p>
+<h2 id="erste-verwendung">Erste Verwendung</h2>
+<p>Das Plugin aktiviert für deine WordPress-Installation einen neuen Shortcode: <strong>[ wp-word-cloud ]</strong>. Diesen kannst du nun auf jeder Seite und in jedem Beitrag beliebig oft einfügen. Wenndu den <strong>Gutenberg-Editor</strong> verwendest, benötigst du dafür den Block &ldquo;<strong>Shortcode</strong>&rdquo;. Im konventionellen Editor kannst du den Shortcode einfach in deinen Text einfügen.<br>
+Eine einfache Implementierung sieht z.B. so aus:</p>
+<p><code>[ wp-word-cloud source-type=&quot;url&quot; id=&quot;meine-word-cloud&quot; ]https://www.spiegel.de[ /wp-word-cloud ]</code></p>
+<p>Es gibt <strong>drei Parameter</strong>, die du <strong>immer</strong> angeben musst:</p>
+<ul>
+<li><strong>id</strong>, eine eindeutige Id, mit der die <strong>Word Cloud</strong> auf deiner Seite angesprochen wird, z.B. <strong>meine-word-cloud</strong> oder einfach nur <strong>test</strong></li>
+<li><strong>source-type</strong>, welcher Art die Quelle für die Word Cloud ist, also z.B. von einer <strong>url</strong> oder den <strong>tags</strong></li>
+<li>sowie Inline-Text, als Verweis auf die Quelle, von wo der Inhalt für die Word Cloud kommt, also z.B. die URL <strong>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.spiegel.de?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://www.spiegel.de</a>
+
+
+</strong> oder die Id eines Beitrages (123)</li>
+</ul>
+<h2 id="zusätzliche-einstellungen">Zusätzliche Einstellungen</h2>
+<p>Natürlich gibt es noch <strong>eine Menge weiterer Parameter</strong>, mit denen du das Erscheinungsbild der Word Cloud steuern kannst. Das Plugin setzt bei der ersten Installation für all diese Parameter <strong>Standard-Einstellungen</strong> fest. Diese sind grundsätzlich <strong>global gültig</strong> und können auf der Einstellungseite angepasst werden:</p>
+<img src="https://nickyreinert.de/2020/2020-06-09-wordpress-word-cloud-2-0/images/grafik-2.png" alt=""><p>In den Einstellungen findest du eine eigene Seite für das WP Word Cloud Plugin - wunderbar!</p>
+<p>Jeden dieser globalen Parameter kannst du auch in deinem Shortcode verwenden. So wir die globale Einstellung überschrieben. So ist die <strong>Hintergrundfarbe</strong> z.B. standardmäßig <strong>transparent</strong> eingestellt. Möchtest du sie für die aktuelle Word Cloud auf <strong>grün und halbtransparent</strong> ändern, übergibst du einfach den Parameter <strong>background-color</strong> folgendermaßen:</p>
+<p><code>[ wp-word-cloud source-type=&quot;url&quot; id=&quot;meine-word-cloud&quot; background-color=&quot;rgba(0,255,255,0.5)&quot; ]https://www.spiegel.de[ /wp-word-cloud ]</code></p>
+<p>Eine genaue Beschreibung aller Parameter folgt jetzt:</p>
+<h2 id="parameter">Parameter</h2>
+<h3 id="id">id</h3>
+<p>Dieser Parameter ist für jeden Shortcode, den du einfügst, <strong>verpflichtend</strong>! Die Id adressiert jede Word Cloud auf einer Seite oder in einem Beitrag. Damit ist es möglich, mehrere Word Clouds gleichzeitig einzubinden. Mit der Id kannst du außerdem das Aussehen der Word Cloud mit CSS steuern. Beispiel:</p>
+<p><code>[ wp-word-cloud source-type=&quot;inline&quot; id=&quot;wordcloud1&quot; ]Lorem Ipsum[ /wp-word-cloud ]</code></p>
+<p><code>[ wp-word-cloud source-type=&quot;inline&quot; id=&quot;wordcloud2&quot; ]Lorem Ipsum[ /wp-word-cloud ]</code></p>
+<h3 id="source-type"><strong>source-type</strong></h3>
+<p>Damit legst du fest, um was für eine Quelle es sich handelt. Dieser Parameter ist <strong>verpflichtend</strong>. Die folgenden Quellen werden unterstützt:</p>
+<h4 id="source-typeinline">source-type=inline</h4>
+<p>Der Text wird innerhalb des Shortcodes übermittelt, z.B:</p>
+<p><code>[ wp-word-cloud source-type=inline id=&quot;demo&quot; ]Lorem Ipsum[ /wp-word-cloud ]</code></p>
+<h4 id="source-typeurl">source-type=<strong>url</strong></h4>
+<p>Im Shortcode wird eine URL angegeben, von der Text abgerufen wird, z.B:</p>
+<p><code>[ wp-word-cloud source-type=url id=&quot;demo&quot; ]https://www.spiegel.de[ /wp-word-cloud ]</code></p>
+<h4 id="source-typeid">**source-type=**id</h4>
+<p>Im Shortcode wird eine Id übergeben, die auf eine Seite oder einen Beitrag deiner Webseite verweist, z.B:</p>
+<p><code>[ wp-word-cloud source-type=id=&quot;demo&quot; ]123[ /wp-word-cloud ]</code></p>
+<h4 id="source-typesql">source-type=sql</h4>
+<p>Im Shortcode wird eine SQL-Abfrage übergeben, die eine bereits gezählte Wortliste zurück gibt, z.B:</p>
+<p><code>[ wp-word-cloud source-type=sql id=&quot;demo&quot;]SELECT word,count FROM table;[ /wp-word-cloud]</code></p>
+<h4 id="source-typetags">source-type=tags</h4>
+<p>Die Word Cloud zeigt alle Tags deiner Seite an, hier musst du im Shortcode nichts weiter übergeben:</p>
+<p><code>[ wp-word-cloud source-type=tags id=&quot;demo&quot;]SELECT word,count FROM table;[ /wp-word-cloud]</code></p>
+<h4 id="source-typecustom-field">source-type=custom-field</h4>
+<p>Im Shortcode wird auf ein custom field, also benutzerdefiniertes bzw. eigenes Feld verwiesen, z.B:</p>
+<p><code>[ wp-word-cloud source-type=custom-field id=&quot;demo&quot;]my-custom-field[ /wp-word-cloud]</code></p>
+<p>Die Darstellung der <strong>eigenen Felder</strong> musst du im Gutenberg-Edito ggf. erst aktivieren. Klicke dazu das Punkt-Menü und dann ganz unten auf &ldquo;Ansicht anpassen&rdquo;. Es öffnet sich nun eine Liste, in der du die &ldquo;eigenen Felder&rdquo; aktivieren kannst:</p>
+<ul>
+<li>
+<img src="https://nickyreinert.de/2020/2020-06-09-wordpress-word-cloud-2-0/images/grafik-10.png" alt=""></li>
+<li>
+<img src="https://nickyreinert.de/2020/2020-06-09-wordpress-word-cloud-2-0/images/grafik-11-700x1059.png" alt=""></li>
+</ul>
+<p>Anzeigen der benutzerdefinierten Felder im Gutenberg-Editor</p>
+<h3 id="count-words"><strong>count-words</strong></h3>
+<p>Wenn die im Shortcode angegebene Quelle einen kompletten Text enthält, müssen die Wörter darin erst gezählt werden. Dazu muss <strong>count-words</strong> auf <strong>1</strong> gesetzt werden. Ist <strong>count-words=0</strong> gesetzt, erwartet das Plugin eine List mit gezählten Wörtern.</p>
+<h3 id="enable-frontend-edit"><strong>enable-frontend-edit</strong></h3>
+<p>Ist dieser Parameter auf 1 gesetzt, wird auf der Seite ein Textfeld angezeigt. Das Textfeld enthält den Text, der mit dem Shortcode definiert wurde. Der Besucher kann den Text dann beliebig verändern oder eigenen Text hinzufügen, um so die <strong>Word Cloud</strong> selber zu steuern. Die Berechnung der <strong>Word Cloud</strong> findet im Browser statt. Im folgenden Beispiel kommt der Text von einem benutzerdefiniertem Feld im Backend. Er wird an das Frontend ausgeliefert und dort in der Word Cloud dargestellt. Gleichzeitig kann man den Text aber auch anpassen und die Wolke neu zeichnen lassen:</p>
+<p><code>[ wp-word-cloud source-type=&quot;custom-field&quot; enable-frontend-edit</code>=1 <code>id=&quot;demo&quot;]my-custom-field[ /wp-word-cloud]</code></p>
+<img src="https://nickyreinert.de/2020/2020-06-09-wordpress-word-cloud-2-0/images/grafik-8-700x755.png" alt=""><p>Ein Textfeld für die Besucher deiner Webseite</p>
+<h3 id="ocr---texterkennung">OCR - Texterkennung</h3>
+<h4 id="enable-ocr"><strong>enable-ocr</strong></h4>
+<p>Ist dieser Parameter auf 1 gesetzt, kann der Benutzer auf der Webseite ein Bild hochladen oder mit der Kamera aufnehmen. Im Browser findet dann eine Text-Erkennung statt. Die Wörter werden dann gezählt und die Word Cloud darauf basierend gezeichnet. Wenn <strong>enable-frontend-edit</strong> nicht aktiv ist, hat dieser Parameter keine Wirkung.</p>
+<p><code>[ wp-word-cloud source-type=&quot;custom-field&quot; enable-frontend-edit=1 enable-ocr=1 id=&quot;demo&quot;]my-custom-field[ /wp-word-cloud]</code></p>
+<p>Für diese Funktionalität greift das Plugin auf die 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://tesseract.projectnaptha.com/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Tesseract-Bibliothek</a>
+
+
+ zurück. Diese ermöglicht die Texterkennung von abfotografierten Dokumenten in verschiedenen Sprachen. Die Texterkennung erfolgt komplett im Browser, also beim Besucher der Webseite. Das Bild wird <strong>nicht zum Server hochgeladen</strong>.</p>
+<h4 id="ocr-language">ocr-language</h4>
+<p>Mit diesem Parameter legst du fest, welche Sprache(n) das ORC-Modul unterstützen soll. Standardmäßig ist hier deu eingestellt. Du kannst mehre Sprachen angeben, wenn du sie mit einem + trennst, z.B. Deutsch + Englisch:</p>
+<p><code>`[ wp-word-cloud source-type=&quot;custom-field&quot; enable-frontend-edit=1 enable-ocr=1 ocr-language=&quot;deu+eng&quot; id=&quot;demo&quot;]my-custom-field[ /wp-word-cloud]`</code></p>
+<p>Eine Liste aller unterstützten Sprachpakete findest du hier:</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://tesseract-ocr.github.io/tessdoc/Data-Files?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous#data-files-for-version-400-november-29-2016" target="_blank" rel="noopener noreferrer">https://tesseract-ocr.github.io/tessdoc/Data-Files#data-files-for-version-400-november-29-2016</a>
+
+
+</p>
+<h4 id="ocr-local-libraries">ocr-local-libraries</h4>
+<p>Das OCR-Modul lädt einige, größere Dateien von einem anderen Server nach, unter anderem auch die Sprachpakete. Du kannst diese Dateien auch auf deinem Server anbieten. Dazu musst du die folgenden Dateien herunterladen und im Unterordner &ldquo;<strong>lib</strong>&rdquo; innerhalb des Plugin-Ordners ablegen:</p>
+<ul>
+<li>[https://unpkg.com/tesseract.js@v2.0.0/dist/worker.min.js](
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://unpkg.com/tesseract.js@v2.0.0/dist/worker.min.js%27?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://unpkg.com/tesseract.js@v2.0.0/dist/worker.min.js'</a>
+
+
+ defer=&lsquo;defer)</li>
+<li>[https://unpkg.com/tesseract.js-core@v2.0.0/tesseract-core.wasm.js](
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://unpkg.com/tesseract.js-core@v2.0.0/tesseract-core.wasm.js%27?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://unpkg.com/tesseract.js-core@v2.0.0/tesseract-core.wasm.js'</a>
+
+
+ defer=&lsquo;defer)</li>
+</ul>
+<p>Außerdem benötigst du die von dir konfigurierten Sprachpakete. Diese kannst 
+
+
+
+
+
+  
+  
+
+  
+  
+    
+    
+    
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://tesseract-ocr.github.io/tessdoc/Data-Files?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous#data-files-for-version-400-november-29-2016" target="_blank" rel="noopener noreferrer">du hier für die Version 4 herunterladen</a>
+
+
+. Die Sprachpakete gehören ebenfalls in den Unterordner &ldquo;lib&rdquo;. Außerdem <strong>musst du manuell</strong> die Dateiendung &ldquo;.gz&rdquo; anhängen.</p>
+<h3 id="eingrenzen-der-wortliste">Eingrenzen der Wortliste</h3>
+<h4 id="min-word-length">min-word-length</h4>
+<p>Hiermit legst du fest, wie lang ein Wort mindestens sein soll, um beim Zählen berücksichtigt zu werden. Diese Einstellung wird <strong>nicht</strong> berücksichtigt, wenn du eine fertige Wortliste als Quelle angibst. In diesem Beispiel wird das Wort Foo beim Zählen ignoriert.</p>
+<p><code>`[ wp-word-cloud source-type=&quot;inline&quot; count-words=1 min-word-lenght=4 id=&quot;demo&quot;]Lorem Ipsum Foo[ /wp-word-cloud]`</code></p>
+<h4 id="min-word-occurence">min-word-occurence</h4>
+<p>Mit diesem Parameter legst du fest, wie oft ein Wort mindestens vorkommen muss, um in der word cloud dargestellt zu werden. Diese Einstellung wird <strong>immer</strong> berücksichtigt, auch wenn du eine fertige Wortliste als Quelle angibst. Im Beispiel werden nur Wörter in der word cloud dargestellt, die mindestens 2 mal vorkommen:</p>
+<p><code>`[ wp-word-cloud source-type=&quot;inline&quot; count-words=1 min-word-occurence=2 id=&quot;demo&quot;]Lorem Ipsum Foo[ /wp-word-cloud]`</code></p>
+<h4 id="black-list-und-enable-black-list">black-list und enable-black-list</h4>
+<p>Die Blacklist enthält Wörter, die beim Zählen nicht berücksichtigt werden dürfen. Das können z.B. Funktionswörter oder Fremdwörter sein, die du nicht in der word cloud sehen möchtest. Die Wörter werden mit einem Leerzeichen getrennt angegeben. Wenn du den Parameter im Shortcode angibst, wird die globale Einstellung komplett ignoriert. Die Blacklist wird nur verwendet, wenn der Parameter enable-black-list auf 1 gesetzt ist. Im Beispiel wird das Wort &ldquo;Lorem&rdquo; beim Zählen ignoriert, das es sich auf der Blacklist befindet.</p>
+<p><code>`[ wp-word-cloud source-type=&quot;inline&quot; count-words=1 enable-black-list`</code>=1 <code>`black-list=&quot;Lorem&quot; id=&quot;demo&quot;]Lorem Ipsum Foo[ /wp-word-cloud]`</code></p>
+<h4 id="enable-custom-black-list">enable-custom-black-list</h4>
+<p>Ist dieser Parameter aktiviert, kann der Besucher deiner Webseite Wörter in der word cloud anklicken, um sie aus der word cloud zu entfernen. Die Wörter erscheinen dann unter der word cloud in einer &ldquo;benutzerdefinierten&rdquo; Blacklist. Wenn sie dort erneut angeklickt werden, erscheinen sie wieder in der word cloud.</p>
+<img src="https://nickyreinert.de/2020/2020-06-09-wordpress-word-cloud-2-0/images/grafik-9-700x569.png" alt=""><p>Eine word cloud mit benutzerdefinierter Blacklist, so schön!</p>
+<h4 id="persistent-custom-black-list">persistent-custom-black-list</h4>
+<p>Hiermit kannst du festlegen, dass die Blacklist erhalten bleibt, wenn der Besucher einen neuen Text in das Eingabefeld eingibt. Ist der Parameter deaktiviert, wird die benutzerdefnierte Blacklist gelöscht, sobald der Besucher einen neuen Text eingibt. Dieser Parameter ist nur wirksam, wenn auch das Textfeld aktiviert ist.</p>
+<h4 id="ignore-chars">ignore-chars</h4>
+<p>Mit diesem Parameter legst du fest, welche Zeichen aus dem Text entfernt werden, bevor er gezählt wird. Hier wird ein regulärer Ausdruck dieser Form erwartet:</p>
+<p><code>ignore-chars=&quot;\(\)\[\]\,\.;&quot;</code></p>
+<p>Auf diese Art kannst du ungewollte Satzzeichen, Sonderzeichen oder Steuerzeichen entfernen.</p>
+<h3 id="erscheinungsbild-anpassen">Erscheinungsbild anpassen</h3>
+<h4 id="style">style</h4>
+<h4 id="text-transform">text-transform</h4>
+<p>Hiermit kannst du festlegen, dass der Text beim Darstellen in der word cloud groß oder kleingeschrieben werden soll. Dieser Parameter kann dementsprechend drei Werte annehmen:</p>
+<ul>
+<li>uppercas (alle Wörter groß schreiben)</li>
+<li>lowercase (alle Wörter klein schreiben)</li>
+<li>none (keine Änderung)</li>
+</ul>
+<p>Diese word cloud nutzt als Ressource die aktuellen Mitteilungen von 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://blog.fefe.de?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">fefe</a>
+
+
+:</p>
+<p>[wp-word-cloud source-type=&ldquo;url&rdquo; id=&ldquo;demo2&rdquo; count-words=1 min-word-occurence=1 min-word-length=3 size-factor=100 min-alpha=0.5 count-words=1]https://blog.fefe.de[/wp-word-cloud]</p>
+]]></content:encoded><atom:updated>2026-06-16T20:56:44+02:00</atom:updated><category>tools</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>project_documentation</dc:type></item><item><title>Pictero - Generator für Poesie-Album-Sprüche</title><link>https://nickyreinert.de/2019/2019-10-15-pictero-generator-fuer-poesie-album-sprueche/</link><pubDate>Tue, 15 Oct 2019 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2019/2019-10-15-pictero-generator-fuer-poesie-album-sprueche/</guid><description> Pictero ist eine Persiflage auf die moralinsauren, romantischen oder schwülstigen Sprüche, die dir auf Delphin-Postern, in Poesie-Alben und mittlerweile auch in sozialen Netzwerken begegnen. Mit Pictero kannst du derartige Texte über Bilder legen, die entweder ganz gut passen. Dazu gehören z.B. …</description><content:encoded><![CDATA[<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://pictero.com/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Pictero</a>
+
+
+ ist eine Persiflage auf die moralinsauren, romantischen oder schwülstigen Sprüche, die dir auf Delphin-Postern, in Poesie-Alben und mittlerweile auch in sozialen Netzwerken begegnen. Mit Pictero kannst du derartige Texte über Bilder legen, die entweder ganz gut passen. Dazu gehören z.B. Strandbilder mit einem viel zu starken Blur-Effekt. Oder du nimmst Bilder, die überhaupt gar nicht passen, wie z.B. ein Stück Fleisch, Katzen oder ein Porträt von Bill Murray.</p>
+<img src="https://nickyreinert.de/2019/2019-10-15-pictero-generator-fuer-poesie-album-sprueche/images/1-1.png" alt=""><p>Don&rsquo;t dream your life, live your dreams. Ok.</p>
+<p>Pictero greift dazu selber auf eine Menge öffentlich zugänglicher Bild-Generatoren zurück:</p>
+<ul>
+<li>picsum.photo</li>
+<li>baconmockup.com</li>
+<li>placebeard.it</li>
+<li>fillmurray.com</li>
+<li>placekitten.com</li>
+<li>placecage.com</li>
+<li>placezombie.com</li>
+<li>stevensegallery.com</li>
+<li>placeimg.com</li>
+</ul>
+<p>Ein weiteres Feature ist die direkte Anbindung an Twitter. Man kann eine Tweet-Id oder URL zu einem Tweet angeben, um so direkt den Text zu visualisieren.</p>
+<p>Als i-Tüpfelchen kannst du den Text maximalironisch mit einer Comic-ähnlichen Schriftart oder einer Handschrift verzieren und das Bild dann herunterladen um die Nachricht deinerseits publikumswirksam an den Mann oder die Frau zu bringen.</p>
+<p>Viel Spaß.</p>
+<img src="https://nickyreinert.de/2019/2019-10-15-pictero-generator-fuer-poesie-album-sprueche/images/2.png" alt=""><p>Bill Murray - er kann es noch</p>
+]]></content:encoded><atom:updated>2025-10-11T11:01:31+02:00</atom:updated><category>tools</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>project_showcase</dc:type></item><item><title>AbbreViator (tm) - Lange Texte automatisch abkürzen</title><link>https://nickyreinert.de/2019/2019-05-13-abbreviator-tm-lange-texte-automatisch-abkurzen/</link><pubDate>Mon, 13 May 2019 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2019/2019-05-13-abbreviator-tm-lange-texte-automatisch-abkurzen/</guid><description>Wenn bei deiner Abschlussarbeit, Masterarbeit, Hausarbeit oder Doktorabeit Qualität mehr zählt als Quantität, dann ist der AbbreViator (tm) für dich genau das richtige. Der AbbreViator (tm) ist für wissenschaftliche und nicht-wissenschaftliche Texte geeigent. Das Werkzeug ersetzt alle Wörter durch …</description><content:encoded><![CDATA[<p>Wenn bei deiner Abschlussarbeit, Masterarbeit, Hausarbeit oder Doktorabeit <strong>Qualität mehr zählt als Quantität</strong>, dann ist der AbbreViator (tm) für dich genau das richtige. Der AbbreViator (tm) ist für wissenschaftliche und nicht-wissenschaftliche Texte geeigent. Das Werkzeug ersetzt alle Wörter durch Abkürzungen und liefert dir dein komplettes Pamphlet zurück, dass inhaltlich nicht weniger wert ist, als das Original, dafür aber umso kompakter präsentiert werden kann. Natürlich erhälst du auch das passende Abkürzungsverzeichnis dazu, dass du deiner schriftlichen Arbeit dann anfügen kannst.<br>
+Die Verwendung des AbbreViator (tm) ist kostenlos, um ein Verweis auf den Urheber (ich) wird freilich gebeten.<br>
+Berichte mir gerne von deinen erfolgreichen Arbeiten und wie die geneigte Leserschaft sie aufgenommen haben. Hier geht es zum AbbreViator (tm):</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://abbreviator.nickyreinert.de/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"></a>
+
+
+
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://abbreviator.nickyreinert.de/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://abbreviator.nickyreinert.de/</a>
+
+
+</p>
+<p><em>Viel Spass mit dem AbbreViator (tm) - in der Kürze steckt die Würze</em></p>
+]]></content:encoded><atom:updated>2025-08-20T21:05:13+02:00</atom:updated><category>tools</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tool_review</dc:type></item><item><title>Lorem Picsum - Der Generator für zufällige Bilder</title><link>https://nickyreinert.de/2019/2019-04-29-lorem-picsum-der-generator-fuer-zufaellige-bilder/</link><pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2019/2019-04-29-lorem-picsum-der-generator-fuer-zufaellige-bilder/</guid><description>Lorem Ipsum kennt jeder. Das sind diese lateinisch anmutenden Texte, die man als Platzhalter verwenden kann. Zu einem richtigen Layout gehören aber nicht nur Texte, sondern auch Bilder. Doch woher nehmen, wenn nicht stehlen? Lorem Picsum heißt die Antwort naheliegenderweise . Dabei handelt es sich …</description><content:encoded><![CDATA[<p>Lorem Ipsum kennt jeder. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://de.wikipedia.org/wiki/Lorem_ipsum?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Das sind diese lateinisch anmutenden Texte,</a>
+
+
+ die man als Platzhalter verwenden kann. Zu einem richtigen Layout gehören aber nicht nur Texte, sondern auch Bilder. <em>Doch woher nehmen, wenn nicht stehlen</em>? <strong>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://picsum.photos/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Lorem Picsum</a>
+
+
+</strong> 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://picsum.photos/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">heißt die Antwort naheliegenderweise</a>
+
+
+. Dabei handelt es sich um eine <strong>kostenlose</strong> und <strong>unkomplizierte</strong> API, um Bilder in deine Seite bzw. dein Layout einzubinden. Die Bilder werden dabei bei jedem Aufruf zufällig neu ausgewählt:</p>
+<p>Das schöne: Du kannst die Bilder relativ zielgenau aussuchen. Egal, ob du ein quadratisches Format oder monochrome Bilder benötigst: Über die entsprechenden Parameter kannst du festlegen, welche Art von Platzhalter-Bild du einbinden willst:</p>
+<p>Die Größe des Bildes wird über die letzten beiden Pfad-Elemente definiert, wenn du nur eine Ziffer eingibst, erhälst du ein quadratisches Bild.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">https://picsum.photos/300/400
+</span></span><span class="line"><span class="ln">2</span><span class="cl">https://picsum.photos/500
+</span></span></code></pre></div><img src="https://picsum.photos/300/400" alt=""><p>Ein zufälliges Bild mit den Abmessungen 300 x 400 Pixel</p>
+<img src="https://picsum.photos/400" alt=""><p>Ein zufälliges quadratisches Bild mit der Kantenlänge 400 Pixel</p>
+<p>Über zusätziche <strong>Get-Parameter</strong> kannst du weitere Eigenschaften des Bildes beeinflussen, wie z.B. die Farbe oder die Unschräfe. Den Grad der Unschärfe kannst du nach Belieben zwischen 1 und 10 einstellen. Die Parameter lassen sich natürlich auch kombinieren:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">https://picsum.photos/100/200?grayscale
+</span></span><span class="line"><span class="ln">2</span><span class="cl">https://picsum.photos/200/300/?blur
+</span></span><span class="line"><span class="ln">3</span><span class="cl">https://picsum.photos/200/300/?blur=2
+</span></span><span class="line"><span class="ln">4</span><span class="cl">https://picsum.photos/id/948/100/200?blur=10&amp;grayscale
+</span></span></code></pre></div><img src="https://picsum.photos/300/400?blur=10&amp;grayscale" alt=""><p>Ein zufälliges, farbloses Bild mit einem Unschärfefaktor von 10</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://picsum.photos/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Auf der Seite des Anbieters finden sich noch ein paar andere Paramter</a>
+
+
+, um z.B. eine Liste von verfügbaren Bildern auszugegeben oder ein bestimmtes Bild per ID anzusprechen.</p>
+<h2 id="alter-hut">Alter Hut</h2>
+<p>Tatsächlich ist die Idee gar nicht mal so neu. Seit mindestens 2012 gibt es 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="http://lorempixel.com?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">http://lorempixel.com</a>
+
+
+ und es gibt noch 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://loremipsum.io/de/21-of-the-best-placeholder-image-generators/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">eine ganze Reihe mehr,</a>
+
+
+ u.a. das berüchtigte Bacon-Mockup.</p>
+]]></content:encoded><atom:updated>2025-10-11T11:01:31+02:00</atom:updated><category>tools</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>tool_review</dc:type></item><item><title>Wordpress-Plugin um eine Word-Cloud mit beliebigen Wörtern darzustellen</title><link>https://nickyreinert.de/2018/2018-06-13-wordpress-plugin-um-eine-word-cloud-mit-beliebigen-woertern-darzustellen/</link><pubDate>Wed, 13 Jun 2018 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2018/2018-06-13-wordpress-plugin-um-eine-word-cloud-mit-beliebigen-woertern-darzustellen/</guid><description>Diese Version ist veraltet, bitte verwende absofort diese Version:
+https://www.nickyreinert.de/wordpress-word-cloud-2-0/ Wer träumt nicht davon, eine Wolke aus Wörtern in Wordpress darstellen zu können? Der Fachmann spricht hier von einer sogenannten Word-Cloud. Ich meine hier übrigens ausdrücklich …</description><content:encoded><![CDATA[<p>Diese Version ist veraltet, bitte verwende absofort diese Version:</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/wordpress-word-cloud-2-0/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://www.nickyreinert.de/wordpress-word-cloud-2-0/</a>
+
+
+</p>
+<p>Wer träumt nicht davon, eine Wolke aus Wörtern in Wordpress darstellen zu können? Der Fachmann spricht hier von einer sogenannten Word-Cloud. Ich meine hier übrigens ausdrücklich nicht die bekannten TagClouds, bei denen schlicht die verwendeten Wordpress-Tags in einer Wolke anklickbar angezeigt werden. Hier geht es einfach um die Darstellung von Wörtern, die entsprechend der Vorkommen verschieden groß dargestellt werden. Leider gab es genau für diesen Zweck bisher kein Wordpress-Plugin. Dafür habe ich aber eine sehr leicht zu bedienende 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/timdream/wordcloud2.js/blob/gh-pages/API.md?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">JavaScript-Bibliothek von Tim Dream: wordCloud2.js</a>
+
+
+ gefunden, auf der ich das Plugin aufgebaut habe.</p>
+<h2 id="installation">Installation</h2>
+<p>Der ganze Spaß steht 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/wordCloud-for-Wordpress?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">auf GitHub zur Verfügung</a>
+
+
+. Du musst lediglich den Source-Code herunterladen und in einen Unterordner in wp-content/plugins entpacken. Wenn du das Plugin im Backend aktiviert hast, kannst du auf jeder Seite und jedem Beitrag den Shortcode [ word-cloud ] nutzen.</p>
+<p>Die folgenden Parameter kannst du im Shortcode übergeben. Der Parameter <strong>target-id</strong> ist dabei immer notwendig, alle anderen sind nicht verpflichtend.</p>
+<ul>
+<li><strong>target-id</strong> - damit wird jede Instanz von word-cloud adressiert. Du kannst je Seite mehrere Word-Clouds erstellen, die Target-Id wird auch als CSS-Id verwendet</li>
+<li><strong>source</strong> -wenn du eine eigene SQL-Abfrage verwenden möchtest, musst du diesen Parameter auf &ldquo;sql&rdquo; setzen, andernfalls wird versucht, ein Custom-Field auszulesen</li>
+<li><strong>source-id</strong> - wenn sich die Wortliste in einem Custom-Field befindet, musst du mit diesem Parameter den Namen des Felds angeben</li>
+<li><strong>query</strong> - wenn du eine SQL-Abfrage verwendest, nutzt du dafür diesen Parameter</li>
+<li><strong>backgroundColor</strong> - die Hintergrundfarbe der Cloud, z.B. #123123</li>
+<li><strong>gridSize</strong> - ein ganze Zahl, mit der die Lücke zwischen den Wörtern gesteuert werden kann</li>
+<li><strong>fontFamily</strong> - welcher Font soll verwendet werden</li>
+<li><strong>fontWeight</strong> - das Gewicht der Schriften, also z.B. bold oder normal</li>
+<li><strong>minRotation</strong> - eine ganze Zahl, die das Mindestmaß der Rotation bestimmt, ist der Wert 0, wird die Rotation deaktiviert</li>
+<li><strong>maxRotation</strong> - das gleiche, nur für die Obergrenze der Rotation</li>
+<li><strong>weightFactor</strong> - eine ganze Zahl, um die Gewichtung der Wörter zu beeinflussen, also ein Multiplikator für die Größe</li>
+<li><strong>shape</strong> - die Form der Wolke, hier kannst du folgende Formen verwenden: circle (Standard), cardioid (Apfel bzw. Herz), diamond, square, triangle-forward, triangle, pentagon und star</li>
+</ul>
+<h2 id="beispiel">Beispiel</h2>
+<h3 id="wörter-aus-einer-mysql-tabelle-nutzen">Wörter aus einer MySQL-Tabelle nutzen</h3>
+<p>Die folgende Word-Cloud verwendet eine Liste von 100 Wörtern aus einer Datenbank-Abfrage:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[ word-cloud target-id=&#34;myWordCloud1&#34; source=&#34;sql&#34; query=&#34;SELECT word, SUM(count) AS count FROM augenblicke.001_words GROUP BY word ORDER BY count DESC LIMIT 0,100&#34; ]
+</span></span></code></pre></div><p>Hier siehst du eine Word-Cloud, die auf eine kleinere Liste zurückgreift, die ich in einem Custom-Field übergebe:</p>
+<p>[word-cloud target-id=&ldquo;myWordCloud2&rdquo; source-id=&ldquo;word-cloud&rdquo;]</p>
+<h3 id="wörter-aus-einem-benutzerdefinierten-feld-nutzen">Wörter aus einem benutzerdefinierten Feld nutzen</h3>
+<p>Achtung: Dieser Weg funktioniert mit dem neuen Gutenberg-Editor (ab Wordpress 5) nicht, da dieser (Stand Januar 2019) keine benutzerdefinierten Felder anzeigt.</p>
+<p>Wenn du auf eine Liste mit Wörter aus einem benutzerdefinierten Feld zugreifen willst, übergibst du als source-id den Namen des benutzerdefinierten Feldes:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[word-cloud target-id=&#34;myWordCloud2&#34; source-id=&#34;word-cloud&#34;]
+</span></span></code></pre></div><p>Das benutzerdefinierte Feld legst du dann mit genau diesem Namen an und füllst es mit den Wörter und den Werten, die Größe represäntieren sollen:</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de/files/grafik-13.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/2018/2018-06-13-wordpress-plugin-um-eine-word-cloud-mit-beliebigen-woertern-darzustellen/images/grafik-13-700x74.png" alt=""></a>
+
+
+</p>
+<p>Benutzerdefiniertes Feld mit eigener Wortliste im klassischen Editor</p>
+]]></content:encoded><atom:updated>2026-06-16T20:56:44+02:00</atom:updated><category>tools</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>project_documentation</dc:type></item><item><title>Eine HTML-Tabelle als Heatmap in Wordpress darstellen</title><link>https://nickyreinert.de/2018/2018-04-06-eine-html-tabelle-als-heatmap-in-wordpress-darstellen/</link><pubDate>Fri, 06 Apr 2018 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2018/2018-04-06-eine-html-tabelle-als-heatmap-in-wordpress-darstellen/</guid><description>data-heatmap dient zur Darstellung einer Heatmap als Wordpress Plugin. Dabei werden entsprechende Quell-Daten in einer HTML-Tabelle als Heatmap darzustellen. Das Ergebnis kann z.B. so aussehen:
+[data-heatmap transpose=“yes” hide-xaxis=“no” hide-yaxis=“no” hide-values=“yes” sort-yaxis=“yes” …</description><content:encoded><![CDATA[<p><em>data-heatmap</em> dient zur Darstellung einer Heatmap als Wordpress Plugin. Dabei werden entsprechende Quell-Daten in einer HTML-Tabelle als Heatmap darzustellen. Das Ergebnis kann z.B. so aussehen:</p>
+<p>[data-heatmap transpose=&ldquo;yes&rdquo; hide-xaxis=&ldquo;no&rdquo; hide-yaxis=&ldquo;no&rdquo; hide-values=&ldquo;yes&rdquo; sort-yaxis=&ldquo;yes&rdquo; source-for-gradiation=&ldquo;y&rdquo;]</p>
+<p>Die Daten stammen aus einer Tabelle mit drei Spalten. Es handelt sich um die Bus- und Bahn-Linien der öffentlichen Verkehrsmittel in Berlin (Spalte x), die Tageszeiten von 0 bis 23 Uhr (Spalte y) und die Anzahl von Beiträgen in einem Portal (Spalte v). Die Heatmap zeigt also, wieviele Beiträge zu einer bestimmten Uhrzeit in einer bestimmten Linie abgegeben wurden.</p>
+<p>y,x,v
+0, BUS, 49
+1, EXPRES-BUS, 4
+1, METRO-BUS, 28
+4, METRO-TRAM, 59
+…</p>
+<p>Das Plugin steht auf 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://github.com/nickyreinert/data-heatmap?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">github.com</a>
+
+
+ zur freien Verwendung zur Verfügung.</p>
+]]></content:encoded><atom:updated>2026-06-16T20:56:44+02:00</atom:updated><category>tools</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>project_documentation</dc:type></item><item><title>COII - Cookie OptIn Interface als Wordpress Plugin</title><link>https://nickyreinert.de/2018/2018-03-03-coii/</link><pubDate>Sat, 03 Mar 2018 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2018/2018-03-03-coii/</guid><description>COII ist ein Plugin für Wordpress mit dem du dem Besucher deiner Seite die Möglichkeit gibst, dem Tracking durch z.B. Google Analytics bzw. Cookies zuzustimmen.
+Cookies und Tracking Grundsätzlich sind Cookies nicht verkehrt. Dabei handelt es sich um kleine Text-Dateien, die von einem Server auf dem …</description><content:encoded><![CDATA[<p>COII ist ein Plugin für Wordpress mit dem du dem Besucher deiner Seite die Möglichkeit gibst, dem Tracking durch z.B. Google Analytics bzw. Cookies zuzustimmen.</p>
+<h2 id="cookies-und-tracking">Cookies und Tracking</h2>
+<p>Grundsätzlich sind <strong>Cookies</strong> nicht verkehrt. Dabei handelt es sich um kleine Text-Dateien, die von einem Server auf dem Computer des Benutzers gespeichert werden, um Informationen zwischenzuspeichern. Für den Betrieb vieler Seiten sind sie oft unerlässlich. Dabei ist es wichtig zu wissen, dass nur der Server auf ein Cookie zugreifen darf, der es auch gesetzt hat. Grundsätzlich kann man zwei Arten unterscheiden: <strong>1st-Party- und 3rd-Party-Cookies</strong>. 1st-Party-Cookies werden von dem Server gespeichert, auf den der Besucher der Website gerade zugreift. Aktuell wäre das für dich z.B. ein Cookie von 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nickyreinert.de?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">www.nickyreinert.de</a>
 
 
 .</p>
-<p>Nach der Installation kopierst du die Datei settings-template zu .settings, um in dieser Datei die Einstellungen für deine WordPress-Installation vorzunehmen. Du startest den Prozess mit <strong>bash start.sh</strong> oder setzt den Ausführen-Flag für bash.sh um diese direkt auszuführen:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">chmod u+x bash.sh
-</span></span><span class="line"><span class="ln">2</span><span class="cl">./bash.sh
-</span></span></code></pre></div><h2 id="zufällige-inhalte">Zufällige Inhalte</h2>
-<p>Das Script ermöglicht das Anlegen von beliebig vielen zufälligen Beiträgen in beliebig vielen zufälligen Kategorien. Was genau dabei passiert, beschreibe ich hier kurz:</p>
-<p>Zunächst wird eine Kategorie erzeugt. Dazu wird von der folgenden API ein zufälliges Wort abgerufen: 
+<p><strong>3rd-Party-Cookies</strong> werden von Dritten auf deinem Computer gespeichert. Das ist möglich, weil ich auf meiner Seite z.B. JavaScript von fremden Websiten einbinde. Diese &ldquo;rufen&rdquo; den anderen Server an. Sehr weit verbreitet ist z.B. Google Analytics. Google kann dann als dritte Partei ein Cookie auf deinem Computer speichern. Wenn du eine andere Website besuchst, die auch das JavaScript von Google Analytics einsetzt, darf Google auf genau diesen Cookie zugreifen und kann dann die Verknüpfung herstellen: Der Besuch meiner Seite, der Besuch der anderen Seite und vermutlich der Besuch vieler weiterer Seiten. Diese Art von Cookies kann man deswegen als Tracking-Cookie bezeichnen.</p>
+<p>Das Problem an der Sache sind die &ldquo;<strong>personenbezogene Daten</strong>&rdquo;. Eigentlich hat niemand ein Problem mit Cookies - so lange sie keine personenbezogenen Daten enthalten. Erst dann betritt man den rechtlich relevanten Raum des Datenschutzes.  Und mit der vor der Tür stehenden <strong>DSGVO</strong> bzw. der <strong>ePrivacy-Verordnung</strong> wird der Betreiber der Website (vermutlich) noch mehr in der Pflicht genommen, die personenbezogenen Daten seiner Besucher zu schützen. Oder: Im explizit das Wahlrecht zu geben: Lässt er das Tracking zu?</p>
+<p>Und dabei soll dir <strong>COII</strong> helfen.</p>
+<h2 id="funktionsweise-voncookies">Funktionsweise von Cookies</h2>
+<p>Beim ersten Besuch deiner Seite sieht der Benutzer einen einfachem Dialog, in dem er dem Tracking zustimmen kann. Oder eben widersprechen.</p>
+<p><strong>COII</strong> speichert die Information wiederum in einem Cookie und lädt die Seite automatisch neu. Wurde dem Tracking zugestimmt, wird das entsprechende Tracking-Pixel (JavaScript) geladen. Sonst nicht. COII  unterscheidet dabei allerdings vorerst nicht zwischen 1st- und 3rd-Party-Cookies.</p>
+<p>In den Einstellungen kannst du (bzw. musst du initial) den Text für den Dialog und die Buttons anpassen. Außerdem solltest du natürlich dein Tracking-Pixel hinterlegen. Sonst brauchst du dieses Plugin  nicht.</p>
+<p>Außerdem kannst du den Shortcode [ coii_dialogue ] auf jeder Seite oder jedem Beitrag - wie z.B. deiner Datenschutzbestimmung - nutzen, um dort die gleiche Abfrage darzustellen.</p>
+<p><strong>COII</strong> kannst du dir 
 
 
 
@@ -142,37 +1940,10 @@ Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und
   
 
   
-  <a href="https://random-word-api.herokuapp.com/word?swear=0&amp;number=&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://random-word-api.herokuapp.com/word?swear=0&amp;number=</a>
+  <a href="https://github.com/nickyreinert/coii/edit/master/README.txt?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">bei Github</a>
 
 
-</p>
-<p>Dieser Kategorie wird dann ein Beitrag wird mit einer beliebigen Anzahl von <strong>Absätzen</strong> von dieser API zugeordnet: 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://metaphorpsum.com/paragraphs/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">http://metaphorpsum.com/paragraphs/</a>
-
-
-. Der Beitrag erhält einen zufälligen Titel (von dort: 
+ oder direkt über das 
 
 
 
@@ -195,107 +1966,11 @@ Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und
   
 
   
-  <a href="http://metaphorpsum.com/sentences/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">http://metaphorpsum.com/sentences</a>
+  <a href="https://wordpress.org/plugins/cookie-optin-interface/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Wordpress-Repository</a>
 
 
-), einen Textauszug (gleiche API), sowie eine beliebige Anzahl zufälliger Tags (Schlagwörter), ebenfalls von 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://random-word-api.herokuapp.com/word?swear=0&amp;number=&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">random-word-api.herokuapp.com</a>
-
-
-. Dann werden für diesen Beitrag Revisionen erzeugt - auch diese in beliebiger Höhe. Abschließend erhält jeder Beitrag ein zufälliges Featured Image sowie ein weiteres zufälliges Bild am Ende des Fließtextes.</p>
-<p>Je nachdem, wieviele Beiträge und Kategorien bzw. Sub-Kategorien eingerichtet werden soll, wird dieser Prozess natürlich wiederholt.</p>
-<p><em>(Bisher werden die Inhalte leider nur auf Englisch eingefügt)</em></p>
-<h2 id="einstellungen">Einstellungen</h2>
-<p>Alle Einstellungen befinden sich in der Datei <strong>.settings</strong> und werden im Folgenden beschrieben. Der PROJECT-Parameter kann im weiteren Verlauf als Platzhalter verwendet werden und sollte keine Leerzeichen oder Sonderzeichen enthalten:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">PROJECT=myWordPressBlog
-</span></span></code></pre></div><h3 id="datenbank">Datenbank</h3>
-<p>Du kannst eine neue Datenbank anlegen (CREATE_DB) oder auf eine existierende Datenbank zurückgreifen.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">DB_DROP=yes|no
-</span></span><span class="line"><span class="ln">2</span><span class="cl">CREATE_DB=yes|no
-</span></span><span class="line"><span class="ln">3</span><span class="cl">DB_ROOT=root
-</span></span><span class="line"><span class="ln">4</span><span class="cl">DB_ROOT_PASSWORD=secret
-</span></span></code></pre></div><p>Willst du eine frische Datenbank anlegen, solltest du die alte Datenbank mit DB_DROP=yes löschen. Soll eine neue Datenbank angelegt werden, müssen die Zugangsdaten für einen privilegierten Nutzer angegeben werden: Mit den folgenden Parameter legst du fest, wie WordPress auf die Datenbank zugreift:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">DB_HOST=127.0.0.1
-</span></span><span class="line"><span class="ln">2</span><span class="cl">DB_NAME=&#34;${PROJECT}&#34;
-</span></span><span class="line"><span class="ln">3</span><span class="cl">DB_PREFIX=&#34;wp_&#34;
-</span></span><span class="line"><span class="ln">4</span><span class="cl">
-</span></span><span class="line"><span class="ln">5</span><span class="cl">ADD_DB_USER=yes|no
-</span></span><span class="line"><span class="ln">6</span><span class="cl">DB_USER=&#34;${PROJECT}&#34;
-</span></span><span class="line"><span class="ln">7</span><span class="cl">DB_USER_PASSWORD=$(cat /dev/urandom | tr -dc &#39;a-zA-Z0-9&#39; | fold -w 32 | head -n 1)
-</span></span></code></pre></div><p>Das Passwort wird im Beispiel zufällig erzeugt, willst du ein eigenes Passwort verwenden, kannst du den Parameter überschreiben, z.B:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">DB_USER_PASSWORT=secret
-</span></span></code></pre></div><p>Der DB-Nutzer wird natürlich nur angelegt, wenn ADD_DB_USER=yes gesetzt ist. Andernfalls musst du hier die passenden Zugangsdaten angeben.</p>
-<h3 id="wordpress">WordPress</h3>
-<p>Du kannst auf eine existierende Installation zurückgreifen, um z.B. dort Beiträge hinzuzufügen, oder WordPress komplett neu installieren. Hier kannst du z.B. auch den oben festgelegten PROJECT-Parameter nutzen:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="n">WP_PATH</span><span class="o">=</span><span class="s2">&#34;/var/nginx/htdocs/${PROJECT}/&#34;</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">INSTALL_CORE</span><span class="o">=</span><span class="n">yes</span><span class="o">|</span><span class="n">no</span>
-</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="n">WP_DROP</span><span class="o">=</span><span class="n">yes</span><span class="o">|</span><span class="n">no</span>
-</span></span></code></pre></div><p>Mit WP_DROP kannst du festlegen, dass der Ordner WP_PATH komplett gelöscht wird. <strong>Vorsicht</strong> ist hier also geboten! Die folgenden Parameter betreffen deine allgemeinen WordPress-Einstellungen. Bei der URL kannst du wieder den PROJECT-Platzhalter nutzen.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">WP_TITLE=&#39;WordPress Test&#39;
-</span></span><span class="line"><span class="ln">2</span><span class="cl">URL=&#34;https://blog.example.org/${PROJECT}&#34;
-</span></span><span class="line"><span class="ln">3</span><span class="cl">WP_ADMIN_NAME=admin
-</span></span><span class="line"><span class="ln">4</span><span class="cl">WP_ADMIN_EMAIL=mail@example.org
-</span></span><span class="line"><span class="ln">5</span><span class="cl">WP_ADMIN_PASSWORD=secret
-</span></span></code></pre></div><p>Willst du ein eigene Passwort vergeben, kannst du auch hier ein zufälliges Passwort erzeugen lassen:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">WP_ADMIN_PASSWORD=$(cat /dev/urandom | tr -dc &#39;a-zA-Z0-9&#39; | fold -w 32 | head -n 1)
-</span></span></code></pre></div><h3 id="theme-und-plugins">Theme und Plugins</h3>
-<p>Mit den folgenden Parametern legst du fest, welches Theme eingerichtet und welche Plugins installiert werden sollen. Der Theme-Name ist der Slug des Themes:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">INSTALL_THEME=yes|no
-</span></span><span class="line"><span class="ln">2</span><span class="cl">THEME=&#34;elementor&#34;
-</span></span><span class="line"><span class="ln">3</span><span class="cl">
-</span></span><span class="line"><span class="ln">4</span><span class="cl">INSTALL_PLUGINS=no
-</span></span><span class="line"><span class="ln">5</span><span class="cl">PLUGINS=&#34;elementor wordpress-seo tinymce-advanced ninja-forms shortcodes-ultimate instagram-feed ml-slider the-events-calendar amp contact-widgets coblocks woocommerce&#34;
-</span></span></code></pre></div><p>Du kannst mehrere Plugins angeben, wenn diese per Leerzeichen voneinander getrennt sind.</p>
-<h3 id="inhalte">Inhalte</h3>
-<p>Der nächste Abschnitt regelt das (zufällige) Anlegen von Beiträgen, Kategorien usw. Natürlich musst du keine Inhalte anlegen. Ist <strong>RANDOMIZE_EVERY_ITEM</strong> auf <strong>yes</strong> gesetzt, wird jeder Beitrag wie oben zufällig erzeugt. Da das eine Menge HTTP-Requests erfordert, kannst du den Parameter auch auf no setzen. In dem Fall wird jede Zufalls-API genau einmal abgerufen. Der ganze Prozess wird dadurch maßgeblich beschleunigt.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">ADD_CONTENT=yes|no
-</span></span><span class="line"><span class="ln">2</span><span class="cl">META_INPUT=&#34;&#34;
-</span></span><span class="line"><span class="ln">3</span><span class="cl">RANDOMIZE_EVERY_ITEM=yes|no
-</span></span></code></pre></div><p>Manche Themes, wie z.B. <strong>Elementor</strong>, fügen den Inhalten, also Beiträgen, bestimmte Meta-Informationen hinzu. Beim automatisierten Anlegen von Beiträgen passiert das allerdings nicht automatisch. Du kannst das hier also entsprechend einrichten. Der Wert wird als JSON übergeben. Achte auf das einfache Anführungszeichen.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">META_INPUT=&#39;{&#34;_elementor_edit_mode&#34;:&#34;&lt;![CDATA[builder]]&gt;&#34;,&#34;_elementor_template_type&#34;:&#34;&lt;![CDATA[kit]]&gt;&#34;,&#34;_elementor_version&#34;:&#34;&lt;![CDATA[2.9.13]]&gt;&#34;}&#39;
-</span></span></code></pre></div><p>Die folgenden Paremeter legen fest, wieviele Inhalte du erzeugen möchtest:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">COUNT_CATEGORIES_LEVEL1=10
-</span></span><span class="line"><span class="ln">2</span><span class="cl">COUNT_CATEGORIES_LEVEL2=5
-</span></span><span class="line"><span class="ln">3</span><span class="cl">
-</span></span><span class="line"><span class="ln">4</span><span class="cl">COUNT_POSTS=100
-</span></span><span class="line"><span class="ln">5</span><span class="cl">COUNT_PARAGRAPHS=20
-</span></span><span class="line"><span class="ln">6</span><span class="cl">COUNT_POST_REVISIONS=5
-</span></span><span class="line"><span class="ln">7</span><span class="cl">COUNT_TAGS=20
-</span></span></code></pre></div><p>Im Beispiel werden 10 Haupt-Kategorien mit jeweils 5 Unter-Kategorien angelegt. Jede Kategorie wird mit 100 Posts befüllt und jeder Post erhält 20 Tags und 5 Revisionen. Das ergibt also 10 * 5 * 100 * 5 Beiträge = 25.000 Beiträge! In diesem Fall macht es Sinn RANDOMIZE_EVERY_ITEM auf no zu setzen, da du sonst mehre tausende Anfragen an die Zufalls-APIs generieren würdest. COUNT_PARAGRAPHS legt die Länge jedes Beitrags in Absätzen fest.</p>
-<h3 id="standard-parameter">Standard-Parameter</h3>
-<p>Die folgenden Parameter musst du in der Regel nicht anpassen. WP_CLI legt den Pfad zur WordPress Kommandozeilen Oberfläche fest. Wird die Datei nicht gefunden, muss WP CLI installiert werden. Dazu dient der Parameter WP_CLI_SOURCE.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">WP_CLI_EXEC=~/wp-cli.phar
-</span></span><span class="line"><span class="ln">2</span><span class="cl">WP_CLI_SOURCE=https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-</span></span></code></pre></div><p>Im folgenden werden die Quellen für die APIs festgelegt. Hier solltest du nichts ändern, da das Script für die Zusammenarbeit mit diesen Quellen eingerichtet ist. Einzig beim Parameter RANDOM_IMAGE_API_URI kannst du bei Bedarf in der URL die Auflösung der abgefragten Bilder festlegen.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">RANDOM_WORD_API_URL=&#39;https://random-word-api.herokuapp.com/word?swear=0&amp;number=&#39;
-</span></span><span class="line"><span class="ln">2</span><span class="cl">RANDOM_SENTENCE_API_URL=&#39;http://metaphorpsum.com/sentences/&#39;
-</span></span><span class="line"><span class="ln">3</span><span class="cl">RANDOM_TEXT_API_URL=&#39;http://metaphorpsum.com/paragraphs/&#39;
-</span></span><span class="line"><span class="ln">4</span><span class="cl">RANDOM_IMAGE_API_URI=&#39;https://picsum.photos/200/300.jpg&#39;
-</span></span></code></pre></div>]]></content:encoded><atom:updated>2026-06-16T20:56:44+02:00</atom:updated><category>development</category><category>tools</category><category>wordpress</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>project_documentation</dc:type></item><item><title>Dateien von einem kaputten Android-Smartphone retten</title><link>https://nickyreinert.de/2019/2019-01-26-dateien-von-einem-kaputten-android-smartphone-retten/</link><pubDate>Sat, 26 Jan 2019 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2019/2019-01-26-dateien-von-einem-kaputten-android-smartphone-retten/</guid><description>Ich hab hier gerade ein altes LG Nexus auf dem Tisch liegen, bei dem das Display in der unteren Hälfte nach einem Sturz nicht mehr funktioniert. Und das ist ja eigentlich der Supergau. Denn für gewöhnlich schützt man sein Gerät ja mit einer Geste vor fremden Zugriffen. Das Problem ist also: Wenn …</description><content:encoded><![CDATA[<p>Ich hab hier gerade ein altes LG Nexus auf dem Tisch liegen, bei dem das Display in der unteren Hälfte nach einem Sturz nicht mehr funktioniert. Und das ist ja eigentlich der Supergau. Denn für gewöhnlich schützt man sein Gerät ja mit einer Geste vor fremden Zugriffen. Das Problem ist also: Wenn früh um sechs Uhr der voreingestellte Wecker angeht, kannst du ihn nicht mehr deaktivieren. Und außerdem kommst du nicht mehr an deine Dateien ran, wenn das Smartphone, wie eben das Nexus von LG, seine Daten nicht gerade auf einer externen Speicherkarte ablegt.</p>
-<p>Das Nexus war zwar bei einer Werkstatt, mit dem Auftrag, die Daten aus dem internen Speicher wieder herzustellen. Doch die konnten wohl auch nicht viel machen. Also wurden die Daten abgeschrieben und das Nexus verstaubte seit Jahren im Schrank in der Hoffnung, die Zukunft würde die Lösung bringen. Und das tut sie…</p>
-<p>Heute bin ich nämlich zufällig auf ein Tool von Google für den Mac gestoßen, das zwar nicht das Wecker-Problem löst, aber zumindest den Zugriff auf deine Daten ermöglicht: 
+ herunterladen.</p>
+]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>tools</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>project_documentation</dc:type></item><item><title>WordCloud in PowerPoint</title><link>https://nickyreinert.de/2012/2012-07-23-wordcloud-in-powerpoint/</link><pubDate>Mon, 23 Jul 2012 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2012/2012-07-23-wordcloud-in-powerpoint/</guid><description>Du hast einen nicht allzu langen Text, den du in eine WordCloud / TagCloud verwandeln möchtest, die du dann in PowerPoint verwenden kannst? Dann lade dir diese WordCloud-Excel-Vorlage herunter. Die Datei enthält ein VBA-Script, das zuerst einen beliebigen Text in einzelne Wörter zerlegt und diese …</description><content:encoded><![CDATA[<p>Du hast einen nicht allzu langen <strong>Text</strong>, den du in eine <strong>WordCloud / TagCloud</strong> verwandeln möchtest, die du dann in PowerPoint verwenden kannst? Dann lade dir diese 
 
 
 
@@ -318,1887 +1993,26 @@ Warnung! Du solltest geübt im Umgang mit der Shell, Bash und WordPress sein und
   
 
   
-  <a href="https://www.android.com/filetransfer/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Android File Transfer</a>
-
-
-. Einige werden jetzt denken: Alter Hut. Aber ich höre gerade das erstmal von <em>AFT.</em> Und offenbar kannten die Experten diese Software bisher auch nicht.</p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.nickyreinert.de/files/grafik-14.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/2019/2019-01-26-dateien-von-einem-kaputten-android-smartphone-retten/images/grafik-14-700x457.png" alt=""></a>
-
-
-</p>
-<p>Android File Transfer - Zugriff auf das Dateisystems deines Android-Gerätes</p>
-<p>Zur Bedienung: Du lädst das dmg-Archiv runter, kopierst das Tool in deinen App-Ordner und startest es. Nachdem du dein Android-Gerät per USB angeschlossen hast, kannst du durch das Dateisystem browsen und Dateien und Ordner beliebig ber Drag&rsquo;n&rsquo;Drop auf deinen Computer kopieren. Problem gelöst.</p>
-]]></content:encoded><atom:updated>2026-06-16T20:56:44+02:00</atom:updated><category>tools</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>how-to_guide</dc:type></item><item><title>Drölf erstaunlich einfache Wege wirklich beeindruckende Screenshots zu erstellen</title><link>https://nickyreinert.de/2018/2018-10-26-droelf-erstaunlich-einfache-wege-wirklich-beeindruckende-screenshots-zu-erstellen/</link><pubDate>Fri, 26 Oct 2018 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2018/2018-10-26-droelf-erstaunlich-einfache-wege-wirklich-beeindruckende-screenshots-zu-erstellen/</guid><description>[caption id=“attachment_2364” align=“alignright” width=“183”] Screenshot mit dem Handy aufnehmen ist so 90er[/caption]
-Eine Studie hat ergeben, dass 99 von 100 Bildschirmaufnahmen (neudeutsch Screenshots) mit dem Handy aufgenommen werden. Warum ist das falsch? Nun:
-Weil die Qualität der Aufnahmen …</description><content:encoded><![CDATA[<p>[caption id=&ldquo;attachment_2364&rdquo; align=&ldquo;alignright&rdquo; width=&ldquo;183&rdquo;]
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.nickyreinert.de/files/droelf-erstaunlich-einfache-wege-wirklich-beeindruckende-screenshots-zu-erstellen/screenshot-mit-dem-handy.jpg?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/2018/2018-10-26-droelf-erstaunlich-einfache-wege-wirklich-beeindruckende-screenshots-zu-erstellen/images/screenshot-mit-dem-handy-183x300.jpg" alt="Screenshot mit dem Handy aufnehmen ist so 90er"></a>
-
-
- Screenshot mit dem Handy aufnehmen ist so 90er[/caption]</p>
-<p>Eine Studie hat ergeben, dass 99 von 100 Bildschirmaufnahmen (neudeutsch <strong>Screenshots</strong>) mit dem Handy aufgenommen werden. Warum ist das falsch? Nun:</p>
-<ul>
-<li>Weil die Qualität der Aufnahmen mit dem Smartphone oft ziemlich schlecht ist,</li>
-<li>der staubige Bildschirm zusätzlich vom Wesentlichen ablenkt sowie</li>
-<li>Licht-Reflexionen oder Moiré-Effekte wichtige Inhalte verdecken.</li>
-<li>Außerdem muss man den Screenshot, wenn man ihn in einem Forum oder einer Social Media Gruppe präsentieren will, unter Umständen erst noch umständlich mit dem Smartphone speichern, ausschneiden, bearbeiten und irgendwo hochladen.</li>
-<li>Auf einem Smartphone-Foto ist nicht sofort ersichtlich, um welche Teile des Bildschirms es denn nun geht.</li>
-</ul>
-<p><strong>Konfuzius</strong>, ein berühmter buddhistischer Priester und begeisterter Internetnutzer, hat es mal so zusammengefasst:</p>
-<blockquote>
-<p>Wer Screenshots im 21. Jahrhundert mit dem Handy im Hochformat aufnimmt, hat die Kontrolle über sein Leben verloren.</p>
-</blockquote>
-<p>Dabei sind die technischen Möglichkeiten zur Aufnahme von Screenshots mittlerweile so viel mehr bequemer als noch zu Zeiten von Netscape und Microsoft DOS. Hier stelle ich die besten und vor allem einfachsten vor!</p>
-<h2 id="screenshots-in-mac-os-x-aufnehmen">Screenshots in Mac OS X aufnehmen</h2>
-<p>Das Betriebssystem von Apple bietet schon eine ganze Weile eine Reihe von Shortcuts an, mit denen sich Bildschirminhalte als Bilddatei aufnehmen lassen:</p>
-<ol>
-<li>Will man den <strong>gesamten Bildschirm</strong> aufnehmen und direkt als Datei speichern, drückt man die folgenden Tasten gleichzeitig: <strong>Umschalttaste-Befehlstaste(⌘)-3</strong>.</li>
-<li>Soll nur ein <strong>bestimmter Bereich</strong> aufgenommen werden, lautet der Shortcut <strong>Umschalttaste-Befehlstaste(⌘)-4</strong> - der Mauscursor wird zu einem Fadenkreuz um damit den gewünschten Bereich zu markieren</li>
-<li>Zur <strong>Aufnahme eines Fensters</strong> drückt man ebenso <strong>Umschalttaste-Befehlstaste(⌘)-4 und danach die Leertaste</strong>. Nun lässt sich das Fenster per Mausklick auswählen.</li>
-<li>Möchte man die Aufnahme nicht als Datei speichern, sondern in direkt in die <strong>Zwischenablage</strong> kopieren, drückt man zu den oben genannten Tastenkombinationen <strong>zusätzlich die CTRL-Taste</strong></li>
-</ol>
-<p>Die komplette Dokumentation dazu befindet sich hier: 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://support.apple.com/de-de/ht201361?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://support.apple.com/de-de/ht201361</a>
-
-
-</p>
-<p>Mit der [neuen Version MacOS](führt Apple ein verbessertes Tool für Screenshots ein (<strong>Umschalttaste-Befehlstaste(⌘)-4</strong>). Nun gibt es einen Timer (5 oder 10 Sekunden) und eine kleine Oberfläche um den Bildschirmaufnahme bequemer zu konfigurieren.</p>
-<h2 id="screenshots-in-windows-10-aufnehmen">Screenshots in Windows 10 aufnehmen</h2>
-<p>Windows von Hause aus eine noch größere Vielzahl von Möglichkeiten an, bequem Screenshots zu erstellen:</p>
-<ol>
-<li>
-<p>Das <strong>Snipping Tool</strong> zur Aufnahme und Bearbeitung von Screenshots ist schon seit Windows 7 Bestandteil des Betriebssystems. Es unterstützt die Aufnahme von beliebigen Bereich, dem ganzen Bildschirm oder sogar komplexer Formen. Außerdem lässt sich eine Verzögerung einstellen, um z.B. Hover-Effekte zu dokumentieren. Außerdem lassen sich bereich mit Farben einfach markieren. Wenn man das Snipping-Tool in der Taskleiste abgelegt hat, kann man über das Kontextmenü zu den Eigenschaften. Dort kann man eine Tastenkombination festlegen, um das Tool jederzeit schnell aufrufen zu können.</p>
-<p>[caption id=&ldquo;attachment_1790&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.nickyreinert.de/files/12-erstaunliche-und-einfache-wege-beeindruckende-screenshots-zu-erstellen/snipping-tool.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/2018/2018-10-26-droelf-erstaunlich-einfache-wege-wirklich-beeindruckende-screenshots-zu-erstellen/images/snipping-tool-300x206.png" alt="Eigenschaften für das Snipping-Tool öffnen"></a>
-
-
- Eigenschaften für das Snipping-Tool öffnen[/caption]</p>
-</li>
-<li>
-<p>Den <strong>gesamten Bildschirm</strong> kann man auf einer Windows-Tastatur mit der <strong>Druck- bzw. PrtScr-Taste</strong> direkt in die Zwischenablage kopieren. Drückt man die <strong>Druck-Taste und Windows-Taste gleichzeitig,</strong> wird der Screenshot im Ordner Bilder - Screenshot <strong>als Datei abgelegt</strong>.</p>
-</li>
-<li>
-<p>Nutzt man mehrere Monitore und will nur den gerade aktiven Bildschirm in die Zwischenablage packen, funktioniert das mit <strong>Alt+Druck-Taste</strong>.</p>
-</li>
-<li>
-<p>Seit Windows 10 gibt es außerdem das <strong>Ink-Tool</strong>, das sich mit <strong>Windows-Taste+W</strong> aufrufen lässt und eine ganze Palette von zusätzlichen Funktionen mitbringt.</p>
-<p>[caption id=&ldquo;attachment_1784&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;189&rdquo;]
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.nickyreinert.de/files/12-erstaunliche-und-einfache-wege-beeindruckende-screenshots-zu-erstellen/windows-ink.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/2018/2018-10-26-droelf-erstaunlich-einfache-wege-wirklich-beeindruckende-screenshots-zu-erstellen/images/windows-ink.png" alt="Screenshot in Windows mit Ink erstellen"></a>
-
-
- Screenshot in Windows mit Ink erstellen[/caption]</p>
-</li>
-<li>
-<p>Noch etwas komfortabler als das Snipping-Tool, aber kein Standard-Bestandteil von Windows, ist 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.microsoft.com/en-us/garage/profiles/snip/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Snip</a>
-
-
-.</p>
-</li>
-</ol>
-<h2 id="screenshot-im-browser-direkt-aufnehmen">Screenshot im Browser direkt aufnehmen</h2>
-<p>Auch die Browser-Hersteller haben erkannt, dass Screenshots wohl ein essentieller Bestandteil des Internets sind. So bieten die gängigsten Browser mittlerweile Funktionen zur Aufnahme des Bildschirms an.</p>
-<ol>
-<li>
-<p>In <strong>Firefox</strong> befindet sich die Funktion direkt im Kontext-Menü jeder Website. Damit lassen sich bestimmte Elemente der Seite, freie Bereich oder die ganze Seite als Screenshot in die Zwischenablage kopieren, als Datei speichern oder sogar in einer Firefox-Cloud ablegen um sie online unter 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://screenshots.firefox.com/shots?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://screenshots.firefox.com/shots</a>
-
-
- verfügbar zu machen!</p>
-<p>[caption id=&ldquo;attachment_1789&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.nickyreinert.de/files/12-erstaunliche-und-einfache-wege-beeindruckende-screenshots-zu-erstellen/firefox.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/2018/2018-10-26-droelf-erstaunlich-einfache-wege-wirklich-beeindruckende-screenshots-zu-erstellen/images/firefox-300x165.png" alt="Screenshot in Firefox anfertigen"></a>
-
-
- Screenshot in Firefox anfertigen[/caption]</p>
-</li>
-<li>
-<p>In <strong>Chrome</strong> ist die Screenshot-Funktion leider etwas versteckt und nicht sehr komfortabel. Am schnellsten erreicht man diese über die Kommandofunktion. Zunächst muss man die Entwicklerkonsole öffnen indem man z.B. die <strong>Taste F12</strong> oder <strong>Control+Shift+I</strong> drückt (Mac: <strong>Command+Option+I</strong>). Dann gelangt man mit Strg+Shift+P zur Auswahl der Chrome-Kommandos wo man nach der Screenshot-Funktion suchen kann. Der lange Weg führt übrigens über die Geräte-Toolbar, mit der Chrome verschiedene Geräteklassen simulieren kann (Ctrl+Shift+M). Dort muss erst oben die gewünschte Auflösung bzw. das Gerät auswählen. Über das kleine Menü in der rechten oberen Ecke gelangt man dann schließlich zur Screenshot-Funktion.[gallery ids=&ldquo;1788,1787,1786&rdquo;]</p>
-</li>
-<li>
-<p>Der neue Microsoft Browser <strong>Edge</strong> ist hier wieder etwas komfortabler. Die Funktion befindet sich hinter dem Button &ldquo;<strong>Notizen einfügen</strong>&rdquo; (Pen &amp; Stencil) rechts neben der Adressleiste. Das Tool bietet sehr viele Funktionen, um den Screenshot aufzunehmen und mit Notizen zu versehen.</p>
-<p>[caption id=&ldquo;attachment_1785&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;294&rdquo;]
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.nickyreinert.de/files/12-erstaunliche-und-einfache-wege-beeindruckende-screenshots-zu-erstellen/edge-notizen.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/2018/2018-10-26-droelf-erstaunlich-einfache-wege-wirklich-beeindruckende-screenshots-zu-erstellen/images/edge-notizen.png" alt="Screenshot anfertigen in Microsoft Edge"></a>
-
-
- Screenshot anfertigen in Microsoft Edge[/caption]</p>
-</li>
-</ol>
-<h2 id="screenshot-mit-dem-smartphone-aufnehmen">Screenshot mit dem Smartphone aufnehmen</h2>
-<p>Du kannst natürlich nicht immer einen ausgewachsenen Computer zur Hand haben und manchmal will man tatsächlich etwas dokumentieren, was einem auf dem kleinen Smartphone-Bildschirm widerfahren ist. Bevor du dir dazu ein weiteres Smartphone nimmst um ein Foto von deinem Smartphone-Display zu machen: Zumindest Android hat seit geraumer Zeit eine Screenshot-Funktion eingebaut: Wenn du den An-/Aus-Button etwas länger drückst, erscheint ein Menü, in dem du die Wahl zwischen Screenshot und sogar einer Bewegtbild-Aufnahme des Bildschirms hast.</p>
-<h2 id="zusammenfassung">Zusammenfassung</h2>
-<p>Mit den hier beschriebenen Methoden landet der hochwertige Screenshot mit geringem Aufwand direkt in der Zwischenablage des Computers (oder als Datei in einem Ordner). Die meisten modernen Plattformen wie Facebook oder Twitter erlauben außerdem mittlerweile das direkte Einfügen von Bildern - also auch Screenshots - aus der Zwischenablage in den Beitrag oder Tweet (z.B. unter Windows mit <strong>CTRL+V</strong>). Man kann also innerhalb weniger Sekunden und mit wenigen Handgriffen einen ansehnlichen Screenshot erstellen, gegebenenfalls fragliche Bereich farblich hervorheben und dann in einen Beitrag auf Facebook kopieren.</p>
-<p>Also, pack dein Smartphone weg oder nutze es für die wirklich wichtigen Dinge und überlasse die richtig guten Screenshots deinem Computer.</p>
-]]></content:encoded><atom:updated>2026-06-16T20:56:44+02:00</atom:updated><category>office</category><category>tools</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>guide</dc:type></item><item><title>Total Commander als SFTP-Client einrichten</title><link>https://nickyreinert.de/2017/2017-09-29-total-commander-als-sftp-client-einrichten/</link><pubDate>Fri, 29 Sep 2017 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2017/2017-09-29-total-commander-als-sftp-client-einrichten/</guid><description>Der Total Commander ist der bessere Explorer für Windows und auch wenn das Programm schon etwas in die Jahre gekommen ist: Vor allem im professionellen Bereich gibt es aus meiner Sicht keine Alternative. Einige praktische Funktionalitäten fehlen dem Total Commander allerdings, wenn man ihn frisch …</description><content:encoded><![CDATA[<p>Der Total Commander ist der bessere Explorer für Windows und auch wenn das Programm schon etwas in die Jahre gekommen ist: Vor allem im professionellen Bereich gibt es aus meiner Sicht keine Alternative. Einige praktische Funktionalitäten fehlen dem Total Commander allerdings, wenn man ihn frisch installiert. So lässt sich der noch nicht als Total Commander als SFTP-Client verwenden. Dazu ist die Installation eines Plugins nötig. Das werde ich im folgenden erklären. Außerdem zeige ich, wie man zwei zusätzliche Plugins installiert, die Arbeit sehr erleichtern: VisualDirSize und QuickSearch eXtended.</p>
-<p>(Manche Plugins kannst du relativ einfach installieren, indem du deren Archiv mit dem Total Commander selber öffnest.)</p>
-<p>[caption id=&ldquo;attachment_1539&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.nickyreinert.de/files/total-commander-als-sftp-client-verwenden/total-commander-plugin-auto-installer.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/2017/2017-09-29-total-commander-als-sftp-client-einrichten/images/total-commander-plugin-auto-installer-300x154.png" alt="Total Commander - automatischer Installation von Plugins beim Öffnen des Archivs"></a>
-
-
- Total Commander - automatischer Installation von Plugins beim Öffnen des Archivs[/caption]</p>
-<h2 id="das-sftp-plugin-installieren">Das SFTP-Plugin installieren</h2>
-<p>Das SFTP-Plugin stammt ebenfalls vom Total Commander Entwickler, muss aber manuell 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.ghisler.com/dplugins.htm?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">von dessen Seite</a>
-
-
- heruntergeladen werden. Nachdem du die Datei heruntergeladen, entpackt und in einen Ordner* nach c:/totalcmd/plugins/wfx/ kopiert hast, musst das du das gleiche für die SSL-Bibliotheken machen. Auch diese sind auf der Plugin-Seite verlinkt. Danach kannst du den Total Commander wieder starten</p>
-<p><em>*ich setze mal voraus, dass das dein aktueller Programm Ordner für den TC ist, andernfalls gehört es natürlich in den bei dir genutzten Programm-Ordner</em></p>
-<p> </p>
-<p>[caption id=&ldquo;attachment_1541&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.nickyreinert.de/files/total-commander-als-sftp-client-verwenden/total-commander-netzwerkumgebung.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/2017/2017-09-29-total-commander-als-sftp-client-einrichten/images/total-commander-netzwerkumgebung-300x115.png" alt="TotalCommander Netzwerkumgebung"></a>
-
-
- TotalCommander Netzwerkumgebung[/caption]</p>
-<p>Über das Menü (Konfigurieren - Einstellungen) gelangst du zum Plugin-Manager und dem Dialog für die Dateisystem-Plugins. Mit &ldquo;Hinzufügen&rdquo; suchst du nun nach dem Ordner, in den du eben die Plugin-Dateien kopiert hast. Fertig. Wenn du nun in die Netzwerkumgebung wechselst, findest du dort den Eintrag &ldquo;SecureFTP&rdquo;. Darin lassen sich mit F7 neue Zugänge anlegen. Mit ALT+Enter kannst du diese bearbeiten und mit SHIFT-F6 umbenennen. Wenn du die Datei sftpplug.ini im Total-Commander-Verzeichnis bearbeitest, kannst du die SFTP-Zugängen auch bequem mit einem Text-Editor verwalten.</p>
-<p>[caption id=&ldquo;attachment_1542&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;244&rdquo;]
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.nickyreinert.de/files/total-commander-als-sftp-client-verwenden/sftp-server-einstellungen.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/2017/2017-09-29-total-commander-als-sftp-client-einrichten/images/sftp-server-einstellungen-244x300.png" alt="SFTP-Server-Einstellungen um den Total Commander als SFTP-Client zu verwenden"></a>
-
-
- SFTP-Server-Einstellungen um den Total Commander als SFTP-Client zu verwenden[/caption]</p>
-<p>Das war es. Nun kannst du den Total Commander als SFTP-Client verwenden.</p>
-<h2 id="das-visualdirsize-plugin-installieren">Das VisualDirSize-Plugin installieren</h2>
-<p>Als nächstes installierst du dir das Plugin, um dir die Größe von Verzeichnissen und Dateien grafisch darstellen zu lassen. Das Plugin ist zwar auch schon über 10 Jahre alt, aber dennoch äußerst praktisch. Du kannst es dir auf einer der bekanntesten aber inoffiziellen Plugin-Seite für den Total Commander herunterladen: 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://totalcmd.net/plugring/visdirsize.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">totalcmd.net</a>
-
-
- </p>
-<p>[caption id=&ldquo;attachment_1543&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.nickyreinert.de/files/total-commander-als-sftp-client-verwenden/VisualDirSize-plugin.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/2017/2017-09-29-total-commander-als-sftp-client-einrichten/images/VisualDirSize-plugin-300x71.png" alt="VisualDirSize - Darstellung des belegten Speicherplatzes"></a>
-
-
- VisualDirSize - Darstellung des belegten Speicherplatzes[/caption]</p>
-<p>Auch diese Datei muss entpackt und in einen Unterordner des Plugin-Ordners kopiert werden. Nach einem Neustart kannst du das Plugin mit STR+Q bzw. CTRL+Q aktivieren. Die Einstellungen verstecken sich hinter dem kleinen Hammer-Symbol, rechts oben in der Menüleiste des Plugins.</p>
-<h2 id="das-quicksearch-extended-plugin-installieren">Das QuickSearch eXtended-Plugin installieren</h2>
-<p>Dieses Plugin rundet deinen Total Commander schließlich perfekt ab. Es ermöglicht dir, die Verzeichnis- bzw. Datei-Listen zu filtern. Du drückst also eine beliebige Steuer-Taste (ALT, CTRL, …) und gibst danach die Zeichenfolge ein, nach der du suchen möchtest. Die Ansicht wird daraufhin für diese Zeichenfolge gefiltert. Das Plugin kann sehr stark angepasst werden und unterstützt z.B. die Suche mit regulären Ausdrücken oder nach ähnlichen Begriffen.</p>
-<p>Auch das Plugin muss auf [totalcmd.net](heruntergeladen und entpackt werden. Auch hier wird der automatische Plugin-Installer unterstützt. Nach einem Neustart steht es dann zur Verfügung. Die Einstellungen befinden sich entweder rechts neben dem Suchfeld (der Doppel-Pfeil nach oben) oder können über tcmatch.exe aufgerufen werden. Die Funktionstaste, mit der das Suchfeld aktiviert wird, muss übrigens im Total Commander eingestellt werden. Zu finden ist diese Einstellungen über die Konfiguration im Bereich &ldquo;Schnellsuche&rdquo;.</p>
-<p>[caption id=&ldquo;attachment_1544&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.nickyreinert.de/files/total-commander-als-sftp-client-verwenden/total-commander-einstellungen-schnellsuche.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/2017/2017-09-29-total-commander-als-sftp-client-einrichten/images/total-commander-einstellungen-schnellsuche-300x240.png" alt="Total Commander - Einstellungen für die Schnellsuche"></a>
-
-
- Total Commander - Einstellungen für die Schnellsuche[/caption]</p>
-<p>Willst du den Filter aktivieren, also die Dateiliste für den Suchbegriff filtern, drückst du entweder CTRL+S bzw. STRG+S oder den kleine Button rechts neben der Suchleiste.</p>
-<p>[caption id=&ldquo;attachment_1540&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.nickyreinert.de/files/total-commander-als-sftp-client-verwenden/quick-search-extended-suchfeld.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/2017/2017-09-29-total-commander-als-sftp-client-einrichten/images/quick-search-extended-suchfeld-300x169.png" alt="QuickSearch eXtended Such-Leiste"></a>
-
-
- QuickSearch eXtended Such-Leiste[/caption]</p>
-]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>tools</category><category>anleitungen</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>how-to_guide</dc:type></item><item><title>Defekte MP4 Videodatei reparieren</title><link>https://nickyreinert.de/2017/2017-09-24-defekte-mp4-videodatei-reparieren/</link><pubDate>Sun, 24 Sep 2017 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2017/2017-09-24-defekte-mp4-videodatei-reparieren/</guid><description>Hilfe verspricht in diesem Fall “ Video Repair Software ” von Grau für Windows und MacOS. Alles was du benötigst ist, neben der defekten MP4 Videodatei, eine funktionierende Referenz-Datei, die mit der gleichen Android-Kamera aufgezeichnet wurde. Du fütterst die Software mit den beiden …</description><content:encoded><![CDATA[<p>Hilfe verspricht in diesem Fall &ldquo;
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://grauonline.de/cms2/?page_id=5&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Video Repair Software</a>
-
-
-&rdquo; von <em>Grau</em> für Windows und MacOS. Alles was du benötigst ist, neben der defekten MP4 Videodatei, eine funktionierende Referenz-Datei, die mit der gleichen Android-Kamera aufgezeichnet wurde. Du fütterst die Software mit den beiden Video-Dateien, startest den &ldquo;Scan&rdquo; und kannst, wenn dein Glück dich nicht vollkommen verlassen hast, die Vorschau der Reparatur verfolgen und das Video und als funktionierende Video-Datei exportieren.</p>
-<p>[caption id=&ldquo;attachment_1001&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;150&rdquo;]
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2014/02/Bildschirmfoto-2014-02-08-um-10.14.02.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/Bildschirmfoto-2014-02-08-um-10.14.02-150x150.png" alt="Bildschirmfoto 2014-02-08 um 10.14.02"></a>
-
-
- Grau GbR Video Repair Software[/caption]</p>
-<p>Leider ist die Software nicht kostenlos erhältlich und repariert im DemoModus nur 50% der Videodatei. Meine defekte MP4 Videodatei konnte ich zwar komplett exportieren, aber der Ton war nur bis zur etwa der Hälfte wiederhergestellt. Ob das an der Testversion oder dem Defekt der Datei liegt, lässt sich nicht sagen. Auf der Suche nach einer Alternative fand ich das 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.yodot.com/download/thank-you-for-downloading-ymovr.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">MOV Repair Tool</a>
-
-
- von Yodot, das ebenfalls für Windows und MacOS erhältlich ist. Die Software bietet keine Einstellungsmöglichkeiten an und verlangt als Input lediglich die defekte MP4 Videodatei.</p>
-<p>[caption id=&ldquo;attachment_1002&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;150&rdquo;]
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2014/02/Bildschirmfoto-2014-02-08-um-10.25.44.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/Bildschirmfoto-2014-02-08-um-10.25.44-150x150.png" alt="Bildschirmfoto 2014-02-08 um 10.25.44"></a>
-
-
- Yodot MOV Repair Tool[/caption]</p>
-<p>Leider bricht das Tool die Reparatur mit der Meldung ab, dass das Kameramodell nicht unterstützt wird. Der dritte Versuch startet mit 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.fixmp4.com/de/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Repair MOV</a>
-
-
- von Remo - einer weiteren kostenpflichtigen Software, die damit wirbt, defekte Videodateien reparieren zu können. Diese Software verlangt ebenfalls eine Referenzdatei. Ein Video, das direkt von der Android-Kamera stammt, wird  zwar nicht akzeptiert. Jedoch nimmt Repair MOV interessanterweise die reparierte Videodatei aus meinem ersten Durchgang an.</p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2014/02/Bildschirmfoto-2014-02-08-um-10.35.53.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/Bildschirmfoto-2014-02-08-um-10.35.53-150x150.png" alt="Bildschirmfoto 2014-02-08 um 10.35.53"></a>
-
-
-</p>
-<p> </p>
-<p>Nach dem die &ldquo;Reparatur&rdquo; beendet ist, kann man sich die Vorschau innerhalb der Software anzeigen lassen. Zum Exportieren des Videos muss man die Software jedoch lizensieren. Der Vorschaubildschirm bleibt bei mir allerdings schwarz.</p>
-<p>[caption id=&ldquo;attachment_1004&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;150&rdquo;]
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2014/02/Bildschirmfoto-2014-02-08-um-10.46.43.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/Bildschirmfoto-2014-02-08-um-10.46.43-150x80.png" alt="Bildschirmfoto 2014-02-08 um 10.46.43"></a>
-
-
- Hexcode einer MP4 Videodatei[/caption]</p>
-<p>Fazit: Eins von drei kostenpflichtigen Tools schafft es, die defekte MP4-Datei zu reparieren. Ansonsten ist das Angebot leider mager. Ein Blick in den Header der defekten Datei und der Versuch, den defekt auf &ldquo;Nerd-Weise&rdquo; zu beheben, schlug letztlich auch fehl. Der Hex-Editor zeigt einen großen Bereich, der mit Nullen gefüllt ist. Hier scheint der Fehler zu liegen. Diese zu entfernen, bringt leider nicht den gewünschten Erfolg - genauso wenig, wie die Header einer defekten und funktionierenden MP4-Datei zu &ldquo;synchronisieren&rdquo;.</p>
-]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>tools</category><category>anleitungen</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>software_review</dc:type></item><item><title>Eduroam mit Windows Mobile</title><link>https://nickyreinert.de/2017/2017-09-24-eduroam-mit-windows-mobile/</link><pubDate>Sun, 24 Sep 2017 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2017/2017-09-24-eduroam-mit-windows-mobile/</guid><description>Eine Schritt-Für-Schritt-Anleitung, um Windows Mobile 6.x - Geräte mit dem Eduroam-Netzwerk zu verbinden.
-[toc=“2,3” title=“Inhalt”]
-Vorbereitung Als mobiles Gerät kommt ein HTC Blackstone / Touch HD mit dem Betriebssystem Windows Mobile 6.1 zum Einsatz. Das Betriebssystem ist komplett in Englisch, …</description><content:encoded><![CDATA[<p>Eine Schritt-Für-Schritt-Anleitung, um Windows Mobile 6.x - Geräte mit dem Eduroam-Netzwerk zu verbinden.</p>
-<p>[toc=&ldquo;2,3&rdquo; title=&ldquo;Inhalt&rdquo;]</p>
-<h3 id="vorbereitung">Vorbereitung</h3>
-<p>Als mobiles Gerät kommt ein HTC Blackstone / Touch HD mit dem Betriebssystem Windows Mobile 6.1 zum Einsatz. Das Betriebssystem ist komplett in Englisch, erst wird dennoch weitestgehend versucht, neben den englischen Bezeichnungen die entsprechenden deutschen zu verwenden. Diese Anleitung erhebt selbstverständlich keinen Anspruch auf Vollständigkeit noch garantiert sie den Erfolg. Kommentare oder Änderungswünsche sind herzlich willkommen. Unbedingt benötigt werden, neben einem mobilen Gerät mit Windows Mobile 6.x:</p>
-<ul>
-<li>der SecureW2 Client für Windows Mobile 5/6 von 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.securew2.com/products/eapsuite/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer" title="http://www.securew2.com/products/eapsuite/">secureW2.com</a>
-
-
-,
-<ul>
-<li>(oder die CAB-Datei, für die direkte Installation 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/files/SecureW2.cab?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer" title="http://www.freecoffee.de/files/SecureW2.cab">hier herunterladen</a>
-
-
-)</li>
-</ul>
-</li>
-<li>das Zertifikat der Deutschen Telekom (Download vom 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.rz.uni-augsburg.de/service/uauxca/zertifikate/telekom-root-2-cer.cer?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer" title="http://www.rz.uni-augsburg.de/service/uauxca/zertifikate/telekom-root-2-cer.cer">Rechenzentrum der Uni Augsburg</a>
-
-
-),</li>
-<li>eine funktionierende Verbindung vom Desktop PC zum mobilen Gerät über ActiveSync (bis Windows XP) oder dem Windows Mobile Device Center (ab Windows Vista)</li>
-</ul>
-<p>und <em>eventuell</em></p>
-<ul>
-<li>eine Software zur Fernsteuerung zur Arbeitserleichterung wie z.B. MyMobiler (die Software nutzt die ActiveSync-Verbindung und erlaubt es, das Gerät komplett vom Computer zu bedienen, Download von 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.mymobiler.com/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer" title="http://www.mymobiler.com/">mymobiler.com</a>
-
-
-) sowie</li>
-<li>einen Registryeditor (Total Commander für Pocket PC (ARM/XSCALE/PXA) auf [ghisler.com](&ldquo;oder den Mobile Registry Editor auf [chip.de](&ldquo;beide Freeware).</li>
-</ul>
-<p><em>In dieser Anleitung verwende ich den Total Commander, da dieser zur Standarsoftware auf meinem Gerät gehört und die Bedienung des eingebauten Registryeditors weitaus komfortabler ist.</em></p>
-<h3 id="installation-von-securew2">Installation von SecureW2</h3>
-<p>Nach dem Starten der Installationsdatei <em>SecureW2_EAP_Suite_113_CE.exe</em> fordert das Programm zur Auswahl einer Sprache auf. Wir bestätigen daraufhin die Willkommensmeldung und akzeptieren die Lizenzbedingungen. Im nächsten Fenster wählen wir, sofern noch nicht geschehen, den <em>TTLS Client</em> aus und starten die Installation mit <em>Installieren</em>.</p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2011/05/1-securew2.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/1-securew2-300x233.png" alt="" title="1-securew2"></a>
-
-
-</p>
-<p>Daraufhin übertrag ActiveSync die Programmdateien zum Gerät und informiert darüber, dass auf dem Gerät weitere Eingaben notwendig sind. ActiveSync wird vorerst mit einem Mausklick auf <em>OK</em> geschlossen. (Ist das Gerät nicht angeschlossen, holt ActiveSync die Übertragung bei der nächsten Verbindung nach.)</p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2011/05/2-active-sync.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/2-active-sync-300x199.png" alt="" title="2-active-sync"></a>
-
-
-</p>
-<p>Auf dem mobilen Gerät wird nun der Speicherort für <em>SecureW2</em> ausgewählt und mit <em>Install / Installieren</em> die Software installiert. War die Installation erfolgreich, wird der Vorgang mit <em>OK</em> auf dem Gerät abgeschlossen. Gleichzeitig wurde auch die Installationsroutine auf dem Computer beendet und kann geschlossen werden.</p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2011/05/3-install-securew2.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/3-install-securew2-180x300.png" alt="" title="3-install-securew2"></a>
-
-
-</p>
-<h3 id="installation-des-zertifikates">Installation des Zertifikates</h3>
-<p>Wer die Installationsdatei des Zertifikates, <em>g_rootcert.cer</em>, nicht direkt auf dem Gerät gespeichert hat, überträgt diese per Drag&rsquo;n&rsquo;Drop oder einem Dateimanager seiner Wahl auf das Gerät. Auf dem Desktopcomputer erreicht man dieses über das Symbol <em>Mobiles Gerät</em> im <em>Arbeitsplatz</em>-Ordner.Den Unterordner <em>Mobiles Gerät\Meine Documente</em> erreicht man auch mit ActiveSync über das Menü <em>Extras / PocketPC durchsuchen</em>.</p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2011/05/4-activesync.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/4-activesync-300x289.png" alt="" title="4-activesync"></a>
-
-
-</p>
-<p>Auf dem mobilen Gerät wird das Zertifikat installiert, indem man es dort im <em>Datei Explorer</em> einfach startet, d.h. einmal anklickt. Windows Mobile bestätigt dann die hoffentlich erfolgreiche Installation.</p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2011/05/5-confirm-cert.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/5-confirm-cert-180x300.png" alt="" title="5-confirm-cert"></a>
-
-
-</p>
-<p>In den Einstellungen des mobilene Gerätes, unter dem zweiten Reiter <em>System</em>, startet man nun den <em>Zertifikatemanager</em> und überprüft unter dem Reiter <em>Root / Wurzel</em> ob das Zertifikat der Deutschen Telekom korrekt angezeigt wird.</p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2011/05/6-cert-manager.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/6-cert-manager-180x300.png" alt="" title="6-cert-manager"></a>
-
-
-
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2011/05/7-cert-manager-root.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/7-cert-manager-root-180x300.png" alt="" title="7-cert-manager-root"></a>
-
-
-</p>
-<p>Ist dem nicht so, muss das Zertifikat in der Registry per Hand eingetragen werden, damit der SecureW2 Client es bei der ersten Verbindung mit dem Netzwerk als &ldquo;vertrauenswürdiges Wurzelzertifikat&rdquo; erkennt. Dazu benötigen wir auf dem Gerät den bereits oben erwähnten Registryeditor. Das Vorgehen wird im Folgenden anhand des Total Commanders erläutert.</p>
-<h4 id="manuelles-registrieren-des-zertifikats">Manuelles Registrieren des Zertifikats</h4>
-<p>Die heruntergeladene Datei <em>tcmdpocketarm.cab</em> wird, wie oben schon einmal erwähnt, auf das Gerät kopiert und dort ausgeführt. Nach dem Öffnen der CAB-Datei wird das Programm installiert und wir starten die Software.<strong>Hinweis</strong>: Das Öffnen von Ordnern und Dateien erfolgt hier nicht wie gewohnt mit einem Klick, sondern durch Doppelklick. Mit Klick auf den <em>Schrägstrich</em> in der rechten oberen Ecke gelangen wir in das Hauptverzeichnis und wählen dort den Ordner <em>\\Plugins</em> und dann den Ordner <em>Registry</em> aus.</p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2011/05/8-total-commander.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/8-total-commander-162x300.png" alt="" title="8-total-commander"></a>
-
-
-</p>
-<p>Dort klicken wir nun nacheinander auf <em>HKCU</em>, <em>Comm</em>, <em>Security</em> sowie <em>SystemCertificates</em> und finden dort Namen wie <em>root</em>, <em>trust</em>, <em>ca</em> usw.</p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2011/05/9-sys-certs.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/9-sys-certs-162x300.png" alt="" title="9-sys-certs"></a>
-
-
-</p>
-<p>Als nächstes prüfen wir, ob sich im Ordner (bzw. Schlüssel) <em>trust</em> und dort unter <em>certificates</em> ein Ordner mit einem kryptischen Namen befindet. Wird dieser dort angezeigt, kann mit der Installation von SecureW2 fortgefahren werden.</p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2011/05/10-hash-name.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/10-hash-name-162x300.png" alt="" title="10-hash-name"></a>
-
-
-</p>
-<p>Ist dem nicht so, wechseln wir durch einfaches Klicken auf den doppelten Punkt in der rechten oberen Ecke wieder 2 Ebenen nach oben und betrachten den Ordner <em>root</em> und dort <em>certificates</em>. Hier muss sich nun ein Ordner mit kryptischen Namen befinden. Durch Drücken auf diesen Ordnernamen und langes Halten öffnet sich das Kontextmenü. Wir wählen <em>In die Zwischenablage kopieren</em> aus und wechseln wieder in den Schlüssel bzw. Ordner <em>trust\certificates</em> (vorher zweimal auf den doppelten Punkt oben rechts) um dort erneut das Kontextmenü zu öffnen und per Klick auf <em>Hier einfügen (Kopieren)</em> den Schlüssel dort zu hinterlegen. Genauso müssen wir nun mit dem Wert <em>UpdateTime</em> verfahren, der sich direkt unter <em>root</em> befindet und in den Ordner trust gehört. (Nicht in den dortigen Unterordner <em>certificates</em>) Die Ordnerstruktur sollte nun wie folgt aussehen:</p>
-<p>\systemcertificats
-\root
-\certificates
-\85a408c09c193e5d51587dcd61330f
-.updatetime
-\trust
-\certificates
-\85a408c09c193e5d51587dcd61330f
-.updatetime</p>
-<p>Der Name &ldquo;85a408c09c193e5d51587dcd61330f&rdquo; weicht dabei von Gerät zu Gerät ab!</p>
-<p>Das Zertifikat <strong>sollte</strong> jetzt auch als vertrauenswürdig registriert sein und von <em>SecureW2</em> erkannt werden.</p>
-<h3 id="einrichtung-des-wlan-zugangs">Einrichtung des WLAN-Zugangs</h3>
-<p>Für gewöhnlich erkennt Windows Mobile die Art der Verschlüsselung selber, an der Stelle soll trotzdem nochmal auf die einzelnen Punkte eingegangen werden. Der Authentifizierungstyp lautet WPA2mit AES-Verschlüsselung.</p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2011/05/11-wlan1.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/11-wlan1-180x300.png" alt="" title="11-wlan1"></a>
-
-
-</p>
-<p>Als EAP-Type wird der installierte SecureW2 TTLS-Client ausgewählt und über die <em>Eigenschaften / Properties</em> eingerichtet.</p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2011/05/12-wlan2.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/12-wlan2-180x300.png" alt="" title="12-wlan2"></a>
-
-
-</p>
-<p>Ob ein neues Profil angelegt oder das Defaultprofil bearbeitet wird, ist vermutlich Geschmackssache. Um jede Fehlerquelle auszuschließen, habe ich ein neues Profil mit dem Namen <em>HTW</em> verwendet.Die Verbindung benutzt eine äußere, anonyme Identität. Per Klick auf <em>Erweitert</em> gelangt man zu den erweiterten Einstellungen. Hier muss ein Haken bei der Option <em>Benutzern erlauben, neue Verbindungen einzurichten</em> gesetzt werden.</p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2011/05/13-wlan3.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/13-wlan3-180x300.png" alt="" title="13-wlan3"></a>
-
-
-
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2011/05/13b-wlan4.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/13b-wlan4-180x300.png" alt="" title="13b-wlan4"></a>
-
-
-</p>
-<p>Unter dem Reiter <em>Zertifikate</em> wird <em>Serverzertifikate überprüfen</em> angehakt. Das untere Fenster <em>vertrauenswürdige CAs</em> ist zu dem Zeitpunkt noch leer. Nach der ersten (erfolgreichen) Verbindung findet ihr hier bzw. in der Liste unter Hinzufügen das Zertifikat der <em>Deutschen Telekom</em>.</p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2011/05/14-wlan5.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/14-wlan5-180x300.png" alt="" title="14-wlan5"></a>
-
-
-</p>
-<p>Unter Authentifizerung wählen wir <em>PAP</em> aus.</p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2011/05/15-wlan6.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/15-wlan6-180x300.png" alt="" title="15-wlan6"></a>
-
-
-</p>
-<p>Als letztes tragen wir die WLAN-Zugangsdaten in der bekannten Form (<em>sMatrikel@htw-berlin.de</em>) unter <em>Benutzerkennung</em> ein.</p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2011/05/16-wlan7.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/16-wlan7-180x300.png" alt="" title="16-wlan7"></a>
-
-
-</p>
-<p>Nach Bestätigung mit <em>OK</em> fragt die Software, ob wir die Vertrauensliste von Windows verwenden möchten, was wir natürlich bestätigen.</p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2011/05/17-wlan8.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/17-wlan8-180x300.png" alt="" title="17-wlan8"></a>
-
-
-</p>
-<p>Damit können wir die Einstellungen des Profiles mit <em>OK</em> endgültig übernehmen und die Konfiguration des WLAN-Zugangs abschließen. Bei der nächsten Verbindung mit dem Netzwerk erkennt <em>SecureW2</em> nun das <em>Telekom Zertifikat</em> an und bittet darum das (Wurzel)-Zertifikat mitsamt der zugehörigen &ldquo;Unterzertifikate&rdquo; zu installieren. Dabei ist lediglich eine Bestätigung erforderlich und der Zugang zu <em>eduroam</em> kann genutzt werden.</p>
-]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>tools</category><category>anleitungen</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>how-to_guide</dc:type></item><item><title>Xperia Z2 Rooten unter Mac</title><link>https://nickyreinert.de/2017/2017-09-24-xperia-z2-rooten-unter-mac/</link><pubDate>Sun, 24 Sep 2017 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2017/2017-09-24-xperia-z2-rooten-unter-mac/</guid><description>Es gibt zwar hier und da Anleitungen um das Xperia Z2 von Sony zu rooten, aber eben nicht für Mac-User. Dabei ist das fast genauso einfach; ich fasse mal zusammen. Es gibt mit dem EasyRootTool die Möglichkeit, das Gerät zu rooten, ohne den Bootloader zu entsperren - für Garantiezwecke ist das …</description><content:encoded><![CDATA[<p>Es gibt zwar hier und da Anleitungen um das Xperia Z2 von Sony zu rooten, aber eben nicht für Mac-User. Dabei ist das fast genauso einfach; ich fasse mal zusammen. Es gibt mit dem EasyRootTool die Möglichkeit, das Gerät zu rooten, ohne den Bootloader zu entsperren - für Garantiezwecke ist das vielleicht ganz sinnvoll. Ich beschreibe im Folgenden trotzdem, wie du den Bootloader entsperrst und danach das Xperia rootest.</p>
-<h2 id="bootloader-entsperren">Bootloader entsperren</h2>
-<p>1. Backup aller wichtigen Daten! ;)</p>
-<p>- Daran sollte man natürlich immer denken, auch wenn die folgenden Schritte in der Regel keine Änderung an der SD-Karte vornehmen - dort wo eure persönlichen Daten eigentlich liegen sollten.</p>
-<p>2. Den Bootloader befreien - angeblich ist das mit dem Paket aus Schritt 3 nicht notwendig. Ich nehme es trotzdem mal hier auf:</p>
-<p>- Besorge dir unter http://developer.sonymobile.com/unlockbootloader/email-verification/ einen Unlock-Key</p>
-<p>- Lade dir den Installer für ADB und Fastboot 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://code.google.com/p/adb-fastboot-install/downloads/detail?name=Androidv4.zip&amp;can=2&amp;q=&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">&gt;&gt;hier&laquo;</a>
-
-
- herunter. 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://wiki.cyanogenmod.org/w/Doc:_adb_intro?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">ADB</a>
-
-
- steht für die Android Debug Bridge und wird im wesentlichen dazu benötigt, von deinem Mac aus auf das Android-Gerät zuzugreifen um darauf Änderungen vornehmen zu können. Und mit 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://wiki.cyanogenmod.org/w/Doc:_fastboot_intro?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Fastboot</a>
-
-
- kannst du eine Partition auf deinem Android neu beschreiben.</p>
-<p>- Nachdem Entpacken machst du dein Smartphone aus und drückst dann die Tasten &ldquo;Volume-Up&rdquo; und &ldquo;Power&rdquo; gleichzeitig - die LED vom Xperia sollte nun rot leuchten. Du schließt das Gerät per USB an deinen Mac an und wechselst du in das Verzeichnis, dort gibst du zwei Befehle ein:</p>
-<p>fastboot devices
-fastboot -i 0x0fce oem unlock 0xDEIN_SONY_KEY</p>
-<p>Fertig. Der Boot-Loader ist &ldquo;frei&rdquo;. Nun folgt der Root-Prozess:</p>
-<h2 id="xperia-z2-rooten">Xperia Z2 rooten</h2>
-<p>Dazu gibt es das 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://forum.xda-developers.com/showthread.php?t=2784900&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Easy Root Tool</a>
-
-
- - wie immer von den XDA-Developers. Du hast das Xperia wieder hochgefahren und musst folgende Optionen in den Einstellungen ändern:</p>
-<p>1. Unter &ldquo;Sicherheit&rdquo;: Unbekannte Quellen erlauben - ja</p>
-<p>2. Unter: &ldquo;Über das Telefon&rdquo; klickst du 10 Mal auf &ldquo;Build Nummer&rdquo; - danach sind die Entwickler-Optionen freigeschaltet. Dort musst du USB-Debugging aktivieren.</p>
-<p>3. Das angeschaltete Xperia schließt du nun per USB an deinen Mac an und startest über die Konsole das Shellskript install.sh: (Du kannst das Skript notfalls auch als Superuser ausführen: sudo ./install.sh)</p>
-<p>./install.sh </p>
-<p>Nach einigen Augenblicken ist das Skript durchgelaufen und bestätigt dir den Erfolg. Du solltest dein Smartphone nun einmal neu starten und dir aus dem PlayStore SuperSU oder eine ähnliche App besorgen, mit der du die Root-Anfragen der Apps verwalten kannst.</p>
+  <a href="https://www.nickyreinert.de/files/wordcloud-in-powerpoint/WordCloud-Excel-Vorlage.xlsm?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">WordCloud-Excel-Vorlage</a>
+
+
+ herunter. Die Datei enthält ein <strong>VBA-Script</strong>, das zuerst einen beliebigen Text in einzelne Wörter zerlegt und diese zählt und sortiert. Danach wird eine <strong>PowerPoint-Folie</strong> erstellt, in der die Wörter in einer WordCloud dargestellt werden. Je öfter das Wort vorkommt, desto größer erscheint es auf der Folie. Die Wörter sind einfache Textfelder und können danach bearbeitet oder verschoben werden.</p>
+<figure>
+  <a href="https://nickyreinert.de/2012/2012-07-23-wordcloud-in-powerpoint/images/WordCloud-in-PowerPoint-150x150.png" target="_blank" class="image-link center" title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2012/2012-07-23-wordcloud-in-powerpoint/images/WordCloud-in-PowerPoint-150x150.png" 
+      alt="WordCloud in PowerPoint"
+      width="500"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Eine WordCloud in PowerPoint erstellen.</figcaption>
+</figure>
+
+<p><strong>Vorbereitung in Excel</strong></p>
+<p>Zunächst kopierst du deinen Text in das Feld für den Quelltext. Per VBA wird daraus bereits automatisch eine Liste mit den Häufigkeiten der Wörter erstellt.</p>
+<p>Mit den Werten für die <strong>PowerPoint-Höhe</strong> und <strong>-Breite</strong> legst du die Abmessung der Folie in der Präsentation fest. Je größer die Folie, desto länger dauert das Rendern der WordCloud. Mit der Größe der Schriftart bestimmst du, wie groß das größte Wort ist. Über den <strong>Faktor Höhenkorrektur</strong> kannst du den vertikalen Abstand der Textfelder korrigieren. Über den <strong>Performance-Faktor</strong> lässt sich die Geschwindigkeit der Verarbeitung steuern. Je höher der Wert, desto schneller das Skript, aber auch schlechter die Berechnung der Platzierung der Textfelder für die Wörter. Der <strong>Top-Wert</strong> legt fest, wie viele Wörter verarbeitet werden sollen.</p>
+<p>Wenn du alles fertig eingestellt hast, drückst du auf <strong>Start</strong> und VBA verrichtet seine Arbeit.</p>
 <p>Fertig.</p>
-]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>tools</category><category>anleitungen</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>how-to_guide</dc:type></item><item><title>MacTubes - Youtube ohne Flash</title><link>https://nickyreinert.de/2013/2013-12-16-mactubes-youtube-ohne-flash/</link><pubDate>Mon, 16 Dec 2013 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2013/2013-12-16-mactubes-youtube-ohne-flash/</guid><description>Flash hat einen gravierenden Nachteil: Der Mac fängt innerhalb weniger Minuten an zu glühen. Das Surfen auf YouTube wird also zur akkustischen und haptischen Tortur für den Schoß. Alternativ beginnt auch die Lackierung des Schreibtisches sich zu lösen. Abhilfe schafft die Freeware “ MacTubes ”.
-Du …</description><content:encoded><![CDATA[<p>Flash hat einen gravierenden Nachteil: Der Mac fängt innerhalb weniger Minuten an zu glühen. Das Surfen auf YouTube wird also zur akkustischen und haptischen Tortur für den Schoß. Alternativ beginnt auch die Lackierung des Schreibtisches sich  zu lösen. Abhilfe schafft die Freeware &ldquo;
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.macupdate.com/app/mac/28608/mactubes/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">MacTubes</a>
-
-
-&rdquo;.</p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.freecoffee.de/wp-content/uploads/2011/06/Bildschirmfoto-2011-06-18-um-13.14.52.png?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><img src="https://nickyreinert.de/categories/tools/images/Bildschirmfoto-2011-06-18-um-13.14.52-300x178.png" alt="" title="Bildschirmfoto 2011-06-18 um 13.14.52"></a>
-
-
-</p>
-<p>Du hast die Möglichkeit, zwischen verschiedenen Abspielprogrammen zu wählen. So kann man die Videos z.B. über QuickTime oder einen internen Player abspielen. Außerdem lassen sich &ldquo;Suchen&rdquo; speichern oder auf bestimmte Länder oder Kategorien eingrenzen. Die gespeicherten Suchen (Nach Autor oder Keyword) können auch in Ordnern organisiert werden.</p>
-]]></content:encoded><atom:updated>2026-09-29T08:54:50+02:00</atom:updated><category>tools</category><category>anleitungen</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>software_review</dc:type></item><item><title>Buffalo Linkstation LS-WXL mit MiniDLNA und Custom Firmware von Shonk 1.64 Mod 1</title><link>https://nickyreinert.de/2013/2013-03-16-buffalo-linkstation-ls-wxl-mit-minidlna-und-custom-firmware-von-shonk-1-64-mod-1/</link><pubDate>Sat, 16 Mar 2013 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2013/2013-03-16-buffalo-linkstation-ls-wxl-mit-minidlna-und-custom-firmware-von-shonk-1-64-mod-1/</guid><description>1. Schritt - Die CFW (Custom FirmWare) von Shonk installieren. Das geschieht relativ komfortable über eine EXE-Datei: http://forum.buffalo.nas-central.org/viewtopic.php?f=68&amp;t=23603
-Die CFW aktiviert zugleich den Telnet-Server, über den ab sofort die nächsten Schritte durchgeführt werden. …</description><content:encoded><![CDATA[<p>1. Schritt - Die CFW (Custom FirmWare) von Shonk installieren. Das geschieht relativ komfortable über eine EXE-Datei: http://forum.buffalo.nas-central.org/viewtopic.php?f=68&amp;t=23603</p>
-<p>Die CFW aktiviert zugleich den Telnet-Server, über den ab sofort die nächsten Schritte durchgeführt werden. Praktischerweise hat OSX (als Linux-Derivat) einen SSL-Telnet-Server eingebaut… also das MacBook von Windows zurück in OSX booten.</p>
-<p>2. Schritt: Den Paketmanager IPKG installieren - das geschieht nach folgender Anleitung über Telnet: http://buffalo.nas-central.org/wiki/Category:LS-WXL#IPKG</p>
-<p>3. Schritt: Den MiniDLNA-Server installieren und dabei folgende Schritte durchgehen: http://forum.nas-hilfe.de/buffalo-technology-nas-anleitungen/minidlna-ab-version-1-0-22-from-scratch-kompilieren-installieren-t1130.html</p>
-<p>4. Dabei wird es voraussichtlich - bzw. ob der &ldquo;Aktualität&rdquo; der Anleitung mit ziemlicher Sicherheit - zu einem Fehler kommen: GetText ist zu alt. Dann hilft folgendes:</p>
-<p>cd /usr/share/doc/ (Anm.: Diesen Ordner musste ich erst anlegen, ggf. nachholen)</p>
-<p>wget -0 gettext.tgz 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://ftp.gnu.org/pub/gnu/gettext/gettext-0.18.2.tar.gz?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">http://ftp.gnu.org/pub/gnu/gettext/gettext-0.18.2.tar.gz</a>
-
-
-</p>
-<p>tar xvzf gettext.tgz</p>
-<p>danach entsprechend 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://gist.github.com/1647940?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer" title="https://gist.github.com/1647940">dieser</a>
-
-
- Anleitung:</p>
-<p>./configure - das dauert eine kleine Ewigkeit, da kann man schon mal n Kaffee trinken gehen</p>
-<p>make check</p>
-<p>make install</p>
-<p>make clean</p>
-<p>Tipps: Ab einem Punkt der Anleitung lautet es &ldquo;Jetzt das in das Verzeichnis des miniDLNA wechseln und einfach&rdquo;. Wo das liegt? Gute Frage. Ich musste erst suchen und bin unter /usr/sbin/minidlna fündig geworden - von dort aus klappt dann auch der autoconf-Befehl.</p>
-<p>Fertig. Für Live-Transcoding dürfte die WXL mit knapp 600 MHz-Prozessor etwas schwach sein, aber dafür läuft der Medienserver um einiges fixer und sieht dabei auch schöner aus (wenn man über die PS3 browsed), als der mitgelieferte Twonky.</p>
-<p><strong>Mehr dazu:</strong></p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.multimediaforum.de/threads/217307439-gettext-01811-ueber-konsole-auf-nas-installieren?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">linux-forum.de</a>
-
-
-</p>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://forum.nas-hilfe.de/buffalo-technology-nas-anleitungen/minidlna-ab-version-1-0-22-from-scratch-kompilieren-installieren-t1130-30.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">nas-hilfe.de</a>
-
-
-</p>
-]]></content:encoded><atom:updated>2026-06-16T20:56:44+02:00</atom:updated><category>development</category><category>tools</category><category>anleitungen</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>technical_tutorial</dc:type></item><item><title>DOS-Spiele auf dem Mac spielen</title><link>https://nickyreinert.de/2012/2012-09-24-dos-spiele-auf-dem-mac-spielen/</link><pubDate>Mon, 24 Sep 2012 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2012/2012-09-24-dos-spiele-auf-dem-mac-spielen/</guid><description>Alte DOS-Spiele auf dem Mac zu spielen ist mit Boxer relativ einfach. Nach der Installation und dem Start der Boxer-App kann man vorhandene Spiele starten, ein neues Spiel importieren oder einfach die DOS-Oberfläche aufrufen.
-Boxer zeigt eine benutzerfreundliche Oberfläche für DOS-Spiele. Der Import …</description><content:encoded><![CDATA[<p><strong>Alte DOS-Spiele</strong> auf dem Mac zu spielen ist mit 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://boxerapp.com/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Boxer</a>
-
-
- relativ einfach. Nach der Installation und dem Start der <strong>Boxer-App</strong> kann man vorhandene Spiele starten, ein neues Spiel importieren oder einfach die DOS-Oberfläche aufrufen.</p>
-<figure>
-  <a href="https://nickyreinert.de/2012/2012-09-24-dos-spiele-auf-dem-mac-spielen/images/Welcome-to-Boxer-150x150.png" target="_blank" class="image-link center" title="Click to view full size">
-    <img 
-      src="https://nickyreinert.de/2012/2012-09-24-dos-spiele-auf-dem-mac-spielen/images/Welcome-to-Boxer-150x150.png" 
-      alt="Welcome to Boxer"
-      width="500"
-      loading="lazy"
-    />
-  </a>
-  <figcaption>Boxer zeigt eine benutzerfreundliche Oberfläche für DOS-Spiele.</figcaption>
-</figure>
-
-<p>Der <strong>Import von Spielen</strong> gestaltet sich sehr einfach: Man kann das Spiel als Ordner oder ausführbare <code>.exe</code>-Datei einfach in die Boxer-App ziehen. Entweder muss das Spiel nun noch installiert werden oder es kann gleich angespielt werden. Der Ordner, in dem Boxer die Spiele ablegt, wird als kleines Regal angezeigt.</p>
-<figure>
-  <a href="https://nickyreinert.de/2012/2012-09-24-dos-spiele-auf-dem-mac-spielen/images/Drop-your-game-here-150x150.png" target="_blank" class="image-link center" title="Click to view full size">
-    <img 
-      src="https://nickyreinert.de/2012/2012-09-24-dos-spiele-auf-dem-mac-spielen/images/Drop-your-game-here-150x150.png" 
-      alt="Drop your game here - Boxer Startbildschirm"
-      width="500"
-      loading="lazy"
-    />
-  </a>
-  <figcaption>Spiele können einfach per Drag-and-Drop importiert werden.</figcaption>
-</figure>
-
-<p>Die Spiele laufen auf einem <strong>MacBook Air der 2. Generation</strong> sehr flüssig. Die Boxer-App ist stabil und intuitiv bedienbar.</p>
-]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>os-x</category><category>tools</category><category>anleitungen</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>how-to_guide</dc:type></item><item><title>GPS-Daten umwandeln</title><link>https://nickyreinert.de/2012/2012-05-24-gps-daten-umwandeln/</link><pubDate>Thu, 24 May 2012 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2012/2012-05-24-gps-daten-umwandeln/</guid><description>Ich habe jetzt eine ganze Weile gesucht, um entweder online, unter Windows oder MacOS meine GPS-Logdateien meines HTC Touch HD im NMEA-Format irgendwie in das etwas bequemere GPX-Format umwandeln zu können. Zuerst stieß ich dabei auf [gps-visualizer.com](eine Seite mit breitem Angebot, die aber vor …</description><content:encoded><![CDATA[<p>Ich habe jetzt eine ganze Weile gesucht, um entweder online, unter Windows oder MacOS meine <strong>GPS-Logdateien</strong> meines HTC Touch HD im <strong>NMEA-Format</strong> irgendwie in das etwas bequemere <strong>GPX-Format</strong> umwandeln zu können. Zuerst stieß ich dabei auf [gps-visualizer.com](eine Seite mit breitem Angebot, die aber vor meinen &ldquo;großen&rdquo; Dateien (etwa 120 MB) kapitulierte.</p>
-<p>Mit 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.routeconverter.de/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">RouteConverter</a>
-
-
- bin ich schließlich auf das passende Tool für <strong>Windows, Linux und MacOS</strong> gestoßen. Das Tool unterstützt erstens 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.routeconverter.de/formats/de?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">eine große Menge von Formaten</a>
-
-
- und ist zweitens kostenlos. Bingo. Die Routen werden außerdem direkt in <strong>GoogleMaps</strong> angezeigt und lassen sich bearbeiten und natürlich exportieren. Screenshots vom Programm gibt es zur Genüge auf der 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.routeconverter.de/tour/de?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Website</a>
-
-
-.</p>
-<p><strong>Update:</strong> Und wenn du dann noch einen Haufen Fotos mit deinem aufgezeichneten GPS-Track synchronisieren willst, greifst du zu 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.earlyinnovations.com/gpsphotolinker/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">GPSPhotoLinker</a>
-
-
-. Die Software erlaubt dir, entweder eine oder mehrere <strong>GPX-Dateien</strong> auszuwählen. Du passt dann nur noch die <strong>Zeitzone</strong> der GPX-Dateien an, fügst beliebig viele Fotos hinzu und lässt das Programm dann den Rest machen: Die Aufnahmezeit deiner Bilder mit den Zeiten der Track-Daten abgleichen und die <strong>GPS-Informationen</strong> in den Metadaten der Bilder speichern. Fertig.</p>
-]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>tools</category><category>anleitungen</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>software_review</dc:type></item><item><title>Speicherplatz-Verbraucher grafisch darstellen</title><link>https://nickyreinert.de/2011/2011-07-03-speicherplatz-verbraucher-grafisch-darstellen/</link><pubDate>Sun, 03 Jul 2011 00:00:00 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2011/2011-07-03-speicherplatz-verbraucher-grafisch-darstellen/</guid><description>Unter Windows diente mir noch der wunderbare [TotalCommander](samt des Plugins [DirSizeCalc](um die größten Verbraucher von Speicherplatz auf meiner Festplatte grafisch darzustellen. Bei macOS muss ich mich (vorerst) mit dem Finder als Dateimanager zufrieden geben. Doch auch für den Mac gibt es eine …</description><content:encoded><![CDATA[<p>Unter Windows diente mir noch der wunderbare [TotalCommander](samt des Plugins [DirSizeCalc](um die größten Verbraucher von <strong>Speicherplatz</strong> auf meiner Festplatte grafisch darzustellen. Bei <strong>macOS</strong> muss ich mich (vorerst) mit dem Finder als Dateimanager zufrieden geben. Doch auch für den Mac gibt es eine nette kostenlose Lösung namens 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="http://www.derlien.com/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">DiscInventory X</a>
-
-
-.</p>
-<figure>
-  <a href="https://nickyreinert.de/2011/2011-07-03-speicherplatz-verbraucher-grafisch-darstellen/images/DiscInventoryX-150x150.png" target="_blank" class="image-link center" title="Click to view full size">
-    <img 
-      src="https://nickyreinert.de/2011/2011-07-03-speicherplatz-verbraucher-grafisch-darstellen/images/DiscInventoryX-150x150.png" 
-      alt="DiscInventoryX"
-      width="500"
-      loading="lazy"
-    />
-  </a>
-  <figcaption>DiscInventory X zeigt Speicherplatzverbrauch grafisch an.</figcaption>
-</figure>
-
-<p><strong>Was kann DiscInventory X?</strong></p>
-<ul>
-<li>farblich sortiert und entsprechend der Größenverhältnisse skalierte Anzeige der Dateien</li>
-<li>bei Klick auf ein &ldquo;Kästchen&rdquo; wird die Datei im Baum angezeigt</li>
-<li>direktes Löschen der Dateien oder Anzeige im Finder</li>
-<li>Anzeige aller Dateien einer bestimmten Kategorie</li>
-<li>Anzeige der Ordnergröße samt Inhalt</li>
-<li>Anzeige, wie viel Platz Dateien bestimmten Typs verbrauchen bzw. wie viele Dateien davon existieren</li>
-</ul>
-]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>tools</category><category>anleitungen</category><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>guide</dc:type></item></channel></rss>
+<p><em>*VBA und der Algorithmus sind eher nicht für lange Texte geeignet. Ein Text mit 349 unterschiedlichen Wörtern und 584 Wörtern insgesamt wird in 55 Sekunden gerendert.</em></p>
+]]></content:encoded><atom:updated>2026-09-21T23:23:59+02:00</atom:updated><category>tools</category><media:content url="https://nickyreinert.de/images/posts/placeholder.jpg" type="image/jpeg"><media:title>Tools</media:title></media:content><dc:subject>Lesezeit: 5 Minuten</dc:subject><dc:type>how-to_guide</dc:type></item></channel></rss>
