@@ -14,7 +14,8 @@
     // keep clear of the sticky title bar while it is shown
     var stickyBar = document.getElementById('sticky-title');
     var offset = stickyBar && stickyBar.classList.contains('visible') ? stickyBar.offsetHeight : 0;
-    var min = GAP + offset;
+    var slim = document.querySelector('#header.header-slim');
+    var min = GAP + offset + (slim ? slim.offsetHeight : 0);
     var top = min;
     if (anchor) {
       top = Math.max(min, anchor.getBoundingClientRect().top);

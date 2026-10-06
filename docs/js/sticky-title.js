@@ -10,6 +10,14 @@
   bar.appendChild(text);
   document.body.prepend(bar);
 
+  // stack below the sticky slim header
+  var slim = document.querySelector('#header.header-slim');
+  function setHeaderHeight() {
+    document.documentElement.style.setProperty('--header-h', (slim ? slim.offsetHeight : 0) + 'px');
+  }
+  setHeaderHeight();
+  window.addEventListener('resize', setHeaderHeight);
+
   var visible = false;
 
   function setVisible(value) {
