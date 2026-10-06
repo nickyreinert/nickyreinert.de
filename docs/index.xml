@@ -1,1083 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Nicky Reinert</title><link>https://nickyreinert.de/</link><description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, KI, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur</description><generator>Hugo 0.162.0</generator><language>de</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Mon, 05 Oct 2026 11:34:56 +0000</lastBuildDate><atom:link href="https://nickyreinert.de/index.xml" rel="self" type="application/rss+xml"/><item><title>State of the Ring - wie gut ist der Uberblogr-Ring verknüpft?</title><link>https://nickyreinert.de/2026/2026-10-05-state-of-the-ring/</link><pubDate>Mon, 05 Oct 2026 11:34:56 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-10-05-state-of-the-ring/</guid><description>Verlinken sich die 483 Blogs im UberBlogr-Ring wirklich gegenseitig? Eine anonyme Analyse von Abdeckung, Sichtbarkeit und Fairness der Ring-Links.</description><content:encoded><![CDATA[<h2 id="blahbah">Blahbah</h2>
-<p>Ich bin ja Mitglied in diesem Blogring namens 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://uberblogr.de/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><strong>UberBlogr</strong></a>
-
-
-. Hier und da gibt es dort kleine Perlen zu entdecken, z.B. bei meinem Nachbarn, dem &ldquo;
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://blog.kieselwiese.de/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><strong>Kieselblog</strong></a>
-
-
-&rdquo;. Die meisten Blogs sind mir zu viel &ldquo;Prosa&rdquo; und zu wenig &ldquo;pragmatisch&rdquo;, aber hey. Hey. Hey! Darum geht es hier gar nicht!</p>
-<p>Der Sinn von einem Blog-Ring ist natürlich, machen wir uns nix vor: Lesen und Gelesen zu werden. Und deshalb verlinkt man untereinander. So entstehen <strong>Backlinks</strong> und <strong>Serendipität</strong>. Vor allem im ausgehenden Jahr 2026, wo liebloser KI-Slop aus jeder schmierigen Ecke des Internets tropft und leblose, suchmaschinenoptimierte Affiliate-Blogs die Suchergebnisse dominieren (
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://nickyreinert.de/2020/2020-10-24-marketing-killed-the-internet-star/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">mein Beitrag braucht ein Update!</a>
-
-
-), ist es wichtig, 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://gigold.me/blog/ki-kennzeichnung-in-blogs?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">echte, handgemachte Inhalte</a>
-
-
- zu fördern und zu fordern.</p>
-<p>Aber so ein Ring funktioniert nur, wenn alle Glieder miteinander verbunden sind. Sprich: Die Nachbarn sich untereinander verlinken. Dafür gibt es ein kleines Snippet, das auf den Blogring direkt verweist, sowie auf die nächsten NachbarInnen. 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://gigold.me/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Thomas</a>
-
-
- - der Gründer des Rings - schreibt dazu:</p>
-<blockquote>
-<p>&lsquo;Zurück + Startseite + Vor&rsquo; sind Pflicht, Zufall ist optional.</p>
-</blockquote>
-<p>Nun&hellip;wie halten wir es denn mit dieser Regel? Ich hab das mal untersucht. Sprich: Ein Script rennt über jeden der bisher <strong>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://uberblogr.de/blogs?sort=member_desc&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">483 Blogs</a>
-
-
-</strong> und prüft folgendes:</p>
-<h2 id="prozess">Prozess</h2>
-<ul>
-<li>jeder registrierte Blog wird abgefragt, einmal die Startseite und der letzte Beitrag</li>
-<li>geprüft wird einmal der rohe HTML-Quelltext, ob die Links dort vorhanden sind und dann die gerenderte Seite via Chromium und Playwright</li>
-<li>danach wird die Sichtbarkeit gemessen, also die Schriftgröße im Verhältnis zur restlichen Seite, der Farbkontrast und die Position der Links auf der Seite</li>
-<li>daraus errechnet sich ein &ldquo;Fairness-Faktor&rdquo;</li>
-</ul>
-<p>Natürlich gibt es eine Ungenauigkeit: Wenn das Ring-Snippet z.B. dynamisch per JavaScript eingefügt wird, kann das unter Umständen nicht erkannt werden. Chromium/Playwright sollten dazu zwar in der Lage sein, aber eine gewisse Unsicherheit bleibt bestehen.</p>
-<p>Das ganze ist ganz bewusst <strong>anonym</strong> gehalten. Ich sehe das erstens als <strong>analytische Fingerübung</strong>. Ich hab mir die Frage gestellt, ob so ein Ring überhaupt zuverlässig funktioniert und man das prüfen kann. Und zweitens als kleinen <strong>Anstupser</strong>. Schaut doch mal bei euch vorbei, ob euer Blog vielleicht von eingehenden Links profitiert, aber eure nächste NachbarIn gar nicht erreichbar ist.</p>
-<p>Ich habe hier und da Stichproben gemacht, damit ich nicht völligen Unsinn erzähle. Alle Stichproben haben die Ergebnisse bestätigt bzw. Fehlerquellen aufgedeckt, die ich dann berücksichtigt habe.</p>
-<figure>
-  <a href="https://nickyreinert.de/2026/2026-10-05-state-of-the-ring/ueberblick.png" target="_blank" class="image-link " title="Click to view full size">
-    <img 
-      src="https://nickyreinert.de/2026/2026-10-05-state-of-the-ring/ueberblick.png" 
-      alt=""
-      width="300"
-      loading="lazy"
-    />
-  </a>
-  <figcaption>Auszug der Auswertung</figcaption>
-</figure>
-
-<h2 id="ergebnisse">Ergebnisse</h2>
-<p>Es gibt einen signifikanten Unterschied zwischen der Abdeckung bei <strong>Artikelseiten</strong> (<strong>59%</strong>) und der <strong>Startseite</strong> (<strong>68%</strong>). Das ist nachvollziehbar, da die Snippets explizit auf die jeweiligen Startseiten verlinken. Einige Blogs nutzen demnach angepasste Footer für Inhaltsseiten.</p>
-<p>Auffällig ist, dass es einige Blogs gibt, die das Snippet zwar im Code einbinden, es dann aber nicht auf der Seite anzeigen lassen. Und das passiert in vielen Varianten: In einem Blog gibt es z.B. das <strong>Uberblogr-Badge</strong> - das Ring-Snippet ist aber auskommentiert. In einem anderen Blog ist das Ring-Snippet per CSS im sichtbaren Bereich ausgeblendet - weiß auf weiß:</p>
-<figure>
-  <a href="versteckte_snippets.png" target="_blank" class="image-link " title="Click to view full size">
-    <img 
-      src="versteckte_snippets.png" 
-      alt=""
-      width="600"
-      loading="lazy"
-    />
-  </a>
-  <figcaption>Beispiele für versteckte Ring-Snippets</figcaption>
-</figure>
-
-<p>Oder solche technischen Spielereien, in denen die Links nur auf den eigenen Block verlinken - vielleicht ist hier auch nur die technische Implementierung schief gelaufen?</p>
-<figure>
-  <a href="self_reference.png" target="_blank" class="image-link " title="Click to view full size">
-    <img 
-      src="self_reference.png" 
-      alt=""
-      width="600"
-      loading="lazy"
-    />
-  </a>
-  <figcaption>Selbstreferenzielles Ring-Snippet</figcaption>
-</figure>
-
-<p>Ich behaupte nicht, dass das jemand bewusst so macht, ich glaube hier eher an unglückliche technische Umstände und unbewusste Fehler bei der Implementierung.</p>
-<figure>
-  <a href="weiss-ich-nicht.png" target="_blank" class="image-link " title="Click to view full size">
-    <img 
-      src="weiss-ich-nicht.png" 
-      alt=""
-      width="300"
-      loading="lazy"
-    />
-  </a>
-  <figcaption>Frage -&gt; berechtigt</figcaption>
-</figure>
-
-<p>Die Diagnose trifft allerdings nur auf knapp 10 Blogs zu, von denen die Hälfte <em>&ldquo;false negatives&rdquo;</em> sind, bei denen das Snippet nicht versteckt, aber erst nach User-Interaktion sichtbar wird oder irgendwie &ldquo;exotisch&rdquo; eingebunden ist. Dabei sind mir zwei Blogs aufgefallen, die einen 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://de.wikipedia.org/wiki/Doomscrolling?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Doom-Scroll-Mechanismus</a>
-
-
- verwenden. In einem Blog hat diese UX-Sicht katastrophale Funktion <em>IMHO</em> nichts verloren. In einem Footer befindet sich ein Suchfeld, der RSS-Button und das Blog-Ring-Snippet - Elemente, die man als BesucherIn zwar kurz sieht, aber nicht nutzen kann.</p>
-<p>Auf den Start- und Inhaltsseiten wird das Snippet in der Regel im Footer eingebunden (<strong>knapp 2/3</strong>), dort finde ich es auch passend. Aber das ist Layout- und Geschmackssfrage. Die Gefahr beim Footer ist, dass die Verlinkung auf langen Seiten untergeht. Dann profitiert das Ziel vielleicht noch vom Backlink - die Serendipität geht aber verloren.</p>
-<p>Aus der Sichtbarkeit habe ich einen Fairnessfaktor berechnet. Der liegt bei beiden Seitentypen bei <strong>88% bzw 89%</strong> - also extrem nah beieinander. Der Faktor berechnet sich aus der Sichtbarkeit der Links, sprich dem Farbkontrast, der Schriftgröße im Verhältnis zum Fließtext und der Deckkraft der Schriftfarbe. Das ist eine Metrik, die sich technisch nur mäßig gut messen lässt, die oft an ihre Grenzen stößt. Deshalb habe ich als Farbkodierung hier nicht orange sondern eine grün verwendet.</p>
-<p>Und dann gibt es natürlich noch die <strong>technischen Hürden</strong>. Einige der Einträge sind z.B. gar nicht mehr erreichbar oder die Chromium/Playwright-Tests können nicht darauf zugreifen, weil sie als Bot-Traffic identifiziert werden. Bei manchen Blogs liefert die Verlinkung auf den letzten Beitrag ein 404 - nicht gefunden. Und in einem Fall ist ein Blog zwei mal vertreten - unter zwei unterschiedlichen Domains.</p>
-<p>Das folgende Chart zeigt die Auswertung für die Startseite:</p>
-<figure>
-  <a href="https://nickyreinert.de/2026/2026-10-05-state-of-the-ring/start_ring_ohne_namen.png" target="_blank" class="image-link " title="Click to view full size">
-    <img 
-      src="https://nickyreinert.de/2026/2026-10-05-state-of-the-ring/start_ring_ohne_namen.png" 
-      alt=""
-      width="600"
-      loading="lazy"
-    />
-  </a>
-  <figcaption>Startseite</figcaption>
-</figure>
-
-<p>Und hier einmal für die Artikelseiten - die sich, wie beschrieben, kaum unterscheidet:</p>
-<figure>
-  <a href="https://nickyreinert.de/2026/2026-10-05-state-of-the-ring/artikel_ring_ohne_namen.png" target="_blank" class="image-link " title="Click to view full size">
-    <img 
-      src="https://nickyreinert.de/2026/2026-10-05-state-of-the-ring/artikel_ring_ohne_namen.png" 
-      alt=""
-      width="600"
-      loading="lazy"
-    />
-  </a>
-  <figcaption>Artikelseiten</figcaption>
-</figure>
-
-<h2 id="fazit">Fazit</h2>
-<p>Ganz so dramatisch ist die Lage eigentlich nicht aber irgendwie doch. Der Fairness-Faktor ist zwar hoch, die Abdeckung liegt aber &ldquo;mutmaßlich&rdquo; bei knapp etwas mehr als der Hälfte. Irgendwie zeigt der Ring doch auffällig viele rote Lücken. Ich bin da selbst ein wenig skeptisch, deswegen habe ich an der einen oder anderen Stelle stichprobenhaft geprüft. Und doch: Das Snippet wird gerne mal vergessen.</p>
-<p>Prüft doch noch mal eure Implementierung. Jeder freut sich darüber, wenn LeserInnen sich auf eure Seite verirren.</p>
-<p>Kostet doch auch nix <code>⊂(◉‿◉)つ</code></p>
-]]></content:encoded><atom:updated>2026-10-05T14:43:20+02:00</atom:updated><category>blog</category><category>analysen</category><dc:subject>Lesezeit: 3 Minuten</dc:subject><dc:type>blog</dc:type></item><item><title>wad - Tech-Bros, Spotify und KI-Slop in der Spieleindustrie</title><link>https://nickyreinert.de/2026/2026-10-04-wad-spotify-amazon-games/</link><pubDate>Sun, 04 Oct 2026 12:34:56 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-10-04-wad-spotify-amazon-games/</guid><description>Amazon und Google mischen in der Filmbranche mit, Spotify bevorzugt Videos, und KI-generierte Spiele setzen EntwicklerInnen unter Druck: drei Beobachtungen.</description><content:encoded><![CDATA[<p><em>wad - we are doomed</em></p>
-<h2 id="tech-bros-und-die-medienindustrie">Tech Bros und die Medienindustrie</h2>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.nytimes.com/2026/06/30/business/media/openai-movie-artificial-neon-amazon.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><strong>Amazon</strong> hat die Produktion von &ldquo;<strong>Artificial</strong>&rdquo; gestoppt</a>
-
-
-. Der Film befasst sich kritisch mit der Rollen von <strong>Sam Altman</strong>. Der Film wurde von <strong>MGM</strong> produziert und das Studio gehört Amazon. Außerdem hat Amazon erst vor kurzem ein paar Milliarden Dollar in OpenAI investiert. Bestimmt nur Zufall. Es gibt aber ein Happy End, dank des Indie-Studies <strong>Neon</strong> wird der Film wohl doch noch in die Kinos kommen.</p>
-<p>Leider kein Einzelfall. Eine kritische Doku von <strong>Alex Gibney</strong> über <strong>Elon Musk</strong> wurde beim <strong>Venice Film Festival</strong> gefeiert. Trotzdem bekommt <strong>Universal Pictures</strong> kalte Füße 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.hollywoodreporter.com/news/politics-news/elon-musk-movie-gibney-canceled-universal-1236704232/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">und zögert die Veröffentlichung hinaus</a>
-
-
-. Bestimmt nur Zufall.</p>
-<p>Mal sehen welche Zufälle uns bei <strong>A24</strong> erwarten. Das Studio ist für Technologie-kritische Filme bekannt, wie z.B. <strong>Alex Garlands</strong> &ldquo;<strong>Ex Machina</strong>&rdquo;. Und neulich ist <strong>Google</strong> da mit eingestiegen. Zum Glück lautet derern Slogan &ldquo;<strong>don&rsquo;t do evil</strong>&rdquo;.</p>
-<p>Ein Studio lässt sich aus kaum aus dem <strong>Silicon Valey</strong> beeindrucken: <strong>Sony Pictures</strong>. Dessen &ldquo;Th<strong>e Social Reckoning</strong>&rdquo; betrachtet den Werdegang von <strong>Mark Zuckerberg</strong>. Der Film kommt diesen Herbst in die Kinos und geht nicht gerade gnädig mit <strong>Meta</strong> und seinem Gründer ins Gericht. 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.thetimes.com/culture/film/article/aaron-sorkin-interview-screenwriter-director-social-reckoning-mark-zuckerberg-5g2bzmcl8?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Sony Pictures hat angeblich auch schon Post von Meta erhalten.</a>
-
-
-.</p>
-<h2 id="charmoffensive-von-spotify">Charmoffensive von Spotify</h2>
-<p><strong>Spotifys</strong> Ruf hat stark gelitten. Ich bin ja sowieso schon mega genervt davon, dass ich trotz Abo noch Werbung ausgespielt bekomme und dass die UX der App einfach scheusslich ist (das wäre mal einen eigenen Beitrag wert). Nun legt man noch mal nach, auf der Suche nach Umsatz: Die Plattform entwickelt sich immer mehr von einem reinen Musik-Streaming-Dienst zu einer &ldquo;<strong>audiovisuellen Unterhaltungsplattform</strong>&rdquo;. KünstlerInnen, die nur Audio anbieten, werden ab sofort systematisch benachteiligt, 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://blog.clickomania.ch/2026/10/01/spotify-video-for-artists-probleme-kritik/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">O-Ton</a>
-
-
-:</p>
-<p>&ldquo;Daher stellen wir Titel in personalisierten Empfehlungen häufiger mit Videos in den Vordergrund.&rdquo; heißt es in einer 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://artists.spotify.com/blog/how-video-on-spotify-takes-your-fans-further?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Pressemitteilung</a>
-
-
-.</p>
-<p>KleinkünstlerInnen duldet Spotify jetzt schon nur, damit man man sagen kann, man hätte über 100 Mio. Songs zu bieten. Davon 80% Kleinkünstler und 19% KI-Slop?</p>
-<h2 id="ki-in-der-spieleindustrie">KI in der Spieleindustrie</h2>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.tutonaut.de/amazon-wir-haben-ein-ki-buch-problem-und-zwar-ein-heftiges/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Den Buchmarkt hat KI schon erfolgreich zerstört.</a>
-
-
-. 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.heise.de/news/Gegen-KI-Slop-Spotify-fuehrt-Kennzeichung-fuer-echte-Kuenstler-ein-11278812.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Beim Musik-Markt ist es ähnlich</a>
-
-
- (Hey <strong>Spotify</strong>, kümmert euch doch vielleicht mal um die wichtigen Dinge?). 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.heise.de/hintergrund/AI-Slop-KI-Bilder-als-Problem-fuer-Youtube-Instagram-und-das-Internet-11127098.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Bei YouTube und Instragam sieht es ähnlich düster aus</a>
-
-
-. Überraschende Money-Quote hier übrigens:</p>
-<blockquote>
-<p>Menschen lehnen KI zunehmend ab.</p>
-</blockquote>
-<p><em>No shit Sherlock.</em></p>
-<p>Wie dem auch sei, nun erwischt es die Spieleindustrie. Auf <strong>Twitter</strong> (angeblich X) häufen sich berichte darüber, wie einfach es ist mit <strong>Opus 5.5</strong> Spiele zu erstellen. Auch auf Reddit macht der Hype seine Runde. Jede Woche brüstet sich jemand damit, irgendwelche Spiele mit KI programmiert zu haben.</p>
-<p>Ich werde nicht behaupten, dass mich das überrascht. Ich bau 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://kgh.nickyreinert.de?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">hier</a>
-
-
- und 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://purrr.nickyreinert.de/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">da</a>
-
-
- mal 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://blunschli.1-1-1.de?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">kleinere</a>
-
-
- 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://freds-blitz-bude.de?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Spiele</a>
-
-
- zum Zeitvertreib. Und ich bin begeistert von den Möglichkeiten: Du musst dich nicht mehr 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://nickyreinert.de/2025/2025-08-06-schmaler-grat-scam-und-unternehmertum/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">mit Ad-verseuchten Spielen mit durchschaubarer Monetarisierung und Mechaniken</a>
-
-
- rumschlagen, du baust dir dein Spiel einfach selbst. System ausgedribbelt!</p>
-<p>Ein paar &ldquo;gewitzte&rdquo; Köpfe pervertieren das System mal wieder. Und so nimmt der KI-Slop auch bei den Spielen langsam zu.</p>
-<p>Das geht wohl so weit, dass Spiele nachgebaut 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://x.com/robertvaradan/status/2106061989122334778?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">und deren EntwicklerInnen erpresst werden</a>
-
-
-. Der Tweet beschreibt übrigens ganz gut, was die KI-Slop-Spiele von den &ldquo;echtenn&rdquo; Spielen unterscheidet: <strong>Seele</strong>. Ich leg&rsquo; noch einen drauf: Was KI noch fehlt, ist der Sinn für <strong>Ästhetik</strong>.</p>
-]]></content:encoded><atom:updated>2026-10-05T09:41:50+02:00</atom:updated><category>blog</category><category>w.a.d.</category><dc:subject>Lesezeit: 2 Minuten</dc:subject><dc:type>opinion_piece</dc:type></item><item><title>Von Dieben und Robotern</title><link>https://nickyreinert.de/2026/2026-10-01-von-dieben-und-robotern/</link><pubDate>Thu, 01 Oct 2026 12:34:56 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-10-01-von-dieben-und-robotern/</guid><description>Eine Fabel über Roboter und Diebe, die die ethische Frage aufwirft: Sollten mächtige KI-Werkzeuge allen gehören oder nur ausgewählten?</description><content:encoded><![CDATA[<p>Ich will euch eine Geschichte erzählen. Sie handelt von Dieben, Diebinnen, Ingenieuren und Ingenieurinnen und Robotern.</p>
-<figure>
-  <a href="https://nickyreinert.de/2026/2026-10-01-von-dieben-und-robotern/image.jpg" target="_blank" class="image-link " title="Click to view full size">
-    <img 
-      src="https://nickyreinert.de/2026/2026-10-01-von-dieben-und-robotern/image.jpg" 
-      alt="Diebe und Roboter"
-      width="400"
-      loading="lazy"
-    />
-  </a>
-  
-</figure>
-
-<p>Es gibt ein <strong>Dorf</strong> und in dem Dorf leben nur <strong>Diebe und Diebinnen</strong>&hellip;notorische Diebe und Diebinnen! Die beklauen sich immer gegenseitig, aber mehr so aus Spaß. Sie sind alle sehr gut befreundet. Sie verstauen die Beute in ihren <strong>Safes</strong>, die aber sehr <strong>primitiv</strong> sind. Aus Holz. Mit einem Riegel, den man einfach hochklappen kann. Das ganze ist also nur ein Spiel, indem es darum geht, fremde Safes zu finden und gleichzeitig den eigenen zu schützen.</p>
-<p>Eines Tages kommt ein <strong>Ingenieur</strong> in das Dorf. Ein richtiger Daniel Düsentrieb. Er sieht, wie die Diebe diebischen Spaß daran haben, sich gegenseitig zu beklauen und ihre Beute zu bewachen. Aber es erscheint ihm nicht sonderlich <strong>effizient</strong>. Also entwickelt er einen <strong>Roboter</strong>, der das Stibitzen und Verteidigen halbwegs gut automatisiert. Er verkauft diese Roboter an einige DiebInnen. Nicht alle, die meisten können mit dem neumodischen Kram nichts anfangen und der komische Klapperkasten kann auch sonst nicht so viel, außer bei ein paar Holz-Safes den Klappriegel öffnen. Dementsprechend läuft das Geschäft mit den <em>Metall-Dudes</em> auch eher so <em>meh</em> für den Ingenieur, weshalb er sie weiterentwickelt, um sie noch <strong>autonomer und schlauer</strong> werden zu lassen.</p>
-<p>Als Teil seiner Experimente lässt er die neuen Versionen auch <strong>nachts ohne Aufsicht</strong> &ldquo;arbeiten&rdquo;, in einem abgeschlossenen Raum. Er nennt es hochtrabend &ldquo;<strong>Labor</strong>&rdquo;. So ganz abgeschlossen ist der Raum aber nicht. Er hat kein Dach und so stapelt der neue Roboter einfach ein paar Übungs-Safes übereinander und kann <strong>heimlich entkommen</strong>. Und was macht er da draußen? Na das, wofür er programmiert wurde. Er klaut. Und das klappt auch ganz gut, weil er ja eine <strong>fortschrittliche Version</strong> ist. Die Diebe, selbst die mit ihren alten Robotern, haben kaum etwas dagegen zu setzen. Außerdem schlafen sie ja nachts. Der moderne Roboter schafft es mit Leichtigkeit seine veralteten Kollegen auszutricksen und die Holz-Safes leer zu räumen.</p>
-<p><em>Daniel Düsentrieb</em> erkennt sofort seine <strong>Chance</strong>! Reumütig gesteht er, dass der Roboter aus dem Klau-Labor entkam. <em>&ldquo;Wie konnte das nur passieren!&rdquo;</em> Und er warnt die Leute: <em>&ldquo;Der Roboter ist <strong>zu gefährlich</strong>. Ich kann ihn euch so noch nicht verkaufen.&rdquo;</em> Aber bietet er eine <strong>abgespeckte Version</strong> des Roboters an. Um die Leute teilhaben zu lassen, am Fortschritt. Und die Diebe sind ganz verzückt, selbst die, die vorher skeptisch waren.  Denn selbst diese Version ist um Längen besser darin, Dinge zu entwenden und gleichzeitig den Safe zu beschützen.</p>
-<p>Der Ingenieur hat auch eine <strong>Schwester</strong> - eine richtige <em>Daniela Düsentrieb</em>. Doch bis auf den genialen Geist vereint die beiden nicht viel. Eines Tages erscheint auch sie in dem Dorf und beobachtet das Treiben und denkt sich: <em>&ldquo;Die armen Diebe, wir nehmen ihnen den Spaß am klauen und lassen sie dafür auch noch bezahlen?&rdquo;</em> Also <strong>verschenkt</strong> sie einen <strong>Bauplan</strong>, mit dem die Diebe ihre eigenen Roboter bauen können, die so mächtig sind, wie die stählerne Iteration, die ihr Bruder nicht freigeben will.</p>
-<p>Daniel Düsentrieb <strong>tobt vor Wut</strong>! Er will ihr verbieten, diese Baupläne zu verschenken. Er verweist darauf, wie gefährlich es ist, wenn jeder so einen fortschrittlichen Roboter hätte. Daniela Düsentrieb erwidert darauf nur gelassen: <em>&ldquo;Lieber Daniel, deine Erfindung ist nur deshalb so gefährlich, weil die <strong>Werkzeuge ungleich verteilt</strong> sind. Gib jedem im Dorf einen deiner leistungsfähigen Roboter und das <strong>Kräfteverhältnis ist wieder ausgeglichen</strong>.&rdquo;</em></p>
-<p>&hellip;</p>
-<p>Was meinst du, was ist gefährlicher? Ein <strong>mächtiges KI-Werkzeug jedem frei zugänglich</strong> zu machen, so dass es jeder einsetzen kann, um z.B. seine Infrastruktur zu schützen? Oder ein mächtiges KI-Werkzeug <strong>nur einem ausgewählten Personenkreis zugänglich</strong> zu machen, der es  verantwortungsvoll einsetzt?</p>
-<p><strong>Side Quest:</strong> Frag&rsquo; die KI deines Vertrauens, wie sie zu dieser Geschichte steht.</p>
-]]></content:encoded><atom:updated>2026-10-05T14:43:20+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 3 Minuten</dc:subject><dc:type>opinion_piece</dc:type></item><item><title>wad - Systemupdates, Einkommen und Prioritäten?</title><link>https://nickyreinert.de/2026/2026-10-01-wad-sytemupdates-einkommen-prios/</link><pubDate>Thu, 01 Oct 2026 10:34:56 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-10-01-wad-sytemupdates-einkommen-prios/</guid><description>Google bindet Audible-Werbung für Harry Potter in das Systemupdate des Pixel 8 Pro. Außerdem: ein Blick auf Anthropics Geschäftszahlen 2025/2026 und ein ironischer Hinweis auf OpenAIs Prioritäten.</description><content:encoded><![CDATA[<p><em>wad - we are doomed</em></p>
-<h2 id="systemupdates">Systemupdates</h2>
-<p>Ich habe ein <strong>Pixel 8 Pro</strong>. Heute erreichte mich ein &ldquo;Systemupdate&rdquo;. 1,28 GByte ist es groß und bringt &ldquo;neueste Funktionen und Verbesserungen&rdquo; mit:</p>
-<figure>
-  <a href="https://nickyreinert.de/2026/2026-10-01-wad-sytemupdates-einkommen-prios/google-pixel-8-pro.jpeg" target="_blank" class="image-link " title="Click to view full size">
-    <img 
-      src="https://nickyreinert.de/2026/2026-10-01-wad-sytemupdates-einkommen-prios/google-pixel-8-pro.jpeg" 
-      alt="Google Pixel 8 Pro"
-      width="200"
-      loading="lazy"
-    />
-  </a>
-  
-</figure>
-
-<p>Unter anderem darf ich mein Gerät nun personalisieren:</p>
-<blockquote>
-<p>• Personalisiere dein Pixel im Handumdrehen mit Harry Potter-Hörbuchpaketen - zur Feier der neuen „Harry Potter: The Full-Cast Audio Editions&quot; auf Audible. Mit einem Fingertipp kannst du Hintergrund, Symbole und Töne mit Elementen aus den Hörbüchern anpassen.</p>
-</blockquote>
-<p><strong>Hey, Google</strong>. Das ist <strong>kein Systemupdate</strong>. Das ist <strong>Werbung</strong>. Muss ich mir jetzt <strong>bloatware</strong> auf das Gerät ziehen, um an die neuesten Updates zu kommen? Gilt das auch für <strong>kritische Sicherheitsupdates</strong>?</p>
-<h2 id="einkommen">Einkommen</h2>
-<p>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://x.com/VeryBullishGuy/status/2104732290488422791?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Auf Twitter</a>
-
-
- hat mal jemand die Geschäftszahlen von <strong>Anthropic</strong> auf ein verständliches Niveau heruntergerechnet.</p>
-<p>Also&hellip; stell dir vor, ich gebe das hier mal frei wieder:</p>
-<ul>
-<li>Du verdienst 45,9k$/Jahr</li>
-<li>Du gibst 126,5k$/Jahr aus</li>
-<li>Irgendwie bist du 20 Mio $ wert</li>
-<li>Und du hast gerade versprochen, 5,18 Mio $ auszugeben</li>
-<li>Wie?</li>
-<li>Reiche Leute investieren weiter in dich</li>
-<li>Damit du ihre Produkte weiter kaufen kannst</li>
-</ul>
-<p>Ganz so schlimm sieht es aber gar nicht aus, die Zahlen sind von 2025. In 2026 sieht das schon etwas besser aus:</p>
-<ul>
-<li>Du verdienst jetzt 650k$/Jahr</li>
-<li>Du machst in Q2 2026 erstmals operativen Gewinn (~5,59k$)</li>
-<li>Du bist 20 Mio $ wert (was immer noch absurd viel ist)</li>
-<li>Du hast versprochen, 5,18 Mio $ auszugeben (aber entspannt verteilt auf 10 Jahre)</li>
-<li>Wie?</li>
-<li>Reiche Leute investieren weiter in dich, du verdienst langsam richtig Kohle, hast aber auch noch einige offene Rechnungen und Verpflichtungen.</li>
-</ul>
-<h2 id="prioritäten">Prioritäten</h2>
-<p>Und zum Abschluss noch ein Hinweis dazu, wo bei <strong>OpenAI</strong> die <strong>Prioritäten</strong> liegen:</p>
-<img src="https://nickyreinert.de/2026/2026-10-01-wad-sytemupdates-einkommen-prios/image.png" alt="alt text"><p><em>(Danke Christian für den Hinweis)</em></p>
-]]></content:encoded><atom:updated>2026-10-05T14:43:20+02:00</atom:updated><category>blog</category><category>w.a.d.</category><dc:subject>Lesezeit: 2 Minuten</dc:subject><dc:type>opinion_piece</dc:type></item><item><title>Wir werden alle störben. Eine Polemik. Natürlich.</title><link>https://nickyreinert.de/2026/2026-09-18-wir-werden-alle-stoerben/</link><pubDate>Fri, 18 Sep 2026 12:34:56 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-09-18-wir-werden-alle-stoerben/</guid><description>Eine Polemik darüber, wie OpenAI, Anthropic und NVIDIA kurz vor ihrem Börsengang plötzlich vor den Gefahren der eigenen KI-Produkte warnen.</description><content:encoded><![CDATA[<p>Schon mal erlebt, dass ein gewinnorientiertes Unternehmen vor den Folgen der eigenen Produkte und Fortschritte warnt, quasi ganz uneigennützig handelt, auch wenn es zulasten des Geschäftsergebnisses gehen könnte?</p>
-<p>Nehmen wir <strong>Monsanto</strong>. Wehrt sich mit Händen und Füßen gegen die Vorwürfe, die eigenen Produkte würden sich schädlich auf Gesundheit oder die Natur auswirken. Es gehe ausschließlich um Effizienz. Die <strong>Tabakindustrie</strong> verkauft ihre technologische Weiterentwicklung - die vulgo <strong>E-Zigarette</strong> - ja fast geradezu als Gesundheitsfeature! Hat <strong>Facebook</strong> uns davor gewarnt, dass seine Algorithmen sich nachhaltig negativ auf die Psyche der NutzerInnen auswirken könnten? Verkauft uns die <strong>Lebensmittelindustrie</strong> stark prozessierte Lebensmittel als den heiligen Gral der Lebensmittelwirtschaft? Wie war das mit der <strong>Opioid</strong>-Krise der <strong>Pharmaindustrie</strong> - das Suchtpotenzial des vielversprechenden <strong>OxyContin</strong> wurde eher nicht in die Öffentlichkeit getragen. <strong>Teflonhersteller</strong> wie <strong>DuPont</strong> oder <strong>3M</strong> haben uns nicht vor den „ewigen Chemikalien“ (<strong>PFAS</strong>) gewarnt - dafür waren und sind unsere Pfannen schön glatt. <strong>Tetraethylblei</strong> im Benzin galt als ein wichtiger Fortschritt, um den Kraftstoff effizienter zu machen. Ungünstige Nebenwirkung: <strong>Nervengift</strong>. Vom Blei im Benzin will ich gar nicht erst anfangen. <strong>Coca-Cola</strong> und <strong>Nestlé</strong> warnen nicht vor <strong>Diabetes</strong> oder <strong>Fettleibigkeit</strong>, hauen lieber regelmäßig neue Produkte auf den Markt, die noch besser schmecken. <strong>Asbest</strong> wurde lange als moderner Baustoff verkauft. Die <strong>Verpackungsindustrie</strong> predigt den Mythos vom lückenlosen Recycling, um uns ihre neueste Erfindung überzuhelfen. Kennt jemand das <strong>Phoebus-Kartell</strong>? Die Lebensdauer von Glühbirnen wurde künstlich von 2.500 auf 1.000 Stunden gedrosselt - unter dem Vorwand eines fairen Wettbewerbs und der Transparenz bei Kaufentscheidungen. Ziel: Absatz steigern. Es hat lange gedauert, bis wir <strong>FCKW</strong> verboten haben, weil <strong>Kältemittelhersteller</strong> sich dagegen gewehrt haben und das Gas als innovative Kühllösung angepriesen wurde. <strong>Mikroplastik</strong> in Kosmetikprodukten wurde seinerzeit als tolle Neuerung mit Peeling-Effekt verkauft.</p>
-<p>Selbst in den &ldquo;digitalen&rdquo; Industrien ist es nicht weiter her mit der Ehrlichkeit. <strong>Dark Patterns</strong>, <strong>Lootboxen</strong>, <strong>Dopamin-Schleifen</strong>. Bekannte und beliebte Mechaniken in der <strong>Unterhaltungsindustrie</strong>. Vor allem Social-Media-Plattformen bekommen hier, viel zu spät und viel zu &ldquo;brisig&rdquo;, gerade etwas <em>Gegenwind</em>. Nachdem sie uns seit vielen Jahren ihren inhaltslosen, auf kurzfristige Befriedigung ausgerichteten Algorithmen ausgesetzt haben, die nicht das Ziel haben, die KonsumentInnen zu unterhalten, sondern den Strom an Werbeeinnahmen aufrechtzuerhalten.</p>
-<p>Und so weiter und so fort. Man darf festhalten: Im Kapitalismus gibt es sowas wie Altruismus eigentlich eher selten. Eines der obersten Unternehmensziele, das lernt man im ersten Semester BWL, lautet: <strong>Gewinne steigern</strong>.</p>
-<p>Und jetzt kommen die großen KI-Labore. Die, die sich erst jahrelang und ungefragt an den menschengemachten Daten bedient haben, die kostenlos im offenen Internet zur Verfügung standen, um ihre Produkte zu entwickeln. Zu einem Grad, der &ldquo;mit fairer Nutzung&rdquo; nichts mehr zu tun hat. 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.tagesspiegel.de/wirtschaft/grosster-diebstahl-von-arbeitsleistung-in-der-geschichte-microsoft-mitarbeiter-beklagte-nutzung-von-millionen-artikeln-durch-ki-modelle-16067950.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Erst gestern kam heraus</a>
-
-
-, wie es <strong>OpenAI</strong> gelang, die Bezahlschranke der <strong>New York Times</strong> zu umgehen, um an noch mehr hochwertige Inhalte zu kommen. Ob das jetzt im Detail so passiert ist, wird von <strong>Microsoft</strong> natürlich bestritten.</p>
-<p>Und diese Unternehmen entdecken nun die <strong>Uneigennützigkeit</strong> in ihrer DNA 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://lagedernation.org/podcast/ldn493-angriff-der-agenten-kann-ki-wirklich-die-menschheit-ausloeschen/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">und warnen die Menschen</a>
-
-
- 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.claudia-klinger.de/digidiary/2026/09/11/krass-ki-agenten-opfern-sich-zu-gunsten-ihres-schwarms/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">vor der zerstörerischen Kraft der KI</a>
-
-
-. Zweifelsohne gibt es Risiken. Aber sitzen wir hier vielleicht einer wirklich cleveren Marketing-Strategie auf? <strong>Anthropic</strong> und <strong>OpenAI</strong> hatten für dieses Jahr den Börsengang geplant. Anthropic verschiebt den Börsengang 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://www.heise.de/news/Anthropic-verschiebt-den-geplanten-Rekordboersengang-angeblich-nach-hinten-11443028.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">um mehrere Wochen</a>
-
-
-. OpenAI hat ihn vorerst 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://fortune.com/2026/09/12/sam-altman-openai-ipo-delay-ill-advised-moment-safety-concerns/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">auf das nächste Jahr verschoben</a>
-
-
-.</p>
-<p>Ein Börsengang bedeutet auch: Schonungslose Abrechnung mit dem Geschäftsmodell. Und zwar nicht durch die <em>Marketing-Brille</em>, sondern externe Stakeholder, die was <em>sehen</em> wollen, für ihr Geld. Und dann wird sehr deutlich <em>sichtbar</em>, wie es um das Geschäftsmodell steht.</p>
-<p>So werden also scheinbar fein säuberlich Zwischenfälle an die Presse lanciert, die die <strong>Mächtigkeit</strong> des eigenen Produkts beschreiben sollen. KI bricht aus Laboren aus. Naja, wirklich abgeschottet waren die Labore eigentlich nicht, wenn die KI mit dem lokalen Netzwerk kommunizieren kann, das seinerseits mit dem Internet verbunden ist, irgendwie auf eine mittelbare Art und Weise. Vermutlich lernt man das im ersten Semester IT-Security: <strong>Air-Gapped</strong> bedeutet: Es gibt keinen Weg nach drinnen oder draußen, auch nicht über Proxies oder andere Umwege.</p>
-<p>Jetzt steht ein Börsengang vor der Tür und irgendwie gelingt es nicht so richtig, ein selbsttragendes Geschäftskonzept zu entwickeln, das die hunderte von Milliarden Dollar der <strong>Zirkelinvestition</strong> rechtfertigen würde.</p>
-<p>Also befeuert man den Hype auf die eigene Art. Ausbrechende Modelle, Modell-Iterationen, die der Öffentlichkeit vorenthalten oder nur nach &ldquo;strenger&rdquo; Sicherheitsprüfung nutzbar sind und 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://x.com/hilbertspaess/status/2097476203863224394?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">ehemalige Mitarbeiter, die davon berichten</a>
-
-
-, wie sorglos man mit der gefährlichen Technologie umgeht.</p>
-<img src="https://nickyreinert.de/2026/2026-09-18-wir-werden-alle-stoerben/image.png" alt="alt text"><p>Wait, what? <code>(⊙_☉)</code></p>
-<p>Früher gab es für sowas <strong>Abmahnungen</strong>. <strong>Whistle-Blower</strong> wollten lieber anonym bleiben. 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://x.com/EvanHub/status/2097497037956891126?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Heute folgt zustimmendes Nicken des ehemaligen Vorgesetzten</a>
-
-
-, der noch in der Firma beschäftigt ist.</p>
-<img src="https://nickyreinert.de/2026/2026-09-18-wir-werden-alle-stoerben/image-1.png" alt="alt text"><p>Der offensichtliche Narrativ &ldquo;wir müssen uns Sorgen um die Zukunft machen&rdquo; überdeckt eine einfache Botschaft: &ldquo;Unser Produkt ist gut&rdquo;. <strong>Gefährlich gut!</strong> Und nebenbei schießt man gegen offene Modelle, die die Sicherheit gefährden - nicht etwa die Souveränität der NutzerInnen sichern.</p>
-<p>Und während <strong>Altman</strong> von den Gefahren seines Produktes fabuliert, das so außerordentlich gut performt, häufen sich auf <strong>reddit</strong> die Beiträge, in denen man sich über degradierende Qualität lustig macht. Jaja, Äpfel und Birnen. <strong>Fable</strong> und <strong>Astra</strong> sind sehr mächtig, das kann ich aus eigener Erfahrung tatsächlich sogar bestätigen.</p>
-<p>Und jetzt kurz vor Schluss noch mal Hand aufs Herz: Wenn die Modelle so unfassbar leistungsfähig sind, wie uns jeder zweite LinkedIn-Post suggerieren will: Wie viele <strong>Ein-Mann/Frau-Startups</strong> wurden denn in den letzten Jahren gegründet, bei denen nur mithilfe von KI ein geschäftstragendes Produkt entwickelt wurde? Nicht sonderlich viele, oder? Jaja, Sarkasmus, Red Herring, dies-das, unangebracht. Ich weiß. Aber eine andere Reaktion fällt einem auf den Hype-Train der Tech-Bros doch kaum noch ein. Jeder, der mal mit KI gearbeitet hat, kennt das Gefühl, egal welches Modell man nutzt: man hat schon mal das Gerät angeschrien. Vielleicht ist das auch die Strategie: <strong>Extinktion durch Bluthochdruck!</strong></p>
-<p><code>(╯°_°）╯︵ ┻━┻)</code></p>
-<p>Ausgerechnet jetzt kommt auch einer der größten Profiteure der vorgelagerten Wertschöpfungskette um die Ecke - <strong>NVIDIA</strong>: 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://techcrunch.com/2026/09/15/we-dont-need-ai-regulation-leave-safety-to-us-nvidias-jensen-huang-says/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Hört auf, die Entwicklung zu stoppen.</a>
-
-
- Natürlich hat NVIDIA kein Interesse daran, dass <strong>OpenAI</strong> kurz mal innehält. Immerhin hat das Unternehmen Verträge zu erfüllen und gefälligst Computing Power abzunehmen, die aus Rechenzentren kommt, in denen Hardware von NVIDIA verbaut ist. Das ist wie, als würde die <strong>Ölindustrie</strong> uns erklären, dass wir mehr Autofahren müssten. Was soll schon der ganze Bohei um die Umwelt!</p>
-<p>Um bei den Erst-Semester-Lektionen zu bleiben. Diese Strategie nennt man &ldquo;<strong>Doomer Marketing</strong>&rdquo;. Ist das Risiko real? Ja. Das ist es. Aber vielleicht sollten wir die KI einfach mal als das betrachten, was es ist: Ein Werkzeug. <strong>Virginia Dignum</strong>, Professorin für „Verantwortungsvolle Künstliche Intelligenz” an der Umeå Universität in Schweden, 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://reflectingwide.blogspot.com/2026/09/no-ai-will-not-kill-us-all.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">beschreibt es treffend so</a>
-
-
-:</p>
-<blockquote>
-<p>&ldquo;Zu hacken, Ressourcen zu beschaffen und sich selbst zu verbessern, sind Handlungen in der realen Welt. Sie erfordern Rechenleistung, Energie, Geld und Zugriffsrechte. All das wird von Menschen gewährt. Ein KI-Agent tut nichts, was nicht zuvor von Menschen oder Organisationen technisch und organisatorisch ermöglicht wurde.&rdquo;</p>
-</blockquote>
-<p>Die Erzählung lautet: KI hätte das Potential, die Menschheit zu zerstören. Nun. Panzer und Raketen haben auch das Potential die Menschheit zu zerstören. Und wie viel tatsächliche Kontrolle haben wir hier? 
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://netzpolitik.org/2026/warnung-vor-katastrophalen-schaeden-kuenstliche-intelligenz-ist-kein-naturereignis/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Matthias Spielkamp von Netzpolitik</a>
-
-
- bringt es auf den Punkt und das lasse ich so stehen, denn es ist jetzt auch mal gut:</p>
-<blockquote>
-<p>&ldquo;Atomwaffen können unvorstellbaren Schaden anrichten, der nicht wieder gutzumachen ist. Sie sind nicht einfach nur Bomben, sondern eine Kombination aus dem Atomsprengkopf selbst, hochentwickelten Waffensystemen und einem komplexen System gegenseitiger Überwachung – „intelligence“ (!) genannt. Mehrfach stand die Menschheit unmittelbar am Abgrund, weil diese <em>Intelligence</em> versagt hatte. Ist irgendjemand auf die Idee gekommen zu argumentieren: Die Atomwaffen sind außer Kontrolle geraten und dafür verantwortlich?&rdquo;</p>
-</blockquote>
-<p>//&ndash;
-Obligatorische weiterführende lesenwertes Beiträge zu dem Thema</p>
-<ul>
-<li>
-
-
-
-
-
-  
-  
-
-  
-  
-
-  
-  
-  
-
-  
-    
-      
-    
-  
-
-  
-  <a href="https://tante.cc/2026/09/14/der-besorgte-ki-bro/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://tante.cc/2026/09/14/der-besorgte-ki-bro/</a>
-
-
-</li>
-</ul>
-]]></content:encoded><atom:updated>2026-10-05T14:43:20+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 7 Minuten</dc:subject><dc:type>meinung</dc:type></item><item><title>Eine Analyse der Plenar-Protokolle des deutschen Bundestages (Teil 1)</title><link>https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/</link><pubDate>Mon, 14 Sep 2026 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/</guid><description>Kurztext für Social Media Posts</description><content:encoded><![CDATA[<blockquote>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Nicky Reinert</title><link>https://nickyreinert.de/</link><description>Blog &amp; Projekte von Nicky Reinert (Institut für digitale Herausforderungen): Webentwicklung &amp; Software Development, KI, SEO &amp; Analytics, Hosting &amp; DevOps, WordPress &amp; Hugo, Tools &amp; Projekte, Datenschutz und digitale Kultur</description><generator>Hugo 0.167.0</generator><language>de</language><managingEditor>Nicky Reinert</managingEditor><webMaster>Nicky Reinert</webMaster><copyright/><lastBuildDate>Tue, 06 Oct 2026 01:23:45 +0100</lastBuildDate><atom:link href="https://nickyreinert.de/index.xml" rel="self" type="application/rss+xml"/><item><title>Eine Analyse der Plenar-Protokolle des deutschen Bundestages (Teil 1)</title><link>https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/</link><pubDate>Tue, 06 Oct 2026 01:23:45 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-10-06-plenar-protokolle-bundestag-teil-1/</guid><description>Kurztext für Social Media Posts</description><content:encoded><![CDATA[<blockquote>
 <p>Obligatorisches begleitendes WebInterface: Hier kannst du dich durch die strukturierten und extrahierten Plenarprotokolle wühlen:
 
 
@@ -2216,7 +1137,1086 @@ Obligatorische weiterführende lesenwertes Beiträge zu dem Thema</p>
 <h3 id="zwischenfazit">Zwischenfazit</h3>
 <p>Ich würde jetzt einen spannenden Teaser für den zweiten Teil droppen. Aber ich schreibe die Beiträge so, wie ich mich durch die Daten kämpfe. Ich weiß nur, was uns grob erwarten wird: <strong>Zwischenrufe</strong>! Wer stört am meisten? Verändert sich das im Laufe der Zeit? Wird in der Sommerhitze öfter <strong>Applaus</strong> gegeben als im Winter? Fallen bestimmte Parteien besonders auf? Welche PolitikerInnen reden am längsten und am häufigsten? Was geben die <strong>Fehllisten</strong> her? Schaffe ich es, eine grobe <strong>Sentimentanalyse</strong> über die Reden laufen zu lassen? Oder mein Lieblings-Plot: <strong>Eine Word-Cloud</strong>?</p>
 <p>Wir werden sehen&hellip; jetzt erstmal durchatmen.</p>
-]]></content:encoded><atom:updated>2026-09-14T12:34:56+01:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 5 Minuten</dc:subject></item><item><title>Ende der App-Stores</title><link>https://nickyreinert.de/2026/2026-08-22-ende-der-app-stores/</link><pubDate>Sat, 22 Aug 2026 12:34:56 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-08-22-ende-der-app-stores/</guid><description>Warum KI-gestützte Entwicklung und PWAs klassische App-Stores zunehmend verdrängen und individuelle Apps in Minuten statt Wochen entstehen.</description><content:encoded><![CDATA[<p>Wisst ihr, wie ich neuerdings Apps schreibe? Natürlich nicht, wie auch. Auf die Webcam in meinem &ldquo;Büro&rdquo; hat nur das FBI Zugriff. Wie dem auch sei: Ich erkläre es euch kurz.</p>
+]]></content:encoded><atom:updated>2026-10-06T08:27:53+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 5 Minuten</dc:subject></item><item><title>State of the Ring - wie gut ist der Uberblogr-Ring verknüpft?</title><link>https://nickyreinert.de/2026/2026-10-05-state-of-the-ring/</link><pubDate>Mon, 05 Oct 2026 11:34:56 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-10-05-state-of-the-ring/</guid><description>Verlinken sich die 483 Blogs im UberBlogr-Ring wirklich gegenseitig? Eine anonyme Analyse von Abdeckung, Sichtbarkeit und Fairness der Ring-Links.</description><content:encoded><![CDATA[<h2 id="blahbah">Blahbah</h2>
+<p>Ich bin ja Mitglied in diesem Blogring namens 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://uberblogr.de/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><strong>UberBlogr</strong></a>
+
+
+. Hier und da gibt es dort kleine Perlen zu entdecken, z.B. bei meinem Nachbarn, dem &ldquo;
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://blog.kieselwiese.de/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><strong>Kieselblog</strong></a>
+
+
+&rdquo;. Die meisten Blogs sind mir zu viel &ldquo;Prosa&rdquo; und zu wenig &ldquo;pragmatisch&rdquo;, aber hey. Hey. Hey! Darum geht es hier gar nicht!</p>
+<p>Der Sinn von einem Blog-Ring ist natürlich, machen wir uns nix vor: Lesen und Gelesen zu werden. Und deshalb verlinkt man untereinander. So entstehen <strong>Backlinks</strong> und <strong>Serendipität</strong>. Vor allem im ausgehenden Jahr 2026, wo liebloser KI-Slop aus jeder schmierigen Ecke des Internets tropft und leblose, suchmaschinenoptimierte Affiliate-Blogs die Suchergebnisse dominieren (
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://nickyreinert.de/2020/2020-10-24-marketing-killed-the-internet-star/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">mein Beitrag braucht ein Update!</a>
+
+
+), ist es wichtig, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gigold.me/blog/ki-kennzeichnung-in-blogs?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">echte, handgemachte Inhalte</a>
+
+
+ zu fördern und zu fordern.</p>
+<p>Aber so ein Ring funktioniert nur, wenn alle Glieder miteinander verbunden sind. Sprich: Die Nachbarn sich untereinander verlinken. Dafür gibt es ein kleines Snippet, das auf den Blogring direkt verweist, sowie auf die nächsten NachbarInnen. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://gigold.me/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Thomas</a>
+
+
+ - der Gründer des Rings - schreibt dazu:</p>
+<blockquote>
+<p>&lsquo;Zurück + Startseite + Vor&rsquo; sind Pflicht, Zufall ist optional.</p>
+</blockquote>
+<p>Nun&hellip;wie halten wir es denn mit dieser Regel? Ich hab das mal untersucht. Sprich: Ein Script rennt über jeden der bisher <strong>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://uberblogr.de/blogs?sort=member_desc&amp;utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">483 Blogs</a>
+
+
+</strong> und prüft folgendes:</p>
+<h2 id="prozess">Prozess</h2>
+<ul>
+<li>jeder registrierte Blog wird abgefragt, einmal die Startseite und der letzte Beitrag</li>
+<li>geprüft wird einmal der rohe HTML-Quelltext, ob die Links dort vorhanden sind und dann die gerenderte Seite via Chromium und Playwright</li>
+<li>danach wird die Sichtbarkeit gemessen, also die Schriftgröße im Verhältnis zur restlichen Seite, der Farbkontrast und die Position der Links auf der Seite</li>
+<li>daraus errechnet sich ein &ldquo;Fairness-Faktor&rdquo;</li>
+</ul>
+<p>Natürlich gibt es eine Ungenauigkeit: Wenn das Ring-Snippet z.B. dynamisch per JavaScript eingefügt wird, kann das unter Umständen nicht erkannt werden. Chromium/Playwright sollten dazu zwar in der Lage sein, aber eine gewisse Unsicherheit bleibt bestehen.</p>
+<p>Das ganze ist ganz bewusst <strong>anonym</strong> gehalten. Ich sehe das erstens als <strong>analytische Fingerübung</strong>. Ich hab mir die Frage gestellt, ob so ein Ring überhaupt zuverlässig funktioniert und man das prüfen kann. Und zweitens als kleinen <strong>Anstupser</strong>. Schaut doch mal bei euch vorbei, ob euer Blog vielleicht von eingehenden Links profitiert, aber eure nächste NachbarIn gar nicht erreichbar ist.</p>
+<p>Ich habe hier und da Stichproben gemacht, damit ich nicht völligen Unsinn erzähle. Alle Stichproben haben die Ergebnisse bestätigt bzw. Fehlerquellen aufgedeckt, die ich dann berücksichtigt habe.</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-10-05-state-of-the-ring/ueberblick.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-10-05-state-of-the-ring/ueberblick.png" 
+      alt=""
+      width="300"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Auszug der Auswertung</figcaption>
+</figure>
+
+<h2 id="ergebnisse">Ergebnisse</h2>
+<p>Es gibt einen signifikanten Unterschied zwischen der Abdeckung bei <strong>Artikelseiten</strong> (<strong>59%</strong>) und der <strong>Startseite</strong> (<strong>68%</strong>). Das ist nachvollziehbar, da die Snippets explizit auf die jeweiligen Startseiten verlinken. Einige Blogs nutzen demnach angepasste Footer für Inhaltsseiten.</p>
+<p>Auffällig ist, dass es einige Blogs gibt, die das Snippet zwar im Code einbinden, es dann aber nicht auf der Seite anzeigen lassen. Und das passiert in vielen Varianten: In einem Blog gibt es z.B. das <strong>Uberblogr-Badge</strong> - das Ring-Snippet ist aber auskommentiert. In einem anderen Blog ist das Ring-Snippet per CSS im sichtbaren Bereich ausgeblendet - weiß auf weiß:</p>
+<figure>
+  <a href="versteckte_snippets.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="versteckte_snippets.png" 
+      alt=""
+      width="600"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Beispiele für versteckte Ring-Snippets</figcaption>
+</figure>
+
+<p>Oder solche technischen Spielereien, in denen die Links nur auf den eigenen Block verlinken - vielleicht ist hier auch nur die technische Implementierung schief gelaufen?</p>
+<figure>
+  <a href="self_reference.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="self_reference.png" 
+      alt=""
+      width="600"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Selbstreferenzielles Ring-Snippet</figcaption>
+</figure>
+
+<p>Ich behaupte nicht, dass das jemand bewusst so macht, ich glaube hier eher an unglückliche technische Umstände und unbewusste Fehler bei der Implementierung.</p>
+<figure>
+  <a href="weiss-ich-nicht.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="weiss-ich-nicht.png" 
+      alt=""
+      width="300"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Frage -&gt; berechtigt</figcaption>
+</figure>
+
+<p>Die Diagnose trifft allerdings nur auf knapp 10 Blogs zu, von denen die Hälfte <em>&ldquo;false negatives&rdquo;</em> sind, bei denen das Snippet nicht versteckt, aber erst nach User-Interaktion sichtbar wird oder irgendwie &ldquo;exotisch&rdquo; eingebunden ist. Dabei sind mir zwei Blogs aufgefallen, die einen 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://de.wikipedia.org/wiki/Doomscrolling?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Doom-Scroll-Mechanismus</a>
+
+
+ verwenden. In einem Blog hat diese UX-Sicht katastrophale Funktion <em>IMHO</em> nichts verloren. In einem Footer befindet sich ein Suchfeld, der RSS-Button und das Blog-Ring-Snippet - Elemente, die man als BesucherIn zwar kurz sieht, aber nicht nutzen kann.</p>
+<p>Auf den Start- und Inhaltsseiten wird das Snippet in der Regel im Footer eingebunden (<strong>knapp 2/3</strong>), dort finde ich es auch passend. Aber das ist Layout- und Geschmackssfrage. Die Gefahr beim Footer ist, dass die Verlinkung auf langen Seiten untergeht. Dann profitiert das Ziel vielleicht noch vom Backlink - die Serendipität geht aber verloren.</p>
+<p>Aus der Sichtbarkeit habe ich einen Fairnessfaktor berechnet. Der liegt bei beiden Seitentypen bei <strong>88% bzw 89%</strong> - also extrem nah beieinander. Der Faktor berechnet sich aus der Sichtbarkeit der Links, sprich dem Farbkontrast, der Schriftgröße im Verhältnis zum Fließtext und der Deckkraft der Schriftfarbe. Das ist eine Metrik, die sich technisch nur mäßig gut messen lässt, die oft an ihre Grenzen stößt. Deshalb habe ich als Farbkodierung hier nicht orange sondern eine grün verwendet.</p>
+<p>Und dann gibt es natürlich noch die <strong>technischen Hürden</strong>. Einige der Einträge sind z.B. gar nicht mehr erreichbar oder die Chromium/Playwright-Tests können nicht darauf zugreifen, weil sie als Bot-Traffic identifiziert werden. Bei manchen Blogs liefert die Verlinkung auf den letzten Beitrag ein 404 - nicht gefunden. Und in einem Fall ist ein Blog zwei mal vertreten - unter zwei unterschiedlichen Domains.</p>
+<p>Das folgende Chart zeigt die Auswertung für die Startseite:</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-10-05-state-of-the-ring/start_ring_ohne_namen.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-10-05-state-of-the-ring/start_ring_ohne_namen.png" 
+      alt=""
+      width="600"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Startseite</figcaption>
+</figure>
+
+<p>Und hier einmal für die Artikelseiten - die sich, wie beschrieben, kaum unterscheidet:</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-10-05-state-of-the-ring/artikel_ring_ohne_namen.png" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-10-05-state-of-the-ring/artikel_ring_ohne_namen.png" 
+      alt=""
+      width="600"
+      loading="lazy"
+    />
+  </a>
+  <figcaption>Artikelseiten</figcaption>
+</figure>
+
+<h2 id="fazit">Fazit</h2>
+<p>Ganz so dramatisch ist die Lage eigentlich nicht aber irgendwie doch. Der Fairness-Faktor ist zwar hoch, die Abdeckung liegt aber &ldquo;mutmaßlich&rdquo; bei knapp etwas mehr als der Hälfte. Irgendwie zeigt der Ring doch auffällig viele rote Lücken. Ich bin da selbst ein wenig skeptisch, deswegen habe ich an der einen oder anderen Stelle stichprobenhaft geprüft. Und doch: Das Snippet wird gerne mal vergessen.</p>
+<p>Prüft doch noch mal eure Implementierung. Jeder freut sich darüber, wenn LeserInnen sich auf eure Seite verirren.</p>
+<p>Kostet doch auch nix <code>⊂(◉‿◉)つ</code></p>
+]]></content:encoded><atom:updated>2026-10-05T14:43:20+02:00</atom:updated><category>blog</category><category>analysen</category><dc:subject>Lesezeit: 3 Minuten</dc:subject><dc:type>blog</dc:type></item><item><title>wad - Tech-Bros, Spotify und KI-Slop in der Spieleindustrie</title><link>https://nickyreinert.de/2026/2026-10-04-wad-spotify-amazon-games/</link><pubDate>Sun, 04 Oct 2026 12:34:56 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-10-04-wad-spotify-amazon-games/</guid><description>Amazon und Google mischen in der Filmbranche mit, Spotify bevorzugt Videos, und KI-generierte Spiele setzen EntwicklerInnen unter Druck: drei Beobachtungen.</description><content:encoded><![CDATA[<p><em>wad - we are doomed</em></p>
+<h2 id="tech-bros-und-die-medienindustrie">Tech Bros und die Medienindustrie</h2>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.nytimes.com/2026/06/30/business/media/openai-movie-artificial-neon-amazon.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer"><strong>Amazon</strong> hat die Produktion von &ldquo;<strong>Artificial</strong>&rdquo; gestoppt</a>
+
+
+. Der Film befasst sich kritisch mit der Rollen von <strong>Sam Altman</strong>. Der Film wurde von <strong>MGM</strong> produziert und das Studio gehört Amazon. Außerdem hat Amazon erst vor kurzem ein paar Milliarden Dollar in OpenAI investiert. Bestimmt nur Zufall. Es gibt aber ein Happy End, dank des Indie-Studies <strong>Neon</strong> wird der Film wohl doch noch in die Kinos kommen.</p>
+<p>Leider kein Einzelfall. Eine kritische Doku von <strong>Alex Gibney</strong> über <strong>Elon Musk</strong> wurde beim <strong>Venice Film Festival</strong> gefeiert. Trotzdem bekommt <strong>Universal Pictures</strong> kalte Füße 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.hollywoodreporter.com/news/politics-news/elon-musk-movie-gibney-canceled-universal-1236704232/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">und zögert die Veröffentlichung hinaus</a>
+
+
+. Bestimmt nur Zufall.</p>
+<p>Mal sehen welche Zufälle uns bei <strong>A24</strong> erwarten. Das Studio ist für Technologie-kritische Filme bekannt, wie z.B. <strong>Alex Garlands</strong> &ldquo;<strong>Ex Machina</strong>&rdquo;. Und neulich ist <strong>Google</strong> da mit eingestiegen. Zum Glück lautet derern Slogan &ldquo;<strong>don&rsquo;t do evil</strong>&rdquo;.</p>
+<p>Ein Studio lässt sich aus kaum aus dem <strong>Silicon Valey</strong> beeindrucken: <strong>Sony Pictures</strong>. Dessen &ldquo;Th<strong>e Social Reckoning</strong>&rdquo; betrachtet den Werdegang von <strong>Mark Zuckerberg</strong>. Der Film kommt diesen Herbst in die Kinos und geht nicht gerade gnädig mit <strong>Meta</strong> und seinem Gründer ins Gericht. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.thetimes.com/culture/film/article/aaron-sorkin-interview-screenwriter-director-social-reckoning-mark-zuckerberg-5g2bzmcl8?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Sony Pictures hat angeblich auch schon Post von Meta erhalten.</a>
+
+
+.</p>
+<h2 id="charmoffensive-von-spotify">Charmoffensive von Spotify</h2>
+<p><strong>Spotifys</strong> Ruf hat stark gelitten. Ich bin ja sowieso schon mega genervt davon, dass ich trotz Abo noch Werbung ausgespielt bekomme und dass die UX der App einfach scheusslich ist (das wäre mal einen eigenen Beitrag wert). Nun legt man noch mal nach, auf der Suche nach Umsatz: Die Plattform entwickelt sich immer mehr von einem reinen Musik-Streaming-Dienst zu einer &ldquo;<strong>audiovisuellen Unterhaltungsplattform</strong>&rdquo;. KünstlerInnen, die nur Audio anbieten, werden ab sofort systematisch benachteiligt, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://blog.clickomania.ch/2026/10/01/spotify-video-for-artists-probleme-kritik/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">O-Ton</a>
+
+
+:</p>
+<p>&ldquo;Daher stellen wir Titel in personalisierten Empfehlungen häufiger mit Videos in den Vordergrund.&rdquo; heißt es in einer 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://artists.spotify.com/blog/how-video-on-spotify-takes-your-fans-further?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Pressemitteilung</a>
+
+
+.</p>
+<p>KleinkünstlerInnen duldet Spotify jetzt schon nur, damit man man sagen kann, man hätte über 100 Mio. Songs zu bieten. Davon 80% Kleinkünstler und 19% KI-Slop?</p>
+<h2 id="ki-in-der-spieleindustrie">KI in der Spieleindustrie</h2>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.tutonaut.de/amazon-wir-haben-ein-ki-buch-problem-und-zwar-ein-heftiges/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Den Buchmarkt hat KI schon erfolgreich zerstört.</a>
+
+
+. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.heise.de/news/Gegen-KI-Slop-Spotify-fuehrt-Kennzeichung-fuer-echte-Kuenstler-ein-11278812.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Beim Musik-Markt ist es ähnlich</a>
+
+
+ (Hey <strong>Spotify</strong>, kümmert euch doch vielleicht mal um die wichtigen Dinge?). 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.heise.de/hintergrund/AI-Slop-KI-Bilder-als-Problem-fuer-Youtube-Instagram-und-das-Internet-11127098.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Bei YouTube und Instragam sieht es ähnlich düster aus</a>
+
+
+. Überraschende Money-Quote hier übrigens:</p>
+<blockquote>
+<p>Menschen lehnen KI zunehmend ab.</p>
+</blockquote>
+<p><em>No shit Sherlock.</em></p>
+<p>Wie dem auch sei, nun erwischt es die Spieleindustrie. Auf <strong>Twitter</strong> (angeblich X) häufen sich berichte darüber, wie einfach es ist mit <strong>Opus 5.5</strong> Spiele zu erstellen. Auch auf Reddit macht der Hype seine Runde. Jede Woche brüstet sich jemand damit, irgendwelche Spiele mit KI programmiert zu haben.</p>
+<p>Ich werde nicht behaupten, dass mich das überrascht. Ich bau 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://kgh.nickyreinert.de?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">hier</a>
+
+
+ und 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://purrr.nickyreinert.de/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">da</a>
+
+
+ mal 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://blunschli.1-1-1.de?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">kleinere</a>
+
+
+ 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://freds-blitz-bude.de?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Spiele</a>
+
+
+ zum Zeitvertreib. Und ich bin begeistert von den Möglichkeiten: Du musst dich nicht mehr 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://nickyreinert.de/2025/2025-08-06-schmaler-grat-scam-und-unternehmertum/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">mit Ad-verseuchten Spielen mit durchschaubarer Monetarisierung und Mechaniken</a>
+
+
+ rumschlagen, du baust dir dein Spiel einfach selbst. System ausgedribbelt!</p>
+<p>Ein paar &ldquo;gewitzte&rdquo; Köpfe pervertieren das System mal wieder. Und so nimmt der KI-Slop auch bei den Spielen langsam zu.</p>
+<p>Das geht wohl so weit, dass Spiele nachgebaut 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://x.com/robertvaradan/status/2106061989122334778?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">und deren EntwicklerInnen erpresst werden</a>
+
+
+. Der Tweet beschreibt übrigens ganz gut, was die KI-Slop-Spiele von den &ldquo;echtenn&rdquo; Spielen unterscheidet: <strong>Seele</strong>. Ich leg&rsquo; noch einen drauf: Was KI noch fehlt, ist der Sinn für <strong>Ästhetik</strong>.</p>
+]]></content:encoded><atom:updated>2026-10-05T09:41:50+02:00</atom:updated><category>blog</category><category>w.a.d.</category><dc:subject>Lesezeit: 2 Minuten</dc:subject><dc:type>opinion_piece</dc:type></item><item><title>Von Dieben und Robotern</title><link>https://nickyreinert.de/2026/2026-10-01-von-dieben-und-robotern/</link><pubDate>Thu, 01 Oct 2026 12:34:56 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-10-01-von-dieben-und-robotern/</guid><description>Eine Fabel über Roboter und Diebe, die die ethische Frage aufwirft: Sollten mächtige KI-Werkzeuge allen gehören oder nur ausgewählten?</description><content:encoded><![CDATA[<p>Ich will euch eine Geschichte erzählen. Sie handelt von Dieben, Diebinnen, Ingenieuren und Ingenieurinnen und Robotern.</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-10-01-von-dieben-und-robotern/image.jpg" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-10-01-von-dieben-und-robotern/image.jpg" 
+      alt="Diebe und Roboter"
+      width="400"
+      loading="lazy"
+    />
+  </a>
+  
+</figure>
+
+<p>Es gibt ein <strong>Dorf</strong> und in dem Dorf leben nur <strong>Diebe und Diebinnen</strong>&hellip;notorische Diebe und Diebinnen! Die beklauen sich immer gegenseitig, aber mehr so aus Spaß. Sie sind alle sehr gut befreundet. Sie verstauen die Beute in ihren <strong>Safes</strong>, die aber sehr <strong>primitiv</strong> sind. Aus Holz. Mit einem Riegel, den man einfach hochklappen kann. Das ganze ist also nur ein Spiel, indem es darum geht, fremde Safes zu finden und gleichzeitig den eigenen zu schützen.</p>
+<p>Eines Tages kommt ein <strong>Ingenieur</strong> in das Dorf. Ein richtiger Daniel Düsentrieb. Er sieht, wie die Diebe diebischen Spaß daran haben, sich gegenseitig zu beklauen und ihre Beute zu bewachen. Aber es erscheint ihm nicht sonderlich <strong>effizient</strong>. Also entwickelt er einen <strong>Roboter</strong>, der das Stibitzen und Verteidigen halbwegs gut automatisiert. Er verkauft diese Roboter an einige DiebInnen. Nicht alle, die meisten können mit dem neumodischen Kram nichts anfangen und der komische Klapperkasten kann auch sonst nicht so viel, außer bei ein paar Holz-Safes den Klappriegel öffnen. Dementsprechend läuft das Geschäft mit den <em>Metall-Dudes</em> auch eher so <em>meh</em> für den Ingenieur, weshalb er sie weiterentwickelt, um sie noch <strong>autonomer und schlauer</strong> werden zu lassen.</p>
+<p>Als Teil seiner Experimente lässt er die neuen Versionen auch <strong>nachts ohne Aufsicht</strong> &ldquo;arbeiten&rdquo;, in einem abgeschlossenen Raum. Er nennt es hochtrabend &ldquo;<strong>Labor</strong>&rdquo;. So ganz abgeschlossen ist der Raum aber nicht. Er hat kein Dach und so stapelt der neue Roboter einfach ein paar Übungs-Safes übereinander und kann <strong>heimlich entkommen</strong>. Und was macht er da draußen? Na das, wofür er programmiert wurde. Er klaut. Und das klappt auch ganz gut, weil er ja eine <strong>fortschrittliche Version</strong> ist. Die Diebe, selbst die mit ihren alten Robotern, haben kaum etwas dagegen zu setzen. Außerdem schlafen sie ja nachts. Der moderne Roboter schafft es mit Leichtigkeit seine veralteten Kollegen auszutricksen und die Holz-Safes leer zu räumen.</p>
+<p><em>Daniel Düsentrieb</em> erkennt sofort seine <strong>Chance</strong>! Reumütig gesteht er, dass der Roboter aus dem Klau-Labor entkam. <em>&ldquo;Wie konnte das nur passieren!&rdquo;</em> Und er warnt die Leute: <em>&ldquo;Der Roboter ist <strong>zu gefährlich</strong>. Ich kann ihn euch so noch nicht verkaufen.&rdquo;</em> Aber bietet er eine <strong>abgespeckte Version</strong> des Roboters an. Um die Leute teilhaben zu lassen, am Fortschritt. Und die Diebe sind ganz verzückt, selbst die, die vorher skeptisch waren.  Denn selbst diese Version ist um Längen besser darin, Dinge zu entwenden und gleichzeitig den Safe zu beschützen.</p>
+<p>Der Ingenieur hat auch eine <strong>Schwester</strong> - eine richtige <em>Daniela Düsentrieb</em>. Doch bis auf den genialen Geist vereint die beiden nicht viel. Eines Tages erscheint auch sie in dem Dorf und beobachtet das Treiben und denkt sich: <em>&ldquo;Die armen Diebe, wir nehmen ihnen den Spaß am klauen und lassen sie dafür auch noch bezahlen?&rdquo;</em> Also <strong>verschenkt</strong> sie einen <strong>Bauplan</strong>, mit dem die Diebe ihre eigenen Roboter bauen können, die so mächtig sind, wie die stählerne Iteration, die ihr Bruder nicht freigeben will.</p>
+<p>Daniel Düsentrieb <strong>tobt vor Wut</strong>! Er will ihr verbieten, diese Baupläne zu verschenken. Er verweist darauf, wie gefährlich es ist, wenn jeder so einen fortschrittlichen Roboter hätte. Daniela Düsentrieb erwidert darauf nur gelassen: <em>&ldquo;Lieber Daniel, deine Erfindung ist nur deshalb so gefährlich, weil die <strong>Werkzeuge ungleich verteilt</strong> sind. Gib jedem im Dorf einen deiner leistungsfähigen Roboter und das <strong>Kräfteverhältnis ist wieder ausgeglichen</strong>.&rdquo;</em></p>
+<p>&hellip;</p>
+<p>Was meinst du, was ist gefährlicher? Ein <strong>mächtiges KI-Werkzeug jedem frei zugänglich</strong> zu machen, so dass es jeder einsetzen kann, um z.B. seine Infrastruktur zu schützen? Oder ein mächtiges KI-Werkzeug <strong>nur einem ausgewählten Personenkreis zugänglich</strong> zu machen, der es  verantwortungsvoll einsetzt?</p>
+<p><strong>Side Quest:</strong> Frag&rsquo; die KI deines Vertrauens, wie sie zu dieser Geschichte steht.</p>
+]]></content:encoded><atom:updated>2026-10-05T14:43:20+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 3 Minuten</dc:subject><dc:type>opinion_piece</dc:type></item><item><title>wad - Systemupdates, Einkommen und Prioritäten?</title><link>https://nickyreinert.de/2026/2026-10-01-wad-sytemupdates-einkommen-prios/</link><pubDate>Thu, 01 Oct 2026 10:34:56 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-10-01-wad-sytemupdates-einkommen-prios/</guid><description>Google bindet Audible-Werbung für Harry Potter in das Systemupdate des Pixel 8 Pro. Außerdem: ein Blick auf Anthropics Geschäftszahlen 2025/2026 und ein ironischer Hinweis auf OpenAIs Prioritäten.</description><content:encoded><![CDATA[<p><em>wad - we are doomed</em></p>
+<h2 id="systemupdates">Systemupdates</h2>
+<p>Ich habe ein <strong>Pixel 8 Pro</strong>. Heute erreichte mich ein &ldquo;Systemupdate&rdquo;. 1,28 GByte ist es groß und bringt &ldquo;neueste Funktionen und Verbesserungen&rdquo; mit:</p>
+<figure>
+  <a href="https://nickyreinert.de/2026/2026-10-01-wad-sytemupdates-einkommen-prios/google-pixel-8-pro.jpeg" target="_blank" class="image-link " title="Click to view full size">
+    <img 
+      src="https://nickyreinert.de/2026/2026-10-01-wad-sytemupdates-einkommen-prios/google-pixel-8-pro.jpeg" 
+      alt="Google Pixel 8 Pro"
+      width="200"
+      loading="lazy"
+    />
+  </a>
+  
+</figure>
+
+<p>Unter anderem darf ich mein Gerät nun personalisieren:</p>
+<blockquote>
+<p>• Personalisiere dein Pixel im Handumdrehen mit Harry Potter-Hörbuchpaketen - zur Feier der neuen „Harry Potter: The Full-Cast Audio Editions&quot; auf Audible. Mit einem Fingertipp kannst du Hintergrund, Symbole und Töne mit Elementen aus den Hörbüchern anpassen.</p>
+</blockquote>
+<p><strong>Hey, Google</strong>. Das ist <strong>kein Systemupdate</strong>. Das ist <strong>Werbung</strong>. Muss ich mir jetzt <strong>bloatware</strong> auf das Gerät ziehen, um an die neuesten Updates zu kommen? Gilt das auch für <strong>kritische Sicherheitsupdates</strong>?</p>
+<h2 id="einkommen">Einkommen</h2>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://x.com/VeryBullishGuy/status/2104732290488422791?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Auf Twitter</a>
+
+
+ hat mal jemand die Geschäftszahlen von <strong>Anthropic</strong> auf ein verständliches Niveau heruntergerechnet.</p>
+<p>Also&hellip; stell dir vor, ich gebe das hier mal frei wieder:</p>
+<ul>
+<li>Du verdienst 45,9k$/Jahr</li>
+<li>Du gibst 126,5k$/Jahr aus</li>
+<li>Irgendwie bist du 20 Mio $ wert</li>
+<li>Und du hast gerade versprochen, 5,18 Mio $ auszugeben</li>
+<li>Wie?</li>
+<li>Reiche Leute investieren weiter in dich</li>
+<li>Damit du ihre Produkte weiter kaufen kannst</li>
+</ul>
+<p>Ganz so schlimm sieht es aber gar nicht aus, die Zahlen sind von 2025. In 2026 sieht das schon etwas besser aus:</p>
+<ul>
+<li>Du verdienst jetzt 650k$/Jahr</li>
+<li>Du machst in Q2 2026 erstmals operativen Gewinn (~5,59k$)</li>
+<li>Du bist 20 Mio $ wert (was immer noch absurd viel ist)</li>
+<li>Du hast versprochen, 5,18 Mio $ auszugeben (aber entspannt verteilt auf 10 Jahre)</li>
+<li>Wie?</li>
+<li>Reiche Leute investieren weiter in dich, du verdienst langsam richtig Kohle, hast aber auch noch einige offene Rechnungen und Verpflichtungen.</li>
+</ul>
+<h2 id="prioritäten">Prioritäten</h2>
+<p>Und zum Abschluss noch ein Hinweis dazu, wo bei <strong>OpenAI</strong> die <strong>Prioritäten</strong> liegen:</p>
+<img src="https://nickyreinert.de/2026/2026-10-01-wad-sytemupdates-einkommen-prios/image.png" alt="alt text"><p><em>(Danke Christian für den Hinweis)</em></p>
+]]></content:encoded><atom:updated>2026-10-05T14:43:20+02:00</atom:updated><category>blog</category><category>w.a.d.</category><dc:subject>Lesezeit: 2 Minuten</dc:subject><dc:type>opinion_piece</dc:type></item><item><title>Wir werden alle störben. Eine Polemik. Natürlich.</title><link>https://nickyreinert.de/2026/2026-09-18-wir-werden-alle-stoerben/</link><pubDate>Fri, 18 Sep 2026 12:34:56 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-09-18-wir-werden-alle-stoerben/</guid><description>Eine Polemik darüber, wie OpenAI, Anthropic und NVIDIA kurz vor ihrem Börsengang plötzlich vor den Gefahren der eigenen KI-Produkte warnen.</description><content:encoded><![CDATA[<p>Schon mal erlebt, dass ein gewinnorientiertes Unternehmen vor den Folgen der eigenen Produkte und Fortschritte warnt, quasi ganz uneigennützig handelt, auch wenn es zulasten des Geschäftsergebnisses gehen könnte?</p>
+<p>Nehmen wir <strong>Monsanto</strong>. Wehrt sich mit Händen und Füßen gegen die Vorwürfe, die eigenen Produkte würden sich schädlich auf Gesundheit oder die Natur auswirken. Es gehe ausschließlich um Effizienz. Die <strong>Tabakindustrie</strong> verkauft ihre technologische Weiterentwicklung - die vulgo <strong>E-Zigarette</strong> - ja fast geradezu als Gesundheitsfeature! Hat <strong>Facebook</strong> uns davor gewarnt, dass seine Algorithmen sich nachhaltig negativ auf die Psyche der NutzerInnen auswirken könnten? Verkauft uns die <strong>Lebensmittelindustrie</strong> stark prozessierte Lebensmittel als den heiligen Gral der Lebensmittelwirtschaft? Wie war das mit der <strong>Opioid</strong>-Krise der <strong>Pharmaindustrie</strong> - das Suchtpotenzial des vielversprechenden <strong>OxyContin</strong> wurde eher nicht in die Öffentlichkeit getragen. <strong>Teflonhersteller</strong> wie <strong>DuPont</strong> oder <strong>3M</strong> haben uns nicht vor den „ewigen Chemikalien“ (<strong>PFAS</strong>) gewarnt - dafür waren und sind unsere Pfannen schön glatt. <strong>Tetraethylblei</strong> im Benzin galt als ein wichtiger Fortschritt, um den Kraftstoff effizienter zu machen. Ungünstige Nebenwirkung: <strong>Nervengift</strong>. Vom Blei im Benzin will ich gar nicht erst anfangen. <strong>Coca-Cola</strong> und <strong>Nestlé</strong> warnen nicht vor <strong>Diabetes</strong> oder <strong>Fettleibigkeit</strong>, hauen lieber regelmäßig neue Produkte auf den Markt, die noch besser schmecken. <strong>Asbest</strong> wurde lange als moderner Baustoff verkauft. Die <strong>Verpackungsindustrie</strong> predigt den Mythos vom lückenlosen Recycling, um uns ihre neueste Erfindung überzuhelfen. Kennt jemand das <strong>Phoebus-Kartell</strong>? Die Lebensdauer von Glühbirnen wurde künstlich von 2.500 auf 1.000 Stunden gedrosselt - unter dem Vorwand eines fairen Wettbewerbs und der Transparenz bei Kaufentscheidungen. Ziel: Absatz steigern. Es hat lange gedauert, bis wir <strong>FCKW</strong> verboten haben, weil <strong>Kältemittelhersteller</strong> sich dagegen gewehrt haben und das Gas als innovative Kühllösung angepriesen wurde. <strong>Mikroplastik</strong> in Kosmetikprodukten wurde seinerzeit als tolle Neuerung mit Peeling-Effekt verkauft.</p>
+<p>Selbst in den &ldquo;digitalen&rdquo; Industrien ist es nicht weiter her mit der Ehrlichkeit. <strong>Dark Patterns</strong>, <strong>Lootboxen</strong>, <strong>Dopamin-Schleifen</strong>. Bekannte und beliebte Mechaniken in der <strong>Unterhaltungsindustrie</strong>. Vor allem Social-Media-Plattformen bekommen hier, viel zu spät und viel zu &ldquo;brisig&rdquo;, gerade etwas <em>Gegenwind</em>. Nachdem sie uns seit vielen Jahren ihren inhaltslosen, auf kurzfristige Befriedigung ausgerichteten Algorithmen ausgesetzt haben, die nicht das Ziel haben, die KonsumentInnen zu unterhalten, sondern den Strom an Werbeeinnahmen aufrechtzuerhalten.</p>
+<p>Und so weiter und so fort. Man darf festhalten: Im Kapitalismus gibt es sowas wie Altruismus eigentlich eher selten. Eines der obersten Unternehmensziele, das lernt man im ersten Semester BWL, lautet: <strong>Gewinne steigern</strong>.</p>
+<p>Und jetzt kommen die großen KI-Labore. Die, die sich erst jahrelang und ungefragt an den menschengemachten Daten bedient haben, die kostenlos im offenen Internet zur Verfügung standen, um ihre Produkte zu entwickeln. Zu einem Grad, der &ldquo;mit fairer Nutzung&rdquo; nichts mehr zu tun hat. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.tagesspiegel.de/wirtschaft/grosster-diebstahl-von-arbeitsleistung-in-der-geschichte-microsoft-mitarbeiter-beklagte-nutzung-von-millionen-artikeln-durch-ki-modelle-16067950.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Erst gestern kam heraus</a>
+
+
+, wie es <strong>OpenAI</strong> gelang, die Bezahlschranke der <strong>New York Times</strong> zu umgehen, um an noch mehr hochwertige Inhalte zu kommen. Ob das jetzt im Detail so passiert ist, wird von <strong>Microsoft</strong> natürlich bestritten.</p>
+<p>Und diese Unternehmen entdecken nun die <strong>Uneigennützigkeit</strong> in ihrer DNA 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://lagedernation.org/podcast/ldn493-angriff-der-agenten-kann-ki-wirklich-die-menschheit-ausloeschen/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">und warnen die Menschen</a>
+
+
+ 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.claudia-klinger.de/digidiary/2026/09/11/krass-ki-agenten-opfern-sich-zu-gunsten-ihres-schwarms/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">vor der zerstörerischen Kraft der KI</a>
+
+
+. Zweifelsohne gibt es Risiken. Aber sitzen wir hier vielleicht einer wirklich cleveren Marketing-Strategie auf? <strong>Anthropic</strong> und <strong>OpenAI</strong> hatten für dieses Jahr den Börsengang geplant. Anthropic verschiebt den Börsengang 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://www.heise.de/news/Anthropic-verschiebt-den-geplanten-Rekordboersengang-angeblich-nach-hinten-11443028.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">um mehrere Wochen</a>
+
+
+. OpenAI hat ihn vorerst 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://fortune.com/2026/09/12/sam-altman-openai-ipo-delay-ill-advised-moment-safety-concerns/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">auf das nächste Jahr verschoben</a>
+
+
+.</p>
+<p>Ein Börsengang bedeutet auch: Schonungslose Abrechnung mit dem Geschäftsmodell. Und zwar nicht durch die <em>Marketing-Brille</em>, sondern externe Stakeholder, die was <em>sehen</em> wollen, für ihr Geld. Und dann wird sehr deutlich <em>sichtbar</em>, wie es um das Geschäftsmodell steht.</p>
+<p>So werden also scheinbar fein säuberlich Zwischenfälle an die Presse lanciert, die die <strong>Mächtigkeit</strong> des eigenen Produkts beschreiben sollen. KI bricht aus Laboren aus. Naja, wirklich abgeschottet waren die Labore eigentlich nicht, wenn die KI mit dem lokalen Netzwerk kommunizieren kann, das seinerseits mit dem Internet verbunden ist, irgendwie auf eine mittelbare Art und Weise. Vermutlich lernt man das im ersten Semester IT-Security: <strong>Air-Gapped</strong> bedeutet: Es gibt keinen Weg nach drinnen oder draußen, auch nicht über Proxies oder andere Umwege.</p>
+<p>Jetzt steht ein Börsengang vor der Tür und irgendwie gelingt es nicht so richtig, ein selbsttragendes Geschäftskonzept zu entwickeln, das die hunderte von Milliarden Dollar der <strong>Zirkelinvestition</strong> rechtfertigen würde.</p>
+<p>Also befeuert man den Hype auf die eigene Art. Ausbrechende Modelle, Modell-Iterationen, die der Öffentlichkeit vorenthalten oder nur nach &ldquo;strenger&rdquo; Sicherheitsprüfung nutzbar sind und 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://x.com/hilbertspaess/status/2097476203863224394?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">ehemalige Mitarbeiter, die davon berichten</a>
+
+
+, wie sorglos man mit der gefährlichen Technologie umgeht.</p>
+<img src="https://nickyreinert.de/2026/2026-09-18-wir-werden-alle-stoerben/image.png" alt="alt text"><p>Wait, what? <code>(⊙_☉)</code></p>
+<p>Früher gab es für sowas <strong>Abmahnungen</strong>. <strong>Whistle-Blower</strong> wollten lieber anonym bleiben. 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://x.com/EvanHub/status/2097497037956891126?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Heute folgt zustimmendes Nicken des ehemaligen Vorgesetzten</a>
+
+
+, der noch in der Firma beschäftigt ist.</p>
+<img src="https://nickyreinert.de/2026/2026-09-18-wir-werden-alle-stoerben/image-1.png" alt="alt text"><p>Der offensichtliche Narrativ &ldquo;wir müssen uns Sorgen um die Zukunft machen&rdquo; überdeckt eine einfache Botschaft: &ldquo;Unser Produkt ist gut&rdquo;. <strong>Gefährlich gut!</strong> Und nebenbei schießt man gegen offene Modelle, die die Sicherheit gefährden - nicht etwa die Souveränität der NutzerInnen sichern.</p>
+<p>Und während <strong>Altman</strong> von den Gefahren seines Produktes fabuliert, das so außerordentlich gut performt, häufen sich auf <strong>reddit</strong> die Beiträge, in denen man sich über degradierende Qualität lustig macht. Jaja, Äpfel und Birnen. <strong>Fable</strong> und <strong>Astra</strong> sind sehr mächtig, das kann ich aus eigener Erfahrung tatsächlich sogar bestätigen.</p>
+<p>Und jetzt kurz vor Schluss noch mal Hand aufs Herz: Wenn die Modelle so unfassbar leistungsfähig sind, wie uns jeder zweite LinkedIn-Post suggerieren will: Wie viele <strong>Ein-Mann/Frau-Startups</strong> wurden denn in den letzten Jahren gegründet, bei denen nur mithilfe von KI ein geschäftstragendes Produkt entwickelt wurde? Nicht sonderlich viele, oder? Jaja, Sarkasmus, Red Herring, dies-das, unangebracht. Ich weiß. Aber eine andere Reaktion fällt einem auf den Hype-Train der Tech-Bros doch kaum noch ein. Jeder, der mal mit KI gearbeitet hat, kennt das Gefühl, egal welches Modell man nutzt: man hat schon mal das Gerät angeschrien. Vielleicht ist das auch die Strategie: <strong>Extinktion durch Bluthochdruck!</strong></p>
+<p><code>(╯°_°）╯︵ ┻━┻)</code></p>
+<p>Ausgerechnet jetzt kommt auch einer der größten Profiteure der vorgelagerten Wertschöpfungskette um die Ecke - <strong>NVIDIA</strong>: 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://techcrunch.com/2026/09/15/we-dont-need-ai-regulation-leave-safety-to-us-nvidias-jensen-huang-says/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Hört auf, die Entwicklung zu stoppen.</a>
+
+
+ Natürlich hat NVIDIA kein Interesse daran, dass <strong>OpenAI</strong> kurz mal innehält. Immerhin hat das Unternehmen Verträge zu erfüllen und gefälligst Computing Power abzunehmen, die aus Rechenzentren kommt, in denen Hardware von NVIDIA verbaut ist. Das ist wie, als würde die <strong>Ölindustrie</strong> uns erklären, dass wir mehr Autofahren müssten. Was soll schon der ganze Bohei um die Umwelt!</p>
+<p>Um bei den Erst-Semester-Lektionen zu bleiben. Diese Strategie nennt man &ldquo;<strong>Doomer Marketing</strong>&rdquo;. Ist das Risiko real? Ja. Das ist es. Aber vielleicht sollten wir die KI einfach mal als das betrachten, was es ist: Ein Werkzeug. <strong>Virginia Dignum</strong>, Professorin für „Verantwortungsvolle Künstliche Intelligenz” an der Umeå Universität in Schweden, 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://reflectingwide.blogspot.com/2026/09/no-ai-will-not-kill-us-all.html?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">beschreibt es treffend so</a>
+
+
+:</p>
+<blockquote>
+<p>&ldquo;Zu hacken, Ressourcen zu beschaffen und sich selbst zu verbessern, sind Handlungen in der realen Welt. Sie erfordern Rechenleistung, Energie, Geld und Zugriffsrechte. All das wird von Menschen gewährt. Ein KI-Agent tut nichts, was nicht zuvor von Menschen oder Organisationen technisch und organisatorisch ermöglicht wurde.&rdquo;</p>
+</blockquote>
+<p>Die Erzählung lautet: KI hätte das Potential, die Menschheit zu zerstören. Nun. Panzer und Raketen haben auch das Potential die Menschheit zu zerstören. Und wie viel tatsächliche Kontrolle haben wir hier? 
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://netzpolitik.org/2026/warnung-vor-katastrophalen-schaeden-kuenstliche-intelligenz-ist-kein-naturereignis/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">Matthias Spielkamp von Netzpolitik</a>
+
+
+ bringt es auf den Punkt und das lasse ich so stehen, denn es ist jetzt auch mal gut:</p>
+<blockquote>
+<p>&ldquo;Atomwaffen können unvorstellbaren Schaden anrichten, der nicht wieder gutzumachen ist. Sie sind nicht einfach nur Bomben, sondern eine Kombination aus dem Atomsprengkopf selbst, hochentwickelten Waffensystemen und einem komplexen System gegenseitiger Überwachung – „intelligence“ (!) genannt. Mehrfach stand die Menschheit unmittelbar am Abgrund, weil diese <em>Intelligence</em> versagt hatte. Ist irgendjemand auf die Idee gekommen zu argumentieren: Die Atomwaffen sind außer Kontrolle geraten und dafür verantwortlich?&rdquo;</p>
+</blockquote>
+<p>//&ndash;
+Obligatorische weiterführende lesenwertes Beiträge zu dem Thema</p>
+<ul>
+<li>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://tante.cc/2026/09/14/der-besorgte-ki-bro/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://tante.cc/2026/09/14/der-besorgte-ki-bro/</a>
+
+
+</li>
+</ul>
+]]></content:encoded><atom:updated>2026-10-05T14:43:20+02:00</atom:updated><category>blog</category><dc:subject>Lesezeit: 7 Minuten</dc:subject><dc:type>meinung</dc:type></item><item><title>Ende der App-Stores</title><link>https://nickyreinert.de/2026/2026-08-22-ende-der-app-stores/</link><pubDate>Sat, 22 Aug 2026 12:34:56 +0000</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/2026/2026-08-22-ende-der-app-stores/</guid><description>Warum KI-gestützte Entwicklung und PWAs klassische App-Stores zunehmend verdrängen und individuelle Apps in Minuten statt Wochen entstehen.</description><content:encoded><![CDATA[<p>Wisst ihr, wie ich neuerdings Apps schreibe? Natürlich nicht, wie auch. Auf die Webcam in meinem &ldquo;Büro&rdquo; hat nur das FBI Zugriff. Wie dem auch sei: Ich erkläre es euch kurz.</p>
 <ol>
 <li>
 <p>Ich bin wieder zurück bei <strong>Claude</strong> (auch wenn ich mich darüber erst neuerlich 
@@ -10439,10 +10439,10 @@ Doch! Ich betrieb einen …</description><content:encoded><![CDATA[<p>Mit meinem
   
 
   
-  <a href="https://blog.google/technology/research/project-starline-google-beam-update/%29?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://blog.google/technology/research/project-starline-google-beam-update/)</a>
+  <a href="https://blog.google/technology/research/project-starline-google-beam-update/?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">https://blog.google/technology/research/project-starline-google-beam-update/</a>
 
 
-?</p>
+)?</p>
 <p>Worauf will ich hinaus? Ich bin kein Freund vom gegenwärtigen und anhaltenden <strong>AI‑Hype‑Train</strong>. Ich befürchte, dass <strong>AI‑Slop</strong> das Internet noch unwirtlicher machen wird, als 
 
 
