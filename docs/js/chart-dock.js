@@ -142,6 +142,9 @@
 
   function update() {
     if (dragging) return;
+    var articleRect = article.getBoundingClientRect();
+    dock.style.left = articleRect.left + 'px';
+    dock.style.width = articleRect.width + 'px';
     var top = topOffset();
     dock.style.top = top + 'px';
     var found = null;
