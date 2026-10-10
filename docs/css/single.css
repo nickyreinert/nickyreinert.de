@@ -291,21 +291,125 @@ img.chart-image.zoomable {
     display: inline-block !important;
 }
 
+/* summary at the end of a post */
+
+.post-summary {
+    width: 100%;
+    margin-top: 2rem;
+    padding: 1rem 0;
+    border-top: 2px solid #878787;
+    color: #555;
+}
+
+.post-summary h2,
+.post-summary p {
+    font-family: 'Latin Modern Roman', Georgia, serif;
+}
+
+.post-summary h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+    color: black;
+}
+
+.post-summary p {
+    margin-bottom: 1rem;
+}
+
+.post-summary-meta {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.5rem 1rem;
+    align-items: baseline;
+    font-size: 0.9rem;
+}
+
+.post-summary-meta dt {
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: #878787;
+}
+
+.post-summary-meta dd {
+    margin: 0;
+    font-family: 'Latin Modern Roman', Georgia, serif;
+    font-size: 1rem;
+    color: black;
+}
+
+.topic-chip {
+    display: inline-block;
+    margin: 0 0.4rem 0.2rem 0;
+    padding: 0 0.4rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    background-color: #EEEEEE;
+    border: 1px dashed #878787;
+}
+
+@media screen and (max-width: 480px) {
+    .post-summary-meta {
+        grid-template-columns: 1fr;
+        gap: 0.15rem;
+    }
+
+    .post-summary-meta dd {
+        margin-bottom: 0.5rem;
+    }
+}
+
 /* prev/next links with the target post's title */
 
-.paginator-prev,
-.paginator-next {
-    max-width: 45%;
+.paginator {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    width: 100%;
+    gap: 2rem;
+    align-items: start;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 2px solid #878787;
+}
+
+.paginator a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    color: black;
+    text-decoration: none;
 }
 
 .paginator-next {
+    align-items: flex-end;
     text-align: right;
 }
 
-.paginator-title {
-    display: block;
-    font-size: 0.85rem;
+.paginator-label {
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
     color: #878787;
+    white-space: nowrap;
+}
+
+.paginator-label b {
+    color: black;
+}
+
+.paginator-title {
+    font-family: 'Latin Modern Roman', Georgia, serif;
+    font-weight: bold;
+    font-size: 1rem;
+    line-height: 1.35;
+}
+
+.paginator a:hover {
+    text-decoration: none;
+}
+
+.paginator a:hover .paginator-title,
+.paginator a:hover .paginator-label b {
+    color: red;
 }
 
 /* chart mode switcher: right-hand container on wide screens, mirrors the sticky ToC */
