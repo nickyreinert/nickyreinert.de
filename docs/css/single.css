@@ -139,12 +139,173 @@
     text-overflow: ellipsis;
 }
 
+#sticky-title .sticky-heading {
+    display: none;
+    font-weight: normal;
+    font-size: 0.85rem;
+    color: #555;
+    padding-top: 0.15rem;
+}
+
+#sticky-title.has-heading .sticky-heading {
+    display: block;
+}
+
+/* keep anchor targets clear of the sticky bars */
+article.content h2,
+article.content h3 {
+    scroll-margin-top: 6rem;
+}
+
+/* docked charts: charts of the current section pinned below the sticky title bar, created by chart-dock.js */
+
+#chart-dock {
+    --dock-h: 30vh; /* overridden by chart-dock.js when the user drags the grip */
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0; /* set by chart-dock.js to the bottom of the sticky bars */
+    z-index: 99;
+    display: flex;
+    justify-content: center;
+    padding: 0.4rem 2rem 0.9rem;
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transform: translateY(-1rem);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    pointer-events: none;
+}
+
+#chart-dock.visible {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#chart-dock img {
+    display: block;
+    max-width: 100%;
+    max-height: var(--dock-h); /* shrunk so tall charts still leave room for the text */
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    margin: 0;
+    cursor: zoom-in;
+}
+
+.chart-dock-close {
+    position: absolute;
+    top: 0.2rem;
+    right: 0.3rem;
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    line-height: 1;
+    color: #878787;
+    cursor: pointer;
+}
+
+.chart-dock-close:hover {
+    color: black;
+}
+
+/* drag grip to adjust the dock height */
+.chart-dock-grip {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 0.9rem;
+    cursor: ns-resize;
+    touch-action: none;
+}
+
+.chart-dock-grip::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 3rem;
+    height: 5px;
+    border-radius: 3px;
+    background-color: #bbb;
+    transform: translate(-50%, -50%);
+}
+
+.chart-dock-grip:hover::after,
+#chart-dock.dragging .chart-dock-grip::after {
+    background-color: #666;
+}
+
+#chart-dock.dragging {
+    transition: none;
+    user-select: none;
+}
+
+@media screen and (max-width: 768px) {
+    #chart-dock {
+        --dock-h: 25vh;
+    }
+}
+
+/* chart zoom modal, created by chart-dock.js */
+
+img.chart-image.zoomable {
+    cursor: zoom-in;
+}
+
+#chart-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    cursor: zoom-out;
+}
+
+#chart-modal.visible {
+    display: flex;
+}
+
+#chart-modal img {
+    max-width: 95vw;
+    max-height: 90vh;
+    margin: 0;
+    background-color: #fff;
+}
+
 /* post meta: global time rule adds a left margin and min-width */
 
 .post-meta time {
     margin-left: 0;
     min-width: 0;
     text-align: right; /* .post time sets a fixed 150px width */
+}
+
+/* common.css hides `.post time` on mobile, but the publish date must stay */
+.post-meta time.dt-published {
+    display: inline-block !important;
+}
+
+/* prev/next links with the target post's title */
+
+.paginator-prev,
+.paginator-next {
+    max-width: 45%;
+}
+
+.paginator-next {
+    text-align: right;
+}
+
+.paginator-title {
+    display: block;
+    font-size: 0.85rem;
+    color: #878787;
 }
 
 /* chart mode switcher: right-hand container on wide screens, mirrors the sticky ToC */

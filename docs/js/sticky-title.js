@@ -8,7 +8,22 @@
   var text = document.createElement('span');
   text.textContent = h1.textContent.trim();
   bar.appendChild(text);
+  var sub = document.createElement('span');
+  sub.className = 'sticky-heading';
+  bar.appendChild(sub);
   document.body.prepend(bar);
+
+  var headings = Array.prototype.slice.call(
+    document.querySelectorAll('article.content h2, article.content h3'));
+  var currentHeading = null;
+
+  function setHeading(heading) {
+    if (heading === currentHeading) return;
+    currentHeading = heading;
+    sub.textContent = heading ? heading.textContent.trim() : '';
+    bar.classList.toggle('has-heading', !!heading);
+    window.dispatchEvent(new Event('sticky-title-change'));
+  }
 
   // stack below the sticky slim header
   var slim = document.querySelector('#header.header-slim');
@@ -30,6 +45,14 @@
   // shown as soon as the real h1 has scrolled out of view
   function update() {
     setVisible(h1.getBoundingClientRect().bottom < 0);
+    // current heading = last one that has scrolled under the bar
+    var limit = bar.getBoundingClientRect().bottom + 4;
+    var found = null;
+    for (var i = 0; i < headings.length; i++) {
+      if (headings[i].getBoundingClientRect().top <= limit) found = headings[i];
+      else break;
+    }
+    setHeading(visible ? found : null);
   }
 
   var ticking = false;
