@@ -8,8 +8,6 @@
     .filter(function (chart) { return chart.querySelector('img.chart-image'); });
   if (!charts.length) return;
 
-  // dock once only this share of the chart is still visible
-  var TRIGGER_VISIBLE = 0.2;
   var headings = Array.prototype.slice.call(article.querySelectorAll('h1, h2, h3, h4'));
 
   // a chart's section ends at the next heading, or at the end of the article
@@ -132,8 +130,14 @@
   function dockHeight(chart) {
     var maxH = userHeight ? clampHeight(userHeight)
       : window.innerHeight * (window.innerWidth <= 768 ? 0.25 : 0.3);
-    var h = chart.querySelector('img.chart-image').offsetHeight;
-    return (h ? Math.min(h, maxH) : maxH) + 22;
+    var img = chart.querySelector('img.chart-image');
+    var h = maxH;
+    if (img.naturalWidth) {
+      // image is also limited by the dock width (minus its 2rem side padding)
+      var maxW = (dock.clientWidth || window.innerWidth) - 64;
+      h = Math.min(maxH, img.naturalHeight, maxW * img.naturalHeight / img.naturalWidth);
+    }
+    return h + 22;
   }
 
   function update() {
@@ -143,8 +147,9 @@
     var found = null;
     var foundEnd = null;
     for (var i = 0; i < charts.length; i++) {
-      var rect = charts[i].getBoundingClientRect();
-      if (rect.bottom - top > rect.height * TRIGGER_VISIBLE) break;
+      // dock once the chart's bottom reaches the dock's bottom edge, so the
+      // following text continues right below the dock instead of under it
+      if (charts[i].getBoundingClientRect().bottom > top + dockHeight(charts[i])) break;
       found = charts[i];
       foundEnd = ends[i];
     }
