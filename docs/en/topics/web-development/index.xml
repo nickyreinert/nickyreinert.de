@@ -11,10 +11,37 @@
 </figure>
 
 <p>I built <strong>cr34te.it</strong>. Anyone can submit changes to a website. Anonymously.</p>
+<p>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+  
+
+  
+    
+      
+    
+  
+
+  
+  <a href="https://cr34te.it?utm_source=institut-fuer-digitale-herausforderungen&amp;utm_medium=allyourbasearebelongtous" target="_blank" rel="noopener noreferrer">cr34te.it</a>
+
+
+</p>
 <p>Of course there is more. Let me explain how it works:</p>
 <p>You visit this website and you think: Well, I&rsquo;d like to add monopoly clone.</p>
 <p>How you do it?</p>
-<p>First you need to claim a <strong>turn</strong>. If you are lucky, you can start right away. Or you will be placed in a queue. The queue holds up to 100 people. When it is your turn, you have <strong>5 minutes</strong>. To do what?</p>
+<p>First you need to claim a <strong>turn</strong>. If you are lucky, you can start right away. Or you will be placed in a queue. The queue holds up to 100 people. When it is your turn, you have <strong>6 minutes</strong>. To do what?</p>
 <p>You copy a prompt and switch to either your preferred AI model in the browser (<strong>ChatGPT</strong>, <strong>Anthropic</strong>, you name it&hellip;) or your local coding agent (<strong>Copilot</strong> in VSCode, <strong>Claude-App</strong>, <code>gemini</code>, <code>pi</code> , you name it&hellip;). Deliver that prompt to the AI, it will ask you what to change and create a patch out of it. Local coding agents usually perform way better, because they support local testing and tool calls.</p>
 <p>The browser-based way requires you to copy the patch back to the website to submit it. There&rsquo;s a small window where you paste and submit your change. It will be tested against a couple of moderation rules. Harmful content, harrassing speech, obsessive spam and such things will be rejected. For apparent reasons.</p>
 <p>Your local coding agent makes it way easier, it can use the <strong>API</strong> to submit changes directly, however the same moderation rules apply.</p>
@@ -77,7 +104,7 @@
 <p>There are more &ldquo;premium features&rdquo;. You can freeze your submission for a given times. Right now this is 34 Minutes or 720 Minutes (12 hours). Alternatively, you can bump a submission from the history back to the top.</p>
 <p>If you experience a submission that still somehow violates a rule or contain content that you may find objectionable, you can report it. A given amount of reports will automatically trigger a take-down of that submission, though: Every report will be also reviewed by the moderation team.</p>
 <p>There&rsquo;s also a way of expressing your support for given submission, but you need to create an account for that: You can upvote or downvote submission. Right now we support Google and GitHub accounts. We will not store any additinal account information except the account ID. Submissions with many upvotes will be more prominently displayed in the history.</p>
-]]></content:encoded><atom:updated>2026-10-14T20:04:21+02:00</atom:updated><category>blog</category><category>development</category><dc:subject>Lesezeit: 3 Minuten</dc:subject><dc:type>project_showcase</dc:type></item><item><title>How to Persist User Configuration in a Gradio App with Cookies</title><link>https://nickyreinert.de/en/2024/2024-05-05-gradio-app/</link><pubDate>Sun, 05 May 2024 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2024/2024-05-05-gradio-app/</guid><description>I am currently building some kind of playground for Huggingface’s text-2-image models. This app offers more than a dozen configuration parameters. The problem: Every time the user reloads the page, all parameters are gone. Here’s my solution to cope with that.
+]]></content:encoded><atom:updated>2026-10-16T15:44:11+02:00</atom:updated><category>blog</category><category>development</category><dc:subject>Lesezeit: 3 Minuten</dc:subject><dc:type>project_showcase</dc:type></item><item><title>How to Persist User Configuration in a Gradio App with Cookies</title><link>https://nickyreinert.de/en/2024/2024-05-05-gradio-app/</link><pubDate>Sun, 05 May 2024 12:34:56 +0100</pubDate><author>Nicky Reinert</author><dc:creator>Nicky Reinert</dc:creator><guid isPermaLink="true">https://nickyreinert.de/en/2024/2024-05-05-gradio-app/</guid><description>I am currently building some kind of playground for Huggingface’s text-2-image models. This app offers more than a dozen configuration parameters. The problem: Every time the user reloads the page, all parameters are gone. Here’s my solution to cope with that.
 Gradio has a gr.Stateobject that allows …</description><content:encoded><![CDATA[<p>I am currently building some kind of playground for Huggingface’s text-2-image models. This app offers more than a dozen configuration parameters. The problem: Every time the user reloads the page, all parameters are gone. Here’s my solution to cope with that.</p>
 <p><strong>Gradio</strong> has a <code>gr.State</code>object that allows you to persist values for the current user in the current tab. But as soon as you open another tab or even reload the page, your user’s setup is gone. While there’s also a <code>gr.Request</code> oject that allows you to access cookies, this only read cookies.</p>
 <img src="https://nickyreinert.de/en/2024/2024-05-05-gradio-app/image-1.png" alt="alt text"><p>So right now there’s no easy way to achieve some kind of “persistent config” for your Gradio demo. But there’s a workaround: Gradio allows you to add custom <strong>JavaScript</strong> to your app, which 
